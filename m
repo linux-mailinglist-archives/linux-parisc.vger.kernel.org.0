@@ -2,43 +2,124 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EF647179B8
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 May 2023 10:14:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D494E717DB0
+	for <lists+linux-parisc@lfdr.de>; Wed, 31 May 2023 13:08:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232547AbjEaIOb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 31 May 2023 04:14:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42864 "EHLO
+        id S232546AbjEaLII (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 31 May 2023 07:08:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231993AbjEaIOa (ORCPT
+        with ESMTP id S232807AbjEaLIH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 31 May 2023 04:14:30 -0400
-X-Greylist: delayed 471 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 31 May 2023 01:14:27 PDT
-Received: from mail.quaich.pl (mail.quaich.pl [51.38.112.58])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A816B93
-        for <linux-parisc@vger.kernel.org>; Wed, 31 May 2023 01:14:27 -0700 (PDT)
-Received: by mail.quaich.pl (Postfix, from userid 1002)
-        id 831F5A3977; Wed, 31 May 2023 08:05:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=quaich.pl; s=mail;
-        t=1685520367; bh=wfvwbFJA200jrsHeP2otbNIBGUSi9OMiPBdlGaZSRdc=;
-        h=Date:From:To:Subject:From;
-        b=I+kRJBIlQpWE8ngfwdMq/Gklq5B8mDpZjvoEoCJLKQCTsI7tTF447uUPrcDf//xPj
-         1oChhsmBdFlezVHP6bivbTKUUxJWcNCWJaY5kzqJW52Sf4GMenwyA8zrPe97mTxMWv
-         KOuVVJxH+KIUhqpaP7xoPmlMJxbmy/g0jHhJdCTMSpcSiLdm22eePcb++/3D9+NWC9
-         H3Yuoshwztm8/hFyPOAif1rs6TQylUcA9FLa3VIE9RLmlxL9vGRS5yigLPXx0t7WFe
-         +rsB9nvhkvelA2Bj8y2QnU+5ia0621qTDT0C55G6djr+mrn6ouQYLtp6qKz81jcB9w
-         SSHO56zxPshKA==
-Received: by quaich.pl for <linux-parisc@vger.kernel.org>; Wed, 31 May 2023 08:05:24 GMT
-Message-ID: <20230531064520-0.1.8h.i6l0.0.2sj8ndpo3r@quaich.pl>
-Date:   Wed, 31 May 2023 08:05:24 GMT
-From:   =?UTF-8?Q? "Tomasz_Wiewi=C3=B3r" ?= <tomasz.wiewior@quaich.pl>
-To:     <linux-parisc@vger.kernel.org>
-Subject: =?UTF-8?Q?Negocjacje-wska=C5=BAnik_skuteczno=C5=9Bci?=
-X-Mailer: mail.quaich.pl
+        Wed, 31 May 2023 07:08:07 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B3C126;
+        Wed, 31 May 2023 04:08:05 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 4D0625C00F1;
+        Wed, 31 May 2023 07:08:04 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Wed, 31 May 2023 07:08:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+         h=cc:cc:content-type:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1685531284; x=
+        1685617684; bh=aeL29fTibpX7OH1ns9iCpikawL6pyGgQIxFzUFIJ5mE=; b=x
+        UDCGtesaL634GL9eXdFKoKL1s1Tz9Ll4uk1Af1BMnvQGH4j9+1PhPANaEaVE379R
+        CdP85tpEg9YcUW2h5dFDnyNMAmMCkYWCYlWHtfBYAhuz7I36GZhVasYeXJhtrGKQ
+        9Lrd5hHztASe4grn656Fm1LxjoNjOG1JM3Ad9/lCi0sHtpjyf+ptypYz5yGO613d
+        qh8+Kv3Y5LpM1E1ielOLRn5Ok/JsogZMAHdTruPsKoySspbI4+TYmoxqI/VIiBEP
+        9NSI/2t5My7odxwCZX0DKZDp9MOjZtjLzlE2tfb83C3rAyCOX0y3uoPoI2tB10/o
+        jG1KAHIWcun/pGj4MxlRQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1685531284; x=1685617684; bh=aeL29fTibpX7O
+        H1ns9iCpikawL6pyGgQIxFzUFIJ5mE=; b=CKpieIWYKmOkyyCDiuZP8D+PUVECt
+        T2ErndCGQJp98RFqZNoUkT/fLhMhJ/86fqOlgcQFwHL1AieUk9bVGqVQwn4r+E2W
+        f0BdsMG0bUxMm93eQ9DkRhxUnn/i/uxmRKJyngDMg7NgPssfHdpcqc4Ji8JdwWKu
+        KcmycyZC8ziSkBHUUx0EKF81JTIo9p1nky54jRBkScT+6/Vtg8YxhCTisfVZ1PtQ
+        DxAb3nZ6wlHPyxA4NCng2CaUSohgQo62Msc4qWAgBMoDuT6fhd6tjX3xJipyPlE8
+        6WncsmBPKzOXGkMG97UzW0dluJcZkHMNBSKLi7gH8TFXTIx7+dO3jVsvQ==
+X-ME-Sender: <xms:kCp3ZGhTVDV0DVu7dmcXkuzxkpXwEA9IwCIFbDRZWqgyIv8wnEJkFQ>
+    <xme:kCp3ZHAPrdO9QnDydIYpePwNPqTvQeT4rDLRRhSWppJUEyVQkKccYZjgigzReTWrC
+    K0XSDatK5L73o__kNY>
+X-ME-Received: <xmr:kCp3ZOGKLu-mTkNtzCsjRFXSA0mPL0O0V-GjwUeK0cpeJiwxiYZ1sNPmsq0FoVcs2JuCqQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeekledgfeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdttddttddtvdenucfhrhhomhepfdfmihhr
+    ihhllhcutedrucfuhhhuthgvmhhovhdfuceokhhirhhilhhlsehshhhuthgvmhhovhdrnh
+    grmhgvqeenucggtffrrghtthgvrhhnpefhieeghfdtfeehtdeftdehgfehuddtvdeuheet
+    tddtheejueekjeegueeivdektdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvg
+X-ME-Proxy: <xmx:kCp3ZPSz5hGKt8pyGe8Ue_MUxG7I7-LMRL0S8Maei_bY-CtDzDeDqg>
+    <xmx:kCp3ZDybG56imlj3lotFSk424EAyO4S3ZalWSFbkTcroWC2CEkq-8g>
+    <xmx:kCp3ZN6cb8NiInnM6MmJJINWLXlxFmXCECS2-MdbyVDlBUBQ7WTXsw>
+    <xmx:lCp3ZIQZa_9Yhyap2wMrdMHayAKX3jfVOiYwSdewsO8ergavPjSuDQ>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 31 May 2023 07:08:00 -0400 (EDT)
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id D69A310BD95; Wed, 31 May 2023 14:07:56 +0300 (+03)
+Date:   Wed, 31 May 2023 14:07:56 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        LKML <linux-kernel@vger.kernel.org>, x86@kernel.org,
+        David Woodhouse <dwmw2@infradead.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Brian Gerst <brgerst@gmail.com>,
+        Arjan van de Veen <arjan@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Paul McKenney <paulmck@kernel.org>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Piotr Gorski <lucjan.lucjanov@gmail.com>,
+        Usama Arif <usama.arif@bytedance.com>,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        xen-devel@lists.xenproject.org,
+        Russell King <linux@armlinux.org.uk>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        linux-csky@vger.kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        linux-riscv@lists.infradead.org,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sabin Rapan <sabrapan@amazon.com>,
+        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [patch] x86/smpboot: Fix the parallel bringup decision
+Message-ID: <20230531110756.g4cz2tjnc7ypskre@box.shutemov.name>
+References: <87jzwqjeey.ffs@tglx>
+ <87cz2ija1e.ffs@tglx>
+ <20230530122951.2wu5rwcu26ofov6f@box.shutemov.name>
+ <87wn0pizbl.ffs@tglx>
+ <ZHYqwsCURnrFdsVm@google.com>
+ <87leh5iom8.ffs@tglx>
+ <8751e955-e975-c6d4-630c-02912b9ef9da@amd.com>
+ <871qiximen.ffs@tglx>
+ <b6323987-059e-5396-20b9-8b6a1687e289@amd.com>
+ <87ilc9gd2d.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ilc9gd2d.ffs@tglx>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -47,29 +128,24 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Szanowni Pa=C5=84stwo,
+On Wed, May 31, 2023 at 09:44:26AM +0200, Thomas Gleixner wrote:
+> The decision to allow parallel bringup of secondary CPUs checks
+> CC_ATTR_GUEST_STATE_ENCRYPT to detect encrypted guests. Those cannot use
+> parallel bootup because accessing the local APIC is intercepted and raises
+> a #VC or #VE, which cannot be handled at that point.
+> 
+> The check works correctly, but only for AMD encrypted guests. TDX does not
+> set that flag.
+> 
+> As there is no real connection between CC attributes and the inability to
+> support parallel bringup, replace this with a generic control flag in
+> x86_cpuinit and let SEV-ES and TDX init code disable it.
+> 
+> Fixes: 0c7ffa32dbd6 ("x86/smpboot/64: Implement arch_cpuhp_init_parallel_bringup() and enable it")
+> Reported-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 
-jako specjali=C5=9Bci w dziedzinie badania potrzeb i projektowania progra=
-m=C3=B3w szkoleniowych, wiemy, jak wa=C5=BCne jest zapewnienie odpowiedni=
-ch narz=C4=99dzi i wiedzy, aby skutecznie zwi=C4=99kszy=C4=87 efektywno=C5=
-=9B=C4=87 zespo=C5=82u, szczeg=C3=B3lnie w du=C5=BCych organizacjach.
+Tested-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-Zamkni=C4=99te szkolenia s=C4=85 najlepszym rozwi=C4=85zaniem dla tych, k=
-t=C3=B3rzy chc=C4=85 skupi=C4=87 si=C4=99 na konkretnych potrzebach i zag=
-adnieniach.=20
-
-Nasza metodyka opiera si=C4=99 na identyfikacji obszar=C3=B3w, kt=C3=B3re=
- wymagaj=C4=85 poprawy, a nast=C4=99pnie dostarczaniu spersonalizowanych =
-rozwi=C4=85za=C5=84, kt=C3=B3re pomagaj=C4=85 osi=C4=85gn=C4=85=C4=87 cel=
-e biznesowe.
-
-Z powodzeniem prowadzili=C5=9Bmy projekty szkoleniowe dla renomowanych ma=
-rek, takich jak: PZU, Bank Pekao S.A., PWC, Ronson Development, Gedeon Ri=
-chter i wielu innych.
-
-Mo=C5=BCemy niezobowi=C4=85zuj=C4=85co porozmawia=C4=87 o mo=C5=BCliwo=C5=
-=9Bciach zorganizowania szkolenia dla Pa=C5=84stwa firmy?
-
-
-Pozdrawiam
-Tomasz Wiewi=C3=B3r
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
