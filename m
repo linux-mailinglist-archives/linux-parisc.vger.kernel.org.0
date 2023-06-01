@@ -2,144 +2,217 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A527F719E5A
-	for <lists+linux-parisc@lfdr.de>; Thu,  1 Jun 2023 15:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8299571EE63
+	for <lists+linux-parisc@lfdr.de>; Thu,  1 Jun 2023 18:12:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232673AbjFANgF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 1 Jun 2023 09:36:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43552 "EHLO
+        id S230151AbjFAQMR (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 1 Jun 2023 12:12:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232329AbjFANgF (ORCPT
+        with ESMTP id S229603AbjFAQMQ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 1 Jun 2023 09:36:05 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42042138
-        for <linux-parisc@vger.kernel.org>; Thu,  1 Jun 2023 06:36:03 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-96f50e26b8bso123102966b.2
-        for <linux-parisc@vger.kernel.org>; Thu, 01 Jun 2023 06:36:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1685626561; x=1688218561;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M0MHDOHZ+ksADoGSH1YMQnsp1jrJ4XOCHJuXFHrOLiU=;
-        b=gqFVbs7CReL0J6SD8SJWJMuWtr04hsoW3vZ6RcZshjJAQfARPK7YoZNO84N5c/LgWu
-         ZPC1ftLNuSHpMj9LUsUbN1oIwPmkzlZksKEWabriZOECSmdU04sPhnW+9BuhBPlcCjUd
-         4Vbkd5vKhlpSwvWkWa3uIv5I0kPX0xNGeL+UA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685626561; x=1688218561;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M0MHDOHZ+ksADoGSH1YMQnsp1jrJ4XOCHJuXFHrOLiU=;
-        b=fR6hzoU/z1H1tJbNV/b2+LYDIRBd/O19c5kilfLJKruom5mA6ZrXoy67DTklkryMM7
-         WgVT2MAst1iuPC9n0leeHiMDIp3Ea8vTDCsgo9msmdtZPXdoWDbiHyXHvt1HYjnObcPH
-         cP+0/ZJyk/BVDnz8NKWTw4uO0A6B4YsKaZ4PcOnygh2ZHcu5OuMb4LF5EFyBCNCe6GEN
-         K/iY0TFzGULJ66sIxhKzvqqe19vTWeO3BELTDkJwa2QDZkoNgFyCzKvC/iNdxTubQAoy
-         2xUEyaeNzNfOj+PjI121Oav2ysEWVZzLS3xOrFAMRnGOFzpT/D9JuuL4W4v7OPY85RTF
-         HTCQ==
-X-Gm-Message-State: AC+VfDxsk9mmMjLIb3KNVjN7mM95nlacxyVy3CBi05TyZib0I3nV+K0N
-        0HWRwGLT9HQvlp/9asTv+eKsHCdOUjc0MUzelgndt5Xn
-X-Google-Smtp-Source: ACHHUZ5ICzImwhPVp42iyEliMg2riYzZiSfYUSlzG7ARP9LHQhlepwBZSc/kpYZL8ToJFz6Ych1O4g==
-X-Received: by 2002:a17:907:a420:b0:967:3963:dab8 with SMTP id sg32-20020a170907a42000b009673963dab8mr8588145ejc.7.1685626561635;
-        Thu, 01 Jun 2023 06:36:01 -0700 (PDT)
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com. [209.85.128.48])
-        by smtp.gmail.com with ESMTPSA id a6-20020a1709063a4600b00973fac6065esm6492837ejf.223.2023.06.01.06.36.01
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Jun 2023 06:36:01 -0700 (PDT)
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-3f6dfc4dffaso8714175e9.0
-        for <linux-parisc@vger.kernel.org>; Thu, 01 Jun 2023 06:36:01 -0700 (PDT)
-X-Received: by 2002:a17:907:2cc6:b0:973:fe5d:ef71 with SMTP id
- hg6-20020a1709072cc600b00973fe5def71mr4787778ejc.14.1685626175454; Thu, 01
- Jun 2023 06:29:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230531130833.635651916@infradead.org> <20230531132323.722039569@infradead.org>
- <70a69deb-7ad4-45b2-8e13-34955594a7ce@app.fastmail.com> <20230601101409.GS4253@hirez.programming.kicks-ass.net>
- <14c50e58-fecc-e96a-ee73-39ef4e4617c7@gmx.de>
-In-Reply-To: <14c50e58-fecc-e96a-ee73-39ef4e4617c7@gmx.de>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu, 1 Jun 2023 09:29:18 -0400
-X-Gmail-Original-Message-ID: <CAHk-=whL65CLuy9D9gyO608acM5WLWo_ggAMP1cGu2XvyC0-hA@mail.gmail.com>
-Message-ID: <CAHk-=whL65CLuy9D9gyO608acM5WLWo_ggAMP1cGu2XvyC0-hA@mail.gmail.com>
-Subject: Re: [PATCH v2 07/12] parisc/percpu: Work around the lack of __SIZEOF_INT128__
-To:     Helge Deller <deller@gmx.de>,
-        Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Will Deacon <will@kernel.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>, dennis@kernel.org,
-        Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
-        Heiko Carstens <hca@linux.ibm.com>, gor@linux.ibm.com,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        borntraeger@linux.ibm.com, Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Joerg Roedel <joro@8bytes.org>,
-        suravee.suthikulpanit@amd.com, Robin Murphy <robin.murphy@arm.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Baolu Lu <baolu.lu@linux.intel.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Pekka Enberg <penberg@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Thu, 1 Jun 2023 12:12:16 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 50B4C18F;
+        Thu,  1 Jun 2023 09:12:13 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 525171063;
+        Thu,  1 Jun 2023 09:12:58 -0700 (PDT)
+Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.36.140])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C47623F663;
+        Thu,  1 Jun 2023 09:12:06 -0700 (PDT)
+Date:   Thu, 1 Jun 2023 17:12:03 +0100
+From:   Mark Rutland <mark.rutland@arm.com>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Hyeonggon Yoo <42.hyeyoo@gmail.com>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org, iommu@lists.linux.dev,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        linux-crypto@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Luis Chamberlain <mcgrof@kernel.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-parisc@vger.kernel.org,
-        John David Anglin <dave.anglin@bell.net>,
-        Sam James <sam@gentoo.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Song Liu <song@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-modules@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 00/13] mm: jit/text allocator
+Message-ID: <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
+References: <20230601101257.530867-1-rppt@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230601101257.530867-1-rppt@kernel.org>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Jun 1, 2023 at 6:32=E2=80=AFAM Helge Deller <deller@gmx.de> wrote:
->
-> I don't think we need to care about gcc-10 on parisc.
-> Debian and Gentoo are the only supported distributions, while Debian
-> requires gcc-12 to build > 6.x kernels, and I assume Gentoo uses at least
-> gcc-12 as well.
->
-> So raising the gcc limit for parisc only (at least temporarily for now)
-> should be fine and your workaround below wouldn't be necessary, right?
+Hi Mike,
 
-This absolutely sounds like the right option. Let's simplify the
-problem space by just saying that parisc needs the newer compiler.
+On Thu, Jun 01, 2023 at 01:12:44PM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> 
+> Hi,
+> 
+> module_alloc() is used everywhere as a mean to allocate memory for code.
+> 
+> Beside being semantically wrong, this unnecessarily ties all subsystmes
+> that need to allocate code, such as ftrace, kprobes and BPF to modules
+> and puts the burden of code allocation to the modules code.
 
-Right now we have that "minimum gcc version" in a somewhat annoying
-place: it's in the ./scripts/min-tool-version.sh file as a shell
-script.
+I agree this is a problem, and one key issue here is that these can have
+different requirements. For example, on arm64 we need modules to be placed
+within a 128M or 2G window containing the kernel, whereas it would be safe for
+the kprobes XOL area to be placed arbitrarily far from the kernel image (since
+we don't allow PC-relative insns to be stepped out-of-line). Likewise arm64
+doesn't have ftrace trampolines, and DIRECT_CALL trampolines can safely be
+placed arbitarily far from the kernel image.
 
-I wonder if we could move the gcc minimum version check into the
-Kconfig file instead, and make it easier to let architectures override
-the minimum version.
+For a while I have wanted to give kprobes its own allocator so that it can work
+even with CONFIG_MODULES=n, and so that it doesn't have to waste VA space in
+the modules area.
 
-I don't quite know how to do that sanely, though. I don't think we
-have a sane way to error out at Kconfig time (except by forcing some
-syntax error inside an 'if' statement or something horrendously hacky
-like that).
+Given that, I think these should have their own allocator functions that can be
+provided independently, even if those happen to use common infrastructure.
 
-Added Masahiro to the (already overlong) participants list.
+> Several architectures override module_alloc() because of various
+> constraints where the executable memory can be located and this causes
+> additional obstacles for improvements of code allocation.
+> 
+> This set splits code allocation from modules by introducing
+> jit_text_alloc(), jit_data_alloc() and jit_free() APIs, replaces call
+> sites of module_alloc() and module_memfree() with the new APIs and
+> implements core text and related allocation in a central place.
+> 
+> Instead of architecture specific overrides for module_alloc(), the
+> architectures that require non-default behaviour for text allocation must
+> fill jit_alloc_params structure and implement jit_alloc_arch_params() that
+> returns a pointer to that structure. If an architecture does not implement
+> jit_alloc_arch_params(), the defaults compatible with the current
+> modules::module_alloc() are used.
 
-                   Linus
+As above, I suspect that each of the callsites should probably be using common
+infrastructure, but I don't think that a single jit_alloc_arch_params() makes
+sense, since the parameters for each case may need to be distinct.
+
+> The new jitalloc infrastructure allows decoupling of kprobes and ftrace
+> from modules, and most importantly it enables ROX allocations for
+> executable memory.
+> 
+> A centralized infrastructure for code allocation allows future
+> optimizations for allocations of executable memory, caching large pages for
+> better iTLB performance and providing sub-page allocations for users that
+> only need small jit code snippets.
+
+This sounds interesting, but I think this can be achieved without requiring a
+single jit_alloc_arch_params() shared by all users?
+
+Thanks,
+Mark.
+
+> 
+> patches 1-5: split out the code allocation from modules and arch
+> patch 6: add dedicated API for data allocations with constraints similar to
+> code allocations
+> patches 7-9: decouple dynamic ftrace and kprobes form CONFIG_MODULES
+> patches 10-13: enable ROX allocations for executable memory on x86
+> 
+> Mike Rapoport (IBM) (11):
+>   nios2: define virtual address space for modules
+>   mm: introduce jit_text_alloc() and use it instead of module_alloc()
+>   mm/jitalloc, arch: convert simple overrides of module_alloc to jitalloc
+>   mm/jitalloc, arch: convert remaining overrides of module_alloc to jitalloc
+>   module, jitalloc: drop module_alloc
+>   mm/jitalloc: introduce jit_data_alloc()
+>   x86/ftrace: enable dynamic ftrace without CONFIG_MODULES
+>   arch: make jitalloc setup available regardless of CONFIG_MODULES
+>   kprobes: remove dependcy on CONFIG_MODULES
+>   modules, jitalloc: prepare to allocate executable memory as ROX
+>   x86/jitalloc: make memory allocated for code ROX
+> 
+> Song Liu (2):
+>   ftrace: Add swap_func to ftrace_process_locs()
+>   x86/jitalloc: prepare to allocate exectuatble memory as ROX
+> 
+>  arch/Kconfig                     |   5 +-
+>  arch/arm/kernel/module.c         |  32 ------
+>  arch/arm/mm/init.c               |  35 ++++++
+>  arch/arm64/kernel/module.c       |  47 --------
+>  arch/arm64/mm/init.c             |  42 +++++++
+>  arch/loongarch/kernel/module.c   |   6 -
+>  arch/loongarch/mm/init.c         |  16 +++
+>  arch/mips/kernel/module.c        |   9 --
+>  arch/mips/mm/init.c              |  19 ++++
+>  arch/nios2/include/asm/pgtable.h |   5 +-
+>  arch/nios2/kernel/module.c       |  24 ++--
+>  arch/parisc/kernel/module.c      |  11 --
+>  arch/parisc/mm/init.c            |  21 +++-
+>  arch/powerpc/kernel/kprobes.c    |   4 +-
+>  arch/powerpc/kernel/module.c     |  37 -------
+>  arch/powerpc/mm/mem.c            |  41 +++++++
+>  arch/riscv/kernel/module.c       |  10 --
+>  arch/riscv/mm/init.c             |  18 +++
+>  arch/s390/kernel/ftrace.c        |   4 +-
+>  arch/s390/kernel/kprobes.c       |   4 +-
+>  arch/s390/kernel/module.c        |  46 +-------
+>  arch/s390/mm/init.c              |  35 ++++++
+>  arch/sparc/kernel/module.c       |  34 +-----
+>  arch/sparc/mm/Makefile           |   2 +
+>  arch/sparc/mm/jitalloc.c         |  21 ++++
+>  arch/sparc/net/bpf_jit_comp_32.c |   8 +-
+>  arch/x86/Kconfig                 |   2 +
+>  arch/x86/kernel/alternative.c    |  43 ++++---
+>  arch/x86/kernel/ftrace.c         |  59 +++++-----
+>  arch/x86/kernel/kprobes/core.c   |   4 +-
+>  arch/x86/kernel/module.c         |  75 +------------
+>  arch/x86/kernel/static_call.c    |  10 +-
+>  arch/x86/kernel/unwind_orc.c     |  13 ++-
+>  arch/x86/mm/init.c               |  52 +++++++++
+>  arch/x86/net/bpf_jit_comp.c      |  22 +++-
+>  include/linux/ftrace.h           |   2 +
+>  include/linux/jitalloc.h         |  69 ++++++++++++
+>  include/linux/moduleloader.h     |  15 ---
+>  kernel/bpf/core.c                |  14 +--
+>  kernel/kprobes.c                 |  51 +++++----
+>  kernel/module/Kconfig            |   1 +
+>  kernel/module/main.c             |  56 ++++------
+>  kernel/trace/ftrace.c            |  13 ++-
+>  kernel/trace/trace_kprobe.c      |  11 ++
+>  mm/Kconfig                       |   3 +
+>  mm/Makefile                      |   1 +
+>  mm/jitalloc.c                    | 185 +++++++++++++++++++++++++++++++
+>  mm/mm_init.c                     |   2 +
+>  48 files changed, 777 insertions(+), 462 deletions(-)
+>  create mode 100644 arch/sparc/mm/jitalloc.c
+>  create mode 100644 include/linux/jitalloc.h
+>  create mode 100644 mm/jitalloc.c
+> 
+> 
+> base-commit: 44c026a73be8038f03dbdeef028b642880cf1511
+> -- 
+> 2.35.1
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
