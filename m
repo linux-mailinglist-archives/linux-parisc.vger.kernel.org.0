@@ -2,35 +2,76 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 352867204DE
-	for <lists+linux-parisc@lfdr.de>; Fri,  2 Jun 2023 16:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07A89720722
+	for <lists+linux-parisc@lfdr.de>; Fri,  2 Jun 2023 18:11:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236242AbjFBOvC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 2 Jun 2023 10:51:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48456 "EHLO
+        id S236747AbjFBQLL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 2 Jun 2023 12:11:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230430AbjFBOvB (ORCPT
+        with ESMTP id S236785AbjFBQK4 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 2 Jun 2023 10:51:01 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 095F9E40;
-        Fri,  2 Jun 2023 07:50:58 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C92851063;
-        Fri,  2 Jun 2023 07:51:43 -0700 (PDT)
-Received: from FVFF77S0Q05N.cambridge.arm.com (FVFF77S0Q05N.cambridge.arm.com [10.1.38.135])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 628663F7BD;
-        Fri,  2 Jun 2023 07:50:52 -0700 (PDT)
-Date:   Fri, 2 Jun 2023 15:50:47 +0100
-From:   Mark Rutland <mark.rutland@arm.com>
+        Fri, 2 Jun 2023 12:10:56 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9872110D8
+        for <linux-parisc@vger.kernel.org>; Fri,  2 Jun 2023 09:10:08 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b1a4250b07so27362601fa.3
+        for <linux-parisc@vger.kernel.org>; Fri, 02 Jun 2023 09:10:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1685722189; x=1688314189;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AeFT72TXfXAwhYRh1W0GvqbmonxTxhIBsAfBN2yDsw0=;
+        b=RTvspkHEUsSuNPDqJToga/D9ksuhPWw2CQKitisED6WLmRQIOFQAE36LbEBLA3ru/5
+         PJaVdbxblp/DhG5XSh/cIh4cCXLdK2RBCol4ghYD8ryW5np9H/RxNs7NiX1M+4siepQU
+         9jFNTjB9dX6Udb1vS1HyTdFCulGwzv3BJcPkc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685722189; x=1688314189;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AeFT72TXfXAwhYRh1W0GvqbmonxTxhIBsAfBN2yDsw0=;
+        b=AFZi4pCusvRx4eLsXQZ8lqwZ4mmTq0CZrotVVPSP19a9XitUcnF1Xfu8Rwyu3RFdiY
+         o+lpjvE7yYqc7xAg0FgZUIdk5GVH+Wjx3wNIYUf6acqZOT79Pi4u2uQnX70sPttw65IF
+         U/bRZ3v0J5Fs0jxRENabxjA25fG81pBX3ElmMrX40lCrcCDVKuv66+5zrqTIjuDXTB36
+         43s4j5rl5fklibOsnFu7Mi2YLVspSWQJlta89YUpLwW//qQL+FRjHmGqYP2LFOu3iZHm
+         mrF0MOC9Doj6DBx1jmgS7kF+i0tShUthz/wNeGdPjUK5te0aOVtrg2BlLCVUmClIIsGY
+         85zA==
+X-Gm-Message-State: AC+VfDwfky+ee6wTZlDl/Uh0YrLSwFlNsmaGR0KSBtXuPOLNnggi2MU0
+        sJWkTu5hKch7tECVuDSinxfiVNhJwlj2Wa3XEL2atDRe
+X-Google-Smtp-Source: ACHHUZ5RwT1SXbQkuorbO9yV0oBf2rFrLFmkQtnB+Y18Wlq8coyYjAuMS4SmwNl0QjLQl8H29Nalug==
+X-Received: by 2002:a05:651c:10ce:b0:2b0:297c:cbdf with SMTP id l14-20020a05651c10ce00b002b0297ccbdfmr319859ljn.1.1685722189143;
+        Fri, 02 Jun 2023 09:09:49 -0700 (PDT)
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com. [209.85.167.41])
+        by smtp.gmail.com with ESMTPSA id m2-20020a2e8702000000b002b1a36ca46fsm264324lji.139.2023.06.02.09.09.48
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Jun 2023 09:09:48 -0700 (PDT)
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-4f3b314b1d7so2975195e87.1
+        for <linux-parisc@vger.kernel.org>; Fri, 02 Jun 2023 09:09:48 -0700 (PDT)
+X-Received: by 2002:ac2:5d6c:0:b0:4f2:509b:87ba with SMTP id
+ h12-20020ac25d6c000000b004f2509b87bamr2034590lft.50.1685722168361; Fri, 02
+ Jun 2023 09:09:28 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230531130833.635651916@infradead.org> <20230531132323.722039569@infradead.org>
+ <70a69deb-7ad4-45b2-8e13-34955594a7ce@app.fastmail.com> <20230601101409.GS4253@hirez.programming.kicks-ass.net>
+ <14c50e58-fecc-e96a-ee73-39ef4e4617c7@gmx.de> <CAHk-=whL65CLuy9D9gyO608acM5WLWo_ggAMP1cGu2XvyC0-hA@mail.gmail.com>
+ <20230602143912.GI620383@hirez.programming.kicks-ass.net>
+In-Reply-To: <20230602143912.GI620383@hirez.programming.kicks-ass.net>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 2 Jun 2023 12:09:11 -0400
+X-Gmail-Original-Message-ID: <CAHk-=wj7K3Q9WbBtQHiOXKc04SRjeOF+TRopkwVoQh_CFU+kvg@mail.gmail.com>
+Message-ID: <CAHk-=wj7K3Q9WbBtQHiOXKc04SRjeOF+TRopkwVoQh_CFU+kvg@mail.gmail.com>
+Subject: Re: [PATCH v2 07/12] parisc/percpu: Work around the lack of __SIZEOF_INT128__
 To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Helge Deller <deller@gmx.de>,
+Cc:     Helge Deller <deller@gmx.de>,
         Masahiro Yamada <masahiroy@kernel.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Jonathan Corbet <corbet@lwn.net>,
         Will Deacon <will@kernel.org>,
         Boqun Feng <boqun.feng@gmail.com>,
+        Mark Rutland <mark.rutland@arm.com>,
         Catalin Marinas <catalin.marinas@arm.com>, dennis@kernel.org,
         Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>,
         Heiko Carstens <hca@linux.ibm.com>, gor@linux.ibm.com,
@@ -62,107 +103,26 @@ Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-parisc@vger.kernel.org,
         John David Anglin <dave.anglin@bell.net>,
         Sam James <sam@gentoo.org>
-Subject: Re: [PATCH v2 07/12] parisc/percpu: Work around the lack of
- __SIZEOF_INT128__
-Message-ID: <ZHoBx7Tk5qK2X+UA@FVFF77S0Q05N.cambridge.arm.com>
-References: <20230531130833.635651916@infradead.org>
- <20230531132323.722039569@infradead.org>
- <70a69deb-7ad4-45b2-8e13-34955594a7ce@app.fastmail.com>
- <20230601101409.GS4253@hirez.programming.kicks-ass.net>
- <14c50e58-fecc-e96a-ee73-39ef4e4617c7@gmx.de>
- <CAHk-=whL65CLuy9D9gyO608acM5WLWo_ggAMP1cGu2XvyC0-hA@mail.gmail.com>
- <20230602143912.GI620383@hirez.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230602143912.GI620383@hirez.programming.kicks-ass.net>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Jun 02, 2023 at 04:39:12PM +0200, Peter Zijlstra wrote:
-> On Thu, Jun 01, 2023 at 09:29:18AM -0400, Linus Torvalds wrote:
-> 
-> > Right now we have that "minimum gcc version" in a somewhat annoying
-> > place: it's in the ./scripts/min-tool-version.sh file as a shell
-> > script.
-> 
+On Fri, Jun 2, 2023 at 10:40=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
 > Something like so then?
-> 
-> ---
-> Subject: parisc: Raise minimal GCC version
-> From: Peter Zijlstra <peterz@infradead.org>
-> Date: Fri Jun  2 16:33:54 CEST 2023
-> 
-> With 64bit builds depending on __SIZEOF_INT128__ raise the parisc
-> minimum compiler version to gcc-11.0.0.
-> 
-> All other 64bit architectures provide this from GCC-5.1.0 (and
-> probably before), except hppa64 which only started advertising this
-> with GCC-11.
-> 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  scripts/min-tool-version.sh |    6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> --- a/scripts/min-tool-version.sh
-> +++ b/scripts/min-tool-version.sh
-> @@ -17,7 +17,11 @@ binutils)
->  	echo 2.25.0
->  	;;
->  gcc)
-> -	echo 5.1.0
-> +	if [ "$SRCARCH" = parisc ]; then
-> +		echo 11.0.0
-> +	else
-> +		echo 5.1.0
-> +	fi
->  	;;
->  llvm)
->  	if [ "$SRCARCH" = s390 ]; then
 
-I gave this a spin and it looks good to me:
+Ack. I think it would be much cleaner if we would have it as part of
+the Kconfig file and architectures could just override some
+GCC_MIN_VERSION value, but that's not the universe we currently have,
+so your patch looks like the best thing to do.
 
-[mark@lakrids:~/src/linux]% usekorg 10.3.0 make ARCH=arm64 CROSS_COMPILE=aarch64-linux- defconfig
-  HOSTCC  scripts/basic/fixdep
-  HOSTCC  scripts/kconfig/conf.o
-  HOSTCC  scripts/kconfig/confdata.o
-  HOSTCC  scripts/kconfig/expr.o
-  LEX     scripts/kconfig/lexer.lex.c
-  YACC    scripts/kconfig/parser.tab.[ch]
-  HOSTCC  scripts/kconfig/lexer.lex.o
-  HOSTCC  scripts/kconfig/menu.o
-  HOSTCC  scripts/kconfig/parser.tab.o
-  HOSTCC  scripts/kconfig/preprocess.o
-  HOSTCC  scripts/kconfig/symbol.o
-  HOSTCC  scripts/kconfig/util.o
-  HOSTLD  scripts/kconfig/conf
-*** Default configuration is based on 'defconfig'
-#
-# configuration written to .config
-#
-[mark@lakrids:~/src/linux]% usekorg 10.3.0 make ARCH=parisc CROSS_COMPILE=hppa64-linux- generic-64bit_defconfig
-***
-*** C compiler is too old.
-***   Your GCC version:    10.3.0
-***   Minimum GCC version: 11.0.0
-***
-scripts/Kconfig.include:44: Sorry, this C compiler is not supported.
-make[1]: *** [scripts/kconfig/Makefile:94: generic-64bit_defconfig] Error 1
-make: *** [Makefile:692: generic-64bit_defconfig] Error 2
-[mark@lakrids:~/src/linux]% usekorg 11.3.0 make ARCH=parisc CROSS_COMPILE=hppa64-linux- generic-64bit_defconfig
-#
-# configuration written to .config
-#
-
-FWIW:
-
-Tested-by: Mark Rutland <mark.rutland@arm.com>
-
-Mark.
+              Linus
