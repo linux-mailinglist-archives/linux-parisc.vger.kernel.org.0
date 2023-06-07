@@ -2,174 +2,174 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1F71724B25
-	for <lists+linux-parisc@lfdr.de>; Tue,  6 Jun 2023 20:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C21BF727245
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jun 2023 00:55:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238519AbjFFSWT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 6 Jun 2023 14:22:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39200 "EHLO
+        id S233205AbjFGWzd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 7 Jun 2023 18:55:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238431AbjFFSWQ (ORCPT
+        with ESMTP id S233227AbjFGWzR (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 6 Jun 2023 14:22:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA00F170A;
-        Tue,  6 Jun 2023 11:22:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4586963696;
-        Tue,  6 Jun 2023 18:22:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A236EC433A8;
-        Tue,  6 Jun 2023 18:22:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686075733;
-        bh=08bgDTu6K2r14VqmkEIMfCPJQ/ZZrnAx7Zh60inB9tQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=PvVbLJcYr9sEPc4KvXnz7da5hnzjz64447Y1vyViBiCb+fl59qj0pvbLDlkg7Wuob
-         rzrnBjSOFtiQecuq+LZ/SRRxmzgXLdbIbqyyYrcYGhY29RsiV56QlreCUSnVm+stVt
-         UoVEGKhBSdT54YRh1gXdKSmvd62cZB1711kSzDIW8D76YUK3gBLlfz43UtqujOAa4M
-         WNIOBkfcw2WKv0IUzEzdSsuoiqNT0iAk+aytnzF0p5Ex5Qs+2o2gd4vHHiQKTwquZM
-         rFReB/rrpz7owlp/MdxR2Mp3uAIDm8MwdFNdtC8Gq4wlspi7VJYfgsGIf9GhxSZs3/
-         0v9cbIwE3cmiA==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2b1a4250b07so75710911fa.3;
-        Tue, 06 Jun 2023 11:22:13 -0700 (PDT)
-X-Gm-Message-State: AC+VfDzCXm5+70Ovpz7W746cGaUigh8vo5Bs482Vva0c0k6BOaC8cWYw
-        xXE/STitpg+B5AXPalqdCtTYAhMWQ+XDi+gPtfw=
-X-Google-Smtp-Source: ACHHUZ5bLSr3tA3IB8xCjeC0rEYdnEDeq7vmc1y/QuS5oHjyhnnuqZDpSw2PwmODz4CMTnRxT8zG59Qp1zLSa+hdG70=
-X-Received: by 2002:a2e:82d0:0:b0:2b0:297c:cbdf with SMTP id
- n16-20020a2e82d0000000b002b0297ccbdfmr1546782ljh.1.1686075731505; Tue, 06 Jun
- 2023 11:22:11 -0700 (PDT)
+        Wed, 7 Jun 2023 18:55:17 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 783D92688
+        for <linux-parisc@vger.kernel.org>; Wed,  7 Jun 2023 15:55:13 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-977c88c9021so498166b.3
+        for <linux-parisc@vger.kernel.org>; Wed, 07 Jun 2023 15:55:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686178513; x=1688770513;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
+        b=h4j71OFNDV5FfvldtjCh/L+Qg71oYHcBnHuDB5srtk996zsBHlbD8SaqVv65TPPNSR
+         D55ZWk68qXdEmt+kIdXRugiaujZb/weZnFCTHcuZcbiNqcbtWT0X7OlskYnP/y/1JDzr
+         WbOZ68AcZfM/aHW4up57fkOGafclaBar/hLOCFBtTjAlCxKYQtVTvq0W4SECGmO4CUql
+         dig397pPxdZX0OTvC2J8JrOzuSqogeJM29duG5G1BgaFsW6donzZWRU1Jz4x6qDKSWR9
+         w6/41Hy1gwVz7zf6M5uQKiqeQS7jHj9sppdk3jRa//N+UQ6Qg+lxAaHE7mp4Zy+a5Adc
+         Kv2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686178513; x=1688770513;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
+        b=Oqb7v28codFtsotr75tumFeauyIkbr3hQnMnUIfaSi/iLNwIJwkbyZFIQh0/1gbOvu
+         zvEkk03qAw5panIFRXKWOuLxpEvZfuJapnFsP/h48Ny8Fd2JSOSNmSBOpHtgYcHzey8q
+         LWL+eBIwumpcmeFcNtLS169Pj95AQmJkRn57+Zbif+nkOUeYxh2ZGRA7a9oxyhR7Dbny
+         YV+PrqJA8sFNGyUOFQVHm1q7Z6IQ1WnXdppWcwgHMoO4/e4kCpAARvaatOlLYcUfKWg/
+         ETiLZBwilkZhI8/B6ecwwqAWedm/Yy/z4oYQGheZ3QRtrevqzix4ti/2z8kkbCsZSsIk
+         fK5g==
+X-Gm-Message-State: AC+VfDxhTh7jouVL0rnN6s7w5l9XkX9ax2Qar3oPK/3HqN3/g2U0sn+Y
+        gzvXaXnmObbdivaxe+Iv9Ag/qKYpRF8oRSeIegQzLliz7WaE4g==
+X-Google-Smtp-Source: ACHHUZ5q9v5E8VuN7LGrTh1boUYVANIIUnJnBwlK4YNL8XVT+z7GalrAexguq0b795Op+2qoCUEoHnMN8sFXq0M0ebg=
+X-Received: by 2002:a17:907:8a15:b0:96f:d154:54f7 with SMTP id
+ sc21-20020a1709078a1500b0096fd15454f7mr7113590ejc.42.1686178492570; Wed, 07
+ Jun 2023 15:54:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230601101257.530867-1-rppt@kernel.org> <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
- <ZHjgIH3aX9dCvVZc@moria.home.lan> <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
- <20230605092040.GB3460@kernel.org> <ZH20XkD74prrdN4u@FVFF77S0Q05N>
-In-Reply-To: <ZH20XkD74prrdN4u@FVFF77S0Q05N>
-From:   Song Liu <song@kernel.org>
-Date:   Tue, 6 Jun 2023 11:21:59 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW7ntn_HpVWdGK_hYVd3zsPEFToBNfmtt0m6K8SwfxJ66Q@mail.gmail.com>
-Message-ID: <CAPhsuW7ntn_HpVWdGK_hYVd3zsPEFToBNfmtt0m6K8SwfxJ66Q@mail.gmail.com>
-Subject: Re: [PATCH 00/13] mm: jit/text allocator
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     Mike Rapoport <rppt@kernel.org>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Helge Deller <deller@gmx.de>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-modules@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Received: by 2002:a54:2409:0:b0:217:72a9:f646 with HTTP; Wed, 7 Jun 2023
+ 15:54:52 -0700 (PDT)
+Reply-To: unitednationcompensationcoordinatortreasury@hotmail.com
+From:   "UNITED NATION DEPUTY SECRETARY-GENERAL (U.N)" 
+        <successikolo@gmail.com>
+Date:   Wed, 7 Jun 2023 15:54:52 -0700
+Message-ID: <CADFNGJ8vkgORi1jPvvhP+FQnPCNqs4cr588+_a-ywDXpqf+qKA@mail.gmail.com>
+Subject: CONTACT DHL OFFICE IMMEDIATELY FOR YOUR ATM MASTER CARD 1.5 MILLION,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_3_NEW_FRM_MNY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FILL_THIS_FORM,FORM_FRAUD_5,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FORM,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:62f listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [successikolo[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 FILL_THIS_FORM Fill in a form with personal information
+        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
+        *  0.0 MONEY_FORM Lots of money if you fill out a form
+        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_3_NEW_FRM_MNY Advance Fee fraud form and lots of
+        *      money
+        *  0.2 MONEY_FRAUD_5 Lots of money and many fraud phrases
+        *  0.0 FORM_FRAUD_5 Fill a form and many fraud phrases
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Jun 5, 2023 at 3:09=E2=80=AFAM Mark Rutland <mark.rutland@arm.com> =
-wrote:
+UNITED NATION DEPUTY SECRETARY-GENERAL.
 
-[...]
+This is to official inform you that we have been having meetings for
+the past three (3) weeks which ended two days ago with MR. JIM YONG
+KIM the world bank president and other seven continent presidents on
+the congress we treated on solution to scam victim problems.
 
-> > > > Can you give more detail on what parameters you need? If the only e=
-xtra
-> > > > parameter is just "does this allocation need to live close to kerne=
-l
-> > > > text", that's not that big of a deal.
-> > >
-> > > My thinking was that we at least need the start + end for each caller=
-. That
-> > > might be it, tbh.
-> >
-> > Do you mean that modules will have something like
-> >
-> >       jit_text_alloc(size, MODULES_START, MODULES_END);
-> >
-> > and kprobes will have
-> >
-> >       jit_text_alloc(size, KPROBES_START, KPROBES_END);
-> > ?
->
-> Yes.
+ Note: we have decided to contact you following the reports we
+received from anti-fraud international monitoring group your
+name/email has been submitted to us therefore the united nations have
+agreed to compensate you with the sum of (USD$ 1.5 Million) this
+compensation is also including international business that failed you
+in the past due to government problems etc.
 
-How about we start with two APIs:
-     jit_text_alloc(size);
-     jit_text_alloc_range(size, start, end);
+ We have arranged your payment through our ATM Master Card and
+deposited it in DHL Office to deliver it to you which is the latest
+instruction from the World Bank president MR. JIM YONG KIM, For your
+information=E2=80=99s, the delivery charges already paid by U.N treasury, t=
+he
+only money you will send to DHL office south Korea is
+($500). for security keeping fee, U.N coordinator already paid for
+others charges fees for delivery except the security keeping fee, the
+director of DHL refused to collect the security keeping fee from U.N
+coordinator, the Director of DHL office said that they don=E2=80=99t know
+exactly time you will contact them to reconfirm your details to avoid
+counting demur-rage that is why they refused collecting the ($500) .
+for security keeping fee.
 
-AFAICT, arm64 is the only arch that requires the latter API. And TBH, I am
-not quite convinced it is needed.
+ Therefore be advice to contact DHL Office agent south Korea. Rev:John
+Lee Tae-seok
+who is in position to deliver your ATM
+Master Card to your location address, contact DHL Office immediately
+with the bellow email & phone number as listed below.
 
->
-> > It sill can be achieved with a single jit_alloc_arch_params(), just by
-> > adding enum jit_type parameter to jit_text_alloc().
->
-> That feels backwards to me; it centralizes a bunch of information about
-> distinct users to be able to shove that into a static array, when the cal=
-lsites
-> can pass that information.
+ Contact name: John Lee Tae-seok
 
-I think we only two type of users: module and everything else (ftrace, kpro=
-be,
-bpf stuff). The key differences are:
+ Email:( dhlgeneralheadquartersrepublic@gmail.com )
 
-  1. module uses text and data; while everything else only uses text.
-  2. module code is generated by the compiler, and thus has stronger
-  requirements in address ranges; everything else are generated via some
-  JIT or manual written assembly, so they are more flexible with address
-  ranges (in JIT, we can avoid using instructions that requires a specific
-  address range).
+ Do not hesitate to Contact Rev: John Lee Tae-seok, as soon as you
 
-The next question is, can we have the two types of users share the same
-address ranges? If not, we can reserve the preferred range for modules,
-and let everything else use the other range. I don't see reasons to further
-separate users in the "everything else" group.
+ read this message. Email:( dhlgeneralheadquartersrepublic@gmail.com )
 
->
-> What's *actually* common after separating out the ranges? Is it just the
-> permissions?
+ Make sure you reconfirmed DHL Office your details ASAP as stated
+below to avoid wrong delivery.
 
-I believe permission is the key, as we need the hardware to enforce
-permission.
+ Your full name..........
 
->
-> If we want this to be able to share allocations and so on, why can't we d=
-o this
-> like a kmem_cache, and have the callsite pass a pointer to the allocator =
-data?
-> That would make it easy for callsites to share an allocator or use a dist=
-inct
-> one.
+ Home address:.........
 
-Sharing among different call sites will give us more benefit (in TLB
-misses rate,
-etc.). For example, a 2MB page may host text of two kernel modules, 4 kprob=
-es,
-6 ftrace trampolines, and 10 BPF programs. All of these only require one en=
-try
-in the iTLB.
+ Your country...........
 
-Thanks,
-Song
+ Your city..............
+
+ Telephone......
+
+ Occupation:.......
+
+ Age:=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
+
+ Let us know as soon as possible you receive your ATM MasterCard
+for proper verification.
+
+ Regards,
+
+ Mrs Vivian kakadu.
+
+ DEPUTY SECRETARY-GENERAL (U.N)
