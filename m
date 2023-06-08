@@ -2,53 +2,53 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9A687287F2
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jun 2023 21:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C7BC7287FC
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Jun 2023 21:17:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229896AbjFHTQu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 8 Jun 2023 15:16:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34218 "EHLO
+        id S236317AbjFHTRl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 8 Jun 2023 15:17:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231857AbjFHTQt (ORCPT
+        with ESMTP id S231445AbjFHTRe (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 8 Jun 2023 15:16:49 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A8092D75
-        for <linux-parisc@vger.kernel.org>; Thu,  8 Jun 2023 12:16:14 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-bacfb7acdb7so1065653276.0
-        for <linux-parisc@vger.kernel.org>; Thu, 08 Jun 2023 12:16:14 -0700 (PDT)
+        Thu, 8 Jun 2023 15:17:34 -0400
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C9D30DD
+        for <linux-parisc@vger.kernel.org>; Thu,  8 Jun 2023 12:17:06 -0700 (PDT)
+Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-39c84863e34so29903b6e.2
+        for <linux-parisc@vger.kernel.org>; Thu, 08 Jun 2023 12:17:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686251670; x=1688843670;
+        d=google.com; s=20221208; t=1686251721; x=1688843721;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hqbvyW6crf6toTfKG311uSxHzLZVjYgM3m9zpPIhyDA=;
-        b=2n/XtD7AqYzwMObmNTcTXdhdmtrivr6xS0a6hxh2028Gq3sNV9XO29gB5O2y3L9l/t
-         L2rqH6x4Pz17FgKoR1Y4rQPo+pjlVHFvq4Uxf6V5Z1hVLY+dk3dbsKixOg2g0+O6MH3o
-         wHR7UhzFBUpyNSTJP8nVTqWIyYA0el7GHtc3GU+0DrUYPDVBZCtJf3wyrCUqLLZR09lv
-         VqBAJ8/LNlL6ViTV2apFi54AS+jw7a1Zjo/eBl1kmHqeluHIV3N/nqy10dITHeklJsgD
-         IGKWlS4umLi9ypWs+T7OEHIYU3YkWJ3FbGyXJ6NMN9TADYksX23kqJlAINxQPvIJDTtX
-         gwNg==
+        bh=WK0F+BrKreVsJ5WKZMSSwYtM+YC+fc99jiRjqR8qAzI=;
+        b=RcRjFaFt7MTsXYJ14yWo4U5eA6pVqkDXz8EgSw8rQFycQ7pMspld1gf0LfqrvmcfQ5
+         wTF2Paqcgla4R0ay3/D+SBW87kCEr4gikKdylaKnD0ifdUg5uzvb81mHOycuMKL93pbu
+         +4jYc+S9ZIa5rCOofCbRs+g+NjpuL2HFQoI0VVvcn9kL+J6N1marZJvlyS6H29Uy9XP9
+         eG8fQcR/05AwiXrOcow804IstbsNP+1l3OZiN8NosONtubhmvXmzHlK/q5JRXElO9Al1
+         ir/ohc+1TCFZSM0rluyKdy7OGTLktO3/SESE0MYOh7msrNKoSiowE8nv54l9tGtZ2JpY
+         LUCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686251670; x=1688843670;
+        d=1e100.net; s=20221208; t=1686251721; x=1688843721;
         h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hqbvyW6crf6toTfKG311uSxHzLZVjYgM3m9zpPIhyDA=;
-        b=eHr0HNFSW60ffmTjHSV/9B8FGqJR+2HEQt5OPQ+HuDRJEYeE7eUZ0EfbUpoNqUhmu8
-         SXdxnBbT7sylQYDhHEOhLx+KGpJEWR8FgKIkFeuYAFPDKXj89N5eOXn8uO9a85KgdWhy
-         ngEtTeTXqrRKn52G0KqNKkvytQU+YqL6eIgxb8zcyvsmP7sgEoVOzt4gs86H0K9PPQV0
-         QspsKmb4QEa93tQhD+f9SKOh8J3n5AvyVlKkqUeNvyaSWevq/KG8h+wTLrsYmIToeGM7
-         V2TUcjarY57MCS142j/7eMAsuz4yPW0u84JFBkXHZB512GUmnokn/vGHJxQCNEBQtfUl
-         oTQg==
-X-Gm-Message-State: AC+VfDz4lvAQw5RScQ7WVDHUu80sVWTQIMyBa71tR1V9kV1hshyGBWj6
-        Lj2Si887eJIJmqTlA3Fih7dfIA==
-X-Google-Smtp-Source: ACHHUZ7aUiIh5IKg+O5kgdrTnFDUinQat6T8kg6GewL/1W4sBHj9jDkDghROqTlVL3SjDvy6zEmR9Q==
-X-Received: by 2002:a25:e302:0:b0:bb1:5a06:70ed with SMTP id z2-20020a25e302000000b00bb15a0670edmr543635ybd.19.1686251670430;
-        Thu, 08 Jun 2023 12:14:30 -0700 (PDT)
+        bh=WK0F+BrKreVsJ5WKZMSSwYtM+YC+fc99jiRjqR8qAzI=;
+        b=KGI+6wKTl8luP7xfbifjg7VwBK8pH92mRZBg/Dn8ZmCilBd2rR1QgiFGFSMateGYxb
+         /aWoOJd4mgRaRBM3nWuOVEn7tjfad9voQ8al/ysqT7iK/JO8i14BQ/qLgEnjJSFrviIT
+         ietU+KcnL1ajZGUTen3FHgscXEsfpo7/MdiXb8jNKRaUzluTmjNMXQNzmmeYf0a4NcWK
+         9e6L4hnTslk8nNqXjXmQfdovzRdBGPoWTJqhG2uBQXzoZeMWiGhl5uzObeuc1kits90V
+         hy3AqMu3ee/wkguz8wrPDkk0ET+150/aZGQfndVCvCtJTOUs0vsmsVifiO1E8EhGx8GF
+         MmoA==
+X-Gm-Message-State: AC+VfDxXaOZJns3vRSUZ8Nt5M9gQp8LJqH/5Ibbk8gBLiRFMdmdeQgaM
+        cpglNcXi9DCi4QA5/GL7rnFK5w==
+X-Google-Smtp-Source: ACHHUZ4GiCiA0/Y6MKCFg7CaDp1TXejdH2N2rUDPBFAR/nPzuleTjqZzDRxE6rsfXkK23/Kmg+ycrg==
+X-Received: by 2002:a54:4893:0:b0:39a:b35b:a06c with SMTP id r19-20020a544893000000b0039ab35ba06cmr9888918oic.30.1686251720727;
+        Thu, 08 Jun 2023 12:15:20 -0700 (PDT)
 Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id e10-20020a25874a000000b00b9e5b28dbd8sm429689ybn.17.2023.06.08.12.14.26
+        by smtp.gmail.com with ESMTPSA id a17-20020a81bb51000000b00545a08184fdsm89974ywl.141.2023.06.08.12.15.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 12:14:29 -0700 (PDT)
-Date:   Thu, 8 Jun 2023 12:14:26 -0700 (PDT)
+        Thu, 08 Jun 2023 12:15:20 -0700 (PDT)
+Date:   Thu, 8 Jun 2023 12:15:16 -0700 (PDT)
 From:   Hugh Dickins <hughd@google.com>
 X-X-Sender: hugh@ripple.attlocal.net
 To:     Andrew Morton <akpm@linux-foundation.org>
@@ -87,9 +87,9 @@ cc:     Mike Kravetz <mike.kravetz@oracle.com>,
         linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v2 04/23] ia64/hugetlb: pte_alloc_huge() pte_offset_huge()
+Subject: [PATCH v2 05/23] m68k: allow pte_offset_map[_lock]() to fail
 In-Reply-To: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
-Message-ID: <1c2c7837-bfea-9640-a74-985379fcc5a@google.com>
+Message-ID: <795f6a7-bcca-cdf-ad2a-fbdaa232998c@google.com>
 References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -104,37 +104,154 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-pte_alloc_map() expects to be followed by pte_unmap(), but hugetlb omits
-that: to keep balance in future, use the recently added pte_alloc_huge()
-instead; with pte_offset_huge() a better name for pte_offset_kernel().
+In rare transient cases, not yet made possible, pte_offset_map() and
+pte_offset_map_lock() may not find a page table: handle appropriately.
+
+Restructure cf_tlb_miss() with a pte_unmap() (previously omitted)
+at label out, followed by one local_irq_restore() for all.
 
 Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
- arch/ia64/mm/hugetlbpage.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/m68k/include/asm/mmu_context.h |  6 ++--
+ arch/m68k/kernel/sys_m68k.c         |  2 ++
+ arch/m68k/mm/mcfmmu.c               | 52 ++++++++++++-----------------
+ 3 files changed, 27 insertions(+), 33 deletions(-)
 
-diff --git a/arch/ia64/mm/hugetlbpage.c b/arch/ia64/mm/hugetlbpage.c
-index 78a02e026164..adc49f2d22e8 100644
---- a/arch/ia64/mm/hugetlbpage.c
-+++ b/arch/ia64/mm/hugetlbpage.c
-@@ -41,7 +41,7 @@ huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
- 	if (pud) {
- 		pmd = pmd_alloc(mm, pud, taddr);
- 		if (pmd)
--			pte = pte_alloc_map(mm, pmd, taddr);
-+			pte = pte_alloc_huge(mm, pmd, taddr);
- 	}
- 	return pte;
+diff --git a/arch/m68k/include/asm/mmu_context.h b/arch/m68k/include/asm/mmu_context.h
+index 8ed6ac14d99f..141bbdfad960 100644
+--- a/arch/m68k/include/asm/mmu_context.h
++++ b/arch/m68k/include/asm/mmu_context.h
+@@ -99,7 +99,7 @@ static inline void load_ksp_mmu(struct task_struct *task)
+ 	p4d_t *p4d;
+ 	pud_t *pud;
+ 	pmd_t *pmd;
+-	pte_t *pte;
++	pte_t *pte = NULL;
+ 	unsigned long mmuar;
+ 
+ 	local_irq_save(flags);
+@@ -139,7 +139,7 @@ static inline void load_ksp_mmu(struct task_struct *task)
+ 
+ 	pte = (mmuar >= PAGE_OFFSET) ? pte_offset_kernel(pmd, mmuar)
+ 				     : pte_offset_map(pmd, mmuar);
+-	if (pte_none(*pte) || !pte_present(*pte))
++	if (!pte || pte_none(*pte) || !pte_present(*pte))
+ 		goto bug;
+ 
+ 	set_pte(pte, pte_mkyoung(*pte));
+@@ -161,6 +161,8 @@ static inline void load_ksp_mmu(struct task_struct *task)
+ bug:
+ 	pr_info("ksp load failed: mm=0x%p ksp=0x08%lx\n", mm, mmuar);
+ end:
++	if (pte && mmuar < PAGE_OFFSET)
++		pte_unmap(pte);
+ 	local_irq_restore(flags);
  }
-@@ -64,7 +64,7 @@ huge_pte_offset (struct mm_struct *mm, unsigned long addr, unsigned long sz)
- 			if (pud_present(*pud)) {
- 				pmd = pmd_offset(pud, taddr);
- 				if (pmd_present(*pmd))
--					pte = pte_offset_map(pmd, taddr);
-+					pte = pte_offset_huge(pmd, taddr);
- 			}
- 		}
+ 
+diff --git a/arch/m68k/kernel/sys_m68k.c b/arch/m68k/kernel/sys_m68k.c
+index bd0274c7592e..c586034d2a7a 100644
+--- a/arch/m68k/kernel/sys_m68k.c
++++ b/arch/m68k/kernel/sys_m68k.c
+@@ -488,6 +488,8 @@ sys_atomic_cmpxchg_32(unsigned long newval, int oldval, int d3, int d4, int d5,
+ 		if (!pmd_present(*pmd))
+ 			goto bad_access;
+ 		pte = pte_offset_map_lock(mm, pmd, (unsigned long)mem, &ptl);
++		if (!pte)
++			goto bad_access;
+ 		if (!pte_present(*pte) || !pte_dirty(*pte)
+ 		    || !pte_write(*pte)) {
+ 			pte_unmap_unlock(pte, ptl);
+diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
+index 70aa0979e027..42f45abea37a 100644
+--- a/arch/m68k/mm/mcfmmu.c
++++ b/arch/m68k/mm/mcfmmu.c
+@@ -91,7 +91,8 @@ int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word)
+ 	p4d_t *p4d;
+ 	pud_t *pud;
+ 	pmd_t *pmd;
+-	pte_t *pte;
++	pte_t *pte = NULL;
++	int ret = -1;
+ 	int asid;
+ 
+ 	local_irq_save(flags);
+@@ -100,47 +101,33 @@ int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word)
+ 		regs->pc + (extension_word * sizeof(long));
+ 
+ 	mm = (!user_mode(regs) && KMAPAREA(mmuar)) ? &init_mm : current->mm;
+-	if (!mm) {
+-		local_irq_restore(flags);
+-		return -1;
+-	}
++	if (!mm)
++		goto out;
+ 
+ 	pgd = pgd_offset(mm, mmuar);
+-	if (pgd_none(*pgd))  {
+-		local_irq_restore(flags);
+-		return -1;
+-	}
++	if (pgd_none(*pgd))
++		goto out;
+ 
+ 	p4d = p4d_offset(pgd, mmuar);
+-	if (p4d_none(*p4d)) {
+-		local_irq_restore(flags);
+-		return -1;
+-	}
++	if (p4d_none(*p4d))
++		goto out;
+ 
+ 	pud = pud_offset(p4d, mmuar);
+-	if (pud_none(*pud)) {
+-		local_irq_restore(flags);
+-		return -1;
+-	}
++	if (pud_none(*pud))
++		goto out;
+ 
+ 	pmd = pmd_offset(pud, mmuar);
+-	if (pmd_none(*pmd)) {
+-		local_irq_restore(flags);
+-		return -1;
+-	}
++	if (pmd_none(*pmd))
++		goto out;
+ 
+ 	pte = (KMAPAREA(mmuar)) ? pte_offset_kernel(pmd, mmuar)
+ 				: pte_offset_map(pmd, mmuar);
+-	if (pte_none(*pte) || !pte_present(*pte)) {
+-		local_irq_restore(flags);
+-		return -1;
+-	}
++	if (!pte || pte_none(*pte) || !pte_present(*pte))
++		goto out;
+ 
+ 	if (write) {
+-		if (!pte_write(*pte)) {
+-			local_irq_restore(flags);
+-			return -1;
+-		}
++		if (!pte_write(*pte))
++			goto out;
+ 		set_pte(pte, pte_mkdirty(*pte));
  	}
+ 
+@@ -161,9 +148,12 @@ int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word)
+ 		mmu_write(MMUOR, MMUOR_ACC | MMUOR_UAA);
+ 	else
+ 		mmu_write(MMUOR, MMUOR_ITLB | MMUOR_ACC | MMUOR_UAA);
+-
++	ret = 0;
++out:
++	if (pte && !KMAPAREA(mmuar))
++		pte_unmap(pte);
+ 	local_irq_restore(flags);
+-	return 0;
++	return ret;
+ }
+ 
+ void __init cf_bootmem_alloc(void)
 -- 
 2.35.3
 
