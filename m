@@ -2,223 +2,160 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B72C57291FE
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Jun 2023 10:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC44B729255
+	for <lists+linux-parisc@lfdr.de>; Fri,  9 Jun 2023 10:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238756AbjFIIAB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 9 Jun 2023 04:00:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33432 "EHLO
+        id S239854AbjFIIKY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 9 Jun 2023 04:10:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239666AbjFIH7i (ORCPT
+        with ESMTP id S240185AbjFIIJa (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 9 Jun 2023 03:59:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451A03AA4
-        for <linux-parisc@vger.kernel.org>; Fri,  9 Jun 2023 00:57:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686297443;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LUPq0cnzOLgrLVKYAlQ346H5looYZtvjQRVHWSAi6lQ=;
-        b=JjEr4BQ/J3Zs/Y2cXQNLSyvcpIjI4NZk6MDLQADiH8h/s1lM6J2Xao1Xdl98Chgbw/ugk3
-        ES7ibWR9modRKP2aMVvwjOcPpeQ1DteVXtiUagYnyUGLkt0mCQjGlRjODr7+lHR21hXSnb
-        8nVRdYmLUyVCmhSCkZZ0TBVrZDLpqR4=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-329-H4pi8mw1NUO8f6MFV9ToJw-1; Fri, 09 Jun 2023 03:57:18 -0400
-X-MC-Unique: H4pi8mw1NUO8f6MFV9ToJw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6E9BA3C0CEFB;
-        Fri,  9 Jun 2023 07:57:17 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-92.pek2.redhat.com [10.72.12.92])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 3FD2C20268C6;
-        Fri,  9 Jun 2023 07:57:10 +0000 (UTC)
-From:   Baoquan He <bhe@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-arch@vger.kernel.org, linux-mm@kvack.org, arnd@arndb.de,
-        christophe.leroy@csgroup.eu, hch@lst.de, rppt@kernel.org,
-        willy@infradead.org, agordeev@linux.ibm.com,
-        wangkefeng.wang@huawei.com, schnelle@linux.ibm.com,
-        David.Laight@ACULAB.COM, shorne@gmail.com, deller@gmx.de,
-        Baoquan He <bhe@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH v6 14/19] parisc: mm: Convert to GENERIC_IOREMAP
-Date:   Fri,  9 Jun 2023 15:55:23 +0800
-Message-Id: <20230609075528.9390-15-bhe@redhat.com>
-In-Reply-To: <20230609075528.9390-1-bhe@redhat.com>
-References: <20230609075528.9390-1-bhe@redhat.com>
+        Fri, 9 Jun 2023 04:09:30 -0400
+Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E15263A88
+        for <linux-parisc@vger.kernel.org>; Fri,  9 Jun 2023 01:09:08 -0700 (PDT)
+Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-565e6beb7aaso13701857b3.2
+        for <linux-parisc@vger.kernel.org>; Fri, 09 Jun 2023 01:09:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1686298146; x=1688890146;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=D+JG9ScbeIgWCoIoD1lrBSynxF7pZ7ZmtCOtSuAlDGQ=;
+        b=RfeoHUBLwqk9vTTBDLCpOuzNXpllWDEkPYc6yjXtxGCPNmX/rvie991AU10lJs4XbF
+         9RzbOtcSEpi5Rh8KstlxITQN3Ffo4ROyfYENBHFqs9HkcG3CFgO7j5lBQrxeeGMGBjp2
+         NZdxOQon49qNf9HZ1Qgrz3xC18+gnVg36Hvk5SsHYUm7h4j5tszvUdFL2KV4ehwHCBOk
+         gyj3AdqSIMMtQdGmRCxc7HYtfEU+n7ezPeWYkyEIY3KjdS94V8qvWswp+jF2hFiGMFim
+         NoPZGExtzKBOx7SOm5zC/zUvIhzRSqstVSVI3uYZkXeW9ex9SLXGk6aLeA5PY5ojGjGB
+         epOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686298146; x=1688890146;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D+JG9ScbeIgWCoIoD1lrBSynxF7pZ7ZmtCOtSuAlDGQ=;
+        b=d63yFnkML29HkiRhM43dgjTH4+xxH6vWLyscpfpx0GXiNqTC/rFdsEyFaO7GAPVIan
+         SHrFGMHYF4nw9TGTa8PwU2HUx3H0Ff6n4Z2SylHRKSv1YP9wkynpsqYJ71i186/kn4PW
+         8Y1ZhfCPoqEjHO5n+P5eV9vueKCEbsOsaVsq9hLf2RctTxFd8tYffn7ERh/H8DNp5qUi
+         kqsO4A8Ek4velBexpv+a06PGjK/5NLX6q6ehvFt5iNJx9FcW8Se7a3kK1ivE8wlC61hZ
+         Sr1ZHaOu9q4vko620ZCKstXQmHBs183tp5eysPtil77VFS9btQ/aJEkqF4o2jEd1njUo
+         TL8w==
+X-Gm-Message-State: AC+VfDzsjZwyBBwo6nmEN3wZnFjZp51hkC8BpcHtMyexpjhV0jb7Y0EI
+        9JBc+5p0+jPE8ZizrPq43b1UtQ==
+X-Google-Smtp-Source: ACHHUZ5DQYcZ9JTl8EUp4l7QLImYygbjncdx8ql55YYe3IsFqc7F1XNEab87Po2zAxMo3TGE3P0BfA==
+X-Received: by 2002:a0d:e684:0:b0:565:e87f:a78f with SMTP id p126-20020a0de684000000b00565e87fa78fmr500342ywe.25.1686298145738;
+        Fri, 09 Jun 2023 01:09:05 -0700 (PDT)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id n19-20020a819c53000000b005688f7596ccsm453200ywa.78.2023.06.09.01.09.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jun 2023 01:09:04 -0700 (PDT)
+Date:   Fri, 9 Jun 2023 01:08:52 -0700 (PDT)
+From:   Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To:     Andrew Morton <akpm@linux-foundation.org>
+cc:     Mike Kravetz <mike.kravetz@oracle.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Hildenbrand <david@redhat.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Helge Deller <deller@gmx.de>,
+        John David Anglin <dave.anglin@bell.net>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v2 07/23 fix] mips: update_mmu_cache() can replace __update_tlb():
+ fix
+In-Reply-To: <178970b0-1539-8aac-76fd-972c6c46ec17@google.com>
+Message-ID: <6852be98-64e6-6092-d1c-13124b97bc75@google.com>
+References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com> <178970b0-1539-8aac-76fd-972c6c46ec17@google.com>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
-generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
-and iounmap() are all visible and available to arch. Arch needs to
-provide wrapper functions to override the generic versions if there's
-arch specific handling in its ioremap_prot(), ioremap() or iounmap().
-This change will simplify implementation by removing duplicated codes
-with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
-functioality as before.
+I expect this to fix the
+arch/mips/mm/tlb-r4k.c:300:16: warning: variable 'pmdp' set but not used
+reported by the kernel test robot; but I am uncomfortable rearranging
+lines in this tlb_probe_hazard() area, and would be glad for review and
+testing by someone familiar with mips - thanks in advance!
 
-Here, add wrapper function ioremap_prot() for parisc's special operation
-when iounmap().
-
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202306091304.cNVIspK0-lkp@intel.com/
+Signed-off-by: Hugh Dickins <hughd@google.com>
 ---
-v5->v6:
-  Remove the stale paragraph related to ARCH_HAS_IOREMAP_WC adding in
-  log - Mike
+ arch/mips/mm/tlb-r4k.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
- arch/parisc/Kconfig          |  1 +
- arch/parisc/include/asm/io.h | 15 ++++++---
- arch/parisc/mm/ioremap.c     | 62 +++---------------------------------
- 3 files changed, 15 insertions(+), 63 deletions(-)
-
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 967bde65dd0e..315cc42b1a2c 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -36,6 +36,7 @@ config PARISC
- 	select GENERIC_ATOMIC64 if !64BIT
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_PCI_IOMAP
-+	select GENERIC_IOREMAP
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_ARCH_TOPOLOGY if SMP
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index c05e781be2f5..366537042465 100644
---- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -125,12 +125,17 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
- /*
-  * The standard PCI ioremap interfaces
-  */
--void __iomem *ioremap(unsigned long offset, unsigned long size);
--#define ioremap_wc			ioremap
--#define ioremap_uc			ioremap
--#define pci_iounmap			pci_iounmap
-+#define ioremap_prot ioremap_prot
-+
-+#define _PAGE_IOREMAP (_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | \
-+		       _PAGE_ACCESSED | _PAGE_NO_CACHE)
- 
--extern void iounmap(const volatile void __iomem *addr);
-+#define ioremap_wc(addr, size)  \
-+	ioremap_prot((addr), (size), _PAGE_IOREMAP)
-+#define ioremap_uc(addr, size)  \
-+	ioremap_prot((addr), (size), _PAGE_IOREMAP)
-+
-+#define pci_iounmap			pci_iounmap
- 
- void memset_io(volatile void __iomem *addr, unsigned char val, int count);
- void memcpy_fromio(void *dst, const volatile void __iomem *src, int count);
-diff --git a/arch/parisc/mm/ioremap.c b/arch/parisc/mm/ioremap.c
-index 345ff0b66499..fd996472dfe7 100644
---- a/arch/parisc/mm/ioremap.c
-+++ b/arch/parisc/mm/ioremap.c
-@@ -13,25 +13,9 @@
- #include <linux/io.h>
- #include <linux/mm.h>
- 
--/*
-- * Generic mapping function (not visible outside):
-- */
--
--/*
-- * Remap an arbitrary physical address space into the kernel virtual
-- * address space.
-- *
-- * NOTE! We need to allow non-page-aligned mappings too: we will obviously
-- * have to convert them into an offset in a page-aligned mapping, but the
-- * caller shouldn't need to know that small detail.
-- */
--void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
-+void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
-+			   unsigned long prot)
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index c96725d17cab..80fc90d8d2f1 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -293,11 +293,13 @@ void local_flush_tlb_one(unsigned long page)
+ void update_mmu_cache(struct vm_area_struct *vma,
+ 		      unsigned long address, pte_t *ptep)
  {
--	void __iomem *addr;
--	struct vm_struct *area;
--	unsigned long offset, last_addr;
--	pgprot_t pgprot;
--
- #ifdef CONFIG_EISA
- 	unsigned long end = phys_addr + size - 1;
- 	/* Support EISA addresses */
-@@ -40,11 +24,6 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
- 		phys_addr |= F_EXTEND(0xfc000000);
- #endif
+-	unsigned long flags;
++#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+ 	pgd_t *pgdp;
+ 	p4d_t *p4dp;
+ 	pud_t *pudp;
+ 	pmd_t *pmdp;
++#endif
++	unsigned long flags;
+ 	int idx, pid;
  
--	/* Don't allow wraparound or zero size */
--	last_addr = phys_addr + size - 1;
--	if (!size || last_addr < phys_addr)
--		return NULL;
--
  	/*
- 	 * Don't allow anybody to remap normal RAM that we're using..
- 	 */
-@@ -62,39 +41,6 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
- 		}
+@@ -316,15 +318,15 @@ void update_mmu_cache(struct vm_area_struct *vma,
+ 		pid = read_c0_entryhi() & cpu_asid_mask(&current_cpu_data);
+ 		write_c0_entryhi(address | pid);
  	}
- 
--	pgprot = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY |
--			  _PAGE_ACCESSED | _PAGE_NO_CACHE);
--
--	/*
--	 * Mappings have to be page-aligned
--	 */
--	offset = phys_addr & ~PAGE_MASK;
--	phys_addr &= PAGE_MASK;
--	size = PAGE_ALIGN(last_addr + 1) - phys_addr;
--
--	/*
--	 * Ok, go for it..
--	 */
--	area = get_vm_area(size, VM_IOREMAP);
--	if (!area)
--		return NULL;
--
--	addr = (void __iomem *) area->addr;
--	if (ioremap_page_range((unsigned long)addr, (unsigned long)addr + size,
--			       phys_addr, pgprot)) {
--		vunmap(addr);
--		return NULL;
--	}
--
--	return (void __iomem *) (offset + (char __iomem *)addr);
--}
--EXPORT_SYMBOL(ioremap);
--
--void iounmap(const volatile void __iomem *io_addr)
--{
--	unsigned long addr = (unsigned long)io_addr & PAGE_MASK;
--
--	if (is_vmalloc_addr((void *)addr))
--		vunmap((void *)addr);
-+	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
- }
--EXPORT_SYMBOL(iounmap);
-+EXPORT_SYMBOL(ioremap_prot);
+-	pgdp = pgd_offset(vma->vm_mm, address);
+ 	mtc0_tlbw_hazard();
+ 	tlb_probe();
+ 	tlb_probe_hazard();
++	idx = read_c0_index();
++#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
++	pgdp = pgd_offset(vma->vm_mm, address);
+ 	p4dp = p4d_offset(pgdp, address);
+ 	pudp = pud_offset(p4dp, address);
+ 	pmdp = pmd_offset(pudp, address);
+-	idx = read_c0_index();
+-#ifdef CONFIG_MIPS_HUGE_TLB_SUPPORT
+ 	/* this could be a huge page  */
+ 	if (ptep == (pte_t *)pmdp) {
+ 		unsigned long lo;
 -- 
-2.34.1
+2.35.3
 
