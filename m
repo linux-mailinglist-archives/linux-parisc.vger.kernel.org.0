@@ -2,238 +2,119 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 280CD72A0CF
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Jun 2023 19:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC2D372AE7D
+	for <lists+linux-parisc@lfdr.de>; Sat, 10 Jun 2023 21:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229850AbjFIRCe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 9 Jun 2023 13:02:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57176 "EHLO
+        id S230316AbjFJTvJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 10 Jun 2023 15:51:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbjFIRCe (ORCPT
+        with ESMTP id S229436AbjFJTvI (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 9 Jun 2023 13:02:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F601706;
-        Fri,  9 Jun 2023 10:02:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 661E165A32;
-        Fri,  9 Jun 2023 17:02:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C774BC433A1;
-        Fri,  9 Jun 2023 17:02:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686330151;
-        bh=vxAb82+vAl+BH98Z/zX2UFkfYunrykLKznTO4Bf32/o=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mi+1/ju1etiB6d0wiW4caAjQqZLe00FeV1NkWgT7OHTC7YXhbWrImPhkjcdfLthep
-         R4NctZPvMcT6YU1NN0hlAPJu7mKlMOhF8XW1w/JUcKEX6IymvTValQ7iJLgbthe+rr
-         JB0Y/WdslTbhCTkFmElAt6A2q9AjkZ65JlkLpT6RWSVvoxHuctv3jAm4tkLSY6DnGo
-         sjANix/3DDuGcfUiGq4bVWyWyi4Aib0wLcEVEjV2uGWiQih+ufGfWA3fM021KKgeWY
-         Dt91VQ5xBfF0lTdjr2IkoyUEOPUU+/xMsQaC1Ua+lm/Kg5AHwmxvY3mxjDI1kZZXq8
-         eusqU7U1U5lpg==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-4f644dffd71so2619959e87.1;
-        Fri, 09 Jun 2023 10:02:31 -0700 (PDT)
-X-Gm-Message-State: AC+VfDx+c0l4S1qiuEKAlyt/LCqcUkiHM3tSjSq0oVFlun3511lj+UTt
-        ZK2TksPRMtOFMcLNOK/fpzzBuN4Bs/Joh/DUnuY=
-X-Google-Smtp-Source: ACHHUZ4u3y79XyQLMHF4er59h6QhhYai8KonYYOOA8YDDos4NgFbnLZdqPfEIRGQCpyydTzD04kcj6u0lkxU6y+OWW4=
-X-Received: by 2002:a2e:9891:0:b0:2b1:e5d8:d008 with SMTP id
- b17-20020a2e9891000000b002b1e5d8d008mr1338098ljj.37.1686330149805; Fri, 09
- Jun 2023 10:02:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230601101257.530867-1-rppt@kernel.org> <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
- <ZHjgIH3aX9dCvVZc@moria.home.lan> <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
- <20230605092040.GB3460@kernel.org> <ZH20XkD74prrdN4u@FVFF77S0Q05N>
- <CAPhsuW7ntn_HpVWdGK_hYVd3zsPEFToBNfmtt0m6K8SwfxJ66Q@mail.gmail.com> <20230608184116.GJ52412@kernel.org>
-In-Reply-To: <20230608184116.GJ52412@kernel.org>
-From:   Song Liu <song@kernel.org>
-Date:   Fri, 9 Jun 2023 10:02:16 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW5YYa6nQhO2=zor75XkdKpFysZD42DgDRkKZvQT6aMqcA@mail.gmail.com>
-Message-ID: <CAPhsuW5YYa6nQhO2=zor75XkdKpFysZD42DgDRkKZvQT6aMqcA@mail.gmail.com>
-Subject: Re: [PATCH 00/13] mm: jit/text allocator
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Helge Deller <deller@gmx.de>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
+        Sat, 10 Jun 2023 15:51:08 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DA5430F6
+        for <linux-parisc@vger.kernel.org>; Sat, 10 Jun 2023 12:51:07 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-191-aQsr8P1pPA2zGT4voRzmug-1; Sat, 10 Jun 2023 20:51:04 +0100
+X-MC-Unique: aQsr8P1pPA2zGT4voRzmug-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sat, 10 Jun
+ 2023 20:50:58 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Sat, 10 Jun 2023 20:50:58 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Andrew Cooper' <andrew.cooper3@citrix.com>,
+        Yunhong Jiang <yunhong.jiang@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+CC:     "Kirill A. Shutemov" <kirill@shutemov.name>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "David Woodhouse" <dwmw2@infradead.org>,
+        Brian Gerst <brgerst@gmail.com>,
+        "Arjan van de Veen" <arjan@linux.intel.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        "Paul McKenney" <paulmck@kernel.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        "Sean Christopherson" <seanjc@google.com>,
+        Oleksandr Natalenko <oleksandr@natalenko.name>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Piotr Gorski <lucjan.lucjanov@gmail.com>,
+        Usama Arif <usama.arif@bytedance.com>,
+        Juergen Gross <jgross@suse.com>,
+        "Boris Ostrovsky" <boris.ostrovsky@oracle.com>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
         Russell King <linux@armlinux.org.uk>,
-        Steven Rostedt <rostedt@goodmis.org>,
+        "Arnd Bergmann" <arnd@arndb.de>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-modules@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        Sabin Rapan <sabrapan@amazon.com>,
+        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: RE: [patch] x86/realmode: Make stack lock work in trampoline_compat()
+Thread-Topic: [patch] x86/realmode: Make stack lock work in
+ trampoline_compat()
+Thread-Index: AQHZmmUgtDGga6k1FUelCeu8f3dcaq+Ecr5A
+Date:   Sat, 10 Jun 2023 19:50:58 +0000
+Message-ID: <67f939e112cc4578833ca74123bee402@AcuMS.aculab.com>
+References: <20230508181633.089804905@linutronix.de>
+ <20230508185218.962208640@linutronix.de>
+ <20230524204818.3tjlwah2euncxzmh@box.shutemov.name> <87y1lbl7r6.ffs@tglx>
+ <87sfbhlwp9.ffs@tglx> <20230529023939.mc2akptpxcg3eh2f@box.shutemov.name>
+ <87bki3kkfi.ffs@tglx> <20230529203129.sthnhzgds7ynddxd@box.shutemov.name>
+ <87h6rujdvl.ffs@tglx> <20230608233402.GA3430@yjiang5-mobl.amr.corp.intel.com>
+ <a56a06c2-73fd-5295-3f6c-922ccb078488@citrix.com>
+In-Reply-To: <a56a06c2-73fd-5295-3f6c-922ccb078488@citrix.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, Jun 8, 2023 at 11:41=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
-te:
->
-> On Tue, Jun 06, 2023 at 11:21:59AM -0700, Song Liu wrote:
-> > On Mon, Jun 5, 2023 at 3:09=E2=80=AFAM Mark Rutland <mark.rutland@arm.c=
-om> wrote:
-> >
-> > [...]
-> >
-> > > > > > Can you give more detail on what parameters you need? If the on=
-ly extra
-> > > > > > parameter is just "does this allocation need to live close to k=
-ernel
-> > > > > > text", that's not that big of a deal.
-> > > > >
-> > > > > My thinking was that we at least need the start + end for each ca=
-ller. That
-> > > > > might be it, tbh.
-> > > >
-> > > > Do you mean that modules will have something like
-> > > >
-> > > >       jit_text_alloc(size, MODULES_START, MODULES_END);
-> > > >
-> > > > and kprobes will have
-> > > >
-> > > >       jit_text_alloc(size, KPROBES_START, KPROBES_END);
-> > > > ?
-> > >
-> > > Yes.
-> >
-> > How about we start with two APIs:
-> >      jit_text_alloc(size);
-> >      jit_text_alloc_range(size, start, end);
-> >
-> > AFAICT, arm64 is the only arch that requires the latter API. And TBH, I=
- am
-> > not quite convinced it is needed.
->
-> Right now arm64 and riscv override bpf and kprobes allocations to use the
-> entire vmalloc address space, but having the ability to allocate generate=
-d
-> code outside of modules area may be useful for other architectures.
->
-> Still the start + end for the callers feels backwards to me because the
-> callers do not define the ranges, but rather the architectures, so we sti=
-ll
-> need a way for architectures to define how they want allocate memory for
-> the generated code.
+RnJvbTogQW5kcmV3IENvb3Blcg0KPiBTZW50OiAwOSBKdW5lIDIwMjMgMDA6NTgNCj4gDQouLi4N
+Cj4gVGhlIGltcG9ydGFudCBwb2ludCBpcyB0aGUgbCBzdWZmaXggb24gYnRzbCwgd2hpY2ggZm9y
+Y2VzIGl0IHRvIGJlIGxvbmcNCj4gKDMyYml0KSBpcnJlc3BlY3RpdmUgb2YgdGhlIGRlZmF1bHQg
+b3BlcmFuZCBzaXplLg0KDQpEb2VzIHRoYXQgbWF0dGVyIGF0IGFsbD8NClRoZSAnYml0JyBvcGNv
+ZGVzIChJJ20gc3VyZSAnYnRzJyBpcyAnYml0IHRlc3QgYW5kIHNldCcpIHRha2UNCmEgYml0IG9m
+ZnNldCBmcm9tIHRoZSBiYXNlIGFkZHJlc3MuDQpUaGlzIGFjY2Vzc2VzIHRoZSBzYW1lIGJpdCBy
+ZWdhcmRsZXNzIG9mIHRoZSBvcGVyYW5kIHNpemUuDQoNClRoZSBvbmUgcmVhbCBpc3N1ZSBpcyB0
+aGF0IGEgYnl0ZSBvcGVyYW5kIHdpbGwgb25seSBsb2NrIHRoZSBvbmUgYnl0ZS4NClRoaXMgbWln
+aHQgYmUgcHJvYmxlbWF0aWMgaWYgbm9uLWJpdCBsb2NrZWQgYWNjZXNzZXMgYXJlIGFsc28gdXNl
+ZC4NCkFsdGhvdWdoIGl0IHdvdWxkIG5lZWQgdG8gYmUgcmF0aGVyIG9ic2N1cmUgdXNlLg0KKFRo
+aXMgbWF5IGJlIG9uZSBvZiB0aGVtLi4uKQ0KDQpUaGUgb25seSBvdGhlciBwcm9ibGVtIGlzIHRo
+YXQgYnRzbCBhbHdheXMgZG9lcyBhIGxvY2tlZCAzMmJpdA0KYWNjZXNzLiBJZiB0aGUgYmFzZSBh
+ZGRyZXNzIGlzIG1pc2FsaWduZWQgdGhpcyBpcyBhIG1pc2FsaWduZWQNCmxvY2tlZCBhY2Nlc3Mg
+LSBwcm9ibGVtYXRpYyBpZiBpdCBjcm9zc2VzIGEgY2FjaGUgbGluZSBib3VuZGFyeS4NCg0KCURh
+dmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3Vu
+dCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3
+Mzg2IChXYWxlcykNCg==
 
-Yeah, this makes sense.
-
->
-> > > > It sill can be achieved with a single jit_alloc_arch_params(), just=
- by
-> > > > adding enum jit_type parameter to jit_text_alloc().
-> > >
-> > > That feels backwards to me; it centralizes a bunch of information abo=
-ut
-> > > distinct users to be able to shove that into a static array, when the=
- callsites
-> > > can pass that information.
-> >
-> > I think we only two type of users: module and everything else (ftrace, =
-kprobe,
-> > bpf stuff). The key differences are:
-> >
-> >   1. module uses text and data; while everything else only uses text.
-> >   2. module code is generated by the compiler, and thus has stronger
-> >   requirements in address ranges; everything else are generated via som=
-e
-> >   JIT or manual written assembly, so they are more flexible with addres=
-s
-> >   ranges (in JIT, we can avoid using instructions that requires a speci=
-fic
-> >   address range).
-> >
-> > The next question is, can we have the two types of users share the same
-> > address ranges? If not, we can reserve the preferred range for modules,
-> > and let everything else use the other range. I don't see reasons to fur=
-ther
-> > separate users in the "everything else" group.
->
-> I agree that we can define only two types: modules and everything else an=
-d
-> let the architectures define if they need different ranges for these two
-> types, or want the same range for everything.
->
-> With only two types we can have two API calls for alloc, and a single
-> structure that defines the ranges etc from the architecture side rather
-> than spread all over.
->
-> Like something along these lines:
->
->         struct execmem_range {
->                 unsigned long   start;
->                 unsigned long   end;
->                 unsigned long   fallback_start;
->                 unsigned long   fallback_end;
->                 pgprot_t        pgprot;
->                 unsigned int    alignment;
->         };
->
->         struct execmem_modules_range {
->                 enum execmem_module_flags flags;
->                 struct execmem_range text;
->                 struct execmem_range data;
->         };
->
->         struct execmem_jit_range {
->                 struct execmem_range text;
->         };
->
->         struct execmem_params {
->                 struct execmem_modules_range    modules;
->                 struct execmem_jit_range        jit;
->         };
->
->         struct execmem_params *execmem_arch_params(void);
->
->         void *execmem_text_alloc(size_t size);
->         void *execmem_data_alloc(size_t size);
->         void execmem_free(void *ptr);
-
-With the jit variation, maybe we can just call these
-module_[text|data]_alloc()?
-
-btw: Depending on the implementation of the allocator, we may also
-need separate free()s for text and data.
-
->
->         void *jit_text_alloc(size_t size);
->         void jit_free(void *ptr);
->
-
-[...]
-
-How should we move ahead from here?
-
-AFAICT, all these changes can be easily extended and refactored
-in the future, so we don't have to make it perfect the first time.
-OTOH, having the interface committed (either this set or my
-module_alloc_type version) can unblock works in the binpack
-allocator and the users side. Therefore, I think we can move
-relatively fast here?
-
-Thanks,
-Song
