@@ -2,55 +2,79 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BDE572EF8F
-	for <lists+linux-parisc@lfdr.de>; Wed, 14 Jun 2023 00:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B61BF72F18B
+	for <lists+linux-parisc@lfdr.de>; Wed, 14 Jun 2023 03:19:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231583AbjFMWjP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 13 Jun 2023 18:39:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41588 "EHLO
+        id S242004AbjFNBTr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 13 Jun 2023 21:19:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbjFMWjN (ORCPT
+        with ESMTP id S242002AbjFNBTq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 13 Jun 2023 18:39:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 379EF129;
-        Tue, 13 Jun 2023 15:39:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 753BB619E3;
-        Tue, 13 Jun 2023 22:39:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57074C433C0;
-        Tue, 13 Jun 2023 22:39:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686695950;
-        bh=NlxvWeh/iI/fmUa5V59cQyuKBcW8FcsJJPOT32TM0xM=;
-        h=Date:Subject:To:References:From:In-Reply-To:From;
-        b=AG9o1FVak06Frs3imw4TZ+ctWP3IXbtyxSJvvijaE9TOVKfTe/zO5VcC1BpdYInIK
-         whO+Yw/dkbnFJqfto4qkaW53dmc88a+CN+yTf+XixqvxxdBCLEWFay8OGy5rkzSkkc
-         DBEBmu327BO1RFwsk58uEObOAlYT/rxdv4s+HhNxbD5XVvVBD1BnI/xfg5GuTJsuFv
-         Xv0AJ+6FmKMFZbBIVQzPD4KCL/nwYDL8aHzq2s7YtYDL0sJT9xsXsMVVOvwJpmUhmm
-         ZeLWMNk1wzi2Gjq/ujV8tyLYcapL/frvulIjGKoI9YU8AJxgie/l1/2AvXvD5YAjT5
-         TOqZwTYZ1gSzQ==
-Message-ID: <d5bd569d-b20e-f9c7-d839-93011dde380b@kernel.org>
-Date:   Tue, 13 Jun 2023 17:39:09 -0500
+        Tue, 13 Jun 2023 21:19:46 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A28AC195;
+        Tue, 13 Jun 2023 18:19:43 -0700 (PDT)
+Received: from dggpemm500006.china.huawei.com (unknown [172.30.72.55])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4QgnX45KKjz18MCL;
+        Wed, 14 Jun 2023 09:14:44 +0800 (CST)
+Received: from [10.174.178.55] (10.174.178.55) by
+ dggpemm500006.china.huawei.com (7.185.36.236) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Wed, 14 Jun 2023 09:19:38 +0800
+Subject: Re: [PATCH v1 01/21] kexec: consolidate kexec and crash options into
+ kernel/Kconfig.kexec
+To:     Eric DeVolder <eric.devolder@oracle.com>, <linux@armlinux.org.uk>,
+        <catalin.marinas@arm.com>, <will@kernel.org>,
+        <chenhuacai@kernel.org>, <geert@linux-m68k.org>,
+        <tsbogend@alpha.franken.de>,
+        <James.Bottomley@HansenPartnership.com>, <deller@gmx.de>,
+        <ysato@users.sourceforge.jp>, <dalias@libc.org>,
+        <glaubitz@physik.fu-berlin.de>, <tglx@linutronix.de>,
+        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+        <86@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-ia64@vger.kernel.org>, <loongarch@lists.linux.dev>,
+        <linux-m68k@lists.linux-m68k.org>, <linux-mips@vger.kernel.org>,
+        <linux-parisc@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
+        <linux-sh@vger.kernel.org>
+CC:     <kernel@xen0n.name>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
+        <christophe.leroy@csgroup.eu>, <paul.walmsley@sifive.com>,
+        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <hca@linux.ibm.com>,
+        <gor@linux.ibm.com>, <agordeev@linux.ibm.com>,
+        <borntraeger@linux.ibm.com>, <svens@linux.ibm.com>,
+        <hpa@zytor.com>, <keescook@chromium.org>, <paulmck@kernel.org>,
+        <peterz@infradead.org>, <frederic@kernel.org>,
+        <akpm@linux-foundation.org>, <ardb@kernel.org>,
+        <samitolvanen@google.com>, <juerg.haefliger@canonical.com>,
+        <arnd@arndb.de>, <rmk+kernel@armlinux.org.uk>,
+        <linus.walleij@linaro.org>, <sebastian.reichel@collabora.com>,
+        <rppt@kernel.org>, <kirill.shutemov@linux.intel.com>,
+        <anshuman.khandual@arm.com>, <ziy@nvidia.com>,
+        <masahiroy@kernel.org>, <ndesaulniers@google.com>,
+        <mhiramat@kernel.org>, <ojeda@kernel.org>, <xin3.li@intel.com>,
+        <tj@kernel.org>, <gregkh@linuxfoundation.org>, <tsi@tuyoix.net>,
+        <bhe@redhat.com>, <hbathini@linux.ibm.com>,
+        <sourabhjain@linux.ibm.com>, <boris.ostrovsky@oracle.com>,
+        <konrad.wilk@oracle.com>
+References: <20230612172805.681179-1-eric.devolder@oracle.com>
+ <20230612172805.681179-2-eric.devolder@oracle.com>
+From:   "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
+Message-ID: <6e362106-9d74-1e00-b94d-ce094367e939@huawei.com>
+Date:   Wed, 14 Jun 2023 09:19:38 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 2/3] nios2: Fix flush_dcache_page() for usage from irq
- context
+In-Reply-To: <20230612172805.681179-2-eric.devolder@oracle.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>, linux@armlinux.org.uk,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-References: <20230524152633.203927-1-deller@gmx.de>
- <20230524152633.203927-3-deller@gmx.de>
-From:   Dinh Nguyen <dinguyen@kernel.org>
-In-Reply-To: <20230524152633.203927-3-deller@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+X-Originating-IP: [10.174.178.55]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500006.china.huawei.com (7.185.36.236)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,70 +83,204 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Helge,
 
-Thanks for the patch. Does it need a Fixes tag?
 
-Dinh
-
-On 5/24/23 10:26, Helge Deller wrote:
-> Since at least kernel 6.1, flush_dcache_page() is called with IRQs
-> disabled, e.g. from aio_complete().
+On 2023/6/13 1:27, Eric DeVolder wrote:
+> The config options for kexec and crash features are consolidated
+> into new file kernel/Kconfig.kexec. Under the "General Setup" submenu
+> is a new submenu "Kexec and crash handling" where all the kexec and
+> crash options that were once in the arch-dependent submenu "Processor
+> type and features" are now consolidated.
 > 
-> But the current implementation for flush_dcache_page() on NIOS2
-> unintentionally re-enables IRQs, which may lead to deadlocks.
+> The following options are impacted:
 > 
-> Fix it by using xa_lock_irqsave() and xa_unlock_irqrestore()
-> for the flush_dcache_mmap_*lock() macros instead.
+>  - KEXEC
+>  - KEXEC_FILE
+>  - KEXEC_SIG
+>  - KEXEC_SIG_FORCE
+>  - KEXEC_BZIMAGE_VERIFY_SIG
+>  - KEXEC_JUMP
+>  - CRASH_DUMP
 > 
-> Cc: Dinh Nguyen <dinguyen@kernel.org>
-> Signed-off-by: Helge Deller <deller@gmx.de>
+> The three main options are KEXEC, KEXEC_FILE and CRASH_DUMP.
+> 
+> Architectures specify support of certain KEXEC and CRASH features with
+> similarly named new ARCH_HAS_<option> config options.
+> 
+> Architectures can utilize the new ARCH_SUPPORTS_<option> config
+> options to specify additional components when <option> is enabled.
+> 
+> To summarize, the ARCH_HAS_<option> permits the <option> to be
+> enabled, and the ARCH_SUPPORTS_<option> handles side effects (ie.
+> select statements).
+> 
+> Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
 > ---
->   arch/nios2/include/asm/cacheflush.h | 4 ++++
->   arch/nios2/mm/cacheflush.c          | 5 +++--
->   2 files changed, 7 insertions(+), 2 deletions(-)
+>  arch/Kconfig         |  13 ------
+>  init/Kconfig         |   2 +
+>  kernel/Kconfig.kexec | 103 +++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 105 insertions(+), 13 deletions(-)
+>  create mode 100644 kernel/Kconfig.kexec
 > 
-> diff --git a/arch/nios2/include/asm/cacheflush.h b/arch/nios2/include/asm/cacheflush.h
-> index d0b71dd71287..a37242662809 100644
-> --- a/arch/nios2/include/asm/cacheflush.h
-> +++ b/arch/nios2/include/asm/cacheflush.h
-> @@ -48,5 +48,9 @@ extern void invalidate_dcache_range(unsigned long start, unsigned long end);
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index 205fd23e0cad..a37730679730 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -11,19 +11,6 @@ source "arch/$(SRCARCH)/Kconfig"
+>  
+>  menu "General architecture-dependent options"
+>  
+> -config CRASH_CORE
+> -	bool
+> -
+> -config KEXEC_CORE
+> -	select CRASH_CORE
+> -	bool
+> -
+> -config KEXEC_ELF
+> -	bool
+> -
+> -config HAVE_IMA_KEXEC
+> -	bool
+> -
+>  config ARCH_HAS_SUBPAGE_FAULTS
+>  	bool
+>  	help
+> diff --git a/init/Kconfig b/init/Kconfig
+> index 32c24950c4ce..4424447e23a5 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -1917,6 +1917,8 @@ config BINDGEN_VERSION_TEXT
+>  config TRACEPOINTS
+>  	bool
+>  
+> +source "kernel/Kconfig.kexec"
+> +
+>  endmenu		# General setup
+>  
+>  source "arch/Kconfig"
+> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+> new file mode 100644
+> index 000000000000..660048099865
+> --- /dev/null
+> +++ b/kernel/Kconfig.kexec
+> @@ -0,0 +1,103 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +
+> +menu "Kexec and crash features"
+> +
+> +config CRASH_CORE
+> +	bool
+> +
+> +config KEXEC_CORE
+> +	select CRASH_CORE
+> +	bool
+> +
+> +config KEXEC_ELF
+> +	bool
+> +
+> +config HAVE_IMA_KEXEC
+> +	bool
+> +
+> +config KEXEC
+> +	bool "Enable kexec system call"
+> +	default ARCH_DEFAULT_KEXEC
+> +	depends on ARCH_HAS_KEXEC
+> +	select KEXEC_CORE
+> +	help
+> +	  kexec is a system call that implements the ability to shutdown your
+> +	  current kernel, and to start another kernel.  It is like a reboot
+> +	  but it is independent of the system firmware.   And like a reboot
+> +	  you can start any kernel with it, not just Linux.
+
+"kernel.  It is like", "firmware.   And like"
+
+A few more spaces, I don't know the original author's intention, perhaps can be removed.
+
+> +
+> +	  The name comes from the similarity to the exec system call.
+> +
+> +	  It is an ongoing process to be certain the hardware in a machine
+> +	  is properly shutdown, so do not be surprised if this code does not
+> +	  initially work for you.  As of this writing the exact hardware
+> +	  interface is strongly in flux, so no good recommendation can be
+> +	  made.
+> +
+> +config KEXEC_FILE
+> +	bool "Enable kexec file based system call"
+> +	depends on ARCH_HAS_KEXEC_FILE
+> +	select KEXEC_CORE
+> +	help
+> +	  This is new version of kexec system call. This system call is
+> +	  file based and takes file descriptors as system call argument
+> +	  for kernel and initramfs as opposed to list of segments as
+> +	  accepted by previous system call.
+> +
+> +config KEXEC_SIG
+> +	bool "Verify kernel signature during kexec_file_load() syscall"
+> +	depends on KEXEC_FILE && MODULE_SIG_FORMAT
+
+I see that there is no "depends on MODULE_SIG_FORMAT" on x86 and arm64.
+
+> +	help
+> +
+
+This blank line can be deleted.
+
+> +	  This option makes the kexec_file_load() syscall check for a valid
+> +	  signature of the kernel image.  The image can still be loaded without
+> +	  a valid signature unless you also enable KEXEC_SIG_FORCE, though if
+> +	  there's a signature that we can check, then it must be valid.
+> +
+> +	  In addition to this option, you need to enable signature
+> +	  verification for the corresponding kernel image type being
+> +	  loaded in order for this to work.
+> +
+> +config KEXEC_SIG_FORCE
+> +	bool "Require a valid signature in kexec_file_load() syscall"
+> +	depends on KEXEC_SIG
+> +	help
+> +	  This option makes kernel signature verification mandatory for
+> +	  the kexec_file_load() syscall.
+> +
+> +config KEXEC_BZIMAGE_VERIFY_SIG
+> +	bool "Enable bzImage signature verification support"
+> +	depends on KEXEC_SIG
+> +	depends on SIGNED_PE_FILE_VERIFICATION
+> +	select SYSTEM_TRUSTED_KEYRING
+> +	help
+> +	  Enable bzImage signature verification support.
+> +
+> +config KEXEC_JUMP
+> +	bool "kexec jump"
+> +	depends on KEXEC && HIBERNATION
+> +	depends on ARCH_HAS_KEXEC_JUMP
+> +	help
+> +	  Jump between original kernel and kexeced kernel and invoke
+> +	  code in physical address mode via KEXEC
+> +
+> +config CRASH_DUMP
+> +	bool "kernel crash dumps"
+> +	depends on ARCH_HAS_CRASH_DUMP
+> +	select KEXEC_CORE
+> +	select CRASH_CORE
+> +	help
+> +	  Generate crash dump after being started by kexec.
+> +	  This should be normally only set in special crash dump kernels
+> +	  which are loaded in the main kernel with kexec-tools into
+> +	  a specially reserved region and then later executed after
+> +	  a crash by kdump/kexec. The crash dump kernel must be compiled
+> +	  to a memory address not used by the main kernel or BIOS using
+> +	  PHYSICAL_START, or it must be built as a relocatable image
+> +	  (CONFIG_RELOCATABLE=y).
+> +	  For more details see Documentation/admin-guide/kdump/kdump.rst
+> +
+> +	  For s390, this option also enables zfcpdump.
+> +	  See also <file:Documentation/s390/zfcpdump.rst>
+> +
+> +endmenu
 > 
->   #define flush_dcache_mmap_lock(mapping)		xa_lock_irq(&mapping->i_pages)
->   #define flush_dcache_mmap_unlock(mapping)	xa_unlock_irq(&mapping->i_pages)
-> +#define flush_dcache_mmap_lock_irqsave(mapping, flags)		\
-> +		xa_lock_irqsave(&mapping->i_pages, flags)
-> +#define flush_dcache_mmap_unlock_irqrestore(mapping, flags)	\
-> +		xa_unlock_irqrestore(&mapping->i_pages, flags)
-> 
->   #endif /* _ASM_NIOS2_CACHEFLUSH_H */
-> diff --git a/arch/nios2/mm/cacheflush.c b/arch/nios2/mm/cacheflush.c
-> index 6aa9257c3ede..35f3b599187f 100644
-> --- a/arch/nios2/mm/cacheflush.c
-> +++ b/arch/nios2/mm/cacheflush.c
-> @@ -75,11 +75,12 @@ static void flush_aliases(struct address_space *mapping, struct page *page)
->   {
->   	struct mm_struct *mm = current->active_mm;
->   	struct vm_area_struct *mpnt;
-> +	unsigned long flags;
->   	pgoff_t pgoff;
-> 
->   	pgoff = page->index;
-> 
-> -	flush_dcache_mmap_lock(mapping);
-> +	flush_dcache_mmap_lock_irqsave(mapping, flags);
->   	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
->   		unsigned long offset;
-> 
-> @@ -92,7 +93,7 @@ static void flush_aliases(struct address_space *mapping, struct page *page)
->   		flush_cache_page(mpnt, mpnt->vm_start + offset,
->   			page_to_pfn(page));
->   	}
-> -	flush_dcache_mmap_unlock(mapping);
-> +	flush_dcache_mmap_unlock_irqrestore(mapping, flags);
->   }
-> 
->   void flush_cache_all(void)
-> --
-> 2.38.1
-> 
+
+-- 
+Regards,
+  Zhen Lei
