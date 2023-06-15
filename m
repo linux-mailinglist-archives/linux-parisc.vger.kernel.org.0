@@ -2,87 +2,181 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B6773109E
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Jun 2023 09:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C15E731D1F
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Jun 2023 17:52:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244728AbjFOHar (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 15 Jun 2023 03:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47608 "EHLO
+        id S1345065AbjFOPwJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 15 Jun 2023 11:52:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244613AbjFOHap (ORCPT
+        with ESMTP id S1345021AbjFOPvr (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 15 Jun 2023 03:30:45 -0400
-X-Greylist: delayed 10270 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Jun 2023 00:30:43 PDT
-Received: from mail.sitirkam.com (mail.aurorateknoglobal.com [103.126.10.58])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5455E69;
-        Thu, 15 Jun 2023 00:30:43 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.sitirkam.com (Postfix) with ESMTP id 16CDD4E7BE8D;
-        Thu, 15 Jun 2023 08:32:17 +0700 (WIB)
-Received: from mail.sitirkam.com ([127.0.0.1])
-        by localhost (mail.sitirkam.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Ese7-pAPUxzt; Thu, 15 Jun 2023 08:32:16 +0700 (WIB)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.sitirkam.com (Postfix) with ESMTP id 29E3C4E7BA8C;
-        Thu, 15 Jun 2023 08:32:05 +0700 (WIB)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.sitirkam.com 29E3C4E7BA8C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitirkam.com;
-        s=B8AB377C-ED3B-11EA-8736-9248CAEF674E; t=1686792725;
-        bh=q7vDHy+gLAr4GKZUDI+hjt8I93kvW09nNmGJORUTyfg=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=Xb++C53IX6it0NRdJ6KCI6lXfhAKCq8P8Ks4ohctCBfc2WvkzaYUrDEbpIjtMfZM6
-         gwATCPxfO+XYuxJPNqaezrRwlrrZFnDgM3A1BLcJqYJVx+8XBBtXz2vL5vF0AE1l6G
-         guIKrbBV8tBP0pQEYkK8JYl/PGU1zWqrdVasxD98/swdJ2VGyaUPe0DtY1e4zV7gmW
-         3QR7PzCVRhGpRjm4sUM22RfpoasHalob+LUPqOlS+Wl/vP12LSG1XoiSThFLP72YM5
-         GLpk+2HNVmRN72yYrA3XTeCiRT10hIqpfMlnd6eUpWmOZ5Q/kW2WB+mXltuqM9dtz0
-         9/VdXlfQ6bf9Q==
-X-Virus-Scanned: amavisd-new at mail.sitirkam.com
-Received: from mail.sitirkam.com ([127.0.0.1])
-        by localhost (mail.sitirkam.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id EtD8e92cZ5a5; Thu, 15 Jun 2023 08:32:04 +0700 (WIB)
-Received: from [185.169.4.111] (unknown [185.169.4.111])
-        by mail.sitirkam.com (Postfix) with ESMTPSA id 21E5C4E7BA81;
-        Thu, 15 Jun 2023 08:31:55 +0700 (WIB)
-Content-Type: text/plain; charset="utf-8"
+        Thu, 15 Jun 2023 11:51:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C02BE30EF;
+        Thu, 15 Jun 2023 08:51:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 393AE615D9;
+        Thu, 15 Jun 2023 15:51:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A065C433C0;
+        Thu, 15 Jun 2023 15:51:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686844263;
+        bh=4vpbcLIWH8N9kUhfy14gCg44JnNZ7tmcDbTQofjr2PY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HtfzZGG4h7OB0EE/lQpmPVeug5hEItWTKVdQh4sHq5pkRyi+IBc4bQYhPGfLUyXAE
+         O6q85QbbLOckkkq+ZDCntMP7kzjRH0BvUgQTZTsRtxOQVhMz+kPywYdC329KKPHRCd
+         EzHAMzGxIY08qUxBzBs5hhcSI+TdpRxjxhxRYluzPI7qsWgQhBwbTOga8HmP1oqokR
+         Nfn1KKfQ7SfISyWUrNFe+l7vvHqttosQ0oHQWcCUmbPCzjqzV6ZQmJ6Lgxc8I7me24
+         3i0BNy8Yi/K34Ad5bteBhAQILk/jkgdXefVdp3M52mTzK8Ji4AXkYMW3KmuCjB1GQn
+         39zP25YPwdB6Q==
+Date:   Thu, 15 Jun 2023 08:50:59 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Hugh Dickins <hughd@google.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Hildenbrand <david@redhat.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Helge Deller <deller@gmx.de>,
+        John David Anglin <dave.anglin@bell.net>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 07/23] mips: update_mmu_cache() can replace
+ __update_tlb()
+Message-ID: <20230615155059.GB3665766@dev-arch.thelio-3990X>
+References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
+ <178970b0-1539-8aac-76fd-972c6c46ec17@google.com>
+ <20230614231758.GA1503611@dev-arch.thelio-3990X>
+ <f5526f17-9d78-f7ea-427a-7e76bfeb6b8@google.com>
+ <344a4da-3890-45fd-607e-b5f85ca6ad48@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Spende
-To:     Recipients <admin@sitirkam.com>
-From:   "Maria-Elisabeth Schaeffler" <admin@sitirkam.com>
-Date:   Wed, 14 Jun 2023 18:34:03 -0700
-Reply-To: schaefflermariaelisabeth1941@gmail.com
-Message-Id: <20230615013156.21E5C4E7BA81@mail.sitirkam.com>
-X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,NIXSPAM_IXHASH,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  3.0 NIXSPAM_IXHASH http://www.nixspam.org/
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [schaefflermariaelisabeth1941[at]gmail.com]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <344a4da-3890-45fd-607e-b5f85ca6ad48@google.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Your email account has been selected for a donation of =E2=82=AC1,700,000. =
-Please contact me for more information.
+On Wed, Jun 14, 2023 at 10:43:30PM -0700, Hugh Dickins wrote:
+> On Wed, 14 Jun 2023, Hugh Dickins wrote:
+> > On Wed, 14 Jun 2023, Nathan Chancellor wrote:
+> > > 
+> > > I just bisected a crash while powering down a MIPS machine in QEMU to
+> > > this change as commit 8044511d3893 ("mips: update_mmu_cache() can
+> > > replace __update_tlb()") in linux-next.
+> > 
+> > Thank you, Nathan, that's very helpful indeed.  This patch certainly knew
+> > that it wanted testing, and I'm glad to hear that it is now seeing some.
+> > 
+> > While powering down?  The messages below look like it was just coming up,
+> > but no doubt that's because you were bisecting (or because I'm unfamiliar
+> > with what messages to expect there).  It's probably irrelevant information,
+> > but I wonder whether the (V)machine worked well enough for a while before
+> > you first powered down and spotted the problem, or whether it's never got
+> > much further than trying to run init (busybox)?  I'm trying to get a feel
+> > for whether the problem occurs under common or uncommon conditions.
 
-Mrs Maria Elisabeth Schaeffler
-CEO SCHAEFFLER.
+Ugh sorry, I have been looking into too many bugs lately and got my
+wires crossed :) this is indeed a problem when running init (which is
+busybox, this is a simple Buildroot file system).
+
+> > > Unfortunately, I can still
+> > > reproduce it with the existing fix you have for this change on the
+> > > mailing list, which is present in next-20230614.
+> > 
+> > Right, that later fix was only for a build warning, nothing functional
+> > (or at least I hoped that it wasn't making any functional difference).
+> > 
+> > Thanks a lot for the detailed instructions below: unfortunately, those
+> > would draw me into a realm of testing I've never needed to enter before,
+> > so a lot of time spent on setup and learning.  Usually, I just stare at
+> > the source.
+> > 
+> > What this probably says is that I should revert most my cleanup there,
+> > and keep as close to the existing code as possible.  But some change is
+> > needed, and I may need to understand (or have a good guess at) what was
+> > going wrong, to decide what kind of retreat will be successful.
+> > 
+> > Back to the source for a while: I hope I'll find examples in nearby MIPS
+> > kernel source (and git history), which will hint at the right way forward.
+> > Then send you a patch against next-20230614 to try, when I'm reasonably
+> > confident that it's enough to satisfy my purpose, but likely not to waste
+> > your time.
+> 
+> I'm going to take advantage of your good nature by attaching
+> two alternative patches, either to go on top of next-20230614.
+> 
+> mips1.patch,
+>  arch/mips/mm/tlb-r4k.c |   12 +-----------
+>  1 file changed, 1 insertion(+), 11 deletions(-)
+> 
+> is by far my favourite.  I couldn't see anything wrong with what's
+> already there for mips, but it seems possible that (though I didn't
+> find it) somewhere calls update_mmu_cache_pmd() on a page table.  So
+> mips1.patch restores the pmd_huge() check, and cleans up further by
+> removing the silly pgdp, p4dp, pudp, pmdp stuff: the pointer has now
+> been passed in by the caller, why walk the tree again?  I should have
+> done it this way before.
+> 
+> But if that doesn't work, then I'm afraid it will have to be
+> mips2.patch,
+>  arch/mips/include/asm/pgtable.h |   15 ++++++++++++---
+>  arch/mips/mm/tlb-r3k.c          |    5 ++---
+>  arch/mips/mm/tlb-r4k.c          |   27 ++++++++++++++++++---------
+>  3 files changed, 32 insertions(+), 15 deletions(-)
+> 
+> which reverts all of the original patch and its build warning fix,
+> and does a pte_unmap() to balance the silly pte_offset_map() there;
+> with an apologetic comment for this being about the only place in
+> the tree where I have no idea what to do if ptep were NULL.
+> 
+> I do hope that you find the first fixes the breakage; but if not, then
+
+I hate to be the bearer of bad news but the first patch did not fix the
+breakage, I see the same issue.
+
+> I even more fervently hope that the second will, despite my hating it.
+> Touch wood for the first, fingers crossed for the second, thanks,
+
+Thankfully, the second one does. Thanks for the quick and thoughtful
+responses!
+
+Cheers,
+Nathan
