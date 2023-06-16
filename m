@@ -2,87 +2,128 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 931DF733AE4
-	for <lists+linux-parisc@lfdr.de>; Fri, 16 Jun 2023 22:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18086733AA9
+	for <lists+linux-parisc@lfdr.de>; Fri, 16 Jun 2023 22:18:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbjFPUdJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Fri, 16 Jun 2023 16:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55176 "EHLO
+        id S231881AbjFPUSO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 16 Jun 2023 16:18:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbjFPUdI (ORCPT
+        with ESMTP id S230022AbjFPUSO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 16 Jun 2023 16:33:08 -0400
-X-Greylist: delayed 1044 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 16 Jun 2023 13:33:04 PDT
-Received: from mail.jovannystark.ml (unknown [165.227.195.193])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6903A91
-        for <linux-parisc@vger.kernel.org>; Fri, 16 Jun 2023 13:33:04 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.jovannystark.ml (Postfix) with ESMTP id 27E2E239676;
-        Fri, 16 Jun 2023 20:12:14 +0000 (UTC)
-Received: from mail.jovannystark.ml ([127.0.0.1])
-        by localhost (mail.jovannystark.ml [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id KuRmmsg8wg3z; Fri, 16 Jun 2023 20:12:13 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.jovannystark.ml (Postfix) with ESMTP id D241B239677;
-        Fri, 16 Jun 2023 20:12:13 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at mail.jovannystark.ml
-Received: from mail.jovannystark.ml ([127.0.0.1])
-        by localhost (mail.jovannystark.ml [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id JDgnALw8F1wP; Fri, 16 Jun 2023 20:12:13 +0000 (UTC)
-Received: from [172.19.127.166] (unknown [185.12.44.248])
-        by mail.jovannystark.ml (Postfix) with ESMTPSA id D5FAE239662;
-        Fri, 16 Jun 2023 20:12:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        Fri, 16 Jun 2023 16:18:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59DC92D60;
+        Fri, 16 Jun 2023 13:18:13 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D95BD63E33;
+        Fri, 16 Jun 2023 20:18:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4CCC433C0;
+        Fri, 16 Jun 2023 20:18:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686946692;
+        bh=U5Tl9qs4B0TBI/rIx4ZZgTkRwFm5uyKz4CPReQtXH/U=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=LmBJJScQlLvxsT8+Ta1tCpM4WXI6TR8l8c5jV/lF5ZOrowqAfZjtpNM41tcPHiArX
+         +YH5I9st348UgQHncZvkjv1I8uf6/B9VIYKB/ZX5ShONmWppK4Z28CmWLldHUX++Co
+         tQHCqBzRDW0rngL+0918l5A/LKDXSOHiSUfIz3m/CZC9iQ5hn0r0gJTm/FmWwj/qLn
+         mAG9TY9iKVAQprNcopRBSELs+aKCJHBbKHSrnFdxygoqMhe72Gcymvj1seoYl1ETYg
+         kF9uj767lw3HcyBO4F7SRQUsfNpsVMh+rYJU6mMVRBqQdXG9XPM9gyQIez8ST13ZvP
+         VGJY2Pv9kdJTA==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2b45a71c9caso13911621fa.3;
+        Fri, 16 Jun 2023 13:18:12 -0700 (PDT)
+X-Gm-Message-State: AC+VfDzwqXFeWcpAfyNZDYJy/dEE3segkj31VXtM2BI04oZSYci1aCEf
+        /ekDI9FrlcgdbzzOuE7aPn1PxICOrGvRVZFOatg=
+X-Google-Smtp-Source: ACHHUZ4zX0CYOJSSN4FGWX93J1VUIgZYXEOYsrGR9cSML7AlHx0h0qQhMxp9jkMOVU4u0KdCA43Yux1f/ue71yfnFUk=
+X-Received: by 2002:a05:651c:225:b0:2b3:4fb7:8991 with SMTP id
+ z5-20020a05651c022500b002b34fb78991mr2815162ljn.43.1686946690319; Fri, 16 Jun
+ 2023 13:18:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Mitteilung (Antwort)
-To:     Recipients <rusty@jovannystark.ml>
-From:   "Josephine H" <rusty@jovannystark.ml>
-Date:   Fri, 16 Jun 2023 21:12:00 +0100
-Reply-To: josephine.hayes@goughseq.co.uk
-X-Antivirus: AVG (VPS 230616-6, 6/16/2023), Outbound message
-X-Antivirus-Status: Clean
-Message-Id: <20230616201208.D5FAE239662@mail.jovannystark.ml>
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,LOTS_OF_MONEY,
-        MONEY_FORM_SHORT,MONEY_FROM_MISSP,RCVD_IN_SBL_CSS,RDNS_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+References: <20230616085038.4121892-1-rppt@kernel.org> <20230616085038.4121892-11-rppt@kernel.org>
+In-Reply-To: <20230616085038.4121892-11-rppt@kernel.org>
+From:   Song Liu <song@kernel.org>
+Date:   Fri, 16 Jun 2023 13:17:57 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW4C1zm72AkHfuo6Xz4+37AG4BgX_k2fM+xw536QeDQS+w@mail.gmail.com>
+Message-ID: <CAPhsuW4C1zm72AkHfuo6Xz4+37AG4BgX_k2fM+xw536QeDQS+w@mail.gmail.com>
+Subject: Re: [PATCH v2 10/12] arch: make execmem setup available regardless of CONFIG_MODULES
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nadav Amit <nadav.amit@gmail.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-modules@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Liebe Damen und Herren
+On Fri, Jun 16, 2023 at 1:52=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+>
+> execmem does not depend on modules, on the contrary modules use
+> execmem.
+>
+> To make execmem available when CONFIG_MODULES=3Dn, for instance for
+> kprobes, split execmem_params initialization out from
+> arch/kernel/module.c and compile it when CONFIG_EXECMEM=3Dy
+>
+> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> ---
+[...]
+> +
+> +struct execmem_params __init *execmem_arch_params(void)
+> +{
+> +       u64 module_alloc_end;
+> +
+> +       kaslr_init();
 
-Bitte besprechen Sie mit mir die Auszahlung Ihres Fonds unter den folgenden Angaben.
+Aha, this addresses my comment on the earlier patch. Thanks!
 
-Aktenzeichen:74785/009534
-Glückszahl:0000488934/3788
-€4.500.000,00 Euro
+Acked-by: Song Liu <song@kernel.org>
 
-Bitte füllen Sie die unten stehenden Felder aus, um weitere Informationen zu erhalten.
-==============================
-{United States Lottogewinner Antrag Auf Zahlung}.
-============================== *
-Vorname :
-Nachname :
-Geburtsdatum :
-Geschlecht :
-Wohnadresse :
-Nationalität :
-Beruf :
-Telefon Nummer:
-Faxnummer:
-Gewonnene Betrag:
-==============================
-Hinweis: Leiten Sie Ihre obigen Angaben an die E-Mail-Adresse (Frau Josephine Hayes) weiter.
 
-E-Mail: mrsjosephinemhayes@outlook.com
-E-Mail: mrsjhayes@consultant.com
-==============================
-
-Chairman Of The Supervisory Board:
-Dipl. Dr Helmut Ziefle
+> +
+> +       module_alloc_end =3D module_alloc_base + MODULES_VSIZE;
+> +
+> +       execmem_params.modules.text.pgprot =3D PAGE_KERNEL;
+> +       execmem_params.modules.text.start =3D module_alloc_base;
+> +       execmem_params.modules.text.end =3D module_alloc_end;
+> +
+> +       execmem_params.jit.text.pgprot =3D PAGE_KERNEL_ROX;
+[...]
