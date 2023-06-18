@@ -2,78 +2,152 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82FDC734724
-	for <lists+linux-parisc@lfdr.de>; Sun, 18 Jun 2023 19:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D233734871
+	for <lists+linux-parisc@lfdr.de>; Sun, 18 Jun 2023 22:58:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229513AbjFRRBd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 18 Jun 2023 13:01:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43654 "EHLO
+        id S229674AbjFRU6L (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 18 Jun 2023 16:58:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjFRRBc (ORCPT
+        with ESMTP id S229584AbjFRU6K (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 18 Jun 2023 13:01:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08507E4C;
-        Sun, 18 Jun 2023 10:01:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E4FE6123C;
-        Sun, 18 Jun 2023 17:01:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D25CBC433C9;
-        Sun, 18 Jun 2023 17:01:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687107690;
-        bh=8hBpRKdPYCGQr3y42zDgjG+5Vvi42Uqy7z3v8HnznDg=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=FW890xa0LrqY73HVGpPPjQ21DXZ8xunzbR706YSMTtZGsoGZYQXoO8gAQ3jHCxkWH
-         IlgIurbOyM1Kk7mC2wWcRDklDusQKJv2ZP7FO+yphjJvFG+pu8vzcpWikgXGHvuFzU
-         RkjPw0TREq1q3gb3LCX7jiRx4O3ppbT697NW0BsnqfbK1nmN/2iNd8ZYtz5NZ6Zggw
-         tQwJTzzSWcZDS7yEUVuMj6xYioxqNfnPk33ZCMqjE8I9KBTa5QHmOCC1/7TVlNeZbz
-         VC+pkidIutag2IFt0kMs113ZGQZMtpg8+u44Cy6v9eENb1p73qBXoXEfEPIDLBGTef
-         eOjN2sChvmWkw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C0DC4C1614E;
-        Sun, 18 Jun 2023 17:01:30 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture fix for v6.4-rc7
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <ZI6TEDXhJKW3l3XF@p100>
-References: <ZI6TEDXhJKW3l3XF@p100>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <ZI6TEDXhJKW3l3XF@p100>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.4-4
-X-PR-Tracked-Commit-Id: b5b2a02bcaac7c287694aa0db4837a07bf178626
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 1dbbfe254d2360993e79a10ca42aeec407e13b34
-Message-Id: <168710769077.15251.15059496966085119746.pr-tracker-bot@kernel.org>
-Date:   Sun, 18 Jun 2023 17:01:30 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Sun, 18 Jun 2023 16:58:10 -0400
+Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 089D9E4D
+        for <linux-parisc@vger.kernel.org>; Sun, 18 Jun 2023 13:58:09 -0700 (PDT)
+Received: by mail-qt1-x832.google.com with SMTP id d75a77b69052e-3f9d619103dso205551cf.1
+        for <linux-parisc@vger.kernel.org>; Sun, 18 Jun 2023 13:58:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1687121888; x=1689713888;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FZtyfCTAVMiPGQWHjgwoE9XDDUe5Zitl3naYIJu5u8M=;
+        b=ZVT9TlvXekbzjsIk4FVN6w5b3V3bL2g07xM58CsOQEKlBliMaOMo4yZji4Q+4M2pTX
+         PwOyYLy6AVqkAYYG8oZQzsoJ5wXO3fYU4dvuBveWcoPn/DBqA76dOm2wErETk5RMX4DF
+         Pdjj7y7tVBfSg3bUPlVpNbbP9RKpJTFpWfMqG6NS8ogCoI9SFLLQjHjuiJCl9wmx/QMI
+         sfudbAhw5Fv3ydEbSaSvd7K7sWgk9eaIp4KEVRbqeVVI+v27ojzRWzN3DHLLYoRPb3Uw
+         6IMcAn+rqIjZUCyYlDlj0BpHHcpwknOPBIBYMxSFkst2yjNHbhKR20MPChNpYuTjpIYD
+         wwUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687121888; x=1689713888;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FZtyfCTAVMiPGQWHjgwoE9XDDUe5Zitl3naYIJu5u8M=;
+        b=VZyYuHScBFhs7RksgPA/iK7HI6m/FMubrLs/BOfBHecaawLH2UdgwCFegJVnpqvcRv
+         sUrB5NUefSKLcnmt+/Rw2kR1OO/3zcwfN4eqO6sgVb7i6WS326FDWy8Cw6TJMnp8b5hL
+         q52X5f9wRq6bZtpmnenrhv9gIcVdVRfqixDV7HT3PgPHUrotyOdK/oJJvSa6/M3h8YWk
+         8ZQ0Zh/gV+K9pJCgIfVk0peh27IvSMwebHXbPRupRYwCTuVeJbYV5sNx2tf7qYU5iyqF
+         x4+oTO+R1ku6XnVzjGcJXYQDX5XEtY+XjE8M/IkLy/WFd76cl91n9dPATr05sS8mq2Q0
+         weQA==
+X-Gm-Message-State: AC+VfDxAY6MbrYWKCBpVLk9oHp+vZz61ypoc63KW5/fmpnhQGu09li5w
+        QslnndsFdbJqenix3YHFAX93qmChcJBWvFdud/hZyg==
+X-Google-Smtp-Source: ACHHUZ6ZDWbPtAWRuLjADFFa6FEUQ3GypTx245KPaUVC0BHZGX9Wd0LOXtVKSGnZtQDaYiPHdDlVEaUz0sYg2vTadSQ=
+X-Received: by 2002:a05:622a:20a:b0:3f9:a78f:c527 with SMTP id
+ b10-20020a05622a020a00b003f9a78fc527mr291449qtx.21.1687121888063; Sun, 18 Jun
+ 2023 13:58:08 -0700 (PDT)
+MIME-Version: 1.0
+References: <a4963be9-7aa6-350-66d0-2ba843e1af44@google.com>
+ <178970b0-1539-8aac-76fd-972c6c46ec17@google.com> <20230614231758.GA1503611@dev-arch.thelio-3990X>
+ <f5526f17-9d78-f7ea-427a-7e76bfeb6b8@google.com> <344a4da-3890-45fd-607e-b5f85ca6ad48@google.com>
+ <20230615155059.GB3665766@dev-arch.thelio-3990X> <76b41825-30fa-b9e8-d043-2affcba24317@google.com>
+ <addfcb3-b5f4-976e-e050-a2508e589cfe@google.com> <ZI0uh8P/akwkGo0D@google.com>
+In-Reply-To: <ZI0uh8P/akwkGo0D@google.com>
+From:   Yu Zhao <yuzhao@google.com>
+Date:   Sun, 18 Jun 2023 14:57:31 -0600
+Message-ID: <CAOUHufbAjZd4Mxkio9OGct-TZ=L0QRG+_6Xa7atQVFN_4ez86w@mail.gmail.com>
+Subject: Re: [PATCH v2 07/23 replacement] mips: add pte_unmap() to balance pte_offset_map()
+To:     Hugh Dickins <hughd@google.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        David Hildenbrand <david@redhat.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>, Helge Deller <deller@gmx.de>,
         John David Anglin <dave.anglin@bell.net>,
-        Ben Hutchings <benh@debian.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-mips@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Sun, 18 Jun 2023 07:16:00 +0200:
+On Fri, Jun 16, 2023 at 9:54=E2=80=AFPM Yu Zhao <yuzhao@google.com> wrote:
+>
+> On Thu, Jun 15, 2023 at 04:02:43PM -0700, Hugh Dickins wrote:
+> > To keep balance in future, __update_tlb() remember to pte_unmap() after
+> > pte_offset_map().  This is an odd case, since the caller has already do=
+ne
+> > pte_offset_map_lock(), then mips forgets the address and recalculates i=
+t;
+> > but my two naive attempts to clean that up did more harm than good.
+> >
+> > Tested-by: Nathan Chancellor <nathan@kernel.org>
+> > Signed-off-by: Hugh Dickins <hughd@google.com>
+>
+> FWIW: Tested-by: Yu Zhao <yuzhao@google.com>
+>
+> There is another problem, likely caused by khugepaged, happened multiple =
+times. But I don't think it's related to your series, just FYI.
+>
+>   Got mcheck at ffffffff81134ef0
+>   CPU: 3 PID: 36 Comm: khugepaged Not tainted 6.4.0-rc6-00049-g62d8779610=
+bb-dirty #1
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.4-4
+...
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/1dbbfe254d2360993e79a10ca42aeec407e13b34
+>   Kernel panic - not syncing: Caught Machine Check exception - caused by =
+multiple matching entries in the TLB.
 
-Thank you!
+In case anyone plans to try to fix this - the problem goes back to at
+least 5.15 stable. My (educated) guess is that nobody complained about
+it because all the testing is done in QEMU, which does NOT detect
+conflicting TLBs. This means the verification of the fix would need to
+be on a real piece of h/w or an updated QEMU.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+In target/mips/tcg/sysemu/tlb_helper.c:
+
+static void r4k_fill_tlb(CPUMIPSState *env, int idx)
+{
+    r4k_tlb_t *tlb;
+    uint64_t mask =3D env->CP0_PageMask >> (TARGET_PAGE_BITS + 1);
+
+    /* XXX: detect conflicting TLBs and raise a MCHECK exception when neede=
+d */
+...
