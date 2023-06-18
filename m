@@ -2,104 +2,135 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01CF97344F4
-	for <lists+linux-parisc@lfdr.de>; Sun, 18 Jun 2023 07:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1937F734550
+	for <lists+linux-parisc@lfdr.de>; Sun, 18 Jun 2023 10:01:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229526AbjFRFQQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 18 Jun 2023 01:16:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36672 "EHLO
+        id S229540AbjFRIBS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 18 Jun 2023 04:01:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbjFRFQO (ORCPT
+        with ESMTP id S229470AbjFRIBR (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 18 Jun 2023 01:16:14 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A5FE49;
-        Sat, 17 Jun 2023 22:16:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1687065362; x=1687670162; i=deller@gmx.de;
- bh=EUaQIqD/ZsW66UMROAlu4iCbxsjI+oeUTCmLgbKJ/4g=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=SHPJMH7tnBwIf4Bt7I1opP5D3dQJQjD07wM03mpq+0tXA8pMRcX2dIUY050piuW+Kjx5mQK
- pViVWlMSHu1BGsLjaeGIlkiAuk6Yjh/T1faaxfz0fC8H+WRBISuIsT5BSgJBbIGyVEB0hNF/j
- Gr2MEhl0GAZrGE+2Cur7cqM+EyRVavov4Fd5KGbMas2VOFL9elBgPvTopxM/1FyRdxFTZScTu
- s6a1TMoGKjDLeB3ANdpzu5+B/rCposqOzHh0j21rCkfO3iopjzc+YUkZNkE/0q+OHxqGv2Ol9
- dRkAPtavYui6Nkf/m/DOtov4DHUhTYPFl7K95CElSQkfibVIunNQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.148.114]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MrhQ6-1pnXVO0u7Y-00nhW5; Sun, 18
- Jun 2023 07:16:02 +0200
-Date:   Sun, 18 Jun 2023 07:16:00 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Cc:     Ben Hutchings <benh@debian.org>
-Subject: [GIT PULL] parisc architecture fix for v6.4-rc7
-Message-ID: <ZI6TEDXhJKW3l3XF@p100>
+        Sun, 18 Jun 2023 04:01:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FA0D10D7;
+        Sun, 18 Jun 2023 01:01:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B17EC60F61;
+        Sun, 18 Jun 2023 08:01:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA1EC433C0;
+        Sun, 18 Jun 2023 08:01:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687075275;
+        bh=JOdF7gdXvqBjASqKs6SWBkQKDgB3N69nrNaZPukvaeM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sRSVsUz+8qwPDTD+DbQ8ZGj3oxWbs6Q2yclpQ5oA01FgfO3x99AMq57vy9vTmKGCz
+         zxsNFAk2tsVXc2/ZMKN5WrqHKwwq7cFYa5f3HPOYIxlAVh8JcIK7E8a/4ukOQRZ4nx
+         MkY7brx+YmsqJJOWjKI+esA6758vzynczNeZM28mb8D2036W2Ac3dVaBq4RYIRm2lO
+         UwBKETxVcKwPW5jcSjXTb+3J9p7JSrJABXAw2lEoobsEXKewtbcSu8Iyl/ROefguVb
+         JB6NowqZPjsvgPvrW3+OErG+qxYX7mjk/nhQmoo1FPg/indEYGUiochf7rWuDn85yN
+         s8jpvUG70jw+A==
+Date:   Sun, 18 Jun 2023 11:00:27 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Andy Lutomirski <luto@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nadav Amit <nadav.amit@gmail.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+        "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Song Liu <song@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-modules@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org,
+        the arch/x86 maintainers <x86@kernel.org>
+Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and
+ jit_text_alloc()
+Message-ID: <20230618080027.GA52412@kernel.org>
+References: <20230616085038.4121892-1-rppt@kernel.org>
+ <20230616085038.4121892-3-rppt@kernel.org>
+ <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:TdNWjSBn5PpPAdht8GFwkkEPO6SEFbE+bQm0ulkmMLPtB5nIlbT
- kZaSqsxQSk7H13sjxncc3qUfcI+M6Tv8wGKunZ0+nOf/ysUfsbjg+NHsDBFlDGOtPn/ZS63
- 6iBMcd7FHq0F+bVK28VD8ykhpOwhAdkw6D85jjQ1bvbinxzrbXuYNQFiBkFeNXZNoBt6UJm
- +hReJiUtwuPtf+oko7J4w==
-UI-OutboundReport: notjunk:1;M01:P0:VsjydBoPoyY=;G1ArkVU6Ab4XJ9SGWJk5ATXU0yV
- bUQrehVA8jd5u+P5k94XS5HbGpryBP1M8jbbtIpawk9Xxz84s7oW5asNlWAfxf80SNyM1unGl
- /v5S6MwDxGtLFyPCzNhE7+GFxwX0XHdrOH4U50wPHDWM1mVRDhXSxt74wNGc2ZoaGrFNTiziA
- fVZLbl76b1kvTot1ljD4CMVlHMOhuNTB1QSzAT+w6YI8XP0CiZgS75bDLFrhKcpM2xTCT0TSy
- ndrunTSXnhQ5MUXKHYRozx1TzOUF/0Xj1NFGxBXV497gqn5WSygzS0cZfJNMIY4pgqNHdo9D/
- Hr1LmqsN/HqWLNJ4qH5vjwjzSwaE3afcQRaCVuAPwK0wwyKQpwwb61jHQL8IsIvVB38gQiBHN
- 1EDUWkGP1uKZvl5VfH77kFl+dgefZTAibdc5v1cU1I3+G/3fBSbtPj7on8zg8VRs5V9+rXeYy
- 2N/kKn9Fgpsd/ZcB/S+4EzBS7E1Du6VSixqzIguMUEOyOb/PTO08q1+txTh0YShOB8wuZQURK
- mgRYpJGoJVa+4Za85OkzDE4+uuJUtr3YpR+Fqn2/zF2s5XEr2DEOONGiELt2+9KsxroKz7nQI
- C2Quz5EqokZ7b7+9MvbUxktjiNSjTXMQXmaM0vdFVwAindPz2C5nKm6rBZXQWUy+wTIHTM0Ty
- Kt5WQgnuV1yYjWnKACYfmE9R9ToXoaccuzU0RfXXHcGqkkb0C/14Uea6Z9Cj0g/ZfxoLBl1i/
- G2fln+mm7a+sddYgxh60/Elxxa1d9eOwiRSqXlA7NSuje+6SyqJP272K05HeTst/Vi7ZTCUv1
- t2o8mkXErlg+eUey/MIgu8aF2nhkuErPyOZbH1qIQaTP4yvCz4Na/lTYfV1frFOc4gqmhMqCu
- 1eQ/zDfW/ND41u4poboQqEmQU1aW77EUDN3UCVXLEIHvmxNl28v7A/9QaGYTH4EIBDWCm131g
- BMUB5oYCUoCtE5gRWj1ugdLGcYo=
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Dear Linus,
+On Sat, Jun 17, 2023 at 01:38:29PM -0700, Andy Lutomirski wrote:
+> On Fri, Jun 16, 2023, at 1:50 AM, Mike Rapoport wrote:
+> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> >
+> > module_alloc() is used everywhere as a mean to allocate memory for code.
+> >
+> > Beside being semantically wrong, this unnecessarily ties all subsystems
+> > that need to allocate code, such as ftrace, kprobes and BPF to modules
+> > and puts the burden of code allocation to the modules code.
+> >
+> > Several architectures override module_alloc() because of various
+> > constraints where the executable memory can be located and this causes
+> > additional obstacles for improvements of code allocation.
+> >
+> > Start splitting code allocation from modules by introducing
+> > execmem_text_alloc(), execmem_free(), jit_text_alloc(), jit_free() APIs.
+> >
+> > Initially, execmem_text_alloc() and jit_text_alloc() are wrappers for
+> > module_alloc() and execmem_free() and jit_free() are replacements of
+> > module_memfree() to allow updating all call sites to use the new APIs.
+> >
+> > The intention semantics for new allocation APIs:
+> >
+> > * execmem_text_alloc() should be used to allocate memory that must reside
+> >   close to the kernel image, like loadable kernel modules and generated
+> >   code that is restricted by relative addressing.
+> >
+> > * jit_text_alloc() should be used to allocate memory for generated code
+> >   when there are no restrictions for the code placement. For
+> >   architectures that require that any code is within certain distance
+> >   from the kernel image, jit_text_alloc() will be essentially aliased to
+> >   execmem_text_alloc().
+> >
+> 
+> Is there anything in this series to help users do the appropriate
+> synchronization when the actually populate the allocated memory with
+> code?  See here, for example:
 
-please pull one small patch for parisc. It fixes a build error
-with the latest binutils.
+This series only factors out the executable allocations from modules and
+puts them in a central place.
+Anything else would go on top after this lands.
+ 
+> https://lore.kernel.org/linux-fsdevel/cb6533c6-cea0-4f04-95cf-b8240c6ab405@app.fastmail.com/T/#u
 
-Thanks,
-Helge
-
----
-
-
-The following changes since commit 858fd168a95c5b9669aac8db6c14a9aeab446375:
-
-  Linux 6.4-rc6 (2023-06-11 14:35:30 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.4-4
-
-for you to fetch changes up to b5b2a02bcaac7c287694aa0db4837a07bf178626:
-
-  parisc: Delete redundant register definitions in <asm/assembly.h> (2023-06-17 06:48:11 +0200)
-
-----------------------------------------------------------------
-parisc architecture fixes for kernel v6.4-rc7:
-
-- Drop redundant register definitions to fix build with latest binutils
-
-----------------------------------------------------------------
-Ben Hutchings (1):
-      parisc: Delete redundant register definitions in <asm/assembly.h>
-
- arch/parisc/include/asm/assembly.h | 4 ----
- 1 file changed, 4 deletions(-)
+-- 
+Sincerely yours,
+Mike.
