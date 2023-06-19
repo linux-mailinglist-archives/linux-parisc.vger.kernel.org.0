@@ -2,72 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAC9B7351A5
-	for <lists+linux-parisc@lfdr.de>; Mon, 19 Jun 2023 12:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D077C7355E7
+	for <lists+linux-parisc@lfdr.de>; Mon, 19 Jun 2023 13:34:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229885AbjFSKLQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 19 Jun 2023 06:11:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54238 "EHLO
+        id S231649AbjFSLei (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 19 Jun 2023 07:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231740AbjFSKLH (ORCPT
+        with ESMTP id S231420AbjFSLeh (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 19 Jun 2023 06:11:07 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94BBC10CE;
-        Mon, 19 Jun 2023 03:10:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1687169428; x=1687774228; i=deller@gmx.de;
- bh=qGeiVrX793s0DZYEPdtucWfg8cVq1CsOldhtd9/eL3w=;
- h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
- b=N7Px8AjvhL4+znxRqKxz+lSA270421k2rcZysgGpUOdCoRMhGTVOjDqDGLH1s0EkpQD0ZFf
- P8X6a67UPCgBtqINFV+8/+O48QhEDhGdWFL8S2dc7nWGUbJOPu9FHjuAF/MwnelAJRj70ooke
- TF0kgPe8dAPr5xLyNrzU7eQOpE1eD3kp57dGR93RygOq7/7ZzHsan29gdI/D6roYCEefuxco/
- Po6GiDXT+7WReQvdM1U5aRmkRt1Y+JRjARR3yIt3/ipmtXPE3rWn4HHtSismb6F+asv/8Oj/G
- auQPLsmcFpQoUStnyLN72oawOJVSUjfcDxuz1ekj35RKbozKmoNw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.144.204]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N2E1G-1q6PTW2kcI-013i1Z; Mon, 19
- Jun 2023 12:10:28 +0200
-Message-ID: <6c7a0ca2-003b-c724-6ef1-4d756d05d2f0@gmx.de>
-Date:   Mon, 19 Jun 2023 12:10:26 +0200
+        Mon, 19 Jun 2023 07:34:37 -0400
+X-Greylist: delayed 158248 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 19 Jun 2023 04:34:34 PDT
+Received: from out-47.mta0.migadu.com (out-47.mta0.migadu.com [IPv6:2001:41d0:1004:224b::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1283BF;
+        Mon, 19 Jun 2023 04:34:34 -0700 (PDT)
+Date:   Mon, 19 Jun 2023 07:34:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1687174472;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Tt3RWh8BEKoqLhK86LDh7llJ14l6KCTXk/okAyPXAzA=;
+        b=i+cENnWbA17Y+F/fishc8UmKkX2d11aFrfbkEA/RSeJGs8DaK+pP54Vf1C7aoZ8NsEj74R
+        cXaE50KWXHIuXWZXVuGC783hgIjWLesjrEEDAYhwTaqLKdCoI85w4n4+GuOUgBvzA2QigP
+        oa1A17/zsm0VN2UgH6YNfjC3Cc/g4gI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Kent Overstreet <kent.overstreet@linux.dev>
+To:     Andy Lutomirski <luto@kernel.org>
+Cc:     Mike Rapoport <rppt@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nadav Amit <nadav.amit@gmail.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+        "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Song Liu <song@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-modules@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org,
+        the arch/x86 maintainers <x86@kernel.org>
+Subject: Re: [PATCH v2 02/12] mm: introduce execmem_text_alloc() and
+ jit_text_alloc()
+Message-ID: <20230619113426.c37bpwvdagbzyevn@moria.home.lan>
+References: <20230616085038.4121892-1-rppt@kernel.org>
+ <20230616085038.4121892-3-rppt@kernel.org>
+ <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 2/3] nios2: Fix flush_dcache_page() for usage from irq
- context
-Content-Language: en-US
-To:     Dinh Nguyen <dinguyen@kernel.org>, linux@armlinux.org.uk,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-References: <20230524152633.203927-1-deller@gmx.de>
- <20230524152633.203927-3-deller@gmx.de>
- <d5bd569d-b20e-f9c7-d839-93011dde380b@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <d5bd569d-b20e-f9c7-d839-93011dde380b@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6Ip6mm7Bsw+/cTJsBB4pvMFdzoEQcOBCpy8pF0iNolDQnV9g6xO
- Kaxf/VhnOD/qaECrj4ihQZK7zgQ12RoTTOe4jXea6vqDj52E3/ZKrkEyrgE9bJE95StLKUk
- QjkBoizdPUV2f9C0Z87Kh61nOR5xeXswAU5iMrMr1RJvzmAdHxRas4oyMhkBjaXaGZw8LHv
- QDCTMPCq1u49IMf8wx2Uw==
-UI-OutboundReport: notjunk:1;M01:P0:qmtmZJb+fTI=;ofiShLOTJd+FmbyF/cxgXTjj6/m
- 1c50isGBSSmpooU3EBnDLlKYI6pj+dvZ0InRMF/IW/qHNTJZewNtxjQsIMM9OZW7pY0jCvk2L
- iqNZaA0oMrvA3DCEKKI8OOqVOuGnTiyAso9B+TklqkrfVaOBFX05Bft6wHSAF8CwbCYe7YOtl
- bb/3WduWfTG7xrC+uDZCRTMeHxHB9aWJ7/HlBs/ykMO+LlGlqcSMoMMkyNz4PGHCNZ/UyAs1F
- TbDQr7/eqHQvhfGTwyGDSy6uQ4nd//mCctuedjPtJbOSmCe6KtLsaJ9wGczSN8IXj0S6GLUEN
- GkcRqQXSBDSzbaQMf/QGJ2wdsrO+fvyf4QQu8iNiVvBk4RyIWBZGgpopPyxI3zK3QRjHzF981
- svk5BLTXhXPDSeYu6zqVziOGDW5sgjUOcVS/Nbs18/3ASCIdZ9seorxIz4kJfrwO4kXFa1O0B
- ROldqmDjv4esQsHt5EeCuKlHy81gbImu5Ke8NbTId9sZGmRk9fDC6yScSVDEyF4O/gTEvzNxX
- rslfj4/Sbvz/yRWafBLg/JnzZd9aYEft7Jzrynp8KXdGTzS6V/y9sbmScAyhiFlTy54KFd16F
- YXFj4OVNsyQV3cL3IPG2TtHZN3A+7jrBHqPQAZuJNAJ7rnOO/+0f1cK+UWa6v27sn+I8kI6TY
- wv873yemxhmLdNsa9RiPzrSwVTsvDGaI87WQowmJsraROW7xfPrIZGrZMf2GW3D1lyQG7gv6K
- wGa8vtSr+02jhURb9OTv3taZquBs5FKqqleDcCgjgcpwTLcPAPFYUTDBEscZmk3RiKOjgfKzo
- JM4r6Em1G7TxXBlDuvy6139O3KQs6y+yTNCS/9vRXfJoXc5wl68vGrsoolhILfsyz6kbnnlUa
- R4TRS0FnSXSdmxbEhcsiePledct/I9QIDWljgktylsRoYZXEgiHbQwQ2IfCTjC6nUs4ui+JDD
- DLWuOKYQEquTAZo2nHeE+5ZSk0s=
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f9a7eebe-d36e-4587-b99d-35d4edefdd14@app.fastmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,100 +81,42 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Dinh,
+On Sat, Jun 17, 2023 at 01:38:29PM -0700, Andy Lutomirski wrote:
+> On Fri, Jun 16, 2023, at 1:50 AM, Mike Rapoport wrote:
+> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> >
+> > module_alloc() is used everywhere as a mean to allocate memory for code.
+> >
+> > Beside being semantically wrong, this unnecessarily ties all subsystems
+> > that need to allocate code, such as ftrace, kprobes and BPF to modules
+> > and puts the burden of code allocation to the modules code.
+> >
+> > Several architectures override module_alloc() because of various
+> > constraints where the executable memory can be located and this causes
+> > additional obstacles for improvements of code allocation.
+> >
+> > Start splitting code allocation from modules by introducing
+> > execmem_text_alloc(), execmem_free(), jit_text_alloc(), jit_free() APIs.
+> >
+> > Initially, execmem_text_alloc() and jit_text_alloc() are wrappers for
+> > module_alloc() and execmem_free() and jit_free() are replacements of
+> > module_memfree() to allow updating all call sites to use the new APIs.
+> >
+> > The intention semantics for new allocation APIs:
+> >
+> > * execmem_text_alloc() should be used to allocate memory that must reside
+> >   close to the kernel image, like loadable kernel modules and generated
+> >   code that is restricted by relative addressing.
+> >
+> > * jit_text_alloc() should be used to allocate memory for generated code
+> >   when there are no restrictions for the code placement. For
+> >   architectures that require that any code is within certain distance
+> >   from the kernel image, jit_text_alloc() will be essentially aliased to
+> >   execmem_text_alloc().
+> >
+> 
+> Is there anything in this series to help users do the appropriate synchronization when the actually populate the allocated memory with code?  See here, for example:
+> 
+> https://lore.kernel.org/linux-fsdevel/cb6533c6-cea0-4f04-95cf-b8240c6ab405@app.fastmail.com/T/#u
 
-On 6/14/23 00:39, Dinh Nguyen wrote:
-> Thanks for the patch. Does it need a Fixes tag?
-
-I did not add a fixes tag for the parisc or arm version.
-
-The code was originally correct, but later patches then suddenly started
-using cache flushes from irq context (e.g. 21b40200cfe96 ("aio: use
-flush_dcache_page()")) which then triggers the bug.
-So, it's hard to say that it fixes one specific commit.
-
-I suggest you backport it as far as possible.
-
-Helge
-
-> Dinh
->
-> On 5/24/23 10:26, Helge Deller wrote:
->> Since at least kernel 6.1, flush_dcache_page() is called with IRQs
->> disabled, e.g. from aio_complete().
->>
->> But the current implementation for flush_dcache_page() on NIOS2
->> unintentionally re-enables IRQs, which may lead to deadlocks.
->>
->> Fix it by using xa_lock_irqsave() and xa_unlock_irqrestore()
->> for the flush_dcache_mmap_*lock() macros instead.
->>
->> Cc: Dinh Nguyen <dinguyen@kernel.org>
->> Signed-off-by: Helge Deller <deller@gmx.de>
->> ---
->> =C2=A0 arch/nios2/include/asm/cacheflush.h | 4 ++++
->> =C2=A0 arch/nios2/mm/cacheflush.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 | 5 +++--
->> =C2=A0 2 files changed, 7 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/nios2/include/asm/cacheflush.h b/arch/nios2/include/a=
-sm/cacheflush.h
->> index d0b71dd71287..a37242662809 100644
->> --- a/arch/nios2/include/asm/cacheflush.h
->> +++ b/arch/nios2/include/asm/cacheflush.h
->> @@ -48,5 +48,9 @@ extern void invalidate_dcache_range(unsigned long sta=
-rt, unsigned long end);
->>
->> =C2=A0 #define flush_dcache_mmap_lock(mapping)=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 xa_lock_irq(&mapping->i_pages)
->> =C2=A0 #define flush_dcache_mmap_unlock(mapping)=C2=A0=C2=A0=C2=A0 xa_u=
-nlock_irq(&mapping->i_pages)
->> +#define flush_dcache_mmap_lock_irqsave(mapping, flags)=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 \
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xa_lock_irqsave(&mapping->i=
-_pages, flags)
->> +#define flush_dcache_mmap_unlock_irqrestore(mapping, flags)=C2=A0=C2=
-=A0=C2=A0 \
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 xa_unlock_irqrestore(&mappi=
-ng->i_pages, flags)
->>
->> =C2=A0 #endif /* _ASM_NIOS2_CACHEFLUSH_H */
->> diff --git a/arch/nios2/mm/cacheflush.c b/arch/nios2/mm/cacheflush.c
->> index 6aa9257c3ede..35f3b599187f 100644
->> --- a/arch/nios2/mm/cacheflush.c
->> +++ b/arch/nios2/mm/cacheflush.c
->> @@ -75,11 +75,12 @@ static void flush_aliases(struct address_space *map=
-ping, struct page *page)
->> =C2=A0 {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct mm_struct *mm =3D current->active=
-_mm;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct vm_area_struct *mpnt;
->> +=C2=A0=C2=A0=C2=A0 unsigned long flags;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pgoff_t pgoff;
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pgoff =3D page->index;
->>
->> -=C2=A0=C2=A0=C2=A0 flush_dcache_mmap_lock(mapping);
->> +=C2=A0=C2=A0=C2=A0 flush_dcache_mmap_lock_irqsave(mapping, flags);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vma_interval_tree_foreach(mpnt, &mapping=
-->i_mmap, pgoff, pgoff) {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long of=
-fset;
->>
->> @@ -92,7 +93,7 @@ static void flush_aliases(struct address_space *mappi=
-ng, struct page *page)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 flush_cache_page=
-(mpnt, mpnt->vm_start + offset,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 page_to_pfn(page));
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->> -=C2=A0=C2=A0=C2=A0 flush_dcache_mmap_unlock(mapping);
->> +=C2=A0=C2=A0=C2=A0 flush_dcache_mmap_unlock_irqrestore(mapping, flags)=
-;
->> =C2=A0 }
->>
->> =C2=A0 void flush_cache_all(void)
->> --
->> 2.38.1
->>
-
+We're still in need of an arch independent text_poke() api.
