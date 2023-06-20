@@ -2,222 +2,148 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D362736D01
-	for <lists+linux-parisc@lfdr.de>; Tue, 20 Jun 2023 15:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 528FB736F40
+	for <lists+linux-parisc@lfdr.de>; Tue, 20 Jun 2023 16:54:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231750AbjFTNS4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 20 Jun 2023 09:18:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48498 "EHLO
+        id S231396AbjFTOyS (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 20 Jun 2023 10:54:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231974AbjFTNSe (ORCPT
+        with ESMTP id S233101AbjFTOyM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 20 Jun 2023 09:18:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C93911FDC
-        for <linux-parisc@vger.kernel.org>; Tue, 20 Jun 2023 06:17:23 -0700 (PDT)
+        Tue, 20 Jun 2023 10:54:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 474BF1AC
+        for <linux-parisc@vger.kernel.org>; Tue, 20 Jun 2023 07:53:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687267031;
+        s=mimecast20190719; t=1687272805;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=L73uxYO6/gwUk9UCAvwzC3MI9+cjvFVAXT1CVkWyq/Y=;
-        b=GwQAH4yJ7Qp+q2MHjOWPB09uQ+Lg18QYtKU2itkAVgH97MeF6siFnFU41xxuGOyqD49eBM
-        r0CDoRagePuQ1A5Hwkgzy1RunAsspJy4N4NvlR5v5/td6Pysd6YIy3MGUhpYfFY9f8SgOp
-        ylK5avHbp4QFwni2bSZ7wiXjBNpG+tY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=M+loKwD1RCVu8eKK2gw8N4KlZrUem/NzN5IicUf+C0A=;
+        b=GSv/iY2NyAPyDzCTj1n/bRJuHqv7tc6ncVZ2TEXNeHWb2ftyeLAgi3LF5usWyeYWKBkmhN
+        sju394v/cYXO1PeWmqZldEnIWpgSKYTvCMF9YndAv5s1CHYv/ulpkk61O2kSuUAEvMSvDz
+        qrvtdTXKpNtXgzTY9zUzyu6l9GYrIT0=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-638-FRnLt72yPKKHm7OpzzusiQ-1; Tue, 20 Jun 2023 09:17:06 -0400
-X-MC-Unique: FRnLt72yPKKHm7OpzzusiQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+ us-mta-57-xInM5PQYOXiUnqhucMOkTw-1; Tue, 20 Jun 2023 10:53:23 -0400
+X-MC-Unique: xInM5PQYOXiUnqhucMOkTw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 773E28870E9;
-        Tue, 20 Jun 2023 13:16:23 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-166.pek2.redhat.com [10.72.12.166])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 8B9FBC1ED96;
-        Tue, 20 Jun 2023 13:16:14 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 344871C2CFEB;
+        Tue, 20 Jun 2023 14:49:56 +0000 (UTC)
+Received: from localhost (ovpn-12-166.pek2.redhat.com [10.72.12.166])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id B5B4014682F7;
+        Tue, 20 Jun 2023 14:49:54 +0000 (UTC)
+Date:   Tue, 20 Jun 2023 22:49:50 +0800
 From:   Baoquan He <bhe@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-arch@vger.kernel.org, linux-mm@kvack.org, arnd@arndb.de,
-        hch@lst.de, christophe.leroy@csgroup.eu, rppt@kernel.org,
-        willy@infradead.org, agordeev@linux.ibm.com,
-        wangkefeng.wang@huawei.com, schnelle@linux.ibm.com,
-        David.Laight@ACULAB.COM, shorne@gmail.com, deller@gmx.de,
-        nathan@kernel.org, glaubitz@physik.fu-berlin.de,
-        Baoquan He <bhe@redhat.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        linux-parisc@vger.kernel.org
-Subject: [PATCH v7 14/19] parisc: mm: Convert to GENERIC_IOREMAP
-Date:   Tue, 20 Jun 2023 21:13:51 +0800
-Message-Id: <20230620131356.25440-15-bhe@redhat.com>
-In-Reply-To: <20230620131356.25440-1-bhe@redhat.com>
-References: <20230620131356.25440-1-bhe@redhat.com>
+To:     Eric DeVolder <eric.devolder@oracle.com>
+Cc:     linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
+        chenhuacai@kernel.org, geert@linux-m68k.org,
+        tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, ysato@users.sourceforge.jp, dalias@libc.org,
+        glaubitz@physik.fu-berlin.de, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, kernel@xen0n.name, mpe@ellerman.id.au,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, hpa@zytor.com, keescook@chromium.org,
+        paulmck@kernel.org, peterz@infradead.org, frederic@kernel.org,
+        akpm@linux-foundation.org, ardb@kernel.org,
+        samitolvanen@google.com, juerg.haefliger@canonical.com,
+        arnd@arndb.de, rmk+kernel@armlinux.org.uk,
+        linus.walleij@linaro.org, sebastian.reichel@collabora.com,
+        rppt@kernel.org, kirill.shutemov@linux.intel.com,
+        anshuman.khandual@arm.com, ziy@nvidia.com, masahiroy@kernel.org,
+        ndesaulniers@google.com, mhiramat@kernel.org, ojeda@kernel.org,
+        thunder.leizhen@huawei.com, xin3.li@intel.com, tj@kernel.org,
+        gregkh@linuxfoundation.org, tsi@tuyoix.net, hbathini@linux.ibm.com,
+        sourabhjain@linux.ibm.com, boris.ostrovsky@oracle.com,
+        konrad.wilk@oracle.com
+Subject: Re: [PATCH v2 02/13] x86/kexec: refactor for kernel/Kconfig.kexec
+Message-ID: <ZJG8jtNUWXxmnfao@MiWiFi-R3L-srv>
+References: <20230619145801.1064716-1-eric.devolder@oracle.com>
+ <20230619145801.1064716-3-eric.devolder@oracle.com>
+ <ZJFhlsFN6DxnWsQE@MiWiFi-R3L-srv>
+ <ac065d02-61a4-3b1f-241d-443ede70d3f2@oracle.com>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac065d02-61a4-3b1f-241d-443ede70d3f2@oracle.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
-generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
-and iounmap() are all visible and available to arch. Arch needs to
-provide wrapper functions to override the generic versions if there's
-arch specific handling in its ioremap_prot(), ioremap() or iounmap().
-This change will simplify implementation by removing duplicated codes
-with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
-functioality as before.
+On 06/20/23 at 07:56am, Eric DeVolder wrote:
+> 
+> 
+> On 6/20/23 03:21, Baoquan He wrote:
+> > Hi Eric,
+> > 
+> > On 06/19/23 at 10:57am, Eric DeVolder wrote:
+> > ......
+> > > +config ARCH_SUPPORTS_KEXEC
+> > > +	def_bool y
+> > > -config ARCH_HAS_KEXEC_PURGATORY
+> > > -	def_bool KEXEC_FILE
+> > > +config ARCH_SUPPORTS_KEXEC_FILE
+> > > +	def_bool X86_64 && CRYPTO && CRYPTO_SHA256
+> > ......
+> > > +config ARCH_SELECTS_KEXEC_FILE
+> > > +	def_bool y
+> > >   	depends on KEXEC_FILE
+> > > -	help
+> > 
+> > I am a little confused about this ARCH_SELECTS_XX adding. Wondering what
+> > limits us defining the ARCH_SUPPORTS_KEXEC_FILE like below? I have limited
+> > knowledge about Kconfig, please correct me if I am wrong. Thanks in
+> > advance.
+> > 
+> >   +config ARCH_SUPPORTS_KEXEC_FILE
+> >   +	def_bool y
+> >    	depends on KEXEC_FILE
+> >    	depends on X86_64 && CRYPTO && CRYPTO_SHA256
+> > 
+> 
+> For the ARCH_SUPPORTS_ options, I chose to list the dependencies on the
+> def_bool line to show that it took all those conditions to result in True.
+> However, as you point out, using a def_bool y and then listing them as 'depends on' works as well.
+> Probably would have resulted in fewer changes to the Kconfig file.
+> Either way is ok (the 'depends on KEXEC_FILE' is erroneous in your example).
 
-Here, add wrapper function ioremap_prot() for parisc's special operation
-when iounmap().
+Got it, thanks. To me, one option with explicit dependencies looks clearer
+and straightforward. I need check and investigage why two options are needed,
+whether two options are unavoidable. Not sure if other people would get
+the same feeling or not. Honestly, it's my first time to see the usage of
+XXX_SELECTS_XXX, it took me a while to dig into.
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Acked-by: Helge Deller <deller@gmx.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
----
- arch/parisc/Kconfig          |  1 +
- arch/parisc/include/asm/io.h | 15 ++++++---
- arch/parisc/mm/ioremap.c     | 62 +++---------------------------------
- 3 files changed, 15 insertions(+), 63 deletions(-)
-
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 967bde65dd0e..315cc42b1a2c 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -36,6 +36,7 @@ config PARISC
- 	select GENERIC_ATOMIC64 if !64BIT
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_PCI_IOMAP
-+	select GENERIC_IOREMAP
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_ARCH_TOPOLOGY if SMP
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index c05e781be2f5..366537042465 100644
---- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -125,12 +125,17 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
- /*
-  * The standard PCI ioremap interfaces
-  */
--void __iomem *ioremap(unsigned long offset, unsigned long size);
--#define ioremap_wc			ioremap
--#define ioremap_uc			ioremap
--#define pci_iounmap			pci_iounmap
-+#define ioremap_prot ioremap_prot
-+
-+#define _PAGE_IOREMAP (_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY | \
-+		       _PAGE_ACCESSED | _PAGE_NO_CACHE)
- 
--extern void iounmap(const volatile void __iomem *addr);
-+#define ioremap_wc(addr, size)  \
-+	ioremap_prot((addr), (size), _PAGE_IOREMAP)
-+#define ioremap_uc(addr, size)  \
-+	ioremap_prot((addr), (size), _PAGE_IOREMAP)
-+
-+#define pci_iounmap			pci_iounmap
- 
- void memset_io(volatile void __iomem *addr, unsigned char val, int count);
- void memcpy_fromio(void *dst, const volatile void __iomem *src, int count);
-diff --git a/arch/parisc/mm/ioremap.c b/arch/parisc/mm/ioremap.c
-index 345ff0b66499..fd996472dfe7 100644
---- a/arch/parisc/mm/ioremap.c
-+++ b/arch/parisc/mm/ioremap.c
-@@ -13,25 +13,9 @@
- #include <linux/io.h>
- #include <linux/mm.h>
- 
--/*
-- * Generic mapping function (not visible outside):
-- */
--
--/*
-- * Remap an arbitrary physical address space into the kernel virtual
-- * address space.
-- *
-- * NOTE! We need to allow non-page-aligned mappings too: we will obviously
-- * have to convert them into an offset in a page-aligned mapping, but the
-- * caller shouldn't need to know that small detail.
-- */
--void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
-+void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
-+			   unsigned long prot)
- {
--	void __iomem *addr;
--	struct vm_struct *area;
--	unsigned long offset, last_addr;
--	pgprot_t pgprot;
--
- #ifdef CONFIG_EISA
- 	unsigned long end = phys_addr + size - 1;
- 	/* Support EISA addresses */
-@@ -40,11 +24,6 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
- 		phys_addr |= F_EXTEND(0xfc000000);
- #endif
- 
--	/* Don't allow wraparound or zero size */
--	last_addr = phys_addr + size - 1;
--	if (!size || last_addr < phys_addr)
--		return NULL;
--
- 	/*
- 	 * Don't allow anybody to remap normal RAM that we're using..
- 	 */
-@@ -62,39 +41,6 @@ void __iomem *ioremap(unsigned long phys_addr, unsigned long size)
- 		}
- 	}
- 
--	pgprot = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY |
--			  _PAGE_ACCESSED | _PAGE_NO_CACHE);
--
--	/*
--	 * Mappings have to be page-aligned
--	 */
--	offset = phys_addr & ~PAGE_MASK;
--	phys_addr &= PAGE_MASK;
--	size = PAGE_ALIGN(last_addr + 1) - phys_addr;
--
--	/*
--	 * Ok, go for it..
--	 */
--	area = get_vm_area(size, VM_IOREMAP);
--	if (!area)
--		return NULL;
--
--	addr = (void __iomem *) area->addr;
--	if (ioremap_page_range((unsigned long)addr, (unsigned long)addr + size,
--			       phys_addr, pgprot)) {
--		vunmap(addr);
--		return NULL;
--	}
--
--	return (void __iomem *) (offset + (char __iomem *)addr);
--}
--EXPORT_SYMBOL(ioremap);
--
--void iounmap(const volatile void __iomem *io_addr)
--{
--	unsigned long addr = (unsigned long)io_addr & PAGE_MASK;
--
--	if (is_vmalloc_addr((void *)addr))
--		vunmap((void *)addr);
-+	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
- }
--EXPORT_SYMBOL(iounmap);
-+EXPORT_SYMBOL(ioremap_prot);
--- 
-2.34.1
+> 
+> > > -
+> > > -	  This option makes the kexec_file_load() syscall check for a valid
+> > > -	  signature of the kernel image.  The image can still be loaded without
+> > > -	  a valid signature unless you also enable KEXEC_SIG_FORCE, though if
+> > > -	  there's a signature that we can check, then it must be valid.
+> > > -
+> > > -	  In addition to this option, you need to enable signature
+> > > -	  verification for the corresponding kernel image type being
+> > > -	  loaded in order for this to work.
+> > > -
+> > 
+> 
 
