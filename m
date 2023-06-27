@@ -2,225 +2,290 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7E607403FC
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jun 2023 21:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D451A7404E6
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jun 2023 22:25:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbjF0TYX (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 27 Jun 2023 15:24:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48172 "EHLO
+        id S230356AbjF0UZW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 27 Jun 2023 16:25:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229893AbjF0TYW (ORCPT
+        with ESMTP id S229618AbjF0UZV (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 27 Jun 2023 15:24:22 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADCA410CC;
-        Tue, 27 Jun 2023 12:24:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1687893852; x=1688498652; i=deller@gmx.de;
- bh=gFcHggE30DKUM2JgtlT+me9FNYXWWHP2feaOMJWLRvM=;
- h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
- b=iJzgJvlgoTgt0ziQXTscpq77ppjl9FDUbS+3g1Jmdtvxf55jphfKZK6uKSMkio+qDBk6uTv
- AhD6VstRUPEpvsqzmohChpryEfqjU4ZgvzVHaJvQtYr4h/zGDq8vOC3zh9gsNdbE/r/ET8SPL
- fOBPtol7YtctFaQAcOinPRskGwxfA7JJOmSeXWJXFSU0W7PPFpkzT1AGsliw4WIMgh/hviIWU
- DSudbYSmrX/1iu5Wcbt8Md+gAacEVZhPv/huUdmrprEIWcW03QndBtoLXa/srNExlAm1WAA1m
- feFKSPD+9m0WTbH1944pmKYuxqfnRW6h6nDtJNN7L79OSMjhiNEg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.155.6]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MuUj2-1pwHjl4838-00rWMR; Tue, 27
- Jun 2023 21:24:12 +0200
-Message-ID: <c65f5b3a-e65f-8033-8f75-3c2247285977@gmx.de>
-Date:   Tue, 27 Jun 2023 21:24:11 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2] io_uring: Adjust mapping wrt architecture aliasing
- requirements
-Content-Language: en-US
-To:     Jiri Slaby <jirislaby@kernel.org>, io-uring@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>, linux-parisc@vger.kernel.org,
-        John David Anglin <dave.anglin@bell.net>
-References: <Y+3kwh8BokobVl6o@p100>
- <818c95bc-50f8-4b2e-d5ca-2511310de47c@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <818c95bc-50f8-4b2e-d5ca-2511310de47c@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hJ0Y6qgU64jUJdqm+N7J/p5TXyi+iMc0vEBJkte+bKz23ah/AhJ
- 3/UQ+5zvYoudLG6bwH0gZ81Cws3Vacjm+MgRfXoPdCtrfVo6esqmPbampfCWWE0MNm/CDnr
- 9vjV8Fem0rzZK1HLvd3r7NRWdTHfiydAs5q3VDFZICR9guPoGTQUgEpig8bjDFx9Y24BDa7
- gvvZPK2UZzJFNK+JJbK2w==
-UI-OutboundReport: notjunk:1;M01:P0:tuu21xzxWE4=;xJAfg/Z8VdNsA3gXtDvgg7DunZi
- r5CWDgBM477k+EBUlc3qsWqF/ScuTHmKqM/ufNY54v3hAQFJJGxHFpu6dYLVmczsvRJL+5SKr
- EaVKdICCijS7EP3+fEl8xL8YMFeSi/9RVfvPDstvlVM2WgqH0c6p/5j1HvTZYiPNRI8trzrFr
- gQOUIkWw0OKZiCWA1YVFazBHkAFwn1cl6lpTGTlvfG6XHllTJKPk0jY1g0c4KTKh2ELpZ6ij+
- jlnFgXbXGrc011GZM/Z0urMC8dcPx3gYFDvaxKlK4o3reE+WNhVVUlcMPUCLAF892uBhpBqpd
- HiADpZi5MWGqeaRWvgSfLZE1pQ3H4s+Hbh4a3Erl7DI2y8iJGaDtBy+K+CFihoG3DCb47V7s8
- vcmKi8aoce1i+OFUFM8fNHKTSweSwy6tRqKZq1ywJ60v1UQdFBis6KpAPjHqQT07ClzpgctBn
- sPB46jWXn1xV5uQg52oNtczKQdrdPuNkDUfBtiygAq83YyjykaV/PMRVNdqg9+aOfILvMHCz/
- TlQXS6GBl2aHw9jILCKvzWufIt6CAiAL2cWUBCdYI2LnPSS40Fs3ORgs5KEiWo4pN6Qq82glp
- a8zRNWZVfZUoC9t7NtzCtsQnL5UZcnASL+jBQU3etjtVKyz/dkA0AHpO5WO+8S4aLYFwr1wU1
- xj5XYVr3xu7uRt47qbE2y9whHgPIydUTKSYDCFtdw/e1M5ki3t72fWiqhLR8vOefpku65GIQy
- nPVuOy2hejKd220fjmc18mBAtoMRoGEzIuiYT+5Y378oMkGuUMBM/vPEUUA03GkcGpdyXaw6a
- fQgWllQP80W3pT1c6H4Xm/1Fa+evlP/30tSe+msCg64WPV8XVi6XSDLQbyeQwK86N+Otlax3k
- 8OfaQnaqWhZh0xqDTFtKNPTxecsLWfD81G9DGXAWgeR6hH+4WnZ81/n7Nq2+aUSnsFhhFKTrm
- cNq3N7Q2MZUWDM4xLMIKBWvRpw4=
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        Tue, 27 Jun 2023 16:25:21 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674CD212D;
+        Tue, 27 Jun 2023 13:25:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687897520; x=1719433520;
+  h=date:from:to:cc:subject:message-id;
+  bh=CZtQQkjwBTjIsN2Lz5HDJSCfMhdSSF8YauQRpgSzeq0=;
+  b=faBD1Te1bDoAjdR0cnZb6Xy4D+w+BP2aaX1FwVqOqSuf33R9JvzW5Pqv
+   JmpolW7wdnF2GdFiPUMKcx6fpc0MWktOPaEJQp9OTiZY6coGCa5daehWD
+   n2iyjYzqWncaUfqzjTvVQquXxPIffTdorl2MXQbmT9R/RmdDNa0ObMCy/
+   bC7fNxmVrd/PgClOsODLurqIGyjFtQEUdofJ4kzu4ab8apFV0OP+T7w93
+   x8q7GiEFZ7O1raDPS+2ZoHbcHkJb6Is8qw+fuXq2QtoMKOewBTjZY9XYv
+   y/kI5Z0I+cAXMLeI/mS+a17R6y7r4bkM4Kd4FHjSvfJZ4fQywVOEYZ9NL
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="365129100"
+X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
+   d="scan'208";a="365129100"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2023 13:25:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10754"; a="716669046"
+X-IronPort-AV: E=Sophos;i="6.01,163,1684825200"; 
+   d="scan'208";a="716669046"
+Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 27 Jun 2023 13:25:17 -0700
+Received: from kbuild by 783282924a45 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qEFFU-000CBp-2F;
+        Tue, 27 Jun 2023 20:25:16 +0000
+Date:   Wed, 28 Jun 2023 04:24:18 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Linux Memory Management List <linux-mm@kvack.org>,
+        intel-gfx@lists.freedesktop.org, kunit-dev@googlegroups.com,
+        linux-kselftest@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: [linux-next:master] BUILD REGRESSION
+ 53cdf865f90ba922a854c65ed05b519f9d728424
+Message-ID: <202306280406.l3OXp90D-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 6/27/23 16:14, Jiri Slaby wrote:
-> On 16. 02. 23, 9:09, Helge Deller wrote:
->> Some architectures have memory cache aliasing requirements (e.g. parisc=
-)
->> if memory is shared between userspace and kernel. This patch fixes the
->> kernel to return an aliased address when asked by userspace via mmap().
->>
->> Signed-off-by: Helge Deller <deller@gmx.de>
->> ---
->> v2: Do not allow to map to a user-provided addresss. This forces
->> programs to write portable code, as usually on x86 mapping to any
->> address will succeed, while it will fail for most provided address if
->> used on stricter architectures.
->>
->> diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
->> index 862e05e6691d..01fe7437a071 100644
->> --- a/io_uring/io_uring.c
->> +++ b/io_uring/io_uring.c
->> @@ -72,6 +72,7 @@
->> =C2=A0 #include <linux/io_uring.h>
->> =C2=A0 #include <linux/audit.h>
->> =C2=A0 #include <linux/security.h>
->> +#include <asm/shmparam.h>
->>
->> =C2=A0 #define CREATE_TRACE_POINTS
->> =C2=A0 #include <trace/events/io_uring.h>
->> @@ -3059,6 +3060,54 @@ static __cold int io_uring_mmap(struct file *fil=
-e, struct vm_area_struct *vma)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return remap_pfn_range(vma, vma->vm_star=
-t, pfn, sz, vma->vm_page_prot);
->> =C2=A0 }
->>
->> +static unsigned long io_uring_mmu_get_unmapped_area(struct file *filp,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uns=
-igned long addr, unsigned long len,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uns=
-igned long pgoff, unsigned long flags)
->> +{
->> +=C2=A0=C2=A0=C2=A0 const unsigned long mmap_end =3D arch_get_mmap_end(=
-addr, len, flags);
->> +=C2=A0=C2=A0=C2=A0 struct vm_unmapped_area_info info;
->> +=C2=A0=C2=A0=C2=A0 void *ptr;
->> +
->> +=C2=A0=C2=A0=C2=A0 /*
->> +=C2=A0=C2=A0=C2=A0=C2=A0 * Do not allow to map to user-provided addres=
-s to avoid breaking the
->> +=C2=A0=C2=A0=C2=A0=C2=A0 * aliasing rules. Userspace is not able to gu=
-ess the offset address of
->> +=C2=A0=C2=A0=C2=A0=C2=A0 * kernel kmalloc()ed memory area.
->> +=C2=A0=C2=A0=C2=A0=C2=A0 */
->> +=C2=A0=C2=A0=C2=A0 if (addr)
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
->> +
->> +=C2=A0=C2=A0=C2=A0 ptr =3D io_uring_validate_mmap_request(filp, pgoff,=
- len);
->> +=C2=A0=C2=A0=C2=A0 if (IS_ERR(ptr))
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENOMEM;
->> +
->> +=C2=A0=C2=A0=C2=A0 info.flags =3D VM_UNMAPPED_AREA_TOPDOWN;
->> +=C2=A0=C2=A0=C2=A0 info.length =3D len;
->> +=C2=A0=C2=A0=C2=A0 info.low_limit =3D max(PAGE_SIZE, mmap_min_addr);
->> +=C2=A0=C2=A0=C2=A0 info.high_limit =3D arch_get_mmap_base(addr, curren=
-t->mm->mmap_base);
->
-> Hi,
->
-> this breaks compat (x86_32) on x86_64 in 6.4. When you run most liburing=
- tests, you'll get ENOMEM, as this high_limit is something in 64-bit space=
-...
->
->> +#ifdef SHM_COLOUR
->> +=C2=A0=C2=A0=C2=A0 info.align_mask =3D PAGE_MASK & (SHM_COLOUR - 1UL);
->> +#else
->> +=C2=A0=C2=A0=C2=A0 info.align_mask =3D PAGE_MASK & (SHMLBA - 1UL);
->> +#endif
->> +=C2=A0=C2=A0=C2=A0 info.align_offset =3D (unsigned long) ptr;
->> +
->> +=C2=A0=C2=A0=C2=A0 /*
->> +=C2=A0=C2=A0=C2=A0=C2=A0 * A failed mmap() very likely causes applicat=
-ion failure,
->> +=C2=A0=C2=A0=C2=A0=C2=A0 * so fall back to the bottom-up function here=
-. This scenario
->> +=C2=A0=C2=A0=C2=A0=C2=A0 * can happen with large stack limits and larg=
-e mmap()
->> +=C2=A0=C2=A0=C2=A0=C2=A0 * allocations.
->> +=C2=A0=C2=A0=C2=A0=C2=A0 */
->> +=C2=A0=C2=A0=C2=A0 addr =3D vm_unmapped_area(&info);
->
-> So the found addr here is > TASK_SIZE - len for 32-bit bins. And get_unm=
-apped_area() returns ENOMEM.
->
->> +=C2=A0=C2=A0=C2=A0 if (offset_in_page(addr)) {
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info.flags =3D 0;
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info.low_limit =3D TASK_UNM=
-APPED_BASE;
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info.high_limit =3D mmap_en=
-d;
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 addr =3D vm_unmapped_area(&=
-info);
->> +=C2=A0=C2=A0=C2=A0 }
->> +
->> +=C2=A0=C2=A0=C2=A0 return addr;
->> +}
->
-> Reverting the whole commit helps of course. Even this completely incorre=
-ct hack helps:
-> --- a/io_uring/io_uring.c
-> +++ b/io_uring/io_uring.c
-> @@ -3398,7 +3398,7 @@ static unsigned long io_uring_mmu_get_unmapped_are=
-a(struct file *filp,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsi=
-gned long addr, unsigned long len,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsi=
-gned long pgoff, unsigned long flags)
->  =C2=A0{
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const unsigned long mmap_end =3D a=
-rch_get_mmap_end(addr, len, flags);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const unsigned long mmap_end =3D i=
-n_32bit_syscall() ? task_size_32bit() : arch_get_mmap_end(addr, len, flags=
-);
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct vm_unmapped_area_info=
- info;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 void *ptr;
->
-> @@ -3417,7 +3417,7 @@ static unsigned long io_uring_mmu_get_unmapped_are=
-a(struct file *filp,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info.flags =3D VM_UNMAPPED_A=
-REA_TOPDOWN;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info.length =3D len;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info.low_limit =3D max(PAGE_=
-SIZE, mmap_min_addr);
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info.high_limit =3D arch_get_mmap_=
-base(addr, current->mm->mmap_base);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info.high_limit =3D in_32bit_sysca=
-ll() ? task_size_32bit() : arch_get_mmap_base(addr, current->mm->mmap_base=
-);
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 53cdf865f90ba922a854c65ed05b519f9d728424  Add linux-next specific files for 20230627
 
-I think your "incorrect hack" is actually correct.
-If it's the compat case which breaks, then task_size_32bit() might be righ=
-t.
-Maybe adding arch_get_mmap_base() and arch_get_mmap_end() macros to handle
-the compat case in to arch/x86/include/asm/* does work, e.g.
-#define arch_get_mmap_base(addr, base) \
-	(in_32bit_syscall() ? task_size_32bit() : base)
+Error/Warning reports:
 
-?
-Helge
+https://lore.kernel.org/oe-kbuild-all/202306122223.HHER4zOo-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202306212119.fBNByIyn-lkp@intel.com
+https://lore.kernel.org/oe-kbuild-all/202306260401.qZlYQpV2-lkp@intel.com
+
+Error/Warning: (recently discovered and may have been fixed)
+
+arch/parisc/kernel/pdt.c:66:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
+drivers/char/mem.c:164:25: error: implicit declaration of function 'unxlate_dev_mem_ptr'; did you mean 'xlate_dev_mem_ptr'? [-Werror=implicit-function-declaration]
+drivers/gpu/drm/i915/soc/intel_gmch.c:41:13: warning: variable 'mchbar_addr' set but not used [-Wunused-but-set-variable]
+drivers/mfd/max77541.c:176:18: warning: cast to smaller integer type 'enum max7754x_ids' from 'const void *' [-Wvoid-pointer-to-enum-cast]
+lib/kunit/executor_test.c:138:4: warning: cast from 'void (*)(const void *)' to 'kunit_action_t *' (aka 'void (*)(void *)') converts to incompatible function type [-Wcast-function-type-strict]
+lib/kunit/test.c:775:38: warning: cast from 'void (*)(const void *)' to 'kunit_action_t *' (aka 'void (*)(void *)') converts to incompatible function type [-Wcast-function-type-strict]
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/usb/cdns3/cdns3-starfive.c:23: warning: expecting prototype for cdns3(). Prototype was for USB_STRAP_HOST() instead
+net/wireless/scan.c:373 cfg80211_gen_new_ie() warn: potential spectre issue 'sub->data' [r]
+net/wireless/scan.c:397 cfg80211_gen_new_ie() warn: possible spectre second half.  'ext_id'
+{standard input}: Error: local label `"2" (instance number 9 of a fb label)' is not defined
+{standard input}:1097: Error: pcrel too far
+{standard input}:13: Error: symbol `__export_symbol_alpha_mv' is already defined
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-randconfig-r024-20230627
+|   `-- standard-input:Error:symbol-__export_symbol_alpha_mv-is-already-defined
+|-- i386-randconfig-m021-20230627
+|   |-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:possible-spectre-second-half.-ext_id
+|   `-- net-wireless-scan.c-cfg80211_gen_new_ie()-warn:potential-spectre-issue-sub-data-r
+|-- parisc-allnoconfig
+|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
+|-- parisc-allyesconfig
+|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
+|-- parisc-defconfig
+|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
+|-- parisc-randconfig-r012-20230627
+|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
+|-- parisc-randconfig-r013-20230627
+|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
+|-- parisc-randconfig-r052-20230627
+|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
+|-- parisc64-defconfig
+|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
+|-- riscv-allmodconfig
+|   `-- drivers-usb-cdns3-cdns3-starfive.c:warning:expecting-prototype-for-cdns3().-Prototype-was-for-USB_STRAP_HOST()-instead
+|-- riscv-allyesconfig
+|   `-- drivers-usb-cdns3-cdns3-starfive.c:warning:expecting-prototype-for-cdns3().-Prototype-was-for-USB_STRAP_HOST()-instead
+|-- sh-allmodconfig
+|   |-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
+|   |-- standard-input:Error:local-label-(instance-number-of-a-fb-label)-is-not-defined
+|   `-- standard-input:Error:pcrel-too-far
+|-- sh-j2_defconfig
+|   `-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
+|-- sh-randconfig-r015-20230627
+|   `-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
+|-- sh-rsk7203_defconfig
+|   `-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
+`-- x86_64-buildonly-randconfig-r001-20230627
+    `-- drivers-gpu-drm-i915-soc-intel_gmch.c:warning:variable-mchbar_addr-set-but-not-used
+clang_recent_errors
+|-- arm-randconfig-r031-20230627
+|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|-- hexagon-randconfig-r041-20230627
+|   |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|-- powerpc-randconfig-r023-20230627
+|   |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+|-- riscv-randconfig-r042-20230627
+|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
+`-- x86_64-randconfig-r011-20230627
+    `-- drivers-mfd-max77541.c:warning:cast-to-smaller-integer-type-enum-max7754x_ids-from-const-void
+
+elapsed time: 725m
+
+configs tested: 137
+configs skipped: 7
+
+tested configs:
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+alpha                randconfig-r004-20230627   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                  randconfig-r043-20230627   gcc  
+arm                              allmodconfig   gcc  
+arm                              allyesconfig   gcc  
+arm                         assabet_defconfig   gcc  
+arm                         bcm2835_defconfig   clang
+arm                                 defconfig   gcc  
+arm                         lpc32xx_defconfig   clang
+arm                        multi_v7_defconfig   gcc  
+arm                          pxa910_defconfig   gcc  
+arm                  randconfig-r031-20230627   clang
+arm                  randconfig-r035-20230627   clang
+arm                  randconfig-r046-20230627   gcc  
+arm                       spear13xx_defconfig   clang
+arm                       versatile_defconfig   clang
+arm64                            alldefconfig   gcc  
+arm64                            allyesconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                randconfig-r003-20230627   gcc  
+csky                                defconfig   gcc  
+hexagon              randconfig-r041-20230627   clang
+hexagon              randconfig-r045-20230627   clang
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-r004-20230627   gcc  
+i386         buildonly-randconfig-r005-20230627   gcc  
+i386         buildonly-randconfig-r006-20230627   gcc  
+i386                              debian-10.3   gcc  
+i386                                defconfig   gcc  
+i386                 randconfig-i001-20230627   gcc  
+i386                 randconfig-i002-20230627   gcc  
+i386                 randconfig-i003-20230627   gcc  
+i386                 randconfig-i004-20230627   gcc  
+i386                 randconfig-i005-20230627   gcc  
+i386                 randconfig-i006-20230627   gcc  
+i386                 randconfig-i011-20230627   clang
+i386                 randconfig-i012-20230627   clang
+i386                 randconfig-i013-20230627   clang
+i386                 randconfig-i014-20230627   clang
+i386                 randconfig-i015-20230627   clang
+i386                 randconfig-i016-20230627   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch            randconfig-r024-20230627   gcc  
+loongarch            randconfig-r032-20230627   gcc  
+m68k                             allmodconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+m68k                        stmark2_defconfig   gcc  
+m68k                          sun3x_defconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                             allmodconfig   gcc  
+mips                             allyesconfig   gcc  
+mips                           mtx1_defconfig   clang
+mips                 randconfig-r022-20230627   gcc  
+mips                           xway_defconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                randconfig-r014-20230627   gcc  
+nios2                randconfig-r026-20230627   gcc  
+openrisc             randconfig-r005-20230627   gcc  
+openrisc             randconfig-r016-20230627   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc               randconfig-r012-20230627   gcc  
+parisc               randconfig-r013-20230627   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                    klondike_defconfig   gcc  
+powerpc                      makalu_defconfig   gcc  
+powerpc                 mpc8315_rdb_defconfig   clang
+powerpc               mpc834x_itxgp_defconfig   clang
+powerpc                 mpc836x_rdk_defconfig   clang
+powerpc                    mvme5100_defconfig   clang
+powerpc                      pasemi_defconfig   gcc  
+powerpc              randconfig-r023-20230627   clang
+powerpc                     tqm8540_defconfig   clang
+powerpc                     tqm8548_defconfig   gcc  
+riscv                            allmodconfig   gcc  
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   gcc  
+riscv                               defconfig   gcc  
+riscv                randconfig-r042-20230627   clang
+riscv                          rv32_defconfig   gcc  
+s390                             allmodconfig   gcc  
+s390                             allyesconfig   gcc  
+s390                                defconfig   gcc  
+s390                 randconfig-r021-20230627   clang
+s390                 randconfig-r044-20230627   clang
+sh                               allmodconfig   gcc  
+sh                        dreamcast_defconfig   gcc  
+sh                               j2_defconfig   gcc  
+sh                          r7780mp_defconfig   gcc  
+sh                   randconfig-r015-20230627   gcc  
+sh                          rsk7203_defconfig   gcc  
+sh                   rts7751r2dplus_defconfig   gcc  
+sh                          sdk7780_defconfig   gcc  
+sh                           se7751_defconfig   gcc  
+sparc                            allyesconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64              randconfig-r001-20230627   gcc  
+sparc64              randconfig-r025-20230627   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   clang
+um                                  defconfig   gcc  
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   gcc  
+x86_64                           allyesconfig   gcc  
+x86_64       buildonly-randconfig-r001-20230627   gcc  
+x86_64       buildonly-randconfig-r002-20230627   gcc  
+x86_64       buildonly-randconfig-r003-20230627   gcc  
+x86_64                              defconfig   gcc  
+x86_64                                  kexec   gcc  
+x86_64               randconfig-r011-20230627   clang
+x86_64               randconfig-x001-20230627   clang
+x86_64               randconfig-x002-20230627   clang
+x86_64               randconfig-x003-20230627   clang
+x86_64               randconfig-x004-20230627   clang
+x86_64               randconfig-x005-20230627   clang
+x86_64               randconfig-x006-20230627   clang
+x86_64               randconfig-x011-20230627   gcc  
+x86_64               randconfig-x012-20230627   gcc  
+x86_64               randconfig-x013-20230627   gcc  
+x86_64               randconfig-x014-20230627   gcc  
+x86_64               randconfig-x015-20230627   gcc  
+x86_64               randconfig-x016-20230627   gcc  
+x86_64                          rhel-8.3-rust   clang
+x86_64                               rhel-8.3   gcc  
+xtensa                           alldefconfig   gcc  
+xtensa                       common_defconfig   gcc  
+xtensa               randconfig-r002-20230627   gcc  
+xtensa               randconfig-r006-20230627   gcc  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
