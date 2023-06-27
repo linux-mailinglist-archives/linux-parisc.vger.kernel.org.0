@@ -2,192 +2,173 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62BBC73FD8C
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jun 2023 16:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE4BF7401AC
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jun 2023 18:52:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230169AbjF0OOt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 27 Jun 2023 10:14:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56464 "EHLO
+        id S232099AbjF0Qwl convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Tue, 27 Jun 2023 12:52:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230161AbjF0OOs (ORCPT
+        with ESMTP id S231345AbjF0Qwj (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 27 Jun 2023 10:14:48 -0400
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA2ABDD;
-        Tue, 27 Jun 2023 07:14:46 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-51d946d2634so3168810a12.3;
-        Tue, 27 Jun 2023 07:14:46 -0700 (PDT)
+        Tue, 27 Jun 2023 12:52:39 -0400
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 094AF10F;
+        Tue, 27 Jun 2023 09:52:36 -0700 (PDT)
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3a04cb10465so3423329b6e.3;
+        Tue, 27 Jun 2023 09:52:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687875285; x=1690467285;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=an7J0hwuqPQSAn7P2uZk1B4J/zfKMTy4fTuFeR6jrO8=;
-        b=jWdapPdkyDv54UpwYS/d0/fCYLLOm+EomoAzDnh9WETwUBfeTs1ZFO9xqcG6J/UXSb
-         nNErSSpNTKuWsad85fuhcUoxmpyLmSPSDBNWm/O3d9Jw/AZUix4G2ueJEpOsc+ARlWba
-         aaoGUqQ4r5RlBnAFdX+rwsvGYa7pmhYrBO6MWTqVeP3xCDL4HeMYFZatUUb5atKpYME7
-         TZJKTvF2t9KOshanSnixZ0qQ+HyFyJ50bb5ipYMNwJe/+TNbAXoEHqGQut/r39oommLV
-         e5s+iu6c7B40UId4fYizU+2QdEaIB/WC/nrous6U/XdcCLHGdkqCWbv5dT4c6w8BVFhM
-         uioQ==
-X-Gm-Message-State: AC+VfDz7Au9Tay5vK6BQOAXAhEV42N6DHcZhkk0A5WVGN0924KQLmISa
-        NksNzfGW5oJWFsvi3DyOF0A=
-X-Google-Smtp-Source: ACHHUZ7VXrLgUhwrWzk6/KfueRoIfZhcZ+Y/vW+FFPyDljzDvtAYuZQLU6Poa4kBj4QT8TElotMPcg==
-X-Received: by 2002:aa7:de9a:0:b0:51b:dcb4:a9b3 with SMTP id j26-20020aa7de9a000000b0051bdcb4a9b3mr13713612edv.24.1687875284962;
-        Tue, 27 Jun 2023 07:14:44 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id e2-20020a50ec82000000b0051dac65fa3csm628527edr.93.2023.06.27.07.14.43
+        d=1e100.net; s=20221208; t=1687884755; x=1690476755;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3lIZI96K9vdLoSwUwpQZZH+ZWrx3VsFWqYpi3+69yqU=;
+        b=j8UVkCGUTQm4cypu9sZY06fFuoeRVjQB3Tcp1KkWVs8FGlEHu5iHdNIL4L9wAZSM3g
+         o4IxO8Yjz1rxMpjtE0FC2o+TnQVwgEALAAeErTkDjqwi9Txf4BFzLkDPhmxurP8dOGvv
+         6sBmGi48HC+3bWDJAN9+L8+tOUyW0OQshYw3hG3ayOYi9hCVkkay00SSMPSnOOeg/8oT
+         /RfaJjmecA8jEludnHWb5IJaeqiO3yIiPyuqsHeZWrUYYc0lBFfJEZfvTj+MKg8fqRs5
+         buW6R+8RofQtFLa49bmBVE2sw9UTywsX2woGDUBwI0GcPVUY2mavaXttbB14mwpFnMXH
+         MYsw==
+X-Gm-Message-State: AC+VfDyA0/0QXiyqbweQsnfFKdaey+PECZBQGXRxM4Hd3MUGu+nNAybG
+        uJRNp8H4MIRqzCRL9XaME3Ew094+gDnpUecO
+X-Google-Smtp-Source: ACHHUZ7sEtTDbMtXMYZM4wQdcH42Gj87XiCWCRSbYSHNx3mT9t9vREEcit/ZxlmEgYFy4cLekney/A==
+X-Received: by 2002:a05:6808:3098:b0:3a3:3a0b:aab8 with SMTP id bl24-20020a056808309800b003a33a0baab8mr1642135oib.48.1687884755254;
+        Tue, 27 Jun 2023 09:52:35 -0700 (PDT)
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com. [209.85.210.47])
+        by smtp.gmail.com with ESMTPSA id l1-20020a544501000000b003a3600182f8sm337192oil.57.2023.06.27.09.52.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jun 2023 07:14:44 -0700 (PDT)
-Message-ID: <818c95bc-50f8-4b2e-d5ca-2511310de47c@kernel.org>
-Date:   Tue, 27 Jun 2023 16:14:43 +0200
+        Tue, 27 Jun 2023 09:52:34 -0700 (PDT)
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6b44b5adfd3so3927087a34.3;
+        Tue, 27 Jun 2023 09:52:34 -0700 (PDT)
+X-Received: by 2002:a05:6358:f55:b0:132:d3b1:c34a with SMTP id
+ c21-20020a0563580f5500b00132d3b1c34amr12105551rwj.7.1687884753801; Tue, 27
+ Jun 2023 09:52:33 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2] io_uring: Adjust mapping wrt architecture aliasing
- requirements
-Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>, io-uring@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>, linux-parisc@vger.kernel.org,
-        John David Anglin <dave.anglin@bell.net>
-References: <Y+3kwh8BokobVl6o@p100>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <Y+3kwh8BokobVl6o@p100>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+References: <20230327121317.4081816-1-arnd@kernel.org> <20230327121317.4081816-22-arnd@kernel.org>
+ <OS0PR01MB5922EDAFCD6DA0313DB99C5E86989@OS0PR01MB5922.jpnprd01.prod.outlook.com>
+ <66899d69-1339-4a61-8612-6f8e452b0b26@app.fastmail.com>
+In-Reply-To: <66899d69-1339-4a61-8612-6f8e452b0b26@app.fastmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 27 Jun 2023 18:52:22 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdV5gT1GDLODsUe0XibPRsRHazF4K-UhxTOQCjtC9Ba4mQ@mail.gmail.com>
+Message-ID: <CAMuHMdV5gT1GDLODsUe0XibPRsRHazF4K-UhxTOQCjtC9Ba4mQ@mail.gmail.com>
+Subject: Re: [PATCH 21/21] dma-mapping: replace custom code with generic implementation
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Biju Das <biju.das.jz@bp.renesas.com>,
+        Arnd Bergmann <arnd@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Vineet Gupta <vgupta@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, guoren <guoren@kernel.org>,
+        Brian Cain <bcain@quicinc.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Stafford Horne <shorne@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S . Miller" <davem@davemloft.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "Lad, Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        "Conor.Dooley" <conor.dooley@microchip.com>,
+        "linux-snps-arc@lists.infradead.org" 
+        <linux-snps-arc@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-oxnas@groups.io" <linux-oxnas@groups.io>,
+        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 16. 02. 23, 9:09, Helge Deller wrote:
-> Some architectures have memory cache aliasing requirements (e.g. parisc)
-> if memory is shared between userspace and kernel. This patch fixes the
-> kernel to return an aliased address when asked by userspace via mmap().
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> ---
-> v2: Do not allow to map to a user-provided addresss. This forces
-> programs to write portable code, as usually on x86 mapping to any
-> address will succeed, while it will fail for most provided address if
-> used on stricter architectures.
-> 
-> diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-> index 862e05e6691d..01fe7437a071 100644
-> --- a/io_uring/io_uring.c
-> +++ b/io_uring/io_uring.c
-> @@ -72,6 +72,7 @@
->   #include <linux/io_uring.h>
->   #include <linux/audit.h>
->   #include <linux/security.h>
-> +#include <asm/shmparam.h>
-> 
->   #define CREATE_TRACE_POINTS
->   #include <trace/events/io_uring.h>
-> @@ -3059,6 +3060,54 @@ static __cold int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
->   	return remap_pfn_range(vma, vma->vm_start, pfn, sz, vma->vm_page_prot);
->   }
-> 
-> +static unsigned long io_uring_mmu_get_unmapped_area(struct file *filp,
-> +			unsigned long addr, unsigned long len,
-> +			unsigned long pgoff, unsigned long flags)
-> +{
-> +	const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
-> +	struct vm_unmapped_area_info info;
-> +	void *ptr;
-> +
-> +	/*
-> +	 * Do not allow to map to user-provided address to avoid breaking the
-> +	 * aliasing rules. Userspace is not able to guess the offset address of
-> +	 * kernel kmalloc()ed memory area.
-> +	 */
-> +	if (addr)
-> +		return -EINVAL;
-> +
-> +	ptr = io_uring_validate_mmap_request(filp, pgoff, len);
-> +	if (IS_ERR(ptr))
-> +		return -ENOMEM;
-> +
-> +	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
-> +	info.length = len;
-> +	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
-> +	info.high_limit = arch_get_mmap_base(addr, current->mm->mmap_base);
+On Thu, Apr 13, 2023 at 2:52 PM Arnd Bergmann <arnd@arndb.de> wrote:
+> On Thu, Apr 13, 2023, at 14:13, Biju Das wrote:
+> > FYI, this patch breaks on RZ/G2L SMARC EVK board and Arnd will send V2
+> > for fixing this issue.
+> >
+> > [10:53] <biju> [    3.384408] Unable to handle kernel paging request at
+> > virtual address 000000004afb0080
+>
+> Right, sorry about this, I accidentally removed the 'phys_to_virt()'
+> conversion on arm64.
 
-Hi,
+Meh, I missed that, so I ended up bisecting this same failure...
 
-this breaks compat (x86_32) on x86_64 in 6.4. When you run most liburing 
-tests, you'll get ENOMEM, as this high_limit is something in 64-bit space...
+This patch is now commit 801f1883c4bb70cc ("dma-mapping: replace
+custom code with generic implementation") in esmil/jh7100-dmapool,
+and broke booting on R-Car Gen3.
 
-> +#ifdef SHM_COLOUR
-> +	info.align_mask = PAGE_MASK & (SHM_COLOUR - 1UL);
-> +#else
-> +	info.align_mask = PAGE_MASK & (SHMLBA - 1UL);
-> +#endif
-> +	info.align_offset = (unsigned long) ptr;
-> +
-> +	/*
-> +	 * A failed mmap() very likely causes application failure,
-> +	 * so fall back to the bottom-up function here. This scenario
-> +	 * can happen with large stack limits and large mmap()
-> +	 * allocations.
-> +	 */
-> +	addr = vm_unmapped_area(&info);
+The following gmail-whitespace-damaged patch fixes that:
 
-So the found addr here is > TASK_SIZE - len for 32-bit bins. And 
-get_unmapped_area() returns ENOMEM.
+diff --git a/arch/arm64/mm/dma-mapping.c b/arch/arm64/mm/dma-mapping.c
+index 97b7cea5eb23aedd..77e0b68b43e5849a 100644
+--- a/arch/arm64/mm/dma-mapping.c
++++ b/arch/arm64/mm/dma-mapping.c
+@@ -15,17 +15,23 @@
 
-> +	if (offset_in_page(addr)) {
-> +		info.flags = 0;
-> +		info.low_limit = TASK_UNMAPPED_BASE;
-> +		info.high_limit = mmap_end;
-> +		addr = vm_unmapped_area(&info);
-> +	}
-> +
-> +	return addr;
-> +}
+ static inline void arch_dma_cache_wback(phys_addr_t paddr, size_t size)
+ {
+-       dcache_clean_poc(paddr, paddr + size);
++       unsigned long start = (unsigned long)phys_to_virt(paddr);
++
++       dcache_clean_poc(start, start + size);
+ }
 
-Reverting the whole commit helps of course. Even this completely 
-incorrect hack helps:
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3398,7 +3398,7 @@ static unsigned long 
-io_uring_mmu_get_unmapped_area(struct file *filp,
-                         unsigned long addr, unsigned long len,
-                         unsigned long pgoff, unsigned long flags)
-  {
--       const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
-+       const unsigned long mmap_end = in_32bit_syscall() ? 
-task_size_32bit() : arch_get_mmap_end(addr, len, flags);
-         struct vm_unmapped_area_info info;
-         void *ptr;
+ static inline void arch_dma_cache_inv(phys_addr_t paddr, size_t size)
+ {
+-       dcache_inval_poc(paddr, paddr + size);
++       unsigned long start = (unsigned long)phys_to_virt(paddr);
++
++       dcache_inval_poc(start, start + size);
+ }
 
-@@ -3417,7 +3417,7 @@ static unsigned long 
-io_uring_mmu_get_unmapped_area(struct file *filp,
-         info.flags = VM_UNMAPPED_AREA_TOPDOWN;
-         info.length = len;
-         info.low_limit = max(PAGE_SIZE, mmap_min_addr);
--       info.high_limit = arch_get_mmap_base(addr, current->mm->mmap_base);
-+       info.high_limit = in_32bit_syscall() ? task_size_32bit() : 
-arch_get_mmap_base(addr, current->mm->mmap_base);
-  #ifdef SHM_COLOUR
-         info.align_mask = PAGE_MASK & (SHM_COLOUR - 1UL);
-  #else
+ static inline void arch_dma_cache_wback_inv(phys_addr_t paddr, size_t size)
+ {
+-       dcache_clean_inval_poc(paddr, paddr + size);
++       unsigned long start = (unsigned long)phys_to_virt(paddr);
++
++       dcache_clean_inval_poc(start, start + size);
+ }
+
+ static inline bool arch_sync_dma_clean_before_fromdevice(void)
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 
-Any ideas? Note that the compat mmap apparently uses bottomup expansion. 
-See:
-         if (!in_32bit_syscall() && (flags & MAP_32BIT))
-                 goto bottomup;
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-in arch_get_unmapped_area_topdown().
-
-thanks,
--- 
-js
-suse labs
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
