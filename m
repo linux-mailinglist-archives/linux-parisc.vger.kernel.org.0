@@ -2,274 +2,192 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1040173F053
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jun 2023 03:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62BBC73FD8C
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jun 2023 16:15:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229987AbjF0BXs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 26 Jun 2023 21:23:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37674 "EHLO
+        id S230169AbjF0OOt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 27 Jun 2023 10:14:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbjF0BXr (ORCPT
+        with ESMTP id S230161AbjF0OOs (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 26 Jun 2023 21:23:47 -0400
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2887C199;
-        Mon, 26 Jun 2023 18:23:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1687829026; x=1719365026;
-  h=date:from:to:cc:subject:message-id;
-  bh=M8nCIoe7kTxc9Ig5mKDgF4P2+mZfoLv6sPtI8q067os=;
-  b=Mj2JKeGpEYfFHnc0zKSBn3TcLOYyAolPO7oICtJAhC8EtpjQT2nka8d+
-   tPSN3gDCG5tlIB75WutDYd+7cH6GlTYVD514/hzCjdD/4etp3GYhhGWK4
-   MxxKOrbs6TRzV8RrI3gb7GN5FSfJrCclvyJuoMqYgWsQ2YloCcSKkAEoL
-   B9kEonptm9hskMYbRZyb3dE2CGsU2vstYhW3CMnGBM1fktp4lnxn8phDD
-   Kc9XlEygThoY/VSjBZUtL2H7qSau14uwOc8bMDO2o20kAZGAabR2pcfTM
-   o2kJLJXnV9dkWHfNGyGZRMUQs4soZFKBqZGZLlr32hIpYrpUoac6rsWTr
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="360303199"
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; 
-   d="scan'208";a="360303199"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2023 18:23:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10753"; a="746028807"
-X-IronPort-AV: E=Sophos;i="6.01,161,1684825200"; 
-   d="scan'208";a="746028807"
-Received: from lkp-server01.sh.intel.com (HELO 783282924a45) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 26 Jun 2023 18:23:42 -0700
-Received: from kbuild by 783282924a45 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qDxQj-000BQX-3C;
-        Tue, 27 Jun 2023 01:23:41 +0000
-Date:   Tue, 27 Jun 2023 09:22:47 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Linux Memory Management List <linux-mm@kvack.org>,
-        intel-gfx@lists.freedesktop.org, kunit-dev@googlegroups.com,
-        linux-bluetooth@vger.kernel.org, linux-btrfs@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-usb@vger.kernel.org
-Subject: [linux-next:master] BUILD REGRESSION
- 60e7c4a25da68cd826719b685babbd23e73b85b0
-Message-ID: <202306270937.nbX3swxD-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        Tue, 27 Jun 2023 10:14:48 -0400
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA2ABDD;
+        Tue, 27 Jun 2023 07:14:46 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-51d946d2634so3168810a12.3;
+        Tue, 27 Jun 2023 07:14:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687875285; x=1690467285;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=an7J0hwuqPQSAn7P2uZk1B4J/zfKMTy4fTuFeR6jrO8=;
+        b=jWdapPdkyDv54UpwYS/d0/fCYLLOm+EomoAzDnh9WETwUBfeTs1ZFO9xqcG6J/UXSb
+         nNErSSpNTKuWsad85fuhcUoxmpyLmSPSDBNWm/O3d9Jw/AZUix4G2ueJEpOsc+ARlWba
+         aaoGUqQ4r5RlBnAFdX+rwsvGYa7pmhYrBO6MWTqVeP3xCDL4HeMYFZatUUb5atKpYME7
+         TZJKTvF2t9KOshanSnixZ0qQ+HyFyJ50bb5ipYMNwJe/+TNbAXoEHqGQut/r39oommLV
+         e5s+iu6c7B40UId4fYizU+2QdEaIB/WC/nrous6U/XdcCLHGdkqCWbv5dT4c6w8BVFhM
+         uioQ==
+X-Gm-Message-State: AC+VfDz7Au9Tay5vK6BQOAXAhEV42N6DHcZhkk0A5WVGN0924KQLmISa
+        NksNzfGW5oJWFsvi3DyOF0A=
+X-Google-Smtp-Source: ACHHUZ7VXrLgUhwrWzk6/KfueRoIfZhcZ+Y/vW+FFPyDljzDvtAYuZQLU6Poa4kBj4QT8TElotMPcg==
+X-Received: by 2002:aa7:de9a:0:b0:51b:dcb4:a9b3 with SMTP id j26-20020aa7de9a000000b0051bdcb4a9b3mr13713612edv.24.1687875284962;
+        Tue, 27 Jun 2023 07:14:44 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id e2-20020a50ec82000000b0051dac65fa3csm628527edr.93.2023.06.27.07.14.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jun 2023 07:14:44 -0700 (PDT)
+Message-ID: <818c95bc-50f8-4b2e-d5ca-2511310de47c@kernel.org>
+Date:   Tue, 27 Jun 2023 16:14:43 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] io_uring: Adjust mapping wrt architecture aliasing
+ requirements
+Content-Language: en-US
+To:     Helge Deller <deller@gmx.de>, io-uring@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>, linux-parisc@vger.kernel.org,
+        John David Anglin <dave.anglin@bell.net>
+References: <Y+3kwh8BokobVl6o@p100>
+From:   Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <Y+3kwh8BokobVl6o@p100>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 60e7c4a25da68cd826719b685babbd23e73b85b0  Add linux-next specific files for 20230626
+On 16. 02. 23, 9:09, Helge Deller wrote:
+> Some architectures have memory cache aliasing requirements (e.g. parisc)
+> if memory is shared between userspace and kernel. This patch fixes the
+> kernel to return an aliased address when asked by userspace via mmap().
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> ---
+> v2: Do not allow to map to a user-provided addresss. This forces
+> programs to write portable code, as usually on x86 mapping to any
+> address will succeed, while it will fail for most provided address if
+> used on stricter architectures.
+> 
+> diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+> index 862e05e6691d..01fe7437a071 100644
+> --- a/io_uring/io_uring.c
+> +++ b/io_uring/io_uring.c
+> @@ -72,6 +72,7 @@
+>   #include <linux/io_uring.h>
+>   #include <linux/audit.h>
+>   #include <linux/security.h>
+> +#include <asm/shmparam.h>
+> 
+>   #define CREATE_TRACE_POINTS
+>   #include <trace/events/io_uring.h>
+> @@ -3059,6 +3060,54 @@ static __cold int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
+>   	return remap_pfn_range(vma, vma->vm_start, pfn, sz, vma->vm_page_prot);
+>   }
+> 
+> +static unsigned long io_uring_mmu_get_unmapped_area(struct file *filp,
+> +			unsigned long addr, unsigned long len,
+> +			unsigned long pgoff, unsigned long flags)
+> +{
+> +	const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
+> +	struct vm_unmapped_area_info info;
+> +	void *ptr;
+> +
+> +	/*
+> +	 * Do not allow to map to user-provided address to avoid breaking the
+> +	 * aliasing rules. Userspace is not able to guess the offset address of
+> +	 * kernel kmalloc()ed memory area.
+> +	 */
+> +	if (addr)
+> +		return -EINVAL;
+> +
+> +	ptr = io_uring_validate_mmap_request(filp, pgoff, len);
+> +	if (IS_ERR(ptr))
+> +		return -ENOMEM;
+> +
+> +	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+> +	info.length = len;
+> +	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
+> +	info.high_limit = arch_get_mmap_base(addr, current->mm->mmap_base);
 
-Error/Warning reports:
+Hi,
 
-https://lore.kernel.org/oe-kbuild-all/202306122223.HHER4zOo-lkp@intel.com
-https://lore.kernel.org/oe-kbuild-all/202306262024.HUr6WfyW-lkp@intel.com
+this breaks compat (x86_32) on x86_64 in 6.4. When you run most liburing 
+tests, you'll get ENOMEM, as this high_limit is something in 64-bit space...
 
-Error/Warning: (recently discovered and may have been fixed)
+> +#ifdef SHM_COLOUR
+> +	info.align_mask = PAGE_MASK & (SHM_COLOUR - 1UL);
+> +#else
+> +	info.align_mask = PAGE_MASK & (SHMLBA - 1UL);
+> +#endif
+> +	info.align_offset = (unsigned long) ptr;
+> +
+> +	/*
+> +	 * A failed mmap() very likely causes application failure,
+> +	 * so fall back to the bottom-up function here. This scenario
+> +	 * can happen with large stack limits and large mmap()
+> +	 * allocations.
+> +	 */
+> +	addr = vm_unmapped_area(&info);
 
-arch/parisc/kernel/pdt.c:66:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
-drivers/char/mem.c:164:25: error: implicit declaration of function 'unxlate_dev_mem_ptr'; did you mean 'xlate_dev_mem_ptr'? [-Werror=implicit-function-declaration]
-drivers/gpu/drm/i915/display/intel_display_power.h:255:70: error: declaration of 'struct seq_file' will not be visible outside of this function [-Werror,-Wvisibility]
-drivers/gpu/drm/i915/display/intel_display_power.h:256:70: error: declaration of 'struct seq_file' will not be visible outside of this function [-Werror,-Wvisibility]
-lib/kunit/executor_test.c:138:4: warning: cast from 'void (*)(const void *)' to 'kunit_action_t *' (aka 'void (*)(void *)') converts to incompatible function type [-Wcast-function-type-strict]
-lib/kunit/test.c:775:38: warning: cast from 'void (*)(const void *)' to 'kunit_action_t *' (aka 'void (*)(void *)') converts to incompatible function type [-Wcast-function-type-strict]
+So the found addr here is > TASK_SIZE - len for 32-bit bins. And 
+get_unmapped_area() returns ENOMEM.
 
-Unverified Error/Warning (likely false positive, please contact us if interested):
+> +	if (offset_in_page(addr)) {
+> +		info.flags = 0;
+> +		info.low_limit = TASK_UNMAPPED_BASE;
+> +		info.high_limit = mmap_end;
+> +		addr = vm_unmapped_area(&info);
+> +	}
+> +
+> +	return addr;
+> +}
 
-drivers/usb/cdns3/cdns3-starfive.c:23: warning: expecting prototype for cdns3(). Prototype was for USB_STRAP_HOST() instead
-fs/btrfs/volumes.c:6407 btrfs_map_block() error: we previously assumed 'mirror_num_ret' could be null (see line 6244)
-lib/kunit/test.c:336 __kunit_abort() warn: ignoring unreachable code.
-{standard input}: Error: local label `"2" (instance number 9 of a fb label)' is not defined
-{standard input}:1097: Error: pcrel too far
+Reverting the whole commit helps of course. Even this completely 
+incorrect hack helps:
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3398,7 +3398,7 @@ static unsigned long 
+io_uring_mmu_get_unmapped_area(struct file *filp,
+                         unsigned long addr, unsigned long len,
+                         unsigned long pgoff, unsigned long flags)
+  {
+-       const unsigned long mmap_end = arch_get_mmap_end(addr, len, flags);
++       const unsigned long mmap_end = in_32bit_syscall() ? 
+task_size_32bit() : arch_get_mmap_end(addr, len, flags);
+         struct vm_unmapped_area_info info;
+         void *ptr;
 
-Error/Warning ids grouped by kconfigs:
+@@ -3417,7 +3417,7 @@ static unsigned long 
+io_uring_mmu_get_unmapped_area(struct file *filp,
+         info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+         info.length = len;
+         info.low_limit = max(PAGE_SIZE, mmap_min_addr);
+-       info.high_limit = arch_get_mmap_base(addr, current->mm->mmap_base);
++       info.high_limit = in_32bit_syscall() ? task_size_32bit() : 
+arch_get_mmap_base(addr, current->mm->mmap_base);
+  #ifdef SHM_COLOUR
+         info.align_mask = PAGE_MASK & (SHM_COLOUR - 1UL);
+  #else
 
-gcc_recent_errors
-|-- i386-randconfig-m021-20230625
-|   `-- fs-btrfs-volumes.c-btrfs_map_block()-error:we-previously-assumed-mirror_num_ret-could-be-null-(see-line-)
-|-- parisc-allyesconfig
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-defconfig
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-generic-64bit_defconfig
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-randconfig-r012-20230626
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-randconfig-r026-20230626
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc-randconfig-r053-20230625
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- parisc64-defconfig
-|   `-- arch-parisc-kernel-pdt.c:warning:no-previous-prototype-for-arch_report_meminfo
-|-- powerpc-randconfig-m041-20230625
-|   `-- lib-kunit-test.c-__kunit_abort()-warn:ignoring-unreachable-code.
-|-- riscv-allmodconfig
-|   `-- drivers-usb-cdns3-cdns3-starfive.c:warning:expecting-prototype-for-cdns3().-Prototype-was-for-USB_STRAP_HOST()-instead
-|-- riscv-allyesconfig
-|   `-- drivers-usb-cdns3-cdns3-starfive.c:warning:expecting-prototype-for-cdns3().-Prototype-was-for-USB_STRAP_HOST()-instead
-|-- sh-allmodconfig
-|   |-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
-|   |-- standard-input:Error:local-label-(instance-number-of-a-fb-label)-is-not-defined
-|   `-- standard-input:Error:pcrel-too-far
-|-- sh-rsk7201_defconfig
-|   `-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
-|-- sh-se7619_defconfig
-|   `-- drivers-char-mem.c:error:implicit-declaration-of-function-unxlate_dev_mem_ptr
-`-- sparc64-randconfig-r053-20230625
-    `-- net-bluetooth-hci_conn.c:WARNING-opportunity-for-kmemdup
-clang_recent_errors
-|-- arm-randconfig-r016-20230626
-|   |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|-- hexagon-randconfig-r041-20230626
-|   |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|-- i386-randconfig-i004-20230626
-|   `-- drivers-gpu-drm-i915-display-intel_display_power.h:error:declaration-of-struct-seq_file-will-not-be-visible-outside-of-this-function-Werror-Wvisibility
-|-- um-randconfig-r024-20230626
-|   |-- lib-kunit-executor_test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-|   `-- lib-kunit-test.c:warning:cast-from-void-(-)(const-void-)-to-kunit_action_t-(aka-void-(-)(void-)-)-converts-to-incompatible-function-type
-`-- x86_64-randconfig-r004-20230626
-    `-- drivers-gpu-drm-i915-display-intel_display_power.h:error:declaration-of-struct-seq_file-will-not-be-visible-outside-of-this-function-Werror-Wvisibility
 
-elapsed time: 1076m
+Any ideas? Note that the compat mmap apparently uses bottomup expansion. 
+See:
+         if (!in_32bit_syscall() && (flags & MAP_32BIT))
+                 goto bottomup;
 
-configs tested: 124
-configs skipped: 8
+in arch_get_unmapped_area_topdown().
 
-tested configs:
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-alpha                randconfig-r002-20230626   gcc  
-alpha                randconfig-r036-20230626   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                        nsim_700_defconfig   gcc  
-arc                  randconfig-r023-20230626   gcc  
-arc                  randconfig-r043-20230626   gcc  
-arm                              allmodconfig   gcc  
-arm                              allyesconfig   gcc  
-arm                       aspeed_g4_defconfig   clang
-arm                                 defconfig   gcc  
-arm                      footbridge_defconfig   gcc  
-arm                           h3600_defconfig   gcc  
-arm                       imx_v4_v5_defconfig   clang
-arm                          ixp4xx_defconfig   clang
-arm                        multi_v7_defconfig   gcc  
-arm                             mxs_defconfig   clang
-arm                       netwinder_defconfig   clang
-arm                  randconfig-r003-20230626   gcc  
-arm                  randconfig-r006-20230626   gcc  
-arm                  randconfig-r016-20230626   clang
-arm                  randconfig-r034-20230626   gcc  
-arm                  randconfig-r046-20230626   clang
-arm                         s5pv210_defconfig   clang
-arm                        spear3xx_defconfig   clang
-arm64                            allyesconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                randconfig-r031-20230626   clang
-csky                                defconfig   gcc  
-csky                 randconfig-r013-20230626   gcc  
-hexagon              randconfig-r041-20230626   clang
-hexagon              randconfig-r045-20230626   clang
-i386                             alldefconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-r004-20230626   clang
-i386         buildonly-randconfig-r005-20230626   clang
-i386         buildonly-randconfig-r006-20230626   clang
-i386                              debian-10.3   gcc  
-i386                                defconfig   gcc  
-i386                 randconfig-i001-20230626   clang
-i386                 randconfig-i002-20230626   clang
-i386                 randconfig-i003-20230626   clang
-i386                 randconfig-i004-20230626   clang
-i386                 randconfig-i005-20230626   clang
-i386                 randconfig-i006-20230626   clang
-i386                 randconfig-i011-20230626   gcc  
-i386                 randconfig-i012-20230626   gcc  
-i386                 randconfig-i013-20230626   gcc  
-i386                 randconfig-i014-20230626   gcc  
-i386                 randconfig-i015-20230626   gcc  
-i386                 randconfig-i016-20230626   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                          hp300_defconfig   gcc  
-m68k                 randconfig-r011-20230626   gcc  
-m68k                 randconfig-r015-20230626   gcc  
-microblaze           randconfig-r005-20230626   gcc  
-mips                             allmodconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                          ath79_defconfig   clang
-mips                           ip22_defconfig   clang
-mips                     loongson2k_defconfig   clang
-mips                          malta_defconfig   clang
-mips                malta_qemu_32r6_defconfig   clang
-mips                      maltaaprp_defconfig   clang
-mips                 randconfig-r035-20230626   gcc  
-nios2                               defconfig   gcc  
-nios2                randconfig-r032-20230626   gcc  
-openrisc                            defconfig   gcc  
-openrisc                 simple_smp_defconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                generic-64bit_defconfig   gcc  
-parisc               randconfig-r012-20230626   gcc  
-parisc               randconfig-r026-20230626   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                      arches_defconfig   gcc  
-powerpc                   currituck_defconfig   gcc  
-powerpc                      pcm030_defconfig   gcc  
-powerpc              randconfig-r021-20230626   gcc  
-powerpc                    socrates_defconfig   clang
-riscv                            alldefconfig   clang
-riscv                            allmodconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   gcc  
-riscv                               defconfig   gcc  
-riscv                randconfig-r042-20230626   gcc  
-riscv                          rv32_defconfig   gcc  
-s390                             allmodconfig   gcc  
-s390                             allyesconfig   gcc  
-s390                                defconfig   gcc  
-s390                 randconfig-r044-20230626   gcc  
-sh                               allmodconfig   gcc  
-sh                                  defconfig   gcc  
-sh                          rsk7201_defconfig   gcc  
-sh                           se7619_defconfig   gcc  
-sh                  sh7785lcr_32bit_defconfig   gcc  
-sparc                            allyesconfig   gcc  
-sparc                               defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   clang
-um                                  defconfig   gcc  
-um                             i386_defconfig   gcc  
-um                   randconfig-r024-20230626   clang
-um                           x86_64_defconfig   gcc  
-x86_64                           allyesconfig   gcc  
-x86_64       buildonly-randconfig-r001-20230626   clang
-x86_64       buildonly-randconfig-r002-20230626   clang
-x86_64       buildonly-randconfig-r003-20230626   clang
-x86_64                              defconfig   gcc  
-x86_64                                  kexec   gcc  
-x86_64               randconfig-r022-20230626   gcc  
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                generic_kc705_defconfig   gcc  
-
+thanks,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+js
+suse labs
+
