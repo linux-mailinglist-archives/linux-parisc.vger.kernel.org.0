@@ -2,100 +2,66 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E0A3741C92
-	for <lists+linux-parisc@lfdr.de>; Thu, 29 Jun 2023 01:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5431742178
+	for <lists+linux-parisc@lfdr.de>; Thu, 29 Jun 2023 09:54:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231555AbjF1Xnu (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 28 Jun 2023 19:43:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39270 "EHLO
+        id S231273AbjF2HyN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 29 Jun 2023 03:54:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbjF1Xnt (ORCPT
+        with ESMTP id S232312AbjF2HxH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 28 Jun 2023 19:43:49 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7577610EC;
-        Wed, 28 Jun 2023 16:43:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-        Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-        bh=mkpKticynoUGDZ1Tdpq3P9FZu5kxXQf0JefJvMLgJuA=; b=eVGM60hxW/1oCROBhJRKbbF9pd
-        /WHGc+o+pb+fkeVze6GKs3Hcu2mjtmWM/4oUGYCU0t+UbFMtrvvcjHSl/cglLWbeBdgmG30OqcMNt
-        S2Pr1+dHNTd4T3qFeiVwQeps/R+LjlmcLTRsuZ8NdhZsmraeYrB2Kel7p0VxJ6+7q7EgMQ6Wx6ank
-        P+yHcdGkzLdLPcfc5husZ1HslNubmokchQy4wGscGAVnBMae971Q/C5VLDp5JrfEWC1X5YToHzDHK
-        +ikxlG8dV0EOrjRrjMKr08rEq8iFClaMjdpXxuLncvJrq9YBnHim1BxRohfVxP5cT8JFsbmDDx9YM
-        9l9IY3yQ==;
-Received: from [2601:1c2:980:9ec0::2764]
-        by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qEeow-00H298-0w;
-        Wed, 28 Jun 2023 23:43:34 +0000
-Message-ID: <08e273fc-49c5-dd09-1c9e-d85a080767f9@infradead.org>
-Date:   Wed, 28 Jun 2023 16:43:27 -0700
+        Thu, 29 Jun 2023 03:53:07 -0400
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52D8C3AB9
+        for <linux-parisc@vger.kernel.org>; Thu, 29 Jun 2023 00:52:06 -0700 (PDT)
+Received: by mail-vs1-xe2f.google.com with SMTP id ada2fe7eead31-44357f34e2dso127926137.3
+        for <linux-parisc@vger.kernel.org>; Thu, 29 Jun 2023 00:52:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688025125; x=1690617125;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZLnFw/rhyNnkKs7VhUTSusrlDu+a/hqARWLfQBAfCus=;
+        b=e1gFertRcQikOot2EhUDUoNGyLTHb44LQhrMLA3GMk2XqXmGGp73q86/ndgO3SgHjt
+         IBNrD/gR0NyMgjAo1nVNsrFINIKCb8IqR92voklA+dBCiKCiiC1/e1k9vhKbIC5e7e0N
+         3u9JwSCRCXWshVoEUhUoDVRF3p5oi1/D9rTg5YUYKKvsoc8o/AZsjhLUpJrPbgh/orQ8
+         tAzsg/RwtcrB5pCZ4f93RaHgsNNeyPz5fle83lB7iC6ftb6qx5okWamsVFIwLfn0FUYw
+         LnK63ks85kxYMYpis/ygXpiXDqoG9S9AtHZweqW+o9E7WdAPJ2rt8v4FrZGqxJuvcx1s
+         CPOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688025125; x=1690617125;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZLnFw/rhyNnkKs7VhUTSusrlDu+a/hqARWLfQBAfCus=;
+        b=SvBQEN4BA1NjMt8b6EpRkv3+3I17mdL8wPJlhdGsvRH7MtmH2M9eWblMtJSY/Z0VNf
+         qSkElVv05qvMuOPG2GZSrbt1ytulxz74w0+tE0/kfXvDu66Ro85Un7KdhxR4Amhu4grx
+         9DTkKv5Ll2Pf/5/QG76Whk16ioZ1b0xNGiw/NIDIDw4VFP2PMDSzS8tt2vfTsrl5oWYJ
+         hA2rlfCyMSme+lr4tNRARgEtzGTwACI3Wiy8x6cqHIgs/aN/zane79HDeirae1aDaTEm
+         8vfzEPvdGQlGS8T/CQWrNxo+S+PLlgJu7zkQqxC69dnwqNHvn9w4af2ThBfmO2TFYxCq
+         kbKA==
+X-Gm-Message-State: AC+VfDzZmdmf/EgFMDb5McgxPA+zLJNMCAIY43unsxlOkG55FDkxehG5
+        nSi8BwjqhRld8ZoWTrg5h2ZO9Z6mcmRGUv/WBdHa6hQ/qQwiOch9rxy4DQ==
+X-Google-Smtp-Source: ACHHUZ4Lzn6G1FlXAnOJMjR8yY+dJ9LOlhxYC6pIrenEDAkO5eMTowbWoUDL5ITTHwdyK/TXL77NMQ6kKueHG6MHV9A=
+X-Received: by 2002:a05:6102:ce:b0:443:69fd:3628 with SMTP id
+ u14-20020a05610200ce00b0044369fd3628mr6682668vsp.13.1688025124920; Thu, 29
+ Jun 2023 00:52:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH] syscalls: Cleanup references to sys_lookup_dcookie()
-Content-Language: en-US
-To:     Sohil Mehta <sohil.mehta@intel.com>, Arnd Bergmann <arnd@arndb.de>,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org
-Cc:     Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Sergei Trofimovich <slyich@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Rohan McLure <rmclure@linux.ibm.com>,
-        Andreas Schwab <schwab@linux-m68k.org>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Brian Gerst <brgerst@gmail.com>, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-perf-users@vger.kernel.org
-References: <20230628230935.1196180-1-sohil.mehta@intel.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20230628230935.1196180-1-sohil.mehta@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 29 Jun 2023 13:21:53 +0530
+Message-ID: <CA+G9fYsb4LCdjoXAz-o7myZfcCOQFdr2af68tYUP+JY17SikjQ@mail.gmail.com>
+Subject: next: parisc: drivers/eisa/eisa-bus.c:436:19: error: conflicting
+ types for 'eisa_init'; have 'int(void)'
+To:     linux-parisc <linux-parisc@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        lkft-triage@lists.linaro.org
+Cc:     Helge Deller <deller@gmx.de>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -103,54 +69,50 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Following build error noticed on parisc with defconfig with gcc-11 on
+today's Linux next-20230629 tag.
+
+Regressions found on parisc:
+
+  - build/gcc-11-defconfig
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+drivers/eisa/eisa-bus.c:436:19: error: conflicting types for
+'eisa_init'; have 'int(void)'
+  436 | static int __init eisa_init(void)
+      |                   ^~~~~~~~~
+In file included from arch/parisc/include/asm/spinlock.h:7,
+                 from arch/parisc/include/asm/atomic.h:22,
+                 from include/linux/atomic.h:7,
+                 from arch/parisc/include/asm/bitops.h:13,
+                 from include/linux/bitops.h:68,
+                 from include/linux/kernel.h:22,
+                 from drivers/eisa/eisa-bus.c:8:
+arch/parisc/include/asm/processor.h:324:13: note: previous declaration
+of 'eisa_init' with type 'void(void)'
+  324 | extern void eisa_init(void);
+      |             ^~~~~~~~~
+make[5]: *** [scripts/Makefile.build:243: drivers/eisa/eisa-bus.o] Error 1
+
+Links,
+- https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230629/testrun/17921584/suite/build/test/gcc-11-defconfig/log
+- https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20230629/testrun/17921584/suite/build/test/gcc-11-defconfig/details/
+
+Steps to reproduce:
+============
+# pip3 install -U --user tuxmake
+#
+# Or install a deb/rpm depending on the running distribution
+# See https://tuxmake.org/install-deb/ or
+# https://tuxmake.org/install-rpm/
+#
+# See https://docs.tuxmake.org/ for complete documentation.
 
 
-On 6/28/23 16:09, Sohil Mehta wrote:
-> commit 'be65de6b03aa ("fs: Remove dcookies support")' removed the
-> syscall definition for lookup_dcookie.  However, syscall tables still
-> point to the old sys_lookup_dcookie() definition. Update syscall tables
-> of all architectures to directly point to sys_ni_syscall() instead.
-> 
-> Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+tuxmake --runtime podman --target-arch parisc --toolchain gcc-11
+--kconfig defconfig
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-
-Thanks.
-
-> ---
-> This patch has a dependency on another patch that has been applied to the
-> asm-generic tree:
-> https://lore.kernel.org/lkml/20230621223600.1348693-1-sohil.mehta@intel.com/
-> ---
->  arch/alpha/kernel/syscalls/syscall.tbl              | 2 +-
->  arch/arm/tools/syscall.tbl                          | 2 +-
->  arch/arm64/include/asm/unistd32.h                   | 4 ++--
->  arch/ia64/kernel/syscalls/syscall.tbl               | 2 +-
->  arch/m68k/kernel/syscalls/syscall.tbl               | 2 +-
->  arch/microblaze/kernel/syscalls/syscall.tbl         | 2 +-
->  arch/mips/kernel/syscalls/syscall_n32.tbl           | 2 +-
->  arch/mips/kernel/syscalls/syscall_n64.tbl           | 2 +-
->  arch/mips/kernel/syscalls/syscall_o32.tbl           | 2 +-
->  arch/parisc/kernel/syscalls/syscall.tbl             | 2 +-
->  arch/powerpc/kernel/syscalls/syscall.tbl            | 2 +-
->  arch/s390/kernel/syscalls/syscall.tbl               | 2 +-
->  arch/sh/kernel/syscalls/syscall.tbl                 | 2 +-
->  arch/sparc/kernel/syscalls/syscall.tbl              | 2 +-
->  arch/x86/entry/syscalls/syscall_32.tbl              | 2 +-
->  arch/x86/entry/syscalls/syscall_64.tbl              | 2 +-
->  arch/xtensa/kernel/syscalls/syscall.tbl             | 2 +-
->  include/linux/compat.h                              | 1 -
->  include/linux/syscalls.h                            | 1 -
->  include/uapi/asm-generic/unistd.h                   | 2 +-
->  kernel/sys_ni.c                                     | 2 --
->  tools/include/uapi/asm-generic/unistd.h             | 2 +-
->  tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl | 2 +-
->  tools/perf/arch/powerpc/entry/syscalls/syscall.tbl  | 2 +-
->  tools/perf/arch/s390/entry/syscalls/syscall.tbl     | 2 +-
->  tools/perf/arch/x86/entry/syscalls/syscall_64.tbl   | 2 +-
->  26 files changed, 24 insertions(+), 28 deletions(-)
-> 
-
-
--- 
-~Randy
+--
+Linaro LKFT
+https://lkft.linaro.org
