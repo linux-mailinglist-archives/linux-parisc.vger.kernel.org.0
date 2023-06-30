@@ -2,113 +2,240 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49D6E743569
-	for <lists+linux-parisc@lfdr.de>; Fri, 30 Jun 2023 08:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E192743C64
+	for <lists+linux-parisc@lfdr.de>; Fri, 30 Jun 2023 15:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232119AbjF3G52 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 30 Jun 2023 02:57:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41782 "EHLO
+        id S232387AbjF3NJa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 30 Jun 2023 09:09:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229967AbjF3G5Z (ORCPT
+        with ESMTP id S232119AbjF3NJ2 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 30 Jun 2023 02:57:25 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95F182D4A;
-        Thu, 29 Jun 2023 23:57:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688108200; x=1688713000; i=deller@gmx.de;
- bh=0q0VUzs1KzIduNEEYU3fEHEwVR18u+xqcQFYFJu20RU=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=htYO+Y87Hk65LKUyVkqEY/06G0o0PPyEFpbg3y2XgzOya4Mgs8PJeGYIhSV7uaIVmG+XqP7
- DJqm62soTcN663xdijGjoCBko18dtY+361fLBD7T10ukBZjipKbtxdlsF05owBEm//snxtdyo
- v4/2bOPQqJubG/SpzEJ/4Rdj55Vagl+OHrt9lapfj7FLNlxiDaPYBCZAESS9eKckxdHZl+iaM
- GrNzB1tmcPAGAmNi1ELZs3QL9W9lo3ETkxS1n7ksr0szCflSRgf9XAofuVQtTXrPx0Yr05fkQ
- mo082CdfJ/+GwPYo2cU/NVon0eL6fqOuEByfSYQNMbQfs1UPelsw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.148.7]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mqs4Z-1pkgzB08R7-00mvVz; Fri, 30
- Jun 2023 08:56:40 +0200
-Message-ID: <0b2aefa4-7407-4936-6604-dedfb1614483@gmx.de>
-Date:   Fri, 30 Jun 2023 08:56:36 +0200
+        Fri, 30 Jun 2023 09:09:28 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B22835B0;
+        Fri, 30 Jun 2023 06:09:26 -0700 (PDT)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35UCvYeb016458;
+        Fri, 30 Jun 2023 13:08:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=pp1; bh=FN5rqn/S21W/5bITOEzjFOkTwNe8qQWXAAfpvfDkQwg=;
+ b=UJNJ5HvOCH3ioidpoyHaAYNX6R7hWNSBpLoG0wUffy5RnAhXHl86PbBvjDO6nKQ8USPi
+ 7sEXar1TkaNkmcJFphUybz6q6Tb4yxl6SQ/ZqNRH66WVQInysN81SF7fQAQUxOBDszhV
+ 3b8fRe2gCQIaza7qcDM7mCKwuC6Ilk9aNPGUJxMUw2n8gCQMYiSIO+tnObSPGBU121h5
+ ObdAJVNEwAu8GE+11sjrvnwTnAQvi/lRj6vqNWPq1mVeKVoGfrKDv0hlj8okmsgyo6sj
+ CZCipRtOJftBTKfcr2t7oYyiWPzb0tjUBJtcpOmD7Kcx/2Zrl+GVqvSu1uoCgmOa264S bw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhygwgdcx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Jun 2023 13:08:13 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 35UCwN5D019695;
+        Fri, 30 Jun 2023 13:08:03 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rhygwgcwe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Jun 2023 13:08:02 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+        by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35U3RosU004120;
+        Fri, 30 Jun 2023 13:07:52 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+        by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3rdr4545n4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 30 Jun 2023 13:07:51 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+        by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35UD7mYr35848862
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 30 Jun 2023 13:07:48 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2D1C420040;
+        Fri, 30 Jun 2023 13:07:48 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 20F4620049;
+        Fri, 30 Jun 2023 13:07:46 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
+        by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+        Fri, 30 Jun 2023 13:07:46 +0000 (GMT)
+Date:   Fri, 30 Jun 2023 15:07:44 +0200
+From:   Alexander Gordeev <agordeev@linux.ibm.com>
+To:     Eric DeVolder <eric.devolder@oracle.com>
+Cc:     linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
+        chenhuacai@kernel.org, geert@linux-m68k.org,
+        tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, ysato@users.sourceforge.jp, dalias@libc.org,
+        glaubitz@physik.fu-berlin.de, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, kernel@xen0n.name, mpe@ellerman.id.au,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com, hpa@zytor.com,
+        keescook@chromium.org, paulmck@kernel.org, peterz@infradead.org,
+        frederic@kernel.org, akpm@linux-foundation.org, ardb@kernel.org,
+        samitolvanen@google.com, juerg.haefliger@canonical.com,
+        arnd@arndb.de, rmk+kernel@armlinux.org.uk,
+        linus.walleij@linaro.org, sebastian.reichel@collabora.com,
+        rppt@kernel.org, kirill.shutemov@linux.intel.com,
+        anshuman.khandual@arm.com, ziy@nvidia.com, masahiroy@kernel.org,
+        ndesaulniers@google.com, mhiramat@kernel.org, ojeda@kernel.org,
+        thunder.leizhen@huawei.com, xin3.li@intel.com, tj@kernel.org,
+        gregkh@linuxfoundation.org, tsi@tuyoix.net, bhe@redhat.com,
+        hbathini@linux.ibm.com, sourabhjain@linux.ibm.com,
+        boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+Subject: Re: [PATCH v3 12/13] s390/kexec: refactor for kernel/Kconfig.kexec
+Message-ID: <ZJ7ToGgYAq33bwYI@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <20230626161332.183214-1-eric.devolder@oracle.com>
+ <20230626161332.183214-13-eric.devolder@oracle.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230626161332.183214-13-eric.devolder@oracle.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: SRv3tQadK_BLStPKVFehsvtKgdD5bfpY
+X-Proofpoint-ORIG-GUID: SMYiBxc5troNBtSiC2kzVXEEuROkenwR
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, linux-parisc <linux-parisc@vger.kernel.org>,
-        sparclinux@vger.kernel.org,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Jason Wang <wangborong@cdjrlc.com>
-References: <20230629184151.888604958@linuxfoundation.org>
- <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
- <CAHk-=whaO3RZmKj8NDjs4f6JEwuwQWWesOfFu-URzOqTkyPoxw@mail.gmail.com>
- <2023063001-overlying-browse-de1a@gregkh>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <2023063001-overlying-browse-de1a@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:579RH/hxDQUZKy2JPrhdJGMkIR7PS/wWM2AUassTtV1Scraepz9
- +cSDfD2O+9+RtAFxZKlWQEzaRvmM5lNQtPz1kc6tiG3zk8wpAnbBC06p+sSr61Q2foZyPEO
- +y3V9cnLoVZQfBOXRzuhC7+LxOCJApqbfL5Z0PrCzwglxna6GinPHPjMw4QWED/QEp3jSqy
- YFYnKVsDe02eQ7uCpUZRw==
-UI-OutboundReport: notjunk:1;M01:P0:oX3xCpx1BDs=;6HP9D34Bw/26MSDKE4PCqBQFzIq
- ODo9vbV53GlPub7zuUS0PfKoxCLEhiT/+8jZ4iXTEl0+Y2njPFJFOgA0MDP8KDbZEmi1hRZaU
- xg48tkVLL2RnhbRMJTaM7Ijx6c2Pmf3cFRDynsQe+iV2tvDKcMoG/1HSBkUt+Q0koa7adc4Ij
- 8Eu+eSapnmV0Om/q6WFTWNxhyqo9yXWohHZCakbkL40HUCwNO6c+OZUiudyLGxsUJDxQx8ixa
- 7/irnUJl02evNJGvwRv83p3HzaNopu4vorEWXHTu4gSUqDAkrDmC9m/rBScyBuveONeaqUFKR
- NaCWUkCaIaM6PKZ5WparWFHT+m/zaLp0k7U+n2R6M1Rsr3bBjgBDp2dDPjE9FqtayowqsyC9W
- u8V2z6Kj3RauYFi8i2iaBk1Wa/laKUMVhLdZB3i2QBTDAfwWTpcU3g2PgQG5GQxM6FoOHyOzS
- UC0cr48hdqoooMnrmMlkh6k5fOG8pzZpdOOuysaCDfDvWzLg+22SvUtGfJszSi7V5G3dV1JYP
- PZVIh/C+aryjw8ypXaNE6l21fG+mIabU7c2bTaPQKyy1Cc8qKqKT6eO13Pt1i7E+auQkNea+/
- zzeVevC5sSvjOlh9zSraWRqyIB8JU6UCo2nscKm5JRkF0tF+Zq/Ge4KC7kEgzbuFJxC1bL8M+
- JplyGDxfhq3ZIFyUKP4rVLazIM/dJ41KQLPZmqUQAJaCK9XUKIZdL80w6ZuK2B3iSru6eYL+e
- hxBClLLgUW4GtQoTymjjLT1GppdoJP7BvGa+t68wG46TNyUXdVfpgSW7ZjfxshSZBiWYvyKWd
- AyugYY6KljR01+C4YS1gsbUJ5fgdjc4wIwRR1lLSPdmB1wfNKmeloOH6dgOdaxUteJ6tOgHFq
- 5Zt3gPK/vg+kwSEmyGkOFiHKGublbaQ2btlaaJ/NN8k47hgXZHLBZGJTGVAdKUrmvU+smYXqh
- +ecxoQj0LxRH2gZWcXSPW5U+Aqo=
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-30_05,2023-06-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ mlxlogscore=999 priorityscore=1501 phishscore=0 impostorscore=0
+ spamscore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306300111
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 6/30/23 08:29, Greg Kroah-Hartman wrote:
-> On Thu, Jun 29, 2023 at 11:16:21PM -0700, Linus Torvalds wrote:
->> On Thu, 29 Jun 2023 at 22:31, Naresh Kamboju <naresh.kamboju@linaro.org=
-> wrote:
->>>
->>> arch/parisc/mm/fault.c: In function 'do_page_fault':
->>> arch/parisc/mm/fault.c:292:22: error: 'prev' undeclared (first use in =
-this function)
->>>    292 |                 if (!prev || !(prev->vm_flags & VM_GROWSUP))
->>
->> Bah. "prev" should be "prev_vma" here.
->>
->> I've pushed out the fix. Greg, apologies. It's
->>
->>     ea3f8272876f parisc: fix expand_stack() conversion
->>
->> and Naresh already pointed to the similarly silly sparc32 fix.
->
-> Ah, I saw it hit your repo before your email here, sorry about that.
-> Now picked up.
+On Mon, Jun 26, 2023 at 12:13:31PM -0400, Eric DeVolder wrote:
+> The kexec and crash kernel options are provided in the common
+> kernel/Kconfig.kexec. Utilize the common options and provide
+> the ARCH_SUPPORTS_ and ARCH_SELECTS_ entries to recreate the
+> equivalent set of KEXEC and CRASH options.
+> 
+> NOTE: The original Kconfig has a KEXEC_SIG which depends on
+> MODULE_SIG_FORMAT. However, attempts to keep the MODULE_SIG_FORMAT
+> dependency (using the strategy outlined in this series, and other
+> techniques) results in 'error: recursive dependency detected'
+> on CRYPTO.
+> 
+> Per Alexander Gordeev <agordeev@linux.ibm.com>: "the MODULE_SIG_FORMAT
+> dependency was introduced with [git commit below] and in fact was not
+> necessary, since s390 did/does not use mod_check_sig() anyway.
+> 
+>  commit c8424e776b09 ("MODSIGN: Export module signature definitions")
+> 
+> MODULE_SIG_FORMAT is needed to select SYSTEM_DATA_VERIFICATION. But
+> SYSTEM_DATA_VERIFICATION is also selected by FS_VERITY*, so dropping
+> MODULE_SIG_FORMAT does not hurt."
+> 
+> Therefore, the solution is to drop the MODULE_SIG_FORMAT dependency
+> from KEXEC_SIG. Still results in equivalent .config files for s390.
+> 
+> Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
+> ---
+>  arch/s390/Kconfig | 65 ++++++++++++++---------------------------------
+>  1 file changed, 19 insertions(+), 46 deletions(-)
+> 
+> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+> index 6dab9c1be508..58dc124433ca 100644
+> --- a/arch/s390/Kconfig
+> +++ b/arch/s390/Kconfig
+> @@ -243,6 +243,25 @@ config PGTABLE_LEVELS
+>  
+>  source "kernel/livepatch/Kconfig"
+>  
+> +config ARCH_DEFAULT_KEXEC
+> +	def_bool y
+> +
+> +config ARCH_SUPPORTS_KEXEC
+> +	def_bool y
+> +
+> +config ARCH_SUPPORTS_KEXEC_FILE
+> +	def_bool CRYPTO && CRYPTO_SHA256 && CRYPTO_SHA256_S390
+> +
+> +config ARCH_HAS_KEXEC_PURGATORY
+> +	def_bool KEXEC_FILE
+> +
+> +config ARCH_SUPPORTS_CRASH_DUMP
+> +	def_bool y
+> +	help
+> +	  Refer to <file:Documentation/s390/zfcpdump.rst> for more details on this.
+> +	  This option also enables s390 zfcpdump.
+> +	  See also <file:Documentation/s390/zfcpdump.rst>
+> +
+>  menu "Processor type and features"
+>  
+>  config HAVE_MARCH_Z10_FEATURES
+> @@ -481,36 +500,6 @@ config SCHED_TOPOLOGY
+>  
+>  source "kernel/Kconfig.hz"
+>  
+> -config KEXEC
+> -	def_bool y
+> -	select KEXEC_CORE
+> -
+> -config KEXEC_FILE
+> -	bool "kexec file based system call"
+> -	select KEXEC_CORE
+> -	depends on CRYPTO
+> -	depends on CRYPTO_SHA256
+> -	depends on CRYPTO_SHA256_S390
+> -	help
+> -	  Enable the kexec file based system call. In contrast to the normal
+> -	  kexec system call this system call takes file descriptors for the
+> -	  kernel and initramfs as arguments.
+> -
+> -config ARCH_HAS_KEXEC_PURGATORY
+> -	def_bool y
+> -	depends on KEXEC_FILE
+> -
+> -config KEXEC_SIG
+> -	bool "Verify kernel signature during kexec_file_load() syscall"
+> -	depends on KEXEC_FILE && MODULE_SIG_FORMAT
+> -	help
+> -	  This option makes kernel signature verification mandatory for
+> -	  the kexec_file_load() syscall.
+> -
+> -	  In addition to that option, you need to enable signature
+> -	  verification for the corresponding kernel image type being
+> -	  loaded in order for this to work.
+> -
+>  config KERNEL_NOBP
+>  	def_bool n
+>  	prompt "Enable modified branch prediction for the kernel by default"
+> @@ -732,22 +721,6 @@ config VFIO_AP
+>  
+>  endmenu
+>  
+> -menu "Dump support"
+> -
+> -config CRASH_DUMP
+> -	bool "kernel crash dumps"
+> -	select KEXEC
+> -	help
+> -	  Generate crash dump after being started by kexec.
+> -	  Crash dump kernels are loaded in the main kernel with kexec-tools
+> -	  into a specially reserved region and then later executed after
+> -	  a crash by kdump/kexec.
+> -	  Refer to <file:Documentation/s390/zfcpdump.rst> for more details on this.
+> -	  This option also enables s390 zfcpdump.
+> -	  See also <file:Documentation/s390/zfcpdump.rst>
+> -
+> -endmenu
+> -
+>  config CCW
+>  	def_bool y
 
-I've just cherry-picked ea3f8272876f on top of -rc2, built and run-tested =
-it,
-and everything is OK on parisc.
-
-Thanks!
-Helge
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
