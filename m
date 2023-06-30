@@ -2,139 +2,183 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65F5D742358
-	for <lists+linux-parisc@lfdr.de>; Thu, 29 Jun 2023 11:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A79074343F
+	for <lists+linux-parisc@lfdr.de>; Fri, 30 Jun 2023 07:31:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231191AbjF2Ji4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 29 Jun 2023 05:38:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42402 "EHLO
+        id S232113AbjF3FbH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 30 Jun 2023 01:31:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbjF2Jiz (ORCPT
+        with ESMTP id S232091AbjF3FbG (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 29 Jun 2023 05:38:55 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C5B8ED;
-        Thu, 29 Jun 2023 02:38:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688031526; x=1688636326; i=deller@gmx.de;
- bh=panwHVO6gMG/7LkBn+/2XCatbzRgXTbCGXRWA9nl57Q=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=nvQkac8XKmivKLlphuedgUmzOhkSznSA5SpqGx7Td4tl4vjfATgssDUL5ay926oNWX2dSQO
- NQdb8Ci1JJ5MYopbmOP1HqCznwDEoKJ49MliDMhW3qoMfKeOdheqipC6O8UB+wKydtkvqPzFO
- BZV1zBzLFRCaReJDJXEoEfR1PeofkIJBVAXWy93HleFjtuYR5D+jwfCqqevRXfJ2gMeomuz1Y
- 1DL7IAp84xZx3eC9rt++2WkCzm5bqda1xTwSpsWg+1TfKg66N+0DJu7ERfx8r7E4+A8XmWtcD
- 95m5Xx1p3AlBv2HQvUJIsWZYiRHOMONoafN5IRASwj3P3/XFHkXg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.146.6]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MBUm7-1qKd7x0bN9-00CwzX; Thu, 29
- Jun 2023 11:38:46 +0200
-Message-ID: <ec1e4376-56e0-c630-cbe6-b8bae2cb715a@gmx.de>
-Date:   Thu, 29 Jun 2023 11:38:43 +0200
+        Fri, 30 Jun 2023 01:31:06 -0400
+Received: from mail-ua1-x934.google.com (mail-ua1-x934.google.com [IPv6:2607:f8b0:4864:20::934])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B743583
+        for <linux-parisc@vger.kernel.org>; Thu, 29 Jun 2023 22:31:04 -0700 (PDT)
+Received: by mail-ua1-x934.google.com with SMTP id a1e0cc1a2514c-7943be26e84so531532241.2
+        for <linux-parisc@vger.kernel.org>; Thu, 29 Jun 2023 22:31:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688103063; x=1690695063;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RpifBzIiPQ544NbGz1gUfjlce5GYM88cZVM7W94e/z8=;
+        b=hyBvN72rknPc+l9wuFKRChEoRQvzihluKLc0rqj9jWn7jSXfbXqGs7PqOzz71UrJul
+         2I5MP1vzV9P1QOwU2ftEh7xmAeNNyxKrIwL7eUmU1Eh1qcaJwSBd30N4Z8nsbg4sgWxX
+         Ay5C+cHWHTZ2TNrYni09u7fkSlpC9Iwh7Zl35POz0a/UJCxwT6LXxnEc8biHSmsYKS5r
+         BYUhBRLNpeYM1auRS4Sha5oeLvNIRxtyTOPCWoDQd9U5zcNuyob93zvVMPtPIqlWvmXT
+         C5EvzicXDCTWRQ6Ohnx4sKq+xGIbDbgrt9P9WGlsl4MBaXVlGgM+/5zrSfTYyUq6vZM1
+         42Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688103063; x=1690695063;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RpifBzIiPQ544NbGz1gUfjlce5GYM88cZVM7W94e/z8=;
+        b=C9IakV4QOBOlpLhe6Oz3WhBuYwzIGXJZBcru/zjsD18daSwvQZFV4iOYExA0WA+q28
+         L53HlJDeg0z6TzM94qXTc3Tdh3qCwy4fltMIjX2WYpYv+u1tA26ogGCKkwuHF3eBOZyH
+         JmR8wQt4qZf2Cr4A2H9yfoW1OwAbXf2M88h0V/9Id3sB7Mxu6ngflYE4ZtYabS5HhuPv
+         wQ8pCc4GTbLR0cXtcnE86H0XO9ivDTJFHH12uuNem8uo1UXrFH58ouK1vhosv9gpno3h
+         DUPC3YE/PsLkK+RmJnUgJurPIcxJ4rWxAuyBVDJ5pju4v55bHq+CUhAWDY5VbmEml04z
+         j2lw==
+X-Gm-Message-State: ABy/qLYhCXSYCdlDsHnuKZiEFRZnIi/lIAWcB7Ud3b9rh42l5PEMAPqq
+        82Tye+V3uKTDg3P3IHTYBR6DLcVUUi8qF3GAlg2WOA==
+X-Google-Smtp-Source: APBJJlHzXNWEksubwbMG0b87MFUYjvu+33oPvUefO/Epc8vNSR/lvoS7c0KVgVmuLELsuNvgkFBPvRDY6U2aHzPB9S0=
+X-Received: by 2002:a67:ec10:0:b0:443:86be:f326 with SMTP id
+ d16-20020a67ec10000000b0044386bef326mr1173207vso.18.1688103063100; Thu, 29
+ Jun 2023 22:31:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: next: parisc: drivers/eisa/eisa-bus.c:436:19: error: conflicting
- types for 'eisa_init'; have 'int(void)'
-Content-Language: en-US
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org
-Cc:     Stephen Rothwell <sfr@canb.auug.org.au>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Anders Roxell <anders.roxell@linaro.org>
-References: <CA+G9fYsb4LCdjoXAz-o7myZfcCOQFdr2af68tYUP+JY17SikjQ@mail.gmail.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <CA+G9fYsb4LCdjoXAz-o7myZfcCOQFdr2af68tYUP+JY17SikjQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20230629184151.888604958@linuxfoundation.org>
+In-Reply-To: <20230629184151.888604958@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Fri, 30 Jun 2023 11:00:51 +0530
+Message-ID: <CA+G9fYsM2s3q1k=+wHszvNbkKbHGe1pskkffWvaGXjYrp6qR=g@mail.gmail.com>
+Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, linux-parisc <linux-parisc@vger.kernel.org>,
+        sparclinux@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Helge Deller <deller@gmx.de>,
+        Jason Wang <wangborong@cdjrlc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:IQvvEQrpFvDa9wBerv9wVDcuJ4fRpGHs8tRS3z/dRy8YxRNGekX
- O4X53xB1ZK59Rjm/w7u2gleWKA1z51EWZ3+VuNmHuUK8gTtgm06ZYhlWpurtQGCn682EPOs
- XOdjVSvoSIcyjAnvbKK77G6mw652xy6A1NHDBnTdEmd1L5QeEOM3J46kFy6rLDQymd2X+sc
- M1h/28Ye7gP/9rGkox0AQ==
-UI-OutboundReport: notjunk:1;M01:P0:wNKflYmbUC4=;QLixZxhr8vGzAoII5pLs7J7ttxy
- sz/zHyLSZbyP8abtPJ1mjH7xGYTZKVXyBtbLabU15GvvRhX3zEGVGa9Vbz/AFhOWV4tGLoJvd
- FJPZXBtstwyk2rOK4XZaCW0qyUCgPW1bO8+HgHVKcKC2C9XCEKGpGIq9DQbmwIFwwdOxIOzLf
- ZCokks7pB7/jFC2t5TzCwtZ9w2jCy27MWFUMZZhY1P8gNWuAEBPLSishE3y3DB975V2eT9vK7
- 5K3No8a9Pe7b9i0eMVX4C84mWo3Hfw6/dLAMTXKHzS2eHO67YH0/0hSwoJWQE3HQ+HTSZ4zk0
- FSzs8bRBrbOXRv2+BzwsPRNx+wz/g4vhrQ3r81I3ma+Oe0jy/bdhy0LALwUzMWz9CqMRhoNTu
- FZcUNJxjRl3DaZi29DqqeT+xvoym4iVKQdjXpYKi2jRqn6+k4x4heLRViqNvGIjXui1mwmF8f
- mkODw5new5fjj8lcZgjQrkoc42EAv2a0CemIEBIBojQGtp7jtTbEXvsHnn7b1poV8g/LMuq+D
- 6IDFV2JS39KuxzQj8Ipgoyn5i3z9lf9EQin+g6BMMesN38BkxXuQjING8oS6r8lf6pD5P3K92
- cxSAV9UUvOpHtYFXVaK164ZagkKFWfUwxAxuYIasnluVeKzORfQQ9U9DhVdul9dZRpJMW/XfL
- JRwb6wLJj/k4QgJyuAZaC9fmcbglRzEmjaAZoYxxhX/6KqGAoB9liZbtKSknctsZ1kI/gC1O+
- YgNhBoc8SHJ5Rx++TnYeNYuLKzDhokJDTJmkmkIwRGVtJPfAUhqQ4w09KnSOFVLErmZmm1chk
- mBJGjIp9VvmjVlZuE522kv943uwH5gl+H67G9oGyxRAmD3oDYdhxPrZ9i5ufJWGsSFmJw5ade
- sQ4phQ9gNNbd2/wAjf1OlkDuTeHLwP03mvrVOu0QKR4zB7d9hP0oCDKooEFex+PwQBsTAOMmL
- KEUt6+mW7xsYkIeaOR1jHBQweeA=
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 6/29/23 09:51, Naresh Kamboju wrote:
-> Following build error noticed on parisc with defconfig with gcc-11 on
-> today's Linux next-20230629 tag.
+On Fri, 30 Jun 2023 at 00:18, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Regressions found on parisc:
+> This is the start of the stable review cycle for the 6.4.1 release.
+> There are 28 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
->    - build/gcc-11-defconfig
+> Responses should be made by Sat, 01 Jul 2023 18:41:39 +0000.
+> Anything received after that time might be too late.
 >
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.4.1-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.4.y
+> and the diffstat can be found below.
 >
-> drivers/eisa/eisa-bus.c:436:19: error: conflicting types for
-> 'eisa_init'; have 'int(void)'
->    436 | static int __init eisa_init(void)
->        |                   ^~~~~~~~~
+> thanks,
+>
+> greg k-h
+
+Results from Linaro=E2=80=99s test farm.
+
+Following build regression noticed on Linux stable-rc 6.4 and also noticed =
+on
+Linux mainline master.
+
+Regressions found on Parisc and Sparc build failed:
+ - build/gcc-11-defconfig
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Parisc Build log:
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+arch/parisc/mm/fault.c: In function 'do_page_fault':
+arch/parisc/mm/fault.c:292:22: error: 'prev' undeclared (first use in
+this function)
+  292 |                 if (!prev || !(prev->vm_flags & VM_GROWSUP))
+      |                      ^~~~
+arch/parisc/mm/fault.c:292:22: note: each undeclared identifier is
+reported only once for each function it appears in
 
 
-It's already fixed in latest parisc git tree.
+sparc Build log:
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+<stdin>:1519:2: warning: #warning syscall clone3 not implemented [-Wcpp]
+arch/sparc/mm/fault_32.c: In function 'force_user_fault':
+arch/sparc/mm/fault_32.c:315:49: error: 'regs' undeclared (first use
+in this function)
+  315 |         vma =3D lock_mm_and_find_vma(mm, address, regs);
+      |                                                 ^~~~
+arch/sparc/mm/fault_32.c:315:49: note: each undeclared identifier is
+reported only once for each function it appears in
 
-Thanks,
-Helge
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.4.y/build/v6.=
+4-29-g8e5ddb853f08/testrun/17959811/suite/build/test/gcc-11-defconfig/detai=
+ls/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.4.y/build/v6.=
+4-29-g8e5ddb853f08/testrun/17959811/suite/build/test/gcc-11-defconfig/log
+
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.4.y/build/v6.=
+4-29-g8e5ddb853f08/testrun/17959890/suite/build/test/gcc-11-defconfig/detai=
+ls/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.4.y/build/v6.=
+4-29-g8e5ddb853f08/testrun/17959890/suite/build/test/gcc-11-defconfig/log
 
 
-> In file included from arch/parisc/include/asm/spinlock.h:7,
->                   from arch/parisc/include/asm/atomic.h:22,
->                   from include/linux/atomic.h:7,
->                   from arch/parisc/include/asm/bitops.h:13,
->                   from include/linux/bitops.h:68,
->                   from include/linux/kernel.h:22,
->                   from drivers/eisa/eisa-bus.c:8:
-> arch/parisc/include/asm/processor.h:324:13: note: previous declaration
-> of 'eisa_init' with type 'void(void)'
->    324 | extern void eisa_init(void);
->        |             ^~~~~~~~~
-> make[5]: *** [scripts/Makefile.build:243: drivers/eisa/eisa-bus.o] Error=
- 1
->
-> Links,
-> - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-202306=
-29/testrun/17921584/suite/build/test/gcc-11-defconfig/log
-> - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-202306=
-29/testrun/17921584/suite/build/test/gcc-11-defconfig/details/
->
-> Steps to reproduce:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> # pip3 install -U --user tuxmake
-> #
-> # Or install a deb/rpm depending on the running distribution
-> # See https://tuxmake.org/install-deb/ or
-> # https://tuxmake.org/install-rpm/
-> #
-> # See https://docs.tuxmake.org/ for complete documentation.
->
->
-> tuxmake --runtime podman --target-arch parisc --toolchain gcc-11
-> --kconfig defconfig
->
-> --
-> Linaro LKFT
-> https://lkft.linaro.org
+Both build failures noticed on mainline and sparc build have been
+fixed yesterday.
+ - https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.4-8542=
+-g82a2a5105589/testrun/17963192/suite/build/test/gcc-11-defconfig/history/
 
+
+Following patch that got fixed
+---
+From 0b26eadbf200abf6c97c6d870286c73219cdac65 Mon Sep 17 00:00:00 2001
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 29 Jun 2023 20:41:24 -0700
+Subject: sparc32: fix lock_mm_and_find_vma() conversion
+
+The sparc32 conversion to lock_mm_and_find_vma() in commit a050ba1e7422
+("mm/fault: convert remaining simple cases to lock_mm_and_find_vma()")
+missed the fact that we didn't actually have a 'regs' pointer available
+in the 'force_user_fault()' case.
+
+It's there in the regular page fault path ("do_sparc_fault()"), but not
+the window underflow/overflow paths.
+
+Which is all fine - we can just pass in a NULL pointer.  The register
+state is only used to avoid deadlock with kernel faults, which is not
+the case for any of these register window faults.
+
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Fixes: a050ba1e7422 ("mm/fault: convert remaining simple cases to
+lock_mm_and_find_vma()")
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+
+--
+Linaro LKFT
+https://lkft.linaro.org
