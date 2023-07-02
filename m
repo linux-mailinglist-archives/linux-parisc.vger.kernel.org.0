@@ -2,108 +2,85 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5248744E4F
-	for <lists+linux-parisc@lfdr.de>; Sun,  2 Jul 2023 17:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DBE8744E59
+	for <lists+linux-parisc@lfdr.de>; Sun,  2 Jul 2023 17:35:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjGBPYP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 2 Jul 2023 11:24:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54836 "EHLO
+        id S229849AbjGBPf6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 2 Jul 2023 11:35:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229871AbjGBPYO (ORCPT
+        with ESMTP id S229533AbjGBPf5 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 2 Jul 2023 11:24:14 -0400
-Received: from cmx-torrgo001.bell.net (mta-tor-003.bell.net [209.71.212.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 766E0E6E
-        for <linux-parisc@vger.kernel.org>; Sun,  2 Jul 2023 08:24:12 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [142.181.186.176]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 64A12924000AFE95
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedviedruddtgdekjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucenucfjughrpefkffggfgfuhffvfhgjtgfgsehtkeertddtfeejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpedutdekveejveefueekueffvefguddvlefhhfefgeeiteektdfgleffuedttdeiteenucfkphepudegvddrudekuddrudekiedrudejieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedugedvrddukedurddukeeirddujeeipdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopedvpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhrtghpthhtoheplhhinhhugidqphgrrhhishgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdgruhhthhgpuhhsvghrpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpghgvohfkrfepveetpdfovfetjfhoshhtpegtmhigqdhtohhrrhhgohdttddu
-X-CM-Envelope: MS4xfIM/nlL9ftwcGRG0Hh5SyTU4ZhHybekArV0Z6pTRaUMS1TZnOnW18R6SkcZWa8I/Rqr0+3LK7jhFDekA05MpUG6XlR2x15JMm18wfuBheurGYhQ8KR9u
- +Zje+/l7g7QpugCGn4Beum8w9FmsiH9z4Wnct6G4e5sIEcHHrGbsEqRKCkeIkQGb2CEdt5NgsAAi4U3GRVbFiMXkxgpLY0fUD33owJy1LHfmsD0DX1axfK+T
- WPSWP8LYbxhJmBGt3P5kzqy+mpAdA0feMW9eHDxO+vw=
-X-RazorGate-Vade-Verdict: clean 0
-X-CM-Analysis: v=2.4 cv=UM++oATy c=1 sm=1 tr=0 ts=64a1969b
- a=4B+q39mD0Bm0IdZjDiNhQQ==:117 a=4B+q39mD0Bm0IdZjDiNhQQ==:17
- a=IkcTkHD0fZMA:10 a=Z4Rwk6OoAAAA:8 a=ag1SF4gXAAAA:8 a=FBHGMhGWAAAA:8
- a=RzOe2KLiYINiSzh6IxUA:9 a=QEXdDO2ut3YA:10 a=HkZW87K1Qel5hWWM3VKY:22
- a=Yupwre4RP9_Eg_Bd0iYG:22 a=9gvnlMMaQFpL9xblJ6ne:22
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.181.186.176) by cmx-torrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
-        id 64A12924000AFE95; Sun, 2 Jul 2023 11:24:11 -0400
-Message-ID: <52379fd0-1c3a-1cf6-1e00-dab8bcf8dab6@bell.net>
-Date:   Sun, 2 Jul 2023 11:24:11 -0400
+        Sun, 2 Jul 2023 11:35:57 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E14E76
+        for <linux-parisc@vger.kernel.org>; Sun,  2 Jul 2023 08:35:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1688312124; x=1688916924; i=deller@gmx.de;
+ bh=WfkD2Weqeg7YPviseF0CuiJIZmuO98xiClivLVtmDmw=;
+ h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+ b=J2ldGfhHQiGAJhw+5saNyMmSnJueUd3arAllufeV4rPEV8+lxC02s7Iu7PPnn8Jf4ZKqKjY
+ vQPJrqYU1Nbsm1zeytgMo5w2pF/lSOWCh/EKFY69w5g937bnGsJxYNWpQT01EPsRNDEEHSddK
+ TbSSh3JyT7t4v9Nc981VyScktP1E/NnaKKYL95cDIItqi1g9+aFRKNpQVZfxvJs6SV7ceYO7q
+ EZX4WUr9yt0lOE3v3o2xHJz5hCP8ftoxy9hSVrhMIcReYy3Vwv1gi9LzL4uhaAZ9FqSTUX3kb
+ RK5hyJy2Zeq3UQQHRORpkUm2Uocw94Mv2bo+Twzm/DjqGfW9DBVQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.159.131]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MysW2-1q3Fi206Ne-00vzlj; Sun, 02
+ Jul 2023 17:35:24 +0200
+Message-ID: <06122964-8d21-4ad1-1d71-93886d078fb6@gmx.de>
+Date:   Sun, 2 Jul 2023 17:35:23 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: execv: Argument list too long
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [GIT PULL] parisc architecture fixes & updates for v6.5-rc1
 Content-Language: en-US
-From:   John David Anglin <dave.anglin@bell.net>
-To:     linux-parisc <linux-parisc@vger.kernel.org>
-References: <612eaa53-6904-6e16-67fc-394f4faa0e16@bell.net>
-In-Reply-To: <612eaa53-6904-6e16-67fc-394f4faa0e16@bell.net>
+To:     Rolf Eike Beer <eike-kernel@sf-tec.de>,
+        linux-parisc@vger.kernel.org
+References: <ZKGOzzDGM1925iYg@p100> <2687291.mvXUDI8C0e@eto.sf-tec.de>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <2687291.mvXUDI8C0e@eto.sf-tec.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:FhoYR8slHNx0248/Pyqw77ELucAzkIRMeW4XQCt5Yk7pMNsFJzn
+ U/HSfgG/SJe0MNGNxOepyNRytpAY/6nVwJn6ImGu7zUoh7HXwmDZvxmCjKe4gVnXhfidIS3
+ wWqVi9idTOXIuRDvO4iejksMjiLNf0Z3vECjPvQwHzaOBwH5QjXE19m7t5Mvt85R+q6+i2L
+ GOcbWDsM9H4aL8EsLPqrA==
+UI-OutboundReport: notjunk:1;M01:P0:kckoKKVW1BI=;VYUJFIrvkn0d8NkgX9qXFOwJ2ML
+ 1kNMT7mUyRVoufOauCr3Sva9tgtrnftKsb2oqwlWEdgN4X/VqD5f3JJMaZ3PrY9mjX6LD9YDr
+ QdHOGwEXCe1an/b7udF/GSrQHZIa67/b8rlDrFT0g7maSFg8zdEmsG+jwM2bLk00s5KYGKjod
+ UAlwv9q5lu729c/Q/uVBFKWfP25Wyoxc8iAjiRv7n9dLExiUxNzzJVvBBuUvTraInnS/Iaib2
+ 6OqANOjjCcRX1wvfhP0g7J6woisHHTdt43iTT+DWu/R+ZTglzo7W5JzN5Qvso19SywU67w00D
+ 13jBtpJnP9LqFTDvvT3n/jwnSoUv5ZV/lzUGBW6QQ3UB05lAPVoR+PKluXRSER6jXfy2qgBYj
+ EaknkF0BXo3yVxZ7wAP4UmFuZ+e1lbR3JyNW+ew86L6yaQLQyh05d4yhcnuZXsirQXzn8vw8r
+ chk4rkYGswYNVOF3bFyRppeihQNEanTkeclrvTC+1ItNoqXklsFvT0JsITVHoIcAz5s6BMhzO
+ 5SBAFVYkBz5LsN+Ikbch5hq7D+i4WLMwEqjxtNJ6oFM6D1fIJ5C1pC2hr8cV8nyPO7zf6VPmG
+ cEMT9Aq2nGbJ1EML3H4XRq/QjkehQC++shHzGqZFYHohV39wdHsy7CFCUyWOO3SUm+ds6k17G
+ y1tp5P/s7o+vON0lbcI3k+9ByE9Xb6BsMfMNQCtzRF5wl9SF9qWLBhPWzdHz2ay5MuIPTVNzn
+ o9Amn+2p+HViOymJvOjIXlflkRDVoliQZcv99nG89YcugdVY0FBmpydbzNliUzo5S/EwzQ9ah
+ j3gX72JYoMyx8KsPbEUq1XYVo6R2wlpkMox79GBujN2y421DI+BKSepR4/Hok2yd06j46HsF6
+ ceIHcA5cmYzMvfAXqNmiLzz09WthXTWVylZ2JP8VX2IC5jYHoS2uv6jXnvvv2IwlHolPuhhqe
+ xqEkzA==
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023-07-02 11:08 a.m., John David Anglin wrote:
-> With Linux  6.1.37+, there is a problem with argument lists:
+On 7/2/23 17:10, Rolf Eike Beer wrote:
+>>        parisc: Default to 8 CPUs for 64-bit kernel
 >
-> | gcc -E -undef     -I../include -I/home/dave/gnu/glibc/objdir/csu -I/home/dave/gnu/glibc/objdir  -I../sysdeps/unix/sysv/linux/hppa 
-> -I../sysdeps/hppa/nptl  -I../sysdeps/unix/sysv/linux/include -I../sysdeps/unix/sysv/linux  -I../sysdeps/nptl -I../sysdeps/pthread  
-> -I../sysdeps/gnu  -I../sysdeps/unix/inet -I../sysdeps/unix/sysv  -I../sysdeps/unix  -I../sysdeps/posix -I../sysdeps/hppa/hppa1.1  
-> -I../sysdeps/wordsize-32 -I../sysdeps/ieee754/flt-32  -I../sysdeps/ieee754/dbl-64 -I../sysdeps/hppa/fpu  -I../sysdeps/hppa  
-> -I../sysdeps/ieee754 -I../sysdeps/generic  -I.. -I../libio -I. -nostdinc -isystem /usr/lib/gcc/hppa-linux-gnu/12/include -isystem /usr/include 
-> -D_LIBC_REENTRANT  -include ../include/libc-symbols.h -DTOP_NAMESPACE=glibc -x assembler-with-cpp - \
->            > /home/dave/gnu/glibc/objdir/Versions.v.iT
-> make[2]: /bin/sh: Argument list too long
-> gcc: fatal error: cannot execute '/usr/lib/gcc/hppa-linux-gnu/12/cc1': execv: Argument list too long
-> compilation terminated.
->
-> Linux 6.1.36+ is okay.
->
-> It doesn't help to increase stack limit.
-I suppose this was caused by:
+> I wonder which machine that is, given that most of us are using C8000 or
+> rp3440 that only support 2x2 CPUs, or even older cruft.
 
-commit 4a1db15878aacb89e8f24c98a2f96fad6db3f967
-Author: Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Thu Jun 29 23:04:57 2023 -0700
+As I wrote in the changelog:
+I've now seen a 6-way SMP rp4440 machine, so increase minimum
+number of CPUs to 8 for 64-bit kernels.
 
-     parisc: fix expand_stack() conversion
+I do have access to it.
 
-     commit ea3f8272876f2958463992f6736ab690fde7fa9c upstream.
-
-     In commit 8d7071af8907 ("mm: always expand the stack with the mmap write
-     lock held") I tried to deal with the remaining odd page fault handling
-     cases.  The oddest one is ia64, which has stacks that grow both up and
-     down.  And because ia64 was _so_ odd, I asked people to verify the end
-     result.
-
-     But a close second oddity is parisc, which is the only one that has a
-     main stack growing up (our "CONFIG_STACK_GROWSUP" config option).  But
-     it looked obvious enough that I didn't worry about it.
-
-     I should have worried a bit more.  Not because it was particularly
-     complex, but because I just used the wrong variable name.
-
-     The previous vma isn't called "prev", it's called "prev_vma". Blush.
-
-     Fixes: 8d7071af8907 ("mm: always expand the stack with the mmap write lock held")
-     Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-Dave
-
--- 
-John David Anglin  dave.anglin@bell.net
-
+Helge
