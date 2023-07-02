@@ -2,175 +2,76 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EEBF744E35
-	for <lists+linux-parisc@lfdr.de>; Sun,  2 Jul 2023 16:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA92C744E41
+	for <lists+linux-parisc@lfdr.de>; Sun,  2 Jul 2023 17:08:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjGBOvM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 2 Jul 2023 10:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50876 "EHLO
+        id S229750AbjGBPIN (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 2 Jul 2023 11:08:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229584AbjGBOvM (ORCPT
+        with ESMTP id S229579AbjGBPIM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 2 Jul 2023 10:51:12 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DCBAE69;
-        Sun,  2 Jul 2023 07:51:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1688309457; x=1688914257; i=deller@gmx.de;
- bh=mIIfORQoXVd4FidkQT6At7/JYvBsefCZTwJLJV8EidU=;
- h=X-UI-Sender-Class:Date:From:To:Subject;
- b=cK0J7RNpzpwqiF/uBOepoFooh3DRvJ5j99RSLT9Lb6ktaGgixFn5dsqS3jrdGTrIe5cjz7r
- Y1YySM+sTJmLTjygae//nyS4ppkt1LArxrbI6HtPQTDwn0IX5JqorOH2+LrBcqfdKC4J591T8
- Z7HKfXVRU3UeKuSt5l3jevaLDBtWIrRpQNif4XTuPiyw3lm5WCX4Gp7zH3f6U7JYTOwUckyx0
- zIk8MeyWXZl8PeRs2D3t12NPAGSVP26NV3h0L6sqbJzmhBWfV1dobBFemGIHiVm+oL0StBlY2
- /WKEBYnUKtyzOUczNP70OVXfTcQYFoNoBQB2T3c9MgNENGOBdJEg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.159.131]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MMGRK-1qZHgU46Lu-00JNk0; Sun, 02
- Jul 2023 16:50:57 +0200
-Date:   Sun, 2 Jul 2023 16:50:55 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture fixes & updates for v6.5-rc1
-Message-ID: <ZKGOzzDGM1925iYg@p100>
+        Sun, 2 Jul 2023 11:08:12 -0400
+Received: from cmx-mtlrgo002.bell.net (mta-mtl-005.bell.net [209.71.208.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F144E67
+        for <linux-parisc@vger.kernel.org>; Sun,  2 Jul 2023 08:08:10 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [142.181.186.176]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 64A12DE6000A9025
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedviedruddtgdekgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucenucfjughrpefkffggfgfvhffutgfgsehtkeertddtfeejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeeitdduhfevleehjeduteehfeehkeeggfffueelveegffelffehgfegveehtdfhfeenucfkphepudegvddrudekuddrudekiedrudejieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedugedvrddukedurddukeeirddujeeipdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopedvpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhrtghpthhtoheplhhinhhugidqphgrrhhishgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdgruhhthhgpuhhsvghrpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpghgvohfkrfepveetpdfovfetjfhoshhtpegtmhigqdhmthhlrhhgohdttddv
+X-CM-Envelope: MS4xfOfAgZBlEdqNJolA4UffmpzH3hYDO1rDqEfOaXHFEN2O1c37JqVv/BXktVWeIYyG5xKXfoaev7BNyrVMvltX0x4xbimLc5jgTv8Fo/6dZPLfrJkGEEHh
+ nJ/QJL+hFUdBNfM4UGpbH3xHyZAv2e5k0Th+Hs/ftHuqByan6Cf8I7qaigN5YmD+RiUF4BzcafZxb50wVvQATYVu7wcZAJG+2hvet7PQtqxMUxQmr3hv4Gp4
+ gg0nM7+aKPCidqAfDLd15ZYTjqcb8Scrbr5ERLt3ai4=
+X-RazorGate-Vade-Verdict: clean 0
+X-CM-Analysis: v=2.4 cv=QbcFAuXv c=1 sm=1 tr=0 ts=64a192d7
+ a=4B+q39mD0Bm0IdZjDiNhQQ==:117 a=4B+q39mD0Bm0IdZjDiNhQQ==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=t28vcC8J_x0fSPyDT2sA:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+X-RazorGate-Vade-Classification: clean
+Received: from [192.168.2.49] (142.181.186.176) by cmx-mtlrgo002.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 64A12DE6000A9025; Sun, 2 Jul 2023 11:08:07 -0400
+Message-ID: <612eaa53-6904-6e16-67fc-394f4faa0e16@bell.net>
+Date:   Sun, 2 Jul 2023 11:08:07 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:5SQMyxN27s4NHfBi/JuO/f6Ggnre/285bRtxkRnGdAFiMXW8xSM
- Ey4vkXK+s1se3EEx6VA5fZtduvigp+XIMiaHggkpGPAsVswldNf96TmIjgyeve4/Pz8K7dM
- RFeKt1u0xp8S+2OI95vU2wSkIAa6IsogDdII7jw9BUkIyGjbwNUq4uuzg9CWNVRH+qQ8gLr
- 32eF4s2h6LZPf8IgRMZQA==
-UI-OutboundReport: notjunk:1;M01:P0:hS39Y22vQaA=;ePO6xmyNedcMuJ2RXYVWS+YUuDa
- jg9cIZMRPiIxImLFiqcyg1me4sy8OvgPj4FFqRnDfMqOUCHrhgfqkQyJ59viBFwRSCXWb8hr/
- FdCm8URovs0vSx8D9597w1mdsY5EHv3qgwgJdSPM6q3cbS13VppytwF3fFNaRUyubOOmSr7pK
- v2px7ZdkCbLYU20+n6IW8+HrlD+l3lDXeVxoN8UMBazR5Dh7mecenOFDTu3Mp5CHYp+D9pWzs
- DRPX9jWBgEaEQIAAG/A4ma4s6y78yIjifHXLO0a1ugwMT2WasjgWYJtTie5VzNZwHmSwnQQKH
- eZ1GHdmdoqUQvQgQcRep3V/y0V02G8wb1ctIJ/O7NIBQ5s7zBhA1mA1VqDcyERXNXL8ykpLAG
- +NTHNkITidACunbg93zMHZvgjAb0jeXRdgJhZdoi1h6dddCeLButK+MLGg7HVCvEqfjjFMzAn
- vsdyjf4CEoxP2xM8OlKqNIWIjU5JeiuKLDXs8Hb90crcbU5R90ti3/9yjfJ4iURCA0AiDhotD
- 7BZxsMJDy9KRXjdFzuBtz+VDgQOfFitbMl+TiTK8ViOpqHc+Ug28AsPMU+YjNpqyWUDhKbhO1
- Apna4qTR2bn+0KrwubBn0kns59LkYS4PN6Gc2DxYqCYa95ypp5rdhcxkenKwuPMEUMXd1fvN1
- oltfFmoCFZ4hcl9zxt6opJijpQgVXEp/QrM6OUBY+uCodROT/veF930E07ogONjxMlpZn02dn
- +gmLBzPsI2tG5SYQwa5YSAvViRbt+mE+MPuXHt24CbHiXIibUDJ5lCdYlg3htMpFOyewEnvnP
- cQJcUQvXulXN4oGKUins3q5C0Dptu4DCKHEsRUR+Fa6nz+QRZUSkpv1Pf2DpsJZSZ2zWku9Sm
- Fy8n2XtYr573wbbyOyEBcKCQr7vgE9ong/vI/lWTRDDLsyLR4JE/Moz4mjTkiMPASm8qDytdr
- sHi1ow==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To:     linux-parisc <linux-parisc@vger.kernel.org>
+From:   John David Anglin <dave.anglin@bell.net>
+Subject: execv: Argument list too long
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+With Linux  6.1.37+, there is a problem with argument lists:
 
-please pull the fixes & upates for the parisc architecture for kernel 6.5-rc1.
+| gcc -E -undef     -I../include -I/home/dave/gnu/glibc/objdir/csu -I/home/dave/gnu/glibc/objdir  -I../sysdeps/unix/sysv/linux/hppa 
+-I../sysdeps/hppa/nptl  -I../sysdeps/unix/sysv/linux/include -I../sysdeps/unix/sysv/linux  -I../sysdeps/nptl -I../sysdeps/pthread  
+-I../sysdeps/gnu  -I../sysdeps/unix/inet -I../sysdeps/unix/sysv  -I../sysdeps/unix  -I../sysdeps/posix -I../sysdeps/hppa/hppa1.1  
+-I../sysdeps/wordsize-32 -I../sysdeps/ieee754/flt-32  -I../sysdeps/ieee754/dbl-64 -I../sysdeps/hppa/fpu  -I../sysdeps/hppa  -I../sysdeps/ieee754 
+-I../sysdeps/generic  -I.. -I../libio -I. -nostdinc -isystem /usr/lib/gcc/hppa-linux-gnu/12/include -isystem /usr/include -D_LIBC_REENTRANT  
+-include ../include/libc-symbols.h -DTOP_NAMESPACE=glibc -x assembler-with-cpp - \
+            > /home/dave/gnu/glibc/objdir/Versions.v.iT
+make[2]: /bin/sh: Argument list too long
+gcc: fatal error: cannot execute '/usr/lib/gcc/hppa-linux-gnu/12/cc1': execv: Argument list too long
+compilation terminated.
 
-This patchset adds the missing cacheflush() syscall and fixes the STI
-(text) console on machines which allow only 64-bit firmware calls.
-The other patches fix warnings for W=1 and refresh the defconfigs.
+Linux 6.1.36+ is okay.
 
-Thanks!
-Helge
+It doesn't help to increase stack limit.
 
-----------------------------------------------------------------
+Dave
 
-The following changes since commit e55e5df193d247a38a5e1ac65a5316a0adcc22fa:
+-- 
+John David Anglin  dave.anglin@bell.net
 
-  csky: fix up lock_mm_and_find_vma() conversion (2023-06-29 23:34:29 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.5-rc1
-
-for you to fetch changes up to 4ad1218bed3d1ea4c5fd28588f8628b92df30ad7:
-
-  parisc: Refresh defconfigs (2023-06-30 17:19:49 +0200)
-
-----------------------------------------------------------------
-parisc architecture fixes and updates for kernel v6.5-rc1:
-
-* Add missing cacheflush() syscall
-* Fix STI console on 64-bit-only machines
-* Move kernel debug options to Kconfig.debug
-* Lots of warning fixes in arch/parisc/ and drivers/parisc/ when
-  compiled with W=1
-* Enable some more graphics drivers in refreshed defconfigs
-
-----------------------------------------------------------------
-Helge Deller (29):
-      parisc: Move TLB_PTLOCK option to Kconfig.debug
-      parisc: Check if IRQs are disabled when calling arch_local_irq_restore()
-      parisc: Add cacheflush() syscall
-      parisc: Fix missing prototype warning for arch_report_meminfo()
-      parisc: Default to 8 CPUs for 64-bit kernel
-      sticon/parisc: Allow 64-bit STI calls in PDC firmware abstration
-      sticon/parisc: Fix STI console on 64-bit only machines
-      parisc: sba_iommu: Fix kdoc warnings
-      parisc: Fold 32-bit compat code into audit_classify_syscall()
-      parisc: drivers: Fix kdoc warnings
-      parisc: firmware: Fix kdoc warnings
-      parisc: pdc_chassis: Fix kdoc warnings
-      parisc: module: Mark symindex __maybe_unused
-      parisc: Mark image_size __maybe_unused in perf_write()
-      parisc: pci-dma: Make pcxl_alloc_range() static
-      parisc: pdc_stable: Fix kdoc and compiler warnings
-      parisc: ccio-dma: Fix kdoc and compiler warnings
-      parisc: sys_parisc: parisc_personality() is called from asm code
-      parisc: processor: Fix kdoc for init_cpu_profiler()
-      parisc: traps: Mark functions static
-      parisc: init: Drop unused variable end_paddr
-      parisc: unwind: Mark start and stop variables __maybe_unused
-      parisc: signal: Mark do_notify_resume() and sys_rt_sigreturn() asmlinkage
-      parisc: unaligned: Include header file to avoid missing prototype warnings
-      parisc: lba_pci: Mark two variables __maybe_unused
-      parisc: dino: Make dino_init() returning void
-      parisc: Move init function declarations into header file
-      parisc: irq: Add irq-related function declarations
-      parisc: Refresh defconfigs
-
- arch/parisc/Kconfig                         |  12 +--
- arch/parisc/Kconfig.debug                   |  11 ++
- arch/parisc/configs/generic-32bit_defconfig |  54 ++++++++--
- arch/parisc/configs/generic-64bit_defconfig |  47 ++++++--
- arch/parisc/include/asm/irqflags.h          |   5 +
- arch/parisc/include/asm/pdc.h               |   4 +-
- arch/parisc/include/asm/processor.h         |  35 ++++++
- arch/parisc/include/uapi/asm/cachectl.h     |  12 +++
- arch/parisc/kernel/audit.c                  |   9 +-
- arch/parisc/kernel/cache.c                  |  49 +++++++++
- arch/parisc/kernel/compat_audit.c           |  16 ---
- arch/parisc/kernel/drivers.c                |  33 +++---
- arch/parisc/kernel/firmware.c               |  61 ++++++-----
- arch/parisc/kernel/irq.c                    |   5 +-
- arch/parisc/kernel/module.c                 |   2 +-
- arch/parisc/kernel/pci-dma.c                |   2 +-
- arch/parisc/kernel/pdc_chassis.c            |  17 +--
- arch/parisc/kernel/pdt.c                    |   1 +
- arch/parisc/kernel/perf.c                   |   2 +-
- arch/parisc/kernel/processor.c              |   2 +-
- arch/parisc/kernel/setup.c                  |  23 +---
- arch/parisc/kernel/signal.c                 |  10 +-
- arch/parisc/kernel/sys_parisc.c             |   3 +-
- arch/parisc/kernel/syscalls/syscall.tbl     |   1 +
- arch/parisc/kernel/traps.c                  |   7 +-
- arch/parisc/kernel/unaligned.c              |   1 +
- arch/parisc/kernel/unwind.c                 |   5 +-
- arch/parisc/mm/init.c                       |   2 -
- drivers/parisc/ccio-dma.c                   |  18 ++--
- drivers/parisc/dino.c                       |   5 +-
- drivers/parisc/eisa.c                       |   2 +-
- drivers/parisc/lba_pci.c                    |   8 +-
- drivers/parisc/pdc_stable.c                 |  36 ++++++-
- drivers/parisc/sba_iommu.c                  |  32 +++---
- drivers/video/fbdev/stifb.c                 |   4 +-
- drivers/video/sticore.c                     | 159 ++++++++++++++++++----------
- include/video/sticore.h                     |  42 ++++----
- 37 files changed, 485 insertions(+), 252 deletions(-)
- create mode 100644 arch/parisc/include/uapi/asm/cachectl.h
