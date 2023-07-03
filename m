@@ -2,61 +2,64 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD6DE745CB1
-	for <lists+linux-parisc@lfdr.de>; Mon,  3 Jul 2023 14:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 694CB745CD5
+	for <lists+linux-parisc@lfdr.de>; Mon,  3 Jul 2023 15:06:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231132AbjGCM7Y (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 3 Jul 2023 08:59:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34752 "EHLO
+        id S230028AbjGCNGy (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 3 Jul 2023 09:06:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230162AbjGCM7X (ORCPT
+        with ESMTP id S230452AbjGCNGx (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 3 Jul 2023 08:59:23 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C01CA;
-        Mon,  3 Jul 2023 05:59:23 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-579d5d89b41so28328217b3.2;
-        Mon, 03 Jul 2023 05:59:22 -0700 (PDT)
+        Mon, 3 Jul 2023 09:06:53 -0400
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99CAF1B5;
+        Mon,  3 Jul 2023 06:06:52 -0700 (PDT)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5703cb4bcb4so46569627b3.3;
+        Mon, 03 Jul 2023 06:06:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688389162; x=1690981162;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1dr4HQZ0ybmeQ6CjGlpt9Gr7qhnsRYi0VYGFtrd/Jo0=;
-        b=D16Idpx2//9PttSQGyKl3HqArfUyqy16bxOy9Mf3li5RWR9EMB4eT9ksxx22AZeN6v
-         pqW+OVJ0Wz5/ZDgnIOYBIWcY0nWWuG0KklX4Gcw9JQFQs/hQLy4sy0IiONeet5ADkkK+
-         g/XCyr81rynnVIlDKoWuE6753xutfw4woO7s9LwRFGEp6HI9bb0/thY/WLUCxyuDBAUB
-         obzPpaHtr/BYtqvJXHxc2Q7jjteAcA4H6vdnhw0ltjpDGxmKdpqOBzPjV79U4JoesdVM
-         IKvL+jH5pHkRzbcWVN6fLchZHXhqDIV87RHLBHPr0/DDb28z3Zo9pPp/2ViEN/E9KIBa
-         0c7g==
+        d=gmail.com; s=20221208; t=1688389612; x=1690981612;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=E/UIpD/SrkLTx6OVnCwv/YXnUS5IysH+eycuEeM76/E=;
+        b=BBdBGotrRDCts8dsP+Iqv/KbwxLpKRS1msq2KDaSkoTMetauVEE001eZ4UjhUIZreP
+         bjwNopiQ0m1B9EO9eE/3xGVuIz6rQ93UmvAGcUoea8RWq1Brz12qzj70ejIhQV5SOlSq
+         0nCvwbkGIiKH0DLTLfrdZ6IzV2uZ+Fm7QEQdiTYzewuoHvP41Xfo4Nn4cHoUTSLXKQNO
+         iKnM95wMBGQxrNJWkRjvHVifhBD0CqX3lOzvzHcZWWhqtwcL8edg28RAuPyPVAXu0dp/
+         Y9mqmSB57NXKwFrbpHX2M43NYVpXvh32xZ6ogH6Q26ER+hLl38uLIhLeR5IltMOZY7Pz
+         +xDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688389162; x=1690981162;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1dr4HQZ0ybmeQ6CjGlpt9Gr7qhnsRYi0VYGFtrd/Jo0=;
-        b=FLRpONsEZISw6CYEK3QOWO/M0VUhk7EsSRkgSdpz0YaJiLC8xstxMlUAaOJ2EfHWhf
-         ufPVDuiW5QAR3IPQSgHY7dGp/D0Ubln0EPbOaCxYx+qJ2ZA3cin9FMgco5un+WIXvDxN
-         RhFVPcSHqT0M79snYjWfpEq6+MKDZ97WwqOysjtZCDR3KGvtbu2T8QJ7QS3q7KUqsA6H
-         /2/pORuI/GGt2ZX7wYZ4EU9Ygt11DI9qDZM78EICsN+ECabwGDmNInMQr/AmmQhFmeoK
-         ZHe9jN02CT0XAnQQ0iFSspMKFjmtZORhr5vFqJoZR+Dj4543NPz+cMH+Hkix+pwK2hUq
-         CWJQ==
-X-Gm-Message-State: ABy/qLZc/PrtYvGVTzY+44K3AmTM8lxkoeVE9DUs8vWktQ2/d2iU3FOp
-        13TzRowY2mjHfXF/0rV1qfCUto1/C5I=
-X-Google-Smtp-Source: APBJJlGUqaPIkZmp3nuwF1k4F7nznp3iQcro+DUawGP1F6w3+MosNO5Eifq6dFqfi2BcNHdtt+VULA==
-X-Received: by 2002:a81:68c6:0:b0:559:f18d:ee94 with SMTP id d189-20020a8168c6000000b00559f18dee94mr8862369ywc.10.1688389162069;
-        Mon, 03 Jul 2023 05:59:22 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688389612; x=1690981612;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E/UIpD/SrkLTx6OVnCwv/YXnUS5IysH+eycuEeM76/E=;
+        b=UstGSvCfGTbUvm8fdhpblP6UlufMxFetPxvV6lTmQFIJSgAF7ivIqnXGQjYcYZVMre
+         8ZmDEHJlEngoOlXKUdECSGqnN6f1OAcXx0KIdV8GaqpQhfY4egdVeJeNiBsOCpJEYbQr
+         DWr46KxgjIvAuwXJTQAcItJenbgN1/93wzM/FxeD5Iyh8yyhpTrlFmrAeh7WdHnxTFn+
+         l9M3ibMG/ltIWK2VjCwV3z5nx6yf15ovyFZxOThltzC1MQAqm/h1NlV0T46b4yNcC4pA
+         wK8kbE9jXT93/I5J/aqDMlKCv+hW77P5RH8XljR+Qm0IMBfhzjvGX9zkJz7xBOvBprvC
+         bteQ==
+X-Gm-Message-State: ABy/qLaCplyDdgj53BKFPBtgYV+z9HAs8ohQ2dvqtWxoS+Yo/3izsKWz
+        vTbPd7IEKSkN4jdVp5B0gHR21J7kJ9g=
+X-Google-Smtp-Source: APBJJlFA4OoXPKC76ahBQyNUCz3bRAW4u9bv/d0+w2rQ8FYfKFA1/1KBcuOobmGfYN5OlK9av2OMNg==
+X-Received: by 2002:a81:ab52:0:b0:570:670c:7fe3 with SMTP id d18-20020a81ab52000000b00570670c7fe3mr11162420ywk.46.1688389610179;
+        Mon, 03 Jul 2023 06:06:50 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id m15-20020a0dca0f000000b00578942e2a86sm1534329ywd.60.2023.07.03.05.59.20
+        by smtp.gmail.com with ESMTPSA id t11-20020a81460b000000b005616d72f435sm5093236ywa.116.2023.07.03.06.06.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Jul 2023 05:59:21 -0700 (PDT)
+        Mon, 03 Jul 2023 06:06:49 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <36986dd6-4973-65a2-3490-84d3c0967adc@roeck-us.net>
-Date:   Mon, 3 Jul 2023 05:59:18 -0700
+Message-ID: <b886c0ee-2ef6-5ec9-17e0-eb66c63a61d4@roeck-us.net>
+Date:   Mon, 3 Jul 2023 06:06:47 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
+Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review - hppa argument list too long
 Content-Language: en-US
+From:   Guenter Roeck <linux@roeck-us.net>
 To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Helge Deller <deller@gmx.de>, stable@vger.kernel.org,
         linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
@@ -77,11 +80,10 @@ References: <20230629184151.888604958@linuxfoundation.org>
  <CAHk-=wgczy0dxK9vg-YWbq6YLP2gP8ix7Ys9K+Mr=S2NEj+hGw@mail.gmail.com>
  <c21e8e95-3353-fc57-87fd-271b2c9cc000@roeck-us.net>
  <CAHk-=wj+F8oGK_Hx6YSPJpwL-xyL+-q2SxtxYE0abtZa_jSkLw@mail.gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 6.4 00/28] 6.4.1-rc1 review - hppa argument list too long
-In-Reply-To: <CAHk-=wj+F8oGK_Hx6YSPJpwL-xyL+-q2SxtxYE0abtZa_jSkLw@mail.gmail.com>
+ <36986dd6-4973-65a2-3490-84d3c0967adc@roeck-us.net>
+In-Reply-To: <36986dd6-4973-65a2-3490-84d3c0967adc@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -93,65 +95,70 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 7/2/23 23:20, Linus Torvalds wrote:
-> On Sun, 2 Jul 2023 at 22:33, Guenter Roeck <linux@roeck-us.net> wrote:
+On 7/3/23 05:59, Guenter Roeck wrote:
+> On 7/2/23 23:20, Linus Torvalds wrote:
+>> On Sun, 2 Jul 2023 at 22:33, Guenter Roeck <linux@roeck-us.net> wrote:
+>>>
+>>> Here you are:
+>>>
+>>> [   31.188688] stack expand failed: ffeff000-fff00000 (ffefeff2)
 >>
->> Here you are:
+>> Ahhah!
 >>
->> [   31.188688] stack expand failed: ffeff000-fff00000 (ffefeff2)
+>> I think the problem is actually ridiculously simple.
+>>
+>> The thing is, the parisc stack expands upwards. That's obvious. I've
+>> mentioned it several times in just this thread as being the thing that
+>> makes parisc special.
+>>
+>> But it's *so* obvious that I didn't even think about what it really implies.
+>>
+>> And part of all the changes was this part in expand_downwards():
+>>
+>>          if (!(vma->vm_flags & VM_GROWSDOWN))
+>>                  return -EFAULT;
+>>
+>> and that will *always* fail on parisc, because - as said multiple
+>> times - the parisc stack expands upwards. It doesn't have VM_GROWSDOWN
+>> set.
+>>
+>> What a dum-dum I am.
+>>
+>> And I did it that way because the *normal* stack expansion obviously
+>> wants it that way and putting the check there not only made sense, but
+>> simplified other code.
+>>
+>> But fs/execve.c is special - and only special for parisc - in that it
+>> really wants to  expand a normally upwards-growing stack downwards
+>> unconditionally.
+>>
+>> Anyway, I think that new check in expand_downwards() is the right
+>> thing to do, and the real fix here is to simply make vm_flags reflect
+>> reality.
+>>
+>> Because during execve, that stack that will _eventually_ grow upwards,
+>> does in fact grow downwards.  Let's make it reflect that.
+>>
+>> We already do magical extra setup for the stack flags during setup
+>> (VM_STACK_INCOMPLETE_SETUP), so extending that logic to contain
+>> VM_GROWSDOWN seems sane and the right thing to do.
+>>
+>> IOW, I think a patch like the attached will fix the problem for real.
+>>
+>> It needs a good commit log and maybe a code comment or two, but before
+>> I bother to do that, let's verify that yes, it does actually fix
+>> things.
+>>
 > 
-> Ahhah!
-> 
-> I think the problem is actually ridiculously simple.
-> 
-> The thing is, the parisc stack expands upwards. That's obvious. I've
-> mentioned it several times in just this thread as being the thing that
-> makes parisc special.
-> 
-> But it's *so* obvious that I didn't even think about what it really implies.
-> 
-> And part of all the changes was this part in expand_downwards():
-> 
->          if (!(vma->vm_flags & VM_GROWSDOWN))
->                  return -EFAULT;
-> 
-> and that will *always* fail on parisc, because - as said multiple
-> times - the parisc stack expands upwards. It doesn't have VM_GROWSDOWN
-> set.
-> 
-> What a dum-dum I am.
-> 
-> And I did it that way because the *normal* stack expansion obviously
-> wants it that way and putting the check there not only made sense, but
-> simplified other code.
-> 
-> But fs/execve.c is special - and only special for parisc - in that it
-> really wants to  expand a normally upwards-growing stack downwards
-> unconditionally.
-> 
-> Anyway, I think that new check in expand_downwards() is the right
-> thing to do, and the real fix here is to simply make vm_flags reflect
-> reality.
-> 
-> Because during execve, that stack that will _eventually_ grow upwards,
-> does in fact grow downwards.  Let's make it reflect that.
-> 
-> We already do magical extra setup for the stack flags during setup
-> (VM_STACK_INCOMPLETE_SETUP), so extending that logic to contain
-> VM_GROWSDOWN seems sane and the right thing to do.
-> 
-> IOW, I think a patch like the attached will fix the problem for real.
-> 
-> It needs a good commit log and maybe a code comment or two, but before
-> I bother to do that, let's verify that yes, it does actually fix
-> things.
+> Yes, it does. I'll run a complete qemu test with it applied to be sure
+> there is no impact on other architectures (yes, I know, that should not
+> be the case, but better safe than sorry). I'll even apply
+> https://lore.kernel.org/all/20230609075528.9390-12-bhe@redhat.com/raw
+> to be able to test sh4.
 > 
 
-Yes, it does. I'll run a complete qemu test with it applied to be sure
-there is no impact on other architectures (yes, I know, that should not
-be the case, but better safe than sorry). I'll even apply
-https://lore.kernel.org/all/20230609075528.9390-12-bhe@redhat.com/raw
-to be able to test sh4.
+Meh, should have figured. That fixes one problem with sh4 builds
+and creates another. Should have figured.
 
 Guenter
 
