@@ -2,50 +2,67 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7E9F746448
-	for <lists+linux-parisc@lfdr.de>; Mon,  3 Jul 2023 22:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD1F2746457
+	for <lists+linux-parisc@lfdr.de>; Mon,  3 Jul 2023 22:42:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229793AbjGCUlF (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 3 Jul 2023 16:41:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44944 "EHLO
+        id S229662AbjGCUml (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 3 Jul 2023 16:42:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjGCUlE (ORCPT
+        with ESMTP id S229450AbjGCUmk (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 3 Jul 2023 16:41:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A021FE5C
-        for <linux-parisc@vger.kernel.org>; Mon,  3 Jul 2023 13:40:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688416816;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=qEyfUvIleE/DMwxJ9dU5lavWxgzOCjVd+5vXxKWRfUM=;
-        b=d/FwSPsRvG0nxuZWcWx+SlDcXvnoXG+b6srwHSEl6N7i1umFzVHKhkzdPJ165Lqrv2Drd6
-        a7gz6EHkKJO07ciInFiq2ge6vPk+9HgJPxcqR/jXME47CttW5sNJK52emG2/4xQXzcoDsh
-        C2oL8rGCYRn9yY9KqExBZ0yRS39ISXI=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-262-_xYCz6DdNyukg9a3-lbWZw-1; Mon, 03 Jul 2023 16:40:11 -0400
-X-MC-Unique: _xYCz6DdNyukg9a3-lbWZw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF7D71C07240;
-        Mon,  3 Jul 2023 20:40:10 +0000 (UTC)
-Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 8C2E140C2063;
-        Mon,  3 Jul 2023 20:40:10 +0000 (UTC)
-Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
-        id 7B5273096A40; Mon,  3 Jul 2023 20:40:10 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 77AB43F7CF;
-        Mon,  3 Jul 2023 22:40:10 +0200 (CEST)
-Date:   Mon, 3 Jul 2023 22:40:10 +0200 (CEST)
-From:   Mikulas Patocka <mpatocka@redhat.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-cc:     Vegard Nossum <vegard.nossum@oracle.com>,
+        Mon, 3 Jul 2023 16:42:40 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABB9AE5D
+        for <linux-parisc@vger.kernel.org>; Mon,  3 Jul 2023 13:42:39 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-51d805cb33aso6138678a12.3
+        for <linux-parisc@vger.kernel.org>; Mon, 03 Jul 2023 13:42:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1688416958; x=1691008958;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ijJxlaJRztSEYO9jtYbvIWX/pyHBzuO2XJufLm4d5Y0=;
+        b=P1cXLRJQAcIdtW5zSvCi/TynoKFrtpVKnIuWB+P4Ojw04mqCR3n/cDVNCVwuP07DU6
+         +z2L7zqogaU8zpYiNF7sK2sjCD8tDyO86MI4AFsC7Yqc/J/nwD7pr+Djoi5O+3gOafak
+         ALXIQf4W4aekFO2hHK+LG9YyNS4Ic6C8LCTX8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688416958; x=1691008958;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ijJxlaJRztSEYO9jtYbvIWX/pyHBzuO2XJufLm4d5Y0=;
+        b=KmOlVrxgYMNW7yhM8o0iQ46F8tWNcT9b2tT6wh3G85NYUPzkR4QAk0aHAG+gS8HHyV
+         skefCbe9plNtmv+U85yA8LyPUkScydFpaesXiK6KQdbCWJzeo56vAPUe7oDk5ldgAQ75
+         CxLEmT4TV6tE+hi+J1UMcyXaPEQ9QoC/QSJrWh4DZIe42+zzffTnlMmhFWg4Ah7zk1eL
+         YbPWryAKVhnZsJ04NT1MwDTpAIK1fs7Mjk/QSWHrHsJrQIkhOJQT1tkTQ24t3pqJdMgP
+         kBKpMqP0AeV6ljiMmXvRvY+/hs1/GoQ3seMMNHSMSBzMsU2/lWMaZwSEolU+BYEZeShg
+         HCiQ==
+X-Gm-Message-State: ABy/qLaJeOi4JgZg3y/+ncAFBdk9KPRqPae7z8fqcuPHM6EYpoIj+PFA
+        L+SH2K6VH3fg/+8AB78NjtgQSdBTkl3syP0mzwP5e9WB
+X-Google-Smtp-Source: APBJJlGbrwnxYHTEdJWHeY7EhlzV3lfsVMIE6vsJTkdLEjUMwvzUDa0tznyAkc45dkLRjhr2zRPaKA==
+X-Received: by 2002:aa7:d78b:0:b0:51e:d60:b6b5 with SMTP id s11-20020aa7d78b000000b0051e0d60b6b5mr3608242edq.41.1688416958069;
+        Mon, 03 Jul 2023 13:42:38 -0700 (PDT)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id q7-20020aa7d447000000b005183ce42da9sm10794123edr.18.2023.07.03.13.42.37
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Jul 2023 13:42:37 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-51cb40f13f6so6127850a12.2
+        for <linux-parisc@vger.kernel.org>; Mon, 03 Jul 2023 13:42:37 -0700 (PDT)
+X-Received: by 2002:aa7:c64c:0:b0:51e:ca7:a107 with SMTP id
+ z12-20020aa7c64c000000b0051e0ca7a107mr4224909edr.31.1688416956905; Mon, 03
+ Jul 2023 13:42:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <ccadf5d7-e22a-ab5b-21e8-18a788251845@redhat.com>
+ <CAHk-=wj=vEtN54KzMHDrguaS8zNg4ppoFP4mm7vVThotGo53nQ@mail.gmail.com> <a8a1cd41-1246-e2cd-10ea-9bc571148afe@redhat.com>
+In-Reply-To: <a8a1cd41-1246-e2cd-10ea-9bc571148afe@redhat.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Mon, 3 Jul 2023 13:42:19 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whEMfVA2EOQVdo03vZbTLs_0q=1xg9dCeZ12mv=WhnUqw@mail.gmail.com>
+Message-ID: <CAHk-=whEMfVA2EOQVdo03vZbTLs_0q=1xg9dCeZ12mv=WhnUqw@mail.gmail.com>
+Subject: Re: [PATCH] parisc: fix inability to allocate stack pages on exec
+To:     Mikulas Patocka <mpatocka@redhat.com>
+Cc:     Vegard Nossum <vegard.nossum@oracle.com>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Frank Scheiner <frank.scheiner@web.de>,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
@@ -53,57 +70,26 @@ cc:     Vegard Nossum <vegard.nossum@oracle.com>,
         John David Anglin <dave@parisc-linux.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         linux-parisc@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] parisc: fix inability to allocate stack pages on exec
-In-Reply-To: <CAHk-=wj=vEtN54KzMHDrguaS8zNg4ppoFP4mm7vVThotGo53nQ@mail.gmail.com>
-Message-ID: <a8a1cd41-1246-e2cd-10ea-9bc571148afe@redhat.com>
-References: <ccadf5d7-e22a-ab5b-21e8-18a788251845@redhat.com> <CAHk-=wj=vEtN54KzMHDrguaS8zNg4ppoFP4mm7vVThotGo53nQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On Mon, 3 Jul 2023 at 13:40, Mikulas Patocka <mpatocka@redhat.com> wrote:
+>
+> (please, also send this patch to Greg, so that it will be included in
+> 6.4.2)
 
+Already part of the -rc1 review commits
 
-On Mon, 3 Jul 2023, Linus Torvalds wrote:
+    https://lore.kernel.org/lkml/20230703184519.261119397@linuxfoundation.org/
 
-> On Mon, 3 Jul 2023 at 12:59, Mikulas Patocka <mpatocka@redhat.com> wrote:
-> >
-> > The patch 8d7071af8907 ("mm: always expand the stack with the mmap write
-> > lock held") breaks PA-RISC.
-> >
-> > The breakage happens if we attempt to pass more arguments to execve than
-> > what fits into the initial stack page - we get -E2BIG in such a case.
-> >
-> > The reason for the breakage is that the commit 8d7071af8907 adds the test
-> > "if (!(vma->vm_flags & VM_GROWSDOWN)) return -EFAULT;" to the function
-> > expand_downwards.
-> 
-> Heh. See
-> 
->    https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f66066bc5136f25e36a2daff4896c768f18c211e
-> 
-> which fixes this differently (and, I think, much better).
-> 
-> Just removing the VM_GROWSDOWN test will actually break some of the other users.
-> 
-> Notably the new and improved expand_stack() function that now handles
-> all the complicated *cough*ia64*cough* cases automatically, which
-> allowed unifying the page fault handling code around this area.
-> 
->               Linus
+Thanks,
 
-Yes - I confirm that this fixes it.
-
-(please, also send this patch to Greg, so that it will be included in 
-6.4.2)
-
-Mikulas
-
+            Linus
