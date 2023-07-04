@@ -2,126 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 668F1746A3F
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jul 2023 09:01:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C958F746A5E
+	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jul 2023 09:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230014AbjGDHB0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 4 Jul 2023 03:01:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37900 "EHLO
+        id S229915AbjGDHPc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 4 Jul 2023 03:15:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230467AbjGDHBY (ORCPT
+        with ESMTP id S229647AbjGDHPc (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 4 Jul 2023 03:01:24 -0400
-Received: from mail-ua1-x935.google.com (mail-ua1-x935.google.com [IPv6:2607:f8b0:4864:20::935])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C9E4E47
-        for <linux-parisc@vger.kernel.org>; Tue,  4 Jul 2023 00:01:11 -0700 (PDT)
-Received: by mail-ua1-x935.google.com with SMTP id a1e0cc1a2514c-7919342c456so1251774241.2
-        for <linux-parisc@vger.kernel.org>; Tue, 04 Jul 2023 00:01:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688454070; x=1691046070;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9pLLIHKvmmk4zC9SwsHcTfPMPfVegexthgZQWT/NwCU=;
-        b=a+pGwLbbwJCReamWGknbZ4TgzzLts/gLAaV9nWXDmYXu0RTVp+HIc+Pa5JAYWjgpdF
-         H3fX/q7DfDx0zMsbAPblAmXluwU/A9dc0AhZezBWT79vpiLO+o1tuCH6sGyzqFChV2dC
-         Uc1eqxPxYnhMHR4q6neEN0OIycj2nx/jme2PN/0FqU44PITVQ/4tg+vyfWar0vJmN1eO
-         fP+xS2MijKwNJc4tHpHwMpSqMHBYMnThA8K7aVAiPcJOekMHvfxGmpnIPr97LeieNmJW
-         SQczBMVI3gEGRq3onvjyWCQhxP0OHv0lDiSOehDBzyPnTlqafLzgjAM6ds8/zcm+lGjV
-         d7vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688454070; x=1691046070;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9pLLIHKvmmk4zC9SwsHcTfPMPfVegexthgZQWT/NwCU=;
-        b=Aez+KlpHd9lJp2QXQmZ+jk4EHSvvkgNuFELsprlu/RJa98cjlyzeWb2MzVrv8SJu3F
-         76hZqKSXTU/wCH12kkqSXufvYkiw9NsOidzOfiyQzgbNVti6omx9yrd11KzAjhEu9yeT
-         /Fy0i/hMNe+8sgIoeh7F3UwflBifMWcbXOgTfSKgcDrArg30Fq9lJ6PlU6Z8K3rgOtpv
-         xO88WMwg9h4zTIz0TiP5RctVUzaTVU6F/1RkfUZjtDBJHyf3CkyQoUsuaFmjLqFJ7FHU
-         pTJMV9j1OX+6nXqG9ln0D5phTmYojLbq703AVv6YJD4r7jUmhr+GNxXYJYlTtFjV4PtB
-         hXEg==
-X-Gm-Message-State: ABy/qLZryODFvyKRPftUrw0SiENL/1AtnmV3dT6HPhZdOgdkuuv6D+Nl
-        0p2a62YfrmuaKyjwW5EBbNQ5677nDaFNca5rzt7NNg==
-X-Google-Smtp-Source: APBJJlHHFru7hehy/Zd70AaP3FWkvc1cUSv1H/u4Os+sP54Zrm6/BsfpbzuKyGRVs/aUbzDELUweyKecQMONkFL4CGM=
-X-Received: by 2002:a67:f413:0:b0:444:c294:afc7 with SMTP id
- p19-20020a67f413000000b00444c294afc7mr3671389vsn.26.1688454070103; Tue, 04
- Jul 2023 00:01:10 -0700 (PDT)
+        Tue, 4 Jul 2023 03:15:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 229FA130;
+        Tue,  4 Jul 2023 00:15:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DFA96116A;
+        Tue,  4 Jul 2023 07:15:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1D3C433C7;
+        Tue,  4 Jul 2023 07:15:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688454927;
+        bh=Qx6SPa/FXBtKHsuhqwtcpwkMWYF76dpQTGSInwUFiQo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=fimT/YP/AwhUtgGvGKQgdcx3SzNIvCNt5RUuS9ji1RvM5vdWAfDmfhixbrbnTaj9p
+         Tk8ZV65fRATwJUd6IdHdAoqcns/a5N6xzLUlm4O/Tkj1HvnjwH4jaVpPJB1cwJ6lD3
+         lOX5CVIewQ7zemoDIRdUeyU5nmoLMFgq2q71zWD8hj56TNCZ/hqkLoObBMQ2lUrPSF
+         fNBR1YcW0VIUCrZmojkUIU99BpEZtJgGzx7Mop3MyaM9AiAUyDnuCZNBA2l4stl5D2
+         utvmVnQ3jYCiZiMu6XYBkbwnYdqOn5nwk3N5OH96xX1Uqx/6RnXygRzEXNCe7yeOi+
+         Ija1G9VDGSOjw==
+Received: from disco-boy.misterjones.org ([217.182.43.188] helo=www.loen.fr)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1qGaFw-00ALG1-JE;
+        Tue, 04 Jul 2023 08:15:24 +0100
 MIME-Version: 1.0
-References: <20230703184518.896751186@linuxfoundation.org>
-In-Reply-To: <20230703184518.896751186@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 4 Jul 2023 12:30:58 +0530
-Message-ID: <CA+G9fYueycAbx7DDR3S57d43UX49SOGnW6igQUZ0voEcapxdYw@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/15] 5.15.120-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        Helge Deller <deller@gmx.de>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Vishal Bhoj <vishal.bhoj@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Date:   Tue, 04 Jul 2023 08:15:24 +0100
+From:   Marc Zyngier <maz@kernel.org>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        kunit-dev@googlegroups.com, kvmarm@lists.linux.dev,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [linux-next:master] BUILD REGRESSION
+ 296d53d8f84ce50ffaee7d575487058c8d437335
+In-Reply-To: <202307032309.v4K1IBoR-lkp@intel.com>
+References: <202307032309.v4K1IBoR-lkp@intel.com>
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <7d3d61c694c0e57b096ff7af6277ed6b@kernel.org>
+X-Sender: maz@kernel.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 217.182.43.188
+X-SA-Exim-Rcpt-To: lkp@intel.com, akpm@linux-foundation.org, linux-mm@kvack.org, kunit-dev@googlegroups.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-parisc@vger.kernel.org, linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, 4 Jul 2023 at 00:27, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.120 release.
-> There are 15 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 05 Jul 2023 18:45:08 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.120-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 2023-07-03 16:11, kernel test robot wrote:
+> tree/branch:
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+> master
+> branch HEAD: 296d53d8f84ce50ffaee7d575487058c8d437335  Add linux-next
+> specific files for 20230703
+> 
 
-Following build regressions noticed on stable-rc 5.15.
-This build failure started happening from v5.15.119 from date June 28, 2023.
+[...]
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Unverified Error/Warning (likely false positive, please contact us if
+> interested):
+> 
+> arch/arm64/kvm/mmu.c:147:3-9: preceding lock on line 140
 
-Regressions found on parisc:
+This *is* a false positive. The function is entered with a lock
+held, it will exit with the lock held as well. Inside the body
+of the function, we release and reacquire the lock.
 
-  - build/gcc-11-allnoconfig
-  - build/gcc-11-defconfig
-  - build/gcc-11-tinyconfig
-
-Build errors:
-=============
-arch/parisc/include/asm/assembly.h: Assembler messages:
-arch/parisc/include/asm/assembly.h:75: Error: symbol `sp' is already defined
-arch/parisc/include/asm/assembly.h:77: Error: symbol `ipsw' is already defined
-make[3]: *** [scripts/Makefile.build:391: arch/parisc/kernel/head.o] Error 1
-arch/parisc/include/asm/assembly.h: Assembler messages:
-
-Links:
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.119-16-g66130849c020/testrun/18074467/suite/build/test/gcc-11-defconfig/log
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.119-16-g66130849c020/testrun/18074467/suite/build/test/gcc-11-defconfig/details/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.119-16-g66130849c020/testrun/18074467/suite/build/test/gcc-11-defconfig/history/
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
+         M.
+-- 
+Jazz is not dead. It just smells funny...
