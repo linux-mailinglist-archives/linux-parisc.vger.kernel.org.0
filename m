@@ -2,100 +2,115 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9963A7473C0
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jul 2023 16:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89C1A747E12
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Jul 2023 09:18:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231649AbjGDOL7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 4 Jul 2023 10:11:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40850 "EHLO
+        id S231131AbjGEHSB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 5 Jul 2023 03:18:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231544AbjGDOLp (ORCPT
+        with ESMTP id S232237AbjGEHR4 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 4 Jul 2023 10:11:45 -0400
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E555F10C1;
-        Tue,  4 Jul 2023 07:11:39 -0700 (PDT)
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-666e97fcc60so3280333b3a.3;
-        Tue, 04 Jul 2023 07:11:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688479899; x=1691071899;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gVWqdQakMSUsv5oj8nSg9QczQrmrUO38b67MhpmWVYY=;
-        b=ZH/KPRP50O9QKZQfFKaA+IfAWPHaD+Gxo1Eu3fP8ZxyDdYI3LJSQtB5pJ1LNZCP35q
-         IiV8TxAZlRORnVGaqCJdzy5BFSME/+DZq9B+IS9yAxJQ4FU3c0sHLNVg4LaQttqWg5hd
-         bM5LMjlOQJCGjfyUqstEXhs3Dd8wimOob7Q0h3RUn4qjwSxiYa/nobSPuoeZEPS9MS42
-         srKFZ70VAwX7m2pI0PgphsbWrm6lh/UXvykFGzcIugoINW1nJ0OhoX+WdVsTs9eNV23E
-         aJtRS4HrQ1C6JxK+hMqI3oWzf0iKWvVdvHE7pO3iCmyrKE+K3UE6Y5185bgItTX1QEDi
-         4JGA==
-X-Gm-Message-State: AC+VfDyguM2YZAAPdq0N9FgoO29YGFEhGKrGIR6kCa7gx3X6HXmDtixw
-        qsAUMcwhyjDMUOAki/oH7fs=
-X-Google-Smtp-Source: ACHHUZ4mKI72SACTkxfTB3tQ6Ji13XYniCvY2MHAxg/n5JeT4DfHtHYI7qLyK+rPyEqNoEPYk2/cWg==
-X-Received: by 2002:a05:6a20:1456:b0:12c:d9cc:340e with SMTP id a22-20020a056a20145600b0012cd9cc340emr10681222pzi.5.1688479899229;
-        Tue, 04 Jul 2023 07:11:39 -0700 (PDT)
-Received: from [192.168.50.14] ([98.51.102.78])
-        by smtp.gmail.com with ESMTPSA id e26-20020a62aa1a000000b00682a9325ffcsm1178509pff.5.2023.07.04.07.11.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Jul 2023 07:11:38 -0700 (PDT)
-Message-ID: <739807cf-4551-4760-83e0-a94026b5c1b8@acm.org>
-Date:   Tue, 4 Jul 2023 07:11:37 -0700
+        Wed, 5 Jul 2023 03:17:56 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98D99197;
+        Wed,  5 Jul 2023 00:17:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1688541463; x=1689146263; i=deller@gmx.de;
+ bh=gxCS/qjG4pfAPqlmGcad4sNZR4U6vupp7BLBkYy1BhI=;
+ h=X-UI-Sender-Class:Date:From:To:Subject;
+ b=mQoWP8Xl7bwdayhytli6v/AEI9Tlia1g8T/RmLj0Ino2Wy9r835bCgZAeHSycIk0YPT2hiJ
+ KKnXabvLNmlwa0XNzz/tpN/mbeAEVoe2Btl9uBsxgIjfJEAS+22E3HPjoWkzLvMJWszNuQwDh
+ nO/j49qPmjkkTmIzSso/WNq8+iHYOQ/xylSHSEbkMiJwSjRu7ueKjQLnLMIO+e693ynQp1uZK
+ wBP8AqCu5ki+GaZsaCaJqDG35HiAyMHd8ZcN3TBJgd3eS/Dhz0vxE7E1iE7ZVJYejOxFcig75
+ bM5I84qoYWEoNmz2DUb6Z0oLXP5Stm1wnl+XQXCK+M/GWmDO6jDQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([94.134.149.108]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M4s51-1qG7xA1tXr-0021PS; Wed, 05
+ Jul 2023 09:17:43 +0200
+Date:   Wed, 5 Jul 2023 09:17:41 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] more parisc architecture fixes & updates for v6.5-rc1
+Message-ID: <ZKUZFS4CGOHNJR1S@p100>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [linux-next:master] BUILD REGRESSION
- 296d53d8f84ce50ffaee7d575487058c8d437335
-Content-Language: en-US
-To:     Marc Zyngier <maz@kernel.org>, kernel test robot <lkp@intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        kunit-dev@googlegroups.com, kvmarm@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-usb@vger.kernel.org, netdev@vger.kernel.org
-References: <202307032309.v4K1IBoR-lkp@intel.com>
- <7d3d61c694c0e57b096ff7af6277ed6b@kernel.org>
-From:   Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <7d3d61c694c0e57b096ff7af6277ed6b@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:8+PlUoe/Yje2T3Q02Os2q9/eZ7ZzFc26qjtwjNIoFZ/FoDjDubm
+ T1uE4aOyWYJRdZPpMqk+l/32T02PjI24/ailUJbPkfkME10fCrjv3r3V0ARsoCs8Pa6AVo6
+ qUyvRHoSoWcanTob1Xj4A5SYZ6ZbrYBXCkkP79UXAM1brLOOvUF4eCwUoLYc1WORkU2nnLr
+ nAvCKhn0vTtleOAzpGdMw==
+UI-OutboundReport: notjunk:1;M01:P0:41VUbBoAXZ0=;cOp7eIEV118VyI0kls++jxczfYO
+ i7C+5saycdVH/fteL+1WgBOHGhs9KvwUtRaRmB4hS41v2jLwRfk710ZSF/DXZwMXGlN1D0HEs
+ LCb/U81uWZ9xKkcSclXcM/C6Rk10TRIoGtXA5K6ezkFRu2cPX7Fs0GwlPExEI3V8Ow18Z3zRI
+ SI6cQGZ+JUAYaVhbAp0oQAMqiy31eldcmF2/dpsnZ6FIvoELCvlxlmTt1krB9xmUFlSE86Ea5
+ 5RZENHH8btSdK16g7Br+YJ1b7l5xdwqh7lJztCk/MNiWWDH+PlNFIjCCyfnYkCUzSskSO08p4
+ 15uqzDT5e+rF2AwZRF/1Q+uPudtX3Qb0bXMFt9O8KePBU0axUAKkYXugTZZlsOQO5pobSimrT
+ rfOZGV9FHchvWCeQSZL5h64NVmptRXOU1wNEZdA3k1viSzR6lN3jXWlYwtFTH/o7QUS+Ugsmr
+ qx5Sv95XkRt2i4h4etMkjXGZPWxMCtVIw+9STFKtrvpLBuQ6i7rgO6/AwNNyx7SMrpR7SwJ2D
+ BnhCYVKRUqaSGR+3xFo5buUykmvwYKdzGVeW9kHduZndqjfKuNC4TSsug6iqk/erU+AQWNhl5
+ tho9a7Rc44z8IcQW5r/cRTCMbuhlcl8/8yQvZdKzcytgGG4pAg90wxEiAsYfj6Ztz709lVtMB
+ EwhPj2PMOBoP6iC30sMcXrvtR9XA/dfVd5dhvyczjy4l9o5/UQwQmKS5guS4nRyWFThXpVTYw
+ b2BkYj9mTkB1EFyDzmz79DsU4OMQXvXIJhaf4iHZWgjcElRqweaQ43Yct1WmuHbcGKWg1XwPA
+ Xp72LvVA9w17V+XSPP/Jy/hE9ut638cP65WXka9tOUy2ODaM9Zcjvtr/aDxmDHeipTnhmLQtQ
+ 7C25FBeYgQqM/4AwPL+uRVevo71s0+mT15rWYi+gW/soD7wSV1tysvL0274qprWPXAgw2RYPQ
+ 6T2JNltoAIhK+SWHedix9UnucTc=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 7/4/23 00:15, Marc Zyngier wrote:
-> On 2023-07-03 16:11, kernel test robot wrote:
->> tree/branch:
->> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
->> master
->> branch HEAD: 296d53d8f84ce50ffaee7d575487058c8d437335  Add linux-next
->> specific files for 20230703
->>
-> 
-> [...]
-> 
->> Unverified Error/Warning (likely false positive, please contact us if
->> interested):
->>
->> arch/arm64/kvm/mmu.c:147:3-9: preceding lock on line 140
-> 
-> This *is* a false positive. The function is entered with a lock
-> held, it will exit with the lock held as well. Inside the body
-> of the function, we release and reacquire the lock.
+Hi Linus,
 
-Which tool reported this message? If this message was reported by 
-sparse, has it been considered to add a __must_hold() annotation?
+please pull a second round of fixes for the parisc architecture for kernel 6.5-rc1.
 
-Thanks,
+This fixes all outstanding compiler warnings when compiled with W=1 in
+the arch/parisc/ and drivers/parisc/ directories.
 
-Bart.
+Thanks!
+Helge
 
+----------------------------------------------------------------
+The following changes since commit a901a3568fd26ca9c4a82d8bc5ed5b3ed844d451:
+
+  Merge tag 'iomap-6.5-merge-1' of git://git.kernel.org/pub/scm/fs/xfs/xfs-linux (2023-07-02 11:14:54 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.5-rc1-2
+
+for you to fetch changes up to f8a473bf5db7a6abaa7cad40303e395dff702819:
+
+  parisc: syscalls: Avoid compiler warnings with W=1 (2023-07-03 18:56:03 +0200)
+
+----------------------------------------------------------------
+parisc architecture fixes and updates for kernel v6.5-rc1 (pt 2):
+
+* Fix all compiler warnings in arch/parisc and drivers/parisc when
+  compiled with W=1
+
+----------------------------------------------------------------
+Helge Deller (6):
+      parisc: pdt: Get prototype for arch_report_meminfo()
+      parisc: smp: Add declaration for start_cpu_itimer()
+      parisc: unwind: Avoid missing prototype warning for handle_interruption()
+      parisc: Raise minimal GCC version to 12.0.0
+      parisc: math-emu: Avoid compiler warnings with W=1
+      parisc: syscalls: Avoid compiler warnings with W=1
+
+ arch/parisc/include/asm/processor.h | 2 ++
+ arch/parisc/kernel/Makefile         | 3 +++
+ arch/parisc/kernel/pdt.c            | 1 +
+ arch/parisc/kernel/smp.c            | 2 --
+ arch/parisc/kernel/unwind.c         | 5 +++--
+ arch/parisc/math-emu/Makefile       | 3 ++-
+ scripts/min-tool-version.sh         | 4 ++--
+ 7 files changed, 13 insertions(+), 7 deletions(-)
