@@ -2,109 +2,48 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F01E374DD9C
-	for <lists+linux-parisc@lfdr.de>; Mon, 10 Jul 2023 20:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6741274DF8E
+	for <lists+linux-parisc@lfdr.de>; Mon, 10 Jul 2023 22:45:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232822AbjGJSwh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 10 Jul 2023 14:52:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55692 "EHLO
+        id S231420AbjGJUo6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 10 Jul 2023 16:44:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230386AbjGJSwf (ORCPT
+        with ESMTP id S232310AbjGJUoE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 10 Jul 2023 14:52:35 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18A86E9;
-        Mon, 10 Jul 2023 11:52:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689015153; x=1720551153;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=9a4XUQKD3ye7xs9ePB4eQT0MrE+BnUzLQe3MtvFmF7Y=;
-  b=Qo6kyb1L00cHEIMPRfSD/Nb1n7yXu2rPhZ6cpuOSNIcWaZzNdt33FLeh
-   Z5NBsbm8g8ODaXEeaREZPNqdp1nkpPlWa9uN7OJ6Ic5xlkZf2pH5l4vIN
-   ZwOK4QbqFU1O0hfj/iVSbO5MRUN6WYiIWOSbzInN1URuqbryge1X14OZE
-   4oK1Wbn/tqtyoXiYzR7+OsOjnP52oWlfIXeK4IvhAJF0cRvUPc2Xpy5jI
-   Ak/GKCaWzJNBo7OTwZm8Fm+bPvyOA0iAURQfzMMI/vzIkrdB1dNTePkax
-   W7CC92PFMKqwdvFmvfKAiXuetInpHAzm56uCgsj+PwjnPtJmShnu9bOMD
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="367004269"
-X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
-   d="scan'208";a="367004269"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2023 11:52:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10767"; a="1051455454"
-X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
-   d="scan'208";a="1051455454"
-Received: from sohilmeh.sc.intel.com ([172.25.103.65])
-  by fmsmga005.fm.intel.com with ESMTP; 10 Jul 2023 11:52:27 -0700
-From:   Sohil Mehta <sohil.mehta@intel.com>
-To:     Arnd Bergmann <arnd@arndb.de>, linux-api@vger.kernel.org,
-        linux-arch@vger.kernel.org
-Cc:     Sohil Mehta <sohil.mehta@intel.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Sergei Trofimovich <slyich@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Rohan McLure <rmclure@linux.ibm.com>,
-        Andreas Schwab <schwab@linux-m68k.org>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-perf-users@vger.kernel.org
-Subject: [PATCH v2] syscalls: Cleanup references to sys_lookup_dcookie()
-Date:   Mon, 10 Jul 2023 18:51:24 +0000
-Message-Id: <20230710185124.3848462-1-sohil.mehta@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230628230935.1196180-1-sohil.mehta@intel.com>
-References: <20230628230935.1196180-1-sohil.mehta@intel.com>
+        Mon, 10 Jul 2023 16:44:04 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5974E6F;
+        Mon, 10 Jul 2023 13:43:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        Content-Type:Content-ID:Content-Description;
+        bh=eXHV2JcA2dh0XcKNU/gzTdwGqE1v+tTzv2WVHsOGr9M=; b=B3VIc80OBWd43RjMo8M572CrEa
+        zGyYC6wIXDYVAo+o+lgp6aTPkjpXshQX68hmVuFOWlBzoPnz3NatZSZVmXtuSWy2OAPZtPyf6z9J+
+        fHDLATzBpxfxXoTAXtgm1EkuAWXbAtk+OwLXcLoAE8VL04uXdUJzZCSqeJ4p0d+VNXo60/6rULD20
+        RNRix6CMP0fn7cmXnb3fmGcmhce36CU7xyFVHtOXlxI660M24oAr3q1QId6Bj+qdh4hhD3WCgw1XG
+        /HpnF7VifeCQD/24RQatL/tYDDYAjuMJDGns+7CgNuNsY6Jzh1jIAxVYHqxg5TnoZwSD4xVQhnAqe
+        JUJmn7IQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qIxjT-00Eupp-FK; Mon, 10 Jul 2023 20:43:43 +0000
+From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: [PATCH v5 20/38] parisc: Implement the new page table range API
+Date:   Mon, 10 Jul 2023 21:43:21 +0100
+Message-Id: <20230710204339.3554919-21-willy@infradead.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20230710204339.3554919-1-willy@infradead.org>
+References: <20230710204339.3554919-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -113,385 +52,327 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-commit 'be65de6b03aa ("fs: Remove dcookies support")' removed the
-syscall definition for lookup_dcookie.  However, syscall tables still
-point to the old sys_lookup_dcookie() definition. Update syscall tables
-of all architectures to directly point to sys_ni_syscall() instead.
+Add set_ptes(), update_mmu_cache_range(), flush_dcache_folio()
+and flush_icache_pages().  Change the PG_arch_1 (aka PG_dcache_dirty) flag
+from being per-page to per-folio.
 
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org> # for perf
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
 ---
-v2:
-- Rebased to v6.5-rc1. No other dependencies.
-- Added acquired tags.
----
- arch/alpha/kernel/syscalls/syscall.tbl              | 2 +-
- arch/arm/tools/syscall.tbl                          | 2 +-
- arch/arm64/include/asm/unistd32.h                   | 4 ++--
- arch/ia64/kernel/syscalls/syscall.tbl               | 2 +-
- arch/m68k/kernel/syscalls/syscall.tbl               | 2 +-
- arch/microblaze/kernel/syscalls/syscall.tbl         | 2 +-
- arch/mips/kernel/syscalls/syscall_n32.tbl           | 2 +-
- arch/mips/kernel/syscalls/syscall_n64.tbl           | 2 +-
- arch/mips/kernel/syscalls/syscall_o32.tbl           | 2 +-
- arch/parisc/kernel/syscalls/syscall.tbl             | 2 +-
- arch/powerpc/kernel/syscalls/syscall.tbl            | 2 +-
- arch/s390/kernel/syscalls/syscall.tbl               | 2 +-
- arch/sh/kernel/syscalls/syscall.tbl                 | 2 +-
- arch/sparc/kernel/syscalls/syscall.tbl              | 2 +-
- arch/x86/entry/syscalls/syscall_32.tbl              | 2 +-
- arch/x86/entry/syscalls/syscall_64.tbl              | 2 +-
- arch/xtensa/kernel/syscalls/syscall.tbl             | 2 +-
- include/linux/compat.h                              | 1 -
- include/linux/syscalls.h                            | 1 -
- include/uapi/asm-generic/unistd.h                   | 2 +-
- kernel/sys_ni.c                                     | 2 --
- tools/include/uapi/asm-generic/unistd.h             | 2 +-
- tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl | 2 +-
- tools/perf/arch/powerpc/entry/syscalls/syscall.tbl  | 2 +-
- tools/perf/arch/s390/entry/syscalls/syscall.tbl     | 2 +-
- tools/perf/arch/x86/entry/syscalls/syscall_64.tbl   | 2 +-
- 26 files changed, 24 insertions(+), 28 deletions(-)
+ arch/parisc/include/asm/cacheflush.h |  14 ++--
+ arch/parisc/include/asm/pgtable.h    |  37 +++++----
+ arch/parisc/kernel/cache.c           | 107 ++++++++++++++++++---------
+ 3 files changed, 105 insertions(+), 53 deletions(-)
 
-diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
-index 1f13995d00d7..1349012f5c2e 100644
---- a/arch/alpha/kernel/syscalls/syscall.tbl
-+++ b/arch/alpha/kernel/syscalls/syscall.tbl
-@@ -334,7 +334,7 @@
- 401	common	io_submit			sys_io_submit
- 402	common	io_cancel			sys_io_cancel
- 405	common	exit_group			sys_exit_group
--406	common	lookup_dcookie			sys_lookup_dcookie
-+406	common	lookup_dcookie			sys_ni_syscall
- 407	common	epoll_create			sys_epoll_create
- 408	common	epoll_ctl			sys_epoll_ctl
- 409	common	epoll_wait			sys_epoll_wait
-diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
-index 8ebed8a13874..cb7ea3bf18cf 100644
---- a/arch/arm/tools/syscall.tbl
-+++ b/arch/arm/tools/syscall.tbl
-@@ -263,7 +263,7 @@
- 246	common	io_submit		sys_io_submit
- 247	common	io_cancel		sys_io_cancel
- 248	common	exit_group		sys_exit_group
--249	common	lookup_dcookie		sys_lookup_dcookie
-+249	common	lookup_dcookie		sys_ni_syscall
- 250	common	epoll_create		sys_epoll_create
- 251	common	epoll_ctl		sys_epoll_ctl		sys_oabi_epoll_ctl
- 252	common	epoll_wait		sys_epoll_wait
-diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
-index d952a28463e0..2d8ab890818a 100644
---- a/arch/arm64/include/asm/unistd32.h
-+++ b/arch/arm64/include/asm/unistd32.h
-@@ -508,8 +508,8 @@ __SYSCALL(__NR_io_submit, compat_sys_io_submit)
- __SYSCALL(__NR_io_cancel, sys_io_cancel)
- #define __NR_exit_group 248
- __SYSCALL(__NR_exit_group, sys_exit_group)
--#define __NR_lookup_dcookie 249
--__SYSCALL(__NR_lookup_dcookie, compat_sys_lookup_dcookie)
-+			/* 249 was lookup_dcookie */
-+__SYSCALL(249, sys_ni_syscall)
- #define __NR_epoll_create 250
- __SYSCALL(__NR_epoll_create, sys_epoll_create)
- #define __NR_epoll_ctl 251
-diff --git a/arch/ia64/kernel/syscalls/syscall.tbl b/arch/ia64/kernel/syscalls/syscall.tbl
-index f8c74ffeeefb..ac8bd817b1b9 100644
---- a/arch/ia64/kernel/syscalls/syscall.tbl
-+++ b/arch/ia64/kernel/syscalls/syscall.tbl
-@@ -222,7 +222,7 @@
- 210	common	fadvise64			sys_fadvise64_64
- 211	common	tgkill				sys_tgkill
- 212	common	exit_group			sys_exit_group
--213	common	lookup_dcookie			sys_lookup_dcookie
-+213	common	lookup_dcookie			sys_ni_syscall
- 214	common	io_setup			sys_io_setup
- 215	common	io_destroy			sys_io_destroy
- 216	common	io_getevents			sys_io_getevents
-diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
-index 4f504783371f..985eab03b83b 100644
---- a/arch/m68k/kernel/syscalls/syscall.tbl
-+++ b/arch/m68k/kernel/syscalls/syscall.tbl
-@@ -255,7 +255,7 @@
- 245	common	io_cancel			sys_io_cancel
- 246	common	fadvise64			sys_fadvise64
- 247	common	exit_group			sys_exit_group
--248	common	lookup_dcookie			sys_lookup_dcookie
-+248	common	lookup_dcookie			sys_ni_syscall
- 249	common	epoll_create			sys_epoll_create
- 250	common	epoll_ctl			sys_epoll_ctl
- 251	common	epoll_wait			sys_epoll_wait
-diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
-index 858d22bf275c..167586f139aa 100644
---- a/arch/microblaze/kernel/syscalls/syscall.tbl
-+++ b/arch/microblaze/kernel/syscalls/syscall.tbl
-@@ -260,7 +260,7 @@
- 250	common	fadvise64			sys_fadvise64
- # 251 is available for reuse (was briefly sys_set_zone_reclaim)
- 252	common	exit_group			sys_exit_group
--253	common	lookup_dcookie			sys_lookup_dcookie
-+253	common	lookup_dcookie			sys_ni_syscall
- 254	common	epoll_create			sys_epoll_create
- 255	common	epoll_ctl			sys_epoll_ctl
- 256	common	epoll_wait			sys_epoll_wait
-diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
-index 1976317d4e8b..eff7a64e6bf1 100644
---- a/arch/mips/kernel/syscalls/syscall_n32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
-@@ -214,7 +214,7 @@
- 203	n32	io_submit			compat_sys_io_submit
- 204	n32	io_cancel			sys_io_cancel
- 205	n32	exit_group			sys_exit_group
--206	n32	lookup_dcookie			sys_lookup_dcookie
-+206	n32	lookup_dcookie			sys_ni_syscall
- 207	n32	epoll_create			sys_epoll_create
- 208	n32	epoll_ctl			sys_epoll_ctl
- 209	n32	epoll_wait			sys_epoll_wait
-diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
-index cfda2511badf..478fe63601fc 100644
---- a/arch/mips/kernel/syscalls/syscall_n64.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
-@@ -214,7 +214,7 @@
- 203	n64	io_submit			sys_io_submit
- 204	n64	io_cancel			sys_io_cancel
- 205	n64	exit_group			sys_exit_group
--206	n64	lookup_dcookie			sys_lookup_dcookie
-+206	n64	lookup_dcookie			sys_ni_syscall
- 207	n64	epoll_create			sys_epoll_create
- 208	n64	epoll_ctl			sys_epoll_ctl
- 209	n64	epoll_wait			sys_epoll_wait
-diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
-index 7692234c3768..1eb4efe647b9 100644
---- a/arch/mips/kernel/syscalls/syscall_o32.tbl
-+++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
-@@ -258,7 +258,7 @@
- 244	o32	io_submit			sys_io_submit			compat_sys_io_submit
- 245	o32	io_cancel			sys_io_cancel
- 246	o32	exit_group			sys_exit_group
--247	o32	lookup_dcookie			sys_lookup_dcookie		compat_sys_lookup_dcookie
-+247	o32	lookup_dcookie			sys_ni_syscall
- 248	o32	epoll_create			sys_epoll_create
- 249	o32	epoll_ctl			sys_epoll_ctl
- 250	o32	epoll_wait			sys_epoll_wait
-diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index a0a9145b6dd4..b2d9266a4736 100644
---- a/arch/parisc/kernel/syscalls/syscall.tbl
-+++ b/arch/parisc/kernel/syscalls/syscall.tbl
-@@ -245,7 +245,7 @@
- # 220 was alloc_hugepages
- # 221 was free_hugepages
- 222	common	exit_group		sys_exit_group
--223	common	lookup_dcookie		sys_lookup_dcookie		compat_sys_lookup_dcookie
-+223	common	lookup_dcookie		sys_ni_syscall
- 224	common	epoll_create		sys_epoll_create
- 225	common	epoll_ctl		sys_epoll_ctl
- 226	common	epoll_wait		sys_epoll_wait
-diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
-index 8c0b08b7a80e..1b7777e5f9ff 100644
---- a/arch/powerpc/kernel/syscalls/syscall.tbl
-+++ b/arch/powerpc/kernel/syscalls/syscall.tbl
-@@ -294,7 +294,7 @@
- 233	32	fadvise64			sys_ppc32_fadvise64		compat_sys_ppc32_fadvise64
- 233	64	fadvise64			sys_fadvise64
- 234	nospu	exit_group			sys_exit_group
--235	nospu	lookup_dcookie			sys_lookup_dcookie		compat_sys_lookup_dcookie
-+235	nospu	lookup_dcookie			sys_ni_syscall
- 236	common	epoll_create			sys_epoll_create
- 237	common	epoll_ctl			sys_epoll_ctl
- 238	common	epoll_wait			sys_epoll_wait
-diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
-index a6935af2235c..11782be77f57 100644
---- a/arch/s390/kernel/syscalls/syscall.tbl
-+++ b/arch/s390/kernel/syscalls/syscall.tbl
-@@ -100,7 +100,7 @@
- 106  common	stat			sys_newstat			compat_sys_newstat
- 107  common	lstat			sys_newlstat			compat_sys_newlstat
- 108  common	fstat			sys_newfstat			compat_sys_newfstat
--110  common	lookup_dcookie		sys_lookup_dcookie		compat_sys_lookup_dcookie
-+110  common	lookup_dcookie		-				-
- 111  common	vhangup			sys_vhangup			sys_vhangup
- 112  common	idle			-				-
- 114  common	wait4			sys_wait4			compat_sys_wait4
-diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
-index 97377e8c5025..a8e3fbd448cd 100644
---- a/arch/sh/kernel/syscalls/syscall.tbl
-+++ b/arch/sh/kernel/syscalls/syscall.tbl
-@@ -260,7 +260,7 @@
- 250	common	fadvise64			sys_fadvise64
- # 251 is unused
- 252	common	exit_group			sys_exit_group
--253	common	lookup_dcookie			sys_lookup_dcookie
-+253	common	lookup_dcookie			sys_ni_syscall
- 254	common	epoll_create			sys_epoll_create
- 255	common	epoll_ctl			sys_epoll_ctl
- 256	common	epoll_wait			sys_epoll_wait
-diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
-index faa835f3c54a..2fb51f6f8248 100644
---- a/arch/sparc/kernel/syscalls/syscall.tbl
-+++ b/arch/sparc/kernel/syscalls/syscall.tbl
-@@ -249,7 +249,7 @@
- 205	common	readahead		sys_readahead			compat_sys_readahead
- 206	common	socketcall		sys_socketcall			sys32_socketcall
- 207	common	syslog			sys_syslog
--208	common	lookup_dcookie		sys_lookup_dcookie		compat_sys_lookup_dcookie
-+208	common	lookup_dcookie		sys_ni_syscall
- 209	common	fadvise64		sys_fadvise64			compat_sys_fadvise64
- 210	common	fadvise64_64		sys_fadvise64_64		compat_sys_fadvise64_64
- 211	common	tgkill			sys_tgkill
-diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
-index bc0a3c941b35..88d7d4dcab55 100644
---- a/arch/x86/entry/syscalls/syscall_32.tbl
-+++ b/arch/x86/entry/syscalls/syscall_32.tbl
-@@ -264,7 +264,7 @@
- 250	i386	fadvise64		sys_ia32_fadvise64
- # 251 is available for reuse (was briefly sys_set_zone_reclaim)
- 252	i386	exit_group		sys_exit_group
--253	i386	lookup_dcookie		sys_lookup_dcookie		compat_sys_lookup_dcookie
-+253	i386	lookup_dcookie
- 254	i386	epoll_create		sys_epoll_create
- 255	i386	epoll_ctl		sys_epoll_ctl
- 256	i386	epoll_wait		sys_epoll_wait
-diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
-index 227538b0ce80..27f78821453b 100644
---- a/arch/x86/entry/syscalls/syscall_64.tbl
-+++ b/arch/x86/entry/syscalls/syscall_64.tbl
-@@ -220,7 +220,7 @@
- 209	64	io_submit		sys_io_submit
- 210	common	io_cancel		sys_io_cancel
- 211	64	get_thread_area
--212	common	lookup_dcookie		sys_lookup_dcookie
-+212	common	lookup_dcookie
- 213	common	epoll_create		sys_epoll_create
- 214	64	epoll_ctl_old
- 215	64	epoll_wait_old
-diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
-index 2b69c3c035b6..65322171b3f3 100644
---- a/arch/xtensa/kernel/syscalls/syscall.tbl
-+++ b/arch/xtensa/kernel/syscalls/syscall.tbl
-@@ -273,7 +273,7 @@
- 252	common	timer_getoverrun		sys_timer_getoverrun
- # System
- 253	common	reserved253			sys_ni_syscall
--254	common	lookup_dcookie			sys_lookup_dcookie
-+254	common	lookup_dcookie			sys_ni_syscall
- 255	common	available255			sys_ni_syscall
- 256	common	add_key				sys_add_key
- 257	common	request_key			sys_request_key
-diff --git a/include/linux/compat.h b/include/linux/compat.h
-index 1cfa4f0f490a..233f61ec8afc 100644
---- a/include/linux/compat.h
-+++ b/include/linux/compat.h
-@@ -581,7 +581,6 @@ asmlinkage long compat_sys_io_pgetevents_time64(compat_aio_context_t ctx_id,
- 					struct io_event __user *events,
- 					struct __kernel_timespec __user *timeout,
- 					const struct __compat_aio_sigset __user *usig);
--asmlinkage long compat_sys_lookup_dcookie(u32, u32, char __user *, compat_size_t);
- asmlinkage long compat_sys_epoll_pwait(int epfd,
- 			struct epoll_event __user *events,
- 			int maxevents, int timeout,
-diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-index 03e3d0121d5e..8f93b37b80fa 100644
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -371,7 +371,6 @@ asmlinkage long sys_lremovexattr(const char __user *path,
- 				 const char __user *name);
- asmlinkage long sys_fremovexattr(int fd, const char __user *name);
- asmlinkage long sys_getcwd(char __user *buf, unsigned long size);
--asmlinkage long sys_lookup_dcookie(u64 cookie64, char __user *buf, size_t len);
- asmlinkage long sys_eventfd2(unsigned int count, int flags);
- asmlinkage long sys_epoll_create1(int flags);
- asmlinkage long sys_epoll_ctl(int epfd, int op, int fd,
-diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
-index fd6c1cb585db..7ea3875137e9 100644
---- a/include/uapi/asm-generic/unistd.h
-+++ b/include/uapi/asm-generic/unistd.h
-@@ -71,7 +71,7 @@ __SYSCALL(__NR_fremovexattr, sys_fremovexattr)
- #define __NR_getcwd 17
- __SYSCALL(__NR_getcwd, sys_getcwd)
- #define __NR_lookup_dcookie 18
--__SC_COMP(__NR_lookup_dcookie, sys_lookup_dcookie, compat_sys_lookup_dcookie)
-+__SYSCALL(__NR_lookup_dcookie, sys_ni_syscall)
- #define __NR_eventfd2 19
- __SYSCALL(__NR_eventfd2, sys_eventfd2)
- #define __NR_epoll_create1 20
-diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
-index 781de7cc6a4e..817f1e433369 100644
---- a/kernel/sys_ni.c
-+++ b/kernel/sys_ni.c
-@@ -51,8 +51,6 @@ COND_SYSCALL_COMPAT(io_pgetevents);
- COND_SYSCALL(io_uring_setup);
- COND_SYSCALL(io_uring_enter);
- COND_SYSCALL(io_uring_register);
--COND_SYSCALL(lookup_dcookie);
--COND_SYSCALL_COMPAT(lookup_dcookie);
- COND_SYSCALL(eventfd2);
- COND_SYSCALL(epoll_create1);
- COND_SYSCALL(epoll_ctl);
-diff --git a/tools/include/uapi/asm-generic/unistd.h b/tools/include/uapi/asm-generic/unistd.h
-index dd7d8e10f16d..652537342a47 100644
---- a/tools/include/uapi/asm-generic/unistd.h
-+++ b/tools/include/uapi/asm-generic/unistd.h
-@@ -71,7 +71,7 @@ __SYSCALL(__NR_fremovexattr, sys_fremovexattr)
- #define __NR_getcwd 17
- __SYSCALL(__NR_getcwd, sys_getcwd)
- #define __NR_lookup_dcookie 18
--__SC_COMP(__NR_lookup_dcookie, sys_lookup_dcookie, compat_sys_lookup_dcookie)
-+__SYSCALL(__NR_lookup_dcookie, sys_ni_syscall)
- #define __NR_eventfd2 19
- __SYSCALL(__NR_eventfd2, sys_eventfd2)
- #define __NR_epoll_create1 20
-diff --git a/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl b/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
-index 3f1886ad9d80..23a72075987d 100644
---- a/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
-+++ b/tools/perf/arch/mips/entry/syscalls/syscall_n64.tbl
-@@ -214,7 +214,7 @@
- 203	n64	io_submit			sys_io_submit
- 204	n64	io_cancel			sys_io_cancel
- 205	n64	exit_group			sys_exit_group
--206	n64	lookup_dcookie			sys_lookup_dcookie
-+206	n64	lookup_dcookie			sys_ni_syscall
- 207	n64	epoll_create			sys_epoll_create
- 208	n64	epoll_ctl			sys_epoll_ctl
- 209	n64	epoll_wait			sys_epoll_wait
-diff --git a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
-index a0be127475b1..2c8db9708ec8 100644
---- a/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
-+++ b/tools/perf/arch/powerpc/entry/syscalls/syscall.tbl
-@@ -294,7 +294,7 @@
- 233	32	fadvise64			sys_ppc32_fadvise64		compat_sys_ppc32_fadvise64
- 233	64	fadvise64			sys_fadvise64
- 234	nospu	exit_group			sys_exit_group
--235	nospu	lookup_dcookie			sys_lookup_dcookie		compat_sys_lookup_dcookie
-+235	nospu	lookup_dcookie			sys_ni_syscall
- 236	common	epoll_create			sys_epoll_create
- 237	common	epoll_ctl			sys_epoll_ctl
- 238	common	epoll_wait			sys_epoll_wait
-diff --git a/tools/perf/arch/s390/entry/syscalls/syscall.tbl b/tools/perf/arch/s390/entry/syscalls/syscall.tbl
-index b68f47541169..85b45b49756e 100644
---- a/tools/perf/arch/s390/entry/syscalls/syscall.tbl
-+++ b/tools/perf/arch/s390/entry/syscalls/syscall.tbl
-@@ -100,7 +100,7 @@
- 106  common	stat			sys_newstat			compat_sys_newstat
- 107  common	lstat			sys_newlstat			compat_sys_newlstat
- 108  common	fstat			sys_newfstat			compat_sys_newfstat
--110  common	lookup_dcookie		sys_lookup_dcookie		compat_sys_lookup_dcookie
-+110  common	lookup_dcookie		-				-
- 111  common	vhangup			sys_vhangup			sys_vhangup
- 112  common	idle			-				-
- 114  common	wait4			sys_wait4			compat_sys_wait4
-diff --git a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
-index c84d12608cd2..da2643738262 100644
---- a/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
-+++ b/tools/perf/arch/x86/entry/syscalls/syscall_64.tbl
-@@ -220,7 +220,7 @@
- 209	64	io_submit		sys_io_submit
- 210	common	io_cancel		sys_io_cancel
- 211	64	get_thread_area
--212	common	lookup_dcookie		sys_lookup_dcookie
-+212	common	lookup_dcookie
- 213	common	epoll_create		sys_epoll_create
- 214	64	epoll_ctl_old
- 215	64	epoll_wait_old
+diff --git a/arch/parisc/include/asm/cacheflush.h b/arch/parisc/include/asm/cacheflush.h
+index c8b6928cee1e..b77c3e0c37d3 100644
+--- a/arch/parisc/include/asm/cacheflush.h
++++ b/arch/parisc/include/asm/cacheflush.h
+@@ -43,8 +43,13 @@ void invalidate_kernel_vmap_range(void *vaddr, int size);
+ #define flush_cache_vmap(start, end)		flush_cache_all()
+ #define flush_cache_vunmap(start, end)		flush_cache_all()
+ 
++void flush_dcache_folio(struct folio *folio);
++#define flush_dcache_folio flush_dcache_folio
+ #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+-void flush_dcache_page(struct page *page);
++static inline void flush_dcache_page(struct page *page)
++{
++	flush_dcache_folio(page_folio(page));
++}
+ 
+ #define flush_dcache_mmap_lock(mapping)		xa_lock_irq(&mapping->i_pages)
+ #define flush_dcache_mmap_unlock(mapping)	xa_unlock_irq(&mapping->i_pages)
+@@ -53,10 +58,9 @@ void flush_dcache_page(struct page *page);
+ #define flush_dcache_mmap_unlock_irqrestore(mapping, flags)	\
+ 		xa_unlock_irqrestore(&mapping->i_pages, flags)
+ 
+-#define flush_icache_page(vma,page)	do { 		\
+-	flush_kernel_dcache_page_addr(page_address(page)); \
+-	flush_kernel_icache_page(page_address(page)); 	\
+-} while (0)
++void flush_icache_pages(struct vm_area_struct *vma, struct page *page,
++		unsigned int nr);
++#define flush_icache_page(vma, page)	flush_icache_pages(vma, page, 1)
+ 
+ #define flush_icache_range(s,e)		do { 		\
+ 	flush_kernel_dcache_range_asm(s,e); 		\
+diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
+index 5656395c95ee..ce38bb375b60 100644
+--- a/arch/parisc/include/asm/pgtable.h
++++ b/arch/parisc/include/asm/pgtable.h
+@@ -73,15 +73,6 @@ extern void __update_cache(pte_t pte);
+ 		mb();				\
+ 	} while(0)
+ 
+-#define set_pte_at(mm, addr, pteptr, pteval)	\
+-	do {					\
+-		if (pte_present(pteval) &&	\
+-		    pte_user(pteval))		\
+-			__update_cache(pteval);	\
+-		*(pteptr) = (pteval);		\
+-		purge_tlb_entries(mm, addr);	\
+-	} while (0)
+-
+ #endif /* !__ASSEMBLY__ */
+ 
+ #define pte_ERROR(e) \
+@@ -285,7 +276,7 @@ extern unsigned long *empty_zero_page;
+ #define pte_none(x)     (pte_val(x) == 0)
+ #define pte_present(x)	(pte_val(x) & _PAGE_PRESENT)
+ #define pte_user(x)	(pte_val(x) & _PAGE_USER)
+-#define pte_clear(mm, addr, xp)  set_pte_at(mm, addr, xp, __pte(0))
++#define pte_clear(mm, addr, xp)  set_pte(xp, __pte(0))
+ 
+ #define pmd_flag(x)	(pmd_val(x) & PxD_FLAG_MASK)
+ #define pmd_address(x)	((unsigned long)(pmd_val(x) &~ PxD_FLAG_MASK) << PxD_VALUE_SHIFT)
+@@ -391,11 +382,29 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
+ 
+ extern void paging_init (void);
+ 
++static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
++		pte_t *ptep, pte_t pte, unsigned int nr)
++{
++	if (pte_present(pte) && pte_user(pte))
++		__update_cache(pte);
++	for (;;) {
++		*ptep = pte;
++		purge_tlb_entries(mm, addr);
++		if (--nr == 0)
++			break;
++		ptep++;
++		pte_val(pte) += 1 << PFN_PTE_SHIFT;
++		addr += PAGE_SIZE;
++	}
++}
++#define set_ptes set_ptes
++
+ /* Used for deferring calls to flush_dcache_page() */
+ 
+ #define PG_dcache_dirty         PG_arch_1
+ 
+-#define update_mmu_cache(vms,addr,ptep) __update_cache(*ptep)
++#define update_mmu_cache_range(vmf, vma, addr, ptep, nr) __update_cache(*ptep)
++#define update_mmu_cache(vma, addr, ptep) __update_cache(*ptep)
+ 
+ /*
+  * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
+@@ -450,7 +459,7 @@ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned
+ 	if (!pte_young(pte)) {
+ 		return 0;
+ 	}
+-	set_pte_at(vma->vm_mm, addr, ptep, pte_mkold(pte));
++	set_pte(ptep, pte_mkold(pte));
+ 	return 1;
+ }
+ 
+@@ -460,14 +469,14 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+ 	pte_t old_pte;
+ 
+ 	old_pte = *ptep;
+-	set_pte_at(mm, addr, ptep, __pte(0));
++	set_pte(ptep, __pte(0));
+ 
+ 	return old_pte;
+ }
+ 
+ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+ {
+-	set_pte_at(mm, addr, ptep, pte_wrprotect(*ptep));
++	set_pte(ptep, pte_wrprotect(*ptep));
+ }
+ 
+ #define pte_same(A,B)	(pte_val(A) == pte_val(B))
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index b55b35c89d6a..442109a48940 100644
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -94,11 +94,11 @@ static inline void flush_data_cache(void)
+ /* Kernel virtual address of pfn.  */
+ #define pfn_va(pfn)	__va(PFN_PHYS(pfn))
+ 
+-void
+-__update_cache(pte_t pte)
++void __update_cache(pte_t pte)
+ {
+ 	unsigned long pfn = pte_pfn(pte);
+-	struct page *page;
++	struct folio *folio;
++	unsigned int nr;
+ 
+ 	/* We don't have pte special.  As a result, we can be called with
+ 	   an invalid pfn and we don't need to flush the kernel dcache page.
+@@ -106,13 +106,17 @@ __update_cache(pte_t pte)
+ 	if (!pfn_valid(pfn))
+ 		return;
+ 
+-	page = pfn_to_page(pfn);
+-	if (page_mapping_file(page) &&
+-	    test_bit(PG_dcache_dirty, &page->flags)) {
+-		flush_kernel_dcache_page_addr(pfn_va(pfn));
+-		clear_bit(PG_dcache_dirty, &page->flags);
++	folio = page_folio(pfn_to_page(pfn));
++	pfn = folio_pfn(folio);
++	nr = folio_nr_pages(folio);
++	if (folio_flush_mapping(folio) &&
++	    test_bit(PG_dcache_dirty, &folio->flags)) {
++		while (nr--)
++			flush_kernel_dcache_page_addr(pfn_va(pfn + nr));
++		clear_bit(PG_dcache_dirty, &folio->flags);
+ 	} else if (parisc_requires_coherency())
+-		flush_kernel_dcache_page_addr(pfn_va(pfn));
++		while (nr--)
++			flush_kernel_dcache_page_addr(pfn_va(pfn + nr));
+ }
+ 
+ void
+@@ -366,6 +370,20 @@ static void flush_user_cache_page(struct vm_area_struct *vma, unsigned long vmad
+ 	preempt_enable();
+ }
+ 
++void flush_icache_pages(struct vm_area_struct *vma, struct page *page,
++		unsigned int nr)
++{
++	void *kaddr = page_address(page);
++
++	for (;;) {
++		flush_kernel_dcache_page_addr(kaddr);
++		flush_kernel_icache_page(kaddr);
++		if (--nr == 0)
++			break;
++		kaddr += PAGE_SIZE;
++	}
++}
++
+ static inline pte_t *get_ptep(struct mm_struct *mm, unsigned long addr)
+ {
+ 	pte_t *ptep = NULL;
+@@ -394,27 +412,30 @@ static inline bool pte_needs_flush(pte_t pte)
+ 		== (_PAGE_PRESENT | _PAGE_ACCESSED);
+ }
+ 
+-void flush_dcache_page(struct page *page)
++void flush_dcache_folio(struct folio *folio)
+ {
+-	struct address_space *mapping = page_mapping_file(page);
+-	struct vm_area_struct *mpnt;
+-	unsigned long offset;
++	struct address_space *mapping = folio_flush_mapping(folio);
++	struct vm_area_struct *vma;
+ 	unsigned long addr, old_addr = 0;
++	void *kaddr;
+ 	unsigned long count = 0;
+-	unsigned long flags;
++	unsigned long i, nr, flags;
+ 	pgoff_t pgoff;
+ 
+ 	if (mapping && !mapping_mapped(mapping)) {
+-		set_bit(PG_dcache_dirty, &page->flags);
++		set_bit(PG_dcache_dirty, &folio->flags);
+ 		return;
+ 	}
+ 
+-	flush_kernel_dcache_page_addr(page_address(page));
++	nr = folio_nr_pages(folio);
++	kaddr = folio_address(folio);
++	for (i = 0; i < nr; i++)
++		flush_kernel_dcache_page_addr(kaddr + i * PAGE_SIZE);
+ 
+ 	if (!mapping)
+ 		return;
+ 
+-	pgoff = page->index;
++	pgoff = folio->index;
+ 
+ 	/*
+ 	 * We have carefully arranged in arch_get_unmapped_area() that
+@@ -424,20 +445,33 @@ void flush_dcache_page(struct page *page)
+ 	 * on machines that support equivalent aliasing
+ 	 */
+ 	flush_dcache_mmap_lock_irqsave(mapping, flags);
+-	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
+-		offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
+-		addr = mpnt->vm_start + offset;
+-		if (parisc_requires_coherency()) {
+-			bool needs_flush = false;
+-			pte_t *ptep;
++	vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff + nr - 1) {
++		unsigned long offset = pgoff - vma->vm_pgoff;
++		unsigned long pfn = folio_pfn(folio);
++
++		addr = vma->vm_start;
++		nr = folio_nr_pages(folio);
++		if (offset > -nr) {
++			pfn -= offset;
++			nr += offset;
++		} else {
++			addr += offset * PAGE_SIZE;
++		}
++		if (addr + nr * PAGE_SIZE > vma->vm_end)
++			nr = (vma->vm_end - addr) / PAGE_SIZE;
+ 
+-			ptep = get_ptep(mpnt->vm_mm, addr);
+-			if (ptep) {
+-				needs_flush = pte_needs_flush(*ptep);
++		if (parisc_requires_coherency()) {
++			for (i = 0; i < nr; i++) {
++				pte_t *ptep = get_ptep(vma->vm_mm,
++							addr + i * PAGE_SIZE);
++				if (!ptep)
++					continue;
++				if (pte_needs_flush(*ptep))
++					flush_user_cache_page(vma,
++							addr + i * PAGE_SIZE);
++				/* Optimise accesses to the same table? */
+ 				pte_unmap(ptep);
+ 			}
+-			if (needs_flush)
+-				flush_user_cache_page(mpnt, addr);
+ 		} else {
+ 			/*
+ 			 * The TLB is the engine of coherence on parisc:
+@@ -450,27 +484,32 @@ void flush_dcache_page(struct page *page)
+ 			 * in (until the user or kernel specifically
+ 			 * accesses it, of course)
+ 			 */
+-			flush_tlb_page(mpnt, addr);
++			for (i = 0; i < nr; i++)
++				flush_tlb_page(vma, addr + i * PAGE_SIZE);
+ 			if (old_addr == 0 || (old_addr & (SHM_COLOUR - 1))
+ 					!= (addr & (SHM_COLOUR - 1))) {
+-				__flush_cache_page(mpnt, addr, page_to_phys(page));
++				for (i = 0; i < nr; i++)
++					__flush_cache_page(vma,
++						addr + i * PAGE_SIZE,
++						(pfn + i) * PAGE_SIZE);
+ 				/*
+ 				 * Software is allowed to have any number
+ 				 * of private mappings to a page.
+ 				 */
+-				if (!(mpnt->vm_flags & VM_SHARED))
++				if (!(vma->vm_flags & VM_SHARED))
+ 					continue;
+ 				if (old_addr)
+ 					pr_err("INEQUIVALENT ALIASES 0x%lx and 0x%lx in file %pD\n",
+-						old_addr, addr, mpnt->vm_file);
+-				old_addr = addr;
++						old_addr, addr, vma->vm_file);
++				if (nr == folio_nr_pages(folio))
++					old_addr = addr;
+ 			}
+ 		}
+ 		WARN_ON(++count == 4096);
+ 	}
+ 	flush_dcache_mmap_unlock_irqrestore(mapping, flags);
+ }
+-EXPORT_SYMBOL(flush_dcache_page);
++EXPORT_SYMBOL(flush_dcache_folio);
+ 
+ /* Defined in arch/parisc/kernel/pacache.S */
+ EXPORT_SYMBOL(flush_kernel_dcache_range_asm);
 -- 
-2.34.1
+2.39.2
 
