@@ -2,377 +2,200 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6741274DF8E
-	for <lists+linux-parisc@lfdr.de>; Mon, 10 Jul 2023 22:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61CC574ECAE
+	for <lists+linux-parisc@lfdr.de>; Tue, 11 Jul 2023 13:28:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231420AbjGJUo6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 10 Jul 2023 16:44:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49488 "EHLO
+        id S231872AbjGKL2I (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 11 Jul 2023 07:28:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232310AbjGJUoE (ORCPT
+        with ESMTP id S230375AbjGKL2D (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 10 Jul 2023 16:44:04 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5974E6F;
-        Mon, 10 Jul 2023 13:43:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description;
-        bh=eXHV2JcA2dh0XcKNU/gzTdwGqE1v+tTzv2WVHsOGr9M=; b=B3VIc80OBWd43RjMo8M572CrEa
-        zGyYC6wIXDYVAo+o+lgp6aTPkjpXshQX68hmVuFOWlBzoPnz3NatZSZVmXtuSWy2OAPZtPyf6z9J+
-        fHDLATzBpxfxXoTAXtgm1EkuAWXbAtk+OwLXcLoAE8VL04uXdUJzZCSqeJ4p0d+VNXo60/6rULD20
-        RNRix6CMP0fn7cmXnb3fmGcmhce36CU7xyFVHtOXlxI660M24oAr3q1QId6Bj+qdh4hhD3WCgw1XG
-        /HpnF7VifeCQD/24RQatL/tYDDYAjuMJDGns+7CgNuNsY6Jzh1jIAxVYHqxg5TnoZwSD4xVQhnAqe
-        JUJmn7IQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qIxjT-00Eupp-FK; Mon, 10 Jul 2023 20:43:43 +0000
-From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Subject: [PATCH v5 20/38] parisc: Implement the new page table range API
-Date:   Mon, 10 Jul 2023 21:43:21 +0100
-Message-Id: <20230710204339.3554919-21-willy@infradead.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20230710204339.3554919-1-willy@infradead.org>
-References: <20230710204339.3554919-1-willy@infradead.org>
+        Tue, 11 Jul 2023 07:28:03 -0400
+Received: from us-smtp-delivery-44.mimecast.com (unknown [207.211.30.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F1CA12E
+        for <linux-parisc@vger.kernel.org>; Tue, 11 Jul 2023 04:28:01 -0700 (PDT)
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-223-P9VisGTbPgGWqvxb_D7cHg-1; Tue, 11 Jul 2023 07:26:13 -0400
+X-MC-Unique: P9VisGTbPgGWqvxb_D7cHg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3A4AF10504C9;
+        Tue, 11 Jul 2023 11:26:13 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.45.225.44])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1B08863F3C;
+        Tue, 11 Jul 2023 11:25:59 +0000 (UTC)
+From:   Alexey Gladkov <legion@kernel.org>
+To:     LKML <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        viro@zeniv.linux.org.uk
+Cc:     James.Bottomley@HansenPartnership.com, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, axboe@kernel.dk,
+        benh@kernel.crashing.org, borntraeger@de.ibm.com, bp@alien8.de,
+        catalin.marinas@arm.com, christian@brauner.io, dalias@libc.org,
+        davem@davemloft.net, deepa.kernel@gmail.com, deller@gmx.de,
+        dhowells@redhat.com, fenghua.yu@intel.com, firoz.khan@linaro.org,
+        fweimer@redhat.com, geert@linux-m68k.org, glebfm@altlinux.org,
+        gor@linux.ibm.com, hare@suse.com, heiko.carstens@de.ibm.com,
+        hpa@zytor.com, ink@jurassic.park.msu.ru, jhogan@kernel.org,
+        kim.phillips@arm.com, ldv@altlinux.org,
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux@armlinux.org.uk,
+        linuxppc-dev@lists.ozlabs.org, luto@kernel.org, mattst88@gmail.com,
+        mingo@redhat.com, monstr@monstr.eu, mpe@ellerman.id.au,
+        namhyung@kernel.org, palmer@sifive.com, paul.burton@mips.com,
+        paulus@samba.org, peterz@infradead.org, ralf@linux-mips.org,
+        rth@twiddle.net, schwidefsky@de.ibm.com,
+        sparclinux@vger.kernel.org, stefan@agner.ch, tglx@linutronix.de,
+        tony.luck@intel.com, tycho@tycho.ws, will@kernel.org,
+        x86@kernel.org, ysato@users.sourceforge.jp
+Subject: [PATCH v3 0/5] Add a new fchmodat4() syscall
+Date:   Tue, 11 Jul 2023 13:25:41 +0200
+Message-Id: <cover.1689074739.git.legion@kernel.org>
+In-Reply-To: <87o8pscpny.fsf@oldenburg2.str.redhat.com>
+References: <87o8pscpny.fsf@oldenburg2.str.redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,SPF_HELO_NONE,SPF_SOFTFAIL,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Add set_ptes(), update_mmu_cache_range(), flush_dcache_folio()
-and flush_icache_pages().  Change the PG_arch_1 (aka PG_dcache_dirty) flag
-from being per-page to per-folio.
+This patch set adds fchmodat4(), a new syscall. The actual
+implementation is super simple: essentially it's just the same as
+fchmodat(), but LOOKUP_FOLLOW is conditionally set based on the flags.
+I've attempted to make this match "man 2 fchmodat" as closely as
+possible, which says EINVAL is returned for invalid flags (as opposed to
+ENOTSUPP, which is currently returned by glibc for AT_SYMLINK_NOFOLLOW).
+I have a sketch of a glibc patch that I haven't even compiled yet, but
+seems fairly straight-forward:
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
+    diff --git a/sysdeps/unix/sysv/linux/fchmodat.c b/sysdeps/unix/sysv/linux/fchmodat.c
+    index 6d9cbc1ce9e0..b1beab76d56c 100644
+    --- a/sysdeps/unix/sysv/linux/fchmodat.c
+    +++ b/sysdeps/unix/sysv/linux/fchmodat.c
+    @@ -29,12 +29,36 @@
+     int
+     fchmodat (int fd, const char *file, mode_t mode, int flag)
+     {
+    -  if (flag & ~AT_SYMLINK_NOFOLLOW)
+    -    return INLINE_SYSCALL_ERROR_RETURN_VALUE (EINVAL);
+    -#ifndef __NR_lchmod		/* Linux so far has no lchmod syscall.  */
+    +  /* There are four paths through this code:
+    +      - The flags are zero.  In this case it's fine to call fchmodat.
+    +      - The flags are non-zero and glibc doesn't have access to
+    +	__NR_fchmodat4.  In this case all we can do is emulate the error codes
+    +	defined by the glibc interface from userspace.
+    +      - The flags are non-zero, glibc has __NR_fchmodat4, and the kernel has
+    +	fchmodat4.  This is the simplest case, as the fchmodat4 syscall exactly
+    +	matches glibc's library interface so it can be called directly.
+    +      - The flags are non-zero, glibc has __NR_fchmodat4, but the kernel does
+    +	not.  In this case we must respect the error codes defined by the glibc
+    +	interface instead of returning ENOSYS.
+    +    The intent here is to ensure that the kernel is called at most once per
+    +    library call, and that the error types defined by glibc are always
+    +    respected.  */
+    +
+    +#ifdef __NR_fchmodat4
+    +  long result;
+    +#endif
+    +
+    +  if (flag == 0)
+    +    return INLINE_SYSCALL (fchmodat, 3, fd, file, mode);
+    +
+    +#ifdef __NR_fchmodat4
+    +  result = INLINE_SYSCALL (fchmodat4, 4, fd, file, mode, flag);
+    +  if (result == 0 || errno != ENOSYS)
+    +    return result;
+    +#endif
+    +
+       if (flag & AT_SYMLINK_NOFOLLOW)
+         return INLINE_SYSCALL_ERROR_RETURN_VALUE (ENOTSUP);
+    -#endif
+
+    -  return INLINE_SYSCALL (fchmodat, 3, fd, file, mode);
+    +  return INLINE_SYSCALL_ERROR_RETURN_VALUE (EINVAL);
+     }
+
+I've never added a new syscall before so I'm not really sure what the
+proper procedure to follow is.  Based on the feedback from my v1 patch
+set it seems this is somewhat uncontroversial.  At this point I don't
+think there's anything I'm missing, though note that I haven't gotten
+around to testing it this time because the diff from v1 is trivial for
+any platform I could reasonably test on.  The v1 patches suggest a
+simple test case, but I didn't re-run it because I don't want to reboot
+my laptop.
+
+Changes since v2 [20190717012719.5524-1-palmer@sifive.com]:
+
+* Rebased to master.
+* The lookup_flags passed to sys_fchmodat4 as suggested by Al Viro.
+* Selftest added.
+
+Changes since v1 [20190531191204.4044-1-palmer@sifive.com]:
+
+* All architectures are now supported, which support squashed into a
+  single patch.
+* The do_fchmodat() helper function has been removed, in favor of directly
+  calling do_fchmodat4().
+* The patches are based on 5.2 instead of 5.1.
+
 ---
- arch/parisc/include/asm/cacheflush.h |  14 ++--
- arch/parisc/include/asm/pgtable.h    |  37 +++++----
- arch/parisc/kernel/cache.c           | 107 ++++++++++++++++++---------
- 3 files changed, 105 insertions(+), 53 deletions(-)
 
-diff --git a/arch/parisc/include/asm/cacheflush.h b/arch/parisc/include/asm/cacheflush.h
-index c8b6928cee1e..b77c3e0c37d3 100644
---- a/arch/parisc/include/asm/cacheflush.h
-+++ b/arch/parisc/include/asm/cacheflush.h
-@@ -43,8 +43,13 @@ void invalidate_kernel_vmap_range(void *vaddr, int size);
- #define flush_cache_vmap(start, end)		flush_cache_all()
- #define flush_cache_vunmap(start, end)		flush_cache_all()
- 
-+void flush_dcache_folio(struct folio *folio);
-+#define flush_dcache_folio flush_dcache_folio
- #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
--void flush_dcache_page(struct page *page);
-+static inline void flush_dcache_page(struct page *page)
-+{
-+	flush_dcache_folio(page_folio(page));
-+}
- 
- #define flush_dcache_mmap_lock(mapping)		xa_lock_irq(&mapping->i_pages)
- #define flush_dcache_mmap_unlock(mapping)	xa_unlock_irq(&mapping->i_pages)
-@@ -53,10 +58,9 @@ void flush_dcache_page(struct page *page);
- #define flush_dcache_mmap_unlock_irqrestore(mapping, flags)	\
- 		xa_unlock_irqrestore(&mapping->i_pages, flags)
- 
--#define flush_icache_page(vma,page)	do { 		\
--	flush_kernel_dcache_page_addr(page_address(page)); \
--	flush_kernel_icache_page(page_address(page)); 	\
--} while (0)
-+void flush_icache_pages(struct vm_area_struct *vma, struct page *page,
-+		unsigned int nr);
-+#define flush_icache_page(vma, page)	flush_icache_pages(vma, page, 1)
- 
- #define flush_icache_range(s,e)		do { 		\
- 	flush_kernel_dcache_range_asm(s,e); 		\
-diff --git a/arch/parisc/include/asm/pgtable.h b/arch/parisc/include/asm/pgtable.h
-index 5656395c95ee..ce38bb375b60 100644
---- a/arch/parisc/include/asm/pgtable.h
-+++ b/arch/parisc/include/asm/pgtable.h
-@@ -73,15 +73,6 @@ extern void __update_cache(pte_t pte);
- 		mb();				\
- 	} while(0)
- 
--#define set_pte_at(mm, addr, pteptr, pteval)	\
--	do {					\
--		if (pte_present(pteval) &&	\
--		    pte_user(pteval))		\
--			__update_cache(pteval);	\
--		*(pteptr) = (pteval);		\
--		purge_tlb_entries(mm, addr);	\
--	} while (0)
--
- #endif /* !__ASSEMBLY__ */
- 
- #define pte_ERROR(e) \
-@@ -285,7 +276,7 @@ extern unsigned long *empty_zero_page;
- #define pte_none(x)     (pte_val(x) == 0)
- #define pte_present(x)	(pte_val(x) & _PAGE_PRESENT)
- #define pte_user(x)	(pte_val(x) & _PAGE_USER)
--#define pte_clear(mm, addr, xp)  set_pte_at(mm, addr, xp, __pte(0))
-+#define pte_clear(mm, addr, xp)  set_pte(xp, __pte(0))
- 
- #define pmd_flag(x)	(pmd_val(x) & PxD_FLAG_MASK)
- #define pmd_address(x)	((unsigned long)(pmd_val(x) &~ PxD_FLAG_MASK) << PxD_VALUE_SHIFT)
-@@ -391,11 +382,29 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
- 
- extern void paging_init (void);
- 
-+static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
-+		pte_t *ptep, pte_t pte, unsigned int nr)
-+{
-+	if (pte_present(pte) && pte_user(pte))
-+		__update_cache(pte);
-+	for (;;) {
-+		*ptep = pte;
-+		purge_tlb_entries(mm, addr);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		pte_val(pte) += 1 << PFN_PTE_SHIFT;
-+		addr += PAGE_SIZE;
-+	}
-+}
-+#define set_ptes set_ptes
-+
- /* Used for deferring calls to flush_dcache_page() */
- 
- #define PG_dcache_dirty         PG_arch_1
- 
--#define update_mmu_cache(vms,addr,ptep) __update_cache(*ptep)
-+#define update_mmu_cache_range(vmf, vma, addr, ptep, nr) __update_cache(*ptep)
-+#define update_mmu_cache(vma, addr, ptep) __update_cache(*ptep)
- 
- /*
-  * Encode/decode swap entries and swap PTEs. Swap PTEs are all PTEs that
-@@ -450,7 +459,7 @@ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma, unsigned
- 	if (!pte_young(pte)) {
- 		return 0;
- 	}
--	set_pte_at(vma->vm_mm, addr, ptep, pte_mkold(pte));
-+	set_pte(ptep, pte_mkold(pte));
- 	return 1;
- }
- 
-@@ -460,14 +469,14 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
- 	pte_t old_pte;
- 
- 	old_pte = *ptep;
--	set_pte_at(mm, addr, ptep, __pte(0));
-+	set_pte(ptep, __pte(0));
- 
- 	return old_pte;
- }
- 
- static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
- {
--	set_pte_at(mm, addr, ptep, pte_wrprotect(*ptep));
-+	set_pte(ptep, pte_wrprotect(*ptep));
- }
- 
- #define pte_same(A,B)	(pte_val(A) == pte_val(B))
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index b55b35c89d6a..442109a48940 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -94,11 +94,11 @@ static inline void flush_data_cache(void)
- /* Kernel virtual address of pfn.  */
- #define pfn_va(pfn)	__va(PFN_PHYS(pfn))
- 
--void
--__update_cache(pte_t pte)
-+void __update_cache(pte_t pte)
- {
- 	unsigned long pfn = pte_pfn(pte);
--	struct page *page;
-+	struct folio *folio;
-+	unsigned int nr;
- 
- 	/* We don't have pte special.  As a result, we can be called with
- 	   an invalid pfn and we don't need to flush the kernel dcache page.
-@@ -106,13 +106,17 @@ __update_cache(pte_t pte)
- 	if (!pfn_valid(pfn))
- 		return;
- 
--	page = pfn_to_page(pfn);
--	if (page_mapping_file(page) &&
--	    test_bit(PG_dcache_dirty, &page->flags)) {
--		flush_kernel_dcache_page_addr(pfn_va(pfn));
--		clear_bit(PG_dcache_dirty, &page->flags);
-+	folio = page_folio(pfn_to_page(pfn));
-+	pfn = folio_pfn(folio);
-+	nr = folio_nr_pages(folio);
-+	if (folio_flush_mapping(folio) &&
-+	    test_bit(PG_dcache_dirty, &folio->flags)) {
-+		while (nr--)
-+			flush_kernel_dcache_page_addr(pfn_va(pfn + nr));
-+		clear_bit(PG_dcache_dirty, &folio->flags);
- 	} else if (parisc_requires_coherency())
--		flush_kernel_dcache_page_addr(pfn_va(pfn));
-+		while (nr--)
-+			flush_kernel_dcache_page_addr(pfn_va(pfn + nr));
- }
- 
- void
-@@ -366,6 +370,20 @@ static void flush_user_cache_page(struct vm_area_struct *vma, unsigned long vmad
- 	preempt_enable();
- }
- 
-+void flush_icache_pages(struct vm_area_struct *vma, struct page *page,
-+		unsigned int nr)
-+{
-+	void *kaddr = page_address(page);
-+
-+	for (;;) {
-+		flush_kernel_dcache_page_addr(kaddr);
-+		flush_kernel_icache_page(kaddr);
-+		if (--nr == 0)
-+			break;
-+		kaddr += PAGE_SIZE;
-+	}
-+}
-+
- static inline pte_t *get_ptep(struct mm_struct *mm, unsigned long addr)
- {
- 	pte_t *ptep = NULL;
-@@ -394,27 +412,30 @@ static inline bool pte_needs_flush(pte_t pte)
- 		== (_PAGE_PRESENT | _PAGE_ACCESSED);
- }
- 
--void flush_dcache_page(struct page *page)
-+void flush_dcache_folio(struct folio *folio)
- {
--	struct address_space *mapping = page_mapping_file(page);
--	struct vm_area_struct *mpnt;
--	unsigned long offset;
-+	struct address_space *mapping = folio_flush_mapping(folio);
-+	struct vm_area_struct *vma;
- 	unsigned long addr, old_addr = 0;
-+	void *kaddr;
- 	unsigned long count = 0;
--	unsigned long flags;
-+	unsigned long i, nr, flags;
- 	pgoff_t pgoff;
- 
- 	if (mapping && !mapping_mapped(mapping)) {
--		set_bit(PG_dcache_dirty, &page->flags);
-+		set_bit(PG_dcache_dirty, &folio->flags);
- 		return;
- 	}
- 
--	flush_kernel_dcache_page_addr(page_address(page));
-+	nr = folio_nr_pages(folio);
-+	kaddr = folio_address(folio);
-+	for (i = 0; i < nr; i++)
-+		flush_kernel_dcache_page_addr(kaddr + i * PAGE_SIZE);
- 
- 	if (!mapping)
- 		return;
- 
--	pgoff = page->index;
-+	pgoff = folio->index;
- 
- 	/*
- 	 * We have carefully arranged in arch_get_unmapped_area() that
-@@ -424,20 +445,33 @@ void flush_dcache_page(struct page *page)
- 	 * on machines that support equivalent aliasing
- 	 */
- 	flush_dcache_mmap_lock_irqsave(mapping, flags);
--	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
--		offset = (pgoff - mpnt->vm_pgoff) << PAGE_SHIFT;
--		addr = mpnt->vm_start + offset;
--		if (parisc_requires_coherency()) {
--			bool needs_flush = false;
--			pte_t *ptep;
-+	vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff + nr - 1) {
-+		unsigned long offset = pgoff - vma->vm_pgoff;
-+		unsigned long pfn = folio_pfn(folio);
-+
-+		addr = vma->vm_start;
-+		nr = folio_nr_pages(folio);
-+		if (offset > -nr) {
-+			pfn -= offset;
-+			nr += offset;
-+		} else {
-+			addr += offset * PAGE_SIZE;
-+		}
-+		if (addr + nr * PAGE_SIZE > vma->vm_end)
-+			nr = (vma->vm_end - addr) / PAGE_SIZE;
- 
--			ptep = get_ptep(mpnt->vm_mm, addr);
--			if (ptep) {
--				needs_flush = pte_needs_flush(*ptep);
-+		if (parisc_requires_coherency()) {
-+			for (i = 0; i < nr; i++) {
-+				pte_t *ptep = get_ptep(vma->vm_mm,
-+							addr + i * PAGE_SIZE);
-+				if (!ptep)
-+					continue;
-+				if (pte_needs_flush(*ptep))
-+					flush_user_cache_page(vma,
-+							addr + i * PAGE_SIZE);
-+				/* Optimise accesses to the same table? */
- 				pte_unmap(ptep);
- 			}
--			if (needs_flush)
--				flush_user_cache_page(mpnt, addr);
- 		} else {
- 			/*
- 			 * The TLB is the engine of coherence on parisc:
-@@ -450,27 +484,32 @@ void flush_dcache_page(struct page *page)
- 			 * in (until the user or kernel specifically
- 			 * accesses it, of course)
- 			 */
--			flush_tlb_page(mpnt, addr);
-+			for (i = 0; i < nr; i++)
-+				flush_tlb_page(vma, addr + i * PAGE_SIZE);
- 			if (old_addr == 0 || (old_addr & (SHM_COLOUR - 1))
- 					!= (addr & (SHM_COLOUR - 1))) {
--				__flush_cache_page(mpnt, addr, page_to_phys(page));
-+				for (i = 0; i < nr; i++)
-+					__flush_cache_page(vma,
-+						addr + i * PAGE_SIZE,
-+						(pfn + i) * PAGE_SIZE);
- 				/*
- 				 * Software is allowed to have any number
- 				 * of private mappings to a page.
- 				 */
--				if (!(mpnt->vm_flags & VM_SHARED))
-+				if (!(vma->vm_flags & VM_SHARED))
- 					continue;
- 				if (old_addr)
- 					pr_err("INEQUIVALENT ALIASES 0x%lx and 0x%lx in file %pD\n",
--						old_addr, addr, mpnt->vm_file);
--				old_addr = addr;
-+						old_addr, addr, vma->vm_file);
-+				if (nr == folio_nr_pages(folio))
-+					old_addr = addr;
- 			}
- 		}
- 		WARN_ON(++count == 4096);
- 	}
- 	flush_dcache_mmap_unlock_irqrestore(mapping, flags);
- }
--EXPORT_SYMBOL(flush_dcache_page);
-+EXPORT_SYMBOL(flush_dcache_folio);
- 
- /* Defined in arch/parisc/kernel/pacache.S */
- EXPORT_SYMBOL(flush_kernel_dcache_range_asm);
+Alexey Gladkov (1):
+  selftests: add fchmodat4(2) selftest
+
+Palmer Dabbelt (4):
+  Non-functional cleanup of a "__user * filename"
+  fs: Add fchmodat4()
+  arch: Register fchmodat4, usually as syscall 451
+  tools headers UAPI: Sync files changed by new fchmodat4 syscall
+
+ arch/alpha/kernel/syscalls/syscall.tbl        |   1 +
+ arch/arm/tools/syscall.tbl                    |   1 +
+ arch/arm64/include/asm/unistd32.h             |   2 +
+ arch/ia64/kernel/syscalls/syscall.tbl         |   1 +
+ arch/m68k/kernel/syscalls/syscall.tbl         |   1 +
+ arch/microblaze/kernel/syscalls/syscall.tbl   |   1 +
+ arch/mips/kernel/syscalls/syscall_n32.tbl     |   1 +
+ arch/mips/kernel/syscalls/syscall_n64.tbl     |   1 +
+ arch/mips/kernel/syscalls/syscall_o32.tbl     |   1 +
+ arch/parisc/kernel/syscalls/syscall.tbl       |   1 +
+ arch/powerpc/kernel/syscalls/syscall.tbl      |   1 +
+ arch/s390/kernel/syscalls/syscall.tbl         |   1 +
+ arch/sh/kernel/syscalls/syscall.tbl           |   1 +
+ arch/sparc/kernel/syscalls/syscall.tbl        |   1 +
+ arch/x86/entry/syscalls/syscall_32.tbl        |   1 +
+ arch/x86/entry/syscalls/syscall_64.tbl        |   1 +
+ arch/xtensa/kernel/syscalls/syscall.tbl       |   1 +
+ fs/open.c                                     |  18 ++-
+ include/linux/syscalls.h                      |   4 +-
+ include/uapi/asm-generic/unistd.h             |   5 +-
+ tools/include/uapi/asm-generic/unistd.h       |   5 +-
+ .../arch/mips/entry/syscalls/syscall_n64.tbl  |   1 +
+ .../arch/powerpc/entry/syscalls/syscall.tbl   |   1 +
+ .../perf/arch/s390/entry/syscalls/syscall.tbl |   1 +
+ .../arch/x86/entry/syscalls/syscall_64.tbl    |   1 +
+ tools/testing/selftests/Makefile              |   1 +
+ tools/testing/selftests/fchmodat4/.gitignore  |   2 +
+ tools/testing/selftests/fchmodat4/Makefile    |   6 +
+ .../selftests/fchmodat4/fchmodat4_test.c      | 151 ++++++++++++++++++
+ 29 files changed, 207 insertions(+), 7 deletions(-)
+ create mode 100644 tools/testing/selftests/fchmodat4/.gitignore
+ create mode 100644 tools/testing/selftests/fchmodat4/Makefile
+ create mode 100644 tools/testing/selftests/fchmodat4/fchmodat4_test.c
+
 -- 
-2.39.2
+2.33.8
 
