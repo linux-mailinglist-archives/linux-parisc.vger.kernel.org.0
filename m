@@ -2,69 +2,74 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 061BA75A6E7
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Jul 2023 08:49:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDF9F75A6F6
+	for <lists+linux-parisc@lfdr.de>; Thu, 20 Jul 2023 08:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbjGTGtr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 20 Jul 2023 02:49:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59524 "EHLO
+        id S231303AbjGTGx6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 20 Jul 2023 02:53:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229604AbjGTGtr (ORCPT
+        with ESMTP id S231289AbjGTGx5 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 20 Jul 2023 02:49:47 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97AF610A;
-        Wed, 19 Jul 2023 23:49:45 -0700 (PDT)
+        Thu, 20 Jul 2023 02:53:57 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2DE1719;
+        Wed, 19 Jul 2023 23:53:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1689835768; x=1690440568; i=deller@gmx.de;
- bh=HZ7rg6AhbQrQ6e7Xq6bBlCGjxjfoM64OtgN0BKs/8YQ=;
+ s=s31663417; t=1689836018; x=1690440818; i=deller@gmx.de;
+ bh=4/kNM7Ipq1uMdYYgZfRESf75NFD7moYKZ1xfRPrX+Wo=;
  h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=EjLiR1ouuZUCT+SNzkAyFPOHlqda/bHE5x2CaZRgACJRdu9wsbkzEggpFOZ8F4MQ2iiKIwu
- 9rS3MyOiTdrntW6+Xy1JFFvR5xY9W/G23tbdrQTfvWfcnBDNYKDJBdCmNZeLGJfwx6Qzd8HSO
- 6cvyv6a5orygDgu851k53WBXf9ajJPfGhUge1KDJy5v6IRqEk+c0oBjTvWQTOdTBmyQ3xFUq4
- Vv5ecKnxbInURErcbNPU6ohg2/lAb0Q8NopyxuBTS1GI76+fK28esSV1jAPvfUFebrqdYjHLM
- shtj/xpQjb9wHNimf25Z89ntl9k2G4BjJhqJ0554oK/w66VPEdCg==
+ b=IkmBVt9kZs/WnnGYg5w4ZRGbh7rQDJX7WnqZOGcoXY4OLd0KUSGA0CDG9h110AplxJQ+iy3
+ IJ2xxVJx0ycAcAg+bCnmW4nkWBhNGU0Yx/3+MgGsNE6Msna2lqVK2YkrItc0c6txeoM8+nktN
+ F2h5z4ZXOAkse2jGVRWlIPhmOZiQW34vIs8sflyTaNsAF7nK8i0beh+SsUPpQG2VCZvpHdFa0
+ Bpsq7N8de6ExE8QyviyRo0Ge1N5Ee+/TaqZqK/INuTtoc0Irc2ZEOhK6u0soruK8vwHhD4qej
+ yf9bDduMr2LXMFpXtmWbYAHO3hJ4FdzhViXCDCgeo3HrolnRoK7A==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.60] ([94.134.153.9]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MLR1f-1qejfv1zxD-00IVXd; Thu, 20
- Jul 2023 08:49:28 +0200
-Message-ID: <5603e84b-656b-e0b2-14ef-13f4e1062552@gmx.de>
-Date:   Thu, 20 Jul 2023 08:49:27 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MOA3F-1qXYbL0ceH-00OYrE; Thu, 20
+ Jul 2023 08:53:38 +0200
+Message-ID: <342d7c94-d04b-342e-7540-4aee6d8b03f5@gmx.de>
+Date:   Thu, 20 Jul 2023 08:53:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH] parisc: math-emu: fcnvxf: Add space after that ','
+Subject: Re: [PATCH 1/3] arm: Fix flush_dcache_page() for usage from irq
+ context
 Content-Language: en-US
-To:     hanyu001@208suo.com
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <tencent_86762B5284E20421D8A676F4CC1B205D2F0A@qq.com>
- <a2ae26be540da062ea4912c36962093b@208suo.com>
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+Cc:     linux-arm-kernel@lists.infradead.org
+References: <20230524152633.203927-1-deller@gmx.de>
+ <20230524152633.203927-2-deller@gmx.de>
+ <3e131821-7665-47f0-a8a6-44b3e4d7a88a@app.fastmail.com>
 From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <a2ae26be540da062ea4912c36962093b@208suo.com>
+In-Reply-To: <3e131821-7665-47f0-a8a6-44b3e4d7a88a@app.fastmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:q9WgkOpkJnkqrKbIKi7caJsirmzwbDML/OhqQyMS5bHREYZdHsc
- xqNH19PsLzVdqbqVa9cNQoSFkWPZsyQWeWMO1o4I9id47AcFZHc+Oimy6p1X7RyAesYr+8+
- IjUU5c7ZMn1AfHsOYmZmjlyjfoyGi27fHA4zZ0rnAATM1pAZusk4Vlrx5EwGU4ZmXsxyQBM
- 5bXAx6w44JW5PEy/Qwe1A==
-UI-OutboundReport: notjunk:1;M01:P0:kLAIqU58eDM=;fkyra3ddEZ8kgnJobsX2Y9tFqtd
- LzwKuCLFp2Nx/FtwmnT1rx2cQbrYh2IgzG0MPvjZpO3y2PC4YrQXMhlaXRK2LbtwZU1mKl1/Q
- 7rL+mi2XO1BFuupyBPzgA/7GaQ8XVfJ/UaQHYDx1Wa036MiZQjGgi3bxcqaFj5ptzGXBE7MO6
- JBK0ipplLLqNfcHnmkbKeg25OEo50NnBWJiwHrU5qcCd6UXlhaKBDeUywdEBG0GKQCWfSwFCf
- v3KNwHRpKGIRfi/vF8d0ok6iJvQEWXh2L7Mb1MZ+lk8dNzwqct4nEKR7gOLJuEfEKTCI7Vj/q
- XobskLGU17/jXMn1EPaRbrxnzwWkxNybq/XuEcvU7Ub2gHfMPvOtAGxwT97Vftl/sGkAK+mEM
- oE+lqmYY6rSqaXVf7qeaMEEx4X/Emr44dBMWM0bIzBqjYeFF65/GIpgGT2D8T+13OGQbWMhiF
- KA1fo2XZiX+VaYAdCu3ldKs9fD9XZQ641zz+orzzcWmTGrX5yDNiDyHIB6T5xMF81XjtK4qCf
- a0gi/WcuhmssWLptnWt2F17yFJZcxKElpzaOh4swSosd9aTL/qaq1Bnj601uMsRriaS3YUw27
- YvpeioO4AMvQi0QTaG1NvmR7AdV91d/8QKUsv2AGT7T6HY/b5pH5l2l4AWa3qZgGyKo3auffC
- 9hIUjsyPWaB2o5RSlbDS4BxUMz1vNFSfDaP73qrTzONKDx62PU9KLQ0ANW86BI7PsSVvspLf9
- NrnaWAye+BmeS+jSFTCxci7SXV7dA5o/0MQJdylSZphg1Hqs6AmI5Y3AdEAutjdYJna+oVUvI
- tQuiga/aJ35p47jkS2AbiyOmkpwxTr4eDBQdLlVr1IXl53l1Kcm35AOX9k2Xq2LKaIIdo2KZ/
- ouK8xs6I0d6ECPQwHEhYjqN0TOwvKmy3wmvlXwmX/90Nm8Lf0n31/DLXSwOsmtpMc+VIkgl6i
- ip3hTNPc8G4jXETLg5pfvPeyxL8=
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Provags-ID: V03:K1:vQJeSZTaMhJL5siCKBjdTopfh4h2nv/z3YKFFjaXxrYqG1oG3vZ
+ ao6IO6gkeSQN9GA3skzm1YYv3ZOF+IzzEZbNbd//3I/9yxRdwJmB75UuExvZZWXqf9kBJSC
+ NR5ghRe+wFg3DY/7LHwkrN/5Pc1xz+6dvoz5ZNppE5qO0CnCD9ECvheCjGvovWk0IC6SABS
+ 5rMCRQ9f100U19+0hEoUA==
+UI-OutboundReport: notjunk:1;M01:P0:YlCFrtpXflE=;3hRRdr4s1RIEwyL0Sdqrqev5V6Y
+ 9zfxiJf7oRMumdIdxCJRcEuPA8ue/2FbUmCAweXtjTI/qmqsT6FyiHUugSiMAtYBzyrWa8fvk
+ YS0IK75AlfO1PmzVGBgVFYL0yjH2ZsKWibqMCvXbMvQBwAMsePxggLQZ7pLSsEO66thoS42/1
+ oBVol9zsO+ujTYK1AG9BaSgIEeLyUPnblfG4gnOokY0VqLmIyAtM7w6Kfzuen7eZE/uHD13Fs
+ zzVDFyUNbeLmNhhDifRA04TYnd/zLdkB0q4oYW5ORp/AczfqSrmx2pPZz3UOy5eIhEqmeEoMg
+ dVtXxNXHvPUuaq93fzALxGHzbkAP54ZhWZkul02W8AikceDIhGJWIdLX9ZJr3zHakdy/r9kAc
+ jM7hSOnPMq5qjW2ZwQr95ztsaiGlLXrZQZ+ElDcShnJZnrmC+42jzVxjPZ4RsOk5u1Fr+8mNG
+ fUeAMEEzXfA9aU3SV2bZP46IDzIoSEveAfOz7FDSfaFn++czSMzmdFA18FQKSLGKKmKB/L2/F
+ PZ9YCO+XhLVPWjMhrek7vBK8KfcpwO1jwwEfUH2Y8cSk8LViDK+9rDgWyKTlvMRNIeR5JBb7o
+ QEpK4xHiB3r/5vY0ouU9gPP+kR3lrfnSjwt3LrOVBlqro9OQkZ2ABO4F4gZIxMqgSu9P2x4Zv
+ LLC2FediH5iyACXuPDLf+b/gDwAqxbnzchvGJCGD5/7uZ6DdieIdad6EYfYXDLpnZLVAmNv0o
+ mlmQKMgQmPUU7S9h4T0Bl++zuJo2vAzxLkHd2SOgj6PczyP8gLTClfL1kRt/fF7oZCqiy+nN1
+ B6Ezd/yG1eox3/WByg1QQc71CKJDGDPJ2E//1prvMHtg12ivY/ABEKaRgpGgfBo/FGd+X1g4q
+ 1CTJBylZBC4fXEe7AYd+9e4Zhte8ZmEZqD+1T5TOFYtxg6dvdbuvT4HajEReo03oQ42CZ6iI8
+ vU75KaiJIoTQiu2nL+eF/3rxqQE=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,59 +77,31 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello hanyu001,
-
-On 7/13/23 11:37, hanyu001@208suo.com wrote:
+On 5/24/23 22:00, Arnd Bergmann wrote:
+> On Wed, May 24, 2023, at 17:26, Helge Deller wrote:
+>> Since at least kernel 6.1, flush_dcache_page() is called with IRQs
+>> disabled, e.g. from aio_complete().
+>>
+>> But the current implementation for flush_dcache_page() on ARM
+>> unintentionally re-enables IRQs, which may lead to deadlocks.
+>>
+>> Fix it by using xa_lock_irqsave() and xa_unlock_irqrestore()
+>> for the flush_dcache_mmap_*lock() macros instead.
+>>
+>> Cc: Russell King (Oracle) <linux@armlinux.org.uk>
+>> Cc: Arnd Bergmann <arnd@arndb.de>
+>> Cc: linux-arm-kernel@lists.infradead.org
+>> Signed-off-by: Helge Deller <deller@gmx.de>
 >
-> Fix Error reported by checkpatch.pl
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 >
-> arch/parisc/math-emu/fcnvxf.c:99: ERROR: space required after that ',' (=
-ctx:VxV
-> )
->
-> Signed-off-by: maqimei <2433033762@qq.com>
+>  From what I can tell, the behavior in aio_complete has been
+> there for over 10 years, since 21b40200cfe96 ("aio: use
+> flush_dcache_page()"). Others may have done the same already
+> back then.
 
-Thanks for that patch!
+gentle ping...
+I think this patch hasn't been picked up yet for arm.
 
-Your patch is correct and as such it should be applied.
-But please notice the arch/parisc/math-emu/README file (in the same
-directory), which states:
-All files except driver.c are snapshots from the HP-UX kernel.  They've
-been modified as little as possible.  Even though they don't fit the
-Linux coding style, please leave them in their funny format just in case
-someone in the future, with access to HP-UX source code, is generous
-enough to update our copies with later changes from HP-UX -- it'll
-make their 'diff' job easier if our code is relatively unmodified.
-
-So, I won't apply any patch to that directory, unless it fixes a real bug
-or is required to compile the kernel.
-
-Thanks,
 Helge
-
-> ---
->  =C2=A0arch/parisc/math-emu/fcnvxf.c | 2 +-
->  =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/parisc/math-emu/fcnvxf.c b/arch/parisc/math-emu/fcnvxf=
-.c
-> index 6940179..f5f9376 100644
-> --- a/arch/parisc/math-emu/fcnvxf.c
-> +++ b/arch/parisc/math-emu/fcnvxf.c
-> @@ -96,7 +96,7 @@
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Sgl_increment(result);
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 case ROUNDNEAREST:
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 Sgl_roundnearest_from_int(src,result);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 Sgl_roundnearest_from_int(src, result);
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (Is_inexacttrap_ena=
-bled()) {
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 *dstptr =3D result;
-
