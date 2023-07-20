@@ -2,106 +2,239 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDF9F75A6F6
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Jul 2023 08:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70B1675AA35
+	for <lists+linux-parisc@lfdr.de>; Thu, 20 Jul 2023 10:58:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231303AbjGTGx6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 20 Jul 2023 02:53:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33806 "EHLO
+        id S230339AbjGTI6q (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 20 Jul 2023 04:58:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231289AbjGTGx5 (ORCPT
+        with ESMTP id S231428AbjGTIy1 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 20 Jul 2023 02:53:57 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2DE1719;
-        Wed, 19 Jul 2023 23:53:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1689836018; x=1690440818; i=deller@gmx.de;
- bh=4/kNM7Ipq1uMdYYgZfRESf75NFD7moYKZ1xfRPrX+Wo=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=IkmBVt9kZs/WnnGYg5w4ZRGbh7rQDJX7WnqZOGcoXY4OLd0KUSGA0CDG9h110AplxJQ+iy3
- IJ2xxVJx0ycAcAg+bCnmW4nkWBhNGU0Yx/3+MgGsNE6Msna2lqVK2YkrItc0c6txeoM8+nktN
- F2h5z4ZXOAkse2jGVRWlIPhmOZiQW34vIs8sflyTaNsAF7nK8i0beh+SsUPpQG2VCZvpHdFa0
- Bpsq7N8de6ExE8QyviyRo0Ge1N5Ee+/TaqZqK/INuTtoc0Irc2ZEOhK6u0soruK8vwHhD4qej
- yf9bDduMr2LXMFpXtmWbYAHO3hJ4FdzhViXCDCgeo3HrolnRoK7A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.153.9]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MOA3F-1qXYbL0ceH-00OYrE; Thu, 20
- Jul 2023 08:53:38 +0200
-Message-ID: <342d7c94-d04b-342e-7540-4aee6d8b03f5@gmx.de>
-Date:   Thu, 20 Jul 2023 08:53:37 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/3] arm: Fix flush_dcache_page() for usage from irq
- context
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
+        Thu, 20 Jul 2023 04:54:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7985D26A2;
+        Thu, 20 Jul 2023 01:54:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 03E4E61900;
+        Thu, 20 Jul 2023 08:54:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CBDC433C8;
+        Thu, 20 Jul 2023 08:54:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689843264;
+        bh=nLUVvJJOl4QJGI6Kn3sQ8QCjl89R0J5mJFa8dm5XKOw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=PuKy3faF1XLn+PHZ7cjaF0uhzIpt8UmxXHlCkcxcysHntuAtgxenMOR0jiqzOaym1
+         WMWgGa+uRvXPjZrWBFBGv038GXrBCyQv80gd0Hc45CQIyyzeMQ82Xaq3ITNm+SYtxo
+         7gvtuugiUYygCScpbVFonOTqCAun5VzD6KVdXP8kD65xKrylzVr11GmSFEDCzkxtVT
+         Q5YLU8AzeJyj7oiLMJZZJ6aCwC/Qi2kX+Q8rqNd9QgbjenTCySbXtXzS2WeAv6NkFU
+         XQgNFCeQsS6eP/C71+pUsdXl355/AKUAswk/sIPsN/gxf6FufuEDrrFaYRAvJ0ZCdI
+         ibNd7XIk2nm/g==
+Date:   Thu, 20 Jul 2023 11:53:52 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     Kent Overstreet <kent.overstreet@linux.dev>,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
         Dinh Nguyen <dinguyen@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-Cc:     linux-arm-kernel@lists.infradead.org
-References: <20230524152633.203927-1-deller@gmx.de>
- <20230524152633.203927-2-deller@gmx.de>
- <3e131821-7665-47f0-a8a6-44b3e4d7a88a@app.fastmail.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <3e131821-7665-47f0-a8a6-44b3e4d7a88a@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:vQJeSZTaMhJL5siCKBjdTopfh4h2nv/z3YKFFjaXxrYqG1oG3vZ
- ao6IO6gkeSQN9GA3skzm1YYv3ZOF+IzzEZbNbd//3I/9yxRdwJmB75UuExvZZWXqf9kBJSC
- NR5ghRe+wFg3DY/7LHwkrN/5Pc1xz+6dvoz5ZNppE5qO0CnCD9ECvheCjGvovWk0IC6SABS
- 5rMCRQ9f100U19+0hEoUA==
-UI-OutboundReport: notjunk:1;M01:P0:YlCFrtpXflE=;3hRRdr4s1RIEwyL0Sdqrqev5V6Y
- 9zfxiJf7oRMumdIdxCJRcEuPA8ue/2FbUmCAweXtjTI/qmqsT6FyiHUugSiMAtYBzyrWa8fvk
- YS0IK75AlfO1PmzVGBgVFYL0yjH2ZsKWibqMCvXbMvQBwAMsePxggLQZ7pLSsEO66thoS42/1
- oBVol9zsO+ujTYK1AG9BaSgIEeLyUPnblfG4gnOokY0VqLmIyAtM7w6Kfzuen7eZE/uHD13Fs
- zzVDFyUNbeLmNhhDifRA04TYnd/zLdkB0q4oYW5ORp/AczfqSrmx2pPZz3UOy5eIhEqmeEoMg
- dVtXxNXHvPUuaq93fzALxGHzbkAP54ZhWZkul02W8AikceDIhGJWIdLX9ZJr3zHakdy/r9kAc
- jM7hSOnPMq5qjW2ZwQr95ztsaiGlLXrZQZ+ElDcShnJZnrmC+42jzVxjPZ4RsOk5u1Fr+8mNG
- fUeAMEEzXfA9aU3SV2bZP46IDzIoSEveAfOz7FDSfaFn++czSMzmdFA18FQKSLGKKmKB/L2/F
- PZ9YCO+XhLVPWjMhrek7vBK8KfcpwO1jwwEfUH2Y8cSk8LViDK+9rDgWyKTlvMRNIeR5JBb7o
- QEpK4xHiB3r/5vY0ouU9gPP+kR3lrfnSjwt3LrOVBlqro9OQkZ2ABO4F4gZIxMqgSu9P2x4Zv
- LLC2FediH5iyACXuPDLf+b/gDwAqxbnzchvGJCGD5/7uZ6DdieIdad6EYfYXDLpnZLVAmNv0o
- mlmQKMgQmPUU7S9h4T0Bl++zuJo2vAzxLkHd2SOgj6PczyP8gLTClfL1kRt/fF7oZCqiy+nN1
- B6Ezd/yG1eox3/WByg1QQc71CKJDGDPJ2E//1prvMHtg12ivY/ABEKaRgpGgfBo/FGd+X1g4q
- 1CTJBylZBC4fXEe7AYd+9e4Zhte8ZmEZqD+1T5TOFYtxg6dvdbuvT4HajEReo03oQ42CZ6iI8
- vU75KaiJIoTQiu2nL+eF/3rxqQE=
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Song Liu <song@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-modules@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH 00/13] mm: jit/text allocator
+Message-ID: <20230720085352.GN1901145@kernel.org>
+References: <20230601101257.530867-1-rppt@kernel.org>
+ <ZHjDU/mxE+cugpLj@FVFF77S0Q05N.cambridge.arm.com>
+ <ZHjgIH3aX9dCvVZc@moria.home.lan>
+ <ZHm3zUUbwqlsZBBF@FVFF77S0Q05N>
+ <20230605092040.GB3460@kernel.org>
+ <ZH20XkD74prrdN4u@FVFF77S0Q05N>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZH20XkD74prrdN4u@FVFF77S0Q05N>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 5/24/23 22:00, Arnd Bergmann wrote:
-> On Wed, May 24, 2023, at 17:26, Helge Deller wrote:
->> Since at least kernel 6.1, flush_dcache_page() is called with IRQs
->> disabled, e.g. from aio_complete().
->>
->> But the current implementation for flush_dcache_page() on ARM
->> unintentionally re-enables IRQs, which may lead to deadlocks.
->>
->> Fix it by using xa_lock_irqsave() and xa_unlock_irqrestore()
->> for the flush_dcache_mmap_*lock() macros instead.
->>
->> Cc: Russell King (Oracle) <linux@armlinux.org.uk>
->> Cc: Arnd Bergmann <arnd@arndb.de>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Signed-off-by: Helge Deller <deller@gmx.de>
->
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
->
->  From what I can tell, the behavior in aio_complete has been
-> there for over 10 years, since 21b40200cfe96 ("aio: use
-> flush_dcache_page()"). Others may have done the same already
-> back then.
+On Mon, Jun 05, 2023 at 11:09:34AM +0100, Mark Rutland wrote:
+> On Mon, Jun 05, 2023 at 12:20:40PM +0300, Mike Rapoport wrote:
+> > On Fri, Jun 02, 2023 at 10:35:09AM +0100, Mark Rutland wrote:
+> > > On Thu, Jun 01, 2023 at 02:14:56PM -0400, Kent Overstreet wrote:
+> > > > On Thu, Jun 01, 2023 at 05:12:03PM +0100, Mark Rutland wrote:
+> > > > > For a while I have wanted to give kprobes its own allocator so that it can work
+> > > > > even with CONFIG_MODULES=n, and so that it doesn't have to waste VA space in
+> > > > > the modules area.
+> > > > > 
+> > > > > Given that, I think these should have their own allocator functions that can be
+> > > > > provided independently, even if those happen to use common infrastructure.
+> > > > 
+> > > > How much memory can kprobes conceivably use? I think we also want to try
+> > > > to push back on combinatorial new allocators, if we can.
+> > > 
+> > > That depends on who's using it, and how (e.g. via BPF).
+> > > 
+> > > To be clear, I'm not necessarily asking for entirely different allocators, but
+> > > I do thinkg that we want wrappers that can at least pass distinct start+end
+> > > parameters to a common allocator, and for arm64's modules code I'd expect that
+> > > we'd keep the range falblack logic out of the common allcoator, and just call
+> > > it twice.
+> > > 
+> > > > > > Several architectures override module_alloc() because of various
+> > > > > > constraints where the executable memory can be located and this causes
+> > > > > > additional obstacles for improvements of code allocation.
+> > > > > > 
+> > > > > > This set splits code allocation from modules by introducing
+> > > > > > jit_text_alloc(), jit_data_alloc() and jit_free() APIs, replaces call
+> > > > > > sites of module_alloc() and module_memfree() with the new APIs and
+> > > > > > implements core text and related allocation in a central place.
+> > > > > > 
+> > > > > > Instead of architecture specific overrides for module_alloc(), the
+> > > > > > architectures that require non-default behaviour for text allocation must
+> > > > > > fill jit_alloc_params structure and implement jit_alloc_arch_params() that
+> > > > > > returns a pointer to that structure. If an architecture does not implement
+> > > > > > jit_alloc_arch_params(), the defaults compatible with the current
+> > > > > > modules::module_alloc() are used.
+> > > > > 
+> > > > > As above, I suspect that each of the callsites should probably be using common
+> > > > > infrastructure, but I don't think that a single jit_alloc_arch_params() makes
+> > > > > sense, since the parameters for each case may need to be distinct.
+> > > > 
+> > > > I don't see how that follows. The whole point of function parameters is
+> > > > that they may be different :)
+> > > 
+> > > What I mean is that jit_alloc_arch_params() tries to aggregate common
+> > > parameters, but they aren't actually common (e.g. the actual start+end range
+> > > for allocation).
+> > 
+> > jit_alloc_arch_params() tries to aggregate architecture constraints and
+> > requirements for allocations of executable memory and this exactly what
+> > the first 6 patches of this set do.
+> > 
+> > A while ago Thomas suggested to use a structure that parametrizes
+> > architecture constraints by the memory type used in modules [1] and Song
+> > implemented the infrastructure for it and x86 part [2].
+> > 
+> > I liked the idea of defining parameters in a single structure, but I
+> > thought that approaching the problem from the arch side rather than from
+> > modules perspective will be better starting point, hence these patches.
+> > 
+> > I don't see a fundamental reason why a single structure cannot describe
+> > what is needed for different code allocation cases, be it modules, kprobes
+> > or bpf. There is of course an assumption that the core allocations will be
+> > the same for all the users, and it seems to me that something like 
+> > 
+> > * allocate physical memory if allocator caches are empty
+> > * map it in vmalloc or modules address space
+> > * return memory from the allocator cache to the caller
+> > 
+> > will work for all usecases.
+> > 
+> > We might need separate caches for different cases on different
+> > architectures, and a way to specify what cache should be used in the
+> > allocator API, but that does not contradict a single structure for arch
+> > specific parameters, but only makes it more elaborate, e.g. something like
+> > 
+> > enum jit_type {
+> > 	JIT_MODULES_TEXT,
+> > 	JIT_MODULES_DATA,
+> > 	JIT_KPROBES,
+> > 	JIT_FTRACE,
+> > 	JIT_BPF,
+> > 	JIT_TYPE_MAX,
+> > };
+> > 
+> > struct jit_alloc_params {
+> > 	struct jit_range	ranges[JIT_TYPE_MAX];
+> > 	/* ... */
+> > };
+> > 
+> > > > Can you give more detail on what parameters you need? If the only extra
+> > > > parameter is just "does this allocation need to live close to kernel
+> > > > text", that's not that big of a deal.
+> > > 
+> > > My thinking was that we at least need the start + end for each caller. That
+> > > might be it, tbh.
+> > 
+> > Do you mean that modules will have something like
+> > 
+> > 	jit_text_alloc(size, MODULES_START, MODULES_END);
+> > 
+> > and kprobes will have
+> > 
+> > 	jit_text_alloc(size, KPROBES_START, KPROBES_END);
+> > ?
+> 
+> Yes.
+> 
+> > It sill can be achieved with a single jit_alloc_arch_params(), just by
+> > adding enum jit_type parameter to jit_text_alloc().
+> 
+> That feels backwards to me; it centralizes a bunch of information about
+> distinct users to be able to shove that into a static array, when the callsites
+> can pass that information. 
+> 
+> What's *actually* common after separating out the ranges? Is it just the
+> permissions?
 
-gentle ping...
-I think this patch hasn't been picked up yet for arm.
+Even if for some architecture the only common thing are the permissions,
+having a definition for code allocations in a single place an improvement.
+The diffstat of the patches is indeed positive (even without comments), but
+having a single structure that specifies how the code should be allocated
+would IMHO actually reduce the maintenance burden.
 
-Helge
+And features like caching of large pages and sub-page size allocations are
+surely will be easier to opt-in this way.
+ 
+> If we want this to be able to share allocations and so on, why can't we do this
+> like a kmem_cache, and have the callsite pass a pointer to the allocator data?
+> That would make it easy for callsites to share an allocator or use a distinct
+> one.
+
+I've looked into doing this like a kmem_cache with call sites passing the
+allocator data, and this gets really hairy. For each user we need to pass
+the arch specific parameters to that user, create a cache there and only
+then the cache can be used. Since we don't have hooks to setup any of the
+users in the arch code, the initialization gets more complex than shoving
+everything into an array.
+
+I think that jit_alloc(type, size) is the best way to move forward to let
+different users choose their ranges and potentially caches. Differentiation
+by the API name will explode even now and it'll get worse if/when new users
+will show up and we can't even force users to avoid using PC-relative
+addressing because, e.g. RISC-V explicitly switched their BPF JIT to use
+that.
+ 
+> Thanks,
+> Mark.
+
+-- 
+Sincerely yours,
+Mike.
