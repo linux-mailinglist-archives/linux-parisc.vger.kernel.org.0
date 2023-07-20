@@ -2,161 +2,129 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF9E75A6BF
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Jul 2023 08:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 061BA75A6E7
+	for <lists+linux-parisc@lfdr.de>; Thu, 20 Jul 2023 08:49:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229796AbjGTGm3 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 20 Jul 2023 02:42:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49000 "EHLO
+        id S230028AbjGTGtr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 20 Jul 2023 02:49:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229884AbjGTGmM (ORCPT
+        with ESMTP id S229604AbjGTGtr (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 20 Jul 2023 02:42:12 -0400
-Received: from mail.208.org (unknown [183.242.55.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 552A03A8E
-        for <linux-parisc@vger.kernel.org>; Wed, 19 Jul 2023 23:41:29 -0700 (PDT)
-Received: from mail.208.org (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTP id 4R633J1249zBRDsN
-        for <linux-parisc@vger.kernel.org>; Thu, 20 Jul 2023 14:40:28 +0800 (CST)
-Authentication-Results: mail.208.org (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)" header.d=208.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=208.org; h=
-        content-transfer-encoding:content-type:message-id:user-agent
-        :references:in-reply-to:subject:to:from:date:mime-version; s=
-        dkim; t=1689835228; x=1692427229; bh=81G26k9hNAjf4shhHCVSfJDBLgY
-        Z547gFCoUSjNeB0c=; b=LHuAnYJOzWDCA/da2pV5Qb0KjplMBIwHY8atuMTVyYG
-        5eZEZoOCcKaET0CkCA+JynUb9w5stv+xJ29Dneq8ebToH6hqoFVWRpUzvr65NK+s
-        WFUAKevoldzVPZrWVUbCJb4ewmDSsbl/fxdGdVGv5i9PP38OBOenjhSataA31viN
-        Ff/4Hjthh52pXhYqqHN+QecAjYF/vVaOluxun1w0Yipvf0/iG3+2VgzPp3VJ8TI0
-        hk0UFKt6KgckgLP18IuH31yRsCme+S5e+WR4MLHHa8fQRJ9ELdiK/7LCqSbtJUIY
-        +w3T9YenJK2aP+3ugCTsS840hDgGn4aFld9K/tKhmIg==
-X-Virus-Scanned: amavisd-new at mail.208.org
-Received: from mail.208.org ([127.0.0.1])
-        by mail.208.org (mail.208.org [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id VNSiMvrqszvC for <linux-parisc@vger.kernel.org>;
-        Thu, 20 Jul 2023 14:40:28 +0800 (CST)
-Received: from localhost (email.208.org [127.0.0.1])
-        by mail.208.org (Postfix) with ESMTPSA id 4R633H6TMDzBRDsD;
-        Thu, 20 Jul 2023 14:40:27 +0800 (CST)
+        Thu, 20 Jul 2023 02:49:47 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97AF610A;
+        Wed, 19 Jul 2023 23:49:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1689835768; x=1690440568; i=deller@gmx.de;
+ bh=HZ7rg6AhbQrQ6e7Xq6bBlCGjxjfoM64OtgN0BKs/8YQ=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=EjLiR1ouuZUCT+SNzkAyFPOHlqda/bHE5x2CaZRgACJRdu9wsbkzEggpFOZ8F4MQ2iiKIwu
+ 9rS3MyOiTdrntW6+Xy1JFFvR5xY9W/G23tbdrQTfvWfcnBDNYKDJBdCmNZeLGJfwx6Qzd8HSO
+ 6cvyv6a5orygDgu851k53WBXf9ajJPfGhUge1KDJy5v6IRqEk+c0oBjTvWQTOdTBmyQ3xFUq4
+ Vv5ecKnxbInURErcbNPU6ohg2/lAb0Q8NopyxuBTS1GI76+fK28esSV1jAPvfUFebrqdYjHLM
+ shtj/xpQjb9wHNimf25Z89ntl9k2G4BjJhqJ0554oK/w66VPEdCg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.153.9]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MLR1f-1qejfv1zxD-00IVXd; Thu, 20
+ Jul 2023 08:49:28 +0200
+Message-ID: <5603e84b-656b-e0b2-14ef-13f4e1062552@gmx.de>
+Date:   Thu, 20 Jul 2023 08:49:27 +0200
 MIME-Version: 1.0
-Date:   Thu, 20 Jul 2023 14:40:27 +0800
-From:   hanyu001@208suo.com
-To:     James.Bottomley@HansenPartnership.com, deller@gmx.de
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] parisc: math-emu: fcnvxf: Add space after that ','
+Content-Language: en-US
+To:     hanyu001@208suo.com
 Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] parisc: kernel: Add require space after that ','
-In-Reply-To: <tencent_A984B205A9D93A7668CF1721A52EBA2B820A@qq.com>
-References: <tencent_A984B205A9D93A7668CF1721A52EBA2B820A@qq.com>
-User-Agent: Roundcube Webmail
-Message-ID: <6a7de5f72aac9c6e71a5b484e7beb6b1@208suo.com>
-X-Sender: hanyu001@208suo.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RDNS_NONE,SPF_HELO_FAIL,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <tencent_86762B5284E20421D8A676F4CC1B205D2F0A@qq.com>
+ <a2ae26be540da062ea4912c36962093b@208suo.com>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <a2ae26be540da062ea4912c36962093b@208suo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:q9WgkOpkJnkqrKbIKi7caJsirmzwbDML/OhqQyMS5bHREYZdHsc
+ xqNH19PsLzVdqbqVa9cNQoSFkWPZsyQWeWMO1o4I9id47AcFZHc+Oimy6p1X7RyAesYr+8+
+ IjUU5c7ZMn1AfHsOYmZmjlyjfoyGi27fHA4zZ0rnAATM1pAZusk4Vlrx5EwGU4ZmXsxyQBM
+ 5bXAx6w44JW5PEy/Qwe1A==
+UI-OutboundReport: notjunk:1;M01:P0:kLAIqU58eDM=;fkyra3ddEZ8kgnJobsX2Y9tFqtd
+ LzwKuCLFp2Nx/FtwmnT1rx2cQbrYh2IgzG0MPvjZpO3y2PC4YrQXMhlaXRK2LbtwZU1mKl1/Q
+ 7rL+mi2XO1BFuupyBPzgA/7GaQ8XVfJ/UaQHYDx1Wa036MiZQjGgi3bxcqaFj5ptzGXBE7MO6
+ JBK0ipplLLqNfcHnmkbKeg25OEo50NnBWJiwHrU5qcCd6UXlhaKBDeUywdEBG0GKQCWfSwFCf
+ v3KNwHRpKGIRfi/vF8d0ok6iJvQEWXh2L7Mb1MZ+lk8dNzwqct4nEKR7gOLJuEfEKTCI7Vj/q
+ XobskLGU17/jXMn1EPaRbrxnzwWkxNybq/XuEcvU7Ub2gHfMPvOtAGxwT97Vftl/sGkAK+mEM
+ oE+lqmYY6rSqaXVf7qeaMEEx4X/Emr44dBMWM0bIzBqjYeFF65/GIpgGT2D8T+13OGQbWMhiF
+ KA1fo2XZiX+VaYAdCu3ldKs9fD9XZQ641zz+orzzcWmTGrX5yDNiDyHIB6T5xMF81XjtK4qCf
+ a0gi/WcuhmssWLptnWt2F17yFJZcxKElpzaOh4swSosd9aTL/qaq1Bnj601uMsRriaS3YUw27
+ YvpeioO4AMvQi0QTaG1NvmR7AdV91d/8QKUsv2AGT7T6HY/b5pH5l2l4AWa3qZgGyKo3auffC
+ 9hIUjsyPWaB2o5RSlbDS4BxUMz1vNFSfDaP73qrTzONKDx62PU9KLQ0ANW86BI7PsSVvspLf9
+ NrnaWAye+BmeS+jSFTCxci7SXV7dA5o/0MQJdylSZphg1Hqs6AmI5Y3AdEAutjdYJna+oVUvI
+ tQuiga/aJ35p47jkS2AbiyOmkpwxTr4eDBQdLlVr1IXl53l1Kcm35AOX9k2Xq2LKaIIdo2KZ/
+ ouK8xs6I0d6ECPQwHEhYjqN0TOwvKmy3wmvlXwmX/90Nm8Lf0n31/DLXSwOsmtpMc+VIkgl6i
+ ip3hTNPc8G4jXETLg5pfvPeyxL8=
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Fix checkpatch warnings:
+Hello hanyu001,
 
-./arch/parisc/kernel/unaligned.c:475: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:484: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:492: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:497: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:505: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:505: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:510: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:510: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:517: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:517: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:522: ERROR: space required after that 
-',' (ctx:VxV)
-./arch/parisc/kernel/unaligned.c:522: ERROR: space required after that 
-',' (ctx:VxV)
+On 7/13/23 11:37, hanyu001@208suo.com wrote:
+>
+> Fix Error reported by checkpatch.pl
+>
+> arch/parisc/math-emu/fcnvxf.c:99: ERROR: space required after that ',' (=
+ctx:VxV
+> )
+>
+> Signed-off-by: maqimei <2433033762@qq.com>
 
-Signed-off-by: Yu Han <hanyu001@208suo.com>
----
-  arch/parisc/kernel/unaligned.c | 16 ++++++++--------
-  1 file changed, 8 insertions(+), 8 deletions(-)
+Thanks for that patch!
 
-diff --git a/arch/parisc/kernel/unaligned.c 
-b/arch/parisc/kernel/unaligned.c
-index 752d0d0..3d346f2 100644
---- a/arch/parisc/kernel/unaligned.c
-+++ b/arch/parisc/kernel/unaligned.c
-@@ -472,7 +472,7 @@ void handle_unaligned(struct pt_regs *regs)
-      case OPCODE_LDWA_I:
-      case OPCODE_LDW_S:
-      case OPCODE_LDWA_S:
--        ret = emulate_ldw(regs, R3(regs->iir),0);
-+        ret = emulate_ldw(regs, R3(regs->iir), 0);
-          break;
+Your patch is correct and as such it should be applied.
+But please notice the arch/parisc/math-emu/README file (in the same
+directory), which states:
+All files except driver.c are snapshots from the HP-UX kernel.  They've
+been modified as little as possible.  Even though they don't fit the
+Linux coding style, please leave them in their funny format just in case
+someone in the future, with access to HP-UX source code, is generous
+enough to update our copies with later changes from HP-UX -- it'll
+make their 'diff' job easier if our code is relatively unmodified.
 
-      case OPCODE_STH:
-@@ -481,7 +481,7 @@ void handle_unaligned(struct pt_regs *regs)
+So, I won't apply any patch to that directory, unless it fixes a real bug
+or is required to compile the kernel.
 
-      case OPCODE_STW:
-      case OPCODE_STWA:
--        ret = emulate_stw(regs, R2(regs->iir),0);
-+        ret = emulate_stw(regs, R2(regs->iir), 0);
-          break;
+Thanks,
+Helge
 
-  #ifdef CONFIG_64BIT
-@@ -489,12 +489,12 @@ void handle_unaligned(struct pt_regs *regs)
-      case OPCODE_LDDA_I:
-      case OPCODE_LDD_S:
-      case OPCODE_LDDA_S:
--        ret = emulate_ldd(regs, R3(regs->iir),0);
-+        ret = emulate_ldd(regs, R3(regs->iir), 0);
-          break;
+> ---
+>  =C2=A0arch/parisc/math-emu/fcnvxf.c | 2 +-
+>  =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/parisc/math-emu/fcnvxf.c b/arch/parisc/math-emu/fcnvxf=
+.c
+> index 6940179..f5f9376 100644
+> --- a/arch/parisc/math-emu/fcnvxf.c
+> +++ b/arch/parisc/math-emu/fcnvxf.c
+> @@ -96,7 +96,7 @@
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Sgl_increment(result);
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 break;
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 case ROUNDNEAREST:
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 Sgl_roundnearest_from_int(src,result);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 Sgl_roundnearest_from_int(src, result);
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (Is_inexacttrap_ena=
+bled()) {
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 *dstptr =3D result;
 
-      case OPCODE_STD:
-      case OPCODE_STDA:
--        ret = emulate_std(regs, R2(regs->iir),0);
-+        ret = emulate_std(regs, R2(regs->iir), 0);
-          break;
-  #endif
-
-@@ -502,24 +502,24 @@ void handle_unaligned(struct pt_regs *regs)
-      case OPCODE_FLDWS:
-      case OPCODE_FLDWXR:
-      case OPCODE_FLDWSR:
--        ret = emulate_ldw(regs,FR3(regs->iir),1);
-+        ret = emulate_ldw(regs, FR3(regs->iir), 1);
-          break;
-
-      case OPCODE_FLDDX:
-      case OPCODE_FLDDS:
--        ret = emulate_ldd(regs,R3(regs->iir),1);
-+        ret = emulate_ldd(regs, R3(regs->iir), 1);
-          break;
-
-      case OPCODE_FSTWX:
-      case OPCODE_FSTWS:
-      case OPCODE_FSTWXR:
-      case OPCODE_FSTWSR:
--        ret = emulate_stw(regs,FR3(regs->iir),1);
-+        ret = emulate_stw(regs, FR3(regs->iir), 1);
-          break;
-
-      case OPCODE_FSTDX:
-      case OPCODE_FSTDS:
--        ret = emulate_std(regs,R3(regs->iir),1);
-+        ret = emulate_std(regs, R3(regs->iir), 1);
-          break;
-
-      case OPCODE_LDCD_I:
