@@ -2,100 +2,99 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C21F975EC9F
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jul 2023 09:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F71175F695
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jul 2023 14:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230017AbjGXHjO (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 24 Jul 2023 03:39:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33512 "EHLO
+        id S230367AbjGXMnI (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 24 Jul 2023 08:43:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbjGXHjN (ORCPT
+        with ESMTP id S230188AbjGXMnH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 24 Jul 2023 03:39:13 -0400
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 647E9180;
-        Mon, 24 Jul 2023 00:39:10 -0700 (PDT)
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3163eb69487so3145192f8f.1;
-        Mon, 24 Jul 2023 00:39:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690184349; x=1690789149;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r3c21fZlC0KRnz3kLqOIBEGeprFwWXQT2AytBpy+S6I=;
-        b=MDiGT45Jia46d6K2KpnrPiUmazseorqGszvr7897suhMdjh717FcYZKoibKuEOwRSU
-         WvECIP+C+ogPc3ygH5VzZcO3LsNsnYWnFOSG3+vFfOtDjxqeFbAE15Bc1iclFK+q1HRf
-         TLquOVunDTav8mz1Rfupc2E0vb2+PzOf2Vp6JtZYLWm0l+Ba6wOCRRHMRc5GIaA4Up5i
-         UVAavWPEAVG1Ot2pXPb6xnkpeiYvlGCpXnXZIPREzqjEKvxZr4a52sLBsgFYYEbhfLSq
-         /NoTtKjoUcZRR9Wc6neK2M5yMhFSGPQt+RKO3Kr4uBXkOSalOi1xb3GK1sSCJJMTivSD
-         qz8g==
-X-Gm-Message-State: ABy/qLar+LZ6/55TWzc67qKdF8Zf2OrMHlEyWZMeb2gFDyx65/4gTql1
-        CvMG6+kabsUwNgZ9XG8BgGLNOv/zkALXpw==
-X-Google-Smtp-Source: APBJJlFc+I0Ove3B+q7CdMlUexJdLMe/NJNkJeHcnmrXtpPsJgnPW2/z3WAEKsY02B7RJKRdXQMhBg==
-X-Received: by 2002:adf:eec2:0:b0:317:417e:a467 with SMTP id a2-20020adfeec2000000b00317417ea467mr5085884wrp.6.1690184348831;
-        Mon, 24 Jul 2023 00:39:08 -0700 (PDT)
-Received: from [192.168.1.58] (185-219-167-24-static.vivo.cz. [185.219.167.24])
-        by smtp.gmail.com with ESMTPSA id w2-20020a5d4b42000000b0030ae53550f5sm11918440wrs.51.2023.07.24.00.39.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jul 2023 00:39:08 -0700 (PDT)
-Message-ID: <047346f8-9ac4-4990-2885-8bfac47b83a3@kernel.org>
-Date:   Mon, 24 Jul 2023 09:39:07 +0200
+        Mon, 24 Jul 2023 08:43:07 -0400
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 155BFE57
+        for <linux-parisc@vger.kernel.org>; Mon, 24 Jul 2023 05:43:04 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:e908:444e:5a23:b79e])
+        by baptiste.telenet-ops.be with bizsmtp
+        id R0j22A00H26vpYY010j2rR; Mon, 24 Jul 2023 14:43:02 +0200
+Received: from geert (helo=localhost)
+        by ramsan.of.borg with local-esmtp (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1qNuty-002O66-6f;
+        Mon, 24 Jul 2023 14:43:02 +0200
+Date:   Mon, 24 Jul 2023 14:43:02 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     linux-kernel@vger.kernel.org
+cc:     Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org
+Subject: Re: Build regressions/improvements in v6.5-rc3
+In-Reply-To: <20230724122626.1701631-1-geert@linux-m68k.org>
+Message-ID: <88f83d73-781d-bdc-126-aa629cb368c@linux-m68k.org>
+References: <CAHk-=wi4Yau-3Bsv2rXYmtXMTLaj3=Wyf4cdM6d89czFvkVsRQ@mail.gmail.com> <20230724122626.1701631-1-geert@linux-m68k.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/2] io_uring: Fix io_uring mmap() by using
- architecture-provided get_unmapped_area()
-Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org,
-        io-uring@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org
-Cc:     matoro <matoro_mailinglist_kernel@matoro.tk>
-References: <20230721152432.196382-1-deller@gmx.de>
- <20230721152432.196382-2-deller@gmx.de>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20230721152432.196382-2-deller@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 21. 07. 23, 17:24, Helge Deller wrote:
-> The io_uring testcase is broken on IA-64 since commit d808459b2e31
-> ("io_uring: Adjust mapping wrt architecture aliasing requirements").
-> 
-> The reason is, that this commit introduced an own architecture
-> independend get_unmapped_area() search algorithm which finds on IA-64 a
-> memory region which is outside of the regular memory region used for
-> shared userspace mappings and which can't be used on that platform
-> due to aliasing.
-> 
-> To avoid similar problems on IA-64 and other platforms in the future,
-> it's better to switch back to the architecture-provided
-> get_unmapped_area() function and adjust the needed input parameters
-> before the call. Beside fixing the issue, the function now becomes
-> easier to understand and maintain.
-> 
-> This patch has been successfully tested with the io_uring testcase on
-> physical x86-64, ppc64le, IA-64 and PA-RISC machines. On PA-RISC the LTP
-> mmmap testcases did not report any regressions.
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Reported-by: matoro <matoro_mailinglist_kernel@matoro.tk>
-> Fixes: d808459b2e31 ("io_uring: Adjust mapping wrt architecture aliasing requirements")
+On Mon, 24 Jul 2023, Geert Uytterhoeven wrote:
+> JFYI, when comparing v6.5-rc3[1] to v6.5-rc2[3], the summaries are:
+>  - build errors: +5/-0
 
-Tested-by: Jiri Slaby <jirislaby@kernel.org>
+   + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]:  => 583:25, 493:25
 
-thanks,
--- 
-js
-suse labs
+mips-gcc13/mips-allmodconfig
 
+Full context:
+
+     In function 'fortify_memset_chk',
+ 	inlined from 'memset_io' at /kisskb/src/arch/mips/include/asm/io.h:486:2,
+ 	inlined from 'build_auth_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:2697:2:
+     /kisskb/src/include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+       493 |                         __write_overflow_field(p_size_field, size);
+ 	  |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     In function 'fortify_memcpy_chk',
+ 	inlined from 'memcpy_toio' at /kisskb/src/arch/mips/include/asm/io.h:494:2,
+ 	inlined from 'translate_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:955:3,
+ 	inlined from 'ray_hw_xmit.constprop' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:912:12:
+     /kisskb/src/include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+       583 |                         __write_overflow_field(p_size_field, size);
+ 	  |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Single-element flexible array abuse in drivers/net/wireless/legacy/rayctl.h:tx_msg.var
+
+   + error: modpost: ".L856" [drivers/mtd/nand/raw/nand.ko] undefined!:  => N/A
+
+parisc-gcc13/parisc-allmodconfig
+
+   + {standard input}: Error: Missing symbol name in directive:  => 1096
+   + {standard input}: Error: unrecognized symbol type "":  => 1096
+
+sh4-gcc12/sh-allmodconfig (ICE)
+
+   + {standard input}: Error: unknown opcode:  => 1091
+
+sh4-gcc13/sh-allmodconfig (ICE)
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/6eaae198076080886b9e7d57f4ae06fa782f90ef/ (all 235 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/fdf0eaf11452d72945af31804e2a1048ee1b574c/ (161 out of 235 configs)
+
+Gr{oetje,eeting}s,
+
+ 						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
