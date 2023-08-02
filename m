@@ -2,34 +2,54 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72CEE76D79D
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Aug 2023 21:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6B8976D842
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Aug 2023 21:57:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231354AbjHBTUl (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 2 Aug 2023 15:20:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36936 "EHLO
+        id S230251AbjHBT5V (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 2 Aug 2023 15:57:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229771AbjHBTUk (ORCPT
+        with ESMTP id S229926AbjHBT5U (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 2 Aug 2023 15:20:40 -0400
-Received: from manchmal.in-ulm.de (manchmal.in-ulm.de [217.10.9.201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF3811B6
-        for <linux-parisc@vger.kernel.org>; Wed,  2 Aug 2023 12:20:38 -0700 (PDT)
-Date:   Wed, 2 Aug 2023 21:20:35 +0200
-From:   Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     linux-parisc@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>
+        Wed, 2 Aug 2023 15:57:20 -0400
+X-Greylist: delayed 76 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 02 Aug 2023 12:57:16 PDT
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-002.bell.net [209.71.208.12])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0161F19BE
+        for <linux-parisc@vger.kernel.org>; Wed,  2 Aug 2023 12:57:15 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [142.198.148.3]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 64C35282007278E1
+X-CM-Envelope: MS4xfCGQ31r/wIKV8z37/fh6q7ay+7s1JVSsFaze70ibJsqHT8seQOyLsMZ9hFZAHcKDy+7a8W72aJYiLXkTDq+7SeJyLCTicyM5grhsbny20yXoGTohpTjs
+ nM5EFodKBK3i3xgg7qlslomeWhVyPY4p2M9UFH/STKIDahmnwL1fB2GSnonum3E7d9seXB0/PV3I6dLn9DpXsoVaELCrQxPwmwGKrr/x57J6L6UtA5Gq2jHv
+ 564Rx2ZUoqwmFpIJKrv8cyH/avwmA1xLNovobLOyTwrZRAEXPM3a7qYWfJu0pWVGAruxtoz4H8yHhP0limcXV0a9GmAYEinkG3H1WqWOwf2cYELM/C3bLKr/
+ Lgc4tAax
+X-CM-Analysis: v=2.4 cv=W7Nb6Tak c=1 sm=1 tr=0 ts=64cab4c3
+ a=yRCPfkTDioc6Jdt88VZLzg==:117 a=yRCPfkTDioc6Jdt88VZLzg==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=xZB5VeKnRI1nMPX0Mx4A:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (142.198.148.3) by cmx-mtlrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 64C35282007278E1; Wed, 2 Aug 2023 15:55:47 -0400
+Message-ID: <e310e8b3-28e8-5b38-1998-c66ebd69b456@bell.net>
+Date:   Wed, 2 Aug 2023 15:55:48 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
 Subject: Re: Regression with kernel 6.4 "swapper: page allocation failure:
  order:0, mode:0x100(__GFP_ZERO)
-Message-ID: <1691003952@msgid.manchmal.in-ulm.de>
+To:     Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
+        Mike Rapoport <rppt@kernel.org>
+Cc:     linux-parisc@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>
 References: <ZMle513nIspxquF5@mail.manchmal.in-ulm.de>
- <ZMooZAKcm8OtKIfx@kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="eHn4uyPvGLYZTyHi"
-Content-Disposition: inline
-In-Reply-To: <ZMooZAKcm8OtKIfx@kernel.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+ <ZMooZAKcm8OtKIfx@kernel.org> <1691003952@msgid.manchmal.in-ulm.de>
+Content-Language: en-US
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <1691003952@msgid.manchmal.in-ulm.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -38,43 +58,21 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On 2023-08-02 3:20 p.m., Christoph Biedl wrote:
+> Mike Rapoport wrote...
+>
+>> Can you check if the patch helps:
+>>
+>> diff --git a/arch/parisc/mm/fixmap.c b/arch/parisc/mm/fixmap.c
+>> index cc15d737fda6..ae3493dae9dc 100644
+> (...)
+>
+> Yes, everything's fine now. Applied on top of v6.5-rc4, there
+> were some offsets.
+Same here.  Applied on v6.4.7 stable.
 
---eHn4uyPvGLYZTyHi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Dave
 
-Mike Rapoport wrote...
+-- 
+John David Anglin  dave.anglin@bell.net
 
-> Can you check if the patch helps:
->=20
-> diff --git a/arch/parisc/mm/fixmap.c b/arch/parisc/mm/fixmap.c
-> index cc15d737fda6..ae3493dae9dc 100644
-(...)
-
-Yes, everything's fine now. Applied on top of v6.5-rc4, there
-were some offsets.
-
-    Christoph
-
---eHn4uyPvGLYZTyHi
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEWXMI+726A12MfJXdxCxY61kUkv0FAmTKrIAACgkQxCxY61kU
-kv1HUxAAz+9ft7Yx1qcsHarYh8T+UkEzl2gI2Cs5sm4tMJGKUkbUhQ1+yoevfq0R
-FLVe7m6HzfRGlDxW/rM3+DYkXbE5VI4wGNZ3ZLDu3+XOgQEwsS+cABNSJ856gTTI
-qRMau63juqV6dJzhsv2JAVsLO5hGx4aAF1V3I6+ikS8nct9K1R3rZd2IxmCWrYPX
-v6S6Mfg8+jjM84UqcdVQElb/Pv1a5Ph3/JZ+/THErQ7TKh/6LcSz8kwhOaTa3Z92
-iLFUSxfLqEspRCJlLGgc2qVBZavk3wWElA2gfEz1cVRcOkHLXd1+gEG/C9i8A52p
-qh3OtJefc7Wi7ju10A1p0ctVyDgtx0xNXO4sgzjpiexg9cH6LcATPtJQzYiyaR+r
-AKIQ0IHeqjdVBMJMxgsJkkSEdXutr5MrRbEGHrMyhIF6+IbIFLW8veYhXDpGupNc
-crf2jQe8ZLKpcFJqRx8hk95IRpjTksZ2DZQxfST0mGs7zowP9Z6H1Hn7/qkFJOhh
-bW5b6OckSdYGRipdeTfTGQhnGo7eoM1nGayTdTnxXACvpl3G+kK2LuWt0epfOqf7
-xlYmMQ90T61WGjqqOnoVhAl7dHX/awHQzcyfIfoW+fT5wuvOi0fVFfgMDfdyFDdW
-MRlPnV9lGfoAYeVcSRUkLTUh2W43UesRMxLYP3yHptBMtEBEWGk=
-=ftWI
------END PGP SIGNATURE-----
-
---eHn4uyPvGLYZTyHi--
