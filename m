@@ -2,225 +2,247 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3B3276E2C3
-	for <lists+linux-parisc@lfdr.de>; Thu,  3 Aug 2023 10:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E096276E391
+	for <lists+linux-parisc@lfdr.de>; Thu,  3 Aug 2023 10:48:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234469AbjHCIRP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 3 Aug 2023 04:17:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41390 "EHLO
+        id S233594AbjHCIsp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 3 Aug 2023 04:48:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231766AbjHCIQg (ORCPT
+        with ESMTP id S234716AbjHCIsn (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 3 Aug 2023 04:16:36 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97F53273E;
-        Thu,  3 Aug 2023 01:10:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691050245; x=1691655045; i=deller@gmx.de;
- bh=dfiBLyzpVYXFy3yK9Npb4p0ssJPM4Ud7kOOxIWKf0lc=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=hTpTJSzMRHrE8odnN1cBnRxduE6UIe38TX5C5DZ1ZLoPGPJCEbjvwqyflDXFoPDeS2K0VWZ
- SoJ1xHQ6K24uw0rj/LpHTNdmsT4bNnJq9rjKH93aaRdnWXeQHMgDesePXzZQHFc/nesvBsLlv
- 1sjzMeVsytP8yOXV+ZDWbHLcDXvBe+4FKSZYAucAnel35/K6YhdMJm5Q0Y9N7n5t5+FZ7WXbf
- sjaA2ayFAXgx1GggdTJiplaeKtWzG7qtDrQVZGVevS7nrf3Wq151lAnsVo6fIJNq4ZtNpm3JT
- QmyaLh7NVrxOmzn6q9x4TOsLfkdkyI3FxD8lUaYAHk838lwBrtcg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.147.53]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MC30P-1qYsLg3AXV-00COKo; Thu, 03
- Aug 2023 10:10:45 +0200
-Message-ID: <c4a235b1-1cf6-bbb6-36e3-c1823b93a132@gmx.de>
-Date:   Thu, 3 Aug 2023 10:10:45 +0200
+        Thu, 3 Aug 2023 04:48:43 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A063EA;
+        Thu,  3 Aug 2023 01:48:41 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 1976121963;
+        Thu,  3 Aug 2023 08:48:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1691052520; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0hBbcrfPXGHM68Wuj3+6ufrfuN1l894aNWg5/t/rzUc=;
+        b=BlREvVqy4q1sYcCDZ4YCCE7xdtk/rNcCD3GOas97X6g/DvZ4CUysjKQsFCHNn11lOgITRn
+        GuL7Ba3IesEMtyElmsqS/Qdimu1a/duWfVaC5yi/osWFwdKaol581uSVRL3wQBkMX6Bgtn
+        /xxI3iEgl5l4ls1qaQDI7PJFP0lyIGQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1691052520;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0hBbcrfPXGHM68Wuj3+6ufrfuN1l894aNWg5/t/rzUc=;
+        b=cWv1TM7WulkoU1ZH44WKmb+MF4rox4iZb4089/sKX9rLNqc/PvtLTtRyw/JXRrVOTJ8EIU
+        xBdE5tnEW6AbR1Dw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id ECC9C134B0;
+        Thu,  3 Aug 2023 08:48:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id tXwYOedpy2SkXgAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Thu, 03 Aug 2023 08:48:39 +0000
+Message-ID: <d0b555a4-ed2e-3100-ae12-1b05f3035824@suse.cz>
+Date:   Thu, 3 Aug 2023 10:48:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/2] parport: gsc: remove DMA leftover code
+ Thunderbird/102.13.1
+Subject: Re: [PATCH] parisc/mm: preallocate fixmap page tables at init
 Content-Language: en-US
-To:     Arnd Bergmann <arnd@kernel.org>,
+To:     Mike Rapoport <rppt@kernel.org>, Helge Deller <deller@gmx.de>
+Cc:     Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-parisc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230726150944.2265044-1-arnd@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20230726150944.2265044-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:m7Yr6Wb3MSwoycBscWmITJuwXxgsSmRov9IejZc36+28cPV3DJW
- b0eihGWihexijDqYEquVSxlIp7+uBh6CpTSKBdGPKjsn6Ctj/aEfr2+h0tqpngL90lMj0/u
- 64Wl7LO2g60exyYXzyRvRMH4fm46iNXrRz5VDuJOzLaDvK88NX57Qn+Q9IuIA5lBPRbzqPo
- znQGRqBHtvdMMbz1ZFUDg==
-UI-OutboundReport: notjunk:1;M01:P0:XxrnvFKcmrI=;4qmLB6lX5zp+8R4jEBSSdPPD0Ah
- KMVXmXN6fkM2jYkILNbtY6ZzunnARGUVu2UuzOAlYPIkD9/xN9IEvq97y9HZQcppnZbwHBTal
- dfYlu+EWC1SCnvxauBYPtDc5lQWPFnfGnj6xxFLp+p/9YzVUByfcvVOd7LuNwOUwSbfbgafWl
- dZZtaZtVhiCzzv0wSjEAebIpcFUtkHI5cX8KgkgxxVtoPq1BiLByon84ocWiKrkqvVV+fXetK
- PrCJpjm3j4SrZFuY+OFoicWDtlZWUhBUx6Z6LAF8ivaSVeh3vpXQjme19lDdMy4MXE1zIFD3/
- 32xlv4+JGbucUWp+La3M94HB/LqQ6TXmt0xPPdpW6umbxkh6JITPnx6S8Zhg/Qep3NoRGZ51L
- n5FKwhMryCsTY0Nr9/wonO4b06i6FVNDhp+DEh62rRVE9ye8tbPh3OT7m4LpSIa5amYeXEOpI
- Q6Pkyg1oH1/sKQ9zrw5MBs8lrHsqTxDpvAfJHPU6GNp0lc57bqh2eK3KJAdFmjBcepG1w7HOx
- oiRMKMUwMaQqOcJoFNec+afgm3I/Zy4kU2IlmI3H26ny0DWqEEsBFju7+9W6x2eDeNZWFbK80
- m40kl8B7zN8J+5EQS8pKazt/Hr58UWmE0/pgz9e4vvYoEXYtGShbiKO+xFGA7uswomfFDEd8e
- SmXDoPLdj8KJ8aqKCJeE2vq+f6i64a9sQb83d23F+HwL2g/GppjNFlJugfHixv0RlEp0yjKSj
- MRX/f3tMtKmPPTRvMUg/q+yS2O0cQZd1yLW9uASL48MX1SezhNfQZKb4AQRIDsuf6Pbna0LvV
- 9c9DETsUFPg//a+JgW+2+f/DIKaC5+8RsV1+BwJ3VMQcnaQV+80SlXtzkH72HqctRa5bCFNGO
- V+kzxJF1nO5PkyJJZQYGvVX2f0s0HhpeuQRGSOq19WnEi2EEZ5Ynuj5ezoRjKeQyRdQ0cc23S
- EDIuE0kEn7oMswKQMDS6q5wCkQ8=
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        John David Anglin <dave.anglin@bell.net>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230803062404.2373480-1-rppt@kernel.org>
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20230803062404.2373480-1-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 7/26/23 17:09, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> This driver does not actually work with DMA mode, but still tries
-> to call ISA DMA interface functions that are stubbed out on
-> parisc, resulting in a W=3D1 build warning:
->
-> drivers/parport/parport_gsc.c: In function 'parport_remove_chip':
-> drivers/parport/parport_gsc.c:389:20: warning: suggest braces around emp=
-ty body in an 'if' statement [-Wempty-body]
->    389 |    free_dma(p->dma);
->
-> Remove the corresponding code as a prerequisite for turning on -Wempty-b=
-ody
-> by default in all kernels.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On 8/3/23 08:24, Mike Rapoport wrote:
+> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> 
+> Christoph Biedl reported early OOM on recent kernels:
+> 
+>     swapper: page allocation failure: order:0, mode:0x100(__GFP_ZERO),
+> nodemask=(null)
+>     CPU: 0 PID: 0 Comm: swapper Not tainted 6.3.0-rc4+ #16
+>     Hardware name: 9000/785/C3600
+>     Backtrace:
+>      [<10408594>] show_stack+0x48/0x5c
+>      [<10e152d8>] dump_stack_lvl+0x48/0x64
+>      [<10e15318>] dump_stack+0x24/0x34
+>      [<105cf7f8>] warn_alloc+0x10c/0x1c8
+>      [<105d068c>] __alloc_pages+0xbbc/0xcf8
+>      [<105d0e4c>] __get_free_pages+0x28/0x78
+>      [<105ad10c>] __pte_alloc_kernel+0x30/0x98
+>      [<10406934>] set_fixmap+0xec/0xf4
+>      [<10411ad4>] patch_map.constprop.0+0xa8/0xdc
+>      [<10411bb0>] __patch_text_multiple+0xa8/0x208
+>      [<10411d78>] patch_text+0x30/0x48
+>      [<1041246c>] arch_jump_label_transform+0x90/0xcc
+>      [<1056f734>] jump_label_update+0xd4/0x184
+>      [<1056fc9c>] static_key_enable_cpuslocked+0xc0/0x110
+>      [<1056fd08>] static_key_enable+0x1c/0x2c
+>      [<1011362c>] init_mem_debugging_and_hardening+0xdc/0xf8
+>      [<1010141c>] start_kernel+0x5f0/0xa98
+>      [<10105da8>] start_parisc+0xb8/0xe4
+> 
+>     Mem-Info:
+>     active_anon:0 inactive_anon:0 isolated_anon:0
+>      active_file:0 inactive_file:0 isolated_file:0
+>      unevictable:0 dirty:0 writeback:0
+>      slab_reclaimable:0 slab_unreclaimable:0
+>      mapped:0 shmem:0 pagetables:0
+>      sec_pagetables:0 bounce:0
+>      kernel_misc_reclaimable:0
+>      free:0 free_pcp:0 free_cma:0
+>     Node 0 active_anon:0kB inactive_anon:0kB active_file:0kB
+> inactive_file:0kB unevictable:0kB isolated(anon):0kB isolated(file):0kB
+> mapped:0kB dirty:0kB writeback:0kB shmem:0kB
+> +writeback_tmp:0kB kernel_stack:0kB pagetables:0kB sec_pagetables:0kB
+> all_unreclaimable? no
+>     Normal free:0kB boost:0kB min:0kB low:0kB high:0kB
+> reserved_highatomic:0KB active_anon:0kB inactive_anon:0kB active_file:0kB
+> inactive_file:0kB unevictable:0kB writepending:0kB
+> +present:1048576kB managed:1039360kB mlocked:0kB bounce:0kB free_pcp:0kB
+> local_pcp:0kB free_cma:0kB
+>     lowmem_reserve[]: 0 0
+>     Normal: 0*4kB 0*8kB 0*16kB 0*32kB 0*64kB 0*128kB 0*256kB 0*512kB
+> 0*1024kB 0*2048kB 0*4096kB = 0kB
+>     0 total pagecache pages
+>     0 pages in swap cache
+>     Free swap  = 0kB
+>     Total swap = 0kB
+>     262144 pages RAM
+>     0 pages HighMem/MovableOnly
+>     2304 pages reserved
+>     Backtrace:
+>      [<10411d78>] patch_text+0x30/0x48
+>      [<1041246c>] arch_jump_label_transform+0x90/0xcc
+>      [<1056f734>] jump_label_update+0xd4/0x184
+>      [<1056fc9c>] static_key_enable_cpuslocked+0xc0/0x110
+>      [<1056fd08>] static_key_enable+0x1c/0x2c
+>      [<1011362c>] init_mem_debugging_and_hardening+0xdc/0xf8
+>      [<1010141c>] start_kernel+0x5f0/0xa98
+>      [<10105da8>] start_parisc+0xb8/0xe4
+> 
+>     Kernel Fault: Code=15 (Data TLB miss fault) at addr 0f7fe3c0
+>     CPU: 0 PID: 0 Comm: swapper Not tainted 6.3.0-rc4+ #16
+>     Hardware name: 9000/785/C3600
+> 
+> This happens because patching static key code temporarily maps it via
+> fixmap and if it happens before page allocator is initialized set_fixmap()
+> cannot allocate memory using pte_alloc_kernel().
+> 
+> Make sure that fixmap page tables are preallocated early so that
+> pte_offset_kernel() in set_fixmap() never resorts to pte allocation.
+> 
+> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 
-Thanks Arnd!
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-I've added it to the parisc for-next git tree.
-
-Helge
+Thanks, Mike!
 
 > ---
->   drivers/parport/parport_gsc.c | 28 ++++------------------------
->   drivers/parport/parport_gsc.h |  7 -------
->   2 files changed, 4 insertions(+), 31 deletions(-)
->
-> diff --git a/drivers/parport/parport_gsc.c b/drivers/parport/parport_gsc=
-.c
-> index 0dcc497b0449a..5e4475254bd0a 100644
-> --- a/drivers/parport/parport_gsc.c
-> +++ b/drivers/parport/parport_gsc.c
-> @@ -28,7 +28,6 @@
->   #include <linux/sysctl.h>
->
->   #include <asm/io.h>
-> -#include <asm/dma.h>
->   #include <linux/uaccess.h>
->   #include <asm/superio.h>
->
-> @@ -226,9 +225,9 @@ static int parport_PS2_supported(struct parport *pb)
->
->   /* --- Initialisation code -------------------------------- */
->
-> -struct parport *parport_gsc_probe_port(unsigned long base,
-> +static struct parport *parport_gsc_probe_port(unsigned long base,
->   				       unsigned long base_hi, int irq,
-> -				       int dma, struct parisc_device *padev)
-> +				       struct parisc_device *padev)
->   {
->   	struct parport_gsc_private *priv;
->   	struct parport_operations *ops;
-> @@ -250,12 +249,9 @@ struct parport *parport_gsc_probe_port(unsigned lon=
-g base,
->   	}
->   	priv->ctr =3D 0xc;
->   	priv->ctr_writable =3D 0xff;
-> -	priv->dma_buf =3D NULL;
-> -	priv->dma_handle =3D 0;
->   	p->base =3D base;
->   	p->base_hi =3D base_hi;
->   	p->irq =3D irq;
-> -	p->dma =3D dma;
->   	p->modes =3D PARPORT_MODE_PCSPP | PARPORT_MODE_SAFEININT;
->   	p->ops =3D ops;
->   	p->private_data =3D priv;
-> @@ -286,17 +282,9 @@ struct parport *parport_gsc_probe_port(unsigned lon=
-g base,
->   	if (p->irq =3D=3D PARPORT_IRQ_AUTO) {
->   		p->irq =3D PARPORT_IRQ_NONE;
->   	}
-> -	if (p->irq !=3D PARPORT_IRQ_NONE) {
-> +	if (p->irq !=3D PARPORT_IRQ_NONE)
->   		pr_cont(", irq %d", p->irq);
->
-> -		if (p->dma =3D=3D PARPORT_DMA_AUTO) {
-> -			p->dma =3D PARPORT_DMA_NONE;
-> -		}
-> -	}
-> -	if (p->dma =3D=3D PARPORT_DMA_AUTO) /* To use DMA, giving the irq
-> -                                           is mandatory (see above) */
-> -		p->dma =3D PARPORT_DMA_NONE;
+> 
+> I didn't add Fixes tag with the commit Christoph bisected because that
+> commit didn't change anything in the initialization of the static keys
+> and I really doubt it is the actual cause of the issue.
+
+Yeah I also don't see how the commit could cause a static key initialization
+to happen sooner than it already has.
+But if it's manifesting for whatever reason since 6.4 then a "Cc: stable #
+6.4+" would be in order.
+
+> 
+>  arch/parisc/mm/fixmap.c |  3 ---
+>  arch/parisc/mm/init.c   | 34 ++++++++++++++++++++++++++++++++++
+>  2 files changed, 34 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/parisc/mm/fixmap.c b/arch/parisc/mm/fixmap.c
+> index cc15d737fda6..ae3493dae9dc 100644
+> --- a/arch/parisc/mm/fixmap.c
+> +++ b/arch/parisc/mm/fixmap.c
+> @@ -19,9 +19,6 @@ void notrace set_fixmap(enum fixed_addresses idx, phys_addr_t phys)
+>  	pmd_t *pmd = pmd_offset(pud, vaddr);
+>  	pte_t *pte;
+>  
+> -	if (pmd_none(*pmd))
+> -		pte = pte_alloc_kernel(pmd, vaddr);
 > -
->   	pr_cont(" [");
->   #define printmode(x)							\
->   do {									\
-> @@ -321,7 +309,6 @@ do {									\
->   			pr_warn("%s: irq %d in use, resorting to polled operation\n",
->   				p->name, p->irq);
->   			p->irq =3D PARPORT_IRQ_NONE;
-> -			p->dma =3D PARPORT_DMA_NONE;
->   		}
->   	}
->
-> @@ -369,8 +356,7 @@ static int __init parport_init_chip(struct parisc_de=
-vice *dev)
->   		pr_info("%s: enhanced parport-modes not supported\n", __func__);
->   	}
->
-> -	p =3D parport_gsc_probe_port(port, 0, dev->irq,
-> -			/* PARPORT_IRQ_NONE */ PARPORT_DMA_NONE, dev);
-> +	p =3D parport_gsc_probe_port(port, 0, dev->irq, dev);
->   	if (p)
->   		parport_count++;
->   	dev_set_drvdata(&dev->dev, p);
-> @@ -382,16 +368,10 @@ static void __exit parport_remove_chip(struct pari=
-sc_device *dev)
->   {
->   	struct parport *p =3D dev_get_drvdata(&dev->dev);
->   	if (p) {
-> -		struct parport_gsc_private *priv =3D p->private_data;
->   		struct parport_operations *ops =3D p->ops;
->   		parport_remove_port(p);
-> -		if (p->dma !=3D PARPORT_DMA_NONE)
-> -			free_dma(p->dma);
->   		if (p->irq !=3D PARPORT_IRQ_NONE)
->   			free_irq(p->irq, p);
-> -		if (priv->dma_buf)
-> -			dma_free_coherent(&priv->dev->dev, PAGE_SIZE,
-> -					  priv->dma_buf, priv->dma_handle);
->   		kfree (p->private_data);
->   		parport_put_port(p);
->   		kfree (ops); /* hope no-one cached it */
-> diff --git a/drivers/parport/parport_gsc.h b/drivers/parport/parport_gsc=
-.h
-> index 9301217edf12c..d447a568c2570 100644
-> --- a/drivers/parport/parport_gsc.h
-> +++ b/drivers/parport/parport_gsc.h
-> @@ -63,8 +63,6 @@ struct parport_gsc_private {
->   	int writeIntrThreshold;
->
->   	/* buffer suitable for DMA, if DMA enabled */
-> -	char *dma_buf;
-> -	dma_addr_t dma_handle;
->   	struct pci_dev *dev;
->   };
->
-> @@ -199,9 +197,4 @@ extern void parport_gsc_inc_use_count(void);
->
->   extern void parport_gsc_dec_use_count(void);
->
-> -extern struct parport *parport_gsc_probe_port(unsigned long base,
-> -						unsigned long base_hi,
-> -						int irq, int dma,
-> -						struct parisc_device *padev);
-> -
->   #endif	/* __DRIVERS_PARPORT_PARPORT_GSC_H */
+>  	pte = pte_offset_kernel(pmd, vaddr);
+>  	set_pte_at(&init_mm, vaddr, pte, __mk_pte(phys, PAGE_KERNEL_RWX));
+>  	flush_tlb_kernel_range(vaddr, vaddr + PAGE_SIZE);
+> diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
+> index 406c52fe23d5..389941c7f209 100644
+> --- a/arch/parisc/mm/init.c
+> +++ b/arch/parisc/mm/init.c
+> @@ -669,6 +669,39 @@ static void __init gateway_init(void)
+>  		  PAGE_SIZE, PAGE_GATEWAY, 1);
+>  }
+>  
+> +static void __init fixmap_init(void)
+> +{
+> +	unsigned long addr = FIXMAP_START;
+> +	unsigned long end = FIXMAP_START + FIXMAP_SIZE;
+> +	pgd_t *pgd = pgd_offset_k(addr);
+> +	p4d_t *p4d = p4d_offset(pgd, addr);
+> +	pud_t *pud = pud_offset(p4d, addr);
+> +	pmd_t *pmd;
+> +
+> +	BUILD_BUG_ON(FIXMAP_SIZE > PMD_SIZE);
+> +
+> +#if CONFIG_PGTABLE_LEVELS == 3
+> +	if (pud_none(*pud)) {
+> +		pmd = memblock_alloc(PAGE_SIZE << PMD_TABLE_ORDER,
+> +				     PAGE_SIZE << PMD_TABLE_ORDER);
+> +		if (!pmd)
+> +			panic("fixmap: pmd allocation failed.\n");
+> +		pud_populate(NULL, pud, pmd);
+> +	}
+> +#endif
+> +
+> +	pmd = pmd_offset(pud, addr);
+> +	do {
+> +		pte_t *pte = memblock_alloc(PAGE_SIZE, PAGE_SIZE);
+> +		if (!pte)
+> +			panic("fixmap: pte allocation failed.\n");
+> +
+> +		pmd_populate_kernel(&init_mm, pmd, pte);
+> +
+> +		addr += PAGE_SIZE;
+> +	} while (addr < end);
+> +}
+> +
+>  static void __init parisc_bootmem_free(void)
+>  {
+>  	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
+> @@ -683,6 +716,7 @@ void __init paging_init(void)
+>  	setup_bootmem();
+>  	pagetable_init();
+>  	gateway_init();
+> +	fixmap_init();
+>  	flush_cache_all_local(); /* start with known state */
+>  	flush_tlb_all_local(NULL);
+>  
+> 
+> base-commit: 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4
 
