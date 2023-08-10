@@ -2,79 +2,89 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF3F8777B71
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Aug 2023 16:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFDAC777BE8
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Aug 2023 17:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234051AbjHJO56 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 10 Aug 2023 10:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35750 "EHLO
+        id S236050AbjHJPN7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 10 Aug 2023 11:13:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235249AbjHJO56 (ORCPT
+        with ESMTP id S236047AbjHJPN6 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 10 Aug 2023 10:57:58 -0400
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-002.bell.net [209.71.208.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AFE42694
-        for <linux-parisc@vger.kernel.org>; Thu, 10 Aug 2023 07:57:57 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [142.198.148.3]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 64C354070130985E
-X-CM-Envelope: MS4xfJ07uiSYwmAzwkKOW6Txr7CkvTVSCYR2590ERDd6Jfzk/upRSuKPBCJJ8POE1MQANehMC7L3+zYMMpsFx5+NnV2IO2WsjRYSpwvz2PVh+x5NDOZ29gt1
- 9f8kORp1xcCQOvfrlSj56RfrfORZ/e628qZ8CBMBvjwqFcFSY/54rj0Z2LiG3/tlwyg9yj7AGaXQyqr3tAQWGLtNw7wuOvBjHZCw9+Ic83X8hrjxxt5Ko+Kv
- hTx6Ew7N2S66HGaZnzzqNtnAJ3Rdf9Ia9aDk261IS70=
-X-CM-Analysis: v=2.4 cv=QbcFAuXv c=1 sm=1 tr=0 ts=64d4faf2
- a=yRCPfkTDioc6Jdt88VZLzg==:117 a=yRCPfkTDioc6Jdt88VZLzg==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=VwQbUJbxAAAA:8 a=rtbVTMtHOJr7CGVfIp0A:9
- a=QEXdDO2ut3YA:10 a=9gvnlMMaQFpL9xblJ6ne:22 a=AjGcO6oz07-iQ99wixmX:22
-Received: from [192.168.2.49] (142.198.148.3) by cmx-mtlrgo002.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
-        id 64C354070130985E; Thu, 10 Aug 2023 10:57:54 -0400
-Message-ID: <a28de2c8-edce-0f2b-0d2a-075fcbf05e3f@bell.net>
-Date:   Thu, 10 Aug 2023 10:57:54 -0400
+        Thu, 10 Aug 2023 11:13:58 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 238762694;
+        Thu, 10 Aug 2023 08:13:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691680424; x=1692285224; i=deller@gmx.de;
+ bh=iIkc2RgfKbq4SxDPjebXDccs3vuOZcXYZkuSl/0CCT8=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=XZPpsXYJ3H20kHWmi/Ad33pJG/4cEU4NDfvR7TckS2UUatPCFPnONvJfVSyPPB6Nxu8sQ2B
+ sl5cR3kDYjstqLshcPsb4PxlGmTEMEacToZq+AlE0T4jll0isls+pPq+gMVzPDJDL+p8cI2UO
+ j+zq26Q44gCoIsFsMTGHSwQWGv5DHohOYZL03MVND3GmkagZiDDR2k5Yc7if1UD4uDZlS0mp/
+ RO+5nlWMACsqvcj/LaP1E/L8GxHySChOPI7uC+O03iFQNLlX1GYCKCj02eXbDXzbn6tcz+Rgi
+ MZSnfP7ha768PMdi2InOoxB4u9N3GTZT6gl7yPi8UqJFE7Lig1FQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.144.133]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M59C2-1qT0tY2uHM-00181c; Thu, 10
+ Aug 2023 17:13:44 +0200
+Message-ID: <398d6094-32c8-71f4-8251-1eec35b460f9@gmx.de>
+Date:   Thu, 10 Aug 2023 17:13:43 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] parisc: Fix lightweight spinlock checks to not break
- futexes
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 09/17] parport: gsc: mark init function static
 Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-References: <ZNM8Rz5f5/d/ZAI8@p100>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <ZNM8Rz5f5/d/ZAI8@p100>
+To:     Arnd Bergmann <arnd@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-parisc@vger.kernel.org
+References: <20230810141947.1236730-1-arnd@kernel.org>
+ <20230810141947.1236730-10-arnd@kernel.org>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <20230810141947.1236730-10-arnd@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:yEfK+8nUtFYnsM8Ph91MwYHPqWKUJ56pkaiYxzUUaiLjfkHatuu
+ F5JdWoUljJ5vnmLP4D7zo3EpBaWPDRa1Rog6t/fMjiUyPzsCz68FpuKBTB2ZdadWTbJqq2z
+ yKpbhKpadf4d+NMe7bL3BuqCqevTUjzjTT7YcCpLhhKbesvpl4bwbq+k0h1K4H7BnzgIZ0r
+ yx+DI6WujwXeVNX9E2wtA==
+UI-OutboundReport: notjunk:1;M01:P0:/OOZDyjNeIc=;8PkoFez+ICfXtIpQdA+PR//fLeb
+ dmFonrvef3qxJZ+FEY4CyUYKwD/aMjGsZktvJ823hcK+fkvPT+1HgFlOgbjz3ezMezJT7fOZg
+ ARkzMJtg+KByXnP10/lM3mHnZyTGQULOmTMd6ZY3N+BeVgF2HeHn83ejebX2lf5fAUJl2RNz1
+ JtkYQz3OAgZdhJ75tNQDpJNfaWnyhgRRx6WYyU5m3Gr/OY5fMimVtshK1yqVkgbqUwjS3Jdm8
+ 8AHNwqXYxLnjgcspkssZYjPwxQEK2PZ9734+1WBsjt3eB+5qjr2M/3mvWrVYfVAmS3Oi2XAqi
+ Y9BpncPJe2kn3ilFrGOOz9GTcjbSXO1L3WfjvQ9veLhU86ShwfO/F0FKDB5n8SGgYZ6UX27zB
+ 0FDl5Mvls3sq5FSFscUwxaJM1YrMO1VPjc4Lpska/n15bjMkCbJRw7TfX/fplo5mxg3TGOIll
+ fn+0/gwqHX6SAGqoYE/YfHO4/TmSGMuqFRdnoqZL2HfW2mENIXdvKxr/L26FZgRiY4TFy5guV
+ pDpW1I86lr8BJRvki+zkV/2vcNjH1c9ZdKI67a+7LTFHA+wH9YUJR9HoFlYE56mW/05cZ1OeS
+ cD5L9IOrwH8MCeIKxwzkogdl6V8mK/kljWprHWxUUOkz8vRwGrmVLto9xwoAuHcXKzG7qi7GM
+ wMAYE/PtaHx65MihbCe+bIWpbZLx7ijwYNFvxF4XIjz/aagNnnZ1oF4aGnVIUiI94RlMbYWIT
+ D0dOePYNh908ljWonQL7gKUKp/GE00v428qPRnIKsmySkdwP44uI25/m8VIGGf9lO7T2LYAEN
+ sjChVumXnX4pLXFoJl24q8+kVEwnds614yOu/j5gQf461aZvKnEjOJfhTGAs6oShB3/f85/VW
+ WQ5coQnFQIqPpc+lkVF11BfWMqjuh4FR5bOVGFQhA442dKSB4Vhr9NjhwJGj+mFgMuZf2VTS7
+ 2zMBVqsn8+GXU+U9Epm20qnidq0=
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023-08-09 3:12 a.m., Helge Deller wrote:
-> The lightweight spinlock checks verify that a spinlock has either value
-> 0 (spinlock locked) and that not any other bits than in
-> __ARCH_SPIN_LOCK_UNLOCKED_VAL is set.
+On 8/10/23 16:19, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> This breaks the current LWS code, which writes the address of the lock
-> into the lock word to unlock it, which was an optimization to save one
-> assembler instruction.
+> This is only used locally, so mark it static to avoid a warning:
 >
-> Fix it by making spinlock_types.h accessible for asm code, change the
-> LWS spinlock-unlocking code to write __ARCH_SPIN_LOCK_UNLOCKED_VAL into
-> the lock word, and add some missing lightweight spinlock checks to the
-> LWS path. Finally, make the spinlock checks dependend on DEBUG_KERNEL.
+> drivers/parport/parport_gsc.c:395:5: error: no previous prototype for 'p=
+arport_gsc_init' [-Werror=3Dmissing-prototypes]
 >
-> Noticed-by: John David Anglin<dave.anglin@bell.net>
-> Signed-off-by: Helge Deller<deller@gmx.de>
-> Cc:stable@vger.kernel.org  # v6.4+
-> Fixes: 15e64ef6520e ("parisc: Add lightweight spinlock checks")
-Fixes system crash in glibc testsuite.
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-Tested-by: John David Anglin <dave.anglin@bell.net>
-
--- 
-John David Anglin  dave.anglin@bell.net
+Acked-by: Helge Deller <deller@gmx.de>
 
