@@ -2,89 +2,217 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFDAC777BE8
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Aug 2023 17:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DC2A777C06
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Aug 2023 17:21:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236050AbjHJPN7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 10 Aug 2023 11:13:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57026 "EHLO
+        id S235930AbjHJPVc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 10 Aug 2023 11:21:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236047AbjHJPN6 (ORCPT
+        with ESMTP id S230123AbjHJPVb (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 10 Aug 2023 11:13:58 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 238762694;
-        Thu, 10 Aug 2023 08:13:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691680424; x=1692285224; i=deller@gmx.de;
- bh=iIkc2RgfKbq4SxDPjebXDccs3vuOZcXYZkuSl/0CCT8=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=XZPpsXYJ3H20kHWmi/Ad33pJG/4cEU4NDfvR7TckS2UUatPCFPnONvJfVSyPPB6Nxu8sQ2B
- sl5cR3kDYjstqLshcPsb4PxlGmTEMEacToZq+AlE0T4jll0isls+pPq+gMVzPDJDL+p8cI2UO
- j+zq26Q44gCoIsFsMTGHSwQWGv5DHohOYZL03MVND3GmkagZiDDR2k5Yc7if1UD4uDZlS0mp/
- RO+5nlWMACsqvcj/LaP1E/L8GxHySChOPI7uC+O03iFQNLlX1GYCKCj02eXbDXzbn6tcz+Rgi
- MZSnfP7ha768PMdi2InOoxB4u9N3GTZT6gl7yPi8UqJFE7Lig1FQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.144.133]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M59C2-1qT0tY2uHM-00181c; Thu, 10
- Aug 2023 17:13:44 +0200
-Message-ID: <398d6094-32c8-71f4-8251-1eec35b460f9@gmx.de>
-Date:   Thu, 10 Aug 2023 17:13:43 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 09/17] parport: gsc: mark init function static
-Content-Language: en-US
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, linux-parisc@vger.kernel.org
+        Thu, 10 Aug 2023 11:21:31 -0400
+Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0B9C90;
+        Thu, 10 Aug 2023 08:21:30 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id 59DCC32002F9;
+        Thu, 10 Aug 2023 11:21:28 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 10 Aug 2023 11:21:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1691680887; x=1691767287; bh=2Q9/wkZuAqGaPUlwVeMbpzA59zc+JfHIktY
+        O4gpFXEA=; b=ZCcOvD/TT/PSev+2Dyu9ZRKhlD4q/bxEv5m+kvnNStn5eSszZWm
+        w9D5rrEsvkBLmz306pN0MqgCBrkdacFLlP0rSRb/WNaZNJc5uMDd5iDiMN+uBXYv
+        GJOyPmA70xOSVNmpH/ET30WSOY/HTl7/mzDWPBLgMgllw73V+Wv/UFpDGv0WYEPU
+        jtUByC4uRRJ9OjRPV5CNx4fob5dB60qcHFbzeHEg6+R6a57BUKfeNUoGYWovUIwx
+        vkeit7Rlnxv0zWR6jkbC368cwJlumjjVa75wl8kXhsl3JJ4muOCtwGQNk5fIhkuq
+        znkzlDD0Cg6bRbITDLIDSH2A0JKt/5wgXSw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+        1691680887; x=1691767287; bh=2Q9/wkZuAqGaPUlwVeMbpzA59zc+JfHIktY
+        O4gpFXEA=; b=mms0pG75QfEGRdY/ORQ0MstTvMIXTCXtbdJmNVVzt+DPpXNBlxD
+        +5UMexA4voHGOBrQCEgGvYUXvBBPVnElQGSTKN9uQ8of7OyWgnvQiBUp3C/yIlpy
+        T8an/+4gYsr+5skEsqiLG48DUKeq8u9j9UtmpBVUujkjk2ll6C5FtSa5b+haekJ9
+        OYWWYQ7A6PKlUtSVrMal7TiMysf/suC9L/GvlijFC/9PWaapAgwmMSMO0BPq04x/
+        L0g0JH5xn86tizCEsedGoJzcSUulJHdXcLb6W1ZtqmRKS99y2tntFCSMjAa6TicL
+        b1YxAem1VYQEPfpVW+ue+k4iDarYNL+9IGQ==
+X-ME-Sender: <xms:dgDVZIXZFhxPSMTfGHMu_-j2HVQVYW5vHFeTdOtr8BoWT28-RIF6yg>
+    <xme:dgDVZMk3uqFfDMn82mnb43VO29EJCPpp4plX5mMJRz932dNS5aFn-4w3AV_XBb3jl
+    0mvSPPdywvSiJb_y1I>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrleeigdekiecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudektdfg
+    jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:dgDVZMauFN35ddea0SKuU1yYRyrapWXPaaGMByK8EiIaJYRLkYpkFg>
+    <xmx:dgDVZHW6P84vUGMSkVGacaT3VuYhP0-MSZOmlRLNtYFc3x20Qf70Cw>
+    <xmx:dgDVZClGx6gZNd8wTSf4DZdU-Y0BptPuYTUp1iefJsadxxAKOn6JuA>
+    <xmx:dwDVZBqV2y_X_7ikf2dZGac6q82UL0zULTX42gbZsO_CIPAMrcH-BQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 47DE4B60089; Thu, 10 Aug 2023 11:21:26 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-624-g7714e4406d-fm-20230801.001-g7714e440
+Mime-Version: 1.0
+Message-Id: <a6222c7f-f903-4de5-821a-f90da8ad1dc9@app.fastmail.com>
+In-Reply-To: <e0c2f7b1-b137-fbd3-aa28-808498eb8e3f@csgroup.eu>
 References: <20230810141947.1236730-1-arnd@kernel.org>
- <20230810141947.1236730-10-arnd@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20230810141947.1236730-10-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <20230810141947.1236730-17-arnd@kernel.org>
+ <e0c2f7b1-b137-fbd3-aa28-808498eb8e3f@csgroup.eu>
+Date:   Thu, 10 Aug 2023 17:21:04 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+        "Arnd Bergmann" <arnd@kernel.org>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc:     "Matt Turner" <mattst88@gmail.com>,
+        "Vineet Gupta" <vgupta@kernel.org>,
+        "Russell King" <linux@armlinux.org.uk>,
+        "Catalin Marinas" <catalin.marinas@arm.com>,
+        "Will Deacon" <will@kernel.org>, guoren <guoren@kernel.org>,
+        "Brian Cain" <bcain@quicinc.com>,
+        "Huacai Chen" <chenhuacai@kernel.org>,
+        "WANG Xuerui" <kernel@xen0n.name>,
+        "Geert Uytterhoeven" <geert@linux-m68k.org>,
+        "Michal Simek" <monstr@monstr.eu>,
+        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+        "Dinh Nguyen" <dinguyen@kernel.org>,
+        "Jonas Bonn" <jonas@southpole.se>,
+        "Stafford Horne" <shorne@gmail.com>,
+        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "Helge Deller" <deller@gmx.de>,
+        "Michael Ellerman" <mpe@ellerman.id.au>,
+        "Palmer Dabbelt" <palmer@dabbelt.com>,
+        "Heiko Carstens" <hca@linux.ibm.com>,
+        "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "Borislav Petkov" <bp@alien8.de>,
+        "Nathan Chancellor" <nathan@kernel.org>,
+        "Nick Desaulniers" <ndesaulniers@google.com>,
+        "Guenter Roeck" <linux@roeck-us.net>,
+        "Stephen Rothwell" <sfr@canb.auug.org.au>,
+        linux-next <linux-next@vger.kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-snps-arc@lists.infradead.org" 
+        <linux-snps-arc@lists.infradead.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "Richard Henderson" <richard.henderson@linaro.org>,
+        "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
+        "Stefan Kristiansson" <stefan.kristiansson@saunalahti.fi>,
+        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+        "Rich Felker" <dalias@libc.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        "Chris Zankel" <chris@zankel.net>,
+        "Max Filippov" <jcmvbkbc@gmail.com>,
+        "Christian Brauner" <brauner@kernel.org>,
+        "Paul Walmsley" <paul.walmsley@sifive.com>,
+        "Albert Ou" <aou@eecs.berkeley.edu>,
+        "Youling Tang" <tangyouling@loongson.cn>,
+        "Tiezhu Yang" <yangtiezhu@loongson.cn>,
+        "Masahiro Yamada" <masahiroy@kernel.org>,
+        "Randy Dunlap" <rdunlap@infradead.org>,
+        "Masami Hiramatsu" <mhiramat@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Miguel Ojeda" <ojeda@kernel.org>,
+        "Zhen Lei" <thunder.leizhen@huawei.com>,
+        "Xin Li" <xin3.li@intel.com>, "Nhat Pham" <nphamcs@gmail.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        =?UTF-8?Q?Marc_Aur=C3=A8le_La_France?= <tsi@tuyoix.net>,
+        "Johannes Weiner" <hannes@cmpxchg.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>
+Subject: Re: [PATCH 16/17] [RFC] arch: turn -Wmissing-prototypes off conditionally
+Content-Type: text/plain;charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:yEfK+8nUtFYnsM8Ph91MwYHPqWKUJ56pkaiYxzUUaiLjfkHatuu
- F5JdWoUljJ5vnmLP4D7zo3EpBaWPDRa1Rog6t/fMjiUyPzsCz68FpuKBTB2ZdadWTbJqq2z
- yKpbhKpadf4d+NMe7bL3BuqCqevTUjzjTT7YcCpLhhKbesvpl4bwbq+k0h1K4H7BnzgIZ0r
- yx+DI6WujwXeVNX9E2wtA==
-UI-OutboundReport: notjunk:1;M01:P0:/OOZDyjNeIc=;8PkoFez+ICfXtIpQdA+PR//fLeb
- dmFonrvef3qxJZ+FEY4CyUYKwD/aMjGsZktvJ823hcK+fkvPT+1HgFlOgbjz3ezMezJT7fOZg
- ARkzMJtg+KByXnP10/lM3mHnZyTGQULOmTMd6ZY3N+BeVgF2HeHn83ejebX2lf5fAUJl2RNz1
- JtkYQz3OAgZdhJ75tNQDpJNfaWnyhgRRx6WYyU5m3Gr/OY5fMimVtshK1yqVkgbqUwjS3Jdm8
- 8AHNwqXYxLnjgcspkssZYjPwxQEK2PZ9734+1WBsjt3eB+5qjr2M/3mvWrVYfVAmS3Oi2XAqi
- Y9BpncPJe2kn3ilFrGOOz9GTcjbSXO1L3WfjvQ9veLhU86ShwfO/F0FKDB5n8SGgYZ6UX27zB
- 0FDl5Mvls3sq5FSFscUwxaJM1YrMO1VPjc4Lpska/n15bjMkCbJRw7TfX/fplo5mxg3TGOIll
- fn+0/gwqHX6SAGqoYE/YfHO4/TmSGMuqFRdnoqZL2HfW2mENIXdvKxr/L26FZgRiY4TFy5guV
- pDpW1I86lr8BJRvki+zkV/2vcNjH1c9ZdKI67a+7LTFHA+wH9YUJR9HoFlYE56mW/05cZ1OeS
- cD5L9IOrwH8MCeIKxwzkogdl6V8mK/kljWprHWxUUOkz8vRwGrmVLto9xwoAuHcXKzG7qi7GM
- wMAYE/PtaHx65MihbCe+bIWpbZLx7ijwYNFvxF4XIjz/aagNnnZ1oF4aGnVIUiI94RlMbYWIT
- D0dOePYNh908ljWonQL7gKUKp/GE00v428qPRnIKsmySkdwP44uI25/m8VIGGf9lO7T2LYAEN
- sjChVumXnX4pLXFoJl24q8+kVEwnds614yOu/j5gQf461aZvKnEjOJfhTGAs6oShB3/f85/VW
- WQ5coQnFQIqPpc+lkVF11BfWMqjuh4FR5bOVGFQhA442dKSB4Vhr9NjhwJGj+mFgMuZf2VTS7
- 2zMBVqsn8+GXU+U9Epm20qnidq0=
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 8/10/23 16:19, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+On Thu, Aug 10, 2023, at 16:59, Christophe Leroy wrote:
+> Le 10/08/2023 =C3=A0 16:19, Arnd Bergmann a =C3=A9crit=C2=A0:
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>=20
+>> I have cleaned up the -Wmissing-prototypes warnings for most of the m=
+ajor architectures
+>> as well as all drivers that get enabled for CONFIG_COMPILE_TEST, so n=
+ow these should be
+>> close to fixed on x86, arm, arm64, powerpc, s390, and riscv.
+>>=20
+>> The other architectures tend to have a lot of these warning in archit=
+ecture specific
+>> code, primarily from functions that are only called from assembler co=
+de and do
+>> not otherwise need a declaration but still cause a warning without on=
+e. Other cases
+>> are simply functions that should just be static or are missing an #in=
+clude statement.
+>>=20
+>> In order to be able to turn the warning on globally by default withou=
+t breaking all
+>> these architectures, add a list of exceptions for architecture direct=
+ories that
+>> can revert back to the old behavior of not warning based on a new
+>> CONFIG_WNO_MISSING_PROTOTYPES option.
 >
-> This is only used locally, so mark it static to avoid a warning:
+> Some architectures only have a few of those errors/warnings.
 >
-> drivers/parport/parport_gsc.c:395:5: error: no previous prototype for 'p=
-arport_gsc_init' [-Werror=3Dmissing-prototypes]
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> For instance microblaze and parisc only have one each. Isn't it better=20
+> to fix them rather then turn the errors off ?
 
-Acked-by: Helge Deller <deller@gmx.de>
+The list was only the 'defconfig' warnings, there are a couple more
+that I saw with 'allmodconfig', and I'm sure there are even more
+when dealing with other random configurations.
 
+I did send other fixes for microblaze and parisc specific drivers,
+and I could also send patches for the two defconfig warnings if
+the maintainers are happy with fixing those but leaving allmodconfig
+to still warn, but I feel that it's easier for them to just
+do the last fixes themselves and then remove my hack again.
+
+I'll wait for Michal and Helge on these.
+
+> Others like loongarch which is a recent actively maintained=20
+> architecture, I'd expect the 30 errors to be easy to fix.
+
+Agreed, they probably are.
+
+> Many of the alpha ones seems to be brought by your commit e19d4ebc536d=20
+> ("alpha: add full ioread64/iowrite64 implementation")
+
+As far as I can see, those already existing before that patch, though
+I did touch the same lines there.
+
+In the end it's a matter of where to stop, as there are endless
+configurations to test if I want to do a complete job. I drew the
+line between powerpc (which I tried to fix) and mips (which I left
+alone), mainly because the powerpc side was already exhausting
+and mips has even more obscure configurations. The other ones on
+the list are all less actively maintained than these two.
+
+     Arnd
