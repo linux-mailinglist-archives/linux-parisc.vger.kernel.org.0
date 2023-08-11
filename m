@@ -2,77 +2,114 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B51287794F9
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Aug 2023 18:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ABAC7795E5
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Aug 2023 19:11:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233963AbjHKQpJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 11 Aug 2023 12:45:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58652 "EHLO
+        id S234215AbjHKRLw (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 11 Aug 2023 13:11:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236089AbjHKQpI (ORCPT
+        with ESMTP id S235464AbjHKRLv (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 11 Aug 2023 12:45:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE8002D7D;
-        Fri, 11 Aug 2023 09:45:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E90AB67702;
-        Fri, 11 Aug 2023 16:45:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 56AD9C433C8;
-        Fri, 11 Aug 2023 16:45:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691772307;
-        bh=y8irfhbayHMZCwSi2BNA7YdqtZ4rbEQUHcyNEOZEnCg=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=FIb6nXyD76CitZsfo7Vm+ZbF53FS/78DhBmqFITpkl2RULLw87O3F8f4jD7GRgS6a
-         o61QskqB2yW12LloeR/zGFq3a9y7v/MzUku1FT4SSU63dauho+hclPXZ/hw8wz1plJ
-         2yYGwGrKSx/zHT370SshxitaZpR6UBHQBuxeL1I4UnAU4uWpMgXdsUY2Yg/VdMLLc7
-         9ZWjrTyen59SSIvZGIsPfoHZIdDcLfNGG3UJidAH4GuSCY0PlrE/JoZIR7ovORhCAU
-         5PNckH5+WRjCa4VBSdKhv7EivWfOgX9En4RJ4rZ3kTyWrbwqb0HJPGeJHIhb2ve6Bb
-         UAlrDxycRmvvw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 4283BC3274B;
-        Fri, 11 Aug 2023 16:45:07 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture fixes for v6.5-rc6
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <ZNZI1sVFrK97d/gW@p100>
-References: <ZNZI1sVFrK97d/gW@p100>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <ZNZI1sVFrK97d/gW@p100>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.5-rc6
-X-PR-Tracked-Commit-Id: d863066e6ce0a70c479a7f618088912ac0ba44ac
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: feb0eee9aa3c85aa15e3b60f82cb8d1fae28f2fe
-Message-Id: <169177230726.3076.5138334969294889011.pr-tracker-bot@kernel.org>
-Date:   Fri, 11 Aug 2023 16:45:07 +0000
-To:     Helge Deller <deller@gmx.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Fri, 11 Aug 2023 13:11:51 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D49FE19F;
+        Fri, 11 Aug 2023 10:11:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691773907; x=1692378707; i=deller@gmx.de;
+ bh=DTvpu55SnrHRDHc9jkNUw++IZViS9L+vW27eRjzRv3Y=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+ b=DkOqj9wIEc4UoMBNLrJaRCLSnEP9hUdAx0p0e6/vxxsftXEib1fTHyc3nK+3M4zQqXtJsC8
+ 0jXOiMJLWVn10CC3qP7LGd4gBfipA9nVQOUJHBAVcjMdIuKCwxb7kYMVaLB/1LARbPMd7p4mo
+ 2mksPuaJ868WHRj0MV1+9xUYRu+QhJVpU5b8XVeOr2v6+iR00z8o8fk0+KIvDPl8mPcvtkvw4
+ GqcBZm1gondfCaVn3Clll1aabirp5Uqi94L1eUmlPbSo8JsQFfZ4nNbUC3pCeq/WpSiL9PXMS
+ wiO5EJxC6cVMCKTwe+pdONyhL45WA8PL5vMOw3lkLDQcvuOWqY8w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([94.134.154.87]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mg6Zq-1prbsz2frq-00hah5; Fri, 11
+ Aug 2023 19:11:47 +0200
+Date:   Fri, 11 Aug 2023 19:11:46 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, Petr Mladek <pmladek@suse.com>
+Cc:     linux-parisc@vger.kernel.org
+Subject: [PATCH] watchdog: Fix lockdep warning
+Message-ID: <ZNZr0mPsIuqKzb5u@p100>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:6lJNnMqR+HtTA3+h9xFX3VvmWhCWQ5tSmahp9ChlB8pyFPiRg4J
+ G/PDINIVK7YXKZJal1xhQsETfOKUCF67gf9KRnmRB/SM6G/5KAz7O1cEc7bN8hq8NEn7/HB
+ hv/201yF2aUUOEdJBgO7X116vSNgN90Lp80DUBPAX9k4mYDMIoOreRm3iZ1nj5AwS8P/fw3
+ dPUYq42DhER3PGmAruCxw==
+UI-OutboundReport: notjunk:1;M01:P0:zAPdIIOqjk4=;a1ZkRJ9KR74ZnLdSpmIVeKnkmcw
+ FwpuO/LpCXaoYVWIwV834fOllmYwWSnh+CvTBZ7aZZZ9hnN+U+lmHE0FtNFnWferU24T9w3Y/
+ jo6TsFMR01i3drLtTBlAwB4XpEAAXXLLrPmIRVLKgWcAw4xThO6vlqLjqUgpuqUKUJ0fmB9Qh
+ YyeecdYS8yofwxrf9rrV/3yYGaCfrrAyxwBqcIKhN19D9QkpkjR0GFPZ/P4nmf36ddQ+IXqqX
+ zghRcQUuIi9UbKroBAgbKWGXbolpXwrTEU3CPk/GIwDde2N5DZ/Jaw3E30MRK6mOWlxdFHgxe
+ fQAEVPYsQQkJAa1Sd3lYU/wV+l4daz6556MqRMYL58zOEE+PajOkyusykByWb/N8CGsjjxcra
+ 9y5z6x0Q474MruZSLCINoRvgPVKc+nhVGokdoytdwmZa/r4fNFeCe/AVlF7MT/pCXCNjXINLW
+ GCof3tjFgW82r1rZvrLMXup6TGlr51TGRYZTKi1lNcsiQIVGbVdLLBxjGDh9xD+qwOJk5JtnN
+ nCvAnQDEXKHk+EIkSpDjUUqoxHiEHj+is2nCVYIDxGbp7k3/JQ1X/R8SpND+Z+Px//QeRfc2u
+ f3oIqGJKc0924llDt9Yii2o5fMmYBbznb4YllZJoYICt0XoWbzE2gDqeDvR3TKOv3lCe0oG1f
+ WuU+9IqUHcrjZeEck09SWc3+MhysyEmrLYiXStZeqy7Hzn2FrrdQT8fS7If6IcIFiNbTCSiIY
+ OYb5aR5We4SPMOhdp+vtnBuqgzI7dgiuwprSiS1ZgQHSAQ/o1WgJ8NjL32SjjJ1iF5RyROOWq
+ nv+5c28+MvWibtbqI+mulLNZj6fZFn69v30Twa9+nUaJzLmOBGcxJTCbMnE7k5ZcwGxn3TpmZ
+ Pflu1q+5T1lso5OQ7v09A/Ygd67ssBeIi645xax0LsJh5ZM86iIjlw45sMgdzkRPr4Nh9UbrC
+ +J/BxG8ZAaHEGFtvhnHv6ya65jo=
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-The pull request you sent on Fri, 11 Aug 2023 16:42:30 +0200:
+Fully initialize detector_work work struct to avoid this kernel warning
+when lockdep is enabled:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.5-rc6
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+ WARNING: bad unlock balance detected!
+ 6.5.0-rc5+ #687 Not tainted
+ -------------------------------------
+ swapper/0/1 is trying to release lock (detector_work) at:
+ [<000000004037e554>] __flush_work+0x60/0x658
+ but there are no more locks to release!
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/feb0eee9aa3c85aa15e3b60f82cb8d1fae28f2fe
+ other info that might help us debug this:
+ no locks held by swapper/0/1.
 
-Thank you!
+ stack backtrace:
+ CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc5+ #687
+ Hardware name: 9000/785/C3700
+ Backtrace:
+  [<0000000041455d5c>] print_unlock_imbalance_bug.part.0+0x20c/0x230
+  [<000000004040d5e8>] lock_release+0x2e8/0x3f8
+  [<000000004037e5cc>] __flush_work+0xd8/0x658
+  [<000000004037eb7c>] flush_work+0x30/0x60
+  [<000000004011f140>] lockup_detector_check+0x54/0x128
+  [<0000000040306430>] do_one_initcall+0x9c/0x408
+  [<0000000040102d44>] kernel_init_freeable+0x688/0x7f0
+  [<000000004146df68>] kernel_init+0x64/0x3a8
+  [<0000000040302020>] ret_from_kernel_thread+0x20/0x28
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+=2D--
+
+diff --git a/kernel/watchdog.c b/kernel/watchdog.c
+index be38276a365f..eab0dfcfa3f9 100644
+=2D-- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -1022,5 +1022,6 @@ void __init lockup_detector_init(void)
+ 	else
+ 		allow_lockup_detector_init_retry =3D true;
+
++	INIT_WORK(&detector_work, lockup_detector_delay_init);
+ 	lockup_detector_setup();
+ }
