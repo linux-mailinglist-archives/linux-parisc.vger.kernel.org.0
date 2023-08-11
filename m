@@ -2,61 +2,61 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 044377793BA
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Aug 2023 18:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC9597793CB
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Aug 2023 18:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230332AbjHKQCj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 11 Aug 2023 12:02:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60772 "EHLO
+        id S233713AbjHKQE1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 11 Aug 2023 12:04:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230004AbjHKQCi (ORCPT
+        with ESMTP id S229448AbjHKQE0 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 11 Aug 2023 12:02:38 -0400
+        Fri, 11 Aug 2023 12:04:26 -0400
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C2E26A0;
-        Fri, 11 Aug 2023 09:02:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B34E58;
+        Fri, 11 Aug 2023 09:04:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691769750; x=1692374550; i=deller@gmx.de;
- bh=iqnZU8mU7l4QzSUyGuAE8+gkYIPMNUxpXam1GvezFL0=;
+ s=s31663417; t=1691769864; x=1692374664; i=deller@gmx.de;
+ bh=l5mnkz2k1a6F+R0c1XAKS+SjI6mLnDCae5GSDV64zGI=;
  h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=gurEsYiCx5h6JS7/3E7TPINnChnbpJXgenK2gid4u1fOoY03aXbqBS87XMcUMvTfvgDtklY
- P7l3ZBhcWjXPZSeBXOfLLsnyvDae63pVkMSSLBI43bC655NoV+7UHypumTm7PXyI7urtAl9Ho
- pGL04kP3y7XegtUkLyVyYWPragvEvAFodzTyc6kgvzVmPw3PsR4hjH5MR2GmC34M07MPCEFEu
- MwdOdUsZYEkCQFmjXUme+r2KxJsX1PRN+JJKzWSlgcOyhcrZ1IjSIj10UKXCnEU7UpYPWszep
- s/Hkj6oZMe0xaArxeq3gTQjqRRgCphcX4zi4lREbRKrAyYuQex5A==
+ b=uZYblYq+QAUR6iLGwSJbpku4LpL/qb4ecQnUit29FrHTi9u18sbxsCuMNLtys4pe4Isrgkt
+ StdV21Bl+r0xetTjB0T9RNgN/GBeYKW1jCPynqaDRDOJh8mktS9TQ9/MK/HmJMCCHg+fmLFYH
+ 6gS2y/rvLKdSHWZib6D2pb0xITYeUGrviUnhp8Xr1hhFDWuVIns6Ip5+kO4+jIXg/gUHcdR6E
+ pJo9yNJPqL7jtPLtAMT7SXBFrWP14HYNmg85LAbyrRZDlb1PtfUcNfVmY16dCiiCn6likcJmQ
+ CSLtWR/fsMk5Sn5zSAd9ydfYu7VkV+IPyphiDlIuaeK2GTcYL6eQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.154.87]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MtwUw-1perNa3bQ4-00uLvy; Fri, 11
- Aug 2023 18:02:30 +0200
-Date:   Fri, 11 Aug 2023 18:02:29 +0200
+Received: from p100 ([94.134.154.87]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MiaY9-1ppdlQ44NL-00fi2W; Fri, 11
+ Aug 2023 18:04:24 +0200
+Date:   Fri, 11 Aug 2023 18:04:22 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: [PATCH] devtmpfs: Add missing lockdep annotation
-Message-ID: <ZNZblen+NXOrW9wE@p100>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-parisc@vger.kernel.org
+Subject: [PATCH] init: Add lockdep annotation to kthreadd_done completer
+Message-ID: <ZNZcBkiVkm87+Tvr@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Provags-ID: V03:K1:5h8fVYMFGB3PYIxsCO6QS49v1wEkt43agtMG/34iq//pZ9V5LAb
- YkF0bhNu1iaP+ZrhLiiYwU0uwHPhPuhkR+J+KERMja230XstP/5Eaz4rguFxCD8fkur+KHe
- onAWIFvnQYGX0CmvhIjx1hLHh78WLKWtExr+sQilpTqGnSapM4TrgWyWTvfiQ6CgOYj5IM9
- M7UCHO2bJlB6p9/JpNPaw==
-UI-OutboundReport: notjunk:1;M01:P0:Wh+Orez885M=;MFgRI0gzaXo5p21CWVsTeBAZuwV
- VQCDA3Tggab/iTa7pkAKkKDBZbNs5+ZzXJ5epLopSII9JFJgZsIg7MQAf9GKDSBeOiIYYdGbB
- iDkRZfLK7omF+F40gOPNQab5gQLX/yr3zk7LqO3mjz5ZidnDXIodN3kmX4AvIsY4swpwcDbPv
- 43tut8annuXC3agK2vpMoYi7dXlgj266zXNCNKh/WIDTqFXs5jig1l1Di8xY5/EJeweHnpEsw
- +vbUwiXFTqu0Os8zESHksew/PgVTw4MXPYqkVwXUVVlCFs9Mrz2kU5KB7jjco7tgdNS24rMYQ
- rxU14jEM2tVOwYrwE1HtDvOJTDyupY7aOIOGiYw5qFQs0SySkQmtT6dDQ98RK7dt9qqcIcLhF
- hP8JMsL7n2A5OBUzA0LM8d9OY/Q7Z7voo+CtLgYX8z+akobNYSUPyjlDzsxPCL7t/ks6dSuqP
- /ZQUCZ/4vkSVW+iZdTc8WlU7jZ/Deuu9Cc+yCjPb664kxIbb74S6f9t21cdKOGSgHYM+Q3MCt
- 4gkBQ7eKzaytJ47rXCrk7HhTmLbXiMTy48wyOdWpfj7QRNY9aRgqSBrv4KBw+yOR25xj1+3Ob
- BgYmPq0VqYJAjhVMfEVSOHYtiAl08HBfZmvTIgWfZ5cqHYCfHSHTe/+E9rwAlGKrF0TeUTXuq
- 8JlWh0dOwVca/boqBfqDVGSLpNU6VFskggvRoT3PpohzM3IOvsEn8aERDZuMfKYC5ga8oJqLA
- exh8rEBuo0m5SL+K5boPCp8wEa43GOeCDehy+EdYghz/Y+QjTMTj8Dvt2giNk97bCg5OiJMxM
- 7DqYcVKFQl5Zqm46R/mH1OlvIdM/u6vBvDv0sxkUWznHsMH/4AFRIa7ZF34x9EJMF5FVbjg7R
- 7H8eutYsLbRS0e7nc9Nrecqc0uzaqpd7oUxBCHsUeFzDJzcQUJN5uBnWh6srygHYIfkkdm/S3
- hNG41XU1OuESyInIAXLOMst3zus=
+X-Provags-ID: V03:K1:sVs2lL9kx55kJx/JfBa6k0AR9UXRwIyujuUX/Dw7vmKICNRJJct
+ JDV4T4yUVK43jOOunqRKV/sF59/BtsjOm0QC6oaovIrtvs4HPmCEU+WO/ntp0nyx7oFHBpa
+ Dx8f5kl4moRkAChAnRhiL9CRXUA30Zt1HfeiAW0UaIzQ3mcvq7OVf+pnJrE2hRfgt4DhQmo
+ 8rHVXExW8RCQX4dXddnnw==
+UI-OutboundReport: notjunk:1;M01:P0:/hEbsO8p8IQ=;ORWZ6GbnDwFW7Fr6WQt7MP+3x4A
+ 3DFQ9fXw1HC97TsYJPWYTtR/yv5qqm0oF5Sm3rujxF77Jr4ilGnEh3+0vbVBO0qqASH7RYeWi
+ IbxDLlYSiggwT+e1NVcedLpXfzBRxRgAhVDvltRSFFkXI5hAzUYtowmZup/yA7GupOc58BR7M
+ l0IaAr6E7IHrDAD8EIdYMc9hnnz+JytVwk/fJ7xA1JKBrCp9hpAaU58j2KfTBPZ0NO0qLnBRu
+ Yz3MlxOsdfn+TLwDySDV4AbmbxIPZaK81NvfftidXTbRma/UC7fJmoxCI6TbTH8hVXVo1qvZl
+ fOxWiMHxJjcKezzy9z26gC9JMuZfSfXJiDk0pA7MjzpFqmd8ll2A3WnWCkEmomv2oI+kwZcW/
+ iHwftyUj9/YGRMj7vP2HQHLPpWz6IlkAJLHHFp4NAhJFx2Wj43vTIFy5Bph5xyTSyq0OxlQ+z
+ HBtk2emZbYiSwxBj3iivRmGfu4A/fjQpropfzk2wPNihJ+DQhK0TOJ6Om33VeFvXv8Sjnl5S/
+ hwXiDjfG40HBjqXT/8//aG+sDPO2vjUfpUUe0frjPzBt14/Pxyc3A9OgBdahEI+MsTuZl+ALL
+ f80kqoPZgTtiNyjkGKK/a82PTc72FGOTDva6qsB4r1ou8iZnema/Qem2cwGZ8EreBFK5buGLV
+ FukkFh2cL5FL+GdCRJU6+EgHB9IyHK4RPZoYa0AjHmPpjY+62vSWeohBQEuVAwON2YuRpLuQ5
+ xCqIxjS3r3RtH01Igs1eSxqbqQb5dtEZFjehfT9IAisyOI8awAOlO6ReQnbEHRLSoocSHMg4C
+ TR2JuEWBrSvn1ZE0VbLAZta2Mu0JzVZS+azHasERTBNFJSsjRsaNb7G+U+wtPDTIYhRyyOwSd
+ TyYmxG+tZstidUmTcXJu3HBGU2ceQrC34Mp91mA0FKQ/KIRIZOMkv7CX61HY7IYLtSPAUad9V
+ cQc6qg==
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -69,35 +69,38 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Add the lockdep annotation to the setup_done completer to avoid this
-kernel warning:
+Add the missing lockdep annotation to avoid this warning:
 
+ INFO: trying to register non-static key.
+ The code is fine but needs lockdep annotation, or maybe
+ you didn't initialize this object before use?
+ turning off the locking correctness validator.
+ CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc5+ #681
+ Hardware name: 9000/785/C3700
  Backtrace:
   [<000000004030bcd0>] show_stack+0x74/0xb0
-  [<000000004146c63c>] dump_stack_lvl+0x104/0x180
-  [<000000004146c6ec>] dump_stack+0x34/0x48
+  [<0000000041469c7c>] dump_stack_lvl+0x104/0x180
+  [<0000000041469d2c>] dump_stack+0x34/0x48
   [<000000004040e5b4>] register_lock_class+0xd24/0xd30
   [<000000004040c21c>] __lock_acquire.isra.0+0xb4/0xac8
   [<000000004040cd60>] lock_acquire+0x130/0x298
-  [<000000004147095c>] _raw_spin_lock_irq+0x60/0xb8
-  [<0000000041474a4c>] wait_for_completion+0xa0/0x2d0
-  [<000000004015d9f4>] devtmpfs_init+0x1e0/0x2b8
-  [<000000004015d0e4>] driver_init+0x68/0x1b8
-  [<0000000040102b68>] kernel_init_freeable+0x4ac/0x7f0
-  [<000000004146df68>] kernel_init+0x64/0x3a8
+  [<000000004146df54>] _raw_spin_lock_irq+0x60/0xb8
+  [<0000000041472044>] wait_for_completion+0xa0/0x2d0
+  [<000000004146b544>] kernel_init+0x48/0x3a8
   [<0000000040302020>] ret_from_kernel_thread+0x20/0x28
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 
-diff --git a/drivers/base/devtmpfs.c b/drivers/base/devtmpfs.c
-index b848764ef018..f98d58b0225c 100644
-=2D-- a/drivers/base/devtmpfs.c
-+++ b/drivers/base/devtmpfs.c
-@@ -462,6 +462,7 @@ int __init devtmpfs_init(void)
- 		return err;
- 	}
+diff --git a/init/main.c b/init/main.c
+index ad920fac325c..11870ca752de 100644
+=2D-- a/init/main.c
++++ b/init/main.c
+@@ -682,6 +682,8 @@ noinline void __ref __noreturn rest_init(void)
+ 	struct task_struct *tsk;
+ 	int pid;
 
-+	init_completion(&setup_done);
- 	thread =3D kthread_run(devtmpfsd, &err, "kdevtmpfs");
- 	if (!IS_ERR(thread)) {
- 		wait_for_completion(&setup_done);
++	init_completion(&kthreadd_done);
++
+ 	rcu_scheduler_starting();
+ 	/*
+ 	 * We need to spawn init first so that it obtains pid 1, however
