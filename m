@@ -2,66 +2,60 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A98AD77A0DE
-	for <lists+linux-parisc@lfdr.de>; Sat, 12 Aug 2023 17:49:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BD5C77A291
+	for <lists+linux-parisc@lfdr.de>; Sat, 12 Aug 2023 22:38:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229795AbjHLPtZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 12 Aug 2023 11:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46434 "EHLO
+        id S230152AbjHLUiH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 12 Aug 2023 16:38:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbjHLPtZ (ORCPT
+        with ESMTP id S231425AbjHLUiB (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 12 Aug 2023 11:49:25 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34F511FC1;
-        Sat, 12 Aug 2023 08:49:23 -0700 (PDT)
+        Sat, 12 Aug 2023 16:38:01 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9EF21720
+        for <linux-parisc@vger.kernel.org>; Sat, 12 Aug 2023 13:38:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691855334; x=1692460134; i=deller@gmx.de;
- bh=AQBcB+CUsX2eTH/+u9mZCUJr+ijUOKXmaOz8H8saal4=;
- h=X-UI-Sender-Class:Date:From:To:Subject;
- b=qPwxhJR79FJL9yRRwISVfZJr9JX1oQFTtt1sOk7MYGg8JyJ0NJpteHMqDRHUa6VKhP7YWGO
- b62K2CYwt8ZZ7/zssWPu9tFrKj8pRJE801Jt0dmo6hrJPChzgFrk+xlzuYdgGtm60wCwLEUzw
- ITSkChaJxFIkFjeuHKFmuVaVvJWXp10BPder1HeNCPXOrc4exxq0EF6ygb0fPwVLE4sfMy4fy
- /xp6oOenmYg7z9hEmlpSZ/baoI6iFmWpnijNqbPk6txQruBcbKc0Ry74hXYXvG4ioWm1SQ5gE
- zK7UDRdXHtu0ycax5odDpdoX5iot6N0BHC2NQCLD2XNYqKuF5Sjg==
+ s=s31663417; t=1691872681; x=1692477481; i=deller@gmx.de;
+ bh=1u48DLIOpXVKoad/MwJxGkSBosF5Nq/Cx6ge5r2r4KI=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+ b=aJxuRl2cGwzdvEI5Ko6HmcGMOc/RI1mYGPIGFg2SlfYrEAmBFspnx0Izy0XNatpGNDWyGRf
+ BDbUs+Cg7IbQv81P9VEc1mgBssIQu2bOfRSMIgXXkITSg/Y/p6g0uHtqIRBVlJTPRp+x6fnD4
+ 6Ot/LvNF1uew3qOHgCYOAD5NnQMbOsrN0YDuwJdcVUL6EzM5jE21yaLn8plbJ44ZANbodYQ83
+ OIa6EN/Us8T/wmlptTo7nZzKMPX5lck/i3Dk1HK7kUiF98/AoHb7ncljEsn1pjRYsNm1/+Zf0
+ EfKJNy/u8wJ6naPfukKNP/nfUcglEwCaQC7cptnT2cX41BqZ0ZmA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100 ([94.134.153.44]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mkpf3-1q4YJd3GMp-00mJHY; Sat, 12
- Aug 2023 17:48:54 +0200
-Date:   Sat, 12 Aug 2023 17:48:52 +0200
+Received: from p100.fritz.box ([94.134.153.44]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3DJl-1qVjeO33wD-003d7C; Sat, 12
+ Aug 2023 22:38:01 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        Guenter Roeck <linux@roeck-us.net>,
-        Borislav Petkov <bp@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH] lockdep: Fix static memory detection even more
-Message-ID: <ZNep5EcYskP9HtGD@p100>
+To:     linux-parisc@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>
+Subject: [PATCH] parisc: lasi: Register LASI power-off feature as sys_off_handler
+Date:   Sat, 12 Aug 2023 22:37:59 +0200
+Message-ID: <20230812203759.395651-1-deller@gmx.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:dcEbt/hL0xn2+/fOPVPAwmkoSqwPYd0eThhUGchBAgmMMFlJtPq
- GJlkPvu/V+fAy2HMh6rrZWAvitZoPyaIjpL79Ktanywxqa5gB3+sODzWqVKQ1crJGjx+WVJ
- puiHh5M6MMHwVqkeVaAge+FRxQqM6rKN8vSmn7d6InP8J5E0Xb2+Y6aypYADBMVL1svoGbj
- SQ/bR316Sou6uCSf5txYA==
-UI-OutboundReport: notjunk:1;M01:P0:FQuwPfMEExY=;0JYJ1lo7wRKTut9LtUqVC1gCdxn
- cqA6IjESb79Fst17BdqiY//gP9sRdNViukWNjBbrLbSrmL/I0267DW2CLXR4aMkztB5ZIwC1J
- m1pw+iF7wl2G5yhVVmjMqlBCkaL6X7gcww2tOGjP4n2r24GtttypEzCTDUHdNtDatC9ZsLHy8
- 6ngAUkx3qXiYB13r0rj7ZDrk8Exrj8MRBdGh+rxBbvP0JPugMBYR+QAWfws8eKZMfL1mUQ6Qb
- 9ppGDVRn86xowoG8gzCbxTIFPjj0f//pqdOuXB6LVZibMKRoz1pqXRy5pJSNbNyIg+2yjVdP+
- Z7aIQuQ+0Nze57gQidbipSrOTB321PEIxU3fYQ3FzFacnEH8deDzD6FOFs3/59ITP78P4H0Ka
- 49K8Vt2DjEDCBYVzW1sLb0PuflsYO2Oy8Y33aF8pGTGD4/eb2z8bOuotpLOgltKA3FfLTtk47
- n5hfn+JkscqiU/ojDZ+4sRXNdyMwUH9hU119zcwDFpAsH4WUHjhYFWB2AYqLtyBJjL/8l8zrZ
- wajni0bjSxw86vmmBpFCJYpHogZu9386UVrvphg1+T91UjtV05refULoCb5lwPVaDjTBXnixD
- Uo7UMSqBBjVbzEvmBr/RoRSvTJDa8DhjlYr6EhDnJTFjXmxo/2KV5aq1/b2d8zG26gdcZFUrK
- NXYPWuXBaNTwdSUY5na2Nb1a6TvVNGz40Z2dtvfHZxGJPTOg48vxDfllP2GXh6qFJLwC6sJky
- /VmkbA9DIwDHxZd4TJ4ljufD1RZAPvAKnzdDxAHzM1d1gVMYpH9GzTXDRefYhIYXlFkSPgoJQ
- eiQPbIHuBwijAiQDL0SuIUdrI7573NFTsbXJeonWsyQWXSx5U61Mj6Ajvjg8pBCRY4ZB9FKaO
- SHSRASFrLGqfc5SgN/KzUbHQUC52RX6n/jOWKpx/2xpaoivS8gV8la5Ma1cvZpel2gE+nWSgT
- PruKjg==
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:2vDRU9KzEvNwjuedKSkR8Ee0tYjMSMj7S0X07aYfpNTvm1w1sOh
+ 3XHSDjsnFl0tbr545vA7bFYC2IALPomZA3yzCInbxlYbTxaLgQPyC1xTJ/J+nM42Pnz7OSd
+ taL5nkL5ayq3Q7sWjxBOMIM8uBFRHk5AfU3QhBjPcRKKKY2oypUTs00tffkocc63Kp7z/d6
+ qRVVYWE76crm08u2nIDTg==
+UI-OutboundReport: notjunk:1;M01:P0:eIR+LMSwihs=;RTb1lzKH13QC+wm1kAj1Z24AcIg
+ vw4BnuaLClRmQOIdBXuvPBaWmYThTsKYX9Aqu94BreNgYTdFH8dfBJ4ebHFnUxvQPgUHgAtmr
+ uMjxfcf4ZNnwOoBXcDSvM6raOY7aG19zBjeY3msqFz3LyvXFJz/YISBs/wPCMOFtzyqcHaPGN
+ 6HMMJfW9LFepGLEBdfGuf1A+jOxNaJ2yJhKoTuatXFZiUFWZrtsg4avNjq0gZ3ujAWiPV46Te
+ QVp4A8HsIVbNH30NLeXpE5Cy63s55VzOGiU23JVTe0lGIHtgZhW+grNhmbMJ/SuB9u9lVtH9h
+ RunC5jpkNDObmLgganxwWhQ+UxgCKr7X7oQPpfQbB0+yQkaG89ZKZgkJB+mnTr71Xuqwt4pmo
+ lRKQFkvT5gVMcF2PM+rLxEwfCfi+VFVQJoxstFS4+ChBSWTvkuOGpE8dFBmu5fAnBpjuWladY
+ ciNYzfCWU03Z78D1tO+5hYjFCOUpD03X2SknyfOB4jNXjvIzzlwgQRFfM7j6B7jiOgV1QAQH3
+ Gqjth93Rau/C+wvufTYsrdtCWq/BoL3GXsalBn1mUBDgse5AJcYVxq6Smt2mEnqgyRh90hOmm
+ 7SZP9wjPDCWhaNIXYxQnQF9J9JGKsj8yWgGkdzzshCr7pjH1eT3pFGVPJ0+FiGnYzVGO9UXMW
+ 9k5pn+CVWY7jSgv4gW6zHKgQ7kgaD3jFSzYTeCmlll2WlGwF9Tx8/eMdSqUZHpM1FEewSMZSv
+ Z5LWBgtR64qULXIELMpznjwXfDLafvRi9hlnikIOxqa1CfxZJYg0sl8nxDf4ml3P2Cm/7UaIb
+ a7uXYHfcpiHquhQV+FecpYZ/T3Q1xKFkxrCQIedCYMpwPmzYJCdLKua1sCIO7MweuFrOsl+jV
+ qp9Y3vhy91QLTvISZBt04qgj4P/DeLv8XkdmtULXYSEFDlWnUPNg8AQ3AQc61ctCV8gVnQx9h
+ 5pxoa2u9BW0Ic2e4MD9qA1KQscI=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
@@ -73,118 +67,101 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On the parisc architecture, lockdep reports for all static objects which
-are in the __initdata section (e.g. "setup_done" in devtmpfs,
-"kthreadd_done" in init/main.c) this warning:
-
-	INFO: trying to register non-static key.
-
-The warning itself is wrong, because those objects are in the __initdata
-section, but the section itself is on parisc outside of range from
-_stext to _end, which is why the static_obj() functions returns a wrong
-answer.
-
-While fixing this issue, I noticed that the whole existing check can
-be simplified a lot.
-Instead of checking against the _stext and _end symbols (which include
-code areas too) just check for the .data and .bss segments (since we check=
- a
-data object). This can be done with the existing is_kernel_core_data()
-macro.
-
-In addition objects in the __initdata section can be checked with
-init_section_contains().
-
-This partly reverts and simplifies commit bac59d18c701 ("x86/setup: Fix st=
-atic
-memory detection").
-
-Tested on x86-64 and parisc.
+Prefer the Linux kernel sys_off_handler functionality over a
+home-grown implementation.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: bac59d18c701 ("x86/setup: Fix static memory detection")
-
 =2D--
+ arch/parisc/kernel/process.c |  6 ------
+ drivers/parisc/lasi.c        | 29 ++++++++++++-----------------
+ 2 files changed, 12 insertions(+), 23 deletions(-)
 
-diff --git a/arch/x86/include/asm/sections.h b/arch/x86/include/asm/sectio=
-ns.h
-index a6e8373a5170..3fa87e5e11ab 100644
-=2D-- a/arch/x86/include/asm/sections.h
-+++ b/arch/x86/include/asm/sections.h
-@@ -2,8 +2,6 @@
- #ifndef _ASM_X86_SECTIONS_H
- #define _ASM_X86_SECTIONS_H
+diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
+index abdbf038d643..62f9b14c6406 100644
+=2D-- a/arch/parisc/kernel/process.c
++++ b/arch/parisc/kernel/process.c
+@@ -97,18 +97,12 @@ void machine_restart(char *cmd)
 
--#define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
+ }
+
+-void (*chassis_power_off)(void);
 -
- #include <asm-generic/sections.h>
- #include <asm/extable.h>
-
-@@ -18,20 +16,4 @@ extern char __end_of_kernel_reserve[];
-
- extern unsigned long _brk_start, _brk_end;
-
--static inline bool arch_is_kernel_initmem_freed(unsigned long addr)
--{
--	/*
--	 * If _brk_start has not been cleared, brk allocation is incomplete,
--	 * and we can not make assumptions about its use.
--	 */
--	if (_brk_start)
--		return 0;
--
--	/*
--	 * After brk allocation is complete, space between _brk_end and _end
--	 * is available for allocation.
--	 */
--	return addr >=3D _brk_end && addr < (unsigned long)&_end;
--}
--
- #endif	/* _ASM_X86_SECTIONS_H */
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 111607d91489..957b785d0b59 100644
-=2D-- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -819,34 +819,20 @@ static int very_verbose(struct lock_class *class)
-  * Is this the address of a static object:
+ /*
+  * This routine is called from sys_reboot to actually turn off the
+  * machine
   */
- #ifdef __KERNEL__
--/*
-- * Check if an address is part of freed initmem. After initmem is freed,
-- * memory can be allocated from it, and such allocations would then have
-- * addresses within the range [_stext, _end].
-- */
--#ifndef arch_is_kernel_initmem_freed
--static int arch_is_kernel_initmem_freed(unsigned long addr)
--{
--	if (system_state < SYSTEM_FREEING_INITMEM)
--		return 0;
--
--	return init_section_contains((void *)addr, 1);
--}
--#endif
--
- static int static_obj(const void *obj)
+ void machine_power_off(void)
  {
--	unsigned long start =3D (unsigned long) &_stext,
--		      end   =3D (unsigned long) &_end,
--		      addr  =3D (unsigned long) obj;
-+	unsigned long addr =3D (unsigned long) obj;
+-	/* If there is a registered power off handler, call it. */
+-	if (chassis_power_off)
+-		chassis_power_off();
+-
+ 	/* Put the soft power button back under hardware control.
+ 	 * If the user had already pressed the power button, the
+ 	 * following call will immediately power off. */
+diff --git a/drivers/parisc/lasi.c b/drivers/parisc/lasi.c
+index 6ef621adb63a..8a2339ad457a 100644
+=2D-- a/drivers/parisc/lasi.c
++++ b/drivers/parisc/lasi.c
+@@ -17,6 +17,7 @@
+ #include <linux/module.h>
+ #include <linux/pm.h>
+ #include <linux/types.h>
++#include <linux/reboot.h>
 
--	if (arch_is_kernel_initmem_freed(addr))
--		return 0;
-+	if (is_kernel_core_data(addr))
-+		return 1;
+ #include <asm/io.h>
+ #include <asm/hardware.h>
+@@ -145,23 +146,19 @@ static void __init lasi_led_init(unsigned long lasi_=
+hpa)
+  * 1 to PWR_ON_L in the Power Control Register
+  *
+  */
+-
+-static unsigned long lasi_power_off_hpa __read_mostly;
+-
+-static void lasi_power_off(void)
++static int lasi_power_off(struct sys_off_data *data)
+ {
+-	unsigned long datareg;
++	struct gsc_asic *lasi =3D data->cb_data;
 
- 	/*
--	 * static variable?
-+	 * in initdata section and used during bootup only?
-+	 * NOTE: On some platforms the initdata section is
-+	 * outside of the _stext ... _end range.
- 	 */
--	if ((addr >=3D start) && (addr < end))
-+	if (system_state < SYSTEM_FREEING_INITMEM &&
-+		init_section_contains((void *)addr, 1))
- 		return 1;
+-	/* calculate addr of the Power Control Register */
+-	datareg =3D lasi_power_off_hpa + 0x0000C000;
++	/* Power down the machine via Power Control Register */
++	gsc_writel(0x02, lasi->hpa + 0x0000C000);
 
- 	/*
+-	/* Power down the machine */
+-	gsc_writel(0x02, datareg);
++	/* might not be reached: */
++	return NOTIFY_DONE;
+ }
+
+ static int __init lasi_init_chip(struct parisc_device *dev)
+ {
+-	extern void (*chassis_power_off)(void);
+ 	struct gsc_asic *lasi;
+ 	int ret;
+
+@@ -212,13 +209,11 @@ static int __init lasi_init_chip(struct parisc_devic=
+e *dev)
+
+ 	gsc_fixup_irqs(dev, lasi, lasi_choose_irq);
+
+-	/* initialize the power off function */
+-	/* FIXME: Record the LASI HPA for the power off function.  This should
+-	 * ensure that only the first LASI (the one controlling the power off)
+-	 * should set the HPA here */
+-	lasi_power_off_hpa =3D lasi->hpa;
+-	chassis_power_off =3D lasi_power_off;
+-
++	/* register the LASI power off function */
++	register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
++                                 SYS_OFF_PRIO_DEFAULT,
++                                 lasi_power_off, lasi);
++
+ 	return ret;
+ }
+
+=2D-
+2.41.0
+
