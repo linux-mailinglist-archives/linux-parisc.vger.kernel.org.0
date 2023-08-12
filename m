@@ -2,60 +2,60 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BD5C77A291
-	for <lists+linux-parisc@lfdr.de>; Sat, 12 Aug 2023 22:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8037377A2E3
+	for <lists+linux-parisc@lfdr.de>; Sat, 12 Aug 2023 22:51:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230152AbjHLUiH (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 12 Aug 2023 16:38:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45190 "EHLO
+        id S229596AbjHLUvo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 12 Aug 2023 16:51:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231425AbjHLUiB (ORCPT
+        with ESMTP id S229446AbjHLUvn (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 12 Aug 2023 16:38:01 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9EF21720
-        for <linux-parisc@vger.kernel.org>; Sat, 12 Aug 2023 13:38:03 -0700 (PDT)
+        Sat, 12 Aug 2023 16:51:43 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8032510F2
+        for <linux-parisc@vger.kernel.org>; Sat, 12 Aug 2023 13:51:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1691872681; x=1692477481; i=deller@gmx.de;
- bh=1u48DLIOpXVKoad/MwJxGkSBosF5Nq/Cx6ge5r2r4KI=;
+ s=s31663417; t=1691873503; x=1692478303; i=deller@gmx.de;
+ bh=Rt0pEMn+LZY2RpiIXLlNAAi0mL1rdIhXoiAcKU5PFIs=;
  h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
- b=aJxuRl2cGwzdvEI5Ko6HmcGMOc/RI1mYGPIGFg2SlfYrEAmBFspnx0Izy0XNatpGNDWyGRf
- BDbUs+Cg7IbQv81P9VEc1mgBssIQu2bOfRSMIgXXkITSg/Y/p6g0uHtqIRBVlJTPRp+x6fnD4
- 6Ot/LvNF1uew3qOHgCYOAD5NnQMbOsrN0YDuwJdcVUL6EzM5jE21yaLn8plbJ44ZANbodYQ83
- OIa6EN/Us8T/wmlptTo7nZzKMPX5lck/i3Dk1HK7kUiF98/AoHb7ncljEsn1pjRYsNm1/+Zf0
- EfKJNy/u8wJ6naPfukKNP/nfUcglEwCaQC7cptnT2cX41BqZ0ZmA==
+ b=kHJdNl49MPQqUF0FHKUo8ZesUCefOrlkp9+YQmAe/BhNgeC5iVP4LJ5IgQKhrdXO0bBesCc
+ JbCvjIN2LqnV9TTKTMvH1M46eVvOuG0knk1eGw6SPvYEPf5zaV5OGbgindY92O0iAAAT97R82
+ EZkkIzux2Gnc4RzGWmH1cPCFIv+Jir2UsNw1klVUKxTpss42xvUb/0gQILQZw34xou0w6Xa+H
+ fAgXbGVniFsMEiVSVSvIHyDCAnTvOc5bezsb8dOEzx67LozUL1KvZ9ms/rqKH8DV0rymEjrsV
+ FEvxQrHaAJf4RkuiwKK9gxUT+Be5BBT8ESGSmNVO8S5bUUdHkBnA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from p100.fritz.box ([94.134.153.44]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3DJl-1qVjeO33wD-003d7C; Sat, 12
- Aug 2023 22:38:01 +0200
+Received: from p100.fritz.box ([94.134.153.44]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1McH9i-1pwhl53F5o-00cgsH; Sat, 12
+ Aug 2023 22:51:43 +0200
 From:   Helge Deller <deller@gmx.de>
 To:     linux-parisc@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>
-Subject: [PATCH] parisc: lasi: Register LASI power-off feature as sys_off_handler
-Date:   Sat, 12 Aug 2023 22:37:59 +0200
-Message-ID: <20230812203759.395651-1-deller@gmx.de>
+Subject: [PATCH 1/2] parisc: Drop the pa7300lc LPMC handler
+Date:   Sat, 12 Aug 2023 22:51:38 +0200
+Message-ID: <20230812205139.401366-1-deller@gmx.de>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:2vDRU9KzEvNwjuedKSkR8Ee0tYjMSMj7S0X07aYfpNTvm1w1sOh
- 3XHSDjsnFl0tbr545vA7bFYC2IALPomZA3yzCInbxlYbTxaLgQPyC1xTJ/J+nM42Pnz7OSd
- taL5nkL5ayq3Q7sWjxBOMIM8uBFRHk5AfU3QhBjPcRKKKY2oypUTs00tffkocc63Kp7z/d6
- qRVVYWE76crm08u2nIDTg==
-UI-OutboundReport: notjunk:1;M01:P0:eIR+LMSwihs=;RTb1lzKH13QC+wm1kAj1Z24AcIg
- vw4BnuaLClRmQOIdBXuvPBaWmYThTsKYX9Aqu94BreNgYTdFH8dfBJ4ebHFnUxvQPgUHgAtmr
- uMjxfcf4ZNnwOoBXcDSvM6raOY7aG19zBjeY3msqFz3LyvXFJz/YISBs/wPCMOFtzyqcHaPGN
- 6HMMJfW9LFepGLEBdfGuf1A+jOxNaJ2yJhKoTuatXFZiUFWZrtsg4avNjq0gZ3ujAWiPV46Te
- QVp4A8HsIVbNH30NLeXpE5Cy63s55VzOGiU23JVTe0lGIHtgZhW+grNhmbMJ/SuB9u9lVtH9h
- RunC5jpkNDObmLgganxwWhQ+UxgCKr7X7oQPpfQbB0+yQkaG89ZKZgkJB+mnTr71Xuqwt4pmo
- lRKQFkvT5gVMcF2PM+rLxEwfCfi+VFVQJoxstFS4+ChBSWTvkuOGpE8dFBmu5fAnBpjuWladY
- ciNYzfCWU03Z78D1tO+5hYjFCOUpD03X2SknyfOB4jNXjvIzzlwgQRFfM7j6B7jiOgV1QAQH3
- Gqjth93Rau/C+wvufTYsrdtCWq/BoL3GXsalBn1mUBDgse5AJcYVxq6Smt2mEnqgyRh90hOmm
- 7SZP9wjPDCWhaNIXYxQnQF9J9JGKsj8yWgGkdzzshCr7pjH1eT3pFGVPJ0+FiGnYzVGO9UXMW
- 9k5pn+CVWY7jSgv4gW6zHKgQ7kgaD3jFSzYTeCmlll2WlGwF9Tx8/eMdSqUZHpM1FEewSMZSv
- Z5LWBgtR64qULXIELMpznjwXfDLafvRi9hlnikIOxqa1CfxZJYg0sl8nxDf4ml3P2Cm/7UaIb
- a7uXYHfcpiHquhQV+FecpYZ/T3Q1xKFkxrCQIedCYMpwPmzYJCdLKua1sCIO7MweuFrOsl+jV
- qp9Y3vhy91QLTvISZBt04qgj4P/DeLv8XkdmtULXYSEFDlWnUPNg8AQ3AQc61ctCV8gVnQx9h
- 5pxoa2u9BW0Ic2e4MD9qA1KQscI=
+X-Provags-ID: V03:K1:RpX+IHG9Pm1NttjwtlUhy2yCK5a9khcHm2ON6Za27QozPsHxrLA
+ VEa1vxng2uVK9YOGrzhxXc7RYFNX1aeNuAQpThxS2LASRjz0AlfcRRo7ki+7hGnVLgkG6r4
+ ZYDQvkbQO8gvdPYR/BZB34+nwGX8FQCb7cQDRsHxaLQI/tjWMXnInggO/iLdCpUVqnhthWk
+ WZMECv8ZRuQ9OcPxewkRA==
+UI-OutboundReport: notjunk:1;M01:P0:sTwdcpslYnQ=;7zIzg/Hw8c+EZxHYKgEklSQSPyX
+ BIKPki6nL0NYA+j/zirBEldmh38uttZmigpY4cEAGhJ7Q6emgdv8HyFQdG52T2KNqy8DZ8asU
+ fPp2Z8kGRWbp71MeclLomblS6EsEQ4GVpxjQmI1iO7W89tvpqPenkw3QcLrIm/dB8x5ZX4Sgr
+ 2kTY8pXQeV3tRC/6ILqFsB8bWzXfa3V5TYqsIOJwTxu72CG19Ugnf+sm9Qn/RzJr3w15ynofL
+ lR5cayEnYMrgYhfpSG97QHYZS04/7QrurZmOnIXjdh/iyZFn5udeijpqBROL0UW/v6egeCWqs
+ 2umNfBaMcR+aUX/V9VKMKjFHnrWos7Vs+QNaU+mdsTbABs2P+IvWMpuUH2k0lSxmBP5tU3kTs
+ n+79+/nr2O5rqC7Jb9g6EqM1TVkP5W0TJ/bTbmJgXx+9NnpAs5VTlkjNEg5SNTHT+dgYzi4Q2
+ Gxw+o2EdiKbtXA1LEnq4frsKdp6ScefVhQ0cPfPJeZ2VAHewkL61zY0Y30inLoScQ7jsD5kQk
+ bv6M3CldSpvS7W7BH+xyoSPLHf7cu5ek2pDth7wCdpLyWQ3CAp8NBiYdR5/txefb2B5ji+cm1
+ URrfq2Kgye2+PT4GnkGShl/xF7zPINM3E/hBufFOoBMcz2QiYt14puJABFBx8Ss4lCd5w2X+h
+ 3RWcY614ijnBFR3y7lj8J6vmIGA0UkFeRwelrakqpMknyzCSCmHIzPFv42TgLEf/XXwzhtsVW
+ kVPFhgibUhpcttbP8Spbz70thd1kOwrH8r+NIfYC44w8i9vsXsboIeRMAWjXIlPydl6xF0Cd+
+ VODNxNTAE637NmeB9XWnKwnP2rVzpB4XgcQ7+W4ON5OnL8J6g4bB+60HlMEy0s7sT40lVrGQb
+ zO0CsAKCacuwUqbKWL9jMAgPtG2U1i2ByQhw+8UrmscWnZqWvD7wEfGD86x2qvnZCT8j/vP38
+ CrEL33phAy39cH0kfC/HdwToo6o=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
@@ -67,101 +67,134 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Prefer the Linux kernel sys_off_handler functionality over a
-home-grown implementation.
+This was actually never really used, and the info it
+prints won't help. Drop it.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 =2D--
- arch/parisc/kernel/process.c |  6 ------
- drivers/parisc/lasi.c        | 29 ++++++++++++-----------------
- 2 files changed, 12 insertions(+), 23 deletions(-)
+ arch/parisc/include/asm/machdep.h | 17 -----------
+ arch/parisc/kernel/Makefile       |  2 +-
+ arch/parisc/kernel/pa7300lc.c     | 51 -------------------------------
+ arch/parisc/kernel/setup.c        |  3 --
+ 4 files changed, 1 insertion(+), 72 deletions(-)
+ delete mode 100644 arch/parisc/include/asm/machdep.h
+ delete mode 100644 arch/parisc/kernel/pa7300lc.c
 
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index abdbf038d643..62f9b14c6406 100644
-=2D-- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -97,18 +97,12 @@ void machine_restart(char *cmd)
-
- }
-
--void (*chassis_power_off)(void);
+diff --git a/arch/parisc/include/asm/machdep.h b/arch/parisc/include/asm/m=
+achdep.h
+deleted file mode 100644
+index 215d2c43989d..000000000000
+=2D-- a/arch/parisc/include/asm/machdep.h
++++ /dev/null
+@@ -1,17 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _PARISC_MACHDEP_H
+-#define _PARISC_MACHDEP_H
 -
- /*
-  * This routine is called from sys_reboot to actually turn off the
-  * machine
-  */
- void machine_power_off(void)
- {
--	/* If there is a registered power off handler, call it. */
--	if (chassis_power_off)
--		chassis_power_off();
+-#include <linux/notifier.h>
 -
- 	/* Put the soft power button back under hardware control.
- 	 * If the user had already pressed the power button, the
- 	 * following call will immediately power off. */
-diff --git a/drivers/parisc/lasi.c b/drivers/parisc/lasi.c
-index 6ef621adb63a..8a2339ad457a 100644
-=2D-- a/drivers/parisc/lasi.c
-+++ b/drivers/parisc/lasi.c
-@@ -17,6 +17,7 @@
- #include <linux/module.h>
- #include <linux/pm.h>
- #include <linux/types.h>
-+#include <linux/reboot.h>
+-#define	MACH_RESTART	1
+-#define	MACH_HALT	2
+-#define MACH_POWER_ON	3
+-#define	MACH_POWER_OFF	4
+-
+-extern struct notifier_block *mach_notifier;
+-extern void pa7300lc_init(void);
+-
+-extern void (*cpu_lpmc)(int, struct pt_regs *);
+-
+-#endif
+diff --git a/arch/parisc/kernel/Makefile b/arch/parisc/kernel/Makefile
+index 2d1478fc4aa5..5ab0467be70a 100644
+=2D-- a/arch/parisc/kernel/Makefile
++++ b/arch/parisc/kernel/Makefile
+@@ -6,7 +6,7 @@
+ extra-y		:=3D vmlinux.lds
 
+ obj-y		:=3D head.o cache.o pacache.o setup.o pdt.o traps.o time.o irq.o \
+-		   pa7300lc.o syscall.o entry.o sys_parisc.o firmware.o \
++		   syscall.o entry.o sys_parisc.o firmware.o \
+ 		   ptrace.o hardware.o inventory.o drivers.o alternative.o \
+ 		   signal.o hpmc.o real2.o parisc_ksyms.o unaligned.o \
+ 		   process.o processor.o pdc_cons.o pdc_chassis.o unwind.o \
+diff --git a/arch/parisc/kernel/pa7300lc.c b/arch/parisc/kernel/pa7300lc.c
+deleted file mode 100644
+index 0d770ac83f70..000000000000
+=2D-- a/arch/parisc/kernel/pa7300lc.c
++++ /dev/null
+@@ -1,51 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/*
+- *   linux/arch/parisc/kernel/pa7300lc.c
+- *	- PA7300LC-specific functions
+- *
+- *   Copyright (C) 2000 Philipp Rumpf */
+-
+-#include <linux/sched.h>
+-#include <linux/sched/debug.h>
+-#include <linux/smp.h>
+-#include <linux/kernel.h>
+-#include <asm/io.h>
+-#include <asm/ptrace.h>
+-#include <asm/machdep.h>
+-
+-/* CPU register indices */
+-
+-#define MIOC_STATUS	0xf040
+-#define MIOC_CONTROL	0xf080
+-#define MDERRADD	0xf0e0
+-#define DMAERR		0xf0e8
+-#define DIOERR		0xf0ec
+-#define HIDMAMEM	0xf0f4
+-
+-/* this returns the HPA of the CPU it was called on */
+-static u32 cpu_hpa(void)
+-{
+-	return 0xfffb0000;
+-}
+-
+-static void pa7300lc_lpmc(int code, struct pt_regs *regs)
+-{
+-	u32 hpa;
+-	printk(KERN_WARNING "LPMC on CPU %d\n", smp_processor_id());
+-
+-	show_regs(regs);
+-
+-	hpa =3D cpu_hpa();
+-	printk(KERN_WARNING
+-		"MIOC_CONTROL %08x\n" "MIOC_STATUS  %08x\n"
+-		"MDERRADD     %08x\n" "DMAERR       %08x\n"
+-		"DIOERR       %08x\n" "HIDMAMEM     %08x\n",
+-		gsc_readl(hpa+MIOC_CONTROL), gsc_readl(hpa+MIOC_STATUS),
+-		gsc_readl(hpa+MDERRADD), gsc_readl(hpa+DMAERR),
+-		gsc_readl(hpa+DIOERR), gsc_readl(hpa+HIDMAMEM));
+-}
+-
+-void pa7300lc_init(void)
+-{
+-	cpu_lpmc =3D pa7300lc_lpmc;
+-}
+diff --git a/arch/parisc/kernel/setup.c b/arch/parisc/kernel/setup.c
+index 211a4afdd282..3e95b5417a50 100644
+=2D-- a/arch/parisc/kernel/setup.c
++++ b/arch/parisc/kernel/setup.c
+@@ -31,7 +31,6 @@
+ #include <asm/sections.h>
+ #include <asm/pdc.h>
+ #include <asm/led.h>
+-#include <asm/machdep.h>	/* for pa7300lc_init() proto */
+ #include <asm/pdc_chassis.h>
  #include <asm/io.h>
- #include <asm/hardware.h>
-@@ -145,23 +146,19 @@ static void __init lasi_led_init(unsigned long lasi_=
-hpa)
-  * 1 to PWR_ON_L in the Power Control Register
-  *
-  */
--
--static unsigned long lasi_power_off_hpa __read_mostly;
--
--static void lasi_power_off(void)
-+static int lasi_power_off(struct sys_off_data *data)
- {
--	unsigned long datareg;
-+	struct gsc_asic *lasi =3D data->cb_data;
+ #include <asm/setup.h>
+@@ -93,8 +92,6 @@ static void __init dma_ops_init(void)
+ 			"the PA-RISC 1.1 or 2.0 architecture specification.\n");
 
--	/* calculate addr of the Power Control Register */
--	datareg =3D lasi_power_off_hpa + 0x0000C000;
-+	/* Power down the machine via Power Control Register */
-+	gsc_writel(0x02, lasi->hpa + 0x0000C000);
-
--	/* Power down the machine */
--	gsc_writel(0x02, datareg);
-+	/* might not be reached: */
-+	return NOTIFY_DONE;
- }
-
- static int __init lasi_init_chip(struct parisc_device *dev)
- {
--	extern void (*chassis_power_off)(void);
- 	struct gsc_asic *lasi;
- 	int ret;
-
-@@ -212,13 +209,11 @@ static int __init lasi_init_chip(struct parisc_devic=
-e *dev)
-
- 	gsc_fixup_irqs(dev, lasi, lasi_choose_irq);
-
--	/* initialize the power off function */
--	/* FIXME: Record the LASI HPA for the power off function.  This should
--	 * ensure that only the first LASI (the one controlling the power off)
--	 * should set the HPA here */
--	lasi_power_off_hpa =3D lasi->hpa;
--	chassis_power_off =3D lasi_power_off;
--
-+	/* register the LASI power off function */
-+	register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
-+                                 SYS_OFF_PRIO_DEFAULT,
-+                                 lasi_power_off, lasi);
-+
- 	return ret;
- }
-
+ 	case pcxl2:
+-		pa7300lc_init();
+-		break;
+ 	default:
+ 		break;
+ 	}
 =2D-
 2.41.0
 
