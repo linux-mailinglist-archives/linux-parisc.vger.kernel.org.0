@@ -2,155 +2,262 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E23377A5AF
-	for <lists+linux-parisc@lfdr.de>; Sun, 13 Aug 2023 10:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 358CF77A5DC
+	for <lists+linux-parisc@lfdr.de>; Sun, 13 Aug 2023 11:49:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230142AbjHMI6v convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-parisc@lfdr.de>); Sun, 13 Aug 2023 04:58:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47518 "EHLO
+        id S231137AbjHMJtT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 13 Aug 2023 05:49:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229774AbjHMI6u (ORCPT
+        with ESMTP id S229484AbjHMJtS (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 13 Aug 2023 04:58:50 -0400
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF96D10E5
-        for <linux-parisc@vger.kernel.org>; Sun, 13 Aug 2023 01:58:52 -0700 (PDT)
-References: <87msyvjr9o.fsf@gentoo.org>
- <93137dbc-4505-e5e8-b2fe-da256c347295@gmx.de>
- <711de21b-1b5a-c3a5-6a11-de44334c7003@gmx.de>
-User-agent: mu4e 1.10.6; emacs 30.0.50
-From:   Sam James <sam@gentoo.org>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Sam James <sam@gentoo.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>
-Subject: Re: 6.4.10 failed boot
-Date:   Sun, 13 Aug 2023 09:58:03 +0100
-Organization: Gentoo
-In-reply-to: <711de21b-1b5a-c3a5-6a11-de44334c7003@gmx.de>
-Message-ID: <87fs4njp2u.fsf@gentoo.org>
+        Sun, 13 Aug 2023 05:49:18 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF21E10CE
+        for <linux-parisc@vger.kernel.org>; Sun, 13 Aug 2023 02:49:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1691920144; x=1692524944; i=deller@gmx.de;
+ bh=xAHgr8ZWuDOzyd59E4gGR+tGDZ72q47NJU6MS+iKPgQ=;
+ h=X-UI-Sender-Class:Date:From:To:Subject;
+ b=pQQ2qVhoz8R0AKrSEBM/kpoUkMQTcm5L92nYR0nA/GamdzQ0urzyTD6jntDubEXxc5w539Y
+ eBgtJjm1+af4aaFylBMmlNo9lPWOxzXCPj6eyPsWRKwY3ggaAaIgWFqzqutvCTEcwYamGWrb8
+ 4+ox4zDPU0LZlyosqv3v644x1kaTt4o/YxP6bMQyUMY/UyFU3SyJQVCOOk3RdLHqjoAojlVh0
+ 8al7cUzarUejmDg3x9MOeby3Ks/c7LGbFEh1JO8nbpXvK1jBmgbuDsE+pGj0TBnGfXJLHisak
+ /ph7xf4zptLdfA4wzNc6TBLKNbA7Dom7NX1QaxKA9LFYXOZaKePg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([94.134.146.141]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N7zFZ-1pjSmh3EzD-0152tg; Sun, 13
+ Aug 2023 11:49:04 +0200
+Date:   Sun, 13 Aug 2023 11:49:03 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Sam James <sam@gentoo.org>, linux-parisc@vger.kernel.org
+Subject: [PATCH] Fix CONFIG_TLB_PTLOCK to work with lightweight spinlock
+ checks
+Message-ID: <ZNinD9QbRUn6BSiR@p100>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:gLBeTn2j8M5eSdkH+xkNqvSyp7ZLCNI/qqjopXZrPcMucfzHNE1
+ j3RromPVIUkYyt22ZU07IgYs+lOZ0WRO97iamKh7ouYIiy1tygQw9N51Lw/9bsfFybnwvht
+ hz+rLP6teOQLv3GVYI04p5ke6kQ3O+5Gv6Yrvn+01WD6Kl3q9GWtqEbJx0Wv4fJlgDylcNi
+ u18LIFSW6OUgJRUNHUNVg==
+UI-OutboundReport: notjunk:1;M01:P0:8Yw2HeqRF/g=;KLheVPkk7Y+nRD94Nssy6vQUNLx
+ mzOMRPeSdPwz1E+M/yxDVHk94cddixvJERU0zWi89wa9L0csay2oYTLdYvL5cf7Ha2ykmfdDh
+ W5U19Esc3iq68dxY1gLJQSrhb7y8yZ+imkW9f8y7DOEB533ofiYTloG7opmuSLwkMSCZy/jVC
+ 6qTbP5JdIRtbbbbHS5CwVh19ANW8bOQD/2ZkcVDLSFHq2oA0UiTBYI3I9duh7RVUF86BZe9hg
+ e6y8MLf4MG8CPDRFezb5XfrIfM37fLDVmuBh+WFh0JhRjDMQJo6KL0BavJEeVn28jQm8m1X9A
+ v/kvddE48SLxljPDDW9ekIkF34WB62ExqJQIY5NqmSvvHHRk0aT9xtdToAS+SIECLBKrWF7Xp
+ 33j9PDtV8PkwD7ha0OIUqZ/l7jvIcsmXGGURMSdqvIYAzdwfaQUPP9UVsdjL8pSqoeAgsLm/J
+ u3Ze+H3r6uLVR00nJ+QOLIOwgD6pfKelM4PXH1jOu3fBwsMojzz9DBOy0IsssjPDSwjyXqRa+
+ 7WwBcu/l0N/0aYWDP2euKSt0id8LWu57weYxYE9EEjrpLyCed7y1IwNyVsN6RhreKB/8G60ix
+ B6QgKmn9TKg93PgSVDdgN7+x+QGSmf13keA7XF2nHWUxby193kzXoUx2gCvPv9EnPuLX612g/
+ 8oTeP2NbTIumW+Xv6OMlMCY5orpn5B8ufbjDJW9qQMzOSmjMJRAZkN13HwsHuOtnY7DU1PztQ
+ oCtmlTExjUsjo6QyROTnzK0ws+f39z9tqTxe0ox0PrFj8GPHqIFUr+d3s4JpdsKJYb3E/tkFc
+ lUF7ooxg/PJV8b3sovOuhNVLKsg+OGdyC1p7KpUj626PD6RrYvXleCpnOt6kNk3GQTec/YvLA
+ Cf0Z5r5P+tp/+Zn2FKPg2vhrUy5VZPqKGp7Meecp1Yz8ilnZ0FaEE+GWBXrLVn9al7TdugpS/
+ xhfj0apgNf2bZI+r0Be1aZPpWB8=
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+For the TLB_PTLOCK checks we used an optimization to store the spc
+register into the spinlock to unlock it. This optimization works as
+long as the lightweight spinlock checks (CONFIG_LIGHTWEIGHT_SPINLOCK_CHECK=
+)
+aren't enabled, because they really check if the lock word is zero or
+__ARCH_SPIN_LOCK_UNLOCKED_VAL and abort with a kernel crash
+("Spinlock was trashed") otherwise.
 
-Helge Deller <deller@gmx.de> writes:
+Drop that optimization to make it possible to activate both checks
+at the same time.
 
-> On 8/13/23 10:38, Helge Deller wrote:
->> On 8/13/23 10:09, Sam James wrote:
->>> Upgrading from 6.1.37 or so to 6.4.10, I get:
->>> ```
->>> [...]
->>> devtmpfs: mounted
->>> Freeing unused kernel image (initmem) memory: 656K
->>> Write protected read-only-after-init data: 41k
->>> Run /sbin/init as init process
->>> process 'usr/lib/systemd/systemd' started with executable stack
->>>        _______________________________
->>>       < Your System ate a SPARC! Gah! >
->>>        -------------------------------
->>>               \   ^__^
->>>                   (__)\       )\/\
->>>                    U  ||----w |
->>>                       ||     ||
->>> init (pid 1): Spinlock was trashed (code 1)
->>> CPU: 1 PID: 1 Comm: init Not tainted 6.4.10 #1
->>> Hardware name: 9000/800/rp3440
->>>
->>>       YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
->>> PSW: 00001000000001001111111100001111 Not tainted
->>> r00-03  000000ff0804ff0f 000000004b4e8de0 00000000404021d8 000000004b4e8e80
->>> r04-07  0000000040f4bda0 000000004b64c000 000000004b699800 000000004d1ad000
->>> r08-11  000000004b699864 000000000c574000 0000000000000000 0000000040001e1c
->>> r12-15  0000000000001000 0000000040ed5900 0000000000000001 0000000000000000
->>> r16-19  000003fff0fff000 000000004101d5a0 0000000040f8d5a0 0000000000001a46
->>> r20-23  0000000000000000 0000000000000000 0000000000000000 0000000000000080
->>> r24-27  0000000000000000 0000000000000000 000000004b699864 0000000040f4bda0
->>> r28-31  00000000000ce800 000000004b4e8e50 000000004b4e8ec0 00000000000ce800
->>> sr00-03  0000000000000000 0000000000000000 0000000000000000 00000000000ce800
->>> sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
->>>
->>> IASQ: 0000000000000000 0000000000000000 IAOQ: 0000000040e8466c 0000000040e84670
->>>   IIR: 0000c006    ISR: 0000000010240000  IOR: 0000002da6699864
->>>   CPU:        1   CR30: 000000004b46a010 CR31: ffffffffffffffff
->>>   ORIG_R28: 0000000000000000
->>>   IAOQ[0]: _raw_spin_lock+0x1c/0x58
->>>   IAOQ[1]: _raw_spin_lock+0x20/0x58
->>>   RP(r2): __pmd_alloc+0xb8/0x1b8
->>> Backtrace:
->>>   [<00000000404021d8>] __pmd_alloc+0xb8/0x1b8
->>>   [<00000000404165c8>] move_page_tables.part.0+0x788/0x7a0
->>>   [<0000000040417630>] move_page_tables+0x38/0x50
->>>   [<000000004047f82c>] shift_arg_pages+0x12c/0x2f0
->>>   [<000000004047fc28>] setup_arg_pages+0x238/0x390
->>>   [<000000004051b538>] load_elf_binary+0x660/0x1b38
->>>   [<0000000040480f54>] bprm_execve+0x41c/0x8c8
->>>   [<000000004048323c>] kernel_execve+0x20c/0x2b8
->>>   [<0000000040e63924>] run_init_process+0x164/0x198
->>>   [<0000000040e63990>] try_to_run_init_process+0x38/0xa0
->>>   [<0000000040e81dd0>] kernel_init+0x290/0x340
->>>   [<00000000401a6020>] ret_from_kernel_thread+0x20/0x28
->>>
->>> CPU: 1 PID: 1 Comm: init Not tainted 6.4.10 #1
->>> Hardware name: 9000/800/rp3440
->>> Backtrace:
->>>   [<00000000401ae4a8>] show_stack+0x70/0x90
->>>   [<0000000040e80d88>] dump_stack_lvl+0xd8/0x128
->>>   [<0000000040e80e0c>] dump_stack+0x34/0x48
->>>   [<00000000401ae6b8>] die_if_kernel+0x1d0/0x388
->>>   [<00000000401af6c8>] handle_interruption+0xbe0/0xcd8
->>>   [<00000000401a707c>] intr_check_sig+0x0/0x3c
->>>
->>> Kernel panic - not syncing: Fatal exception
->>> ```
->>>
->>> Note that I did apply
->>> 1. https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.4/io_uring-parisc-adjust-pgoff-in-io_uring-mmap-for-parisc.patch
->>> 2. https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.4/parisc-fix-lightweight-spinlock-checks-to-not-break-futexes.patch
->>> on top of 6.4.10, which I thought would solve any spinlock problems.
->>
->> Hmm.. I thought patch 2 should have fixed it.
->> Do you have TLB_PTLOCK enabled? If so, maybe I missed fixing that in patch (2)? I'll check..
->
-> I was right.
-> TLB_PTLOCK and LIGHTWEIGHT_SPINLOCK_CHECK currently can't be enabled at the same
-> time, as it will then crash as shown above.
->
+Noticed-by: Sam James <sam@gentoo.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v6.4+
+Fixes: 15e64ef6520e ("parisc: Add lightweight spinlock checks")
 
-You answered before I could even set up the new config, let alone build
-it! :)
+diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+index 0e5ebfe8d9d2..bddf9c905c01 100644
+=2D-- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -25,6 +25,7 @@
+ #include <asm/traps.h>
+ #include <asm/thread_info.h>
+ #include <asm/alternative.h>
++#include <asm/spinlock_types.h>
 
-Speedy!
+ #include <linux/linkage.h>
+ #include <linux/pgtable.h>
+@@ -415,24 +416,22 @@
+ 	.endm
 
-> Please disable TLB_PTLOCK for now until I can come up with a patch.
+ 	/* Release page_table_lock without reloading lock address.
+-	   Note that the values in the register spc are limited to
+-	   NR_SPACE_IDS (262144). Thus, the stw instruction always
+-	   stores a nonzero value even when register spc is 64 bits.
+ 	   We use an ordered store to ensure all prior accesses are
+ 	   performed prior to releasing the lock. */
+-	.macro		ptl_unlock0	spc,tmp
++	.macro		ptl_unlock0	spc,tmp,tmp2
+ #ifdef CONFIG_TLB_PTLOCK
+-98:	or,COND(=3D)	%r0,\spc,%r0
+-	stw,ma		\spc,0(\tmp)
++98:	ldi		__ARCH_SPIN_LOCK_UNLOCKED_VAL, \tmp2
++	or,COND(=3D)	%r0,\spc,%r0
++	stw,ma		\tmp2,0(\tmp)
+ 99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+ #endif
+ 	.endm
 
-Ack, will do. Thank you for the fast response Helge!
->
-> Helge
->
->
->> "Spinlock was trashed" is coming from CONFIG_LIGHTWEIGHT_SPINLOCK_CHECK.
->> Disabling that config option should at least bring your kernel up.
->>
->> You might want to add this too:
->> https://patchwork.kernel.org/project/linux-parisc/patch/ZNep5EcYskP9HtGD@p100/
->> (lockdep: Fix static memory detection even more)
->> But I don't think it's related.
+ 	/* Release page_table_lock. */
+-	.macro		ptl_unlock1	spc,tmp
++	.macro		ptl_unlock1	spc,tmp,tmp2
+ #ifdef CONFIG_TLB_PTLOCK
+ 98:	get_ptl		\tmp
+-	ptl_unlock0	\spc,\tmp
++	ptl_unlock0	\spc,\tmp,\tmp2
+ 99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+ #endif
+ 	.endm
+@@ -1125,7 +1124,7 @@ dtlb_miss_20w:
 
-Will do, given I'm building anyway. Thanks for the heads up.
+ 	idtlbt          pte,prot
 
->>
->> Helge
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
 
-I'll test any patch when it is ready too.
+@@ -1151,7 +1150,7 @@ nadtlb_miss_20w:
 
-best,
-sam
+ 	idtlbt          pte,prot
 
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1185,7 +1184,7 @@ dtlb_miss_11:
+
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1218,7 +1217,7 @@ nadtlb_miss_11:
+
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1247,7 +1246,7 @@ dtlb_miss_20:
+
+ 	idtlbt          pte,prot
+
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1275,7 +1274,7 @@ nadtlb_miss_20:
+
+ 	idtlbt		pte,prot
+
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1320,7 +1319,7 @@ itlb_miss_20w:
+
+ 	iitlbt          pte,prot
+
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1344,7 +1343,7 @@ naitlb_miss_20w:
+
+ 	iitlbt          pte,prot
+
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1378,7 +1377,7 @@ itlb_miss_11:
+
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1402,7 +1401,7 @@ naitlb_miss_11:
+
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1432,7 +1431,7 @@ itlb_miss_20:
+
+ 	iitlbt          pte,prot
+
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1452,7 +1451,7 @@ naitlb_miss_20:
+
+ 	iitlbt          pte,prot
+
+-	ptl_unlock1	spc,t0
++	ptl_unlock1	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1482,7 +1481,7 @@ dbit_trap_20w:
+
+ 	idtlbt          pte,prot
+
+-	ptl_unlock0	spc,t0
++	ptl_unlock0	spc,t0,t1
+ 	rfir
+ 	nop
+ #else
+@@ -1508,7 +1507,7 @@ dbit_trap_11:
+
+ 	mtsp            t1, %sr1     /* Restore sr1 */
+
+-	ptl_unlock0	spc,t0
++	ptl_unlock0	spc,t0,t1
+ 	rfir
+ 	nop
+
+@@ -1528,7 +1527,7 @@ dbit_trap_20:
+
+ 	idtlbt		pte,prot
+
+-	ptl_unlock0	spc,t0
++	ptl_unlock0	spc,t0,t1
+ 	rfir
+ 	nop
+ #endif
