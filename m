@@ -2,109 +2,132 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27CE477BB61
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Aug 2023 16:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D15077BDD6
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Aug 2023 18:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230521AbjHNORh (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 14 Aug 2023 10:17:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48682 "EHLO
+        id S231853AbjHNQVh convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Mon, 14 Aug 2023 12:21:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbjHNORb (ORCPT
+        with ESMTP id S230396AbjHNQVO (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 14 Aug 2023 10:17:31 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA5FDAB;
-        Mon, 14 Aug 2023 07:17:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=0ZCRqZIZ+9R/YAsCdB/+Blpu9sk8S1vh2WqxU66lNdw=; b=nxWWF9OPk64csqFPfAmCcpVPMX
-        gTKX+XuGyf5Y1aR7e5h9mjRfnHXIHHS+KV4d81uxnaH23o+cenkbrgnNGP+C9xge7xWHyL/WgBpp6
-        C5NZt1EfgEwRnzjDBvb4qwerAscYViOCe7ksGyZWLYp8odLhn357hbyroa3t/DNHFRCsmvIWX+RbX
-        sxpN/UTZx4NtTbzlq5Uyo0VJKBun+utxE+GB1umi6mgEMo3qr6YC8WNCPBA9cwoTZflzfO+qJUZk7
-        NCBKRb5aMfd58Y2ewN4wtxmILm62qqVF+AuUf235AWPYuUHlB8h8BHEgdDUA65qOLKyi2IhCj4xvI
-        Yhih/Mig==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qVYNb-002PiS-B4; Mon, 14 Aug 2023 14:17:11 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A1B6B300137;
-        Mon, 14 Aug 2023 16:17:10 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 42894202C2248; Mon, 14 Aug 2023 16:17:10 +0200 (CEST)
-Date:   Mon, 14 Aug 2023 16:17:10 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     kernel test robot <oliver.sang@intel.com>
-Cc:     Helge Deller <deller@gmx.de>, oe-lkp@lists.linux.dev,
-        lkp@intel.com, linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-parisc@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>,
-        Borislav Petkov <bp@suse.de>
-Subject: Re: [PATCH] lockdep: Fix static memory detection even more
-Message-ID: <20230814141710.GL776869@hirez.programming.kicks-ass.net>
-References: <ZNep5EcYskP9HtGD@p100>
- <202308141646.d3160c77-oliver.sang@intel.com>
+        Mon, 14 Aug 2023 12:21:14 -0400
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8556EF1;
+        Mon, 14 Aug 2023 09:21:13 -0700 (PDT)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-5899ed05210so47216097b3.3;
+        Mon, 14 Aug 2023 09:21:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692030072; x=1692634872;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3LQvPgG2h1/fLfnTL/EIPEHhur13Ow7MR7eEqaGIBCU=;
+        b=BcM161IaZP8yd1CaIbtvBSkxW+TPDrPTs46TxOWnWOJ3iE/Tvxaw+AwkI2VUMT1lkt
+         DRnFw82wDxrUz3kmncvnj/4XbqIC7fuM5//L/24fb0Hn6/n/FuBB0ecwYw4ywCAyL50a
+         kfKStLvIFn9vZ08bJUNXLwLC67Vj9wLVwl200czXCP2bYwmH7IQnGlOBIcnm45B45K3g
+         BNPkcEW0cIf6xrtXDnGY0OKE6ClxJaQEiFsvUyU6hjoDBhpmgvjeoH1gvmf4xKS3y7pc
+         DiyjAPgJqLZ+AqXwr26XhNBledxtN+GqB6trdlsDYMHOmottGDczC8Ro6bZ5tgD7sgBm
+         +32g==
+X-Gm-Message-State: AOJu0YwAqLwfo6YFYRytX4pNCN1OabM7WHtnmZICBaooUSkCoTQQez6c
+        j/IUwieJabsL216LvSs21rtssTXc042Ayg==
+X-Google-Smtp-Source: AGHT+IEf6L/iS4ShmH/QjRXmuRIkIRuzWe1qcS9HzdpxBcSEUj2dYpsYjDG4kteu1T+H/RSdVXV5aQ==
+X-Received: by 2002:a0d:d684:0:b0:583:d32f:ed61 with SMTP id y126-20020a0dd684000000b00583d32fed61mr11057131ywd.27.1692030072394;
+        Mon, 14 Aug 2023 09:21:12 -0700 (PDT)
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com. [209.85.219.172])
+        by smtp.gmail.com with ESMTPSA id h125-20020a0df783000000b005869cf151ebsm2831363ywf.144.2023.08.14.09.21.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Aug 2023 09:21:12 -0700 (PDT)
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-d62bdd1a97dso4592481276.3;
+        Mon, 14 Aug 2023 09:21:12 -0700 (PDT)
+X-Received: by 2002:a25:ae98:0:b0:d0f:926b:c734 with SMTP id
+ b24-20020a25ae98000000b00d0f926bc734mr10259367ybj.61.1692030071857; Mon, 14
+ Aug 2023 09:21:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202308141646.d3160c77-oliver.sang@intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <CAHk-=wi4Yau-3Bsv2rXYmtXMTLaj3=Wyf4cdM6d89czFvkVsRQ@mail.gmail.com>
+ <20230724122626.1701631-1-geert@linux-m68k.org> <88f83d73-781d-bdc-126-aa629cb368c@linux-m68k.org>
+ <202307281551.D894AA39@keescook>
+In-Reply-To: <202307281551.D894AA39@keescook>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 14 Aug 2023 18:20:59 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXRiacSxqDzYmakWAQB99kYvY0Bi9zALP9ZnC9Xs_xO5g@mail.gmail.com>
+Message-ID: <CAMuHMdXRiacSxqDzYmakWAQB99kYvY0Bi9zALP9ZnC9Xs_xO5g@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v6.5-rc3
+To:     Kees Cook <keescook@chromium.org>
+Cc:     linux-kernel@vger.kernel.org,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,RCVD_IN_SORBS_WEB,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 09:40:42PM +0800, kernel test robot wrote:
-> 
-> 
-> Hello,
-> 
-> kernel test robot noticed "BUG:key#has_not_been_registered" on:
-> 
-> commit: 94d4413e506da48ea18f1cc982202874d35c76b1 ("[PATCH] lockdep: Fix static memory detection even more")
-> url: https://github.com/intel-lab-lkp/linux/commits/Helge-Deller/lockdep-Fix-static-memory-detection-even-more/20230812-235022
-> base: https://git.kernel.org/cgit/linux/kernel/git/akpm/mm.git mm-everything
-> patch link: https://lore.kernel.org/all/ZNep5EcYskP9HtGD@p100/
-> patch subject: [PATCH] lockdep: Fix static memory detection even more
-> 
-> in testcase: boot
-> 
-> compiler: gcc-12
-> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
-> 
-> (please refer to attached dmesg/kmsg for entire log/backtrace)
-> 
-> 
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <oliver.sang@intel.com>
-> | Closes: https://lore.kernel.org/oe-lkp/202308141646.d3160c77-oliver.sang@intel.com
-> 
-> 
-> 
-> [    0.575811][    T1] BUG: key b35c282c has not been registered!
-> [    0.576580][    T1] ------------[ cut here ]------------
-> [    0.577216][    T1] DEBUG_LOCKS_WARN_ON(1)
-> [    0.577236][    T1] WARNING: CPU: 0 PID: 1 at kernel/locking/lockdep.c:4888 lockdep_init_map_type+0x155/0x250
-> [    0.578389][    T1] Modules linked in:
-> [    0.578856][    T1] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc4-00587-g94d4413e506d #2
+Hi Kees,
 
-> [    0.595653][    T1]  __kernfs_create_file+0x6a/0xe0
-> [    0.596244][    T1]  sysfs_add_bin_file_mode_ns+0x4e/0xc0
-> [    0.596891][    T1]  sysfs_create_bin_file+0x5c/0x90
-> [    0.597496][    T1]  ? nsproxy_cache_init+0x30/0x30
-> [    0.598090][    T1]  ksysfs_init+0x5c/0x90
+On Sat, Jul 29, 2023 at 12:57 AM Kees Cook <keescook@chromium.org> wrote:
+> On Mon, Jul 24, 2023 at 02:43:02PM +0200, Geert Uytterhoeven wrote:
+> > On Mon, 24 Jul 2023, Geert Uytterhoeven wrote:
+> > > JFYI, when comparing v6.5-rc3[1] to v6.5-rc2[3], the summaries are:
+> > >  - build errors: +5/-0
+> >
+> >   + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]:  => 583:25, 493:25
+> >
+> > mips-gcc13/mips-allmodconfig
+> >
+> > Full context:
+> >
+> >     In function 'fortify_memset_chk',
+> >       inlined from 'memset_io' at /kisskb/src/arch/mips/include/asm/io.h:486:2,
+> >       inlined from 'build_auth_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:2697:2:
+> >     /kisskb/src/include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+> >       493 |                         __write_overflow_field(p_size_field, size);
+> >         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >     In function 'fortify_memcpy_chk',
+> >       inlined from 'memcpy_toio' at /kisskb/src/arch/mips/include/asm/io.h:494:2,
+> >       inlined from 'translate_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:955:3,
+> >       inlined from 'ray_hw_xmit.constprop' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:912:12:
+> >     /kisskb/src/include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+> >       583 |                         __write_overflow_field(p_size_field, size);
+> >         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >
+> > Single-element flexible array abuse in drivers/net/wireless/legacy/rayctl.h:tx_msg.var
+>
+> ^^^^
+> is this line from you or is there a tool outputting this? Because, yes,
 
-Problem seems to be __ro_after_init. Your patch only considers
-is_kernel_core_data(), which seems to not include these other fancy data
-sections we have.
+It is a line from me.
+
+(should I take it as a compliment that I start sounding like a tool? ;-)
+
+> very true:
+>
+> struct tx_msg {
+>     struct tib_structure tib;
+>     struct phy_header phy;
+>     struct mac_header mac;
+>     UCHAR  var[1];
+> };
+>
+> I'll send a patch.
+
+Thanks, I noticed you took care while I was enjoying summer holidays ;-)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
