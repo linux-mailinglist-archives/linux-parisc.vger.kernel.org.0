@@ -2,74 +2,45 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 091C577C03D
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Aug 2023 21:01:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41F5677C37C
+	for <lists+linux-parisc@lfdr.de>; Tue, 15 Aug 2023 00:32:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231794AbjHNTBK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 14 Aug 2023 15:01:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51494 "EHLO
+        id S231557AbjHNWbi (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 14 Aug 2023 18:31:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231918AbjHNTAz (ORCPT
+        with ESMTP id S233330AbjHNWbQ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 14 Aug 2023 15:00:55 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9BEE10F9
-        for <linux-parisc@vger.kernel.org>; Mon, 14 Aug 2023 12:00:54 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1bcad794ad4so29619125ad.3
-        for <linux-parisc@vger.kernel.org>; Mon, 14 Aug 2023 12:00:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1692039654; x=1692644454;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gKTJbYyHwGU/Pavfa3Pni61Jgqd+CWSu3/z3hiS2FZk=;
-        b=HLQl75aDvj2mEnVYovaIHU/OOGwgRtjHAT3BetsxMzFRe6RXIWRmCMYKUVj2Mu9Mdl
-         d2IbKwWkNjw3pocpmU1XmO6+RmPLRa68vlKwfk2y/ciQk/k7dfiSIL9qbC/wkf2pj4+W
-         d/ah7C/qdg5kc7tdACd3HKs8HaDGCfk13BTHc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692039654; x=1692644454;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gKTJbYyHwGU/Pavfa3Pni61Jgqd+CWSu3/z3hiS2FZk=;
-        b=RKy5jEzIl3Coq8FI1vd7De3QO26SSMKBYMFxxe6+HiY58vr15CrDrDEiYUqHJWMtqq
-         wwk1R8mUnWRPxAzfHntgpZNaPYa2XZFGGlVwHgV6Zn75Ss+qaVfI/9m8Mu41Qu/R204l
-         i5RThfnY2+jecp6AzP2fg8tzmltEFIYUjMvLBL5EVnNFHlnJ94aStiN7bYf6rC9W71LZ
-         wzfiLZ14BPt61cwIpCngYW9dP9nG0QfttT2aRMCS6MWW/qhwr0g6vMMDS/kJPiCfSYeK
-         r1oyt8BmmK5r7Rmk6Gh3ydYZUads28gSh0S5iFCqMpAbFhByWSk0MwhCLZSxjn53NTfc
-         b+6w==
-X-Gm-Message-State: AOJu0YzG57nUF0hkGD+G7RHtWjczq+1wg3Ueai5xYub5KOcAESU4Np2F
-        /PZqxoRWwHQ45XO/ok7Pk2vWuQ==
-X-Google-Smtp-Source: AGHT+IFdxlyUb3opfqP0LZm8yaMzbRYT5aUM9s1n5GnCFd9QkjKQiIIeuTRrDisx8zwdDnVwz0WSPw==
-X-Received: by 2002:a17:902:968f:b0:1bc:4f64:e2fc with SMTP id n15-20020a170902968f00b001bc4f64e2fcmr8552937plp.27.1692039654159;
-        Mon, 14 Aug 2023 12:00:54 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id u18-20020a170903125200b001b53953f306sm9813816plh.178.2023.08.14.12.00.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Aug 2023 12:00:52 -0700 (PDT)
-Date:   Mon, 14 Aug 2023 12:00:51 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org
-Subject: Re: Build regressions/improvements in v6.5-rc3
-Message-ID: <202308141159.9E4C2332@keescook>
-References: <CAHk-=wi4Yau-3Bsv2rXYmtXMTLaj3=Wyf4cdM6d89czFvkVsRQ@mail.gmail.com>
- <20230724122626.1701631-1-geert@linux-m68k.org>
- <88f83d73-781d-bdc-126-aa629cb368c@linux-m68k.org>
- <202307281551.D894AA39@keescook>
- <CAMuHMdXRiacSxqDzYmakWAQB99kYvY0Bi9zALP9ZnC9Xs_xO5g@mail.gmail.com>
+        Mon, 14 Aug 2023 18:31:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 513251719;
+        Mon, 14 Aug 2023 15:31:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E2EA56186D;
+        Mon, 14 Aug 2023 22:31:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D29C433CA;
+        Mon, 14 Aug 2023 22:31:11 +0000 (UTC)
+Date:   Tue, 15 Aug 2023 00:31:09 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     Helge Deller <deller@gmx.de>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        Guenter Roeck <linux@roeck-us.net>,
+        Borislav Petkov <bp@suse.de>,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH v2] lockdep: Fix static memory detection even more
+Message-ID: <ZNqrLRaOi/3wPAdp@p100>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMuHMdXRiacSxqDzYmakWAQB99kYvY0Bi9zALP9ZnC9Xs_xO5g@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,63 +48,125 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 06:20:59PM +0200, Geert Uytterhoeven wrote:
-> Hi Kees,
-> 
-> On Sat, Jul 29, 2023 at 12:57 AM Kees Cook <keescook@chromium.org> wrote:
-> > On Mon, Jul 24, 2023 at 02:43:02PM +0200, Geert Uytterhoeven wrote:
-> > > On Mon, 24 Jul 2023, Geert Uytterhoeven wrote:
-> > > > JFYI, when comparing v6.5-rc3[1] to v6.5-rc2[3], the summaries are:
-> > > >  - build errors: +5/-0
-> > >
-> > >   + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]:  => 583:25, 493:25
-> > >
-> > > mips-gcc13/mips-allmodconfig
-> > >
-> > > Full context:
-> > >
-> > >     In function 'fortify_memset_chk',
-> > >       inlined from 'memset_io' at /kisskb/src/arch/mips/include/asm/io.h:486:2,
-> > >       inlined from 'build_auth_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:2697:2:
-> > >     /kisskb/src/include/linux/fortify-string.h:493:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-> > >       493 |                         __write_overflow_field(p_size_field, size);
-> > >         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > >     In function 'fortify_memcpy_chk',
-> > >       inlined from 'memcpy_toio' at /kisskb/src/arch/mips/include/asm/io.h:494:2,
-> > >       inlined from 'translate_frame' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:955:3,
-> > >       inlined from 'ray_hw_xmit.constprop' at /kisskb/src/drivers/net/wireless/legacy/ray_cs.c:912:12:
-> > >     /kisskb/src/include/linux/fortify-string.h:583:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
-> > >       583 |                         __write_overflow_field(p_size_field, size);
-> > >         |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > >
-> > > Single-element flexible array abuse in drivers/net/wireless/legacy/rayctl.h:tx_msg.var
-> >
-> > ^^^^
-> > is this line from you or is there a tool outputting this? Because, yes,
-> 
-> It is a line from me.
-> 
-> (should I take it as a compliment that I start sounding like a tool? ;-)
+On the parisc architecture, lockdep reports for all static objects which
+are in the __initdata section (e.g. "setup_done" in devtmpfs,
+"kthreadd_done" in init/main.c) this warning:
 
-Heh. It was so declaratory. :) I think I was hoping there was some
-analyzer that could save us the pain of manually examining these
-warnings.
+	INFO: trying to register non-static key.
 
-> 
-> > very true:
-> >
-> > struct tx_msg {
-> >     struct tib_structure tib;
-> >     struct phy_header phy;
-> >     struct mac_header mac;
-> >     UCHAR  var[1];
-> > };
-> >
-> > I'll send a patch.
-> 
-> Thanks, I noticed you took care while I was enjoying summer holidays ;-)
+The warning itself is wrong, because those objects are in the __initdata
+section, but the section itself is on parisc outside of range from
+_stext to _end, which is why the static_obj() functions returns a wrong
+answer.
 
-Awesome! Thanks for the report. :)
+While fixing this issue, I noticed that the whole existing check can
+be simplified a lot.
+Instead of checking against the _stext and _end symbols (which include
+code areas too) just check for the .data and .bss segments (since we check a
+data object). This can be done with the existing is_kernel_core_data()
+macro.
 
--- 
-Kees Cook
+In addition objects in the __initdata section can be checked with
+init_section_contains(), and is_kernel_rodata() allows keys to be in the
+_ro_after_init section.
+
+This partly reverts and simplifies commit bac59d18c701 ("x86/setup: Fix static
+memory detection").
+
+Fixes: bac59d18c701 ("x86/setup: Fix static memory detection")
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+---
+v2:
+- check is_kernel_rodata() as well, since keys are allowed in the
+  __ro_after_init section. Reported by kernel test robot.
+
+---
+
+diff --git a/arch/x86/include/asm/sections.h b/arch/x86/include/asm/sections.h
+index a6e8373a5170..3fa87e5e11ab 100644
+--- a/arch/x86/include/asm/sections.h
++++ b/arch/x86/include/asm/sections.h
+@@ -2,8 +2,6 @@
+ #ifndef _ASM_X86_SECTIONS_H
+ #define _ASM_X86_SECTIONS_H
+ 
+-#define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
+-
+ #include <asm-generic/sections.h>
+ #include <asm/extable.h>
+ 
+@@ -18,20 +16,4 @@ extern char __end_of_kernel_reserve[];
+ 
+ extern unsigned long _brk_start, _brk_end;
+ 
+-static inline bool arch_is_kernel_initmem_freed(unsigned long addr)
+-{
+-	/*
+-	 * If _brk_start has not been cleared, brk allocation is incomplete,
+-	 * and we can not make assumptions about its use.
+-	 */
+-	if (_brk_start)
+-		return 0;
+-
+-	/*
+-	 * After brk allocation is complete, space between _brk_end and _end
+-	 * is available for allocation.
+-	 */
+-	return addr >= _brk_end && addr < (unsigned long)&_end;
+-}
+-
+ #endif	/* _ASM_X86_SECTIONS_H */
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 111607d91489..e85b5ad3e206 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -819,34 +819,26 @@ static int very_verbose(struct lock_class *class)
+  * Is this the address of a static object:
+  */
+ #ifdef __KERNEL__
+-/*
+- * Check if an address is part of freed initmem. After initmem is freed,
+- * memory can be allocated from it, and such allocations would then have
+- * addresses within the range [_stext, _end].
+- */
+-#ifndef arch_is_kernel_initmem_freed
+-static int arch_is_kernel_initmem_freed(unsigned long addr)
+-{
+-	if (system_state < SYSTEM_FREEING_INITMEM)
+-		return 0;
+-
+-	return init_section_contains((void *)addr, 1);
+-}
+-#endif
+-
+ static int static_obj(const void *obj)
+ {
+-	unsigned long start = (unsigned long) &_stext,
+-		      end   = (unsigned long) &_end,
+-		      addr  = (unsigned long) obj;
++	unsigned long addr = (unsigned long) obj;
+ 
+-	if (arch_is_kernel_initmem_freed(addr))
+-		return 0;
++	if (is_kernel_core_data(addr))
++		return 1;
++
++	/*
++	 * keys are allowed in the __ro_after_init section.
++	 */
++	if (is_kernel_rodata(addr))
++		return 1;
+ 
+ 	/*
+-	 * static variable?
++	 * in initdata section and used during bootup only?
++	 * NOTE: On some platforms the initdata section is
++	 * outside of the _stext ... _end range.
+ 	 */
+-	if ((addr >= start) && (addr < end))
++	if (system_state < SYSTEM_FREEING_INITMEM &&
++		init_section_contains((void *)addr, 1))
+ 		return 1;
+ 
+ 	/*
