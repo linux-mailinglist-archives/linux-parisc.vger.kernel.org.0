@@ -2,43 +2,43 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62B7F78001B
+	by mail.lfdr.de (Postfix) with ESMTP id 88BB678001C
 	for <lists+linux-parisc@lfdr.de>; Thu, 17 Aug 2023 23:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355408AbjHQVpd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 17 Aug 2023 17:45:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53648 "EHLO
+        id S1355406AbjHQVpc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 17 Aug 2023 17:45:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355427AbjHQVpO (ORCPT
+        with ESMTP id S1355431AbjHQVpP (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 17 Aug 2023 17:45:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0398D1FC3
-        for <linux-parisc@vger.kernel.org>; Thu, 17 Aug 2023 14:45:13 -0700 (PDT)
+        Thu, 17 Aug 2023 17:45:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22FFDE4F
+        for <linux-parisc@vger.kernel.org>; Thu, 17 Aug 2023 14:45:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D02D6540B
-        for <linux-parisc@vger.kernel.org>; Thu, 17 Aug 2023 21:45:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A085C433C8;
-        Thu, 17 Aug 2023 21:45:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B53AC6441B
+        for <linux-parisc@vger.kernel.org>; Thu, 17 Aug 2023 21:45:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72408C433C7;
+        Thu, 17 Aug 2023 21:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692308712;
-        bh=Ycne5p+Zb5M0VpTwmM0yB9wizBb2ZvWSNDhzmSi8z/w=;
+        s=k20201202; t=1692308713;
+        bh=UQGbIwFzgYixJPgdfmufpeK2ES1cy5Py6XrJ+9HLaB4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tZS1OLAiK7wL6vIKC+mcmzNWqo3k1tVQfsxMighUh56g6rY4/WiZ6RXufF/iyalbR
-         Nwpb4KpBfEzas+RcbyUOGGt4fY+nWYiQPyVryRfhvvHO5KhHywYd0K4lg78iGbphpp
-         p8lDm98+Pr/fk5Muzn5YQdVZcA1mLLM92jcKsU3SXYjSOJDrOnmXhGimukZXj1djdm
-         ZND4GFAYv8MJ70RPtc7VmU0Bnp2r+0F3jSYUj0JD9QoZdmxzLvSahs2CgAVu+ZZOwH
-         0Z3wD23SMQTjetMFBmLl7UeWDujFizbccMn+DrE3Ggfr+Biyme01C09mPw5wbdTxA3
-         NyZP2WDkSZBag==
+        b=jrpcrd8FHjlXK3P8PquymaNijcmjl1mzzI5aJWeRdopLNddWGHZ6P4hE08WsB/Y/E
+         16c4NQZu53CyaffAnXmSnlirjiRCXlG+H7wRDd5RpgK+oGC8nabuwi4uga8PlgBOA+
+         c6tMmpruEJpF4czxAmYk5YSLACmkSw7VOAuBIiYsEVo67xTdvJa+v73V9+90yQI9o4
+         4JJUobgWaCN+RCCjgGZXz5uRMM2jLswrsPU16UkBF6RZwOSNpCnKfUokMCN8hHGs2k
+         Ty+OS8Cxoz5TKTAF5CKf3xfszqNLr8SeMl1JPcH/kX52kGFhej+CuD+soN0Eru8vvR
+         OPb/Cd4YoB0AQ==
 From:   deller@kernel.org
 To:     linux-parisc@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>
-Subject: [PATCH 4/5] parisc: Fix comment on Elf64 Function descriptor
-Date:   Thu, 17 Aug 2023 23:45:01 +0200
-Message-ID: <20230817214503.108660-5-deller@kernel.org>
+Subject: [PATCH 5/5] parisc: Wire up eBPF code
+Date:   Thu, 17 Aug 2023 23:45:02 +0200
+Message-ID: <20230817214503.108660-6-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230817214503.108660-1-deller@kernel.org>
 References: <20230817214503.108660-1-deller@kernel.org>
@@ -56,28 +56,36 @@ X-Mailing-List: linux-parisc@vger.kernel.org
 
 From: Helge Deller <deller@gmx.de>
 
-The format of the Elf64 Function descriptor is defined by the ABI.
-Mention the various use cases in the comment.
-
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- arch/parisc/include/asm/elf.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/parisc/Kbuild  | 2 +-
+ arch/parisc/Kconfig | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/parisc/include/asm/elf.h b/arch/parisc/include/asm/elf.h
-index cc426d365892..140eaa97bf21 100644
---- a/arch/parisc/include/asm/elf.h
-+++ b/arch/parisc/include/asm/elf.h
-@@ -163,8 +163,7 @@ typedef struct elf32_fdesc {
+diff --git a/arch/parisc/Kbuild b/arch/parisc/Kbuild
+index a6d3b280ba0c..749b195f2894 100644
+--- a/arch/parisc/Kbuild
++++ b/arch/parisc/Kbuild
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-y	+= mm/ kernel/ math-emu/
++obj-y	+= mm/ kernel/ math-emu/ net/
  
- /* Format for the Elf64 Function descriptor */
- typedef struct elf64_fdesc {
--	__u64	dummy[2]; /* FIXME: nothing uses these, why waste
--			   * the space */
-+	__u64	dummy[2]; /* used by 64-bit eBPF and tracing functions */
- 	__u64	addr;
- 	__u64	gp;
- } Elf64_Fdesc;
+ # for cleaning
+ subdir- += boot
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 4cb46d5c64a2..f79ea09b94ab 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -56,6 +56,8 @@ config PARISC
+ 	select HAVE_ARCH_KFENCE
+ 	select HAVE_ARCH_SECCOMP_FILTER
+ 	select HAVE_ARCH_TRACEHOOK
++	select HAVE_EBPF_JIT
++	select ARCH_WANT_DEFAULT_BPF_JIT
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HOTPLUG_CORE_SYNC_DEAD if HOTPLUG_CPU
+ 	select GENERIC_SCHED_CLOCK
 -- 
 2.41.0
 
