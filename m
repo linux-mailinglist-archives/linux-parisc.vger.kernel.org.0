@@ -2,48 +2,47 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FA4C780018
-	for <lists+linux-parisc@lfdr.de>; Thu, 17 Aug 2023 23:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1917278001A
+	for <lists+linux-parisc@lfdr.de>; Thu, 17 Aug 2023 23:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352950AbjHQVpc (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 17 Aug 2023 17:45:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53642 "EHLO
+        id S1355413AbjHQVpd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 17 Aug 2023 17:45:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1355421AbjHQVpO (ORCPT
+        with ESMTP id S1355436AbjHQVpQ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 17 Aug 2023 17:45:14 -0400
+        Thu, 17 Aug 2023 17:45:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC32219A1
-        for <linux-parisc@vger.kernel.org>; Thu, 17 Aug 2023 14:45:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF3F61BF9
+        for <linux-parisc@vger.kernel.org>; Thu, 17 Aug 2023 14:45:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D34A6441B
-        for <linux-parisc@vger.kernel.org>; Thu, 17 Aug 2023 21:45:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC342C433C8;
-        Thu, 17 Aug 2023 21:45:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EA9B63309
+        for <linux-parisc@vger.kernel.org>; Thu, 17 Aug 2023 21:45:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218FFC433C7;
+        Thu, 17 Aug 2023 21:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692308709;
-        bh=xXnpWQwf+RESdtzIxiV5WE5kBdfiSUrmxfOWwXSs3eM=;
+        s=k20201202; t=1692308710;
+        bh=PmjiP6RqbQ4c0/2RUBUdyuSGEP2kDQbhU68Bar93eqs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r6szU/dnsrRXSDWbWoSrwe9Dwk9EFJa8pJBNB9SeUYOCyCxcvk18gn5bzwk9NEtuL
-         k8gW8RfYVnQTsrtOpgv9IdqcFwl7bWNIesrT6az62i5zJZfJQYLtpPWE0uIyOFo4TP
-         gzTVkO6VhzfVUJPbEGxR42BFV69aG0G+fHU8Rd2wQHq5vAsAUb5FWQ9p1NL9ec1fJ5
-         KPSLgtW79zBrjz8XlRsjPhBnjOzAcmKXr8KLGOl7cJ+rmyqsDvIho/C8KiAY6as2ZQ
-         ZnvMq2LDLjGiRwEmxos7yQ8yMrqaow4z728eHX7LK221Uvbl0/io/3C3yiEkQp4z+s
-         60o3NY1OjqaDw==
+        b=Nljf4fba/Q1hKBq80cSfORlqDOEtxaUPSd6li0EWUgWerz6hN8Pt6ATOSnrTrwZfe
+         bngYqaiL2WrbF/Jv99urHJoQ5K44OPEXDGj6cuR9A+/OmYDWMHXWU8JKprPOJFUftU
+         aLWo5gZgqIq8poOuBuXo7ZDKj5+XUPx5rEeW7wEeCqNJggW0adwEnhie5opu4wS7Mx
+         deBJooPRYS1YWQJEcjBPK9nV2X++F9YBBA1Dh1Y9JMlv4xm6y5VR+qZk8Z+d0uZmgq
+         iYmU6UjhTu0pXcaiEl6FLR44z6/Vs7DmvZq1MfQALVQAa4j2gwbEikKaYOrOb6X8fp
+         RZKEJEhXj3AHg==
 From:   deller@kernel.org
 To:     linux-parisc@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>
-Subject: [PATCH 2/5] parisc: Add 64-bit eBPF JIT compiler
-Date:   Thu, 17 Aug 2023 23:44:59 +0200
-Message-ID: <20230817214503.108660-3-deller@kernel.org>
+Subject: [PATCH 3/5] parisc: Add eBPF JIT compiler glue code and Makefile
+Date:   Thu, 17 Aug 2023 23:45:00 +0200
+Message-ID: <20230817214503.108660-4-deller@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230817214503.108660-1-deller@kernel.org>
 References: <20230817214503.108660-1-deller@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -59,1224 +58,726 @@ From: Helge Deller <deller@gmx.de>
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 ---
- arch/parisc/net/bpf_jit_comp64.c | 1209 ++++++++++++++++++++++++++++++
- 1 file changed, 1209 insertions(+)
- create mode 100644 arch/parisc/net/bpf_jit_comp64.c
+ arch/parisc/net/Makefile       |   9 +
+ arch/parisc/net/bpf_jit.h      | 479 +++++++++++++++++++++++++++++++++
+ arch/parisc/net/bpf_jit_core.c | 207 ++++++++++++++
+ 3 files changed, 695 insertions(+)
+ create mode 100644 arch/parisc/net/Makefile
+ create mode 100644 arch/parisc/net/bpf_jit.h
+ create mode 100644 arch/parisc/net/bpf_jit_core.c
 
-diff --git a/arch/parisc/net/bpf_jit_comp64.c b/arch/parisc/net/bpf_jit_comp64.c
+diff --git a/arch/parisc/net/Makefile b/arch/parisc/net/Makefile
 new file mode 100644
-index 000000000000..54b0d5e25e02
+index 000000000000..22b12024d4c3
 --- /dev/null
-+++ b/arch/parisc/net/bpf_jit_comp64.c
-@@ -0,0 +1,1209 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/arch/parisc/net/Makefile
+@@ -0,0 +1,9 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++obj-$(CONFIG_BPF_JIT) += bpf_jit_core.o
++
++ifeq ($(CONFIG_64BIT),y)
++	obj-$(CONFIG_BPF_JIT) += bpf_jit_comp64.o
++else
++	obj-$(CONFIG_BPF_JIT) += bpf_jit_comp32.o
++endif
+diff --git a/arch/parisc/net/bpf_jit.h b/arch/parisc/net/bpf_jit.h
+new file mode 100644
+index 000000000000..8b8896959f04
+--- /dev/null
++++ b/arch/parisc/net/bpf_jit.h
+@@ -0,0 +1,479 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +/*
-+ * BPF JIT compiler for PA-RISC (64-bit)
++ * Common functionality for PARISC32 and PARISC64 BPF JIT compilers
 + *
-+ * Copyright(c) 2023 Helge Deller <deller@gmx.de>
++ * Copyright (c) 2023 Helge Deller <deller@gmx.de>
 + *
-+ * The code is based on the BPF JIT compiler for RV64 by Björn Töpel.
-+ *
-+ * TODO:
-+ * - check if bpf_jit_needs_zext() is needed (currently enabled)
-+ * - implement arch_prepare_bpf_trampoline(), poke(), ...
 + */
 +
-+#include <linux/bitfield.h>
++#ifndef _BPF_JIT_H
++#define _BPF_JIT_H
++
 +#include <linux/bpf.h>
 +#include <linux/filter.h>
-+#include <linux/libgcc.h>
-+#include "bpf_jit.h"
++#include <asm/cacheflush.h>
 +
-+static const int regmap[] = {
-+	[BPF_REG_0] =	HPPA_REG_RET0,
-+	[BPF_REG_1] =	HPPA_R(5),
-+	[BPF_REG_2] =	HPPA_R(6),
-+	[BPF_REG_3] =	HPPA_R(7),
-+	[BPF_REG_4] =	HPPA_R(8),
-+	[BPF_REG_5] =	HPPA_R(9),
-+	[BPF_REG_6] =	HPPA_R(10),
-+	[BPF_REG_7] =	HPPA_R(11),
-+	[BPF_REG_8] =	HPPA_R(12),
-+	[BPF_REG_9] =	HPPA_R(13),
-+	[BPF_REG_FP] =	HPPA_R(14),
-+	[BPF_REG_AX] =	HPPA_R(15),
++#define HPPA_JIT_DEBUG	0
++#define HPPA_JIT_REBOOT	0
++#define HPPA_JIT_DUMP	0
++
++#define OPTIMIZE_HPPA	1	/* enable some asm optimizations */
++// echo 1 > /proc/sys/net/core/bpf_jit_enable
++
++#define HPPA_R(nr)	nr	/* use HPPA register #nr */
++
++enum {
++	HPPA_REG_ZERO =	0,	/* The constant value 0 */
++	HPPA_REG_R1 =	1,	/* used for addil */
++	HPPA_REG_RP =	2,	/* Return address */
++
++	HPPA_REG_ARG7 =	19,	/* ARG4-7 used in 64-bit ABI */
++	HPPA_REG_ARG6 =	20,
++	HPPA_REG_ARG5 =	21,
++	HPPA_REG_ARG4 =	22,
++
++	HPPA_REG_ARG3 =	23,	/* ARG0-3 in 32- and 64-bit ABI */
++	HPPA_REG_ARG2 =	24,
++	HPPA_REG_ARG1 =	25,
++	HPPA_REG_ARG0 =	26,
++	HPPA_REG_GP =	27,	/* Global pointer */
++	HPPA_REG_RET0 =	28,	/* Return value, HI in 32-bit */
++	HPPA_REG_RET1 =	29,	/* Return value, LOW in 32-bit */
++	HPPA_REG_SP =	30,	/* Stack pointer */
++	HPPA_REG_R31 =	31,
++
++#ifdef CONFIG_64BIT
++	HPPA_REG_TCC	     = 3,
++	HPPA_REG_TCC_SAVED   = 4,
++	HPPA_REG_TCC_IN_INIT = HPPA_REG_R31,
++#else
++	HPPA_REG_TCC	     = 18,
++	HPPA_REG_TCC_SAVED   = 17,
++	HPPA_REG_TCC_IN_INIT = HPPA_REG_R31,
++#endif
++
++	HPPA_REG_T0 =	HPPA_REG_R1,	/* Temporaries */
++	HPPA_REG_T1 =	HPPA_REG_R31,
++	HPPA_REG_T2 =	HPPA_REG_ARG4,
++#ifndef CONFIG_64BIT
++	HPPA_REG_T3 =	HPPA_REG_ARG5,	/* not used in 64-bit */
++	HPPA_REG_T4 =	HPPA_REG_ARG6,
++	HPPA_REG_T5 =	HPPA_REG_ARG7,
++#endif
 +};
 +
-+/*
-+ * Stack layout during BPF program execution (note: stack grows up):
-+ *
-+ *                     high
-+ *   HPPA64 sp =>  +----------+ <= HPPA64 fp
-+ *                 | saved sp |
-+ *                 | saved rp |
-+ *                 |   ...    | HPPA64 callee-saved registers
-+ *                 | curr args|
-+ *                 | local var|
-+ *                 +----------+ <= (BPF FP)
-+ *                 |          |
-+ *                 |   ...    | BPF program stack
-+ *                 |          |
-+ *                 |   ...    | Function call stack
-+ *                 |          |
-+ *                 +----------+
-+ *                     low
-+ */
-+
-+/* Offset from fp for BPF registers stored on stack. */
-+#define STACK_ALIGN	FRAME_SIZE
-+
-+#define EXIT_PTR_LOAD(reg)	hppa64_ldd_im16(-FRAME_SIZE, HPPA_REG_SP, reg)
-+#define EXIT_PTR_STORE(reg)	hppa64_std_im16(reg, -FRAME_SIZE, HPPA_REG_SP)
-+#define EXIT_PTR_JUMP(reg, nop)	hppa_bv(HPPA_REG_ZERO, reg, nop)
-+
-+static u8 bpf_to_hppa_reg(int bpf_reg, struct hppa_jit_context *ctx)
-+{
-+	u8 reg = regmap[bpf_reg];
-+
-+	REG_SET_SEEN(ctx, reg);
-+	return reg;
++struct hppa_jit_context {
++	struct bpf_prog *prog;
++	u32 *insns;		/* HPPA insns */
++	int ninsns;
++	int reg_seen_collect;
++	int reg_seen;
++	int body_len;
++	int epilogue_offset;
++	int prologue_len;
++	int *offset;		/* BPF to HPPA */
 +};
 +
-+static void emit_hppa_copy(const s8 rs, const s8 rd, struct hppa_jit_context *ctx)
++#define REG_SET_SEEN(ctx, nr)	{ if (ctx->reg_seen_collect) ctx->reg_seen |= BIT(nr); }
++#define REG_SET_SEEN_ALL(ctx)	{ if (ctx->reg_seen_collect) ctx->reg_seen = -1; }
++#define REG_FORCE_SEEN(ctx, nr)	{ ctx->reg_seen |= BIT(nr); }
++#define REG_WAS_SEEN(ctx, nr)	(ctx->reg_seen & BIT(nr))
++#define REG_ALL_SEEN(ctx)	(ctx->reg_seen == -1)
++
++#define HPPA_INSN_SIZE		4	/* bytes per HPPA asm instruction */
++#define REG_SIZE		REG_SZ	/* bytes per native "long" word */
++
++/* subtract hppa displacement on branches which is .+8 */
++#define HPPA_BRANCH_DISPLACEMENT  2	/* instructions */
++
++/* asm statement indicator to execute delay slot */
++#define EXEC_NEXT_INSTR	0
++#define NOP_NEXT_INSTR	1
++
++#define im11(val)	(((u32)(val)) & 0x07ff)
++
++#define hppa_ldil(addr, reg) \
++	hppa_t5_insn(0x08, reg, ((u32)(addr)) >> 11)		/* ldil im21,reg */
++#define hppa_addil(addr, reg) \
++	hppa_t5_insn(0x0a, reg, ((u32)(addr)) >> 11)		/* addil im21,reg -> result in gr1 */
++#define hppa_ldo(im14, reg, target) \
++	hppa_t1_insn(0x0d, reg, target, im14)			/* ldo val14(reg),target */
++#define hppa_ldi(im14, reg) \
++	hppa_ldo(im14, HPPA_REG_ZERO, reg)			/* ldi val14,reg */
++#define hppa_or(reg1, reg2, target) \
++	hppa_t6_insn(0x02, reg2, reg1, 0, 0, 0x09, target)	/* or reg1,reg2,target */
++#define hppa_or_cond(reg1, reg2, cond, f, target) \
++	hppa_t6_insn(0x02, reg2, reg1, cond, f, 0x09, target)
++#define hppa_and(reg1, reg2, target) \
++	hppa_t6_insn(0x02, reg2, reg1, 0, 0, 0x08, target)	/* and reg1,reg2,target */
++#define hppa_and_cond(reg1, reg2, cond, f, target) \
++	hppa_t6_insn(0x02, reg2, reg1, cond, f, 0x08, target)
++#define hppa_xor(reg1, reg2, target) \
++	hppa_t6_insn(0x02, reg2, reg1, 0, 0, 0x0a, target)	/* xor reg1,reg2,target */
++#define hppa_add(reg1, reg2, target) \
++	hppa_t6_insn(0x02, reg2, reg1, 0, 0, 0x18, target)	/* add reg1,reg2,target */
++#define hppa_addc(reg1, reg2, target) \
++	hppa_t6_insn(0x02, reg2, reg1, 0, 0, 0x1c, target)	/* add,c reg1,reg2,target */
++#define hppa_sub(reg1, reg2, target) \
++	hppa_t6_insn(0x02, reg2, reg1, 0, 0, 0x10, target)	/* sub reg1,reg2,target */
++#define hppa_subb(reg1, reg2, target) \
++	hppa_t6_insn(0x02, reg2, reg1, 0, 0, 0x14, target)	/* sub,b reg1,reg2,target */
++#define hppa_nop() \
++	hppa_or(0,0,0)						/* nop: or 0,0,0 */
++#define hppa_addi(val11, reg, target) \
++	hppa_t7_insn(0x2d, reg, target, val11)			/* addi im11,reg,target */
++#define hppa_subi(val11, reg, target) \
++	hppa_t7_insn(0x25, reg, target, val11)			/* subi im11,reg,target */
++#define hppa_copy(reg, target) \
++	hppa_or(reg, HPPA_REG_ZERO, target)			/* copy reg,target */
++#define hppa_ldw(val14, reg, target) \
++	hppa_t1_insn(0x12, reg, target, val14)			/* ldw im14(reg),target */
++#define hppa_ldb(val14, reg, target) \
++	hppa_t1_insn(0x10, reg, target, val14)			/* ldb im14(reg),target */
++#define hppa_ldh(val14, reg, target) \
++	hppa_t1_insn(0x11, reg, target, val14)			/* ldh im14(reg),target */
++#define hppa_stw(reg, val14, base) \
++	hppa_t1_insn(0x1a, base, reg, val14)			/* stw reg,im14(base) */
++#define hppa_stb(reg, val14, base) \
++	hppa_t1_insn(0x18, base, reg, val14)			/* stb reg,im14(base) */
++#define hppa_sth(reg, val14, base) \
++	hppa_t1_insn(0x19, base, reg, val14)			/* sth reg,im14(base) */
++#define hppa_stwma(reg, val14, base) \
++	hppa_t1_insn(0x1b, base, reg, val14)			/* stw,ma reg,im14(base) */
++#define hppa_bv(reg, base, nop) \
++	hppa_t11_insn(0x3a, base, reg, 0x06, 0, nop)		/* bv(,n) reg(base) */
++#define hppa_be(offset, base) \
++	hppa_t12_insn(0x38, base, offset, 0x00, 1)		/* be,n offset(0,base) */
++#define hppa_be_l(offset, base, nop) \
++	hppa_t12_insn(0x39, base, offset, 0x00, nop)		/* ble(,nop) offset(0,base) */
++#define hppa_mtctl(reg, cr) \
++	hppa_t21_insn(0x00, cr, reg, 0xc2, 0)			/* mtctl reg,cr */
++#define hppa_mtsar(reg) \
++	hppa_mtctl(reg, 11)					/* mtsar reg */
++#define hppa_zdep(r, p, len, target) \
++	hppa_t10_insn(0x35, target, r, 0, 2, p, len)		/* zdep r,a,b,t */
++#define hppa_shl(r, len, target) \
++	hppa_zdep(r, len, len, lo(rd))
++#define hppa_depwz(r, p, len, target) \
++	hppa_t10_insn(0x35, target, r, 0, 3, 31-(p), 32-(len))	/* depw,z r,p,len,ret1 */
++#define hppa_depwz_sar(reg, target) \
++	hppa_t1_insn(0x35, target, reg, 0)			/* depw,z reg,sar,32,target */
++#define hppa_shrpw_sar(reg, target) \
++	hppa_t10_insn(0x34, reg, 0, 0, 0, 0, target)		/* shrpw r0,reg,sar,target */
++#define hppa_shrpw(r1, r2, p, target) \
++	hppa_t10_insn(0x34, r2, r1, 0, 2, 31-(p), target)	/* shrpw r1,r2,p,target */
++#define hppa_shd(r1, r2, p, target) \
++	hppa_t10_insn(0x34, r2, r1, 0, 2, 31-(p), target)	/* shrpw r1,r2,p,tarfer */
++#define hppa_extrws_sar(reg, target) \
++	hppa_t10_insn(0x34, reg, target, 0, 5, 0, 0)		/* extrw,s reg,sar,32,ret0 */
++#define hppa_extrws(reg, p, len, target) \
++	hppa_t10_insn(0x34, reg, target, 0, 7, p, len)		/* extrw,s reg,p,len,target */
++#define hppa_extru(r, p, len, target) \
++	hppa_t10_insn(0x34, r, target, 0, 6, p, 32-(len))
++#define hppa_shr(r, len, target) \
++	hppa_extru(r, 31-(len), 32-(len), target)
++#define hppa_bl(imm17, rp) \
++	hppa_t12_insn(0x3a, rp, imm17, 0x00, 1)			/* bl,n target_addr,rp */
++#define hppa_sh2add(r1, r2, target) \
++	hppa_t6_insn(0x02, r2, r1, 0, 0, 0x1a, target)		/* sh2add r1,r2,target */
++
++#define hppa_combt(r1, r2, target_addr, condition, nop) \
++	hppa_t11_insn(IS_ENABLED(CONFIG_64BIT) ? 0x27 : 0x20, \
++		r2, r1, condition, target_addr, nop)		/* combt,cond,n r1,r2,addr */
++#define hppa_beq(r1, r2, target_addr) \
++	hppa_combt(r1, r2, target_addr, 1, NOP_NEXT_INSTR)
++#define hppa_blt(r1, r2, target_addr) \
++	hppa_combt(r1, r2, target_addr, 2, NOP_NEXT_INSTR)
++#define hppa_ble(r1, r2, target_addr) \
++	hppa_combt(r1, r2, target_addr, 3, NOP_NEXT_INSTR)
++#define hppa_bltu(r1, r2, target_addr) \
++	hppa_combt(r1, r2, target_addr, 4, NOP_NEXT_INSTR)
++#define hppa_bleu(r1, r2, target_addr) \
++	hppa_combt(r1, r2, target_addr, 5, NOP_NEXT_INSTR)
++
++#define hppa_combf(r1, r2, target_addr, condition, nop) \
++	hppa_t11_insn(IS_ENABLED(CONFIG_64BIT) ? 0x2f : 0x22, \
++		r2, r1, condition, target_addr, nop)		/* combf,cond,n r1,r2,addr */
++#define hppa_bne(r1, r2, target_addr) \
++	hppa_combf(r1, r2, target_addr, 1, NOP_NEXT_INSTR)
++#define hppa_bge(r1, r2, target_addr) \
++	hppa_combf(r1, r2, target_addr, 2, NOP_NEXT_INSTR)
++#define hppa_bgt(r1, r2, target_addr) \
++	hppa_combf(r1, r2, target_addr, 3, NOP_NEXT_INSTR)
++#define hppa_bgeu(r1, r2, target_addr) \
++	hppa_combf(r1, r2, target_addr, 4, NOP_NEXT_INSTR)
++#define hppa_bgtu(r1, r2, target_addr) \
++	hppa_combf(r1, r2, target_addr, 5, NOP_NEXT_INSTR)
++
++/* 64-bit instructions */
++#ifdef CONFIG_64BIT
++#define hppa64_ldd_reg(reg, b, target) \
++	hppa_t10_insn(0x03, b, reg, 0, 0, 3<<1, target)
++#define hppa64_ldd_im5(im5, b, target) \
++	hppa_t10_insn(0x03, b, low_sign_unext(im5,5), 0, 1<<2, 3<<1, target)
++#define hppa64_ldd_im16(im16, b, target) \
++	hppa_t10_insn(0x14, b, target, 0, 0, 0, 0) | re_assemble_16(im16)
++#define hppa64_std_im5(src, im5, b) \
++	hppa_t10_insn(0x03, b, src, 0, 1<<2, 0xB<<1, low_sign_unext(im5,5))
++#define hppa64_std_im16(src, im16, b) \
++	hppa_t10_insn(0x1c, b, src, 0, 0, 0, 0) | re_assemble_16(im16)
++#define hppa64_bl_long(offs22) \
++	hppa_t12_L_insn(0x3a, offs22, 1)
++#define hppa64_mtsarcm(reg) \
++	hppa_t21_insn(0x00, 11, reg, 0xc6, 0)
++#define hppa64_shrpd_sar(reg, target) \
++	hppa_t10_insn(0x34, reg, 0, 0, 0, 1<<4, target)
++#define hppa64_shladd(r1, sa, r2, target) \
++	hppa_t6_insn(0x02, r2, r1, 0, 0, 1<<4|1<<3|sa, target)
++#define hppa64_depdz_sar(reg, target) \
++	hppa_t21_insn(0x35, target, reg, 3<<3, 0)
++#define hppa_extrd_sar(reg, target, se) \
++	hppa_t10_insn(0x34, reg, target, 0, 0, 0, 0) | 2<<11 | (se&1)<<10 | 1<<9 | 1<<8
++#define hppa64_bve_l_rp(base) \
++	(0x3a << 26) | (base << 21) | 0xf000
++#define hppa64_permh_3210(r, target) \
++	(0x3e << 26) | (r << 21) | (r << 16) | (target) | 0x00006900
++#define hppa64_hshl(r, sa, target) \
++	(0x3e << 26) | (0 << 21) | (r << 16) | (sa << 6) | (target) | 0x00008800
++#define hppa64_hshr_u(r, sa, target) \
++	(0x3e << 26) | (r << 21) | (0 << 16) | (sa << 6) | (target) | 0x0000c800
++#endif
++
++struct hppa_jit_data {
++	struct bpf_binary_header *header;
++	u8 *image;
++	struct hppa_jit_context ctx;
++};
++
++static inline void bpf_fill_ill_insns(void *area, unsigned int size)
 +{
-+	REG_SET_SEEN(ctx, rd);
-+	if (OPTIMIZE_HPPA && (rs == rd))
-+		return;
-+	REG_SET_SEEN(ctx, rs);
-+	emit(hppa_copy(rs, rd), ctx);
++	memset(area, 0, size);
 +}
 +
-+static void emit_hppa64_depd(u8 src, u8 pos, u8 len, u8 target, bool no_zero, struct hppa_jit_context *ctx)
++static inline void bpf_flush_icache(void *start, void *end)
 +{
-+	int c;
-+
-+	pos &= (BITS_PER_LONG - 1);
-+	pos = 63 - pos;
-+	len = 64 - len;
-+	c =  (len < 32)  ? 0x4 : 0;
-+	c |= (pos >= 32) ? 0x2 : 0;
-+	c |= (no_zero)   ? 0x1 : 0;
-+	emit(hppa_t10_insn(0x3c, target, src, 0, c, pos & 0x1f, len & 0x1f), ctx);
++	flush_icache_range((unsigned long)start, (unsigned long)end);
 +}
 +
-+static void emit_hppa64_shld(u8 src, int num, u8 target, struct hppa_jit_context *ctx)
++/* Emit a 4-byte HPPA instruction. */
++static inline void emit(const u32 insn, struct hppa_jit_context *ctx)
 +{
-+	emit_hppa64_depd(src, 63-num, 64-num, target, 0, ctx);
-+}
-+
-+static void emit_hppa64_extrd(u8 src, u8 pos, u8 len, u8 target, bool signed_op, struct hppa_jit_context *ctx)
-+{
-+	int c;
-+
-+	pos &= (BITS_PER_LONG - 1);
-+	len = 64 - len;
-+	c =  (len <  32) ? 0x4 : 0;
-+	c |= (pos >= 32) ? 0x2 : 0;
-+	c |= signed_op   ? 0x1 : 0;
-+	emit(hppa_t10_insn(0x36, src, target, 0, c, pos & 0x1f, len & 0x1f), ctx);
-+}
-+
-+static void emit_hppa64_extrw(u8 src, u8 pos, u8 len, u8 target, bool signed_op, struct hppa_jit_context *ctx)
-+{
-+	int c;
-+
-+	pos &= (32 - 1);
-+	len = 32 - len;
-+	c = 0x06 | (signed_op ? 1 : 0);
-+	emit(hppa_t10_insn(0x34, src, target, 0, c, pos, len), ctx);
-+}
-+
-+#define emit_hppa64_zext32(r, target, ctx) \
-+	emit_hppa64_extrd(r, 63, 32, target, false, ctx)
-+#define emit_hppa64_sext32(r, target, ctx) \
-+	emit_hppa64_extrd(r, 63, 32, target, true, ctx)
-+
-+static void emit_hppa64_shrd(u8 src, int num, u8 target, bool signed_op, struct hppa_jit_context *ctx)
-+{
-+	emit_hppa64_extrd(src, 63-num, 64-num, target, signed_op, ctx);
-+}
-+
-+static void emit_hppa64_shrw(u8 src, int num, u8 target, bool signed_op, struct hppa_jit_context *ctx)
-+{
-+	emit_hppa64_extrw(src, 31-num, 32-num, target, signed_op, ctx);
-+}
-+
-+/* Emit variable-length instructions for 32-bit imm */
-+static void emit_imm32(u8 rd, s32 imm, struct hppa_jit_context *ctx)
-+{
-+	u32 lower = im11(imm);
-+
-+	REG_SET_SEEN(ctx, rd);
-+	if (OPTIMIZE_HPPA && relative_bits_ok(imm, 14)) {
-+		emit(hppa_ldi(imm, rd), ctx);
-+		return;
-+	}
-+	if (OPTIMIZE_HPPA && lower == imm) {
-+		emit(hppa_ldo(lower, HPPA_REG_ZERO, rd), ctx);
-+		return;
-+	}
-+	emit(hppa_ldil(imm, rd), ctx);
-+	if (OPTIMIZE_HPPA && (lower == 0))
-+		return;
-+	emit(hppa_ldo(lower, rd, rd), ctx);
-+}
-+
-+static bool is_32b_int(s64 val)
-+{
-+	return val == (s32) val;
-+}
-+
-+/* Emit variable-length instructions for 64-bit imm */
-+static void emit_imm(u8 rd, s64 imm, u8 tmpreg, struct hppa_jit_context *ctx)
-+{
-+	u32 upper32;
-+
-+	/* get lower 32-bits into rd, sign extended */
-+	emit_imm32(rd, imm, ctx);
-+
-+	/* do we have upper 32-bits too ? */
-+	if (OPTIMIZE_HPPA && is_32b_int(imm))
-+		return;
-+
-+	/* load upper 32-bits into lower tmpreg and deposit into rd */
-+	upper32 = imm >> 32;
-+	if (upper32 || !OPTIMIZE_HPPA) {
-+		emit_imm32(tmpreg, upper32, ctx);
-+		emit_hppa64_depd(tmpreg, 31, 32, rd, 1, ctx);
-+	} else
-+		emit_hppa64_depd(HPPA_REG_ZERO, 31, 32, rd, 1, ctx);
-+
-+}
-+
-+static int emit_jump(signed long paoff, bool force_far,
-+			       struct hppa_jit_context *ctx)
-+{
-+	unsigned long pc, addr;
-+
-+	/* Note: Use 2 instructions for jumps if force_far is set. */
-+	if (relative_bits_ok(paoff - HPPA_BRANCH_DISPLACEMENT, 22)) {
-+		/* use BL,long branch followed by nop() */
-+		emit(hppa64_bl_long(paoff - HPPA_BRANCH_DISPLACEMENT), ctx);
-+		if (force_far)
-+			emit(hppa_nop(), ctx);
-+		return 0;
-+	}
-+
-+	pc = (uintptr_t) &ctx->insns[ctx->ninsns];
-+	addr = pc + (paoff * HPPA_INSN_SIZE);
-+	/* even the 64-bit kernel runs in memory below 4GB */
-+	if (WARN_ON_ONCE(addr >> 32))
-+		return -E2BIG;
-+	emit(hppa_ldil(addr, HPPA_REG_R31), ctx);
-+	emit(hppa_be_l(im11(addr) >> 2, HPPA_REG_R31, NOP_NEXT_INSTR), ctx);
-+	return 0;
-+}
-+
-+static void __build_epilogue(bool is_tail_call, struct hppa_jit_context *ctx)
-+{
-+	int i;
-+
-+	if (is_tail_call) {
-+		/*
-+		 * goto *(t0 + 4);
-+		 * Skips first instruction of prologue which initializes tail
-+		 * call counter. Assumes t0 contains address of target program,
-+		 * see emit_bpf_tail_call.
-+		 */
-+		emit(hppa_ldo(1 * HPPA_INSN_SIZE, HPPA_REG_T0, HPPA_REG_T0), ctx);
-+		emit(hppa_bv(HPPA_REG_ZERO, HPPA_REG_T0, EXEC_NEXT_INSTR), ctx);
-+		/* in delay slot: */
-+		emit(hppa_copy(HPPA_REG_TCC, HPPA_REG_TCC_IN_INIT), ctx);
-+
-+		return;
-+	}
-+
-+	/* load epilogue function pointer and jump to it. */
-+	/* exit point is either at next instruction, or the outest TCC exit function */
-+	emit(EXIT_PTR_LOAD(HPPA_REG_RP), ctx);
-+	emit(EXIT_PTR_JUMP(HPPA_REG_RP, NOP_NEXT_INSTR), ctx);
-+
-+	/* NOTE: we are 64-bit and big-endian, so return lower sign-extended 32-bit value */
-+	emit_hppa64_sext32(regmap[BPF_REG_0], HPPA_REG_RET0, ctx);
-+
-+	/* Restore callee-saved registers. */
-+	for (i = 3; i <= 15; i++) {
-+		if (OPTIMIZE_HPPA && !REG_WAS_SEEN(ctx, HPPA_R(i)))
-+			continue;
-+		emit(hppa64_ldd_im16(-REG_SIZE * i, HPPA_REG_SP, HPPA_R(i)), ctx);
-+	}
-+
-+	/* load original return pointer (stored by outest TCC function) */
-+	emit(hppa64_ldd_im16(-2*REG_SIZE, HPPA_REG_SP, HPPA_REG_RP), ctx);
-+	emit(hppa_bv(HPPA_REG_ZERO, HPPA_REG_RP, EXEC_NEXT_INSTR), ctx);
-+	/* in delay slot: */
-+	emit(hppa64_ldd_im5(-REG_SIZE, HPPA_REG_SP, HPPA_REG_SP), ctx);
-+
-+	emit(hppa_nop(), ctx); // XXX WARUM einer zu wenig ??
-+}
-+
-+static int emit_branch(u8 op, u8 rd, u8 rs, signed long paoff,
-+			struct hppa_jit_context *ctx)
-+{
-+	int e, s;
-+	bool far = false;
-+	int off;
-+
-+	if (op == BPF_JSET) {
-+		/*
-+		 * BPF_JSET is a special case: it has no inverse so translate
-+		 * to and() function and compare against zero
-+		 */
-+		emit(hppa_and(rd, rs, HPPA_REG_T0), ctx);
-+		paoff -= 1; /* reduce offset due to hppa_and() above */
-+		rd = HPPA_REG_T0;
-+		rs = HPPA_REG_ZERO;
-+		op = BPF_JNE;
++	if (ctx->insns) {
++		ctx->insns[ctx->ninsns] = insn;
 +	}
 +
-+	/* set start after BPF_JSET */
-+	s = ctx->ninsns;
++	ctx->ninsns++;
++}
 +
-+	if (!relative_branch_ok(paoff - HPPA_BRANCH_DISPLACEMENT + 1, 12)) {
-+		op = invert_bpf_cond(op);
-+		far = true;
-+	}
++static inline int epilogue_offset(struct hppa_jit_context *ctx)
++{
++	int to = ctx->epilogue_offset, from = ctx->ninsns;
 +
-+	/*
-+	 * For a far branch, the condition is negated and we jump over the
-+	 * branch itself, and the two instructions from emit_jump.
-+	 * For a near branch, just use paoff.
-+	 */
-+	off = far ? (2 - HPPA_BRANCH_DISPLACEMENT) : paoff - HPPA_BRANCH_DISPLACEMENT;
++	return (to - from);
++}
 +
-+	switch (op) {
-+	/* IF (dst COND src) JUMP off */
++/* Return -1 or inverted cond. */
++static inline int invert_bpf_cond(u8 cond)
++{
++	switch (cond) {
 +	case BPF_JEQ:
-+		emit(hppa_beq(rd, rs, off), ctx);
-+		break;
++		return BPF_JNE;
 +	case BPF_JGT:
-+		emit(hppa_bgtu(rd, rs, off), ctx);
-+		break;
++		return BPF_JLE;
 +	case BPF_JLT:
-+		emit(hppa_bltu(rd, rs, off), ctx);
-+		break;
++		return BPF_JGE;
 +	case BPF_JGE:
-+		emit(hppa_bgeu(rd, rs, off), ctx);
-+		break;
++		return BPF_JLT;
 +	case BPF_JLE:
-+		emit(hppa_bleu(rd, rs, off), ctx);
-+		break;
++		return BPF_JGT;
 +	case BPF_JNE:
-+		emit(hppa_bne(rd, rs, off), ctx);
-+		break;
++		return BPF_JEQ;
 +	case BPF_JSGT:
-+		emit(hppa_bgt(rd, rs, off), ctx);
-+		break;
++		return BPF_JSLE;
 +	case BPF_JSLT:
-+		emit(hppa_blt(rd, rs, off), ctx);
-+		break;
++		return BPF_JSGE;
 +	case BPF_JSGE:
-+		emit(hppa_bge(rd, rs, off), ctx);
-+		break;
++		return BPF_JSLT;
 +	case BPF_JSLE:
-+		emit(hppa_ble(rd, rs, off), ctx);
-+		break;
-+	default:
-+		WARN_ON(1);
++		return BPF_JSGT;
 +	}
-+
-+	if (far) {
-+		int ret;
-+		e = ctx->ninsns;
-+		/* Adjust for extra insns. */
-+		paoff -= (e - s);
-+		ret = emit_jump(paoff, true, ctx);
-+		if (ret)
-+			return ret;
-+	} else {
-+		/*
-+		 * always allocate 2 nops instead of the far branch to
-+		 * reduce translation loops
-+		 */
-+		emit(hppa_nop(), ctx);
-+		emit(hppa_nop(), ctx);
-+	}
-+	return 0;
++	return -1;
 +}
 +
-+static void emit_zext_32(u8 reg, struct hppa_jit_context *ctx)
++
++static inline signed long hppa_offset(int insn, int off, struct hppa_jit_context *ctx)
 +{
-+	emit_hppa64_zext32(reg, reg, ctx);
++	signed long from, to;
++
++	off++; /* BPF branch is from PC+1 */
++	from = (insn > 0) ? ctx->offset[insn - 1] : 0;
++	to = (insn + off > 0) ? ctx->offset[insn + off - 1] : 0;
++	return (to - from);
 +}
 +
-+static void emit_bpf_tail_call(int insn, struct hppa_jit_context *ctx)
++/* does the signed value fits into a given number of bits ? */
++static inline int check_bits_int(signed long val, int bits)
 +{
-+	/*
-+	 * R1 -> &ctx
-+	 * R2 -> &array
-+	 * R3 -> index
-+	 */
-+	int off;
-+	const s8 arr_reg = regmap[BPF_REG_2];
-+	const s8 idx_reg = regmap[BPF_REG_3];
-+	struct bpf_array bpfa;
-+	struct bpf_prog bpfp;
-+
-+	/* if there is any tail call, we need to save & restore all registers */
-+	REG_SET_SEEN_ALL(ctx);
-+
-+	/* get address of TCC main exit function for error case into rp */
-+	emit(EXIT_PTR_LOAD(HPPA_REG_RP), ctx);
-+
-+	/* max_entries = array->map.max_entries; */
-+	off = offsetof(struct bpf_array, map.max_entries);
-+	BUILD_BUG_ON(sizeof(bpfa.map.max_entries) != 4);
-+	emit(hppa_ldw(off, arr_reg, HPPA_REG_T1), ctx);
-+
-+	/*
-+	 * if (index >= max_entries)
-+	 *   goto out;
-+	 */
-+	emit(hppa_bltu(idx_reg, HPPA_REG_T1, 2 - HPPA_BRANCH_DISPLACEMENT), ctx);
-+	emit(EXIT_PTR_JUMP(HPPA_REG_RP, NOP_NEXT_INSTR), ctx);
-+
-+	/*
-+	 * if (--tcc < 0)
-+	 *   goto out;
-+	 */
-+	REG_FORCE_SEEN(ctx, HPPA_REG_TCC);
-+	emit(hppa_ldo(-1, HPPA_REG_TCC, HPPA_REG_TCC), ctx);
-+	emit(hppa_bge(HPPA_REG_TCC, HPPA_REG_ZERO, 2 - HPPA_BRANCH_DISPLACEMENT), ctx);
-+	emit(EXIT_PTR_JUMP(HPPA_REG_RP, NOP_NEXT_INSTR), ctx);
-+
-+	/*
-+	 * prog = array->ptrs[index];
-+	 * if (!prog)
-+	 *   goto out;
-+	 */
-+	BUILD_BUG_ON(sizeof(bpfa.ptrs[0]) != 8);
-+	emit(hppa64_shladd(idx_reg, 3, arr_reg, HPPA_REG_T0), ctx);
-+	off = offsetof(struct bpf_array, ptrs);
-+	BUILD_BUG_ON(off < 16);
-+	emit(hppa64_ldd_im16(off, HPPA_REG_T0, HPPA_REG_T0), ctx);
-+	emit(hppa_bne(HPPA_REG_T0, HPPA_REG_ZERO, 2 - HPPA_BRANCH_DISPLACEMENT), ctx);
-+	emit(EXIT_PTR_JUMP(HPPA_REG_RP, NOP_NEXT_INSTR), ctx);
-+
-+	/*
-+	 * tcc = temp_tcc;
-+	 * goto *(prog->bpf_func + 4);
-+	 */
-+	off = offsetof(struct bpf_prog, bpf_func);
-+	BUILD_BUG_ON(off < 16);
-+	BUILD_BUG_ON(sizeof(bpfp.bpf_func) != 8);
-+	emit(hppa64_ldd_im16(off, HPPA_REG_T0, HPPA_REG_T0), ctx);
-+	/* Epilogue jumps to *(t0 + 4). */
-+	__build_epilogue(true, ctx);
++	return	((val >= 0) && ((val >> bits) == 0)) ||
++		 ((val < 0) && (((~((u32)val)) >> (bits-1)) == 0));
 +}
 +
-+static void init_regs(u8 *rd, u8 *rs, const struct bpf_insn *insn,
-+		      struct hppa_jit_context *ctx)
++/* can the signed value be used in relative code ? */
++static inline int relative_bits_ok(signed long val, int bits)
 +{
-+	u8 code = insn->code;
-+
-+	switch (code) {
-+	case BPF_JMP | BPF_JA:
-+	case BPF_JMP | BPF_CALL:
-+	case BPF_JMP | BPF_EXIT:
-+	case BPF_JMP | BPF_TAIL_CALL:
-+		break;
-+	default:
-+		*rd = bpf_to_hppa_reg(insn->dst_reg, ctx);
-+	}
-+
-+	if (code & (BPF_ALU | BPF_X) || code & (BPF_ALU64 | BPF_X) ||
-+	    code & (BPF_JMP | BPF_X) || code & (BPF_JMP32 | BPF_X) ||
-+	    code & BPF_LDX || code & BPF_STX)
-+		*rs = bpf_to_hppa_reg(insn->src_reg, ctx);
++	return	((val >= 0) && (val < (1UL << (bits-1)))) || /* XXX */
++		 ((val < 0) && (((~((unsigned long)val)) >> (bits-1)) == 0)
++			    && (val & (1UL << (bits-1))));
 +}
 +
-+static void emit_zext_32_rd_rs(u8 *rd, u8 *rs, struct hppa_jit_context *ctx)
++/* can the signed value be used in relative branches ? */
++static inline int relative_branch_ok(signed long val, int bits)
 +{
-+	emit_hppa64_zext32(*rd, HPPA_REG_T2, ctx);
-+	*rd = HPPA_REG_T2;
-+	emit_hppa64_zext32(*rs, HPPA_REG_T1, ctx);
-+	*rs = HPPA_REG_T1;
++	return	((val >= 0) && (val < (1UL << (bits-2)))) || /* XXX */
++		 ((val < 0) && (((~((unsigned long)val)) < (1UL << (bits-2))))
++			    && (val & (1UL << (bits-1))));
 +}
 +
-+static void emit_sext_32_rd_rs(u8 *rd, u8 *rs, struct hppa_jit_context *ctx)
++
++#define is_5b_int(val)		check_bits_int(val, 5)
++
++static inline unsigned sign_unext(unsigned x, unsigned len)
 +{
-+	emit_hppa64_sext32(*rd, HPPA_REG_T2, ctx);
-+	*rd = HPPA_REG_T2;
-+	emit_hppa64_sext32(*rs, HPPA_REG_T1, ctx);
-+	*rs = HPPA_REG_T1;
++	unsigned len_ones;
++
++	len_ones = (1 << len) - 1;
++	return x & len_ones;
 +}
 +
-+static void emit_zext_32_rd_t1(u8 *rd, struct hppa_jit_context *ctx)
++static inline unsigned low_sign_unext(unsigned x, unsigned len)
 +{
-+	emit_hppa64_zext32(*rd, HPPA_REG_T2, ctx);
-+	*rd = HPPA_REG_T2;
-+	emit_zext_32(HPPA_REG_T1, ctx);
++	unsigned temp;
++	unsigned sign;
++
++	sign = (x >> (len-1)) & 1;
++	temp = sign_unext (x, len-1);
++	return (temp << 1) | sign;
 +}
 +
-+static void emit_sext_32_rd(u8 *rd, struct hppa_jit_context *ctx)
++static inline unsigned re_assemble_12(unsigned as12)
 +{
-+	emit_hppa64_sext32(*rd, HPPA_REG_T2, ctx);
-+	*rd = HPPA_REG_T2;
++	return ((  (as12 & 0x800) >> 11)
++		| ((as12 & 0x400) >> (10 - 2))
++		| ((as12 & 0x3ff) << (1 + 2)));
 +}
 +
-+static bool is_signed_bpf_cond(u8 cond)
++static inline unsigned re_assemble_14(unsigned as14)
 +{
-+	return cond == BPF_JSGT || cond == BPF_JSLT ||
-+		cond == BPF_JSGE || cond == BPF_JSLE;
++	return ((  (as14 & 0x1fff) << 1)
++		| ((as14 & 0x2000) >> 13));
 +}
 +
-+static void emit_call(u64 addr, bool fixed, struct hppa_jit_context *ctx)
++#ifdef CONFIG_64BIT
++static inline unsigned re_assemble_16(unsigned as16)
 +{
-+	const int offset_sp = 2*FRAME_SIZE;
++	unsigned s, t;
 +
-+	emit(hppa_ldo(offset_sp, HPPA_REG_SP, HPPA_REG_SP), ctx);
-+
-+	emit_hppa_copy(regmap[BPF_REG_1], HPPA_REG_ARG0, ctx);
-+	emit_hppa_copy(regmap[BPF_REG_2], HPPA_REG_ARG1, ctx);
-+	emit_hppa_copy(regmap[BPF_REG_3], HPPA_REG_ARG2, ctx);
-+	emit_hppa_copy(regmap[BPF_REG_4], HPPA_REG_ARG3, ctx);
-+	emit_hppa_copy(regmap[BPF_REG_5], HPPA_REG_ARG4, ctx);
-+
-+	/* Backup TCC. */
-+	REG_FORCE_SEEN(ctx, HPPA_REG_TCC_SAVED);
-+	if (REG_WAS_SEEN(ctx, HPPA_REG_TCC))
-+		emit(hppa_copy(HPPA_REG_TCC, HPPA_REG_TCC_SAVED), ctx);
-+
-+	/*
-+	 * Use ldil() to load absolute address. Don't use emit_imm as the
-+	 * number of emitted instructions should not depend on the value of
-+	 * addr.
-+	 */
-+	WARN_ON(addr >> 32);
-+	/* load function address and gp from Elf64_Fdesc descriptor */
-+	emit(hppa_ldil(addr, HPPA_REG_R31), ctx);
-+	emit(hppa_ldo(im11(addr), HPPA_REG_R31, HPPA_REG_R31), ctx);
-+	emit(hppa64_ldd_im16(offsetof(struct elf64_fdesc, addr),
-+			     HPPA_REG_R31, HPPA_REG_RP), ctx);
-+	emit(hppa64_bve_l_rp(HPPA_REG_RP), ctx);
-+	emit(hppa64_ldd_im16(offsetof(struct elf64_fdesc, gp),
-+			     HPPA_REG_R31, HPPA_REG_GP), ctx);
-+
-+	/* Restore TCC. */
-+	if (REG_WAS_SEEN(ctx, HPPA_REG_TCC))
-+		emit(hppa_copy(HPPA_REG_TCC_SAVED, HPPA_REG_TCC), ctx);
-+
-+	emit(hppa_ldo(-offset_sp, HPPA_REG_SP, HPPA_REG_SP), ctx);
-+
-+	/* Set return value. */
-+	emit_hppa_copy(HPPA_REG_RET0, regmap[BPF_REG_0], ctx);
++	/* Unusual 16-bit encoding, for wide mode only.  */
++	t = (as16 << 1) & 0xffff;
++	s = (as16 & 0x8000);
++	return (t ^ s ^ (s >> 1)) | (s >> 15);
 +}
++#endif
 +
-+static void emit_call_libgcc_ll(void *func, const s8 arg0,
-+		const s8 arg1, u8 opcode, struct hppa_jit_context *ctx)
++static inline unsigned re_assemble_17(unsigned as17)
 +{
-+	u64 func_addr;
-+
-+	if (BPF_CLASS(opcode) == BPF_ALU) {
-+		emit_hppa64_zext32(arg0, HPPA_REG_ARG0, ctx);
-+		emit_hppa64_zext32(arg1, HPPA_REG_ARG1, ctx);
-+	} else {
-+		emit_hppa_copy(arg0, HPPA_REG_ARG0, ctx);
-+		emit_hppa_copy(arg1, HPPA_REG_ARG1, ctx);
-+	}
-+
-+	/* libcgcc overwrites HPPA_REG_RET0, so keep copy in HPPA_REG_TCC_SAVED */
-+	if (arg0 != HPPA_REG_RET0) {
-+		REG_SET_SEEN(ctx, HPPA_REG_TCC_SAVED);
-+		emit(hppa_copy(HPPA_REG_RET0, HPPA_REG_TCC_SAVED), ctx);
-+	}
-+
-+	/* set up stack */
-+	emit(hppa_ldo(FRAME_SIZE, HPPA_REG_SP, HPPA_REG_SP), ctx);
-+
-+	func_addr = (uintptr_t) func;
-+	/* load function func_address and gp from Elf64_Fdesc descriptor */
-+	emit_imm(HPPA_REG_R31, func_addr, arg0, ctx);
-+	emit(hppa64_ldd_im16(offsetof(struct elf64_fdesc, addr),
-+			     HPPA_REG_R31, HPPA_REG_RP), ctx);
-+        /* skip the following bve_l instruction if divisor is 0. */
-+        if (BPF_OP(opcode) == BPF_DIV || BPF_OP(opcode) == BPF_MOD) {
-+		if (BPF_OP(opcode) == BPF_DIV)
-+			emit_hppa_copy(HPPA_REG_ZERO, HPPA_REG_RET0, ctx);
-+		else {
-+			emit_hppa_copy(HPPA_REG_ARG0, HPPA_REG_RET0, ctx);
-+		}
-+		emit(hppa_beq(HPPA_REG_ARG1, HPPA_REG_ZERO, 2 - HPPA_BRANCH_DISPLACEMENT), ctx);
-+	}
-+	emit(hppa64_bve_l_rp(HPPA_REG_RP), ctx);
-+	emit(hppa64_ldd_im16(offsetof(struct elf64_fdesc, gp),
-+			     HPPA_REG_R31, HPPA_REG_GP), ctx);
-+
-+	emit(hppa_ldo(-FRAME_SIZE, HPPA_REG_SP, HPPA_REG_SP), ctx);
-+
-+	emit_hppa_copy(HPPA_REG_RET0, arg0, ctx);
-+
-+	/* restore HPPA_REG_RET0 */
-+	if (arg0 != HPPA_REG_RET0)
-+		emit(hppa_copy(HPPA_REG_TCC_SAVED, HPPA_REG_RET0), ctx);
++	return ((  (as17 & 0x10000) >> 16)
++		| ((as17 & 0x0f800) << (16 - 11))
++		| ((as17 & 0x00400) >> (10 - 2))
++		| ((as17 & 0x003ff) << (1 + 2)));
 +}
 +
-+static void emit_store(const s8 rd, const s8 rs, s16 off,
-+			  struct hppa_jit_context *ctx, const u8 size,
-+			  const u8 mode)
++static inline unsigned re_assemble_21(unsigned as21)
 +{
-+	s8 dstreg;
-+
-+	/* need to calculate address since offset does not fit in 14 bits? */
-+	if (relative_bits_ok(off, 14))
-+		dstreg = rd;
-+	else {
-+		/* need to use R1 here, since addil puts result into R1 */
-+		dstreg = HPPA_REG_R1;
-+		emit(hppa_addil(off, rd), ctx);
-+		off = im11(off);
-+	}
-+
-+	switch (size) {
-+	case BPF_B:
-+		emit(hppa_stb(rs, off, dstreg), ctx);
-+		break;
-+	case BPF_H:
-+		emit(hppa_sth(rs, off, dstreg), ctx);
-+		break;
-+	case BPF_W:
-+		emit(hppa_stw(rs, off, dstreg), ctx);
-+		break;
-+	case BPF_DW:
-+		if (off & 7) {
-+			emit(hppa_ldo(off, dstreg, HPPA_REG_R1), ctx);
-+			emit(hppa64_std_im5(rs, 0, HPPA_REG_R1), ctx);
-+		} else if (off >= -16 && off <= 15)
-+			emit(hppa64_std_im5(rs, off, dstreg), ctx);
-+		else
-+			emit(hppa64_std_im16(rs, off, dstreg), ctx);
-+		break;
-+	}
++	return ((  (as21 & 0x100000) >> 20)
++		| ((as21 & 0x0ffe00) >> 8)
++		| ((as21 & 0x000180) << 7)
++		| ((as21 & 0x00007c) << 14)
++		| ((as21 & 0x000003) << 12));
 +}
++
++static inline unsigned re_assemble_22(unsigned as22)
++{
++	return ((  (as22 & 0x200000) >> 21)
++		| ((as22 & 0x1f0000) << (21 - 16))
++		| ((as22 & 0x00f800) << (16 - 11))
++		| ((as22 & 0x000400) >> (10 - 2))
++		| ((as22 & 0x0003ff) << (1 + 2)));
++}
++
++/* Various HPPA instruction formats. */
++/* see https://parisc.wiki.kernel.org/images-parisc/6/68/Pa11_acd.pdf, appendix C */
++
++static inline u32 hppa_t1_insn(u8 opcode, u8 b, u8 r, s16 im14)
++{
++	return ((opcode << 26) | (b << 21) | (r << 16) | re_assemble_14(im14));
++}
++
++static inline u32 hppa_t5_insn(u8 opcode, u8 tr, u32 val21)
++{
++	return ((opcode << 26) | (tr << 21) | re_assemble_21(val21));
++}
++
++static inline u32 hppa_t6_insn(u8 opcode, u8 r2, u8 r1, u8 c, u8 f, u8 ext6, u16 t)
++{
++	return ((opcode << 26) | (r2 << 21) | (r1 << 16) | (c << 13) | (f << 12) |
++		(ext6 << 6) | t);
++}
++
++/* 7. Arithmetic immediate */
++static inline u32 hppa_t7_insn(u8 opcode, u8 r, u8 t, u32 im11)
++{
++	return ((opcode << 26) | (r << 21) | (t << 16) | low_sign_unext(im11, 11));
++}
++
++/* 10. Shift instructions */
++static inline u32 hppa_t10_insn(u8 opcode, u8 r2, u8 r1, u8 c, u8 ext3, u8 cp, u8 t)
++{
++	return ((opcode << 26) | (r2 << 21) | (r1 << 16) | (c << 13) |
++		(ext3 << 10) | (cp << 5) | t);
++}
++
++/* 11. Conditional branch instructions */
++static inline u32 hppa_t11_insn(u8 opcode, u8 r2, u8 r1, u8 c, u32 w, u8 nop)
++{
++	u32 ra = re_assemble_12(w);
++	// ra = low_sign_unext(w,11) | (w & (1<<10)
++	return ((opcode << 26) | (r2 << 21) | (r1 << 16) | (c << 13) | (nop << 1) | ra);
++}
++
++/* 12. Branch instructions */
++static inline u32 hppa_t12_insn(u8 opcode, u8 rp, u32 w, u8 ext3, u8 nop)
++{
++	return ((opcode << 26) | (rp << 21) | (ext3 << 13) | (nop << 1) | re_assemble_17(w));
++}
++
++static inline u32 hppa_t12_L_insn(u8 opcode, u32 w, u8 nop)
++{
++	return ((opcode << 26) | (0x05 << 13) | (nop << 1) | re_assemble_22(w));
++}
++
++/* 21. Move to control register */
++static inline u32 hppa_t21_insn(u8 opcode, u8 r2, u8 r1, u8 ext8, u8 t)
++{
++	return ((opcode << 26) | (r2 << 21) | (r1 << 16) | (ext8 << 5) | t);
++}
++
++/* Helper functions called by jit code on HPPA32 and HPPA64. */
++
++u64 hppa_div64(u64 div, u64 divisor);
++u64 hppa_div64_rem(u64 div, u64 divisor);
++
++/* Helper functions that emit HPPA instructions when possible. */
++
++void bpf_jit_build_prologue(struct hppa_jit_context *ctx);
++void bpf_jit_build_epilogue(struct hppa_jit_context *ctx);
 +
 +int bpf_jit_emit_insn(const struct bpf_insn *insn, struct hppa_jit_context *ctx,
-+		      bool extra_pass)
++		      bool extra_pass);
++
++#endif /* _BPF_JIT_H */
+diff --git a/arch/parisc/net/bpf_jit_core.c b/arch/parisc/net/bpf_jit_core.c
+new file mode 100644
+index 000000000000..bda8d1f7bec3
+--- /dev/null
++++ b/arch/parisc/net/bpf_jit_core.c
+@@ -0,0 +1,207 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Common functionality for HPPA32 and HPPA64 BPF JIT compilers
++ *
++ * Copyright (c) 2023 Helge Deller <deller@gmx.de>
++ *
++ */
++
++#include <linux/bpf.h>
++#include <linux/filter.h>
++#include "bpf_jit.h"
++
++/* Number of iterations to try until offsets converge. */
++#define NR_JIT_ITERATIONS	35
++
++static int build_body(struct hppa_jit_context *ctx, bool extra_pass, int *offset)
 +{
-+	bool is64 = BPF_CLASS(insn->code) == BPF_ALU64 ||
-+		    BPF_CLASS(insn->code) == BPF_JMP;
-+	int s, e, ret, i = insn - ctx->prog->insnsi;
-+	s64 paoff;
-+	struct bpf_prog_aux *aux = ctx->prog->aux;
-+	u8 rd = -1, rs = -1, code = insn->code;
-+	s16 off = insn->off;
-+	s32 imm = insn->imm;
++	const struct bpf_prog *prog = ctx->prog;
++	int i;
++	bool again = false;
 +
-+	init_regs(&rd, &rs, insn, ctx);
++	ctx->reg_seen_collect = true;
++	for (i = 0; i < prog->len; i++) {
++		const struct bpf_insn *insn = &prog->insnsi[i];
++		int ret;
 +
-+	switch (code) {
-+	/* dst = src */
-+	case BPF_ALU | BPF_MOV | BPF_X:
-+	case BPF_ALU64 | BPF_MOV | BPF_X:
-+		if (imm == 1) {
-+			/* Special mov32 for zext */
-+			emit_zext_32(rd, ctx);
-+			break;
++		ret = bpf_jit_emit_insn(insn, ctx, extra_pass);
++// printk("instruction #%d -> RET %d\n", i, ret);
++		/* BPF_LD | BPF_IMM | BPF_DW: skip the next instruction. */
++		if (ret > 0)
++			i++;
++		if (offset) {
++			if (offset[i] != ctx->ninsns)
++				again = 1;
++			offset[i] = ctx->ninsns;
 +		}
-+		if (!is64 && !aux->verifier_zext)
-+			emit_hppa64_zext32(rs, rd, ctx);
-+		else
-+			emit_hppa_copy(rs, rd, ctx);
-+		break;
-+
-+	/* dst = dst OP src */
-+	case BPF_ALU | BPF_ADD | BPF_X:
-+	case BPF_ALU64 | BPF_ADD | BPF_X:
-+                emit(hppa_add(rd, rs, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_SUB | BPF_X:
-+	case BPF_ALU64 | BPF_SUB | BPF_X:
-+                emit(hppa_sub(rd, rs, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_AND | BPF_X:
-+	case BPF_ALU64 | BPF_AND | BPF_X:
-+                emit(hppa_and(rd, rs, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_OR | BPF_X:
-+	case BPF_ALU64 | BPF_OR | BPF_X:
-+                emit(hppa_or(rd, rs, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_XOR | BPF_X:
-+	case BPF_ALU64 | BPF_XOR | BPF_X:
-+                emit(hppa_xor(rd, rs, rd), ctx);
-+		if (!is64 && !aux->verifier_zext && rs != rd)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_MUL | BPF_K:
-+	case BPF_ALU64 | BPF_MUL | BPF_K:
-+		emit_imm(HPPA_REG_T1, is64 ? (s64)(s32)imm : (u32)imm, HPPA_REG_T2, ctx);
-+		rs = HPPA_REG_T1;
-+		fallthrough;
-+	case BPF_ALU | BPF_MUL | BPF_X:
-+	case BPF_ALU64 | BPF_MUL | BPF_X:
-+		emit_call_libgcc_ll(__muldi3, rd, rs, code, ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_DIV | BPF_K:
-+	case BPF_ALU64 | BPF_DIV | BPF_K:
-+		emit_imm(HPPA_REG_T1, is64 ? (s64)(s32)imm : (u32)imm, HPPA_REG_T2, ctx);
-+		rs = HPPA_REG_T1;
-+		fallthrough;
-+	case BPF_ALU | BPF_DIV | BPF_X:
-+	case BPF_ALU64 | BPF_DIV | BPF_X:
-+		emit_call_libgcc_ll(&hppa_div64, rd, rs, code, ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_MOD | BPF_K:
-+	case BPF_ALU64 | BPF_MOD | BPF_K:
-+		emit_imm(HPPA_REG_T1, is64 ? (s64)(s32)imm : (u32)imm, HPPA_REG_T2, ctx);
-+		rs = HPPA_REG_T1;
-+		fallthrough;
-+	case BPF_ALU | BPF_MOD | BPF_X:
-+	case BPF_ALU64 | BPF_MOD | BPF_X:
-+		emit_call_libgcc_ll(&hppa_div64_rem, rd, rs, code, ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+
-+	case BPF_ALU | BPF_LSH | BPF_X:
-+	case BPF_ALU64 | BPF_LSH | BPF_X:
-+		emit_hppa64_sext32(rs, HPPA_REG_T0, ctx);
-+		emit(hppa64_mtsarcm(HPPA_REG_T0), ctx);
-+		if (is64)
-+			emit(hppa64_depdz_sar(rd, rd), ctx);
-+		else
-+			emit(hppa_depwz_sar(rd, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_RSH | BPF_X:
-+	case BPF_ALU64 | BPF_RSH | BPF_X:
-+		emit(hppa_mtsar(rs), ctx);
-+		if (is64)
-+			emit(hppa64_shrpd_sar(rd, rd), ctx);
-+		else
-+			emit(hppa_shrpw_sar(rd, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_ARSH | BPF_X:
-+	case BPF_ALU64 | BPF_ARSH | BPF_X:
-+		emit_hppa64_sext32(rs, HPPA_REG_T0, ctx);
-+                emit(hppa64_mtsarcm(HPPA_REG_T0), ctx);
-+		if (is64)
-+			emit(hppa_extrd_sar(rd, rd, 1), ctx);
-+		else
-+			emit(hppa_extrws_sar(rd, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+
-+	/* dst = -dst */
-+	case BPF_ALU | BPF_NEG:
-+	case BPF_ALU64 | BPF_NEG:
-+		emit(hppa_sub(HPPA_REG_ZERO, rd, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+
-+	/* dst = BSWAP##imm(dst) */
-+	case BPF_ALU | BPF_END | BPF_FROM_BE:
-+		switch (imm) {
-+		case 16:
-+			/* zero-extend 16 bits into 64 bits */
-+			emit_hppa64_depd(HPPA_REG_ZERO, 63-16, 64-16, rd, 1, ctx);
-+			break;
-+		case 32:
-+			if (!aux->verifier_zext)
-+				emit_zext_32(rd, ctx);
-+			break;
-+		case 64:
-+			/* Do nothing */
-+			break;
-+		}
-+		break;
-+
-+	case BPF_ALU | BPF_END | BPF_FROM_LE:
-+		switch (imm) {
-+		case 16:
-+			emit(hppa_extru(rd, 31 - 8, 8, HPPA_REG_T1), ctx);
-+			emit(hppa_depwz(rd, 23, 8, HPPA_REG_T1), ctx);
-+			emit(hppa_extru(HPPA_REG_T1, 31, 16, rd), ctx);
-+			emit_hppa64_extrd(HPPA_REG_T1, 63, 16, rd, 0, ctx);
-+			break;
-+		case 32:
-+			emit(hppa_shrpw(rd, rd, 16, HPPA_REG_T1), ctx);
-+			emit_hppa64_depd(HPPA_REG_T1, 63-16, 8, HPPA_REG_T1, 1, ctx);
-+			emit(hppa_shrpw(rd, HPPA_REG_T1, 8, HPPA_REG_T1), ctx);
-+			emit_hppa64_extrd(HPPA_REG_T1, 63, 32, rd, 0, ctx);
-+			break;
-+		case 64:
-+			emit(hppa64_permh_3210(rd, HPPA_REG_T1), ctx);
-+			emit(hppa64_hshl(HPPA_REG_T1, 8, HPPA_REG_T2), ctx);
-+			emit(hppa64_hshr_u(HPPA_REG_T1, 8, HPPA_REG_T1), ctx);
-+			emit(hppa_or(HPPA_REG_T2, HPPA_REG_T1, rd), ctx);
-+			break;
-+		default:
-+			pr_err("bpf-jit: BPF_END imm %d invalid\n", imm);
-+			return -1;
-+		}
-+		break;
-+
-+	/* dst = imm */
-+	case BPF_ALU | BPF_MOV | BPF_K:
-+	case BPF_ALU64 | BPF_MOV | BPF_K:
-+		emit_imm(rd, imm, HPPA_REG_T2, ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+
-+	/* dst = dst OP imm */
-+	case BPF_ALU | BPF_ADD | BPF_K:
-+	case BPF_ALU64 | BPF_ADD | BPF_K:
-+		if (relative_bits_ok(imm, 14)) {
-+			emit(hppa_ldo(imm, rd, rd), ctx);
-+		} else {
-+			emit_imm(HPPA_REG_T1, imm, HPPA_REG_T2, ctx);
-+			emit(hppa_add(rd, HPPA_REG_T1, rd), ctx);
-+		}
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_SUB | BPF_K:
-+	case BPF_ALU64 | BPF_SUB | BPF_K:
-+		if (relative_bits_ok(-imm, 14)) {
-+			emit(hppa_ldo(-imm, rd, rd), ctx);
-+		} else {
-+			emit_imm(HPPA_REG_T1, imm, HPPA_REG_T2, ctx);
-+			emit(hppa_sub(rd, HPPA_REG_T1, rd), ctx);
-+		}
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_AND | BPF_K:
-+	case BPF_ALU64 | BPF_AND | BPF_K:
-+		emit_imm(HPPA_REG_T1, imm, HPPA_REG_T2, ctx);
-+                emit(hppa_and(rd, HPPA_REG_T1, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_OR | BPF_K:
-+	case BPF_ALU64 | BPF_OR | BPF_K:
-+		emit_imm(HPPA_REG_T1, imm, HPPA_REG_T2, ctx);
-+                emit(hppa_or(rd, HPPA_REG_T1, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_XOR | BPF_K:
-+	case BPF_ALU64 | BPF_XOR | BPF_K:
-+		emit_imm(HPPA_REG_T1, imm, HPPA_REG_T2, ctx);
-+                emit(hppa_xor(rd, HPPA_REG_T1, rd), ctx);
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_LSH | BPF_K:
-+	case BPF_ALU64 | BPF_LSH | BPF_K:
-+		if (imm != 0) {
-+			emit_hppa64_shld(rd, imm, rd, ctx);
-+		}
-+
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_RSH | BPF_K:
-+	case BPF_ALU64 | BPF_RSH | BPF_K:
-+		if (imm != 0) {
-+			if (is64)
-+				emit_hppa64_shrd(rd, imm, rd, false, ctx);
-+			else
-+				emit_hppa64_shrw(rd, imm, rd, false, ctx);
-+		}
-+
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+	case BPF_ALU | BPF_ARSH | BPF_K:
-+	case BPF_ALU64 | BPF_ARSH | BPF_K:
-+		if (imm != 0) {
-+			if (is64)
-+				emit_hppa64_shrd(rd, imm, rd, true, ctx);
-+			else
-+				emit_hppa64_shrw(rd, imm, rd, true, ctx);
-+		}
-+
-+		if (!is64 && !aux->verifier_zext)
-+			emit_zext_32(rd, ctx);
-+		break;
-+
-+	/* JUMP off */
-+	case BPF_JMP | BPF_JA:
-+		paoff = hppa_offset(i, off, ctx);
-+		ret = emit_jump(paoff, false, ctx);
-+		if (ret)
-+			return ret;
-+		break;
-+
-+	/* IF (dst COND src) JUMP off */
-+	case BPF_JMP | BPF_JEQ | BPF_X:
-+	case BPF_JMP32 | BPF_JEQ | BPF_X:
-+	case BPF_JMP | BPF_JGT | BPF_X:
-+	case BPF_JMP32 | BPF_JGT | BPF_X:
-+	case BPF_JMP | BPF_JLT | BPF_X:
-+	case BPF_JMP32 | BPF_JLT | BPF_X:
-+	case BPF_JMP | BPF_JGE | BPF_X:
-+	case BPF_JMP32 | BPF_JGE | BPF_X:
-+	case BPF_JMP | BPF_JLE | BPF_X:
-+	case BPF_JMP32 | BPF_JLE | BPF_X:
-+	case BPF_JMP | BPF_JNE | BPF_X:
-+	case BPF_JMP32 | BPF_JNE | BPF_X:
-+	case BPF_JMP | BPF_JSGT | BPF_X:
-+	case BPF_JMP32 | BPF_JSGT | BPF_X:
-+	case BPF_JMP | BPF_JSLT | BPF_X:
-+	case BPF_JMP32 | BPF_JSLT | BPF_X:
-+	case BPF_JMP | BPF_JSGE | BPF_X:
-+	case BPF_JMP32 | BPF_JSGE | BPF_X:
-+	case BPF_JMP | BPF_JSLE | BPF_X:
-+	case BPF_JMP32 | BPF_JSLE | BPF_X:
-+	case BPF_JMP | BPF_JSET | BPF_X:
-+	case BPF_JMP32 | BPF_JSET | BPF_X:
-+		paoff = hppa_offset(i, off, ctx);
-+		if (!is64) {
-+			s = ctx->ninsns;
-+			if (is_signed_bpf_cond(BPF_OP(code)))
-+				emit_sext_32_rd_rs(&rd, &rs, ctx);
-+			else
-+				emit_zext_32_rd_rs(&rd, &rs, ctx);
-+			e = ctx->ninsns;
-+
-+			/* Adjust for extra insns */
-+			paoff -= (e - s);
-+		}
-+		if (BPF_OP(code) == BPF_JSET) {
-+			/* Adjust for and */
-+			paoff -= 1;
-+			emit(hppa_and(rs, rd, HPPA_REG_T1), ctx);
-+			emit_branch(BPF_JNE, HPPA_REG_T1, HPPA_REG_ZERO, paoff,
-+				    ctx);
-+		} else {
-+			emit_branch(BPF_OP(code), rd, rs, paoff, ctx);
-+		}
-+		break;
-+
-+	/* IF (dst COND imm) JUMP off */
-+	case BPF_JMP | BPF_JEQ | BPF_K:
-+	case BPF_JMP32 | BPF_JEQ | BPF_K:
-+	case BPF_JMP | BPF_JGT | BPF_K:
-+	case BPF_JMP32 | BPF_JGT | BPF_K:
-+	case BPF_JMP | BPF_JLT | BPF_K:
-+	case BPF_JMP32 | BPF_JLT | BPF_K:
-+	case BPF_JMP | BPF_JGE | BPF_K:
-+	case BPF_JMP32 | BPF_JGE | BPF_K:
-+	case BPF_JMP | BPF_JLE | BPF_K:
-+	case BPF_JMP32 | BPF_JLE | BPF_K:
-+	case BPF_JMP | BPF_JNE | BPF_K:
-+	case BPF_JMP32 | BPF_JNE | BPF_K:
-+	case BPF_JMP | BPF_JSGT | BPF_K:
-+	case BPF_JMP32 | BPF_JSGT | BPF_K:
-+	case BPF_JMP | BPF_JSLT | BPF_K:
-+	case BPF_JMP32 | BPF_JSLT | BPF_K:
-+	case BPF_JMP | BPF_JSGE | BPF_K:
-+	case BPF_JMP32 | BPF_JSGE | BPF_K:
-+	case BPF_JMP | BPF_JSLE | BPF_K:
-+	case BPF_JMP32 | BPF_JSLE | BPF_K:
-+		paoff = hppa_offset(i, off, ctx);
-+		s = ctx->ninsns;
-+		if (imm) {
-+			emit_imm(HPPA_REG_T1, imm, HPPA_REG_T2, ctx);
-+			rs = HPPA_REG_T1;
-+		} else {
-+			rs = HPPA_REG_ZERO;
-+		}
-+		if (!is64) {
-+			if (is_signed_bpf_cond(BPF_OP(code)))
-+				emit_sext_32_rd(&rd, ctx);
-+			else
-+				emit_zext_32_rd_t1(&rd, ctx);
-+		}
-+		e = ctx->ninsns;
-+
-+		/* Adjust for extra insns */
-+		paoff -= (e - s);
-+		emit_branch(BPF_OP(code), rd, rs, paoff, ctx);
-+		break;
-+	case BPF_JMP | BPF_JSET | BPF_K:
-+	case BPF_JMP32 | BPF_JSET | BPF_K:
-+		paoff = hppa_offset(i, off, ctx);
-+		s = ctx->ninsns;
-+		emit_imm(HPPA_REG_T1, imm, HPPA_REG_T2, ctx);
-+		emit(hppa_and(HPPA_REG_T1, rd, HPPA_REG_T1), ctx);
-+		/* For jset32, we should clear the upper 32 bits of t1, but
-+		 * sign-extension is sufficient here and saves one instruction,
-+		 * as t1 is used only in comparison against zero.
-+		 */
-+		if (!is64 && imm < 0)
-+			emit_hppa64_sext32(HPPA_REG_T1, HPPA_REG_T1, ctx);
-+		e = ctx->ninsns;
-+		paoff -= (e - s);
-+		emit_branch(BPF_JNE, HPPA_REG_T1, HPPA_REG_ZERO, paoff, ctx);
-+		break;
-+	/* function call */
-+	case BPF_JMP | BPF_CALL:
-+	{
-+		bool fixed_addr;
-+		u64 addr;
-+
-+		ret = bpf_jit_get_func_addr(ctx->prog, insn, extra_pass,
-+					    &addr, &fixed_addr);
++// printk("INSTR  %d  offset at %d\n", i, offset ? offset[i]: 0);
 +		if (ret < 0)
 +			return ret;
-+
-+		REG_SET_SEEN_ALL(ctx);
-+		emit_call(addr, fixed_addr, ctx);
-+		break;
 +	}
-+	/* tail call */
-+	case BPF_JMP | BPF_TAIL_CALL:
-+		emit_bpf_tail_call(i, ctx);
-+		break;
-+
-+	/* function return */
-+	case BPF_JMP | BPF_EXIT:
-+		if (i == ctx->prog->len - 1)
-+			break;
-+
-+		paoff = epilogue_offset(ctx);
-+		ret = emit_jump(paoff, false, ctx);
-+		if (ret)
-+			return ret;
-+		break;
-+
-+	/* dst = imm64 */
-+	case BPF_LD | BPF_IMM | BPF_DW:
-+	{
-+		struct bpf_insn insn1 = insn[1];
-+		u64 imm64 = (u64)insn1.imm << 32 | (u32)imm;
-+		if (bpf_pseudo_func(insn))
-+			imm64 = (uintptr_t)dereference_function_descriptor((void*)imm64);
-+		emit_imm(rd, imm64, HPPA_REG_T2, ctx);
-+
-+		return 1;
-+	}
-+
-+	/* LDX: dst = *(size *)(src + off) */
-+	case BPF_LDX | BPF_MEM | BPF_B:
-+	case BPF_LDX | BPF_MEM | BPF_H:
-+	case BPF_LDX | BPF_MEM | BPF_W:
-+	case BPF_LDX | BPF_MEM | BPF_DW:
-+	case BPF_LDX | BPF_PROBE_MEM | BPF_B:
-+	case BPF_LDX | BPF_PROBE_MEM | BPF_H:
-+	case BPF_LDX | BPF_PROBE_MEM | BPF_W:
-+	case BPF_LDX | BPF_PROBE_MEM | BPF_DW:
-+	{
-+		u8 srcreg;
-+
-+		/* need to calculate address since offset does not fit in 14 bits? */
-+		if (relative_bits_ok(off, 14))
-+			srcreg = rs;
-+		else {
-+			/* need to use R1 here, since addil puts result into R1 */
-+			srcreg = HPPA_REG_R1;
-+			BUG_ON(rs == HPPA_REG_R1);
-+			BUG_ON(rd == HPPA_REG_R1);
-+			emit(hppa_addil(off, rs), ctx);
-+			off = im11(off);
-+		}
-+
-+		switch (BPF_SIZE(code)) {
-+		case BPF_B:
-+			emit(hppa_ldb(off, srcreg, rd), ctx);
-+			if (insn_is_zext(&insn[1]))
-+				return 1;
-+			break;
-+		case BPF_H:
-+			emit(hppa_ldh(off, srcreg, rd), ctx);
-+			if (insn_is_zext(&insn[1]))
-+				return 1;
-+			break;
-+		case BPF_W:
-+			emit(hppa_ldw(off, srcreg, rd), ctx);
-+			if (insn_is_zext(&insn[1]))
-+				return 1;
-+			break;
-+		case BPF_DW:
-+			if (off & 7) {
-+				emit(hppa_ldo(off, srcreg, HPPA_REG_R1), ctx);
-+				emit(hppa64_ldd_reg(HPPA_REG_ZERO, HPPA_REG_R1, rd), ctx);
-+			} else if (off >= -16 && off <= 15)
-+				emit(hppa64_ldd_im5(off, srcreg, rd), ctx);
-+			else
-+				emit(hppa64_ldd_im16(off, srcreg, rd), ctx);
-+			break;
-+		}
-+		break;
-+	}
-+	/* speculation barrier */
-+	case BPF_ST | BPF_NOSPEC:
-+		break;
-+
-+	/* ST: *(size *)(dst + off) = imm */
-+	/* STX: *(size *)(dst + off) = src */
-+	case BPF_ST | BPF_MEM | BPF_B:
-+	case BPF_ST | BPF_MEM | BPF_H:
-+	case BPF_ST | BPF_MEM | BPF_W:
-+	case BPF_ST | BPF_MEM | BPF_DW:
-+
-+	case BPF_STX | BPF_MEM | BPF_B:
-+	case BPF_STX | BPF_MEM | BPF_H:
-+	case BPF_STX | BPF_MEM | BPF_W:
-+	case BPF_STX | BPF_MEM | BPF_DW:
-+		if (BPF_CLASS(code) == BPF_ST) {
-+			emit_imm(HPPA_REG_T2, imm, HPPA_REG_T1, ctx);
-+			rs = HPPA_REG_T2;
-+		}
-+
-+		emit_store(rd, rs, off, ctx, BPF_SIZE(code), BPF_MODE(code));
-+		break;
-+
-+	case BPF_STX | BPF_ATOMIC | BPF_W:
-+	case BPF_STX | BPF_ATOMIC | BPF_DW:
-+		pr_info_once(
-+			"bpf-jit: not supported: atomic operation %02x ***\n",
-+			insn->imm);
-+		return -EFAULT;
-+
-+	default:
-+		pr_err("bpf-jit: unknown opcode %02x\n", code);
-+		return -EINVAL;
-+	}
-+
++	ctx->reg_seen_collect = false;
 +	return 0;
 +}
 +
-+void bpf_jit_build_prologue(struct hppa_jit_context *ctx)
-+{
-+	int bpf_stack_adjust, stack_adjust, i;
-+	unsigned long addr;
-+	s8 reg;
-+
-+	/*
-+	 * stack on hppa grows up, so if tail calls are used we need to
-+	 * allocate the maximum stack size
-+	 */
-+	if (REG_ALL_SEEN(ctx))
-+		bpf_stack_adjust = MAX_BPF_STACK;
-+	else
-+		bpf_stack_adjust = ctx->prog->aux->stack_depth;
-+	bpf_stack_adjust = round_up(bpf_stack_adjust, STACK_ALIGN);
-+
-+	stack_adjust = FRAME_SIZE + bpf_stack_adjust;
-+	stack_adjust = round_up(stack_adjust, STACK_ALIGN);
-+
-+	/*
-+	 * NOTE: We construct an Elf64_Fdesc descriptor here.
-+	 * The first 4 words initialize the TCC and compares them.
-+	 * Then follows the virtual address of the eBPF function,
-+	 * and the gp for this function.
-+	 *
-+	 * The first instruction sets the tail-call-counter (TCC) register.
-+	 * This instruction is skipped by tail calls.
-+	 * Use a temporary register instead of a caller-saved register initially.
-+	 */
-+	REG_FORCE_SEEN(ctx, HPPA_REG_TCC_IN_INIT);
-+	emit(hppa_ldi(MAX_TAIL_CALL_CNT, HPPA_REG_TCC_IN_INIT), ctx);
-+
-+	/*
-+	 * Skip all initializations when called as BPF TAIL call.
-+	 */
-+	emit(hppa_ldi(MAX_TAIL_CALL_CNT, HPPA_REG_R1), ctx);
-+	emit(hppa_beq(HPPA_REG_TCC_IN_INIT, HPPA_REG_R1, 6 - HPPA_BRANCH_DISPLACEMENT), ctx);
-+	emit(hppa64_bl_long(ctx->prologue_len - 3 - HPPA_BRANCH_DISPLACEMENT), ctx);
-+
-+	/* store entry address of this eBPF function */
-+	addr = (uintptr_t) &ctx->insns[0];
-+	emit(addr >> 32, ctx);
-+	emit(addr & 0xffffffff, ctx);
-+
-+	/* store gp of this eBPF function */
-+	asm("copy %%r27,%0" : "=r" (addr) );
-+	emit(addr >> 32, ctx);
-+	emit(addr & 0xffffffff, ctx);
-+
-+	/* Set up hppa stack frame. */
-+	emit_hppa_copy(HPPA_REG_SP, HPPA_REG_R1, ctx);
-+	emit(hppa_ldo(stack_adjust, HPPA_REG_SP, HPPA_REG_SP), ctx);
-+	emit(hppa64_std_im5 (HPPA_REG_R1, -REG_SIZE, HPPA_REG_SP), ctx);
-+	emit(hppa64_std_im16(HPPA_REG_RP, -2*REG_SIZE, HPPA_REG_SP), ctx);
-+
-+	/* Save callee-save registers. */
-+	for (i = 3; i <= 15; i++) {
-+		if (OPTIMIZE_HPPA && !REG_WAS_SEEN(ctx, HPPA_R(i)))
-+			continue;
-+		emit(hppa64_std_im16(HPPA_R(i), -REG_SIZE * i, HPPA_REG_SP), ctx);
-+	}
-+
-+	/* load function parameters; load all if we use tail functions */
-+	#define LOAD_PARAM(arg, dst) \
-+		if (REG_WAS_SEEN(ctx, regmap[dst]) ||	\
-+		    REG_WAS_SEEN(ctx, HPPA_REG_TCC))	\
-+			emit_hppa_copy(arg, regmap[dst], ctx)
-+	LOAD_PARAM(HPPA_REG_ARG0, BPF_REG_1);
-+	LOAD_PARAM(HPPA_REG_ARG1, BPF_REG_2);
-+	LOAD_PARAM(HPPA_REG_ARG2, BPF_REG_3);
-+	LOAD_PARAM(HPPA_REG_ARG3, BPF_REG_4);
-+	LOAD_PARAM(HPPA_REG_ARG4, BPF_REG_5);
-+	#undef LOAD_PARAM
-+
-+	REG_FORCE_SEEN(ctx, HPPA_REG_T0);
-+	REG_FORCE_SEEN(ctx, HPPA_REG_T1);
-+	REG_FORCE_SEEN(ctx, HPPA_REG_T2);
-+
-+	/*
-+	 * Now really set the tail call counter (TCC) register.
-+	 */
-+	if (REG_WAS_SEEN(ctx, HPPA_REG_TCC))
-+		emit(hppa_ldi(MAX_TAIL_CALL_CNT, HPPA_REG_TCC), ctx);
-+
-+	/*
-+	 * Save epilogue function pointer for outer TCC call chain.
-+	 * The main TCC call stores the final RP on stack.
-+	 */
-+	addr = (uintptr_t) &ctx->insns[ctx->epilogue_offset];
-+	/* skip first two instructions which jump to exit */
-+	addr += 2 * HPPA_INSN_SIZE;
-+	emit_imm(HPPA_REG_T2, addr, HPPA_REG_T1, ctx);
-+	emit(EXIT_PTR_STORE(HPPA_REG_T2), ctx);
-+
-+	/* Set up BPF frame pointer. */
-+	reg = regmap[BPF_REG_FP];	/* -> HPPA_REG_FP */
-+	if (REG_WAS_SEEN(ctx, reg)) {
-+		emit(hppa_ldo(-FRAME_SIZE, HPPA_REG_SP, reg), ctx);
-+	}
-+}
-+
-+void bpf_jit_build_epilogue(struct hppa_jit_context *ctx)
-+{
-+	__build_epilogue(false, ctx);
-+}
-+
-+bool bpf_jit_supports_kfunc_call(void)
++bool bpf_jit_needs_zext(void)
 +{
 +	return true;
++}
++
++struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
++{
++	unsigned int prog_size = 0, extable_size = 0;
++	bool tmp_blinded = false, extra_pass = false;
++	struct bpf_prog *tmp, *orig_prog = prog;
++	int pass = 0, prev_ninsns = 0, prologue_len, i;
++	struct hppa_jit_data *jit_data;
++	struct hppa_jit_context *ctx;
++
++	if (!prog->jit_requested)
++		return orig_prog;
++
++	tmp = bpf_jit_blind_constants(prog);
++	if (IS_ERR(tmp))
++		return orig_prog;
++	if (tmp != prog) {
++		tmp_blinded = true;
++		prog = tmp;
++	}
++
++	jit_data = prog->aux->jit_data;
++	if (!jit_data) {
++		jit_data = kzalloc(sizeof(*jit_data), GFP_KERNEL);
++		if (!jit_data) {
++			prog = orig_prog;
++			goto out;
++		}
++		prog->aux->jit_data = jit_data;
++	}
++
++	ctx = &jit_data->ctx;
++
++	if (ctx->offset) {
++		extra_pass = true;
++		prog_size = sizeof(*ctx->insns) * ctx->ninsns;
++		goto skip_init_ctx;
++	}
++
++	ctx->prog = prog;
++	ctx->offset = kcalloc(prog->len, sizeof(int), GFP_KERNEL);
++	if (!ctx->offset) {
++		prog = orig_prog;
++		goto out_offset;
++	}
++	for (i = 0; i < prog->len; i++) {
++		prev_ninsns += 20;
++		ctx->offset[i] = prev_ninsns;
++	}
++
++	for (i = 0; i < NR_JIT_ITERATIONS; i++) {
++		pass++;
++		ctx->ninsns = 0;
++		if (build_body(ctx, extra_pass, ctx->offset)) {
++			prog = orig_prog;
++			goto out_offset;
++		}
++		ctx->body_len = ctx->ninsns;
++		bpf_jit_build_prologue(ctx);
++		ctx->prologue_len = ctx->ninsns - ctx->body_len;
++		ctx->epilogue_offset = ctx->ninsns;
++		bpf_jit_build_epilogue(ctx);
++
++		if (ctx->ninsns == prev_ninsns) {
++			if (jit_data->header)
++				break;
++			/* obtain the actual image size */
++			extable_size = prog->aux->num_exentries *
++				sizeof(struct exception_table_entry);
++			prog_size = sizeof(*ctx->insns) * ctx->ninsns;
++
++			jit_data->header =
++				bpf_jit_binary_alloc(prog_size + extable_size,
++						     &jit_data->image,
++						     sizeof(u32),
++						     bpf_fill_ill_insns);
++			if (!jit_data->header) {
++				prog = orig_prog;
++				goto out_offset;
++			}
++
++			ctx->insns = (u32 *)jit_data->image;
++			/*
++			 * Now, when the image is allocated, the image can
++			 * potentially shrink more (auipc/jalr -> jal).
++			 */
++		}
++		prev_ninsns = ctx->ninsns;
++	}
++
++	if (i == NR_JIT_ITERATIONS) {
++		pr_err("bpf-jit: image did not converge in <%d passes!\n", i);
++		if (jit_data->header)
++			bpf_jit_binary_free(jit_data->header);
++		prog = orig_prog;
++		goto out_offset;
++	}
++
++	if (extable_size)
++		prog->aux->extable = (void *)ctx->insns + prog_size;
++
++skip_init_ctx:
++	pass++;
++	ctx->ninsns = 0;
++
++	bpf_jit_build_prologue(ctx);
++	if (build_body(ctx, extra_pass, NULL)) {
++		bpf_jit_binary_free(jit_data->header);
++		prog = orig_prog;
++		goto out_offset;
++	}
++	bpf_jit_build_epilogue(ctx);
++
++	if (HPPA_JIT_DEBUG || bpf_jit_enable > 1) {
++		if (HPPA_JIT_DUMP)
++			bpf_jit_dump(prog->len, prog_size, pass, ctx->insns);
++		if (HPPA_JIT_REBOOT)
++			{ extern int machine_restart(char *); machine_restart(""); }
++	}
++
++	prog->bpf_func = (void *)ctx->insns;
++	prog->jited = 1;
++	prog->jited_len = prog_size;
++
++	bpf_flush_icache(jit_data->header, ctx->insns + ctx->ninsns);
++
++	if (!prog->is_func || extra_pass) {
++		bpf_jit_binary_lock_ro(jit_data->header);
++		prologue_len = ctx->epilogue_offset - ctx->body_len;
++		for (i = 0; i < prog->len; i++)
++			ctx->offset[i] += prologue_len;
++		bpf_prog_fill_jited_linfo(prog, ctx->offset);
++out_offset:
++		kfree(ctx->offset);
++		kfree(jit_data);
++		prog->aux->jit_data = NULL;
++	}
++out:
++	if (HPPA_JIT_REBOOT)
++		{ extern int machine_restart(char *); machine_restart(""); }
++
++	if (tmp_blinded)
++		bpf_jit_prog_release_other(prog, prog == orig_prog ?
++					   tmp : orig_prog);
++	return prog;
++}
++
++u64 hppa_div64(u64 div, u64 divisor)
++{
++	div = div64_u64(div, divisor);
++	return div;
++}
++
++u64 hppa_div64_rem(u64 div, u64 divisor)
++{
++	u64 rem;
++	div64_u64_rem(div, divisor, &rem);
++	return rem;
 +}
 -- 
 2.41.0
