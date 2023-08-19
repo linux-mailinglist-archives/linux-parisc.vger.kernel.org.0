@@ -2,49 +2,42 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 292B6781599
-	for <lists+linux-parisc@lfdr.de>; Sat, 19 Aug 2023 01:02:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D5ED7818CE
+	for <lists+linux-parisc@lfdr.de>; Sat, 19 Aug 2023 12:39:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241862AbjHRXCY (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 18 Aug 2023 19:02:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38776 "EHLO
+        id S229887AbjHSKjt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 19 Aug 2023 06:39:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241917AbjHRXCB (ORCPT
+        with ESMTP id S229838AbjHSKjo (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 18 Aug 2023 19:02:01 -0400
+        Sat, 19 Aug 2023 06:39:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AED4D12B
-        for <linux-parisc@vger.kernel.org>; Fri, 18 Aug 2023 16:01:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 261CA240AF;
+        Sat, 19 Aug 2023 02:21:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 44B3262A19
-        for <linux-parisc@vger.kernel.org>; Fri, 18 Aug 2023 23:01:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F153AC433C8;
-        Fri, 18 Aug 2023 23:01:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692399718;
-        bh=ELSN2fnTlevxdRcWDZPxUBcM+0DVUnUs55t+4ftpJhs=;
-        h=From:To:Cc:Subject:Date:From;
-        b=mSdSVUgYWXCgAH9ueZUkk+mNkY1+BWwCep4ue2aBD0VvVUTQHppTXaYVECIYnv15l
-         00+MAU9rvp477dTdC/Sl/NFPPX/YfCbD79XMdAA1/K41l+v4KPitHo9FsWF8+NG6ns
-         PM9+YSbuDTnZq0v8kLuefiWfb40pB1stme0NXoSJl8oC6m8s1mJdoUHrFN0rXO7Tzj
-         jMFW896jwjNV0stI6pmN1Ui6IUoLCWwnwPyJpf3X9UF9IHL/iNwAX8KWD6zz4hcjdK
-         YAdTAkFIydWKceK4oi2623SHN7e0YKWKAbM2XkWU+wR5vQqhFfIskkqF/Kzrjwzqji
-         ri17LjFqMNCLA==
-From:   deller@kernel.org
-To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>
-Subject: [PATCH] parisc: Use generic mmap top-down layout and brk randomization
-Date:   Sat, 19 Aug 2023 01:01:40 +0200
-Message-ID: <20230818230140.68414-1-deller@kernel.org>
-X-Mailer: git-send-email 2.41.0
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE73460E07;
+        Sat, 19 Aug 2023 09:21:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FAEC433C7;
+        Sat, 19 Aug 2023 09:21:29 +0000 (UTC)
+Date:   Sat, 19 Aug 2023 11:21:26 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andrei Vagin <avagin@openvz.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-parisc@vger.kernel.org
+Subject: [PATCH] procfs: Fix /proc/self/maps output for 32-bit kernel and
+ compat tasks
+Message-ID: <ZOCJltW/eufPUc+T@p100>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,170 +45,71 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+On a 32-bit kernel addresses should be shown with 8 hex digits, e.g.:
 
-parisc uses a top-down layout by default that exactly fits the generic
-functions, so get rid of arch specific code and use the generic version
-by selecting ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT.
+root@debian:~# cat /proc/self/maps
+00010000-00019000 r-xp 00000000 08:05 787324     /usr/bin/cat
+00019000-0001a000 rwxp 00009000 08:05 787324     /usr/bin/cat
+0001a000-0003b000 rwxp 00000000 00:00 0          [heap]
+f7551000-f770d000 r-xp 00000000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+f770d000-f770f000 r--p 001bc000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+f770f000-f7714000 rwxp 001be000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+f7d39000-f7d68000 r-xp 00000000 08:05 794759     /usr/lib/hppa-linux-gnu/ld.so.1
+f7d68000-f7d69000 r--p 0002f000 08:05 794759     /usr/lib/hppa-linux-gnu/ld.so.1
+f7d69000-f7d6d000 rwxp 00030000 08:05 794759     /usr/lib/hppa-linux-gnu/ld.so.1
+f7ea9000-f7eaa000 r-xp 00000000 00:00 0          [vdso]
+f8565000-f8587000 rwxp 00000000 00:00 0          [stack]
 
-Note that on parisc the stack always grows up and a "unlimited stack"
-simply means that the value as defined in CONFIG_STACK_MAX_DEFAULT_SIZE_MB
-should be used. So RLIM_INFINITY is not an indicator to use the legacy
-memory layout.
+But since commmit 0e3dc0191431 ("procfs: add seq_put_hex_ll to speed up
+/proc/pid/maps") even on native 32-bit kernels the output looks like this:
+
+root@debian:~# cat /proc/self/maps
+0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324  /usr/bin/cat
+0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787324  /usr/bin/cat
+000000001a000-000000003b000 rwxp 00000000 00:00 0  [heap]
+00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+00000000f758d000-00000000f758f000 r--p 000000001bc000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+00000000f758f000-00000000f7594000 rwxp 000000001be000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+00000000f7af9000-00000000f7b28000 r-xp 00000000 000000008:000000005 794759  /usr/lib/hppa-linux-gnu/ld.so.1
+00000000f7b28000-00000000f7b29000 r--p 000000002f000 000000008:000000005 794759  /usr/lib/hppa-linux-gnu/ld.so.1
+00000000f7b29000-00000000f7b2d000 rwxp 0000000030000 000000008:000000005 794759  /usr/lib/hppa-linux-gnu/ld.so.1
+00000000f7e0c000-00000000f7e0d000 r-xp 00000000 00:00 0  [vdso]
+00000000f9061000-00000000f9083000 rwxp 00000000 00:00 0  [stack]
+
+This patch brings back the old default 8-hex digit output for
+32-bit kernels and compat tasks.
 
 Signed-off-by: Helge Deller <deller@gmx.de>
----
- arch/parisc/Kconfig             | 17 +++++++++++
- arch/parisc/kernel/process.c    | 14 ---------
- arch/parisc/kernel/sys_parisc.c | 54 +--------------------------------
- mm/util.c                       |  5 ++-
- 4 files changed, 22 insertions(+), 68 deletions(-)
+Fixes: 0e3dc0191431 ("procfs: add seq_put_hex_ll to speed up /proc/pid/maps")
+Cc: Andrei Vagin <avagin@openvz.org>
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 4cb46d5c64a2..3a257bca0878 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -49,6 +49,9 @@ config PARISC
- 	select TTY # Needed for pdc_cons.c
- 	select HAS_IOPORT if PCI || EISA
- 	select HAVE_DEBUG_STACKOVERFLOW
-+	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
-+	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
-+	select HAVE_ARCH_MMAP_RND_BITS
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_HASH
- 	select HAVE_ARCH_JUMP_LABEL
-@@ -124,6 +127,20 @@ config TIME_LOW_RES
- 	depends on SMP
- 	default y
+diff --git a/fs/seq_file.c b/fs/seq_file.c
+index f5fdaf3b1572..1a15b531aede 100644
+--- a/fs/seq_file.c
++++ b/fs/seq_file.c
+@@ -19,6 +19,7 @@
+ #include <linux/printk.h>
+ #include <linux/string_helpers.h>
+ #include <linux/uio.h>
++#include <linux/compat.h>
  
-+config ARCH_MMAP_RND_BITS_MIN
-+	default 18 if 64BIT
-+	default 8
-+
-+config ARCH_MMAP_RND_COMPAT_BITS_MIN
-+	default 8
-+
-+config ARCH_MMAP_RND_BITS_MAX
-+	default 24 if 64BIT
-+	default 17
-+
-+config ARCH_MMAP_RND_COMPAT_BITS_MAX
-+	default 17
-+
- # unless you want to implement ACPI on PA-RISC ... ;-)
- config PM
- 	bool
-diff --git a/arch/parisc/kernel/process.c b/arch/parisc/kernel/process.c
-index 62f9b14c6406..ed93bd8c1545 100644
---- a/arch/parisc/kernel/process.c
-+++ b/arch/parisc/kernel/process.c
-@@ -278,17 +278,3 @@ __get_wchan(struct task_struct *p)
- 	} while (count++ < MAX_UNWIND_ENTRIES);
- 	return 0;
- }
--
--static inline unsigned long brk_rnd(void)
--{
--	return (get_random_u32() & BRK_RND_MASK) << PAGE_SHIFT;
--}
--
--unsigned long arch_randomize_brk(struct mm_struct *mm)
--{
--	unsigned long ret = PAGE_ALIGN(mm->brk + brk_rnd());
--
--	if (ret < mm->brk)
--		return mm->brk;
--	return ret;
--}
-diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
-index 9915062d5243..ab896eff7a1d 100644
---- a/arch/parisc/kernel/sys_parisc.c
-+++ b/arch/parisc/kernel/sys_parisc.c
-@@ -161,7 +161,7 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+ #include <linux/uaccess.h>
+ #include <asm/page.h>
+@@ -759,11 +760,16 @@ void seq_put_hex_ll(struct seq_file *m, const char *delimiter,
+ 			seq_puts(m, delimiter);
  	}
  
- 	info.flags = 0;
--	info.low_limit = mm->mmap_legacy_base;
-+	info.low_limit = mm->mmap_base;
- 	info.high_limit = mmap_upper_limit(NULL);
- 	return vm_unmapped_area(&info);
- }
-@@ -181,58 +181,6 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
- 			addr, len, pgoff, flags, DOWN);
- }
++#ifdef CONFIG_64BIT
+ 	/* If x is 0, the result of __builtin_clzll is undefined */
+-	if (v == 0)
++	if (v == 0 || is_compat_task())
+ 		len = 1;
+ 	else
+ 		len = (sizeof(v) * 8 - __builtin_clzll(v) + 3) / 4;
++#else
++	/* On 32-bit kernel always use provided width */
++	len = 1;
++#endif
  
--static int mmap_is_legacy(void)
--{
--	if (current->personality & ADDR_COMPAT_LAYOUT)
--		return 1;
--
--	/* parisc stack always grows up - so a unlimited stack should
--	 * not be an indicator to use the legacy memory layout.
--	 * if (rlimit(RLIMIT_STACK) == RLIM_INFINITY)
--	 *	return 1;
--	 */
--
--	return sysctl_legacy_va_layout;
--}
--
--static unsigned long mmap_rnd(void)
--{
--	unsigned long rnd = 0;
--
--	if (current->flags & PF_RANDOMIZE)
--		rnd = get_random_u32() & MMAP_RND_MASK;
--
--	return rnd << PAGE_SHIFT;
--}
--
--unsigned long arch_mmap_rnd(void)
--{
--	return (get_random_u32() & MMAP_RND_MASK) << PAGE_SHIFT;
--}
--
--static unsigned long mmap_legacy_base(void)
--{
--	return TASK_UNMAPPED_BASE + mmap_rnd();
--}
--
--/*
-- * This function, called very early during the creation of a new
-- * process VM image, sets up which VM layout function to use:
-- */
--void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
--{
--	mm->mmap_legacy_base = mmap_legacy_base();
--	mm->mmap_base = mmap_upper_limit(rlim_stack);
--
--	if (mmap_is_legacy()) {
--		mm->mmap_base = mm->mmap_legacy_base;
--		mm->get_unmapped_area = arch_get_unmapped_area;
--	} else {
--		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
--	}
--}
--
--
- asmlinkage unsigned long sys_mmap2(unsigned long addr, unsigned long len,
- 	unsigned long prot, unsigned long flags, unsigned long fd,
- 	unsigned long pgoff)
-diff --git a/mm/util.c b/mm/util.c
-index dd12b9531ac4..881020644497 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -396,7 +396,10 @@ static int mmap_is_legacy(struct rlimit *rlim_stack)
- 	if (current->personality & ADDR_COMPAT_LAYOUT)
- 		return 1;
- 
--	if (rlim_stack->rlim_cur == RLIM_INFINITY)
-+	/* On parisc the stack always grows up - so a unlimited stack should
-+	 * not be an indicator to use the legacy memory layout. */
-+	if (rlim_stack->rlim_cur == RLIM_INFINITY &&
-+		!IS_ENABLED(CONFIG_STACK_GROWSUP))
- 		return 1;
- 
- 	return sysctl_legacy_va_layout;
--- 
-2.41.0
-
+ 	if (len < width)
+ 		len = width;
