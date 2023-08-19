@@ -2,114 +2,107 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D5ED7818CE
-	for <lists+linux-parisc@lfdr.de>; Sat, 19 Aug 2023 12:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FBB2781902
+	for <lists+linux-parisc@lfdr.de>; Sat, 19 Aug 2023 12:43:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229887AbjHSKjt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 19 Aug 2023 06:39:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40590 "EHLO
+        id S229996AbjHSKnG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 19 Aug 2023 06:43:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229838AbjHSKjo (ORCPT
+        with ESMTP id S231294AbjHSKmo (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 19 Aug 2023 06:39:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 261CA240AF;
-        Sat, 19 Aug 2023 02:21:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE73460E07;
-        Sat, 19 Aug 2023 09:21:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FAEC433C7;
-        Sat, 19 Aug 2023 09:21:29 +0000 (UTC)
-Date:   Sat, 19 Aug 2023 11:21:26 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andrei Vagin <avagin@openvz.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-parisc@vger.kernel.org
-Subject: [PATCH] procfs: Fix /proc/self/maps output for 32-bit kernel and
- compat tasks
-Message-ID: <ZOCJltW/eufPUc+T@p100>
+        Sat, 19 Aug 2023 06:42:44 -0400
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F7246734;
+        Sat, 19 Aug 2023 03:22:25 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0Vq53wpY_1692440537;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vq53wpY_1692440537)
+          by smtp.aliyun-inc.com;
+          Sat, 19 Aug 2023 18:22:19 +0800
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+To:     catalin.marinas@arm.com, will@kernel.org,
+        James.Bottomley@HansenPartnership.com, deller@gmx.de,
+        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+        hpa@zytor.com
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-parisc@vger.kernel.org
+Subject: [PATCH] HWPOISON: add a pr_err message when forcibly send a sigbus
+Date:   Sat, 19 Aug 2023 18:22:12 +0800
+Message-Id: <20230819102212.21103-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On a 32-bit kernel addresses should be shown with 8 hex digits, e.g.:
+When a process tries to access a page that is already offline, the
+kernel will send a sigbus signal with the BUS_MCEERR_AR code. This
+signal is typically handled by a registered sigbus handler in the
+process. However, if the process does not have a registered sigbus
+handler, it is important for end users to be informed about what
+happened.
 
-root@debian:~# cat /proc/self/maps
-00010000-00019000 r-xp 00000000 08:05 787324     /usr/bin/cat
-00019000-0001a000 rwxp 00009000 08:05 787324     /usr/bin/cat
-0001a000-0003b000 rwxp 00000000 00:00 0          [heap]
-f7551000-f770d000 r-xp 00000000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
-f770d000-f770f000 r--p 001bc000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
-f770f000-f7714000 rwxp 001be000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
-f7d39000-f7d68000 r-xp 00000000 08:05 794759     /usr/lib/hppa-linux-gnu/ld.so.1
-f7d68000-f7d69000 r--p 0002f000 08:05 794759     /usr/lib/hppa-linux-gnu/ld.so.1
-f7d69000-f7d6d000 rwxp 00030000 08:05 794759     /usr/lib/hppa-linux-gnu/ld.so.1
-f7ea9000-f7eaa000 r-xp 00000000 00:00 0          [vdso]
-f8565000-f8587000 rwxp 00000000 00:00 0          [stack]
+To address this, add an error message similar to those implemented on
+the x86, powerpc, and parisc platforms.
 
-But since commmit 0e3dc0191431 ("procfs: add seq_put_hex_ll to speed up
-/proc/pid/maps") even on native 32-bit kernels the output looks like this:
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+---
+ arch/arm64/mm/fault.c  | 2 ++
+ arch/parisc/mm/fault.c | 5 ++---
+ arch/x86/mm/fault.c    | 3 +--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-root@debian:~# cat /proc/self/maps
-0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324  /usr/bin/cat
-0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787324  /usr/bin/cat
-000000001a000-000000003b000 rwxp 00000000 00:00 0  [heap]
-00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
-00000000f758d000-00000000f758f000 r--p 000000001bc000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
-00000000f758f000-00000000f7594000 rwxp 000000001be000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
-00000000f7af9000-00000000f7b28000 r-xp 00000000 000000008:000000005 794759  /usr/lib/hppa-linux-gnu/ld.so.1
-00000000f7b28000-00000000f7b29000 r--p 000000002f000 000000008:000000005 794759  /usr/lib/hppa-linux-gnu/ld.so.1
-00000000f7b29000-00000000f7b2d000 rwxp 0000000030000 000000008:000000005 794759  /usr/lib/hppa-linux-gnu/ld.so.1
-00000000f7e0c000-00000000f7e0d000 r-xp 00000000 00:00 0  [vdso]
-00000000f9061000-00000000f9083000 rwxp 00000000 00:00 0  [stack]
-
-This patch brings back the old default 8-hex digit output for
-32-bit kernels and compat tasks.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 0e3dc0191431 ("procfs: add seq_put_hex_ll to speed up /proc/pid/maps")
-Cc: Andrei Vagin <avagin@openvz.org>
-
-diff --git a/fs/seq_file.c b/fs/seq_file.c
-index f5fdaf3b1572..1a15b531aede 100644
---- a/fs/seq_file.c
-+++ b/fs/seq_file.c
-@@ -19,6 +19,7 @@
- #include <linux/printk.h>
- #include <linux/string_helpers.h>
- #include <linux/uio.h>
-+#include <linux/compat.h>
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 3fe516b32577..38e2186882bd 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -679,6 +679,8 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
+ 	} else if (fault & (VM_FAULT_HWPOISON_LARGE | VM_FAULT_HWPOISON)) {
+ 		unsigned int lsb;
  
- #include <linux/uaccess.h>
- #include <asm/page.h>
-@@ -759,11 +760,16 @@ void seq_put_hex_ll(struct seq_file *m, const char *delimiter,
- 			seq_puts(m, delimiter);
- 	}
++		pr_err("MCE: Killing %s:%d due to hardware memory corruption fault at %lx\n",
++		       current->comm, current->pid, far);
+ 		lsb = PAGE_SHIFT;
+ 		if (fault & VM_FAULT_HWPOISON_LARGE)
+ 			lsb = hstate_index_to_shift(VM_FAULT_GET_HINDEX(fault));
+diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
+index a4c7c7630f48..6b096b47e149 100644
+--- a/arch/parisc/mm/fault.c
++++ b/arch/parisc/mm/fault.c
+@@ -395,9 +395,8 @@ void do_page_fault(struct pt_regs *regs, unsigned long code,
+ #ifdef CONFIG_MEMORY_FAILURE
+ 		if (fault & (VM_FAULT_HWPOISON|VM_FAULT_HWPOISON_LARGE)) {
+ 			unsigned int lsb = 0;
+-			printk(KERN_ERR
+-	"MCE: Killing %s:%d due to hardware memory corruption fault at %08lx\n",
+-			tsk->comm, tsk->pid, address);
++			pr_err("MCE: Killing %s:%d due to hardware memory corruption fault at %08lx\n",
++				tsk->comm, tsk->pid, address);
+ 			/*
+ 			 * Either small page or large page may be poisoned.
+ 			 * In other words, VM_FAULT_HWPOISON_LARGE and
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index e8711b2cafaf..7266509cca54 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -962,8 +962,7 @@ do_sigbus(struct pt_regs *regs, unsigned long error_code, unsigned long address,
+ 		struct task_struct *tsk = current;
+ 		unsigned lsb = 0;
  
-+#ifdef CONFIG_64BIT
- 	/* If x is 0, the result of __builtin_clzll is undefined */
--	if (v == 0)
-+	if (v == 0 || is_compat_task())
- 		len = 1;
- 	else
- 		len = (sizeof(v) * 8 - __builtin_clzll(v) + 3) / 4;
-+#else
-+	/* On 32-bit kernel always use provided width */
-+	len = 1;
-+#endif
- 
- 	if (len < width)
- 		len = width;
+-		pr_err(
+-	"MCE: Killing %s:%d due to hardware memory corruption fault at %lx\n",
++		pr_err("MCE: Killing %s:%d due to hardware memory corruption fault at %lx\n",
+ 			tsk->comm, tsk->pid, address);
+ 		if (fault & VM_FAULT_HWPOISON_LARGE)
+ 			lsb = hstate_index_to_shift(VM_FAULT_GET_HINDEX(fault));
+-- 
+2.39.3
+
