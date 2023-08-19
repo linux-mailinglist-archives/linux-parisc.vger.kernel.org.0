@@ -2,100 +2,116 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E140781961
-	for <lists+linux-parisc@lfdr.de>; Sat, 19 Aug 2023 13:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7207781BAC
+	for <lists+linux-parisc@lfdr.de>; Sun, 20 Aug 2023 02:23:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231248AbjHSLwp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 19 Aug 2023 07:52:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47654 "EHLO
+        id S229488AbjHTAWr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 19 Aug 2023 20:22:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231270AbjHSLwo (ORCPT
+        with ESMTP id S229667AbjHTAWW (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 19 Aug 2023 07:52:44 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB1A3260BB;
-        Sat, 19 Aug 2023 04:50:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1692445796; x=1693050596; i=deller@gmx.de;
- bh=EjMxJHShEwrxNGB+OlRmt22+ZwJAHPlR2zFij4iNzW4=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=MtvcLKlfMdJ8A4g1U54MbKpSndQTNEXQIw4Zc/JPXuQ9B3GMTmATO925SIgiX4gX/pnNHam
- Wli1xXdaCoZ2XHWg/QjacgqZMrxDdwHbdGd9P4cBj0xMZsNMZofXYffmgqOSL5H/4tlcbYXup
- mi24j9JwrBMulvD6sNMvndhEW5F3OOrocYqoeYdr+W5ovTzrFcH//etcLOb9NZuebqog3KlA7
- amN2P2XkxUF6xr7XLUejUYOaqjudK8pnufsWFYQGt39qm7ef5JqcO4CezY7gGRqfc6rpPpuFU
- jIsH6ysjKGDvPFBG3WQwiySQlX2UQjpGj+VAR8I91yoEzR2h473g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.154.181]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mo6v3-1pwb4J09hj-00pdAN; Sat, 19
- Aug 2023 13:49:56 +0200
-Message-ID: <ef106f59-f7d6-93bc-6872-d60ded127830@gmx.de>
-Date:   Sat, 19 Aug 2023 13:49:53 +0200
+        Sat, 19 Aug 2023 20:22:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02066E715F
+        for <linux-parisc@vger.kernel.org>; Sat, 19 Aug 2023 14:44:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74A7660F01
+        for <linux-parisc@vger.kernel.org>; Sat, 19 Aug 2023 21:44:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14959C433C7;
+        Sat, 19 Aug 2023 21:44:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692481442;
+        bh=TN6SPNdn/vA/HroGsKlhOpKWn15yA7ZlZPBZrwLZsYs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=T78ZIDd9txGLXIRe3kR9ZEaa0l4lsw9sb7bgKgwetpBRZIP1Gukp9t+Ra+WMflXvL
+         AyHwQ46r5Czr9qHrcG7J801/LGEZ08EQftVQn0MkpQr/s6exoO79n/Bpt2WU+Xi3h1
+         2rOFJRi0Dm9SG7TDwWH1iG8UNMcRp34ySFVVdQBiC0BRTZVfFw0rqSkoQQp8JbRUE3
+         cFx0ixiWBVm0JRGjEnv0zP32Ht1gTvIa/kXsE9gy8yLtJz1ZE7IMoR/GBxruruffG7
+         pcN1AXie3A+Ijmibl1+N4ScZBzq4BPBVPZQlhFCUcyilTV45lIB7BlRmddY214lBrj
+         BOUbAOD0GfhTg==
+From:   deller@kernel.org
+To:     linux-parisc@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>
+Subject: [PATCH] parisc: unaligned: Simplify 32-bit assembly in emulate_std()
+Date:   Sat, 19 Aug 2023 23:43:47 +0200
+Message-ID: <20230819214347.9653-1-deller@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] HWPOISON: add a pr_err message when forcibly send a
- sigbus
-Content-Language: en-US
-To:     Shuai Xue <xueshuai@linux.alibaba.com>, catalin.marinas@arm.com,
-        will@kernel.org, James.Bottomley@HansenPartnership.com,
-        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        hpa@zytor.com
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org
-References: <20230819102212.21103-1-xueshuai@linux.alibaba.com>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <20230819102212.21103-1-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:vEqnuzE2C0GjP6pSbpiblTMY7spBjR06BrHcICxDzhUnGR8UiUw
- 5yKz/z47iRV2N9m3fCxfG9FtVTcj+9GQvGBTQB3g1YqT3ryKg36XK5O8yxvDqt348QY1Mm8
- lAhmdOcVaVEmpySQQPVk3OK55qyBEgtkFIAecXgwggGvzpx6tN1G5jSxljPX8as/HpI3Qeq
- QHvAsPWQKJkR3WE4HS8ug==
-UI-OutboundReport: notjunk:1;M01:P0:ZcoAs9bADe0=;wiVrdSlFiXsPwdrvpvFouPd1gv2
- 0raSLM3zmETBRyStCaPLXvtdkCgkA1aAKzTEOq+BeDFEmSBGl1RMcwjzowMCmpcHFxhC3dbGu
- mj0g0bo/4ord/R29Le1ui5FyCET5W9cE6EHpusffuFMR11WdcS7Mgg+6zft3UijidWYum3YIw
- PQmAZ9FStoYkW94JyCNwtJsUHyv/EOFWimwYaCReHq6qrCmNhOYvJSvsO7cbVeU2wO18ocfR2
- 710aeenm6qQzkHksEuU8+P/cReu8iLbsoDzsaCj7EDb5ySCDTFssdU1Q+bQPBSIWJekMMzfCg
- +6O5IQ481mgpdGgdE9UVffakiCy+N37ZC1lMf74Z6dIl/me/OVZxRaSK25zR/UxKIdhQpfJYx
- flIjHNJX3sXBohs+25drxWpiEzp+cv3GsIuTc6ycyW80dqVofbxXScnaNWVtoillgZjk46xbi
- WuQykauybAJLUehzP9ydJ9Mq08cE/+WQz7eEaYQAv0DgvlgJbKh9BXL/rvsrq5/261ToE1M44
- m75an4Kz6YaMyWuu7SBjnKfixha83bPj5flXpm/6P/AZigwqHWirXbAOhg2XZwTFsiSeTsTxk
- DE+zAVXANypvj+Y6D5FRxJmrM44NJYpjh+iKCUk5Nkpvrjm/Yh6BplcESG9ZmoCUFMW821yvw
- rIxaFcDr+D8mUJQh97fHEWVUkXnAH60j21qrGGRHPyRvdmKXW/cmCAwdYB6cOeBmjzVLhpD9Y
- j4WTCMhv3t7J1nDBpPjlbBYj9kPHPZOmMlRGBu3n/BWt2znvrxcTDiK2ZU5PKAE5adEc2Yk3t
- KwhnMp0D7Ljw5Az2Af+2HC3W8y9wB4PP7axGoXlftbvfqGd/fCe6WkpYBIzL+Gko0WbsDRv1t
- kqLuEhL42bSLfOksN4YgAKwrS7HTsIyk4Ns47jTZcrUzf8KNshRhZwT5ENxAoHpfRcKEpSeZJ
- 3jbjyc+wZINxeykg32F/nHb7eag=
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 8/19/23 12:22, Shuai Xue wrote:
-> When a process tries to access a page that is already offline, the
-> kernel will send a sigbus signal with the BUS_MCEERR_AR code. This
-> signal is typically handled by a registered sigbus handler in the
-> process. However, if the process does not have a registered sigbus
-> handler, it is important for end users to be informed about what
-> happened.
->
-> To address this, add an error message similar to those implemented on
-> the x86, powerpc, and parisc platforms.
->
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> ---
->   arch/arm64/mm/fault.c  | 2 ++
->   arch/parisc/mm/fault.c | 5 ++---
->   arch/x86/mm/fault.c    | 3 +--
->   3 files changed, 5 insertions(+), 5 deletions(-)
+From: Helge Deller <deller@gmx.de>
 
-Acked-by: Helge Deller <deller@gmx.de> # parisc
+No need to extract upper and lower 32bit values of the 64-bit value. Use
+gcc's %R1 to access lower 32-bits and %1 to access upper 32-bits
+instead.
 
+Signed-off-by: Helge Deller <deller@gmx.de>
+---
+ arch/parisc/kernel/unaligned.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
+
+diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
+index 170d0dda4213..ce25acfe4889 100644
+--- a/arch/parisc/kernel/unaligned.c
++++ b/arch/parisc/kernel/unaligned.c
+@@ -338,25 +338,24 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
+ 	: "r19", "r20", "r21", "r22", "r1" );
+ #else
+     {
+-	unsigned long valh = (val >> 32), vall = (val & 0xffffffffl);
+ 	__asm__ __volatile__ (
+-"	mtsp	%4, %%sr1\n"
+-"	zdep	%2, 29, 2, %%r19\n"
+-"	dep	%%r0, 31, 2, %3\n"
++"	mtsp	%3, %%sr1\n"
++"	zdep	%R1, 29, 2, %%r19\n"
++"	dep	%%r0, 31, 2, %2\n"
+ "	mtsar	%%r19\n"
+ "	zvdepi	-2, 32, %%r19\n"
+-"1:	ldw	0(%%sr1,%3),%%r20\n"
+-"2:	ldw	8(%%sr1,%3),%%r21\n"
+-"	vshd	%1, %2, %%r1\n"
++"1:	ldw	0(%%sr1,%2),%%r20\n"
++"2:	ldw	8(%%sr1,%2),%%r21\n"
++"	vshd	%1, %R1, %%r1\n"
+ "	vshd	%%r0, %1, %1\n"
+-"	vshd	%2, %%r0, %2\n"
++"	vshd	%R1, %%r0, %R1\n"
+ "	and	%%r20, %%r19, %%r20\n"
+ "	andcm	%%r21, %%r19, %%r21\n"
+ "	or	%1, %%r20, %1\n"
+-"	or	%2, %%r21, %2\n"
+-"3:	stw	%1,0(%%sr1,%3)\n"
+-"4:	stw	%%r1,4(%%sr1,%3)\n"
+-"5:	stw	%2,8(%%sr1,%3)\n"
++"	or	%R1, %%r21, %R1\n"
++"3:	stw	%1,0(%%sr1,%2)\n"
++"4:	stw	%%r1,4(%%sr1,%2)\n"
++"5:	stw	%R1,8(%%sr1,%2)\n"
+ "6:	\n"
+ 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 6b)
+ 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 6b)
+@@ -364,7 +363,7 @@ static int emulate_std(struct pt_regs *regs, int frreg, int flop)
+ 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(4b, 6b)
+ 	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(5b, 6b)
+ 	: "+r" (ret)
+-	: "r" (valh), "r" (vall), "r" (regs->ior), "r" (regs->isr)
++	: "r" (val), "r" (regs->ior), "r" (regs->isr)
+ 	: "r19", "r20", "r21", "r1" );
+     }
+ #endif
+-- 
+2.41.0
 
