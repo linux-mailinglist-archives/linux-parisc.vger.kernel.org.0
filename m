@@ -2,259 +2,123 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91656783A09
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Aug 2023 08:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC8E1783CF0
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Aug 2023 11:30:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232075AbjHVGeG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 22 Aug 2023 02:34:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41158 "EHLO
+        id S234291AbjHVJa4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 22 Aug 2023 05:30:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233049AbjHVGeE (ORCPT
+        with ESMTP id S234315AbjHVJa4 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 22 Aug 2023 02:34:04 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D45E1E47;
-        Mon, 21 Aug 2023 23:33:36 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 01FC422C44;
-        Tue, 22 Aug 2023 06:33:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1692685983; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0LefrGrfWIlUUodSIRfdXfGvUMxOpn3Da/x1z7+TACM=;
-        b=dcW/Td18f6Fki4csXaJVH2kX+joGxDMOht06LwZTOfNsgqpMfncIfcqoPyYT4pr6k4mnSU
-        M0TGSwt1po685EhpFFg+MsGQqwUnObFIRiO2wfy913FH+/Lel6/Fb2dOKqsq92KJa+2uD1
-        Bu3YIapaL9IWtKzXxWr75rikpNrC41E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1692685983;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0LefrGrfWIlUUodSIRfdXfGvUMxOpn3Da/x1z7+TACM=;
-        b=rG0JjH04TqT5CksLvToAlLn8tIAFYWH057rgn75zDtNS/jv7ATjOlZlbjVPfguARFEVAuk
-        XrENx1kzxGQ4t0Cg==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Tue, 22 Aug 2023 05:30:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E75B5CD1
+        for <linux-parisc@vger.kernel.org>; Tue, 22 Aug 2023 02:30:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id 4B5DF2C143;
-        Tue, 22 Aug 2023 06:32:58 +0000 (UTC)
-Date:   Tue, 22 Aug 2023 08:32:57 +0200
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
-Cc:     Eric DeVolder <eric.devolder@oracle.com>, linux@armlinux.org.uk,
-        catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
-        geert@linux-m68k.org, tsbogend@alpha.franken.de,
-        James.Bottomley@hansenpartnership.com, deller@gmx.de,
-        ysato@users.sourceforge.jp, dalias@libc.org,
-        glaubitz@physik.fu-berlin.de, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, peterz@infradead.org,
-        linus.walleij@linaro.org, hpa@zytor.com, kernel@xen0n.name,
-        ardb@kernel.org, tsi@tuyoix.net, agordeev@linux.ibm.com,
-        paulmck@kernel.org, bhe@redhat.com, masahiroy@kernel.org,
-        konrad.wilk@oracle.com, sebastian.reichel@collabora.com,
-        samitolvanen@google.com, ojeda@kernel.org,
-        juerg.haefliger@canonical.com, borntraeger@linux.ibm.com,
-        frederic@kernel.org, arnd@arndb.de, mhiramat@kernel.org,
-        aou@eecs.berkeley.edu, keescook@chromium.org, gor@linux.ibm.com,
-        anshuman.khandual@arm.com, hca@linux.ibm.com, xin3.li@intel.com,
-        npiggin@gmail.com, rmk+kernel@armlinux.org.uk,
-        paul.walmsley@sifive.com, boris.ostrovsky@oracle.com,
-        ziy@nvidia.com, hbathini@linux.ibm.com, gregkh@linuxfoundation.org,
-        kirill.shutemov@linux.intel.com, ndesaulniers@google.com,
-        sourabhjain@linux.ibm.com, palmer@dabbelt.com, svens@linux.ibm.com,
-        tj@kernel.org, akpm@linux-foundation.org, rppt@kernel.org
-Subject: Re: [PATCH v6 02/14] x86/kexec: refactor for kernel/Kconfig.kexec
-Message-ID: <20230822063257.GI8826@kitsune.suse.cz>
-References: <20230712161545.87870-1-eric.devolder@oracle.com>
- <20230712161545.87870-3-eric.devolder@oracle.com>
- <d8ddd4bd-fbc9-dbe9-f5c3-daf8d89aa46d@huawei.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D34D61389
+        for <linux-parisc@vger.kernel.org>; Tue, 22 Aug 2023 09:30:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F33C433C7;
+        Tue, 22 Aug 2023 09:30:51 +0000 (UTC)
+Date:   Tue, 22 Aug 2023 11:30:48 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     linux-parisc@vger.kernel.org
+Subject: [Fwd: [PATCH v2] procfs: Fix /proc/self/maps output for 32-bit
+ kernel and compat tasks]
+Message-ID: <ZOSASLfsKMzZvZq9@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d8ddd4bd-fbc9-dbe9-f5c3-daf8d89aa46d@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-6.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello,
+----- Forwarded message from Helge Deller <deller@gmx.de> -----
 
-On Thu, Jul 13, 2023 at 07:13:57PM +0800, Leizhen (ThunderTown) wrote:
-> 
-> 
-> On 2023/7/13 0:15, Eric DeVolder wrote:
-> > The kexec and crash kernel options are provided in the common
-> > kernel/Kconfig.kexec. Utilize the common options and provide
-> > the ARCH_SUPPORTS_ and ARCH_SELECTS_ entries to recreate the
-> > equivalent set of KEXEC and CRASH options.
-> > 
-> > Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
-> > ---
-> >  arch/x86/Kconfig | 92 ++++++++++--------------------------------------
-> >  1 file changed, 19 insertions(+), 73 deletions(-)
-> > 
-> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> > index 7422db409770..9767a343f7c2 100644
-> > --- a/arch/x86/Kconfig
-> > +++ b/arch/x86/Kconfig
-> > @@ -2040,88 +2040,34 @@ config EFI_RUNTIME_MAP
-> >  
-> >  source "kernel/Kconfig.hz"
-> >  
-> > -config KEXEC
-> > -	bool "kexec system call"
-> > -	select KEXEC_CORE
-> > -	help
-> > -	  kexec is a system call that implements the ability to shutdown your
-> > -	  current kernel, and to start another kernel.  It is like a reboot
-> > -	  but it is independent of the system firmware.   And like a reboot
-> > -	  you can start any kernel with it, not just Linux.
-> > -
-> > -	  The name comes from the similarity to the exec system call.
-> > -
-> > -	  It is an ongoing process to be certain the hardware in a machine
-> > -	  is properly shutdown, so do not be surprised if this code does not
-> > -	  initially work for you.  As of this writing the exact hardware
-> > -	  interface is strongly in flux, so no good recommendation can be
-> > -	  made.
-> > -
-> > -config KEXEC_FILE
-> > -	bool "kexec file based system call"
-> > -	select KEXEC_CORE
-> > -	select HAVE_IMA_KEXEC if IMA
-> > -	depends on X86_64
-> > -	depends on CRYPTO=y
-> > -	depends on CRYPTO_SHA256=y
-> > -	help
-> > -	  This is new version of kexec system call. This system call is
-> > -	  file based and takes file descriptors as system call argument
-> > -	  for kernel and initramfs as opposed to list of segments as
-> > -	  accepted by previous system call.
-> > +config ARCH_SUPPORTS_KEXEC
-> > +	def_bool y
-> 
-> In v5, Joel Fernandes seems to suggest you change it to the following form:
+Date: Tue, 22 Aug 2023 11:20:36 +0200
+From: Helge Deller <deller@gmx.de>
+To: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, Andrei Vagin <avagin@openvz.org>, Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v2] procfs: Fix /proc/self/maps output for 32-bit kernel and compat tasks
+Message-ID: <ZOR95DiR8tdcHDfq@p100>
 
-It's unfortunate that the suggestion did not make it to the mailinglist.
+On a 32-bit kernel addresses should be shown with 8 hex digits, e.g.:
 
-> In arch/Kconfig:
-> +config ARCH_SUPPORTS_KEXEC
-> +	bool
-> 
-> In arch/x86/Kconfig:
-> config X86
-> 	... ...
-> +	select ARCH_SUPPORTS_KEXEC
-> 
-> In arch/arm64/Kconfig:
-> config ARM64
-> 	... ...
-> +	select ARCH_SUPPORTS_KEXEC if PM_SLEEP_SMP
+root@debian:~# cat /proc/self/maps
+00010000-00019000 r-xp 00000000 08:05 787324     /usr/bin/cat
+00019000-0001a000 rwxp 00009000 08:05 787324     /usr/bin/cat
+0001a000-0003b000 rwxp 00000000 00:00 0          [heap]
+f7551000-f770d000 r-xp 00000000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+f770d000-f770f000 r--p 001bc000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+f770f000-f7714000 rwxp 001be000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+f7d39000-f7d68000 r-xp 00000000 08:05 794759     /usr/lib/hppa-linux-gnu/ld.so.1
+f7d68000-f7d69000 r--p 0002f000 08:05 794759     /usr/lib/hppa-linux-gnu/ld.so.1
+f7d69000-f7d6d000 rwxp 00030000 08:05 794759     /usr/lib/hppa-linux-gnu/ld.so.1
+f7ea9000-f7eaa000 r-xp 00000000 00:00 0          [vdso]
+f8565000-f8587000 rwxp 00000000 00:00 0          [stack]
 
-Which might work for this case
+But since commmit 0e3dc0191431 ("procfs: add seq_put_hex_ll to speed up
+/proc/pid/maps") even on native 32-bit kernels the output looks like this:
 
-> 
-> etc..
-> 
-> You can refer to ARCH_HAS_DEBUG_VIRTUAL.
-> 
-> >  
-> > -config ARCH_HAS_KEXEC_PURGATORY
-> > -	def_bool KEXEC_FILE
-> > +config ARCH_SUPPORTS_KEXEC_FILE
-> > +	def_bool X86_64 && CRYPTO && CRYPTO_SHA256
-> >  
-> > -config KEXEC_SIG
-> > -	bool "Verify kernel signature during kexec_file_load() syscall"
-> > +config ARCH_SELECTS_KEXEC_FILE
-> > +	def_bool y
-> >  	depends on KEXEC_FILE
-> > -	help
-> > +	select HAVE_IMA_KEXEC if IMA
+root@debian:~# cat /proc/self/maps
+0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324  /usr/bin/cat
+0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787324  /usr/bin/cat
+000000001a000-000000003b000 rwxp 00000000 00:00 0  [heap]
+00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+00000000f758d000-00000000f758f000 r--p 000000001bc000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+00000000f758f000-00000000f7594000 rwxp 000000001be000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+00000000f7af9000-00000000f7b28000 r-xp 00000000 000000008:000000005 794759  /usr/lib/hppa-linux-gnu/ld.so.1
+00000000f7b28000-00000000f7b29000 r--p 000000002f000 000000008:000000005 794759  /usr/lib/hppa-linux-gnu/ld.so.1
+00000000f7b29000-00000000f7b2d000 rwxp 0000000030000 000000008:000000005 794759  /usr/lib/hppa-linux-gnu/ld.so.1
+00000000f7e0c000-00000000f7e0d000 r-xp 00000000 00:00 0  [vdso]
+00000000f9061000-00000000f9083000 rwxp 00000000 00:00 0  [stack]
 
-but not this case, at least not this trivially.
+This patch brings back the old default 8-hex digit output for
+32-bit kernels and compat tasks.
 
-Than for consistency it looks better to keep as is.
+Fixes: 0e3dc0191431 ("procfs: add seq_put_hex_ll to speed up /proc/pid/maps")
+Cc: Andrei Vagin <avagin@openvz.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-Thanks
+---
+v2:
+- Linux kernel test robot complained that is_compat_task() isn't known.
+  Use in_compat_syscall() instead and check for 32-bit kernel with
+  !IS_ENABLED(CONFIG_64BIT)
 
-Michal
+---
 
-> >  
-> > -	  This option makes the kexec_file_load() syscall check for a valid
-> > -	  signature of the kernel image.  The image can still be loaded without
-> > -	  a valid signature unless you also enable KEXEC_SIG_FORCE, though if
-> > -	  there's a signature that we can check, then it must be valid.
-> > +config ARCH_HAS_KEXEC_PURGATORY
-> > +	def_bool KEXEC_FILE
-> >  
-> > -	  In addition to this option, you need to enable signature
-> > -	  verification for the corresponding kernel image type being
-> > -	  loaded in order for this to work.
-> > +config ARCH_SUPPORTS_KEXEC_SIG
-> > +	def_bool y
-> >  
-> > -config KEXEC_SIG_FORCE
-> > -	bool "Require a valid signature in kexec_file_load() syscall"
-> > -	depends on KEXEC_SIG
-> > -	help
-> > -	  This option makes kernel signature verification mandatory for
-> > -	  the kexec_file_load() syscall.
-> > +config ARCH_SUPPORTS_KEXEC_SIG_FORCE
-> > +	def_bool y
-> >  
-> > -config KEXEC_BZIMAGE_VERIFY_SIG
-> > -	bool "Enable bzImage signature verification support"
-> > -	depends on KEXEC_SIG
-> > -	depends on SIGNED_PE_FILE_VERIFICATION
-> > -	select SYSTEM_TRUSTED_KEYRING
-> > -	help
-> > -	  Enable bzImage signature verification support.
-> > +config ARCH_SUPPORTS_KEXEC_BZIMAGE_VERIFY_SIG
-> > +	def_bool y
-> >  
-> > -config CRASH_DUMP
-> > -	bool "kernel crash dumps"
-> > -	depends on X86_64 || (X86_32 && HIGHMEM)
-> > -	help
-> > -	  Generate crash dump after being started by kexec.
-> > -	  This should be normally only set in special crash dump kernels
-> > -	  which are loaded in the main kernel with kexec-tools into
-> > -	  a specially reserved region and then later executed after
-> > -	  a crash by kdump/kexec. The crash dump kernel must be compiled
-> > -	  to a memory address not used by the main kernel or BIOS using
-> > -	  PHYSICAL_START, or it must be built as a relocatable image
-> > -	  (CONFIG_RELOCATABLE=y).
-> > -	  For more details see Documentation/admin-guide/kdump/kdump.rst
-> > +config ARCH_SUPPORTS_KEXEC_JUMP
-> > +	def_bool y
-> >  
-> > -config KEXEC_JUMP
-> > -	bool "kexec jump"
-> > -	depends on KEXEC && HIBERNATION
-> > -	help
-> > -	  Jump between original kernel and kexeced kernel and invoke
-> > -	  code in physical address mode via KEXEC
-> > +config ARCH_SUPPORTS_CRASH_DUMP
-> > +	def_bool X86_64 || (X86_32 && HIGHMEM)
-> >  
-> >  config PHYSICAL_START
-> >  	hex "Physical address where the kernel is loaded" if (EXPERT || CRASH_DUMP)
-> > 
-> 
-> -- 
-> Regards,
->   Zhen Lei
+diff --git a/fs/seq_file.c b/fs/seq_file.c
+index f5fdaf3b1572..52a0ea05cad2 100644
+--- a/fs/seq_file.c
++++ b/fs/seq_file.c
+@@ -19,6 +19,7 @@
+ #include <linux/printk.h>
+ #include <linux/string_helpers.h>
+ #include <linux/uio.h>
++#include <linux/compat.h>
+ 
+ #include <linux/uaccess.h>
+ #include <asm/page.h>
+@@ -759,8 +760,9 @@ void seq_put_hex_ll(struct seq_file *m, const char *delimiter,
+ 			seq_puts(m, delimiter);
+ 	}
+ 
+-	/* If x is 0, the result of __builtin_clzll is undefined */
+-	if (v == 0)
++	/* If v is 0, the result of __builtin_clzll is undefined */
++	/* Use provided width on 32-bit kernel and compat mode */
++	if (v == 0 || !IS_ENABLED(CONFIG_64BIT) || in_compat_syscall())
+ 		len = 1;
+ 	else
+ 		len = (sizeof(v) * 8 - __builtin_clzll(v) + 3) / 4;
+
+----- End forwarded message -----
