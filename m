@@ -2,109 +2,168 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACB23784EA1
-	for <lists+linux-parisc@lfdr.de>; Wed, 23 Aug 2023 04:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 967E3785522
+	for <lists+linux-parisc@lfdr.de>; Wed, 23 Aug 2023 12:15:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232208AbjHWCTQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 22 Aug 2023 22:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58736 "EHLO
+        id S232993AbjHWKPP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 23 Aug 2023 06:15:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232211AbjHWCTN (ORCPT
+        with ESMTP id S233372AbjHWKOr (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 22 Aug 2023 22:19:13 -0400
-X-Greylist: delayed 917 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Aug 2023 19:19:10 PDT
-Received: from symantec4.comsats.net.pk (symantec4.comsats.net.pk [203.124.41.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADFA2CF8
-        for <linux-parisc@vger.kernel.org>; Tue, 22 Aug 2023 19:19:10 -0700 (PDT)
-X-AuditID: cb7c291e-055ff70000002aeb-4a-64e5541fba40
-Received: from iesco.comsatshosting.com (iesco.comsatshosting.com [210.56.28.11])
-        (using TLS with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        by symantec4.comsats.net.pk (Symantec Messaging Gateway) with SMTP id 7E.A2.10987.F1455E46; Wed, 23 Aug 2023 05:34:39 +0500 (PKT)
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns;
-        d=iesco.com.pk; s=default;
-        h=received:content-type:mime-version:content-transfer-encoding
-          :content-description:subject:to:from:date:reply-to;
-        b=G0Jptx/pKKfMx3sx45ihUEq3qGu2z+1K+iWFW8IjI7EZ65pWtXtfo5v67FJDCSNeP
-          CICU3RnzrZbEbi13cQLsQvftpBLkb50SD6FCBG4+Nzbzfexb7pggumKjyhRmLkvW4
-          s8yEj0XZyiE5cECKiq514M263am/pLFKWFgt2GY80=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=iesco.com.pk; s=default;
-        h=reply-to:date:from:to:subject:content-description
-          :content-transfer-encoding:mime-version:content-type;
-        bh=GMzYzcyTxDsE6wX/XHG6MHqAdAiHrhqbmmLQ/TZ1QnQ=;
-        b=Wxt0Z9U9+pd19ix45oDk5VOKjsuyiZhiQncmUcNjXKEp3EwchWrAExo+awHiZJebG
-          nUyDrbxK0Via82WK1AU6mb5bAio3RbbylpX681LYvUxh136Fddy5HgEOI08DyJr3y
-          J70OXV1/cG2KJPYMRm8y8y9FskvY3bQy5qewuYtEw=
-Received: from [94.156.6.90] (UnknownHost [94.156.6.90]) by iesco.comsatshosting.com with SMTP;
-   Wed, 23 Aug 2023 04:31:05 +0500
-Message-ID: <7E.A2.10987.F1455E46@symantec4.comsats.net.pk>
-Content-Type: text/plain; charset="iso-8859-1"
+        Wed, 23 Aug 2023 06:14:47 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398EFEE;
+        Wed, 23 Aug 2023 03:14:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1692785671; x=1693390471; i=deller@gmx.de;
+ bh=+vjVPKDrBOyCnqJ4pbOmswE10ObdhKDRZDAv7WIvODs=;
+ h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:In-Reply-To;
+ b=U2IboGXy1UTBXX2U2qDOIpIq8HRll3xR4k2DYkCpGHQiDnjh0/XvJE5R3vlkKRNMFGbulab
+ zD2oHpPG/ls/vHACZV1t4qAJrb5BNbpZF1GeyEfzzdztH8jD6m4R4rdUhAmzdwDsPx/x3cjB1
+ hxs/TuXP4HwUtmYXGC/tFjEKfFXxdScOuWkD0iJJBlLJAKSuQtt54xuf+4BFxunMW/ACJAEPI
+ l2M0fFquME9sX1RYMtRG4aUL2AwnlxqidhUQniN5AW3FIqK6t+XVOB7UHtViAtFZ74EPuqVBn
+ FnB7VMDKHuDpyjk8OigM4gFATQlgej86V3wOngQl2alLto6rbdbw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.150.103]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mq2j2-1pvaei4AqI-00nDT0; Wed, 23
+ Aug 2023 12:14:31 +0200
+Message-ID: <1d5a18b1-efde-6c67-e17a-8c40e4e6d09c@gmx.de>
+Date:   Wed, 23 Aug 2023 12:14:30 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] procfs: Fix /proc/self/maps output for 32-bit kernel
+ and compat tasks
+Content-Language: en-US
+From:   Helge Deller <deller@gmx.de>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andrei Vagin <avagin@openvz.org>,
+        linux-parisc <linux-parisc@vger.kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+References: <ZOR95DiR8tdcHDfq@p100>
+ <20230822113453.acc69f8540bed25cde79e675@linux-foundation.org>
+ <8eb38faf-16a2-a538-b243-1b4706f73169@gmx.de>
+ <a1a19e05-0cfd-cae5-9edb-9d63e70ee06d@gmx.de>
+In-Reply-To: <a1a19e05-0cfd-cae5-9edb-9d63e70ee06d@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Re; Interest,
-To:     linux-parisc@vger.kernel.org
-From:   "Chen Yun" <pso.chairmanbod@iesco.com.pk>
-Date:   Tue, 22 Aug 2023 16:31:19 -0700
-Reply-To: chnyne@gmail.com
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNLMWRmVeSWpSXmKPExsVyyUKGW1c+5GmKwYuJ0haPTl1gcmD0+LxJ
-        LoAxissmJTUnsyy1SN8ugStjyboLLAW7mSva+hexNDA+Zupi5OSQEDCROPB5DSOILSSwh0li
-        wT0dEJtFYDWzxPbtql2MXED2Q2aJV2v3s4A4QgLNjBJzTvxiAaniFbCWmPb8MzuIzSygJ3Fj
-        6hQ2iLigxMmZT1gg4toSyxa+Zu5i5ACy1SS+dpWAhIUFxCQ+TVsG1ioioCBx4OVzsFY2AX2J
-        FV+bGSGOUJXonPMD6jgpiY1X1rNNYOSfhWTbLCTbZiHZNgth2wJGllWMEsWVuYnAQEs20UvO
-        zy1OLCnWy0st0SvI3sQIDMLTNZpyOxiXXko8xCjAwajEw/tz3ZMUIdbEMqCuQ4wSHMxKIrzS
-        3x+mCPGmJFZWpRblxxeV5qQWH2KU5mBREue1FXqWLCSQnliSmp2aWpBaBJNl4uCUamAUMnpR
-        Hqq7aClbhMwKE3HlrYt8GcSmW798rLg88Fqk6sI2I64di8ym8K04t+pOQ8FTt80zPl3b/aDI
-        V6ou7sEDtqctG2NPii/Zp9xQK/U4OTItxaWBI26eleMZTpMPcmtNjh2cHHJ16iaxO8tmMp8w
-        nXRQ7FvwpOL+drf/W2ZO8j7y7LJzXE2pEktxRqKhFnNRcSIA7Y1NXj4CAAA=
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_SBL,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
-        *      blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [URIs: iesco.com.pk]
-        * -0.7 RCVD_IN_DNSWL_LOW RBL: Sender listed at https://www.dnswl.org/,
-        *       low trust
-        *      [203.124.41.30 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [94.156.6.90 listed in zen.spamhaus.org]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
+X-Provags-ID: V03:K1:POnCAhUkxWA7Nycr7xMtIc6ojJsSa3o2+uLXrEfu0dGr7FZsKks
+ 2GPaOjPIdyS6drBp33SJKBjK2YPOfovQXXIqb42hCBUwBEDOMgDymdcsnq+uLZNDh4P/YDv
+ Gdb/JlLsQsRUrWrSkTIBbzhaiNWvsHRmnHVWoA/VYHHPlR5prNkBVmAcBng4VPcNSJXjQcr
+ JYqhudQ+WCV8epDIi+0YA==
+UI-OutboundReport: notjunk:1;M01:P0:g40IZdfjNfM=;US7ldrjTh3lYV1VlXRlibG6ijaI
+ mpeVbsJXJZQWEEHfsiwM0eusH///mETjZjkEL7APqGrIWunc4V+PrmKViA8oOkRQeR4FbStx7
+ 49I0t+1/9ilKWYUknP1F4ZCLmVP67Niabj/szIObOKk/sNkjClmAB6uKgq/Q2nq8e30gYKGOO
+ 7EBqBz7+2EqrQO4a+KIL/xaIJFI4JqnT80OKYRxlt571lSiKT+wah4mkjvKZcrdvqpLYVG/Cp
+ DFZGDaCz4P41OZ45ViSJwcuVYYQFGeZLdrqaDaQnudabWc5grv9jeDocOK4MMpjHoriaUzFaK
+ hBv26Q4RSscB8TMjXhqP5FaZ8eeZ9WC2zJcVda9WD4uY3jjPZz3ijsA+1DeZY8F58M9NRtkCG
+ 7VvdDFULi1oNgJRtvefOSf0BbryhhaXv72I2X3rS3+/99+BkvZOmBI/Zg4UsXhiEIB1SXFAD1
+ HmRVCIJFjwfo5j9DfBR8HA87CIgO2qcv/X1qLYxN2/kx9dlAJKGd7ULgKSPaRLNkwF7WaQJUx
+ nMKjdKKmBIDXOhoXc7J7BPOIWLu0oaNxahzRMkeUDn3z1fMYKgiyQV3zYCBnfLzMHZfySe4O/
+ eyXFZ5fIx0fDL/JixHNFQz+teJiNjZgeVtbSu40CaRBGmDwDjqp16KKk3DB3f7to4kFMe3dhh
+ cmGsmqVGy+T/utVkKcgdT1MjIOWZx9wSVABRbUsMgrvvqwwGWqyQxc8NACsbWAaG4PU3umY0O
+ Mdh2IGVoNKQSR3x1+1wfRzFEzWJpkd7Wzoq0ot842Xb10roW6cG+axuKVSo182diS1ssCIAW3
+ GL+y9GN+KEYnhSDov3tHWDBAjV/+QONrXxmipmovzR4ERIIPZGT1lhfA70iAl5gZbAhRj37nx
+ P62Ns/tX7T0a/Six8IojLm45hghEwz+gmPSVfQLmmDrXkmyOC+HA+kVXGzLkKJQp2z+m6o1L6
+ Ubhzf11tujelZQ/cytofGm9r4QA=
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Re; Interest,
+On 8/23/23 00:04, Helge Deller wrote:
+> On 8/22/23 22:53, Helge Deller wrote:
+>> On 8/22/23 20:34, Andrew Morton wrote:
+>>> On Tue, 22 Aug 2023 11:20:36 +0200 Helge Deller <deller@gmx.de> wrote:
+>>>
+>>>> On a 32-bit kernel addresses should be shown with 8 hex digits, e.g.:
+>>>>
+>>>> root@debian:~# cat /proc/self/maps
+>>>> 00010000-00019000 r-xp 00000000 08:05 787324=C2=A0=C2=A0=C2=A0=C2=A0 =
+/usr/bin/cat
+>>>> 00019000-0001a000 rwxp 00009000 08:05 787324=C2=A0=C2=A0=C2=A0=C2=A0 =
+/usr/bin/cat
+>>>> 0001a000-0003b000 rwxp 00000000 00:00 0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 [heap]
+>>>> f7551000-f770d000 r-xp 00000000 08:05 794765=C2=A0=C2=A0=C2=A0=C2=A0 =
+/usr/lib/hppa-linux-gnu/libc.so.6
+>>>> f770d000-f770f000 r--p 001bc000 08:05 794765=C2=A0=C2=A0=C2=A0=C2=A0 =
+/usr/lib/hppa-linux-gnu/libc.so.6
+>>>> f770f000-f7714000 rwxp 001be000 08:05 794765=C2=A0=C2=A0=C2=A0=C2=A0 =
+/usr/lib/hppa-linux-gnu/libc.so.6
+>>>> f7d39000-f7d68000 r-xp 00000000 08:05 794759=C2=A0=C2=A0=C2=A0=C2=A0 =
+/usr/lib/hppa-linux-gnu/ld.so.1
+>>>> f7d68000-f7d69000 r--p 0002f000 08:05 794759=C2=A0=C2=A0=C2=A0=C2=A0 =
+/usr/lib/hppa-linux-gnu/ld.so.1
+>>>> f7d69000-f7d6d000 rwxp 00030000 08:05 794759=C2=A0=C2=A0=C2=A0=C2=A0 =
+/usr/lib/hppa-linux-gnu/ld.so.1
+>>>> f7ea9000-f7eaa000 r-xp 00000000 00:00 0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 [vdso]
+>>>> f8565000-f8587000 rwxp 00000000 00:00 0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 [stack]
+>>>>
+>>>> But since commmit 0e3dc0191431 ("procfs: add seq_put_hex_ll to speed =
+up
+>>>> /proc/pid/maps") even on native 32-bit kernels the output looks like =
+this:
+>>>>
+>>>> root@debian:~# cat /proc/self/maps
+>>>> 0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324=
+=C2=A0 /usr/bin/cat
+>>>> 0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787=
+324=C2=A0 /usr/bin/cat
+>>>> 000000001a000-000000003b000 rwxp 00000000 00:00 0=C2=A0 [heap]
+>>>> 00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 7=
+94765=C2=A0 /usr/lib/hppa-linux-gnu/libc.so.6
+>>>> 00000000f758d000-00000000f758f000 r--p 000000001bc000 000000008:00000=
+0005 794765=C2=A0 /usr/lib/hppa-linux-gnu/libc.so.6
+>>>> 00000000f758f000-00000000f7594000 rwxp 000000001be000 000000008:00000=
+0005 794765=C2=A0 /usr/lib/hppa-linux-gnu/libc.so.6
+>>>> 00000000f7af9000-00000000f7b28000 r-xp 00000000 000000008:000000005 7=
+94759=C2=A0 /usr/lib/hppa-linux-gnu/ld.so.1
+>>>> 00000000f7b28000-00000000f7b29000 r--p 000000002f000 000000008:000000=
+005 794759=C2=A0 /usr/lib/hppa-linux-gnu/ld.so.1
+>>>> 00000000f7b29000-00000000f7b2d000 rwxp 0000000030000 000000008:000000=
+005 794759=C2=A0 /usr/lib/hppa-linux-gnu/ld.so.1
+>>>> 00000000f7e0c000-00000000f7e0d000 r-xp 00000000 00:00 0=C2=A0 [vdso]
+>>>> 00000000f9061000-00000000f9083000 rwxp 00000000 00:00 0=C2=A0 [stack]
+>>>>
+>>>> This patch brings back the old default 8-hex digit output for
+>>>> 32-bit kernels and compat tasks.
+>>>>
+>>>> Fixes: 0e3dc0191431 ("procfs: add seq_put_hex_ll to speed up /proc/pi=
+d/maps")
+>>>
+>>> That was five years ago.
 
-I am interested in discussing the Investment proposal as I explained
-in my previous mail. May you let me know your interest and the
-possibility of a cooperation aimed for mutual interest.
+It's even worse :-)
+The real bug was introduced 10 years ago, in kernel 3.11.
+Commit 4df87bb7b6a22 ("lib: add weak clz/ctz functions") added __clzsi2()
+and __clzdi2() which operate on 32-bit parameters instead of 64-bit
+parameters (64-bit kernel is OK, just 32-bit kernels are affected!).
 
-Looking forward to your mail for further discussion.
+This patch in my for-next tree fixes it:
+https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/co=
+mmit/?h=3Dfor-next&id=3Dc8daddb96ddc4cc95b19944ef5dfa831d317fb4b
 
-Regards
+I'll send the final patch to the mailing list if the tests via for-next se=
+ems ok.
 
-------
-Chen Yun - Chairman of CREC
-China Railway Engineering Corporation - CRECG
-China Railway Plaza, No.69 Fuxing Road, Haidian District, Beijing, P.R.
-China
+>> Given there is some risk of breaking existing parsers, is it worth fixi=
+ng this?
+The parsers are not the problem, but Yes, we will have to fix it.
 
+The patch will not affect 64-bit kernels.
+But for 32-bit kernels we will need that patch to get __clzdi2() return th=
+e correct
+values, otherwise there might be other upcoming issues.
+
+Helge
