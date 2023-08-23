@@ -2,168 +2,250 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 967E3785522
-	for <lists+linux-parisc@lfdr.de>; Wed, 23 Aug 2023 12:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 718CE785D11
+	for <lists+linux-parisc@lfdr.de>; Wed, 23 Aug 2023 18:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232993AbjHWKPP (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 23 Aug 2023 06:15:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52030 "EHLO
+        id S237483AbjHWQO4 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 23 Aug 2023 12:14:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233372AbjHWKOr (ORCPT
+        with ESMTP id S237482AbjHWQO4 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 23 Aug 2023 06:14:47 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398EFEE;
-        Wed, 23 Aug 2023 03:14:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1692785671; x=1693390471; i=deller@gmx.de;
- bh=+vjVPKDrBOyCnqJ4pbOmswE10ObdhKDRZDAv7WIvODs=;
- h=X-UI-Sender-Class:Date:Subject:From:To:Cc:References:In-Reply-To;
- b=U2IboGXy1UTBXX2U2qDOIpIq8HRll3xR4k2DYkCpGHQiDnjh0/XvJE5R3vlkKRNMFGbulab
- zD2oHpPG/ls/vHACZV1t4qAJrb5BNbpZF1GeyEfzzdztH8jD6m4R4rdUhAmzdwDsPx/x3cjB1
- hxs/TuXP4HwUtmYXGC/tFjEKfFXxdScOuWkD0iJJBlLJAKSuQtt54xuf+4BFxunMW/ACJAEPI
- l2M0fFquME9sX1RYMtRG4aUL2AwnlxqidhUQniN5AW3FIqK6t+XVOB7UHtViAtFZ74EPuqVBn
- FnB7VMDKHuDpyjk8OigM4gFATQlgej86V3wOngQl2alLto6rbdbw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.150.103]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mq2j2-1pvaei4AqI-00nDT0; Wed, 23
- Aug 2023 12:14:31 +0200
-Message-ID: <1d5a18b1-efde-6c67-e17a-8c40e4e6d09c@gmx.de>
-Date:   Wed, 23 Aug 2023 12:14:30 +0200
+        Wed, 23 Aug 2023 12:14:56 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 93017E7E;
+        Wed, 23 Aug 2023 09:14:49 -0700 (PDT)
+Received: from pwmachine.numericable.fr (85-170-34-233.rev.numericable.fr [85.170.34.233])
+        by linux.microsoft.com (Postfix) with ESMTPSA id B645E2126CC6;
+        Wed, 23 Aug 2023 09:14:45 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B645E2126CC6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1692807289;
+        bh=lt0BWoCzKU9aBI9VmoKWYDdOwLmOs+rGiamRpCppdZY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=ryDQ3sg5K+4/KzXzDFfl6WO5jLgxConn53svwJRwhCmCIy1U97+2rfnKtiLqSzC7/
+         Wy7VcR/j0ODnGkadQBvdgDc3ZSLaH7iWYF/5FFDCwaomlxYfAmMRsAOb07Kuq8Hop/
+         K9zQ+WI3VTnDXTorW1jr08P24+y+Q8IEsQQ8jGpQ=
+From:   Francis Laniel <flaniel@linux.microsoft.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        linux-trace-kernel@vger.kernel.org,
+        Francis Laniel <flaniel@linux.microsoft.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org
+Subject: [RFC PATCH v1 1/1] tracing/kprobes: Return ENAMESVRLSYMS when func matches several symbols
+Date:   Wed, 23 Aug 2023 18:14:10 +0200
+Message-Id: <20230823161410.103489-2-flaniel@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230823161410.103489-1-flaniel@linux.microsoft.com>
+References: <20230823161410.103489-1-flaniel@linux.microsoft.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] procfs: Fix /proc/self/maps output for 32-bit kernel
- and compat tasks
-Content-Language: en-US
-From:   Helge Deller <deller@gmx.de>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andrei Vagin <avagin@openvz.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-References: <ZOR95DiR8tdcHDfq@p100>
- <20230822113453.acc69f8540bed25cde79e675@linux-foundation.org>
- <8eb38faf-16a2-a538-b243-1b4706f73169@gmx.de>
- <a1a19e05-0cfd-cae5-9edb-9d63e70ee06d@gmx.de>
-In-Reply-To: <a1a19e05-0cfd-cae5-9edb-9d63e70ee06d@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:POnCAhUkxWA7Nycr7xMtIc6ojJsSa3o2+uLXrEfu0dGr7FZsKks
- 2GPaOjPIdyS6drBp33SJKBjK2YPOfovQXXIqb42hCBUwBEDOMgDymdcsnq+uLZNDh4P/YDv
- Gdb/JlLsQsRUrWrSkTIBbzhaiNWvsHRmnHVWoA/VYHHPlR5prNkBVmAcBng4VPcNSJXjQcr
- JYqhudQ+WCV8epDIi+0YA==
-UI-OutboundReport: notjunk:1;M01:P0:g40IZdfjNfM=;US7ldrjTh3lYV1VlXRlibG6ijaI
- mpeVbsJXJZQWEEHfsiwM0eusH///mETjZjkEL7APqGrIWunc4V+PrmKViA8oOkRQeR4FbStx7
- 49I0t+1/9ilKWYUknP1F4ZCLmVP67Niabj/szIObOKk/sNkjClmAB6uKgq/Q2nq8e30gYKGOO
- 7EBqBz7+2EqrQO4a+KIL/xaIJFI4JqnT80OKYRxlt571lSiKT+wah4mkjvKZcrdvqpLYVG/Cp
- DFZGDaCz4P41OZ45ViSJwcuVYYQFGeZLdrqaDaQnudabWc5grv9jeDocOK4MMpjHoriaUzFaK
- hBv26Q4RSscB8TMjXhqP5FaZ8eeZ9WC2zJcVda9WD4uY3jjPZz3ijsA+1DeZY8F58M9NRtkCG
- 7VvdDFULi1oNgJRtvefOSf0BbryhhaXv72I2X3rS3+/99+BkvZOmBI/Zg4UsXhiEIB1SXFAD1
- HmRVCIJFjwfo5j9DfBR8HA87CIgO2qcv/X1qLYxN2/kx9dlAJKGd7ULgKSPaRLNkwF7WaQJUx
- nMKjdKKmBIDXOhoXc7J7BPOIWLu0oaNxahzRMkeUDn3z1fMYKgiyQV3zYCBnfLzMHZfySe4O/
- eyXFZ5fIx0fDL/JixHNFQz+teJiNjZgeVtbSu40CaRBGmDwDjqp16KKk3DB3f7to4kFMe3dhh
- cmGsmqVGy+T/utVkKcgdT1MjIOWZx9wSVABRbUsMgrvvqwwGWqyQxc8NACsbWAaG4PU3umY0O
- Mdh2IGVoNKQSR3x1+1wfRzFEzWJpkd7Wzoq0ot842Xb10roW6cG+axuKVSo182diS1ssCIAW3
- GL+y9GN+KEYnhSDov3tHWDBAjV/+QONrXxmipmovzR4ERIIPZGT1lhfA70iAl5gZbAhRj37nx
- P62Ns/tX7T0a/Six8IojLm45hghEwz+gmPSVfQLmmDrXkmyOC+HA+kVXGzLkKJQp2z+m6o1L6
- Ubhzf11tujelZQ/cytofGm9r4QA=
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 8/23/23 00:04, Helge Deller wrote:
-> On 8/22/23 22:53, Helge Deller wrote:
->> On 8/22/23 20:34, Andrew Morton wrote:
->>> On Tue, 22 Aug 2023 11:20:36 +0200 Helge Deller <deller@gmx.de> wrote:
->>>
->>>> On a 32-bit kernel addresses should be shown with 8 hex digits, e.g.:
->>>>
->>>> root@debian:~# cat /proc/self/maps
->>>> 00010000-00019000 r-xp 00000000 08:05 787324=C2=A0=C2=A0=C2=A0=C2=A0 =
-/usr/bin/cat
->>>> 00019000-0001a000 rwxp 00009000 08:05 787324=C2=A0=C2=A0=C2=A0=C2=A0 =
-/usr/bin/cat
->>>> 0001a000-0003b000 rwxp 00000000 00:00 0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 [heap]
->>>> f7551000-f770d000 r-xp 00000000 08:05 794765=C2=A0=C2=A0=C2=A0=C2=A0 =
-/usr/lib/hppa-linux-gnu/libc.so.6
->>>> f770d000-f770f000 r--p 001bc000 08:05 794765=C2=A0=C2=A0=C2=A0=C2=A0 =
-/usr/lib/hppa-linux-gnu/libc.so.6
->>>> f770f000-f7714000 rwxp 001be000 08:05 794765=C2=A0=C2=A0=C2=A0=C2=A0 =
-/usr/lib/hppa-linux-gnu/libc.so.6
->>>> f7d39000-f7d68000 r-xp 00000000 08:05 794759=C2=A0=C2=A0=C2=A0=C2=A0 =
-/usr/lib/hppa-linux-gnu/ld.so.1
->>>> f7d68000-f7d69000 r--p 0002f000 08:05 794759=C2=A0=C2=A0=C2=A0=C2=A0 =
-/usr/lib/hppa-linux-gnu/ld.so.1
->>>> f7d69000-f7d6d000 rwxp 00030000 08:05 794759=C2=A0=C2=A0=C2=A0=C2=A0 =
-/usr/lib/hppa-linux-gnu/ld.so.1
->>>> f7ea9000-f7eaa000 r-xp 00000000 00:00 0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 [vdso]
->>>> f8565000-f8587000 rwxp 00000000 00:00 0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 [stack]
->>>>
->>>> But since commmit 0e3dc0191431 ("procfs: add seq_put_hex_ll to speed =
-up
->>>> /proc/pid/maps") even on native 32-bit kernels the output looks like =
-this:
->>>>
->>>> root@debian:~# cat /proc/self/maps
->>>> 0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324=
-=C2=A0 /usr/bin/cat
->>>> 0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787=
-324=C2=A0 /usr/bin/cat
->>>> 000000001a000-000000003b000 rwxp 00000000 00:00 0=C2=A0 [heap]
->>>> 00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 7=
-94765=C2=A0 /usr/lib/hppa-linux-gnu/libc.so.6
->>>> 00000000f758d000-00000000f758f000 r--p 000000001bc000 000000008:00000=
-0005 794765=C2=A0 /usr/lib/hppa-linux-gnu/libc.so.6
->>>> 00000000f758f000-00000000f7594000 rwxp 000000001be000 000000008:00000=
-0005 794765=C2=A0 /usr/lib/hppa-linux-gnu/libc.so.6
->>>> 00000000f7af9000-00000000f7b28000 r-xp 00000000 000000008:000000005 7=
-94759=C2=A0 /usr/lib/hppa-linux-gnu/ld.so.1
->>>> 00000000f7b28000-00000000f7b29000 r--p 000000002f000 000000008:000000=
-005 794759=C2=A0 /usr/lib/hppa-linux-gnu/ld.so.1
->>>> 00000000f7b29000-00000000f7b2d000 rwxp 0000000030000 000000008:000000=
-005 794759=C2=A0 /usr/lib/hppa-linux-gnu/ld.so.1
->>>> 00000000f7e0c000-00000000f7e0d000 r-xp 00000000 00:00 0=C2=A0 [vdso]
->>>> 00000000f9061000-00000000f9083000 rwxp 00000000 00:00 0=C2=A0 [stack]
->>>>
->>>> This patch brings back the old default 8-hex digit output for
->>>> 32-bit kernels and compat tasks.
->>>>
->>>> Fixes: 0e3dc0191431 ("procfs: add seq_put_hex_ll to speed up /proc/pi=
-d/maps")
->>>
->>> That was five years ago.
+Previously to this commit, if func matches several symbols, a PMU kprobe would
+be installed for the first matching address.
+This could lead to some misunderstanding when some BPF code was never called
+because it was attached to a function which was indeed not call, because the
+effectively called one has no kprobes.
 
-It's even worse :-)
-The real bug was introduced 10 years ago, in kernel 3.11.
-Commit 4df87bb7b6a22 ("lib: add weak clz/ctz functions") added __clzsi2()
-and __clzdi2() which operate on 32-bit parameters instead of 64-bit
-parameters (64-bit kernel is OK, just 32-bit kernels are affected!).
+So, this commit introduces ENAMESVRLSYMS which is returned when func matches
+several symbols.
+This way, user needs to use addr to remove the ambiguity.
 
-This patch in my for-next tree fixes it:
-https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/co=
-mmit/?h=3Dfor-next&id=3Dc8daddb96ddc4cc95b19944ef5dfa831d317fb4b
+Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+Link: https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@kernel.org/
+---
+ arch/alpha/include/uapi/asm/errno.h        |  2 ++
+ arch/mips/include/uapi/asm/errno.h         |  2 ++
+ arch/parisc/include/uapi/asm/errno.h       |  2 ++
+ arch/sparc/include/uapi/asm/errno.h        |  2 ++
+ include/uapi/asm-generic/errno.h           |  2 ++
+ kernel/trace/trace_kprobe.c                | 26 ++++++++++++++++++++++
+ tools/arch/alpha/include/uapi/asm/errno.h  |  2 ++
+ tools/arch/mips/include/uapi/asm/errno.h   |  2 ++
+ tools/arch/parisc/include/uapi/asm/errno.h |  2 ++
+ tools/arch/sparc/include/uapi/asm/errno.h  |  2 ++
+ tools/include/uapi/asm-generic/errno.h     |  2 ++
+ 11 files changed, 46 insertions(+)
 
-I'll send the final patch to the mailing list if the tests via for-next se=
-ems ok.
+diff --git a/arch/alpha/include/uapi/asm/errno.h b/arch/alpha/include/uapi/asm/errno.h
+index 3d265f6babaf..3d9686d915f9 100644
+--- a/arch/alpha/include/uapi/asm/errno.h
++++ b/arch/alpha/include/uapi/asm/errno.h
+@@ -125,4 +125,6 @@
 
->> Given there is some risk of breaking existing parsers, is it worth fixi=
-ng this?
-The parsers are not the problem, but Yes, we will have to fix it.
+ #define EHWPOISON	139	/* Memory page has hardware error */
 
-The patch will not affect 64-bit kernels.
-But for 32-bit kernels we will need that patch to get __clzdi2() return th=
-e correct
-values, otherwise there might be other upcoming issues.
++#define ENAMESVRLSYMS	140	/* Name correspond to several symbols */
++
+ #endif
+diff --git a/arch/mips/include/uapi/asm/errno.h b/arch/mips/include/uapi/asm/errno.h
+index 2fb714e2d6d8..1fd64ee7b629 100644
+--- a/arch/mips/include/uapi/asm/errno.h
++++ b/arch/mips/include/uapi/asm/errno.h
+@@ -124,6 +124,8 @@
 
-Helge
+ #define EHWPOISON	168	/* Memory page has hardware error */
+
++#define ENAMESVRLSYMS	169	/* Name correspond to several symbols */
++
+ #define EDQUOT		1133	/* Quota exceeded */
+
+
+diff --git a/arch/parisc/include/uapi/asm/errno.h b/arch/parisc/include/uapi/asm/errno.h
+index 87245c584784..c7845ceece26 100644
+--- a/arch/parisc/include/uapi/asm/errno.h
++++ b/arch/parisc/include/uapi/asm/errno.h
+@@ -124,4 +124,6 @@
+
+ #define EHWPOISON	257	/* Memory page has hardware error */
+
++#define ENAMESVRLSYMS	258	/* Name correspond to several symbols */
++
+ #endif
+diff --git a/arch/sparc/include/uapi/asm/errno.h b/arch/sparc/include/uapi/asm/errno.h
+index 81a732b902ee..1ed065943bab 100644
+--- a/arch/sparc/include/uapi/asm/errno.h
++++ b/arch/sparc/include/uapi/asm/errno.h
+@@ -115,4 +115,6 @@
+
+ #define EHWPOISON	135	/* Memory page has hardware error */
+
++#define ENAMESVRLSYMS	136	/* Name correspond to several symbols */
++
+ #endif
+diff --git a/include/uapi/asm-generic/errno.h b/include/uapi/asm-generic/errno.h
+index cf9c51ac49f9..3d5d5740c8da 100644
+--- a/include/uapi/asm-generic/errno.h
++++ b/include/uapi/asm-generic/errno.h
+@@ -120,4 +120,6 @@
+
+ #define EHWPOISON	133	/* Memory page has hardware error */
+
++#define ENAMESVRLSYMS	134	/* Name correspond to several symbols */
++
+ #endif
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 23dba01831f7..53b66db1ff53 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -1699,6 +1699,16 @@ static int unregister_kprobe_event(struct trace_kprobe *tk)
+ }
+
+ #ifdef CONFIG_PERF_EVENTS
++
++static int count_symbols(void *data, unsigned long unused)
++{
++	unsigned int *count = data;
++
++	(*count)++;
++
++	return 0;
++}
++
+ /* create a trace_kprobe, but don't add it to global lists */
+ struct trace_event_call *
+ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+@@ -1709,6 +1719,22 @@ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+ 	int ret;
+ 	char *event;
+
++	/*
++	 * If user specifies func, we check that the function name does not
++	 * correspond to several symbols.
++	 * If this is the case, we return with error code ENAMESVRLSYMS to
++	 * indicate the user he/she should use addr and offs rather than func to
++	 * remove the ambiguity.
++	 */
++	if (func) {
++		unsigned int count;
++
++		count = 0;
++		kallsyms_on_each_match_symbol(count_symbols, func, &count);
++		if (count > 1)
++			return ERR_PTR(-ENAMESVRLSYMS);
++	}
++
+ 	/*
+ 	 * local trace_kprobes are not added to dyn_event, so they are never
+ 	 * searched in find_trace_kprobe(). Therefore, there is no concern of
+diff --git a/tools/arch/alpha/include/uapi/asm/errno.h b/tools/arch/alpha/include/uapi/asm/errno.h
+index 3d265f6babaf..3d9686d915f9 100644
+--- a/tools/arch/alpha/include/uapi/asm/errno.h
++++ b/tools/arch/alpha/include/uapi/asm/errno.h
+@@ -125,4 +125,6 @@
+
+ #define EHWPOISON	139	/* Memory page has hardware error */
+
++#define ENAMESVRLSYMS	140	/* Name correspond to several symbols */
++
+ #endif
+diff --git a/tools/arch/mips/include/uapi/asm/errno.h b/tools/arch/mips/include/uapi/asm/errno.h
+index 2fb714e2d6d8..1fd64ee7b629 100644
+--- a/tools/arch/mips/include/uapi/asm/errno.h
++++ b/tools/arch/mips/include/uapi/asm/errno.h
+@@ -124,6 +124,8 @@
+
+ #define EHWPOISON	168	/* Memory page has hardware error */
+
++#define ENAMESVRLSYMS	169	/* Name correspond to several symbols */
++
+ #define EDQUOT		1133	/* Quota exceeded */
+
+
+diff --git a/tools/arch/parisc/include/uapi/asm/errno.h b/tools/arch/parisc/include/uapi/asm/errno.h
+index 87245c584784..c7845ceece26 100644
+--- a/tools/arch/parisc/include/uapi/asm/errno.h
++++ b/tools/arch/parisc/include/uapi/asm/errno.h
+@@ -124,4 +124,6 @@
+
+ #define EHWPOISON	257	/* Memory page has hardware error */
+
++#define ENAMESVRLSYMS	258	/* Name correspond to several symbols */
++
+ #endif
+diff --git a/tools/arch/sparc/include/uapi/asm/errno.h b/tools/arch/sparc/include/uapi/asm/errno.h
+index 81a732b902ee..1ed065943bab 100644
+--- a/tools/arch/sparc/include/uapi/asm/errno.h
++++ b/tools/arch/sparc/include/uapi/asm/errno.h
+@@ -115,4 +115,6 @@
+
+ #define EHWPOISON	135	/* Memory page has hardware error */
+
++#define ENAMESVRLSYMS	136	/* Name correspond to several symbols */
++
+ #endif
+diff --git a/tools/include/uapi/asm-generic/errno.h b/tools/include/uapi/asm-generic/errno.h
+index cf9c51ac49f9..3d5d5740c8da 100644
+--- a/tools/include/uapi/asm-generic/errno.h
++++ b/tools/include/uapi/asm-generic/errno.h
+@@ -120,4 +120,6 @@
+
+ #define EHWPOISON	133	/* Memory page has hardware error */
+
++#define ENAMESVRLSYMS	134	/* Name correspond to several symbols */
++
+ #endif
+--
+2.34.1
+
