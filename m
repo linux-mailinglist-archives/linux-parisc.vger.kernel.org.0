@@ -2,75 +2,120 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02CAC7891BF
-	for <lists+linux-parisc@lfdr.de>; Sat, 26 Aug 2023 00:35:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83C977891E1
+	for <lists+linux-parisc@lfdr.de>; Sat, 26 Aug 2023 00:45:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230169AbjHYWeb (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 25 Aug 2023 18:34:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43204 "EHLO
+        id S230316AbjHYWo6 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 25 Aug 2023 18:44:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230173AbjHYWeC (ORCPT
+        with ESMTP id S230153AbjHYWok (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 25 Aug 2023 18:34:02 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D628F26A5
-        for <linux-parisc@vger.kernel.org>; Fri, 25 Aug 2023 15:33:58 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-529fa243739so4592a12.0
-        for <linux-parisc@vger.kernel.org>; Fri, 25 Aug 2023 15:33:58 -0700 (PDT)
+        Fri, 25 Aug 2023 18:44:40 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A203269F;
+        Fri, 25 Aug 2023 15:44:38 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1bdbbede5d4so11971175ad.2;
+        Fri, 25 Aug 2023 15:44:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693002837; x=1693607637; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1693003477; x=1693608277;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:subject:from:references:cc:to:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EqXwtngxbhcerFqq2zzrMvbfgVxQJUNuombpjhiM9xQ=;
-        b=NLyB9aUncDEVcUMuN2DPiA/YxQpRVA1YzTqo4wVgy6rEIj9Xxu4oQ1amnG+RoIBxAE
-         aafI7MtWGaxK92/k+CIyvN6ds01pkj5P5dt3KmRD7k5d1azbsK9dSzKr/Y8pEj4Xu8iV
-         EQ4J/u8E3Tr14suESQ7hU1z5xJwKabJZocUpJbS5Vv1aIN1efSDX/RYMokfsDZFNGKEe
-         HLEshr9sADc+FOJ0C4hszMln8QF0A4YwEoU2aeLAkRnrZT3wPzaGoup2cO74qjaewLAy
-         BrNP2AlDhV6EJEfxiMcjxZih4bXES58CTd1uCq0epnIDA6BPZZtnDBzbTV1bkfVLMmxw
-         de4Q==
+        bh=+EfHZKV5Rs50FUqRYXClC9vzZD5WlxrYeYbs3IamXT4=;
+        b=YxGLOPcaOZR604IVjJRcGcoKnB33IZ0CTfYuHyWKXt+0pInUOQSMoNyJ0dS6B1KmgY
+         cxaBOMvor3UlQ6MZnz8hco99YltIQ+TVGTfUiOj3M6EtIom4aLy5Ogu10qSlU6URXk+W
+         RnRGmXEhLIg0POh+PDKptxk33OVTKsM2/52zz5494dr8R8CSNGpoqbrRI3gpmS9Q+cTN
+         hJYUsHOFyiz+AcMtmJLq8rt6PHOWgX+jhYTNJt4ghkMZ1YZYHd+UADqGIVtKxfSRzrdW
+         eHx1TWLsT9QLE3Re7SH9KzLMTXlxKvezJrH+R76CylIu77symnMHbROv+J2zJ4UP/BTK
+         7yuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693002837; x=1693607637;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EqXwtngxbhcerFqq2zzrMvbfgVxQJUNuombpjhiM9xQ=;
-        b=GDx/KyzGU+wzh/V3LRcFgI7GR4jsjFjbjvS6qLLVzxsx+M/nAUVHtEgyuu1RP5Wjbu
-         XCdonn2BnqPsYmHclBDKEAGHYt77oGLCknF1Jq+WYG+sFiRNTJ3GK+wgvvKLp6QVZIJD
-         KAI0lL3GYMYjjp4YFAO3L48DNabWx9FoUpbbDiU4HlbdiZ8t//SM2d5ezx4mq4Kpa1fm
-         6m8CTif1ThL6+3px+xdeLuAvx1igDN2SSupPw4Vbqnj8/Im+ZFBhwAGN77h/2SkcgN0R
-         uoJVlKrHX/uxTVZgxe+Wt36Q2u1+6IopB6+N71VigQaQbG7Ep9eACPfGoAGDCe81MTnF
-         dC+g==
-X-Gm-Message-State: AOJu0Yx4Ljs0YVJM5xk8VTzoRPDH2H0pYZnpWA4Rq2HHxcsmzz51P7GD
-        dlCVaPx4m0i6/k8BKB3SJvLkPQrJnA4GpufM5nSc
-X-Google-Smtp-Source: AGHT+IFl+RqipzjnPK+1V9vuXjOHGZb5UAP9IzU5oxxAZYiKr7WoTFmlztwgHegYdwhF5D9l61/KmtDABnovZFTgoF8=
-X-Received: by 2002:a50:d55c:0:b0:523:d5bc:8424 with SMTP id
- f28-20020a50d55c000000b00523d5bc8424mr44451edj.5.1693002837049; Fri, 25 Aug
- 2023 15:33:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <ZOkGCSNr0VN2VIJJ@p100> <CAHk-=wjZwSymfuGvf7TX3UQLU1OMN1FZMnEA-Hja0ruqyhMK4A@mail.gmail.com>
- <CAHk-=whVvD05T0yD5DQj803uETLD6qDq-Vx-SiLPcrL=eO77LQ@mail.gmail.com> <CAKwvOdnYauyrzz7-ceH-MP_KZ5ED8oYxjRx_Xei68=tUOSeKyA@mail.gmail.com>
-In-Reply-To: <CAKwvOdnYauyrzz7-ceH-MP_KZ5ED8oYxjRx_Xei68=tUOSeKyA@mail.gmail.com>
-From:   Bill Wendling <morbo@google.com>
-Date:   Fri, 25 Aug 2023 15:33:40 -0700
-Message-ID: <CAGG=3QWcZPYqHMcjwuYDz1+OQhzS40hmhdOvSBZBQOkhs8YAQQ@mail.gmail.com>
-Subject: Re: [PATCH] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit kernels
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Helge Deller <deller@gmx.de>,
-        Nathan Chancellor <nathan@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        d=1e100.net; s=20221208; t=1693003477; x=1693608277;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:subject:from:references:cc:to:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+EfHZKV5Rs50FUqRYXClC9vzZD5WlxrYeYbs3IamXT4=;
+        b=cp1KRCgcYkUTSF2D8a/65bm9gqUzQihVnP8c6wC6//KEb6d0JIiky/UAp7xRjHFcih
+         8s1FHO+UQbhcKHIGH6ZyjVwvqRLBbhsB1N1lNaZ9FL0owO1HKhy/Fwso4Cvtq+DxE50o
+         vA7XJSYq98tq7HF5W5D9gEn1VMwaEF0hgGVUNno9jMKLX7vah3BgtHwPV9vdnNbsncU0
+         TFZg16oEAiXNzdM5iLR35aiSR8KTJ8GuInan1PFH3GSggW5Y8J+wCiQEH3fo8NVkPoAi
+         od40573Ua718hlQrOtxancrF5a/ztQX6HBg4R5oi+P8L7kdh3pR2ZE6vtGyfLme3mm8e
+         BgfA==
+X-Gm-Message-State: AOJu0Yx8RZpbLX9s4Wh8CoyI+NHVzTMAIgKR8W9FocKvYDSC9GX2MXs6
+        LP3g7lpzxzcizs6KrVtcVCocaJKsEpB/tg==
+X-Google-Smtp-Source: AGHT+IHfISCtSa05UGz9PT6tDA2qtVyoG70cJPjb2fBEQ6/U+mzxDHROeZB/hJ4FR5D+DwWhbVxiGA==
+X-Received: by 2002:a17:903:25d4:b0:1bd:bbc3:c87b with SMTP id jc20-20020a17090325d400b001bdbbc3c87bmr18047490plb.41.1693003477133;
+        Fri, 25 Aug 2023 15:44:37 -0700 (PDT)
+Received: from Schmitz-MacBook-Pro.local (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
+        by smtp.googlemail.com with ESMTPSA id b1-20020a170902d50100b001adf6b21c77sm2280761plg.107.2023.08.25.15.44.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Aug 2023 15:44:36 -0700 (PDT)
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Chanho Min <chanho.min@lge.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+        linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Brian Cain <bcain@quicinc.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        x86@kernel.org, Borislav Petkov <bp@alien8.de>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        linux-next@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-kbuild@vger.kernel.org
+References: <20230810141947.1236730-1-arnd@kernel.org>
+ <169292577153.789945.11297239773543112051.b4-ty@oracle.com>
+ <3956e2a4-c545-1212-e95f-3cf61a60d6a4@gmail.com>
+ <CAMuHMdWC2S330_Vb_NTHTDC=BakBsw4ouP-eFJv0erV1-jmvTQ@mail.gmail.com>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Subject: Re: (subset) [PATCH 00/17] -Wmissing-prototype warning fixes
+Message-ID: <130b3b57-edb0-184d-5b5f-69b013715773@gmail.com>
+Date:   Sat, 26 Aug 2023 10:44:13 +1200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
+MIME-Version: 1.0
+In-Reply-To: <CAMuHMdWC2S330_Vb_NTHTDC=BakBsw4ouP-eFJv0erV1-jmvTQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,114 +123,67 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Fri, Aug 25, 2023 at 2:01=E2=80=AFPM Nick Desaulniers
-<ndesaulniers@google.com> wrote:
->
-> On Fri, Aug 25, 2023 at 1:43=E2=80=AFPM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> >
-> > [ Unrelated to this patch, except it made me look, adding clang build
-> > people to cc ]
-> >
-> > On Fri, 25 Aug 2023 at 13:25, Linus Torvalds
-> > <torvalds@linux-foundation.org> wrote:
-> > >
-> > > On Fri, 25 Aug 2023 at 12:50, Helge Deller <deller@gmx.de> wrote:
-> > > >
-> > > > This patch fixes the in-kernel functions __clzdi2() and __ctzdi2() =
-[..]
-> > >
-> > > Applied,
-> >
-> > Bah. Still applied,  but actually building this (on 64-bit, so kind of
-> > pointless) I note that clang completely messes up this function on
-> > x86.
-> >
-> > Clang turns this:
-> >
-> >         return __ffs64(val);
-> >
-> > into this horror:
-> >
-> >         pushq   %rax
-> >         movq    %rdi, (%rsp)
-> >         #APP
-> >         rep
-> >         bsfq    (%rsp), %rax
-> >         #NO_APP
-> >         popq    %rcx
-> >
-> > which is just incredibly broken on so many levels. It *should* be a
-> > single instruction, like gcc does:
-> >
-> >         rep; bsf %rdi,%rax      # tmp87, word
-> >
-> > but clang decides that it really wants to put the argument on the
-> > stack, and apparently also wants to do that nonsensical stack
-> > alignment thing to make things even worse.
-> >
-> > We use this:
-> >
-> >   static __always_inline unsigned long variable__ffs(unsigned long word=
-)
-> >   {
-> >         asm("rep; bsf %1,%0"
-> >                 : "=3Dr" (word)
-> >                 : "rm" (word));
-> >         return word;
-> >   }
-> >
-> > for the definition, and it looks like clang royally just screws up
-> > here. Yes, "m" is _allowed_ in that input set, but it damn well
-> > shouldn't be used for something that is already in a register, since
-> > "r" is also allowed, and is the first choice.
-> >
-> > I think it's this clang bug:
-> >
-> >     https://github.com/llvm/llvm-project/issues/20571
->
-> ^ yep, my comments at the end of that thread are the last time we've
-> had a chance to look into this.  Boy, it's been 9 months since the
-> last discussion of it.  I'm sorry for that.
->
-> The TL;DR of that thread is that when both "r" and "m" constraints are
-> present, LLVM is conservative and always chooses "m" because at that
-> point it's not able to express to later passes that "m" is still a
-> valid fallback if "r" was chosen.
->
-> Obviously "r" is preferable to "m" and we should fix that.  Seeing who
-> wants to roll up their sleeves and volunteer to understand LLVM's
-> register allocation code is like asking who wants to be the first to
-> jump into a black hole and see what happens.
+Hi Geert,
 
-Yum! Human spaghetti! :-)
+Am 25.08.23 um 19:39 schrieb Geert Uytterhoeven:
+> Hi Michael,
+>
+> On Fri, Aug 25, 2023 at 3:31=E2=80=AFAM Michael Schmitz <schmitzmic@gma=
+il.com> wrote:
+>> On 25/08/23 13:12, Martin K. Petersen wrote:
+>>> [11/17] scsi: gvp11: remove unused gvp11_setup() function
+>>>          https://git.kernel.org/mkp/scsi/c/bfaa4a0ce1bb
+>> I somehow missed that one ...
+>>
+>> The gvp11_setup() function was probably a relic from the times before
+>> module parameters.
+>>
+>> Since gvp11_xfer_mask appears to be required for some Amiga systems to=
 
-I want to look into this myself. I'm a bit focussed on other things at
-the moment, but this is definitely on my list of "DO WANT"s.
+>> set the DMA mask, I'd best send a patch to add such a module parameter=
+ ...
+>>
+>> Do you know any details around the use of DMA masks for Amiga WD33C93
+>> drivers, Geert?
+> Doh, it's been a while, and I never had an affected system.
+> Probably it's needed on A2000 with an accelerator card and GVP II SCSI,=
 
--bw
+> to prevent DMA to RAM banks that do not support fast DMA cycles.
 
->  I'm having a hard enough
-> time understanding the stack spilling code to better understand what
-> precisely exists in what stack slots in order to make progress on some
-> of our -Wframe-larger-than=3D warnings, but I need to suck it up and do
-> better.
+Thanks, that's good enough for me.
+
+Linux 2.0 had this comment:
+
+|/* * DMA transfer mask for GVP Series II SCSI controller. * Some
+versions can only DMA into the 24 bit address space * (0->16M). Others
+can DMA into the full 32 bit address * space. The default is to only
+allow DMA into the 24 bit * address space. The "gvp11=3D0xFFFFFFFE" setup=
+
+parameter can * be supplied to force an alternate (32 bit) mask. */ |
+
+|We now handle that (since 2.6.35) through masks defined in
+gvp11_zorro_tbl[] (though I note these don't account for unaligned
+addresses such as implied by the example in the comment. Are unaligned
+DMA buffers still possible today?). Would that cover the 'A2000 with
+accelerator' case?
+|
+
+||
+
+I'm happy to send a patch if an override to the device default DMA mask
+is still necessary.
+
+(Incidentally - did you ever publish the m68k full history tree anywhere
+in git?)
+
+Cheers,
+
+=C2=A0=C2=A0=C2=A0 Michael
+
+
 >
-> This came up previously in our discussion about __builtin_ia32_readeflags=
-_*.
-> https://lore.kernel.org/all/20211215211847.206208-1-morbo@google.com/
+> Gr{oetje,eeting}s,
 >
-> >     https://github.com/llvm/llvm-project/issues/30873
-> >     https://github.com/llvm/llvm-project/issues/34837
-> >
-> > and it doesn't matter for *this* case (since I don't think this
-> > library function is ever used on x86), but it looks like a generic
-> > clang issue.
-> >
-> >                  Linus
+>                         Geert
 >
->
->
-> --
-> Thanks,
-> ~Nick Desaulniers
+
