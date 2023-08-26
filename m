@@ -2,166 +2,105 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF2B978939F
-	for <lists+linux-parisc@lfdr.de>; Sat, 26 Aug 2023 05:18:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69F20789458
+	for <lists+linux-parisc@lfdr.de>; Sat, 26 Aug 2023 09:36:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231694AbjHZDSM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 25 Aug 2023 23:18:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59928 "EHLO
+        id S231919AbjHZHfd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 26 Aug 2023 03:35:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231769AbjHZDSB (ORCPT
+        with ESMTP id S231918AbjHZHfE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 25 Aug 2023 23:18:01 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5646010EF
-        for <linux-parisc@vger.kernel.org>; Fri, 25 Aug 2023 20:17:58 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1b52875b8d9so83055ad.0
-        for <linux-parisc@vger.kernel.org>; Fri, 25 Aug 2023 20:17:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693019878; x=1693624678; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NTpWWoAzCcGiRnwVxW+wyPGfNXm/UmsRStzWL2401ms=;
-        b=teQLc7wAUgGrER8vTD1pcB6PLRVdVTwkVG9WKMNyN6+TCd5oCGlJESlTncu6f8VdQP
-         qUYGszWCYKw4qYMn5yc0yrthvYgBgSEjpKMKYnCGVHpK2dSNWIYAOBz09QLbTDTK/1Q1
-         e+bYeitkmm9iaYQYhYBPqMj2y0l7jOevVP32SGNN4ABk2Tj4mQsEobj1s5kMItYq8nJe
-         4PoByq3CP7G/b9yV8es943koSrvFzG260D6zZwop7NaSILAS5xQVzp/8V2AjKtGPDYsg
-         7Bbp6tmLgIdhfeHhg3uup4RLFA6hYT+jQ9mmApTUGNAFlg1hGDuhfthJ45DULTmXbV4G
-         iMHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693019878; x=1693624678;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NTpWWoAzCcGiRnwVxW+wyPGfNXm/UmsRStzWL2401ms=;
-        b=km7XrWc39lThTQriceVMijMGsAvFEDYP9XVOsjCCV0tTwpvU1lmuxv9ANm+sUGp5hW
-         DEVPIHO+uqzNUpk1H7ZlqZEiWlHYB9liq9ZSVba2Erbvqv+5nV1eMs6uk3xQa9iRlnbw
-         7/zh81IYS+hMGnh2UXPpWZmEANU+G4EubeppLJnqk+AaqIlHiQPcH2ve0ahTaID6xrkx
-         NI2JkpMLyc1fngarIY/IS0zeh82VBq3eCec4Cqnpdim+Pqew6nakyMpVV5VoWZloRVMb
-         hJpf3lLNYGY9AB73ZxG/YvZRBY0n1oOKGFl/SypFaImfhBezumaN+Zv6LfiUFkSd4eB0
-         CNEA==
-X-Gm-Message-State: AOJu0YxnpdM4MKOKxzysKAVkH7rKLgDQUsdd4rcvRXUwF7rf0aDAqQsV
-        VijgAZI3igp5OQaKimTWb6wVdg==
-X-Google-Smtp-Source: AGHT+IFgTjL85NMW7QVTfT1LIEunufc8m3DLUqvJfm8kEADFDEa+5LGQPIut13OdOpGUuedULTjPsw==
-X-Received: by 2002:a17:902:c703:b0:1bd:b75a:e95f with SMTP id p3-20020a170902c70300b001bdb75ae95fmr128179plp.0.1693019877605;
-        Fri, 25 Aug 2023 20:17:57 -0700 (PDT)
-Received: from google.com ([2620:15c:2d3:205:6671:452e:1913:d899])
-        by smtp.gmail.com with ESMTPSA id a14-20020a62bd0e000000b006870ff20254sm2251739pff.125.2023.08.25.20.17.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Aug 2023 20:17:57 -0700 (PDT)
-Date:   Fri, 25 Aug 2023 20:17:52 -0700
-From:   Fangrui Song <maskray@google.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Bill Wendling <morbo@google.com>, Helge Deller <deller@gmx.de>,
-        Nathan Chancellor <nathan@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Chanho Min <chanho.min@lge.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        clang-built-linux <llvm@lists.linux.dev>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
-Subject: Re: [PATCH] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit
- kernels
-Message-ID: <20230826031752.gongmxkr56zyycol@google.com>
-References: <ZOkGCSNr0VN2VIJJ@p100>
- <CAHk-=wjZwSymfuGvf7TX3UQLU1OMN1FZMnEA-Hja0ruqyhMK4A@mail.gmail.com>
- <CAHk-=whVvD05T0yD5DQj803uETLD6qDq-Vx-SiLPcrL=eO77LQ@mail.gmail.com>
- <CAKwvOdnYauyrzz7-ceH-MP_KZ5ED8oYxjRx_Xei68=tUOSeKyA@mail.gmail.com>
- <CAGG=3QWcZPYqHMcjwuYDz1+OQhzS40hmhdOvSBZBQOkhs8YAQQ@mail.gmail.com>
- <CAGG=3QX8AaTedPy-joWm6yp+TFHBVXm59OcvxkdLGsSuDjem5g@mail.gmail.com>
- <CAHk-=wjQpXpnGAwvv-oBi+cQ0g+D9rTK5STkXSSV4a90FPR+EQ@mail.gmail.com>
- <CAKwvOdm_y6UOnxFrAiDxou2jc8CRUvyhfH9kAdc3PG0=bEvduw@mail.gmail.com>
- <CAHk-=wgJzMzPFTCzejWs1WM4=74z2VENyOzySnucrXG3i=ajrw@mail.gmail.com>
+        Sat, 26 Aug 2023 03:35:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC2212137;
+        Sat, 26 Aug 2023 00:35:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7188B61115;
+        Sat, 26 Aug 2023 07:35:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7A1C433C8;
+        Sat, 26 Aug 2023 07:35:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693035301;
+        bh=Ire7ypYxtufnlRxtBcnyW07jEaxvrn0kOHcZFJ1ADw4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=IQeJrNGeNdNXuaE1IkUKvft0JchpXnlcAKrUFoeUKxYGjIwqYlL9HuLkK5cdb1K1k
+         VqtrQg2VjqFbrobseVVTSa2EnVL9FoFMZKJJ3nkbhMN5GC2EraSPpkEkKvbftqMtp6
+         Ju6c0c9gkpOQgf0UVToPbvbbt52SQoLsc2TgQh+M=
+Date:   Sat, 26 Aug 2023 09:34:59 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     deller@kernel.org
+Cc:     linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] parisc: led: Reduce CPU overhead for disk & lan LED
+ computation
+Message-ID: <2023082636-refreeze-plot-9f6e@gregkh>
+References: <20230825180928.205499-1-deller@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHk-=wgJzMzPFTCzejWs1WM4=74z2VENyOzySnucrXG3i=ajrw@mail.gmail.com>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230825180928.205499-1-deller@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023-08-25, Linus Torvalds wrote:
->On Fri, 25 Aug 2023 at 17:52, Nick Desaulniers <ndesaulniers@google.com> wrote:
->>
->> So 2 concerns where "I'll do it in inline asm" can pessimize codegen:
->> 1. You alluded to this, but what happens when one of these functions
->> is called with a constant?
->
->This is why our headers have a lot of __builtin_constant_p()'s in them..
->
->In this particular case, see the x86 asm/bitops.h code:
->
->    #define ffs(x) (__builtin_constant_p(x) ? __builtin_ffs(x) :
->variable_ffs(x))
+On Fri, Aug 25, 2023 at 08:09:26PM +0200, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
+> 
+> Older PA-RISC machines have LEDs which show the disk- and LAN-activity.
+> The computation is done in software and takes quite some time, e.g. on a
+> J6500 this may take up to 60% time of one CPU if the machine is loaded
+> via network traffic.
+> 
+> Since most people don't care about the LEDs, start with LEDs disabled and
+> just show a CPU heartbeat LED. The disk and LAN LEDs can be turned on
+> manually via /proc/pdc/led.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Cc: <stable@vger.kernel.org>
+> ---
+>  drivers/parisc/led.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/parisc/led.c b/drivers/parisc/led.c
+> index 8bdc5e043831..765f19608f60 100644
+> --- a/drivers/parisc/led.c
+> +++ b/drivers/parisc/led.c
+> @@ -56,8 +56,8 @@
+>  static int led_type __read_mostly = -1;
+>  static unsigned char lastleds;	/* LED state from most recent update */
+>  static unsigned int led_heartbeat __read_mostly = 1;
+> -static unsigned int led_diskio    __read_mostly = 1;
+> -static unsigned int led_lanrxtx   __read_mostly = 1;
+> +static unsigned int led_diskio    __read_mostly;
+> +static unsigned int led_lanrxtx   __read_mostly;
+>  static char lcd_text[32]          __read_mostly;
+>  static char lcd_text_default[32]  __read_mostly;
+>  static int  lcd_no_led_support    __read_mostly = 0; /* KittyHawk doesn't support LED on its LCD */
+> @@ -589,6 +589,9 @@ int __init register_led_driver(int model, unsigned long cmd_reg, unsigned long d
+>  		return 1;
+>  	}
+>  	
+> +	pr_info("LED: Enable disk and LAN activity LEDs "
+> +		"via /proc/pdc/led\n");
 
-For the curious (like me),
+When drivers are working properly, they should be quiet.  Who is going
+to see this message?
 
-__builtin_ffs
-https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html#index-_005f_005fbuiltin_005fffs says
+I don't even understand it, are you saying that you now need to go
+enable the led through proc?  And why are leds in proc, I thought they
+had a real class for them?  Why not use that instead?
 
-     Returns the number of leading 0-bits in x, starting at the most significant bit position. If x is 0, the result is undefined.
+And finally, you shouldn't split strings across lines :)
 
-The hangling of 0 seems the cause that __builtin_ffs codegen is not as
-well as inline asm.  Clang implemented the builtin in 2008 and took the
-same constraint (penalty).
+thanks,
 
-
-
-GCC compiles __builtin_ctzl(x) to xorl    %eax, %eax; tzcntq  %rdi, %rax
-on most Intel processors (AMD -march= values are unaffected). The extra
-xor is due to a false dependency issue
-https://gcc.gnu.org/git/?p=gcc.git&a=commit;h=73543b2286027da1de561902440b53f775a03a86
-
-Inline asm wins here as well since we know the argument 0 is undefined.
-
-In May 2023, https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=cc6eb8b51f9568ae0caf46b80e2a0aff050030ce
-"Disable avoid_false_dep_for_bmi for atom and icelake(and later) core processors."
-removed the extra xor for icelake (and later) core processors.
-
->but this is actually quite a common pattern, and it's often not about
->something like __builtin_ffs() at all.
->
->See all the other __builtin_constant_p()'s that we have in that same
->file because we basically just use different code sequences for
->constants.
->
->And that file isn't even unusual. We use it quite a lot when we care
->about code generation for some particular case.
->
->> 2. by providing the definition of a symbol typically provided by libc
->> (and then not building with -ffreestanding) pessimizes libcall
->> optimization.
->
->.. and this is partly why we often avoid libgcc things, and do certain
->things by hand.
->
->The classic rule is "Don't do 64-bit divisions using the C '/' operator".
->
->So in the kernel you have to use do_div() and friends, because the
->library versions are often disgusting and might not know that 64/32 is
->much much cheaper and is what you want.
->
->And quite often we simply use other names - but then we also do *not*
->build with -freestanding, because -freestanding has at least
->traditionally meant that the compiler won't optimize the simple and
->obvious cases (typically things like "memcpy with a constant size").
->
->So we mix and match and pick the best option.
->
->The kernel really doesn't care about architecture portability, because
->honestly, something like "ffs()" is entirely *trivial* to get right,
->compared to the real differences between architectures (eg VM and IO
->differences etc).
->
->             Linus
->
+greg k-h
