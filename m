@@ -2,51 +2,51 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B137A7892A3
-	for <lists+linux-parisc@lfdr.de>; Sat, 26 Aug 2023 02:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C78B7892CA
+	for <lists+linux-parisc@lfdr.de>; Sat, 26 Aug 2023 02:53:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231183AbjHZAJU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 25 Aug 2023 20:09:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55036 "EHLO
+        id S231463AbjHZAxA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 25 Aug 2023 20:53:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231215AbjHZAJS (ORCPT
+        with ESMTP id S231365AbjHZAwa (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 25 Aug 2023 20:09:18 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 242151BF1
-        for <linux-parisc@vger.kernel.org>; Fri, 25 Aug 2023 17:09:16 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-51e24210395so5309a12.0
-        for <linux-parisc@vger.kernel.org>; Fri, 25 Aug 2023 17:09:16 -0700 (PDT)
+        Fri, 25 Aug 2023 20:52:30 -0400
+Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0D8426B6
+        for <linux-parisc@vger.kernel.org>; Fri, 25 Aug 2023 17:52:27 -0700 (PDT)
+Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-649edb3a3d6so7303066d6.0
+        for <linux-parisc@vger.kernel.org>; Fri, 25 Aug 2023 17:52:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693008554; x=1693613354; darn=vger.kernel.org;
+        d=google.com; s=20221208; t=1693011147; x=1693615947;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dUk3uUdXKs7+gMswma28tK7skGdlo6kxLEqcZ8WRqnQ=;
-        b=mrn6PoxWdSeDC6uvzb8XBnTntfjWhrF40nXCB4FTap+iDuaA6jZ1yWD23GZ5rIWpgm
-         P9isM5FCEhyPsUztOrTrhTBTvDQUcHVH0TWWlAFUlHdioHWw6VBwa2rGpLH6OnEZZqwV
-         frdoQX2ULVimqWmzGODXfYvMARhTc9E5XeXh6snHUu2xE6MPU1I4id9r7cYZqfAmhSDb
-         XTc6P+UzI2WzeTkAaeIMio/dL4qCaNShMX3240zZFs8YSwvYCywmc+7JljRn0H/QVvHk
-         QXW2bjJq+jgiEUhv+8bQBczwkg75jvw0v21zhZBTCUo8c9mdodMZyOmuQkrpfco3m1Un
-         YUbw==
+        bh=+J7kciouNJsutvOaSseED/xKurG7haKJwfT8MXPWBzY=;
+        b=acCQC+bc8rrgogDzIQdyOfFdHpy5+cz7vpObjOHuUeFuUqlQjOObck4WO/y81eCCSR
+         5F+xoS8a6J8to8Jxikarm36ku6TtU9VeOfGru1uzPSWbHHE7ykayBAoA/l2ZipilqOp8
+         1glTfxLOPpnyOCPVzHA0LNWbPoD3HDH/OR5OF6UFr3xs55vRpBwgPQbMKOp5G3oydF5q
+         uFzmYLjceSofQUQhOUcMirgiLp1eUHtqG0n3fbzH7UdZmZNxUz7QuARaX5XZjbbl4FHg
+         x9nXLmSOL68Tdh2tEK7jT3KyyomXw7qioqUDde+NK+6qBcI+B16s4kJky5xjSuZU3NZl
+         X42A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693008554; x=1693613354;
+        d=1e100.net; s=20221208; t=1693011147; x=1693615947;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dUk3uUdXKs7+gMswma28tK7skGdlo6kxLEqcZ8WRqnQ=;
-        b=cusgG+h3A/i0dog5JEdS2uzQYdN/Tx7/vu5PIaqfZmZkQkqvqfjDaiPlSS6Q9zD90g
-         NcGeyQLEDRSPh3mNztcFa3UGhqkUZdRMaFB+EzzDLwGuhqplfmoNeOqn0SbbJE66igoe
-         ORqDSvPrVrb1/I9l65b6jeDVwHfCyxP7BH/ZAZjLCf9WG7EK+fC+AXh71XupLJv+aWaG
-         dlTj9pc3yuYJIVPuyq187lNDGRqE9znsD9HeDK4l1mYjA6OhgwBPEbpt0bVxxjq9gBTQ
-         YGtFHgwOYjKxQR1291fyFZm01B/zdvXcvqk7Srl5+VcjRDIggKdCc4aHxTXUm6cNWgt/
-         iHtA==
-X-Gm-Message-State: AOJu0Yw1b0VzVkYck5u4pO/Tu9xpsGz9u5yv/vhN0L5YkmmehBXCs91M
-        1zaQDVG5vYPabXdh0BQA5S3sAlija6CnRthor0LB
-X-Google-Smtp-Source: AGHT+IGtWbkJwcLQ/ocO4eGbqywH04d66oLtkjo3mbgDLG8roDA2WIsW7oZLbmk5ITMurK3TQtNFqD/8fMM4VgjiUhY=
-X-Received: by 2002:a50:9ec4:0:b0:528:ef2:7613 with SMTP id
- a62-20020a509ec4000000b005280ef27613mr44216edf.7.1693008554394; Fri, 25 Aug
- 2023 17:09:14 -0700 (PDT)
+        bh=+J7kciouNJsutvOaSseED/xKurG7haKJwfT8MXPWBzY=;
+        b=MlTzZKoN2d0F690xUS7QMSp4IyVaxtASXcAUlv1a1TWQTB5NlmigsFMCsM5nD92Y2X
+         2x8FftGnNJTL1aR28gTVGIirsSwrySlus60sxqChESVCHki6Clx79PLN538/2IjeoUgN
+         ShW3pILh4aGAVcWa1ASPHimfINJrxWEv0FyOCmVNaTu7p3CKnuc6W8QJJqTXF3dKePS8
+         whWUGROOvE+WaI20dh9MUpZqO6OsQE70k7AR9VVTN8RAJQDZaFLwoSatqISeto7R1fTZ
+         NHjWt97Use6TQBJ3L5zNpico9VPRru1VI8xzYNOAOz8gZKozygAQHm6iXwNKowxMNlck
+         nZ6w==
+X-Gm-Message-State: AOJu0YydomEbBbU3o2B8OlGG1KWBlzk7TqA3vf74radm/tJ+MWmw3y7g
+        uhCrttVIDhk9fq73FU9ZXxLzv2BQ+TJbVLtlAD1MUQ==
+X-Google-Smtp-Source: AGHT+IHUl+cV0AuyG3YZsjvVAiEoB8lybgoQjHXXC/mHU8xpGWOX78uyClywPQSO6XIWh8IMW8v3kNwE06HnOhP5Qtw=
+X-Received: by 2002:a0c:b455:0:b0:648:190c:bdd5 with SMTP id
+ e21-20020a0cb455000000b00648190cbdd5mr22564370qvf.9.1693011146887; Fri, 25
+ Aug 2023 17:52:26 -0700 (PDT)
 MIME-Version: 1.0
 References: <ZOkGCSNr0VN2VIJJ@p100> <CAHk-=wjZwSymfuGvf7TX3UQLU1OMN1FZMnEA-Hja0ruqyhMK4A@mail.gmail.com>
  <CAHk-=whVvD05T0yD5DQj803uETLD6qDq-Vx-SiLPcrL=eO77LQ@mail.gmail.com>
@@ -54,20 +54,21 @@ References: <ZOkGCSNr0VN2VIJJ@p100> <CAHk-=wjZwSymfuGvf7TX3UQLU1OMN1FZMnEA-Hja0r
  <CAGG=3QWcZPYqHMcjwuYDz1+OQhzS40hmhdOvSBZBQOkhs8YAQQ@mail.gmail.com>
  <CAGG=3QX8AaTedPy-joWm6yp+TFHBVXm59OcvxkdLGsSuDjem5g@mail.gmail.com> <CAHk-=wjQpXpnGAwvv-oBi+cQ0g+D9rTK5STkXSSV4a90FPR+EQ@mail.gmail.com>
 In-Reply-To: <CAHk-=wjQpXpnGAwvv-oBi+cQ0g+D9rTK5STkXSSV4a90FPR+EQ@mail.gmail.com>
-From:   Bill Wendling <morbo@google.com>
-Date:   Fri, 25 Aug 2023 17:08:57 -0700
-Message-ID: <CAGG=3QU7kvKTJf7M5x_QR_HrYJCz=tWnCNMg4OCw9_oChEuPPw@mail.gmail.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Fri, 25 Aug 2023 17:52:15 -0700
+Message-ID: <CAKwvOdm_y6UOnxFrAiDxou2jc8CRUvyhfH9kAdc3PG0=bEvduw@mail.gmail.com>
 Subject: Re: [PATCH] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit kernels
 To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Helge Deller <deller@gmx.de>,
+Cc:     Bill Wendling <morbo@google.com>, Helge Deller <deller@gmx.de>,
         Nathan Chancellor <nathan@kernel.org>,
         linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
         Chanho Min <chanho.min@lge.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kees Cook <keescook@chromium.org>
+        Kees Cook <keescook@chromium.org>,
+        clang-built-linux <llvm@lists.linux.dev>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
@@ -84,33 +85,6 @@ X-Mailing-List: linux-parisc@vger.kernel.org
 On Fri, Aug 25, 2023 at 4:35=E2=80=AFPM Linus Torvalds
 <torvalds@linux-foundation.org> wrote:
 >
-> On Fri, 25 Aug 2023 at 15:57, Bill Wendling <morbo@google.com> wrote:
-> > >
-> > Another idea is that there are __builtin_* functions for a lot of
-> > functions that are currently in inline asm
->
-> No. We've been through this before. The builtins are almost entirely
-> untested, and often undocumented and buggy.
->
-> > The major issue with the
-> > `__builtin_ia32_readeflags_*` was its inability to take unrelated MSRs
-> > into account during code motion. That may not be the same worry here?
->
-> No, the problem with __builtin_ia32_readeflags_*() was that it was
-> literally completely buggy and generated entirely broken code:
->
->     https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D104971
->
-> but that's really more of a symptom than anything else.
->
-> It's a symptom of the fact that unlike inline asm's, those builtins
-> are often undocumented in what compiler version they appeared, and are
-> of very questionable quality. They often don't have many users, and
-> the test suites are non-existent.
->
-> For example, we *do* use __builtin_ffs() on x86 for constant values,
-> because the compiler does the right thing.
->
 > But for non-constant ones, the inline asm actually generates better
 > code: gcc generatea some disgusting mess with a 'bsf' followed by a
 > 'cmov' for the zero case, when we know better.
@@ -119,8 +93,6 @@ On Fri, Aug 25, 2023 at 4:35=E2=80=AFPM Linus Torvalds
 >
 >    https://godbolt.org/z/jKKf48Wsf
 >
-Ew...gross.
-
 > I don't understand why compiler people prefer a builtin that is an
 > untested special case that assumes that the compiler knows what is
 > going on (and often doesn't), over a generic escape facility that is
@@ -133,28 +105,22 @@ Ew...gross.
 > the point where "worse" is actively buggy crap.
 >
 > At least inline asms are reliable. That's a *big* deal.
->
-There are a couple of reasons why compiler writers (at least I) prefer
-builtins to inline asm. Inline asm takes control away from the
-compiler, which makes it harder for the compiler to perform normal
-optimizations. It's more portable. As for better code, it won't
-generate it in all situations, as you pointed out, but can typically
-generate as good code.
 
-Inline asm has its own issues---portability, difficult to use
-constraints (the EFLAGS asms went back and forth on its constraints
-over the years), and, from what I remember, GNU's inline asm is
-closely tied to its register allocator, making it hard to support in
-other compilers. Plus, there's not guarantee that an inline asm won't
-be moved. (It's been discussed before, and I also believe that the
-current Linux inline asm "barriers" should prevent this. I just vastly
-prefer guaranteed behavior over "it works now". I've migrated many
-systems to new compilers (and even compiler versions) and have seen
-"well, it worked for the previous compiler" types of bugs that were
-actual bugs in the programmer's code.)
-
-Okay, none of what I said is going to convince you to use builtins,
-and I'm not suggesting we do. It's just a few of the reasons why we
-tend to prefer them to other methods. Just take this as an FYI. :-)
-
--bw
+So 2 concerns where "I'll do it in inline asm" can pessimize codegen:
+1. You alluded to this, but what happens when one of these functions
+is called with a constant? (Not just a literal value, but a value that
+can be proven constant at compile time via optimizations as well?)
+arch/x86/include/asm/bitops.h got this right for ffs(), but it did not
+for fls()! (I think that could be `if (__builtin_constant_p(x)) return
+x ? 32 - __builtin_clz(x) : 0;` but check my math; oh, good job
+arch/powerpc/include/asm/bitops.h).
+2. by providing the definition of a symbol typically provided by libc
+(and then not building with -ffreestanding) pessimizes libcall
+optimization.
+example: https://godbolt.org/z/crrTKEf6G
+ffs() gets this right again by using a macro, and __always_inline can
+work around this somewhat (so fls() if off the hook here). But any
+attempt using `static inline` would be pessimized for constants.
+--=20
+Thanks,
+~Nick Desaulniers
