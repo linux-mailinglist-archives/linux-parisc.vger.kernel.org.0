@@ -2,33 +2,52 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7707D78A1CD
-	for <lists+linux-parisc@lfdr.de>; Sun, 27 Aug 2023 23:25:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 584D678A1F2
+	for <lists+linux-parisc@lfdr.de>; Sun, 27 Aug 2023 23:33:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229920AbjH0VYe (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 27 Aug 2023 17:24:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34342 "EHLO
+        id S229947AbjH0VdU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 27 Aug 2023 17:33:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229947AbjH0VYS (ORCPT
+        with ESMTP id S230245AbjH0VdM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 27 Aug 2023 17:24:18 -0400
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0878CEB
-        for <linux-parisc@vger.kernel.org>; Sun, 27 Aug 2023 14:24:16 -0700 (PDT)
-References: <520.NvTX.6mXZpmfh4Ju.1awpAS@seznam.cz>
-User-agent: mu4e 1.10.6; emacs 30.0.50
-From:   Sam James <sam@gentoo.org>
-To:     Vidra.Jonas@seznam.cz
-Cc:     linux-parisc@vger.kernel.org
-Subject: Re: Possible io_uring bug in PA-RISC kernel 6.1.46
-Date:   Sun, 27 Aug 2023 22:23:02 +0100
-Organization: Gentoo
-In-reply-to: <520.NvTX.6mXZpmfh4Ju.1awpAS@seznam.cz>
-Message-ID: <87jztggow5.fsf@gentoo.org>
+        Sun, 27 Aug 2023 17:33:12 -0400
+Received: from cmx-torrgo001.bell.net (mta-tor-003.bell.net [209.71.212.30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99286107
+        for <linux-parisc@vger.kernel.org>; Sun, 27 Aug 2023 14:33:10 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [142.198.135.111]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 64E88507002F0452
+X-CM-Envelope: MS4xfBWVu2n+oJmPcLJqRbRJEhwSXftpsopC+cNXCb7iYGMMmxpDywHBNon2p950R2K4ONqJ22TTxzIroyoNzWfAYvdWTg48ofDJpUE0rOg2KMQje15kCqc0
+ ETZI2nzMclPGptiN96VI996tfvRiEaPbn/QNN7Yi5wa0VJe3qCoVZVceAD/cISknGk9i+lxG+oDb54k/+vj7X0xs6uz0/KzvI9ZVI8m9QrhGC6YxockVI9MI
+ 7fX6PxWDBAamsCtThy4Lqbt1/tDoFoxZoacfKl3u0v1ZKmAxbGEZ/fMU1k3eFod2vikva5DgMlIXp9D2zTFZyA==
+X-CM-Analysis: v=2.4 cv=UM++oATy c=1 sm=1 tr=0 ts=64ebc0b2
+ a=m0hBPjpnfWKpZW+YOe+Hqw==:117 a=m0hBPjpnfWKpZW+YOe+Hqw==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=SxjZZnf_5SGMlcyiv-4A:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (142.198.135.111) by cmx-torrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 64E88507002F0452; Sun, 27 Aug 2023 17:31:30 -0400
+Message-ID: <13c75691-ac65-93be-c217-89e7cfbed10e@bell.net>
+Date:   Sun, 27 Aug 2023 17:31:30 -0400
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: Possible io_uring bug in PA-RISC kernel 6.1.46
+Content-Language: en-US
+From:   John David Anglin <dave.anglin@bell.net>
+To:     Helge Deller <deller@gmx.de>, Vidra.Jonas@seznam.cz,
+        linux-parisc@vger.kernel.org
+References: <520.NvTX.6mXZpmfh4Ju.1awpAS@seznam.cz>
+ <7ce98f53-d80d-fc78-1bff-419eedaf8e36@bell.net>
+ <f8be4af4-725a-902f-60a5-0f18c198b130@gmx.de>
+ <d52e26aa-0c46-498b-0586-1fea2f94c58d@bell.net>
+In-Reply-To: <d52e26aa-0c46-498b-0586-1fea2f94c58d@bell.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -36,35 +55,19 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On 2023-08-27 5:01 p.m., John David Anglin wrote:
+>> Did the libuv check failed on 6.1.46 for you?
+> No. It was successful.
+I ran the testsuite a few more times.  Sometimes metrics_pool_events times out:
 
-<Vidra.Jonas@seznam.cz> writes:
+not ok 179 - metrics_pool_events
+# timeout
+# Output from process `metrics_pool_events`: (no output)
 
-> Hello,
->
-> on my C8000 workstation, I'm getting libuv aborts connected to io_uring
-> usage. I'm not sure whether this is a libuv bug or a kernel one, but
-> since libuv is pretty well tested on other archs, it's probably a
-> PA-RISC issue. I've encountered the problem in kernel versions 6.1.41
-> and 6.1.46. 6.1.4 seemed fine, but I updated other system packages in
-> the meantime, so I can't be sure.
->
-> The issue is that a call to
-> `io_uring_enter(fd, 2, 2, IORING_ENTER_GETEVENTS)`
-> returns 0, and libuv reacts to that by aborting, probably on this line:
-> https://github.com/libuv/libuv/blob/65dc822d6c20a9130fa100c7b46d751f8cf4d233/src/unix/linux.c#L1252
-> (I'm saying probably, because gdb seems to be buggy on my machine and I
-> don't really trust its output, so I rely on strace instead, but that
-> doesn't support backtraces on the PA-RISC.)
+All other tests are ok.
 
-* elfutils needs me to finish off the port - I have some old patches
-rebased.
+Dave
 
-* I wasn't aware of libunwind being broken (you mentioned it on IRC)
-though.
-
-* Can you file a bug for your gdb issue at
-  https://sourceware.org/bugzilla? so far I've tried and I can't
-  reproduce any problems with it
-
-
+-- 
+John David Anglin  dave.anglin@bell.net
 
