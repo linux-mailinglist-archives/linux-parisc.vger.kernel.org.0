@@ -2,76 +2,69 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D48CE78B919
-	for <lists+linux-parisc@lfdr.de>; Mon, 28 Aug 2023 22:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 743D678B932
+	for <lists+linux-parisc@lfdr.de>; Mon, 28 Aug 2023 22:12:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231678AbjH1UJz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 28 Aug 2023 16:09:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57628 "EHLO
+        id S232297AbjH1ULd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 28 Aug 2023 16:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231819AbjH1UJ2 (ORCPT
+        with ESMTP id S232018AbjH1ULC (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 28 Aug 2023 16:09:28 -0400
-Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91D3A188
-        for <linux-parisc@vger.kernel.org>; Mon, 28 Aug 2023 13:09:25 -0700 (PDT)
-Received: by mail-qv1-xf30.google.com with SMTP id 6a1803df08f44-64ccdf8820dso16124726d6.1
-        for <linux-parisc@vger.kernel.org>; Mon, 28 Aug 2023 13:09:25 -0700 (PDT)
+        Mon, 28 Aug 2023 16:11:02 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B622DC6
+        for <linux-parisc@vger.kernel.org>; Mon, 28 Aug 2023 13:10:58 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-64f387094ddso22794986d6.3
+        for <linux-parisc@vger.kernel.org>; Mon, 28 Aug 2023 13:10:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693253364; x=1693858164;
+        d=google.com; s=20221208; t=1693253458; x=1693858258;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=O8dPY9eCAsS9DxNmXw4q9BxGXE3hbCpPhG8iHRwXkCE=;
-        b=oexC9A9Wf9nYL1LbjiQA91QzC/pvV+ufWECVAjaNfuTiCKzbMNaIeF+ziNstzvQJHy
-         BLnC3OIhII0n/jIW8KXrEZ4DRwH22ttaRAiXdYFYm7lXcSemweoyJw/lieJSzOp3Wxut
-         QYcrfuxCkolkZg2th18Wrp1Ced3wbhdAktE71LZYSh+Gm+ufSVBnOZSzzreu/wpxh8Ib
-         slwhsUM3jTyCim/OG4IuWcTwu20ubG9h2fWWI6HVgn21V3l9d/QI4kiqfVaJJxZysukV
-         /GdUAgZBRljTlTNcRiLQ9U/l7dgLMu/8dPkZohEVKbwwNiwNMbvaueF0Q8+PS0fRPiyu
-         8uQg==
+        bh=YEj2FhwgEQBu2u6UWKCDUiStj2AeiFrde70HGTbVs2E=;
+        b=Tfhthi+MI4fV23bQm9BON0fbYEbXhtEhk6DL5PVVloNoK/aXp4+TL37t8Kzl1PBfyn
+         yNLzll/Gco47d/JhFPxE0SYlJqmAC6B7cMK6VqTMTYCD9wMKPMAzz1dfCyDm0kgvF4AE
+         rRJBvx6hKBn5vGAyMVKUKg4SH0KRuVz7WABmPMEpe9OlCfahaW+AQHYjqb50d+JOtNj3
+         zunJTRrCyH68fFfLVJyrSQA0gCX9BQxoVQ8xdzDPi6bQqDgbi6OxAfiKAwKkEkD52zJ6
+         Py9YZpOHmpU1R0fj4sgDSfI5UB2mZYdvgQjZ9TIn3+ga/uigF2i0/I03y4i7ZbQCzjaQ
+         tcOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693253364; x=1693858164;
+        d=1e100.net; s=20221208; t=1693253458; x=1693858258;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=O8dPY9eCAsS9DxNmXw4q9BxGXE3hbCpPhG8iHRwXkCE=;
-        b=Tkm6MI6E8EVluZMD/n1u82RyypMnjgaAfhOe+KHB6LauFNMX1n8PY1IRJIsau1xzpC
-         1Alec84iAHrZcZXmdeb0M5IvIJ+B+0YcpMNvOpVUaV99qkEs4EnzaUUIc1kpLFRgtKaB
-         qe9JBhJWxvktIgi3rS4b3zYzNPF7nqahoTugOZP7tlAKkIu18cOM2z4vxKiCcG9AoIhL
-         +m+o/iEDlqYDAwAW7R4bW7K4aB/0cTo4mweNYneUdUi+1UV65bYRqNVghc1E9xV6rb/B
-         mjGcpNXU3elOE8zkya+/tF7o3C5VKtoeEHz1KYFGm+0j1LPp/Hf5SxMMQnZofkszzuaq
-         r82A==
-X-Gm-Message-State: AOJu0YzuYMXPI88scR1JWXNKbqoiDDUnmhl9YyJCClh0VMcpVPyQ1UEl
-        lJiA1SMc1WiaHsxfINrVtVrRcXY3nSSDgH9As5aqxA==
-X-Google-Smtp-Source: AGHT+IEJ6EmXGksnoAvaX9OGIo+HeNz5gIXPkKZOVrXcfunLXoAFwiCa8KE27zaQHT0TJqbMt5OwZFE1kBHJq0UmQwo=
-X-Received: by 2002:a0c:e448:0:b0:647:3346:1289 with SMTP id
- d8-20020a0ce448000000b0064733461289mr871860qvm.11.1693253364609; Mon, 28 Aug
- 2023 13:09:24 -0700 (PDT)
+        bh=YEj2FhwgEQBu2u6UWKCDUiStj2AeiFrde70HGTbVs2E=;
+        b=GS8Mi9pnBrj/MT7NqIyTKnKPmbZb9QqdK/dEzWiMEuVKbwLyH8X8rmJiJZ3BeASppJ
+         GBQaxJ/Ib2QtKWatY83LMvyepyIlArp0DjPVN+LIVGjxqCvDyPGlocIVIUYkbcDIFZPK
+         LRSbjJ2PUpYaw+kQCaPjLh/je6URGAhjlfQFXzBIl4KnwKw1OyCzkXMQSJQJZgKMV/hv
+         0T3fA5csvgJ8kF5WAvsFyaLMsKsyfNCJcyQD+tMPSjpNOL4/eZrUTVHuD9EL7EoTMIDR
+         5q2vO9W/NuMtsGc16P1nmT+KyHJAZs+1tAC7K63po/zT39z1MpzJ47H7XziCwjVJfQ9j
+         M+nQ==
+X-Gm-Message-State: AOJu0Yx/JdT0hmuhcYkkv83ye+hOmDbK+aoJbNMVqY7jcHu/GIz/Bw+W
+        vavG+MV15btmdYJQe2Dvc3zEFYfPRAa0E1Y5sq4U2w==
+X-Google-Smtp-Source: AGHT+IF5SvoY7zvuJXy4YahE9LKj/ohiPFaQ4pKJboBPPj/76CWHq7H87yEtd3IhZWW+FGGyO5J3KsqGg4HZvg8aDzY=
+X-Received: by 2002:a0c:e188:0:b0:64f:59b8:cfd9 with SMTP id
+ p8-20020a0ce188000000b0064f59b8cfd9mr16575067qvl.18.1693253457739; Mon, 28
+ Aug 2023 13:10:57 -0700 (PDT)
 MIME-Version: 1.0
 References: <ZOkGCSNr0VN2VIJJ@p100> <CAHk-=wjZwSymfuGvf7TX3UQLU1OMN1FZMnEA-Hja0ruqyhMK4A@mail.gmail.com>
- <CAHk-=whVvD05T0yD5DQj803uETLD6qDq-Vx-SiLPcrL=eO77LQ@mail.gmail.com>
- <CAKwvOdnYauyrzz7-ceH-MP_KZ5ED8oYxjRx_Xei68=tUOSeKyA@mail.gmail.com>
- <CAGG=3QWcZPYqHMcjwuYDz1+OQhzS40hmhdOvSBZBQOkhs8YAQQ@mail.gmail.com>
- <CAGG=3QX8AaTedPy-joWm6yp+TFHBVXm59OcvxkdLGsSuDjem5g@mail.gmail.com>
- <CAHk-=wjQpXpnGAwvv-oBi+cQ0g+D9rTK5STkXSSV4a90FPR+EQ@mail.gmail.com>
- <CAKwvOdm_y6UOnxFrAiDxou2jc8CRUvyhfH9kAdc3PG0=bEvduw@mail.gmail.com>
- <CAHk-=wgJzMzPFTCzejWs1WM4=74z2VENyOzySnucrXG3i=ajrw@mail.gmail.com> <CAMuHMdXZ4fGjjXguftvrB69rt7dR6ngFA46YB8oGpk2_issJzA@mail.gmail.com>
-In-Reply-To: <CAMuHMdXZ4fGjjXguftvrB69rt7dR6ngFA46YB8oGpk2_issJzA@mail.gmail.com>
+ <CAHk-=whVvD05T0yD5DQj803uETLD6qDq-Vx-SiLPcrL=eO77LQ@mail.gmail.com> <cc5f4f5701674b96b0009b6b9b257cc8@AcuMS.aculab.com>
+In-Reply-To: <cc5f4f5701674b96b0009b6b9b257cc8@AcuMS.aculab.com>
 From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 28 Aug 2023 13:09:13 -0700
-Message-ID: <CAKwvOdm4148KZ=eiGU-K0M-1RX_Fwnrh0n0Cj_ON+N63D5AfAQ@mail.gmail.com>
+Date:   Mon, 28 Aug 2023 13:10:46 -0700
+Message-ID: <CAKwvOdnrg9b3nF4mRWGYJSKytnEtGdKGz+aHPWSX3aHUm5eAYg@mail.gmail.com>
 Subject: Re: [PATCH] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit kernels
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
+To:     David Laight <David.Laight@aculab.com>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Bill Wendling <morbo@google.com>, Helge Deller <deller@gmx.de>,
+        Helge Deller <deller@gmx.de>,
         Nathan Chancellor <nathan@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Chanho Min <chanho.min@lge.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        clang-built-linux <llvm@lists.linux.dev>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
@@ -85,34 +78,74 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Aug 28, 2023 at 12:33=E2=80=AFAM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
+On Mon, Aug 28, 2023 at 3:53=E2=80=AFAM David Laight <David.Laight@aculab.c=
+om> wrote:
 >
-> Hi Linus,
+> From: Linus Torvalds
+> > Sent: 25 August 2023 21:43
+> ....
+> > Clang turns this:
+> >
+> >         return __ffs64(val);
+> >
+> > into this horror:
+> >
+> >         pushq   %rax
+> >         movq    %rdi, (%rsp)
+> >         #APP
+> >         rep
+> >         bsfq    (%rsp), %rax
+> >         #NO_APP
+> >         popq    %rcx
+> >
+> > which is just incredibly broken on so many levels. It *should* be a
+> > single instruction, like gcc does:
+> >
+> >         rep; bsf %rdi,%rax      # tmp87, word
+> >
+> > but clang decides that it really wants to put the argument on the
+> > stack, and apparently also wants to do that nonsensical stack
+> > alignment thing to make things even worse.
+> >
+> > We use this:
+> >
+> >   static __always_inline unsigned long variable__ffs(unsigned long word=
+)
+> >   {
+> >         asm("rep; bsf %1,%0"
+> >                 : "=3Dr" (word)
+> >                 : "rm" (word));
+> >         return word;
+> >   }
+> >
+> > for the definition, and it looks like clang royally just screws up
+> > here. Yes, "m" is _allowed_ in that input set, but it damn well
+> > shouldn't be used for something that is already in a register, since
+> > "r" is also allowed, and is the first choice.
 >
-> On Sat, Aug 26, 2023 at 3:08=E2=80=AFAM Linus Torvalds
-> <torvalds@linux-foundation.org> wrote:
-> > On Fri, 25 Aug 2023 at 17:52, Nick Desaulniers <ndesaulniers@google.com=
-> wrote:
-> > And quite often we simply use other names - but then we also do *not*
-> > build with -freestanding, because -freestanding has at least
-> > traditionally meant that the compiler won't optimize the simple and
-> > obvious cases (typically things like "memcpy with a constant size").
+> Why don't we just remove the "m" option?
 >
-> Several architectures (incl. x86, but excl. amd64) do build the kernel wi=
-th
-> -freestanding.
+> Pretty much the only time it will be worse is it the value
+> is in memory and loading it into a register causes a spill
+> to stack.
 >
-> IIRC, the issue was that without that, gcc was "optimizing" calls
-> to standard functions (implemented as inline optimized assembler
-> functions) by replacing them with calls to other standard functions
-> (also implemented as inline optimized assembler functions).  As the
-> latter became external calls, this defeated the optimized assembler
-> implementation, and could even cause build failures if no external
-> implementation was available.
+> While it is possible to generate code where that happens it
+> is pretty unlikely.
 
-That's what the -fno-builtin-* flags are for, IMO, though those also
-have toolchain portability issues IME.
+As Linus expressed below, register exhaustion could occur.  Besides,
+this is a bug in clang that we acknowledge, and should fix.  I have
+the general idea where things are going wrong, I just don't yet have
+the muscle memory (or time) to dive into the register allocator.
+
+>
+>         David
+>
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1=
+ 1PT, UK
+> Registration No: 1397386 (Wales)
+
+
 
 --=20
 Thanks,
