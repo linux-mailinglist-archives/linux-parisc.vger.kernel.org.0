@@ -2,76 +2,43 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9543178B950
-	for <lists+linux-parisc@lfdr.de>; Mon, 28 Aug 2023 22:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 945BE78BA79
+	for <lists+linux-parisc@lfdr.de>; Mon, 28 Aug 2023 23:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232732AbjH1UP1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 28 Aug 2023 16:15:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35612 "EHLO
+        id S229532AbjH1V4a (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 28 Aug 2023 17:56:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233696AbjH1UO6 (ORCPT
+        with ESMTP id S229772AbjH1V4F (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 28 Aug 2023 16:14:58 -0400
-Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF0A6EC
-        for <linux-parisc@vger.kernel.org>; Mon, 28 Aug 2023 13:14:54 -0700 (PDT)
-Received: by mail-qv1-xf30.google.com with SMTP id 6a1803df08f44-64c2e2572f7so21470166d6.1
-        for <linux-parisc@vger.kernel.org>; Mon, 28 Aug 2023 13:14:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693253694; x=1693858494;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tMDd65fdCHl2xtT/3to1El4/4exfLPs4G2IChT81xSs=;
-        b=4DGdPA1sH8CBwQvIK6eIJACZD5O8uvd+EQnkfVuGBNin/s61pTTZGlxATmdX31PKk+
-         M4effxZ4z/hh7rLAIuRqrRO87iOSMS5g/iFj1WxC5DIpAs9ESrwwetYXfLwZXOGKOj1n
-         le11o9hZoJoypLeph3ta2vZz242piVec5/VDySRnMB4gIq0bwIkpaWW0Cq6ZHdueYnD/
-         WrTDtGSVMqN6ZYZ+9yv83y9MuHpjrY6++6DOp9BHkNNQ3y7xUYyRMjM9ht8s3nhb/s9v
-         LD8OZktGRlNLnfFg0vXTnJNZJ52VUs27had+g7l1Yyt3UxgK7+NR0XhfL55HNscNdN4P
-         +iXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693253694; x=1693858494;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tMDd65fdCHl2xtT/3to1El4/4exfLPs4G2IChT81xSs=;
-        b=b0OhfmJ55nbIiKOGaWgV7U+1F9wmepSWeIsZZc3bhP50L0Mlj5nv7t++TXY2aeismc
-         QnF7CaPS/v538O7zlApNggca0YwzY3J5BW91+N7WWHi+6vydp8BPEZquCAR00RJbCrC6
-         Xll+/PWJt3qoOCXLiKGIUOxusmgJ5Bi5TFhVoKVoIQHXv+NsdXIgPXMeV7ZjnK6nc5cH
-         A7tMhfWDgxR4zkEEgLxgBBPHwFP8Bw15rN/y8Zs30LE9puPPBfzRWuxreGNgtxNbTuRz
-         M7/0I4aQ1CJmyWf24Srq4H4oQJSMxvtdU/uM9irE+J/pIlNggYa5m57r5Zf1n0mvrVZ7
-         zL1w==
-X-Gm-Message-State: AOJu0YzMw2p1R9w3BwNg9MzChwi20mSBeNuUETmR+McGwoBmqJAnF3C/
-        ppMdba2EOIsVTUGU6wLLnfYCjtLmgC8SBl+XenZPKg==
-X-Google-Smtp-Source: AGHT+IFXdJyIqaL9v7tZnBYt0jxTjNV9JWHvz0fn6Zev3OQsd+Un77YdKGhViaW3TUslEp0ARZvuWQJzFhDhPb38330=
-X-Received: by 2002:a05:6214:1fc9:b0:63d:eef:c3f6 with SMTP id
- jh9-20020a0562141fc900b0063d0eefc3f6mr26933551qvb.38.1693253693738; Mon, 28
- Aug 2023 13:14:53 -0700 (PDT)
+        Mon, 28 Aug 2023 17:56:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38F410C;
+        Mon, 28 Aug 2023 14:56:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 699B061935;
+        Mon, 28 Aug 2023 21:56:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7126C433C7;
+        Mon, 28 Aug 2023 21:55:58 +0000 (UTC)
+Date:   Mon, 28 Aug 2023 23:55:55 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-parisc@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>
+Cc:     Vidra.Jonas@seznam.cz, Sam James <sam@gentoo.org>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [STABLE] stable backport request for 6.1 for io_uring
+Message-ID: <ZO0X64s72JpFJnRM@p100>
 MIME-Version: 1.0
-References: <ZOkGCSNr0VN2VIJJ@p100> <CAHk-=wjZwSymfuGvf7TX3UQLU1OMN1FZMnEA-Hja0ruqyhMK4A@mail.gmail.com>
- <CAHk-=whVvD05T0yD5DQj803uETLD6qDq-Vx-SiLPcrL=eO77LQ@mail.gmail.com>
- <cc5f4f5701674b96b0009b6b9b257cc8@AcuMS.aculab.com> <CAHk-=wieUuOd-aUz0dma6TnZ+TLVk5-ytJiwbMqLpjcvdzzvQg@mail.gmail.com>
-In-Reply-To: <CAHk-=wieUuOd-aUz0dma6TnZ+TLVk5-ytJiwbMqLpjcvdzzvQg@mail.gmail.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Mon, 28 Aug 2023 13:14:42 -0700
-Message-ID: <CAKwvOdmUptr9_HsU3fz3pa=Y0-SqgHcKk7SJV7hmeBGaw1C3Aw@mail.gmail.com>
-Subject: Re: [PATCH] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit kernels
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     David Laight <David.Laight@aculab.com>,
-        Helge Deller <deller@gmx.de>,
-        Nathan Chancellor <nathan@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Chanho Min <chanho.min@lge.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        HEXHASH_WORD,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,56 +46,131 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Aug 28, 2023 at 9:30=E2=80=AFAM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Mon, 28 Aug 2023 at 03:53, David Laight <David.Laight@aculab.com> wrot=
-e:
-> >
-> > From: Linus Torvalds
-> > >
-> > > We use this:
-> > >
-> > >   static __always_inline unsigned long variable__ffs(unsigned long wo=
-rd)
-> > >   {
-> > >         asm("rep; bsf %1,%0"
-> > >                 : "=3Dr" (word)
-> > >                 : "rm" (word));
-> > >         return word;
-> > >   }
-> > >
-> > > for the definition, and it looks like clang royally just screws up
-> > > here. Yes, "m" is _allowed_ in that input set, but it damn well
-> > > shouldn't be used for something that is already in a register, since
-> > > "r" is also allowed, and is the first choice.
-> >
-> > Why don't we just remove the "m" option?
->
-> For this particular case, it would probably be the right thing to do.
-> It's sad, though, because gcc handles this correctly, and always has.
->
-> And in this particular case, it probably matters not at all.
->
-> In many other cases where we have 'rm', we may actually be in the
-> situation that having 'rm' (or other cases like "g" that also allows
-> immediates) helps because register pressure can be a thing.
->
-> It's mostly a thing on 32-bit x86 where you have a lot fewer
-> registers, and there we've literally run into situations where we have
-> had internal compiler errors because of complex inline asm statements
-> running out of registers.
->
-> With a simple "one input, one output" case, that just isn't an issue,
-> so to work around a clang misfeature we could do it - if somebody
-> finds a case where it actually matters (as opposed to "damn, when
-> looking at the generted code for a function that we never actually use
-> on x86, I noticed that code generation is horrendous").
->
->              Linus
+Hello Greg, Hello Jens, Hello stable team,
 
-Yes; it's a compiler bug, and we will fix it. Then the fix will be an
-incentive for folks that care to move to a newer toolchain.
---=20
-Thanks,
-~Nick Desaulniers
+would you please accept some backports to v6.1-stable for io_uring()?
+io_uring() fails on parisc because of some missing upstream patches.
+Since 6.1 is currently used in debian and gentoo as main kernel we
+face some build errors due to the missing patches.
+
+Here are the 3 steps I'm asking for (for kernel 6.1-stable only, the others are OK):
+
+1) cherry-pick this upstream commit:
+	commit 567b35159e76997e95b643b9a8a5d9d2198f2522
+	Author: John David Anglin <dave@parisc-linux.org>
+	Date:   Sun Feb 26 18:03:33 2023 +0000
+	parisc: Cleanup mmap implementation regarding color alignment
+
+2) cherry-pick this upstream commit:
+	commit b5d89408b9fb21258f7c371d6d48a674f60f7181
+	Author: Helge Deller <deller@gmx.de>
+	Date:   Fri Jun 30 12:36:09 2023 +0200
+	parisc: sys_parisc: parisc_personality() is called from asm code
+
+3) apply the patch below as manual backport:
+I think this is the least invasive change and I wasn't able to otherwise
+simply pull in the upstream patches without touching code I don't want
+to touch (and keep life easier for Jens if he wants to backport other
+patches later).
+
+Thanks!
+Helge
+
+
+From: Helge Deller <deller@gmx.de>
+Date: Mon, 28 Aug 2023 23:07:49 +0200
+Subject: [PATCH] io_uring/parisc: Adjust pgoff in io_uring mmap() for parisc
+
+Vidra Jonas reported issues on parisc with libuv which then triggers
+build errors with cmake. Debugging shows that those issues stem from
+io_uring().
+
+I was not able to easily pull in upstream commits directly, so here
+is IMHO the least invasive manual backport of the following upstream
+commits to fix the cache aliasing issues on parisc on kernel 6.1
+with io_uring:
+
+56675f8b9f9b ("io_uring/parisc: Adjust pgoff in io_uring mmap() for parisc")
+32832a407a71 ("io_uring: Fix io_uring mmap() by using architecture-provided get_unmapped_area()")
+d808459b2e31 ("io_uring: Adjust mapping wrt architecture aliasing requirements")
+
+With this patch kernel 6.1 has all relevant mmap changes and is
+identical to kernel 6.5 with regard to mmap() in io_uring.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: Vidra.Jonas@seznam.cz
+Link: https://lore.kernel.org/linux-parisc/520.NvTX.6mXZpmfh4Ju.1awpAS@seznam.cz/
+Cc: Sam James <sam@gentoo.org>
+Cc: John David Anglin <dave.anglin@bell.net>
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index ed8e9deae284..b0e47fe1eb4b 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -72,6 +72,7 @@
+ #include <linux/io_uring.h>
+ #include <linux/audit.h>
+ #include <linux/security.h>
++#include <asm/shmparam.h>
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/io_uring.h>
+@@ -3110,6 +3111,49 @@ static __cold int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return remap_pfn_range(vma, vma->vm_start, pfn, sz, vma->vm_page_prot);
+ }
+ 
++static unsigned long io_uring_mmu_get_unmapped_area(struct file *filp,
++			unsigned long addr, unsigned long len,
++			unsigned long pgoff, unsigned long flags)
++{
++	void *ptr;
++
++	/*
++	 * Do not allow to map to user-provided address to avoid breaking the
++	 * aliasing rules. Userspace is not able to guess the offset address of
++	 * kernel kmalloc()ed memory area.
++	 */
++	if (addr)
++		return -EINVAL;
++
++	ptr = io_uring_validate_mmap_request(filp, pgoff, len);
++	if (IS_ERR(ptr))
++		return -ENOMEM;
++
++	/*
++	 * Some architectures have strong cache aliasing requirements.
++	 * For such architectures we need a coherent mapping which aliases
++	 * kernel memory *and* userspace memory. To achieve that:
++	 * - use a NULL file pointer to reference physical memory, and
++	 * - use the kernel virtual address of the shared io_uring context
++	 *   (instead of the userspace-provided address, which has to be 0UL
++	 *   anyway).
++	 * - use the same pgoff which the get_unmapped_area() uses to
++	 *   calculate the page colouring.
++	 * For architectures without such aliasing requirements, the
++	 * architecture will return any suitable mapping because addr is 0.
++	 */
++	filp = NULL;
++	flags |= MAP_SHARED;
++	pgoff = 0;	/* has been translated to ptr above */
++#ifdef SHM_COLOUR
++	addr = (uintptr_t) ptr;
++	pgoff = addr >> PAGE_SHIFT;
++#else
++	addr = 0UL;
++#endif
++	return current->mm->get_unmapped_area(filp, addr, len, pgoff, flags);
++}
++
+ #else /* !CONFIG_MMU */
+ 
+ static int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
+@@ -3324,6 +3368,8 @@ static const struct file_operations io_uring_fops = {
+ #ifndef CONFIG_MMU
+ 	.get_unmapped_area = io_uring_nommu_get_unmapped_area,
+ 	.mmap_capabilities = io_uring_nommu_mmap_capabilities,
++#else
++	.get_unmapped_area = io_uring_mmu_get_unmapped_area,
+ #endif
+ 	.poll		= io_uring_poll,
+ #ifdef CONFIG_PROC_FS
