@@ -2,87 +2,97 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9F8F78A993
-	for <lists+linux-parisc@lfdr.de>; Mon, 28 Aug 2023 12:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F415778AE4B
+	for <lists+linux-parisc@lfdr.de>; Mon, 28 Aug 2023 13:00:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbjH1KEx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 28 Aug 2023 06:04:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40854 "EHLO
+        id S232391AbjH1K7l (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 28 Aug 2023 06:59:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230337AbjH1KEr (ORCPT
+        with ESMTP id S232463AbjH1K7X (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 28 Aug 2023 06:04:47 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC20010C;
-        Mon, 28 Aug 2023 03:04:43 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-99df431d4bfso394001366b.1;
-        Mon, 28 Aug 2023 03:04:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693217082; x=1693821882;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YF+tBcFB8oUAJLRFh8palpJJ8k8VFrTFaU4dRCnVkd0=;
-        b=fnSgMhcsY93sz5w5SAqlosS1e5CtS8cTgo1oaCubuRsmnFbL2ULRJsVZFShm1Bc1id
-         ZzLOLxnYu3IymoJAM080tklkdA92FqPjdzuWsU4mNKxuPAXiTwSDVMBxr+IUCC+ZxTna
-         J+1V44Ngj395eXqXZVIQSHnore95m/ZeMo//rzmT39gNPJjz2hc0y03q0i+6Jwnkt5Eq
-         QA2sT6oSUOqoFF3h9EzBmBp3h4OCb5hxFBB4ixNon8tMZCm532o5OrsDeXDwSg7HF1G6
-         JByfqm36Iv8WINtKvV1xRW/0Fy0ufK4EjWyjTqcGYres9Tf1BmPjbQwYa0A2FaFp/zXK
-         K+LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693217082; x=1693821882;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YF+tBcFB8oUAJLRFh8palpJJ8k8VFrTFaU4dRCnVkd0=;
-        b=I14IKduwiSJrPH2U+dmOFS00EB4ph+H1KeR2c5MBGVmim/0VUiLGsiP+WJRihAjNwA
-         aLZd+WGq3d0abUkKi+zLU7JHoDhl28gkLoojs/XouZBpWl5yj26j40aTOWOIrLXsv9K9
-         0jRSTj+Vz9lmL1IIiPep3Og9I3/txRiE4ekpjqjGSDW7bbCzvhYftAIca60v9cPJR+Sf
-         375h0i+AUceM8S5KExQn2bCkFE4oJAa/DCBVw71wbyc2NGnYpsL5s1v77pk4kmJvCjJf
-         5DjjiAjbJGarVeKuWA87Izy+ZCVaX7yLtaei/Q9DRpg0wB9vz++UO48O4gsc0/oB3Mgw
-         EIQA==
-X-Gm-Message-State: AOJu0YwKywI+YEzMAhPBRxoPDwvMiosd6x7eFNVDp6vkPllOcdH1Y17E
-        dZfMVpGZEUPGw8jCrdz0acPi9OJlj5T/bC5rr8L4yl4Qyuw=
-X-Google-Smtp-Source: AGHT+IEv81ay/Ms7SUmOAPSoLX1ePrJ048tBBg1eModdvSwOMPYQRIS9QPxDdrcRZCdVbH6+/pImd7xxDum7wTcXELY=
-X-Received: by 2002:a17:906:8a51:b0:9a1:fab3:ee34 with SMTP id
- gx17-20020a1709068a5100b009a1fab3ee34mr9418974ejc.0.1693217082095; Mon, 28
- Aug 2023 03:04:42 -0700 (PDT)
+        Mon, 28 Aug 2023 06:59:23 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C143CF9
+        for <linux-parisc@vger.kernel.org>; Mon, 28 Aug 2023 03:59:16 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-312-yYM7kxAkNtydxSJM6giphA-1; Mon, 28 Aug 2023 11:53:09 +0100
+X-MC-Unique: yYM7kxAkNtydxSJM6giphA-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 28 Aug
+ 2023 11:53:12 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Mon, 28 Aug 2023 11:53:12 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Linus Torvalds' <torvalds@linux-foundation.org>,
+        Helge Deller <deller@gmx.de>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Chanho Min <chanho.min@lge.com>,
+        "Geert Uytterhoeven" <geert@linux-m68k.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: RE: [PATCH] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit
+ kernels
+Thread-Topic: [PATCH] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit
+ kernels
+Thread-Index: AQHZ15Tpa0MOqrSpzEiPMMjR1E/Se6//izkQ
+Date:   Mon, 28 Aug 2023 10:53:12 +0000
+Message-ID: <cc5f4f5701674b96b0009b6b9b257cc8@AcuMS.aculab.com>
+References: <ZOkGCSNr0VN2VIJJ@p100>
+ <CAHk-=wjZwSymfuGvf7TX3UQLU1OMN1FZMnEA-Hja0ruqyhMK4A@mail.gmail.com>
+ <CAHk-=whVvD05T0yD5DQj803uETLD6qDq-Vx-SiLPcrL=eO77LQ@mail.gmail.com>
+In-Reply-To: <CAHk-=whVvD05T0yD5DQj803uETLD6qDq-Vx-SiLPcrL=eO77LQ@mail.gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-References: <20230810141947.1236730-1-arnd@kernel.org> <20230810141947.1236730-10-arnd@kernel.org>
-In-Reply-To: <20230810141947.1236730-10-arnd@kernel.org>
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Date:   Mon, 28 Aug 2023 11:04:05 +0100
-Message-ID: <CADVatmNRd11Xmm1ReY+1Ce-SgnHcMizAa4DpvsCsG7Z7NLdObg@mail.gmail.com>
-Subject: Re: [PATCH 09/17] parport: gsc: mark init function static
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        linux-parisc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Thu, 10 Aug 2023 at 15:22, Arnd Bergmann <arnd@kernel.org> wrote:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> This is only used locally, so mark it static to avoid a warning:
->
-> drivers/parport/parport_gsc.c:395:5: error: no previous prototype for 'parport_gsc_init' [-Werror=missing-prototypes]
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+RnJvbTogTGludXMgVG9ydmFsZHMNCj4gU2VudDogMjUgQXVndXN0IDIwMjMgMjE6NDMNCi4uLi4N
+Cj4gQ2xhbmcgdHVybnMgdGhpczoNCj4gDQo+ICAgICAgICAgcmV0dXJuIF9fZmZzNjQodmFsKTsN
+Cj4gDQo+IGludG8gdGhpcyBob3Jyb3I6DQo+IA0KPiAgICAgICAgIHB1c2hxICAgJXJheA0KPiAg
+ICAgICAgIG1vdnEgICAgJXJkaSwgKCVyc3ApDQo+ICAgICAgICAgI0FQUA0KPiAgICAgICAgIHJl
+cA0KPiAgICAgICAgIGJzZnEgICAgKCVyc3ApLCAlcmF4DQo+ICAgICAgICAgI05PX0FQUA0KPiAg
+ICAgICAgIHBvcHEgICAgJXJjeA0KPiANCj4gd2hpY2ggaXMganVzdCBpbmNyZWRpYmx5IGJyb2tl
+biBvbiBzbyBtYW55IGxldmVscy4gSXQgKnNob3VsZCogYmUgYQ0KPiBzaW5nbGUgaW5zdHJ1Y3Rp
+b24sIGxpa2UgZ2NjIGRvZXM6DQo+IA0KPiAgICAgICAgIHJlcDsgYnNmICVyZGksJXJheCAgICAg
+ICMgdG1wODcsIHdvcmQNCj4gDQo+IGJ1dCBjbGFuZyBkZWNpZGVzIHRoYXQgaXQgcmVhbGx5IHdh
+bnRzIHRvIHB1dCB0aGUgYXJndW1lbnQgb24gdGhlDQo+IHN0YWNrLCBhbmQgYXBwYXJlbnRseSBh
+bHNvIHdhbnRzIHRvIGRvIHRoYXQgbm9uc2Vuc2ljYWwgc3RhY2sNCj4gYWxpZ25tZW50IHRoaW5n
+IHRvIG1ha2UgdGhpbmdzIGV2ZW4gd29yc2UuDQo+IA0KPiBXZSB1c2UgdGhpczoNCj4gDQo+ICAg
+c3RhdGljIF9fYWx3YXlzX2lubGluZSB1bnNpZ25lZCBsb25nIHZhcmlhYmxlX19mZnModW5zaWdu
+ZWQgbG9uZyB3b3JkKQ0KPiAgIHsNCj4gICAgICAgICBhc20oInJlcDsgYnNmICUxLCUwIg0KPiAg
+ICAgICAgICAgICAgICAgOiAiPXIiICh3b3JkKQ0KPiAgICAgICAgICAgICAgICAgOiAicm0iICh3
+b3JkKSk7DQo+ICAgICAgICAgcmV0dXJuIHdvcmQ7DQo+ICAgfQ0KPiANCj4gZm9yIHRoZSBkZWZp
+bml0aW9uLCBhbmQgaXQgbG9va3MgbGlrZSBjbGFuZyByb3lhbGx5IGp1c3Qgc2NyZXdzIHVwDQo+
+IGhlcmUuIFllcywgIm0iIGlzIF9hbGxvd2VkXyBpbiB0aGF0IGlucHV0IHNldCwgYnV0IGl0IGRh
+bW4gd2VsbA0KPiBzaG91bGRuJ3QgYmUgdXNlZCBmb3Igc29tZXRoaW5nIHRoYXQgaXMgYWxyZWFk
+eSBpbiBhIHJlZ2lzdGVyLCBzaW5jZQ0KPiAiciIgaXMgYWxzbyBhbGxvd2VkLCBhbmQgaXMgdGhl
+IGZpcnN0IGNob2ljZS4NCg0KV2h5IGRvbid0IHdlIGp1c3QgcmVtb3ZlIHRoZSAibSIgb3B0aW9u
+Pw0KDQpQcmV0dHkgbXVjaCB0aGUgb25seSB0aW1lIGl0IHdpbGwgYmUgd29yc2UgaXMgaXQgdGhl
+IHZhbHVlDQppcyBpbiBtZW1vcnkgYW5kIGxvYWRpbmcgaXQgaW50byBhIHJlZ2lzdGVyIGNhdXNl
+cyBhIHNwaWxsDQp0byBzdGFjay4NCg0KV2hpbGUgaXQgaXMgcG9zc2libGUgdG8gZ2VuZXJhdGUg
+Y29kZSB3aGVyZSB0aGF0IGhhcHBlbnMgaXQNCmlzIHByZXR0eSB1bmxpa2VseS4NCg0KCURhdmlk
+DQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBG
+YXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2
+IChXYWxlcykNCg==
 
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-
-
--- 
-Regards
-Sudip
