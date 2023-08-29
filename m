@@ -2,43 +2,41 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 945BE78BA79
-	for <lists+linux-parisc@lfdr.de>; Mon, 28 Aug 2023 23:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C57278C4E0
+	for <lists+linux-parisc@lfdr.de>; Tue, 29 Aug 2023 15:07:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229532AbjH1V4a (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 28 Aug 2023 17:56:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42650 "EHLO
+        id S235541AbjH2NHJ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 29 Aug 2023 09:07:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229772AbjH1V4F (ORCPT
+        with ESMTP id S235947AbjH2NG5 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 28 Aug 2023 17:56:05 -0400
+        Tue, 29 Aug 2023 09:06:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38F410C;
-        Mon, 28 Aug 2023 14:56:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68EBB184;
+        Tue, 29 Aug 2023 06:06:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 699B061935;
-        Mon, 28 Aug 2023 21:56:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7126C433C7;
-        Mon, 28 Aug 2023 21:55:58 +0000 (UTC)
-Date:   Mon, 28 Aug 2023 23:55:55 +0200
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E839E60C89;
+        Tue, 29 Aug 2023 13:06:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04861C433C7;
+        Tue, 29 Aug 2023 13:06:50 +0000 (UTC)
+Date:   Tue, 29 Aug 2023 15:06:47 +0200
 From:   Helge Deller <deller@gmx.de>
-To:     stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>, linux-parisc@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>
-Cc:     Vidra.Jonas@seznam.cz, Sam James <sam@gentoo.org>,
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [STABLE] stable backport request for 6.1 for io_uring
-Message-ID: <ZO0X64s72JpFJnRM@p100>
+Subject: [GIT PULL] parisc architecture fixes for v6.6-rc1
+Message-ID: <ZO3tZ204Tro+83MC@p100>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        HEXHASH_WORD,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,131 +44,116 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hello Greg, Hello Jens, Hello stable team,
+Hi Linus,
 
-would you please accept some backports to v6.1-stable for io_uring()?
-io_uring() fails on parisc because of some missing upstream patches.
-Since 6.1 is currently used in debian and gentoo as main kernel we
-face some build errors due to the missing patches.
+please pull the parisc architecture fixes and enhancements for kernel 6.6-rc1.
 
-Here are the 3 steps I'm asking for (for kernel 6.1-stable only, the others are OK):
-
-1) cherry-pick this upstream commit:
-	commit 567b35159e76997e95b643b9a8a5d9d2198f2522
-	Author: John David Anglin <dave@parisc-linux.org>
-	Date:   Sun Feb 26 18:03:33 2023 +0000
-	parisc: Cleanup mmap implementation regarding color alignment
-
-2) cherry-pick this upstream commit:
-	commit b5d89408b9fb21258f7c371d6d48a674f60f7181
-	Author: Helge Deller <deller@gmx.de>
-	Date:   Fri Jun 30 12:36:09 2023 +0200
-	parisc: sys_parisc: parisc_personality() is called from asm code
-
-3) apply the patch below as manual backport:
-I think this is the least invasive change and I wasn't able to otherwise
-simply pull in the upstream patches without touching code I don't want
-to touch (and keep life easier for Jens if he wants to backport other
-patches later).
+PA-RISC now has a native eBPF JIT compiler for 32- and 64-bit
+kernels, the LED driver was rewritten to use the Linux LED framework
+and most of the parisc bootup code was switched to use *_initcall()
+functions.
 
 Thanks!
 Helge
 
+----------------------------------------------------------------
+The following changes since commit 706a741595047797872e669b3101429ab8d378ef:
 
-From: Helge Deller <deller@gmx.de>
-Date: Mon, 28 Aug 2023 23:07:49 +0200
-Subject: [PATCH] io_uring/parisc: Adjust pgoff in io_uring mmap() for parisc
+  Linux 6.5-rc7 (2023-08-20 15:02:52 +0200)
 
-Vidra Jonas reported issues on parisc with libuv which then triggers
-build errors with cmake. Debugging shows that those issues stem from
-io_uring().
+are available in the Git repository at:
 
-I was not able to easily pull in upstream commits directly, so here
-is IMHO the least invasive manual backport of the following upstream
-commits to fix the cache aliasing issues on parisc on kernel 6.1
-with io_uring:
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.6-rc1
 
-56675f8b9f9b ("io_uring/parisc: Adjust pgoff in io_uring mmap() for parisc")
-32832a407a71 ("io_uring: Fix io_uring mmap() by using architecture-provided get_unmapped_area()")
-d808459b2e31 ("io_uring: Adjust mapping wrt architecture aliasing requirements")
+for you to fetch changes up to 77e0ddf097d6d4ceaf898e088b133b99e0a97fa0:
 
-With this patch kernel 6.1 has all relevant mmap changes and is
-identical to kernel 6.5 with regard to mmap() in io_uring.
+  parisc: ccio-dma: Create private runway procfs root entry (2023-08-28 18:00:27 +0200)
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: Vidra.Jonas@seznam.cz
-Link: https://lore.kernel.org/linux-parisc/520.NvTX.6mXZpmfh4Ju.1awpAS@seznam.cz/
-Cc: Sam James <sam@gentoo.org>
-Cc: John David Anglin <dave.anglin@bell.net>
+----------------------------------------------------------------
+parisc architecture fixes and enhancements for kernel v6.6-rc1:
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index ed8e9deae284..b0e47fe1eb4b 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -72,6 +72,7 @@
- #include <linux/io_uring.h>
- #include <linux/audit.h>
- #include <linux/security.h>
-+#include <asm/shmparam.h>
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/io_uring.h>
-@@ -3110,6 +3111,49 @@ static __cold int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
- 	return remap_pfn_range(vma, vma->vm_start, pfn, sz, vma->vm_page_prot);
- }
- 
-+static unsigned long io_uring_mmu_get_unmapped_area(struct file *filp,
-+			unsigned long addr, unsigned long len,
-+			unsigned long pgoff, unsigned long flags)
-+{
-+	void *ptr;
-+
-+	/*
-+	 * Do not allow to map to user-provided address to avoid breaking the
-+	 * aliasing rules. Userspace is not able to guess the offset address of
-+	 * kernel kmalloc()ed memory area.
-+	 */
-+	if (addr)
-+		return -EINVAL;
-+
-+	ptr = io_uring_validate_mmap_request(filp, pgoff, len);
-+	if (IS_ERR(ptr))
-+		return -ENOMEM;
-+
-+	/*
-+	 * Some architectures have strong cache aliasing requirements.
-+	 * For such architectures we need a coherent mapping which aliases
-+	 * kernel memory *and* userspace memory. To achieve that:
-+	 * - use a NULL file pointer to reference physical memory, and
-+	 * - use the kernel virtual address of the shared io_uring context
-+	 *   (instead of the userspace-provided address, which has to be 0UL
-+	 *   anyway).
-+	 * - use the same pgoff which the get_unmapped_area() uses to
-+	 *   calculate the page colouring.
-+	 * For architectures without such aliasing requirements, the
-+	 * architecture will return any suitable mapping because addr is 0.
-+	 */
-+	filp = NULL;
-+	flags |= MAP_SHARED;
-+	pgoff = 0;	/* has been translated to ptr above */
-+#ifdef SHM_COLOUR
-+	addr = (uintptr_t) ptr;
-+	pgoff = addr >> PAGE_SHIFT;
-+#else
-+	addr = 0UL;
-+#endif
-+	return current->mm->get_unmapped_area(filp, addr, len, pgoff, flags);
-+}
-+
- #else /* !CONFIG_MMU */
- 
- static int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
-@@ -3324,6 +3368,8 @@ static const struct file_operations io_uring_fops = {
- #ifndef CONFIG_MMU
- 	.get_unmapped_area = io_uring_nommu_get_unmapped_area,
- 	.mmap_capabilities = io_uring_nommu_mmap_capabilities,
-+#else
-+	.get_unmapped_area = io_uring_mmu_get_unmapped_area,
- #endif
- 	.poll		= io_uring_poll,
- #ifdef CONFIG_PROC_FS
+* add eBPF JIT compiler for 32- and 64-bit kernel
+* LCD/LED driver rewrite to utilize Linux LED subsystem
+* switch to generic mmap top-down layout and brk randomization
+* kernel startup cleanup by loading most drivers via arch_initcall()
+
+----------------------------------------------------------------
+Helge Deller (31):
+      parisc: lasi: Register LASI power-off feature as sys_off_handler
+      parisc: Drop the pa7300lc LPMC handler
+      parisc: traps: Drop cpu_lpmc function pointer
+      parisc: Use page table locks only if DEBUG_KERNEL is enabled
+      parisc: Fix /proc/cpuinfo output for lscpu
+      parisc: Use generic mmap top-down layout and brk randomization
+      parisc: Add 32-bit eBPF JIT compiler
+      parisc: Add 64-bit eBPF JIT compiler
+      parisc: Add eBPF JIT compiler glue code and Makefile
+      parisc: Fix comment on Elf64 function descriptor
+      parisc: Wire up eBPF JIT compiler
+      parisc: unaligned: Simplify 32-bit assembly in emulate_std()
+      parisc: Avoid ioremap() for same addresss in iosapic_register()
+      parisc: led: Reduce CPU overhead for disk & lan LED computation
+      parisc: Makefile: Adjust order in which drivers should be loaded
+      parisc: dino: Convert dino PCI bus driver to use arch_initcall()
+      parisc: hppb: Convert HP PB bus driver to use arch_initcall()
+      parisc: eisa: Convert HP EISA bus driver to use arch_initcall()
+      parisc: ccio: Convert CCIO driver to use arch_initcall()
+      parisc: gsc: Convert GSC bus driver to use arch_initcall()
+      parisc: lba: Convert LBA PCI bus driver to use arch_initcall()
+      parisc: led: Move register_led_regions() to late_initcall()
+      parisc: sba_iommu: Convert SBA IOMMU driver to use arch_initcall()
+      parisc: iosapic: Convert I/O Sapic driver to use arch_initcall()
+      parisc: wax: Initialize wax driver via arch_initcall()
+      parisc: asp: Initialize asp driver via arch_initcall()
+      parisc: lasi: Initialize LASI driver via arch_initcall()
+      parisc: led: Fix LAN receive and transmit LEDs
+      parisc: led: Rewrite LED/LCD driver to utilizize Linux LED subsystem
+      parisc: chassis: Do not overwrite string on LCD display
+      parisc: ccio-dma: Create private runway procfs root entry
+
+ arch/parisc/Kbuild                  |    2 +-
+ arch/parisc/Kconfig                 |   19 +
+ arch/parisc/Kconfig.debug           |    2 +-
+ arch/parisc/include/asm/elf.h       |    3 +-
+ arch/parisc/include/asm/led.h       |   16 +-
+ arch/parisc/include/asm/machdep.h   |   17 -
+ arch/parisc/include/asm/processor.h |    8 -
+ arch/parisc/include/asm/ropes.h     |    2 +-
+ arch/parisc/include/asm/runway.h    |    3 -
+ arch/parisc/kernel/Makefile         |    2 +-
+ arch/parisc/kernel/pa7300lc.c       |   51 --
+ arch/parisc/kernel/pdc_chassis.c    |    6 +
+ arch/parisc/kernel/process.c        |   20 -
+ arch/parisc/kernel/processor.c      |   13 +-
+ arch/parisc/kernel/setup.c          |   49 --
+ arch/parisc/kernel/sys_parisc.c     |   54 +-
+ arch/parisc/kernel/traps.c          |    5 +-
+ arch/parisc/kernel/unaligned.c      |   25 +-
+ arch/parisc/net/Makefile            |    9 +
+ arch/parisc/net/bpf_jit.h           |  479 +++++++++++
+ arch/parisc/net/bpf_jit_comp32.c    | 1615 +++++++++++++++++++++++++++++++++++
+ arch/parisc/net/bpf_jit_comp64.c    | 1209 ++++++++++++++++++++++++++
+ arch/parisc/net/bpf_jit_core.c      |  201 +++++
+ drivers/parisc/Kconfig              |    3 +-
+ drivers/parisc/Makefile             |   16 +-
+ drivers/parisc/asp.c                |   11 +-
+ drivers/parisc/ccio-dma.c           |   25 +-
+ drivers/parisc/dino.c               |    6 +-
+ drivers/parisc/eisa.c               |    5 +-
+ drivers/parisc/gsc.c                |   15 -
+ drivers/parisc/hppb.c               |    7 +-
+ drivers/parisc/iosapic.c            |   12 +-
+ drivers/parisc/lasi.c               |   37 +-
+ drivers/parisc/lba_pci.c            |    8 +-
+ drivers/parisc/led.c                |  901 ++++++++-----------
+ drivers/parisc/sba_iommu.c          |    7 +-
+ drivers/parisc/wax.c                |   12 +-
+ mm/util.c                           |    5 +-
+ 38 files changed, 3997 insertions(+), 883 deletions(-)
+ delete mode 100644 arch/parisc/include/asm/machdep.h
+ delete mode 100644 arch/parisc/kernel/pa7300lc.c
+ create mode 100644 arch/parisc/net/Makefile
+ create mode 100644 arch/parisc/net/bpf_jit.h
+ create mode 100644 arch/parisc/net/bpf_jit_comp32.c
+ create mode 100644 arch/parisc/net/bpf_jit_comp64.c
+ create mode 100644 arch/parisc/net/bpf_jit_core.c
