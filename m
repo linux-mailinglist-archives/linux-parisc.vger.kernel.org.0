@@ -2,91 +2,82 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5645A78F856
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Sep 2023 08:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37DFD790A3E
+	for <lists+linux-parisc@lfdr.de>; Sun,  3 Sep 2023 01:04:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234233AbjIAGEp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 1 Sep 2023 02:04:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47860 "EHLO
+        id S230444AbjIBXER (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 2 Sep 2023 19:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348341AbjIAGEp (ORCPT
+        with ESMTP id S229571AbjIBXEQ (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 1 Sep 2023 02:04:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526A510CE
-        for <linux-parisc@vger.kernel.org>; Thu, 31 Aug 2023 23:04:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D76A261C61
-        for <linux-parisc@vger.kernel.org>; Fri,  1 Sep 2023 06:04:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B7DC433C7;
-        Fri,  1 Sep 2023 06:04:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693548281;
-        bh=dhqjQZOfZuCwV4bxHzmp7Ql2/m3cU1koqyCdIayfpQI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=dWTlzjN5AGOuDoIQtW1xSemQ4uxltsrJsHNvdmqIxTfHrMDsSS1wzgry2XVqVMW1h
-         Ho/XwK4EudvMjNjUZSbxqFtyD3PUDykF8+aQxfx1I9qMTC+lDPLT7ih+L0R7xZAr08
-         /6BDufYX7M6qBs8j8HZeXZCPneZcN2DzXVzgLz6i8eq9Val1Y5qTZ4NoPOKF9XufXa
-         Ya6QL7WcbuYhWoyN5D/k1Kp/hPQTpR4T6mMsXC+En3XFO74cmLVVJSORSbugRmkgga
-         nI0cdISVazSc9RzdJUJbmCT5ULT8p/Jl+jk1CXa5kbG8go89TitsfmysRfLcpixVJY
-         rNoEpBJgSo55g==
-From:   deller@kernel.org
-To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>
-Subject: [PATCH] parisc: shmparam.h: Document aliasing requirements of PA-RISC
-Date:   Fri,  1 Sep 2023 08:04:31 +0200
-Message-ID: <20230901060431.6170-1-deller@kernel.org>
-X-Mailer: git-send-email 2.41.0
+        Sat, 2 Sep 2023 19:04:16 -0400
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-001.bell.net [209.71.208.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FEC9CFE
+        for <linux-parisc@vger.kernel.org>; Sat,  2 Sep 2023 16:04:13 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [142.198.135.111]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 64C3528203335C88
+X-CM-Envelope: MS4xfCZV9U/yPgj7+HROGzGHBlXsIEzaEWiNhhVFpnpBSAz36lUysIlGYAK827DlBqvrkWyMXamUYceL0m2BvmQzZS9w3At3H8iwbXr+QHJUXx7bo5iXHXCC
+ Hv+gZgEB/5R12RMf3MrYbx7Ow6sGmgghsp7rSwDqsKxyN45TvgNhJ90xMhl7vKvkYUh9cJTzY177y3J4x+5oWtwF/zL2bn293728lcqmTVaGu8gPf0/DNtKG
+ fsPd2jg8Y7Qdl5c28sRpQNigD0a/LuFZ9U6I5BXLvnzN75OqKm4HB7RucklibJyE85qax8f/emdGElJfGJxo4oqtIxLDX7yVxbQMOczw9hMTROMFaYqqDXvU
+ P7zAuPzB+m7Om5IRBJg9j2eKI6yvSXOWBsFiOxf6N8SOHn4aaNigb/2pwVilxXFs9CH1phpMPtdiszsr/lcQbQ/u2fArsIFzUDkTbOvh7toxpqHQyNs=
+X-CM-Analysis: v=2.4 cv=W7Nb6Tak c=1 sm=1 tr=0 ts=64f3bf69
+ a=m0hBPjpnfWKpZW+YOe+Hqw==:117 a=m0hBPjpnfWKpZW+YOe+Hqw==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=ZjPAgu6vkrefqVqYoh8A:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (142.198.135.111) by cmx-mtlrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 64C3528203335C88; Sat, 2 Sep 2023 19:04:09 -0400
+Message-ID: <8f6006a7-1819-a2fb-e928-7f26ba7df6ec@bell.net>
+Date:   Sat, 2 Sep 2023 19:04:10 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [STABLE] stable backport request for 6.1 for io_uring
+Content-Language: en-US
+To:     Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>,
+        stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-parisc@vger.kernel.org
+Cc:     Vidra.Jonas@seznam.cz, Sam James <sam@gentoo.org>
+References: <ZO0X64s72JpFJnRM@p100>
+ <5aa6799a-d577-4485-88e0-545f6459c74e@kernel.dk>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <5aa6799a-d577-4485-88e0-545f6459c74e@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+On 2023-08-30 12:17 p.m., Jens Axboe wrote:
+> On 8/28/23 3:55 PM, Helge Deller wrote:
+>> Hello Greg, Hello Jens, Hello stable team,
+>>
+>> would you please accept some backports to v6.1-stable for io_uring()?
+>> io_uring() fails on parisc because of some missing upstream patches.
+>> Since 6.1 is currently used in debian and gentoo as main kernel we
+>> face some build errors due to the missing patches.
+> Fine with me.
+This is probably not a problem with the backport but I see this fail in liburing tests:
 
-Add some documentation why PA-RISC uses SHMLBA and SHM_COLOUR.
+Running test wq-aff.t open: No such file or directory
+test sqpoll failed
+Test wq-aff.t failed with ret 1
+Running test xattr.t 0 sec [0]
+Running test statx.t 0 sec [0]
+Running test sq-full-cpp.t 0 sec [0]
+Tests failed (1): <wq-aff.t>
 
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- arch/parisc/include/asm/shmparam.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Dave
 
-diff --git a/arch/parisc/include/asm/shmparam.h b/arch/parisc/include/asm/shmparam.h
-index 74f74e4d35b7..5a95b0f62b87 100644
---- a/arch/parisc/include/asm/shmparam.h
-+++ b/arch/parisc/include/asm/shmparam.h
-@@ -2,6 +2,21 @@
- #ifndef _ASMPARISC_SHMPARAM_H
- #define _ASMPARISC_SHMPARAM_H
- 
-+/*
-+ * PA-RISC uses virtually indexed & physically tagged (VIPT) caches
-+ * which has strict requirements when two pages to the same physical
-+ * address are accessed through different mappings. Read the section
-+ * "Address Aliasing" in the arch docs for more detail:
-+ * PA-RISC 1.1 (page 3-6):
-+ * https://parisc.wiki.kernel.org/images-parisc/6/68/Pa11_acd.pdf
-+ * PA-RISC 2.0 (page F-5):
-+ * https://parisc.wiki.kernel.org/images-parisc/7/73/Parisc2.0.pdf
-+ *
-+ * For Linux we allow kernel and userspace to map pages on page size
-+ * granularity (SHMLBA) but have to ensure that, if two pages are
-+ * mapped to the same physical address, the virtual and physical
-+ * addresses modulo SHM_COLOUR are identical.
-+ */
- #define SHMLBA	   PAGE_SIZE	/* attach addr a multiple of this */
- #define SHM_COLOUR 0x00400000	/* shared mappings colouring */
- 
 -- 
-2.41.0
+John David Anglin  dave.anglin@bell.net
 
