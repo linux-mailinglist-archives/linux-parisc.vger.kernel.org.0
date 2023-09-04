@@ -2,115 +2,98 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E037915C7
-	for <lists+linux-parisc@lfdr.de>; Mon,  4 Sep 2023 12:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3CB1791C3C
+	for <lists+linux-parisc@lfdr.de>; Mon,  4 Sep 2023 19:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241307AbjIDKk7 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 4 Sep 2023 06:40:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51926 "EHLO
+        id S234515AbjIDR5T (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 4 Sep 2023 13:57:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230247AbjIDKk6 (ORCPT
+        with ESMTP id S232840AbjIDR5S (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 4 Sep 2023 06:40:58 -0400
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32CC7CA;
-        Mon,  4 Sep 2023 03:40:54 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R371e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0VrJ9gP4_1693824049;
-Received: from 30.240.117.141(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VrJ9gP4_1693824049)
-          by smtp.aliyun-inc.com;
-          Mon, 04 Sep 2023 18:40:50 +0800
-Message-ID: <2540b570-1c1a-7d1b-59e9-6c32d9947c44@linux.alibaba.com>
-Date:   Mon, 4 Sep 2023 18:40:48 +0800
+        Mon, 4 Sep 2023 13:57:18 -0400
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-001.bell.net [209.71.208.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010C6DD
+        for <linux-parisc@vger.kernel.org>; Mon,  4 Sep 2023 10:57:11 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [142.198.135.111]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 64C35282035A5989
+X-CM-Envelope: MS4xfAPjfPu05dcH8uv2sS8SHRlcsSy4KQiSse029DYT5h2OuERTfrZcaOiWK7LJqB26eRFI5i25L0YaiUGp7bkcy0opiEsUIl917F/kuuDhmui+kINU3291
+ dqJ+Tc0M5IA3cxgULYbclce1ydoPlV1P8FRBpyGSejl7nusjp+KjHoP4AO9kBwPtTDAi4j6+AsLFDtLC7z5+ye0nbk0xijAMSnaFbYDqfN4u2NVE96YYBSsi
+ Qrhuu8NkThyYwKXoXEvDe7SCgEi3r9o0bhB2wDNaYtEiLV7bMIKKwYLudSCIune+BmRPgaVAsKR4gVGwbeF49Q==
+X-CM-Analysis: v=2.4 cv=W7Nb6Tak c=1 sm=1 tr=0 ts=64f61a6c
+ a=m0hBPjpnfWKpZW+YOe+Hqw==:117 a=m0hBPjpnfWKpZW+YOe+Hqw==:17
+ a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=xNf9USuDAAAA:8 a=FBHGMhGWAAAA:8
+ a=dEZuh6yRk1065rfvW3AA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+ a=SEwjQc04WA-l_NiBhQ7s:22 a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (142.198.135.111) by cmx-mtlrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 64C35282035A5989; Mon, 4 Sep 2023 13:57:00 -0400
+Message-ID: <d9caffa3-7995-e2a9-325d-f92b05504f9d@bell.net>
+Date:   Mon, 4 Sep 2023 13:57:01 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [PATCH] HWPOISON: add a pr_err message when forcibly send a
- sigbus
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] parisc: shmparam.h: Document aliasing requirements of
+ PA-RISC
 Content-Language: en-US
-To:     Helge Deller <deller@gmx.de>, Will Deacon <will@kernel.org>,
-        "Luck, Tony" <tony.luck@intel.com>
-Cc:     catalin.marinas@arm.com, James.Bottomley@HansenPartnership.com,
-        dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        hpa@zytor.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-References: <20230819102212.21103-1-xueshuai@linux.alibaba.com>
- <20230821105025.GB19469@willie-the-truck>
- <44c4d801-3e21-426b-2cf0-a7884d2bf5ff@linux.alibaba.com>
- <54114b64-4726-da46-8ffa-16749ec0887a@linux.alibaba.com>
- <20230830221814.GB30121@willie-the-truck>
- <d1c8c0fa-815f-6804-e4e5-89a5259e4bb1@linux.alibaba.com>
- <c9284441-be6e-d2a0-9283-9e90c9d2da41@gmx.de>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <c9284441-be6e-d2a0-9283-9e90c9d2da41@gmx.de>
-Content-Type: text/plain; charset=UTF-8
+To:     deller@kernel.org, linux-parisc@vger.kernel.org
+Cc:     Helge Deller <deller@gmx.de>
+References: <20230901060431.6170-1-deller@kernel.org>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <20230901060431.6170-1-deller@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-11.4 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+On 2023-09-01 2:04 a.m., deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
+>
+> Add some documentation why PA-RISC uses SHMLBA and SHM_COLOUR.
+>
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> ---
+>   arch/parisc/include/asm/shmparam.h | 15 +++++++++++++++
+>   1 file changed, 15 insertions(+)
+>
+> diff --git a/arch/parisc/include/asm/shmparam.h b/arch/parisc/include/asm/shmparam.h
+> index 74f74e4d35b7..5a95b0f62b87 100644
+> --- a/arch/parisc/include/asm/shmparam.h
+> +++ b/arch/parisc/include/asm/shmparam.h
+> @@ -2,6 +2,21 @@
+>   #ifndef _ASMPARISC_SHMPARAM_H
+>   #define _ASMPARISC_SHMPARAM_H
+>   
+> +/*
+> + * PA-RISC uses virtually indexed & physically tagged (VIPT) caches
+> + * which has strict requirements when two pages to the same physical
+> + * address are accessed through different mappings. Read the section
+> + * "Address Aliasing" in the arch docs for more detail:
+> + * PA-RISC 1.1 (page 3-6):
+> + * https://parisc.wiki.kernel.org/images-parisc/6/68/Pa11_acd.pdf
+> + * PA-RISC 2.0 (page F-5):
+> + * https://parisc.wiki.kernel.org/images-parisc/7/73/Parisc2.0.pdf
+> + *
+> + * For Linux we allow kernel and userspace to map pages on page size
+> + * granularity (SHMLBA) but have to ensure that, if two pages are
+> + * mapped to the same physical address, the virtual and physical
+> + * addresses modulo SHM_COLOUR are identical.
+> + */
+>   #define SHMLBA	   PAGE_SIZE	/* attach addr a multiple of this */
+>   #define SHM_COLOUR 0x00400000	/* shared mappings colouring */
+Does SHM_COLOUR need to be exposed to user space?  See the following issue with sysprof:
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1021853
 
+Dave
 
-On 2023/8/31 17:06, Helge Deller wrote:
-> On 8/31/23 05:29, Shuai Xue wrote:
->> On 2023/8/31 06:18, Will Deacon wrote:
->>> On Mon, Aug 28, 2023 at 09:41:55AM +0800, Shuai Xue wrote:
->>>> On 2023/8/22 09:15, Shuai Xue wrote:
->>>>> On 2023/8/21 18:50, Will Deacon wrote:
->>>>>>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
->>>>>>> index 3fe516b32577..38e2186882bd 100644
->>>>>>> --- a/arch/arm64/mm/fault.c
->>>>>>> +++ b/arch/arm64/mm/fault.c
->>>>>>> @@ -679,6 +679,8 @@ static int __kprobes do_page_fault(unsigned long far, unsigned long esr,
->>>>>>>       } else if (fault & (VM_FAULT_HWPOISON_LARGE | VM_FAULT_HWPOISON)) {
->>>>>>>           unsigned int lsb;
->>>>>>>
->>>>>>> +        pr_err("MCE: Killing %s:%d due to hardware memory corruption fault at %lx\n",
->>>>>>> +               current->comm, current->pid, far);
->>>>>>>           lsb = PAGE_SHIFT;
->>>>>>>           if (fault & VM_FAULT_HWPOISON_LARGE)
->>>>>>>               lsb = hstate_index_to_shift(VM_FAULT_GET_HINDEX(fault));
->>>>>>
->>>>>> Hmm, I'm not convinced by this. We have 'show_unhandled_signals' already,
->>>>>> and there's plenty of code in memory-failure.c for handling poisoned pages
->>>>>> reported by e.g. GHES. I don't think dumping extra messages in dmesg from
->>>>>> the arch code really adds anything.
->>>>>
->>>>> I see the show_unhandled_signals() will dump the stack but it rely on
->>>>> /proc/sys/debug/exception-trace be set.
->>>>>
->>>>> The memory failure is the top issue in our production cloud and also other hyperscalers.
->>>>> We have received complaints from our operations engineers and end users that processes
->>>>> are being inexplicably killed :(. Could you please consider add a message?
->>>
->>> I don't have any objection to logging this stuff somehow, I'm just not
->>> convinced that the console is the best place for that information in 2023.
->>> Is there really nothing better?
-> 
->> I agree that console might not the better place, but it still plays an important role.
->> IMO the most direct idea for end user to check what happened is to check by viewing
->> the dmesg. In addition, we deployed some log store service collects all cluster dmesg
->> from /var/log/kern.
-> 
-> Right, pr_err() is not just console.
-> It ends up in the syslog, which ends up in a lot of places, e.g. through syslog forwarding.
-> Most monitoring tools monitor the syslog as well.
-> 
-> So, IMHO pr_err() is the right thing.
-> 
-> Helge
-> 
-
-Totally agreed.
-
-Thank you.
-
-Best Regards,
-Shuai
+-- 
+John David Anglin  dave.anglin@bell.net
 
