@@ -2,98 +2,71 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3CB1791C3C
-	for <lists+linux-parisc@lfdr.de>; Mon,  4 Sep 2023 19:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46792792974
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 Sep 2023 18:52:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234515AbjIDR5T (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 4 Sep 2023 13:57:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35748 "EHLO
+        id S1352209AbjIEQ0j (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 5 Sep 2023 12:26:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232840AbjIDR5S (ORCPT
+        with ESMTP id S1353868AbjIEI0R (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 4 Sep 2023 13:57:18 -0400
-Received: from cmx-mtlrgo001.bell.net (mta-mtl-001.bell.net [209.71.208.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010C6DD
-        for <linux-parisc@vger.kernel.org>; Mon,  4 Sep 2023 10:57:11 -0700 (PDT)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-Originating-IP: [142.198.135.111]
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 64C35282035A5989
-X-CM-Envelope: MS4xfAPjfPu05dcH8uv2sS8SHRlcsSy4KQiSse029DYT5h2OuERTfrZcaOiWK7LJqB26eRFI5i25L0YaiUGp7bkcy0opiEsUIl917F/kuuDhmui+kINU3291
- dqJ+Tc0M5IA3cxgULYbclce1ydoPlV1P8FRBpyGSejl7nusjp+KjHoP4AO9kBwPtTDAi4j6+AsLFDtLC7z5+ye0nbk0xijAMSnaFbYDqfN4u2NVE96YYBSsi
- Qrhuu8NkThyYwKXoXEvDe7SCgEi3r9o0bhB2wDNaYtEiLV7bMIKKwYLudSCIune+BmRPgaVAsKR4gVGwbeF49Q==
-X-CM-Analysis: v=2.4 cv=W7Nb6Tak c=1 sm=1 tr=0 ts=64f61a6c
- a=m0hBPjpnfWKpZW+YOe+Hqw==:117 a=m0hBPjpnfWKpZW+YOe+Hqw==:17
- a=IkcTkHD0fZMA:10 a=VwQbUJbxAAAA:8 a=xNf9USuDAAAA:8 a=FBHGMhGWAAAA:8
- a=dEZuh6yRk1065rfvW3AA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
- a=SEwjQc04WA-l_NiBhQ7s:22 a=9gvnlMMaQFpL9xblJ6ne:22
-Received: from [192.168.2.49] (142.198.135.111) by cmx-mtlrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
-        id 64C35282035A5989; Mon, 4 Sep 2023 13:57:00 -0400
-Message-ID: <d9caffa3-7995-e2a9-325d-f92b05504f9d@bell.net>
-Date:   Mon, 4 Sep 2023 13:57:01 -0400
+        Tue, 5 Sep 2023 04:26:17 -0400
+X-Greylist: delayed 89114 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 01:26:14 PDT
+Received: from mail.equinoxrise.pl (mail.equinoxrise.pl [217.61.112.157])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F455CC7
+        for <linux-parisc@vger.kernel.org>; Tue,  5 Sep 2023 01:26:14 -0700 (PDT)
+Received: by mail.equinoxrise.pl (Postfix, from userid 1002)
+        id 37F5E83239; Mon,  4 Sep 2023 09:40:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=equinoxrise.pl;
+        s=mail; t=1693813259;
+        bh=v6OgBfK5dN7P5dQ0wCu59rOfZaiqziJeLNblJ8dOcGI=;
+        h=Date:From:To:Subject:From;
+        b=1Hivdk3C6fzg8hWA2IQIg94+ccX7AKaRBF2BW5dLXru3bcGo8dtDrsercJRTbe2Ka
+         O1iCT5lOzZFKhqAnrRze+F8HGjyCvqpq5Rg5i5kpUNc0QXaJC0dHCUnn4UFp0wY+ty
+         /anq9yn7eI8NBFHA0NkqXrP/L0/4HdTi3dKJmeCGOta2J9WU0qsXNH83W3mVd/8c22
+         YTXD5iKJ16etAtViYFJCSn0ypoHT7921PK3/YRkoffCZ9+QahDzLFYO6w390dq7jh7
+         REu/vQiCJm9k8JwfuxhXEhrLwTODElkPvoRvLtk+cx8zeQnBDivl5iQ0q0K5lDYlYN
+         J0xZgFZhYkHOQ==
+Received: by mail.equinoxrise.pl for <linux-parisc@vger.kernel.org>; Mon,  4 Sep 2023 07:40:34 GMT
+Message-ID: <20230904084500-0.1.7.q95.0.g7nyyod6ph@equinoxrise.pl>
+Date:   Mon,  4 Sep 2023 07:40:34 GMT
+From:   "Mateusz Talaga" <mateusz.talaga@equinoxrise.pl>
+To:     <linux-parisc@vger.kernel.org>
+Subject: Prezentacja
+X-Mailer: mail.equinoxrise.pl
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH] parisc: shmparam.h: Document aliasing requirements of
- PA-RISC
-Content-Language: en-US
-To:     deller@kernel.org, linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>
-References: <20230901060431.6170-1-deller@kernel.org>
-From:   John David Anglin <dave.anglin@bell.net>
-In-Reply-To: <20230901060431.6170-1-deller@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023-09-01 2:04 a.m., deller@kernel.org wrote:
-> From: Helge Deller <deller@gmx.de>
->
-> Add some documentation why PA-RISC uses SHMLBA and SHM_COLOUR.
->
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> ---
->   arch/parisc/include/asm/shmparam.h | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
->
-> diff --git a/arch/parisc/include/asm/shmparam.h b/arch/parisc/include/asm/shmparam.h
-> index 74f74e4d35b7..5a95b0f62b87 100644
-> --- a/arch/parisc/include/asm/shmparam.h
-> +++ b/arch/parisc/include/asm/shmparam.h
-> @@ -2,6 +2,21 @@
->   #ifndef _ASMPARISC_SHMPARAM_H
->   #define _ASMPARISC_SHMPARAM_H
->   
-> +/*
-> + * PA-RISC uses virtually indexed & physically tagged (VIPT) caches
-> + * which has strict requirements when two pages to the same physical
-> + * address are accessed through different mappings. Read the section
-> + * "Address Aliasing" in the arch docs for more detail:
-> + * PA-RISC 1.1 (page 3-6):
-> + * https://parisc.wiki.kernel.org/images-parisc/6/68/Pa11_acd.pdf
-> + * PA-RISC 2.0 (page F-5):
-> + * https://parisc.wiki.kernel.org/images-parisc/7/73/Parisc2.0.pdf
-> + *
-> + * For Linux we allow kernel and userspace to map pages on page size
-> + * granularity (SHMLBA) but have to ensure that, if two pages are
-> + * mapped to the same physical address, the virtual and physical
-> + * addresses modulo SHM_COLOUR are identical.
-> + */
->   #define SHMLBA	   PAGE_SIZE	/* attach addr a multiple of this */
->   #define SHM_COLOUR 0x00400000	/* shared mappings colouring */
-Does SHM_COLOUR need to be exposed to user space?  See the following issue with sysprof:
-https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1021853
+Dzie=C5=84 dobry!
 
-Dave
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
+=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
+zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
 
--- 
-John David Anglin  dave.anglin@bell.net
+Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
+=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
+dostaw.
 
+Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
+nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
+ co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
+
+Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
+=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
+zania w Pa=C5=84stwa firmie.
+
+
+Pozdrawiam
+Mateusz Talaga
