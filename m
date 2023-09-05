@@ -2,115 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C11792977
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 Sep 2023 18:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25426792D62
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 Sep 2023 20:29:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352330AbjIEQ0l (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 5 Sep 2023 12:26:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50620 "EHLO
+        id S241204AbjIES3m (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 5 Sep 2023 14:29:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353821AbjIEIT1 (ORCPT
+        with ESMTP id S240329AbjIES3l (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 5 Sep 2023 04:19:27 -0400
-Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1BD31AE
-        for <linux-parisc@vger.kernel.org>; Tue,  5 Sep 2023 01:19:24 -0700 (PDT)
-Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6bd3317144fso1871123a34.1
-        for <linux-parisc@vger.kernel.org>; Tue, 05 Sep 2023 01:19:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693901964; x=1694506764; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CvUmRYKO5rN5JiKdYLn9/Xxm/soJiVGtQm650JnL3Yc=;
-        b=Rsh1U5LWkGLD60egT4xH0OkFTYAdhZ9PEm8UjiAWZ2Ip5vQRRw1xGx18MGa89HvYT6
-         DHnioG41PeB3MkB8Ft4Wrqqp2kjHic/Vkr/qunTIeMzVwVxM8xASTQz27lIUkjehlemV
-         8hhlmR9WWRNLvf+5DEaOSg8zVsJ6dc1e3o0hPmiekrNR95zn5u2OlTodDzhAW5FoXvst
-         vtI6oie/Go2kADRNvERCwQ/tj5WyItWCvOqaItC7RUWSKHX1Jy68bxHNnuEfs4fh7/gu
-         3DkWJuriwsFIhQtQN+dSHz9r/brcNOoN1uxEnXTsFI93qPjm9f/GoLz132bzGfSth5g7
-         +kXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693901964; x=1694506764;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CvUmRYKO5rN5JiKdYLn9/Xxm/soJiVGtQm650JnL3Yc=;
-        b=Xne9DYlhhdZTlSXobgh61FKQjZwb/td3CT2GYWqMfJ0kmHTvHmfh6N4gm0vX/X71+I
-         HxC7iHkR35Z7MnTNtZHAY1kwZ573CT75y/CE8MBf5/ZSNPn370qDrGVPRuwxux7aGmSC
-         QiXzVNyqKTs/lYbXkFJthuZvb2oqlMd4UL7yiiRoPbsSmLrG/XWKUUDhUY/PIfNhQTef
-         DU+mkU/uz9x023kt8yQq0lDEnT4I8X6vqmmuVCcVf9jFuvasQu2u//etcrrMlNh7WEhD
-         pmAxZiqK2srpzVk9ECAJkp6YPXlBVzHLlgGoQA3HAUv6ODqEQoAfKzUYRKFRYCaIpBFe
-         ckZQ==
-X-Gm-Message-State: AOJu0YxQ+gvcJnYBD01HZWNGKpGjgmT2rxlqyJ9qSv2Xix/Wn/tVquMw
-        ugom+POxZ2UK3R7DgqmfFYOonaFCd/qtP4/+N1L828y0bPnCgg==
-X-Google-Smtp-Source: AGHT+IERAX8PQb3+O/VRt2IpdT+B8+AIRhc7TR9qfBXEywqtD/tUeMqNmseulSPs3fS452xIhVN8tbhQYqX1LXl34po=
-X-Received: by 2002:a0c:aa1b:0:b0:653:5736:c0b4 with SMTP id
- d27-20020a0caa1b000000b006535736c0b4mr10412089qvb.54.1693901943569; Tue, 05
- Sep 2023 01:19:03 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a0c:de0e:0:b0:634:8588:8dcb with HTTP; Tue, 5 Sep 2023
- 01:19:02 -0700 (PDT)
-Reply-To: wuwumoneytransfer5000@hotmail.com
-From:   "(IMF) SCAM VICTIMS" <smmab4668@gmail.com>
-Date:   Tue, 5 Sep 2023 01:19:02 -0700
-Message-ID: <CAPvhgiGb_xchv+cBfjtNXZbs3T38s2BJRqmONSNBDUeOvUkr=Q@mail.gmail.com>
-Subject: Betrugsopfer
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        Tue, 5 Sep 2023 14:29:41 -0400
+Received: from mxe-2-522.seznam.cz (mxe-2-522.seznam.cz [IPv6:2a02:598:64:8a00::1000:522])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D32C8113
+        for <linux-parisc@vger.kernel.org>; Tue,  5 Sep 2023 11:29:09 -0700 (PDT)
+Received: from email.seznam.cz
+        by smtpc-mxe-64ffbbb66d-k5m5t
+        (smtpc-mxe-64ffbbb66d-k5m5t [2a02:598:64:8a00::1000:522])
+        id 7dfa9b43b234c4ff7da5ee8a;
+        Tue, 05 Sep 2023 20:27:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seznam.cz;
+        s=szn20221014; t=1693938475;
+        bh=SS1x1jCPVEePoyamOj6pUKsAwho9UZqyCra2wZoHvmg=;
+        h=Received:From:To:Cc:Subject:Date:Message-Id:References:
+         In-Reply-To:Mime-Version:X-Mailer:Content-Type:
+         Content-Transfer-Encoding;
+        b=GVLI+EKeLmbpRKL0ZWBEn0EThFnOup5zHZ/JtX1VdeD549fm+mWKXEFQWMZ8F4pMT
+         xgORpbjkclULxsABcKiy0QAXderWB8nn5dRsvTQ7Lh+aqh1M4t5AKSQ3RjxQCWtwqt
+         p+aNE2MgslbvbW9CCKuCDjLJXd6i2G2DORUZ6DtVW3auEW6PYlNoKLjKGgkUYnIv+r
+         25lTI9Pdd16wUO6yMnDWVBcNdto9QXIDnTGQlYsz7IZs70kRwX/r6bLeg/nJrjju96
+         dHJ/NUGNcxqrs9h3LibMF6RDCd8rCCv7TMn0ZJaiSvMh3OZWIXKPH5WunsiEogOw3Y
+         zfUCZ6SOpOonA==
+Received: from snat-11.cgn.sat-an.net (snat-11.cgn.sat-an.net [176.222.226.11])
+        by email.seznam.cz (szn-ebox-5.0.161~newmaster-4) with HTTP;
+        Tue, 05 Sep 2023 19:12:41 +0200 (CEST)
+From:   <Vidra.Jonas@seznam.cz>
+To:     "Helge Deller" <deller@gmx.de>
+Cc:     "John David Anglin" <dave.anglin@bell.net>,
+        <linux-parisc@vger.kernel.org>
+Subject: Re: Possible io_uring bug in PA-RISC kernel 6.1.46
+Date:   Tue, 05 Sep 2023 19:12:41 +0200 (CEST)
+Message-Id: <1yX.NvPF.6kt2vjNkw{E.1azs69@seznam.cz>
+References: <520.NvTX.6mXZpmfh4Ju.1awpAS@seznam.cz>
+        <7ce98f53-d80d-fc78-1bff-419eedaf8e36@bell.net>
+        <f8be4af4-725a-902f-60a5-0f18c198b130@gmx.de>
+        <d52e26aa-0c46-498b-0586-1fea2f94c58d@bell.net>
+        <13c75691-ac65-93be-c217-89e7cfbed10e@bell.net>
+        <d27ecc12-c507-f691-7be5-8344b72f713f@gmx.de>
+        <1wd.NvQz.Gj}B593TXc.1azrF9@seznam.cz>
+        <1xN.NvP9.1{VV8Csbz0.1azrZI@seznam.cz>
+In-Reply-To: <1xN.NvP9.1{VV8Csbz0.1azrZI@seznam.cz>
+Mime-Version: 1.0 (szn-mime-2.1.32)
+X-Mailer: szn-ebox-5.0.161~newmaster-4
+Content-Type: text/plain;
+        charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Sehr geehrter E-Mail-Besitzer,
+On 2023-09-05 18:35:30, Jonas Vidra wrote:
+> On 2023-09-05 18:14:01, Jonas Vidra wrote:
+>> I will try building a vanilla 6.1.46 with the patch by John David Angli=
+n
+>> applied and I'll report back. It might take me a while, though, as the=
+
+>> PA-RISC system in question is not available 24/7.
+>
+> I did a dirty rebuild (no `make clean`) with the patch and it fixes the=
+
+> issue as well.
+
+I was too hasty. The failure is still present on patched 6.1.46, although=
+
+it is now intermittent. With a vanilla 6.1.46, I hit the issue perhaps 10=
+
+times, and it seemed that the problematic command fails every single time.=
+
+On a patched 6.1.46, the problematic command ran 3 times but only failed=
+
+twice =E2=80=93 it finished fine on the first run.
+
+It might be just pure chance, though, if the actual failure frequency is=
+
+something like 4/5 =E2=80=93 it is possible that both versions are identic=
+ally
+buggy.
+
+I have no idea if the Helge's tree I tested previously is similarly
+affected =E2=80=93 the failure rate there is 0/4, which too might be due t=
+o
+just exceptionally good luck. But I still hope it is fixed there.
 
 
+> Is a minimal reproducer of the issue still desired? I can try to create=
 
-Der Internationale W=C3=A4hrungsfonds (IWF) entsch=C3=A4digt alle Betrugsop=
-fer
-und Ihre E-Mail-Adresse wurde auf der Liste der Betrugsopfer gefunden.
+> something from the strace output, but I'm not sure whether it's still
+> necessary.
 
-Dieses Western Union-B=C3=BCro wurde vom IWF beauftragt Ihnen Ihre
-Verg=C3=BCtung per Western Union Money Transfer zu =C3=BCberweisen.
+I'm now assuming it's really needed. I will prepare it, hopefully in the=
 
-Wir haben uns jedoch entschieden Ihre eigene Zahlung =C3=BCber Geldtransfer
-der Westunion in H=C3=B6he von =E2=82=AC5,000, pro Tag vorzunehmen bis die
-Gesamtsumme von =E2=82=AC1,500.000.00, vollst=C3=A4ndig an Sie =C3=BCberwie=
-sen wurde.
-
-Wir k=C3=B6nnen die Zahlung m=C3=B6glicherweise nicht nur mit Ihrer
-E-Mail-Adresse senden daher ben=C3=B6tigen wir Ihre Informationen dar=C3=BC=
-ber
-wohin wir das Geld an Sie senden wie z. B.:
-
-
-Name des Adressaten ________________
-
-Adresse________________
-
-Land__________________
-
-Telefonnummer________________
-
-Angeh=C3=A4ngte Kopie Ihres Ausweises______________
-
-Das Alter ________________________
-
-
-Wir beginnen mit der =C3=9Cbertragung sobald wir Ihre Informationen
-erhalten haben: Kontakt E-Mail: ( wuwumoneytransfer5000@hotmail.com)
-
-
-Getreu,
-
-
-Herr Anthony Duru,
-
-Direktor von Geldtransfer der Westunion
+next few days.
