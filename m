@@ -2,66 +2,129 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 879B8799687
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 Sep 2023 08:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A71C799A37
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 Sep 2023 19:15:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjIIGMB (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 9 Sep 2023 02:12:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43814 "EHLO
+        id S236151AbjIIRQA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 9 Sep 2023 13:16:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232773AbjIIGMA (ORCPT
+        with ESMTP id S230504AbjIIRP7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 9 Sep 2023 02:12:00 -0400
-Received: from mxe-2-af5.seznam.cz (mxe-2-af5.seznam.cz [IPv6:2a02:598:64:8a00::1000:af5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74F0619BA
-        for <linux-parisc@vger.kernel.org>; Fri,  8 Sep 2023 23:11:55 -0700 (PDT)
-Received: from email.seznam.cz
-        by smtpc-mxe-785cd4949-ksbtx
-        (smtpc-mxe-785cd4949-ksbtx [2a02:598:64:8a00::1000:af5])
-        id 390383b1f6cddc0d395cf678;
-        Sat, 09 Sep 2023 08:11:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seznam.cz;
-        s=szn20221014; t=1694239900;
-        bh=fE7nwBQ2cREDISYtqwOwXuB6TSLN/udjeBhc7lt6l0c=;
-        h=Received:From:To:Cc:Subject:Date:Message-Id:References:
-         In-Reply-To:Mime-Version:X-Mailer:Content-Type:
-         Content-Transfer-Encoding;
-        b=dcsmmyC4xKaDg+8rEADLUBdTpTPMwsk4A9aIWPjrA+oBBf/iEPA2Ld5yF9TtJ2Ftv
-         pW4yTTyIUQwiNcgxOk6AnIuUekfWSLQdao/a5qjZSmN+6CBNonWrYFWbC1pSbpu+TE
-         TorpDk99NupCLc0CVJAqcdudNRRXULkReNYSV7f0lK4+hY/kmv7IIJcigoSg1cGpFu
-         n/ssciAbXsvqD816rQCiR/90x50sRwVCbQK4NgFqxP7jv0lw53QIaVPwSbwj1X+NmC
-         JdJd141UE19MVW9GoEu7cDWOFbZGJWxPViLMUTfIAZn4x+A7lN7NwxOZblhm+Qwgd1
-         MtgNth1qjQbvA==
-Received: from unknown ([176.222.226.11])
-        by email.seznam.cz (szn-ebox-5.0.161~newmaster-4) with HTTP;
-        Sat, 09 Sep 2023 08:11:37 +0200 (CEST)
-From:   <Vidra.Jonas@seznam.cz>
-To:     "Helge Deller" <deller@gmx.de>
-Cc:     "John David Anglin" <dave.anglin@bell.net>,
-        <linux-parisc@vger.kernel.org>
-Subject: Re: Possible io_uring bug in PA-RISC kernel 6.1.46
-Date:   Sat, 09 Sep 2023 08:11:37 +0200 (CEST)
-Message-Id: <3rz.NvOL.1UBWO8RA7lO.1a}0oP@seznam.cz>
-References: <1yX.NvPF.6kt2vjNkw{E.1azs69@seznam.cz>
-        <1M4b1y-1qfpu42R6s-001mPw@mail.gmx.net>
-In-Reply-To: <1M4b1y-1qfpu42R6s-001mPw@mail.gmx.net>
-Mime-Version: 1.0 (szn-mime-2.1.32)
-X-Mailer: szn-ebox-5.0.161~newmaster-4
-Content-Type: text/plain;
-        charset=utf-8
+        Sat, 9 Sep 2023 13:15:59 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA7EDC7;
+        Sat,  9 Sep 2023 10:15:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B15C433C9;
+        Sat,  9 Sep 2023 17:15:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694279755;
+        bh=KhtWGf2zPoyiuxjJnXbblI6vUKh1wZS3V87vTaTu1Ak=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=orQqJHz5NHPU9U9e8TwVINUBcesVcDAxcGwZJFOGPzVl/1QfguH4sjWojoPNDENhn
+         DN9JYIKOzELAOjDg2ULxs17pWQceUPZom7GFWsnzwT3Zs3ptPQpFzlLU9i5lA4GAlk
+         wsmLUPJkUsvTlleAwfHbOgfD2RDCAhR+0SC7lj8mfXwETlfcX19Xk+9pSkuPwhEzH7
+         5KuiXaKwaZT82PEgw8F6/uDg8D/QxeULK5DLxhZ4LOD3Ce6D8LaVRMIikTw+s3h0CY
+         CiPBrDBhCz7uBMIQ5FTJvPIYDlQIa+8d2n9oJcUD0eYniyKfmlI0vexUL0FJr3ss/E
+         8hfdVRhwCupAQ==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-1c504386370so2149444fac.1;
+        Sat, 09 Sep 2023 10:15:55 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yx78ceyapgzytwt9pj+vRHGTMEvtpISlAPfdoUK6H1Qz4dshvh+
+        3rzlQOZRzBGpye0McjSagebml+fUS9Pnfrr2kko=
+X-Google-Smtp-Source: AGHT+IFB4QMpozMyQcYYqjROcK1d0b9AZciucdiHOYXeCZaSUKBl9wA+yiE9RsjNLUevb72OKpxlQpU6vZOn2MWqVuI=
+X-Received: by 2002:a05:6870:41cf:b0:1b7:27cf:9709 with SMTP id
+ z15-20020a05687041cf00b001b727cf9709mr7079226oac.43.1694279754787; Sat, 09
+ Sep 2023 10:15:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230905190828.790400-1-masahiroy@kernel.org> <1MbRk3-1q6Cp42Bcv-00bwDk@mail.gmx.net>
+In-Reply-To: <1MbRk3-1q6Cp42Bcv-00bwDk@mail.gmx.net>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Sun, 10 Sep 2023 02:15:18 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASqCukUFNjT5NOfc7eT6isvh6K70DpMmCu3YkukbA9Tmw@mail.gmail.com>
+Message-ID: <CAK7LNASqCukUFNjT5NOfc7eT6isvh6K70DpMmCu3YkukbA9Tmw@mail.gmail.com>
+Subject: Re: [PATCH] linux/export: fix reference to exported functions for parisc64
+To:     Helge Deller <deller@gmx.de>
+Cc:     linux-parisc@vger.kernel.org,
+        John David Anglin <dave.anglin@bell.net>,
+        linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023-09-07 11:39:14, Helge Deller wrote:
-> Please try kernel 6.1.51 or newer.
+On Wed, Sep 6, 2023 at 4:26=E2=80=AFAM Helge Deller <deller@gmx.de> wrote:
+>
+> I think ppc64 is affected too.
 
-I just tested 6.1.52 and it seems to work fine.
+
+I tested ppc64 ABI v1, but did not see a breakage.
+
+
+
+
+
+> Search for dereference_function_descriptor() in kernel sources, e.g.
+> https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1494564.html
+> Helge
+>
+> -------- Urspr=C3=BCngliche Nachricht --------
+> Von: Masahiro Yamada <masahiroy@kernel.org>
+> Datum: 05.09.23 21:08 (GMT+01:00)
+> An: linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>, John Davi=
+d Anglin <dave.anglin@bell.net>
+> Cc: linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, Masahiro =
+Yamada <masahiroy@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>
+> Betreff: [PATCH] linux/export: fix reference to exported functions for pa=
+risc64
+>
+> John David Anglin reported parisc has been broken since commit
+> ddb5cdbafaaa ("kbuild: generate KSYMTAB entries by modpost").
+>
+> I checked the assembler output, and noticed function references are
+> prefixed with P%, so the situation in parisc64 is similar to ia64.
+>
+> Fixes: ddb5cdbafaaa ("kbuild: generate KSYMTAB entries by modpost")
+> Reported-by: John David Anglin <dave.anglin@bell.net>
+> Closes: https://lore.kernel.org/linux-parisc/1901598a-e11d-f7dd-a5d9-9a69=
+d06e6b6e@bell.net/T/#u
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+> I just checked the assembler output, and I created this patch
+> based on my best guess. Only compile-tested.
+> I hope somebody will run-test this patch.
+>
+>
+> include/linux/export-internal.h | 2 ++
+> 1 file changed, 2 insertions(+)
+>
+> diff --git a/include/linux/export-internal.h b/include/linux/export-inter=
+nal.h
+> index 1c849db953a5..45fca09b2319 100644
+> --- a/include/linux/export-internal.h
+> +++ b/include/linux/export-internal.h
+> @@ -52,6 +52,8 @@
+>
+> #ifdef CONFIG_IA64
+> #define KSYM_FUNC(name) @fptr(name)
+> +#elif defined(CONFIG_PARISC) && defined(CONFIG_64BIT)
+> +#define KSYM_FUNC(name) P%name
+> #else
+> #define KSYM_FUNC(name) name
+> #endif
+> --
+> 2.39.2
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
