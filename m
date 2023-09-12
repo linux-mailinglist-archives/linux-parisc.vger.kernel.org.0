@@ -2,56 +2,44 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E95C79DC1C
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 Sep 2023 00:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5C4C79DC6D
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Sep 2023 01:04:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237817AbjILWrL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 12 Sep 2023 18:47:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48094 "EHLO
+        id S237755AbjILXEa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 12 Sep 2023 19:04:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237841AbjILWrI (ORCPT
+        with ESMTP id S233926AbjILXE3 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 12 Sep 2023 18:47:08 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E881708;
-        Tue, 12 Sep 2023 15:47:04 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-31aeedbb264so6597900f8f.0;
-        Tue, 12 Sep 2023 15:47:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694558822; x=1695163622; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GxeItlNv04+BjzshAn31wAsB9adLvt962s1bQaHQhqk=;
-        b=qkDC7lydUruK+up4ibdg5dKJAohUWVCTp+4NBx524I2YL7zZVduRLYAlDwpC/jjmUb
-         R+Z9ZRFQJ8RqepOGSlG3bkVnNZ5Zofvov5QBXV+mq3mxxIPMHM+I3Aq6xGfmacmk8BGu
-         YsV9xSqrV6GW6owSRIe4f2YSzostnhu9dn3wsUu/UQXKxVXl6uA9xN8reeDQtGehTwdR
-         qVnCzMAyxUcIR3Ipl8Nv+GjrF4h63D+zin2vjp68FApH7wxZOS38o1k6oEHbFbc0J8ps
-         AejUvVu6NZ2nacbgbQ3gl8Gvz8h5QAMn/A+xncv9UPOKVEYPMJFj5sedZSzkF3fDKd1u
-         M8QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694558822; x=1695163622;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GxeItlNv04+BjzshAn31wAsB9adLvt962s1bQaHQhqk=;
-        b=M8XBBwvWUJ14TkS3XPZIlnRPJ1mxnNYmOK1fz573PuTZgri6R2TOTw8mATEfO0AYGS
-         wdrkkm0BaI76FG9hxKMKqUdbUdZZAsKb24lggG2cs3L00b7gyBt1CekKQhFiaPW4/NRg
-         C+Is3IE0Y7Z8T0DiP1jOE5YcQRNClTHhAT72vR2cyHUVokWY1aubRauNKmYJJ/aWx610
-         iCVPz8JPYl6xqrXY/agF5HuQh0kH2uGeS68X9/mKqcjhK1PoIFn0uk2nw9w4b8uyfyPF
-         Nmr2FTFj4Jod6ySmhQJmkMNmXemh+fBHO0TZSHKFQFgVrW51wr0JwKFNacQglk8UOn7G
-         yc+g==
-X-Gm-Message-State: AOJu0YxRLjva5vrNwg3uPLWbHnybuXk5wil6jVO5u2mWDb2Uuzv5Font
-        zSNEbDFoxsqK2JqYttsGFS4=
-X-Google-Smtp-Source: AGHT+IGIRL1pLS66Q0kL+tNt95f9G7dGNYYYAmglWQ49OAUKZ2P+a9yQAWCML5eZu0IFvzTnTl7LPw==
-X-Received: by 2002:a5d:45d0:0:b0:31f:9838:dfc4 with SMTP id b16-20020a5d45d0000000b0031f9838dfc4mr646970wrs.33.1694558822455;
-        Tue, 12 Sep 2023 15:47:02 -0700 (PDT)
-Received: from ip-172-31-30-46.eu-west-1.compute.internal (ec2-34-242-166-189.eu-west-1.compute.amazonaws.com. [34.242.166.189])
-        by smtp.gmail.com with ESMTPSA id e15-20020a5d594f000000b00317df42e91dsm13921794wri.4.2023.09.12.15.47.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Sep 2023 15:47:02 -0700 (PDT)
-From:   Puranjay Mohan <puranjay12@gmail.com>
-To:     Alexei Starovoitov <ast@kernel.org>,
+        Tue, 12 Sep 2023 19:04:29 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC8C510CC;
+        Tue, 12 Sep 2023 16:04:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=8Xnsts4Cfn+cOT3sGgRWXdJJo7XuO0f7Sydd31WHTcA=; b=l1RiQBK7aQEeAsxzffD6ydEe/f
+        NM+7cytrM7BkaxV8cbnuaUSMNBrvTLl+1kI6ycPclYye8dQeFhv6BYOZ5d5lDyTkq7p8yRsWccYMq
+        nOLM5MDkKFXrsC52KEyCubDJflkn4N4KzOpbwIvg1CK8cVHV2xeX2HXhLWZbjB7Jgqvkw5IfPB2/4
+        jnlEVaw8jyP5ATaifqb6WdAKZa8ftjMdlEbrSPwalEPFEKYIdhoeGJZwtWyqW/TQR/kxWH4hdDs5j
+        5PRd3ZFf+lSo0hiVCswIub4eXPhFv0buNl6FdPSAq3eSvp599F4IZ2+mb2sAbrNukx9zu++JWJt+3
+        FmxzjG+w==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33570)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1qgCQF-0001kz-0s;
+        Wed, 13 Sep 2023 00:03:56 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1qgCQ9-000384-3j; Wed, 13 Sep 2023 00:03:49 +0100
+Date:   Wed, 13 Sep 2023 00:03:49 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Puranjay Mohan <puranjay12@gmail.com>
+Cc:     Alexei Starovoitov <ast@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
         Andrii Nakryiko <andrii@kernel.org>,
         Martin KaFai Lau <martin.lau@linux.dev>,
@@ -62,8 +50,7 @@ To:     Alexei Starovoitov <ast@kernel.org>,
         Stanislav Fomichev <sdf@google.com>,
         Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
         Shubham Bansal <illusionist.neo@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
         "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
@@ -78,50 +65,47 @@ To:     Alexei Starovoitov <ast@kernel.org>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-riscv@lists.infradead.org, netdev@vger.kernel.org
-Cc:     puranjay12@gmail.com
-Subject: [PATCH bpf-next 6/6] bpf, verifier: always mark destination of LDX as 64-bit
-Date:   Tue, 12 Sep 2023 22:46:54 +0000
-Message-Id: <20230912224654.6556-7-puranjay12@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230912224654.6556-1-puranjay12@gmail.com>
+Subject: Re: [PATCH bpf-next 5/6] bpf, arm32: Always zero extend for LDX with
+ B/H/W
+Message-ID: <ZQDuVTSycDcjDkvi@shell.armlinux.org.uk>
 References: <20230912224654.6556-1-puranjay12@gmail.com>
+ <20230912224654.6556-6-puranjay12@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230912224654.6556-6-puranjay12@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-All 64-bit JITs utilize a single instruction to load + zero-extend a
-byte, word, or a half-word. The optimisation of emitting zext for LDX is
-not useful for most of the JITs.
+On Tue, Sep 12, 2023 at 10:46:53PM +0000, Puranjay Mohan wrote:
+> The JITs should not depend on the verifier for zero extending the upper
+> 32 bits of the destination register when loading a byte, half-word, or
+> word.
+> 
+> A following patch will make the verifier stop patching zext instructions
+> after LDX.
 
-All the JITs that relied on the verifier for zero extension of LDX
-desitination registers have been modified to always zero extend the
-destination.
+This was introduced by:
 
-Now the verifier can safely mark LDX destination as 64-bit and stop
-emitting zero-extension instructions for it.
+163541e6ba34 ("arm: bpf: eliminate zero extension code-gen")
 
-Signed-off-by: Puranjay Mohan <puranjay12@gmail.com>
----
- kernel/bpf/verifier.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+along with an additional function. So three points:
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index dbba2b806017..02a1ac1a1327 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3028,9 +3028,7 @@ static bool is_reg64(struct bpf_verifier_env *env, struct bpf_insn *insn,
- 		return false;
- 
- 	if (class == BPF_LDX) {
--		if (t != SRC_OP)
--			return BPF_SIZE(code) == BPF_DW;
--		/* LDX source must be ptr. */
-+		/* LDX source must be a ptr. and LDX destination is always zero-extended. */
- 		return true;
- 	}
- 
+1) the commit should probably explain why it has now become undesirable
+to access this verifier state, whereas it appears it was explicitly
+added to permit this optimisation.
+2) you state that jits should not depend on this state, but the above
+commit adds more references than you're removing, so aren't there still
+references to the verifier remaining after this patch? I count a total
+of 10, and the patch below removes three.
+3) what about the bpf_jit_needs_zext() function that was added to
+support the export of this zext state?
+
+Essentially, the logic stated in the commit message doesn't seem to be
+reflected by the proposed code change.
+
 -- 
-2.39.2
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
