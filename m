@@ -2,94 +2,109 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAE9079D998
-	for <lists+linux-parisc@lfdr.de>; Tue, 12 Sep 2023 21:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCBD879D9CB
+	for <lists+linux-parisc@lfdr.de>; Tue, 12 Sep 2023 21:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232810AbjILTcj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 12 Sep 2023 15:32:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36564 "EHLO
+        id S232613AbjILTwq (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 12 Sep 2023 15:52:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237447AbjILTci (ORCPT
+        with ESMTP id S232767AbjILTwp (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 12 Sep 2023 15:32:38 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 312BECF
-        for <linux-parisc@vger.kernel.org>; Tue, 12 Sep 2023 12:32:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
- t=1694547151; x=1695151951; i=deller@gmx.de;
- bh=61TBlianlGBAFTwuBTAD3iiuY4IgZwzI4i08ZGlMDAU=;
- h=X-UI-Sender-Class:Date:To:References:From:Subject:In-Reply-To;
- b=OZKSdaCNrg1cEkeYTQjAq18Eko2SEHIqpeCSyv0d+OOs65Qlu6TkFO6cu9hllNQUJp3aCQNk5Pb
- 2RrnpimbwHVohW7CK2ls27nTh05KskqnGf2i1xQuKjRlbHCOMtghtrTuyOhJnBJdSNNfTO3uxeq8m
- 2I8NGE0g/iWgJJVVsWdSxMSNkcOx15wP/ACV7CIr4x5kXxwY7HruIlQxAxHaOziCe7jyaQhqXTJvg
- JbJRpK4WmdLb9F0DuPOhkGUgjhMUsUZMykfbYe5kLbXfUi9bUuvyw26ekSJ6Eda+qnnM9hPCtD57Z
- 3CRtPT7YVCMPOug2qqN/WT0q1ArpicTkXVFw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.148.165]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MD9XF-1qpBgE1bZR-0095LB; Tue, 12
- Sep 2023 21:32:31 +0200
-Message-ID: <db74e45c-aa0c-0256-96f2-07ebb936d57d@gmx.de>
-Date:   Tue, 12 Sep 2023 21:32:28 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To:     Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
-        linux-parisc@vger.kernel.org
-References: <1694366957@msgid.manchmal.in-ulm.de>
+        Tue, 12 Sep 2023 15:52:45 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3309115;
+        Tue, 12 Sep 2023 12:52:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7CFC433C8;
+        Tue, 12 Sep 2023 19:52:39 +0000 (UTC)
+Date:   Tue, 12 Sep 2023 21:52:36 +0200
 From:   Helge Deller <deller@gmx.de>
-Subject: Re: Possible 6.5 regression: Huge values for "commited memory"
-In-Reply-To: <1694366957@msgid.manchmal.in-ulm.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:LboqJZujrYbmCmmFPjLO6/+cTxveyQCBJUo2E8xQSmj7j2BqA7h
- Ba3kZpZm4U4DTL7FDqeRCMWLn3AJRUsQDdYnclF1DGDeeXwC7zg0ax32Br0AipxTnCEhace
- n5qqCbD6+Br4MAIyNGqnri0MAHyT4KulrtttV/DO0Nk8MzFf4L5TVuOqj6hVN50NGeHQIWd
- ugvVp6b3TU9bTNfqQh7LA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:3GGcev11K4o=;1g/NnA/ARYwB/WGMDns+HpeA6nZ
- cTyssbja3ktzeTh67Gd7RnF7kQhtd7ogSYnDG0Q6iKEO4VcUuLuwB/9ZR+/xOZax1BO6I0L4J
- lnQ4N4ZOwEBNtvMsLpUwnpM2S1j/efmz3iYW6YOKQe7fB9B48DrLXd6bAue68/4eaE/uhHzhp
- mH8gnfrPbXdIzv03TVRyLz4S+ouKtgDQw1oL04DCJHvPveT4w7DOJ2VPiq0bPDDt9krY0v/i7
- nl/vcL52d/982KI+YxBtq79XYqKvw6Sr/i3lMuNxWyUwvMkMDr+4NbCgA4OQVENFDJZqBA2/A
- eNhOcPTURzsAav0M073SUCCwdNWgm2pheaSl5X0FiAZmtk56JUCEpmodfiCYgEp95njMtKjIc
- sDliNriHdpC4HdgKMFrhh9hsnp3aI+bQERXq3Uf8kfwU7Kxti7Jq/RSvl7uvO0KdMEiIj1fr8
- jHqx3W7vy0o56sYCqT7Q4wvZkJOVqdOHSnMzyNlxaaGQ7Rj5YjDeDBDuVappBpZP4BSjxesDf
- tJvIkhMUTiXpXgNvBVlBiCXhBOEpRYOVysazS58I/sKFRfwdyiQSm93yghAy8nsdu1w/DfkoB
- urFr/vQxCE9bO+L80ZPaOq2mocxTOqBqSIGnilo+zbmskV0Uk86ieQYLpVKt33bHqY4JW51aD
- 4Eoh5QLNfcW+/nAvKdFQEEm4QPvJIVJH+uWrbmQ2OmCFOBVvcxQV2whZuljrFPiwhr78f32G5
- V+yn4vkDU9UTaYCbuBTBUg07J+bthi/K6x2HBb9ikYxwNXcCloj3/IIx5PIa/kLkSCbq2VXhU
- 2idpJh4RbkW4UAYO+T77MucjmMT2kwbpw5C2BextUlk69ExuFQ15mD9W80Pg8y1Tzuwr+fIWb
- xQNNq3EsdLwKBBXaK3nfCAos02FE5bwstZ1mtKitF3LPARgtpstBYDgKfRayXJzTN0MCMtmmJ
- /d8pFBwCpJVRLETDTQFN+6RezJY=
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture fixes for v6.6-rc2
+Message-ID: <ZQDBhMmGlXPll86B@p100>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Christoph,
+Hi Linus,
 
-On 9/10/23 19:48, Christoph Biedl wrote:
-> For the time being, just an observation: I monitor various parameters on
-> my systems, and among them is "Committed memory", the Committed_AS value
-> in /proc/meminfo.
->
-> Since upgrading to the 6.5.x series, I noticed the value there grows way
-> higher values then previously in hppa, even if the machine is idle.
-> Values seem to rise up to around 1.6 Gbyte, long-term average is rather
-> 200-300 Mbyte. Also, I cannot see any memory hogs in top. The workload
-> hasn't changed in months.
->
-> To sum it up, I reckon something went wrong in the memory usage
-> accounting. Is this already on radar, or should I start bisecting? That
-> might take a lot of time, though.
+please pull some parisc architecture fixes and enhancements for kernel 6.6-rc2.
 
-I doubt there is a specific memory leak in the parisc code.
-Usually we just touch driver code or other arch-related code, so if
-there is something wrong, then it must be in generic code and should
-be visible on other platforms too.
-We changed to the SLUB allocator, but I don't think this makes any
-difference either.
+* Fix a module symbol resolving issue on parisc64
+* Some sparse and build-warning fixes
+* Enable Block-TLBs on 32-bit CPUs
 
+Thanks!
 Helge
 
+----------------------------------------------------------------
+The following changes since commit 6c1b980a7e79e55e951b4b2c47eefebc75071209:
 
+  Merge tag 'dma-mapping-6.6-2023-08-29' of git://git.infradead.org/users/hch/dma-mapping (2023-08-29 20:32:10 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.6-rc2
+
+for you to fetch changes up to 08700ec705043eb0cee01b35cf5b9d63f0230d12:
+
+  linux/export: fix reference to exported functions for parisc64 (2023-09-12 17:42:00 +0200)
+
+----------------------------------------------------------------
+parisc architecture fixes and enhancements for kernel v6.6-rc2:
+
+* fix reference to exported symbols for parisc64 [Masahiro Yamada]
+* Block-TLB (BTLB) support on 32-bit CPUs
+* sparse and build-warning fixes
+
+----------------------------------------------------------------
+Helge Deller (14):
+      parisc: sba_iommu: Fix build warning if procfs if disabled
+      parisc: sba: Fix compile warning wrt list of SBA devices
+      parisc: sba-iommu: Fix sparse warnigs
+      parisc: ccio-dma: Fix sparse warnings
+      parisc: iosapic.c: Fix sparse warnings
+      parisc: drivers: Fix sparse warning
+      parisc: irq: Make irq_stack_union static to avoid sparse warning
+      parisc: shmparam.h: Document aliasing requirements of PA-RISC
+      parisc: Prepare for Block-TLB support on 32-bit kernel
+      parisc: BTLB: Clear possibly existing BTLB entries
+      parisc: BTLB: Add BTLB insert and purge firmware function wrappers
+      parisc: BTLB: _edata symbol has to be page aligned for BTLB support
+      parisc: firmware: Simplify calling non-PA20 functions
+      parisc: BTLB: Initialize BTLB tables at CPU startup
+
+Masahiro Yamada (1):
+      linux/export: fix reference to exported functions for parisc64
+
+ arch/parisc/include/asm/cache.h     |  1 +
+ arch/parisc/include/asm/mckinley.h  |  8 -----
+ arch/parisc/include/asm/pdc.h       |  5 +--
+ arch/parisc/include/asm/processor.h |  1 +
+ arch/parisc/include/asm/ropes.h     |  7 ++--
+ arch/parisc/include/asm/shmparam.h  | 15 ++++++++
+ arch/parisc/kernel/asm-offsets.c    |  2 ++
+ arch/parisc/kernel/cache.c          |  8 +----
+ arch/parisc/kernel/drivers.c        |  2 +-
+ arch/parisc/kernel/firmware.c       | 56 +++++++++++++++++++++++------
+ arch/parisc/kernel/head.S           | 16 +++++++--
+ arch/parisc/kernel/irq.c            |  2 +-
+ arch/parisc/kernel/processor.c      |  2 ++
+ arch/parisc/kernel/vmlinux.lds.S    |  1 +
+ arch/parisc/mm/init.c               | 72 +++++++++++++++++++++++++++++++++++++
+ drivers/char/agp/parisc-agp.c       |  2 --
+ drivers/parisc/ccio-dma.c           | 18 +++++-----
+ drivers/parisc/iommu-helpers.h      |  8 ++---
+ drivers/parisc/iosapic.c            |  4 +--
+ drivers/parisc/iosapic_private.h    |  4 +--
+ drivers/parisc/sba_iommu.c          | 38 +++++++++-----------
+ include/linux/export-internal.h     |  2 ++
+ scripts/mod/modpost.c               |  9 +++++
+ 23 files changed, 207 insertions(+), 76 deletions(-)
+ delete mode 100644 arch/parisc/include/asm/mckinley.h
