@@ -2,61 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27EB779DC8D
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 Sep 2023 01:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 111F379DCFA
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Sep 2023 02:10:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232165AbjILXRC (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 12 Sep 2023 19:17:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40988 "EHLO
+        id S231166AbjIMALA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 12 Sep 2023 20:11:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbjILXRB (ORCPT
+        with ESMTP id S229589AbjIMAK7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 12 Sep 2023 19:17:01 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAD5B10F7;
-        Tue, 12 Sep 2023 16:16:57 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-500c37d479aso10100301e87.2;
-        Tue, 12 Sep 2023 16:16:57 -0700 (PDT)
+        Tue, 12 Sep 2023 20:10:59 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74DBD10F2;
+        Tue, 12 Sep 2023 17:10:55 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-5009d4a4897so10577925e87.0;
+        Tue, 12 Sep 2023 17:10:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694560616; x=1695165416; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1694563854; x=1695168654; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XrbSVU4nZUFvuKXs1rDJFefP9fH0F3hyySGPvLoP9m8=;
-        b=YzzvrFNtj8Z6VMUMkRu3/32kLqhf2WWzBzG8H1YSIITP3OLuw4c+IyTIMTMHpKOjKt
-         25zhumNrSRpDab/8Vkxu6IZYA0W1oBeieNkhIZVWvk1Yxk2ZTRCf2Idgyxqkd5bqxDvF
-         kMVNyINz73ncXMJl5pG5D3qfZJggauWCB4Fcsb8PLiF2gh+/TpdcmjdXWeFxntc00L29
-         D70UyXFrXQ2s3lMHbJKho0Qv2yLC9B596TzXduupA5oWTfYBZZZwbVNP6fAJeLFUPjEe
-         v5ORKFPXlKIw/k2ZxWhIQtApU57xYdu0u7Hv5hNkLF4n1L9CyrgODlhnwOvW5klZdP+k
-         LLWA==
+        bh=lDU5pSKkCf+ROG6Vvo9qMmmrl9dENDhQwvux9jW53fk=;
+        b=CVyz6mj2IOl6ZWa3h6yHaDn88UJAmI459eSDxjXlKtaJpQjW8BHLm24w1AgA3xQoMD
+         pHQ1FD5hSRFV4Xh1BKAQwXaXK2jpUHQc6eYZG7jrCtRupzu/fzVFENNDLJxbyGyJ9PPc
+         fH/itVFaXbbnVIg2ipf6s3T4Z3FWpYM5E92nRP5HN4nl4xePNf7aehiFIfDvKHxQe60G
+         KIko1QarmwKnGHdil8Tke9T1AhD8vEqc4nrECcj9FMBCrwUj5MW79lKUvWCEyifkNRLO
+         MZJaljWTb4MWNi7if4UbMmGkK5djCeup7IR0PIM7gvUSojs4fWXXLEJLkHoil9VsfbN2
+         Rw6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694560616; x=1695165416;
+        d=1e100.net; s=20230601; t=1694563854; x=1695168654;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XrbSVU4nZUFvuKXs1rDJFefP9fH0F3hyySGPvLoP9m8=;
-        b=jPQ3bvX6lhsloXBm5W//dEIuzrQ8LpnuGCuMOvjPHA04th6r/MJxeMUXu0Euu1wfik
-         3a461pIoBpANs8KZbB/nePXEQ2gVmrqoeYvgXlKqIMs4knOHbCjoZVAqAXz7/djGcK4f
-         bPpctOMp+eV/UdaxVfnE3pg30LF0LsESHPdFmJgW95952oroFxAayREvV0vlRLXxwXyK
-         gN316kgSWc2Qq49penCg0FgIW0cDFeBK1cYUB4NSj9uuEPzW4QYtZNWyel+1fbgq9HSz
-         M93WG6WTH4Pnn+crGop28zx5i+5GSMeq0vEPDL4aJDhqBFcfWFMtRy5dOD0/1GnKj32q
-         V/bw==
-X-Gm-Message-State: AOJu0YzUv9ELVuOxcqStVXnbU/oeCS2XG+zEdUNu963w7xcg4IV00/YQ
-        Yx7JwyHVuApCmraJrOYUTLGGIKZd6LGA7Ol47ZI=
-X-Google-Smtp-Source: AGHT+IEBY3l3EINWayY7tuJfGoVDjPoP8cqckAfPldb0MCin3ecEklcSeeAUDt1vmekTIwLD2t/Y9JLbGHco4LHds+E=
-X-Received: by 2002:a05:6512:31c3:b0:500:a694:46f with SMTP id
- j3-20020a05651231c300b00500a694046fmr951572lfe.19.1694560615656; Tue, 12 Sep
- 2023 16:16:55 -0700 (PDT)
+        bh=lDU5pSKkCf+ROG6Vvo9qMmmrl9dENDhQwvux9jW53fk=;
+        b=l0M+Z+wKqg7JyIRRqf2kZDB9klGYcgIEWQFTkcpD7DCvsGRR+8CeSwSOf9a1WH/cH9
+         LlTGbASgkT1vnXCFzMvA1K9r5ooeFbNCpfeAtJcT8xGhGjnL9+tC44rXafxRVjf/Teoz
+         2Xpf1k69c5FzZ6ji/SYsKjOxL+v57doli++52S9qpIwbL7yT/ECNsMe8g1usQM9TsJmP
+         RZd0pQZSiZsRHCyuuk0BB3DoS0JoFWmh7zbJI9w8tN7bgyNNGxo6lyWX2BXg9H/SBO6I
+         J9quGX1vVKZsYbJ12wOBSgtjCIhJatqOPN7MnEGX6YXHawGl6sVf9Jgno1Z5RUNp1Z+3
+         wLWQ==
+X-Gm-Message-State: AOJu0YxJjhiJybii4mTJt1SajdD7QgAw7Ea6GdpAgu9uOEYk/liR8DW0
+        +r0Fq5Xn+poy7KEypk1YjRPR+eJOYsla0MbC+aA=
+X-Google-Smtp-Source: AGHT+IE0DJ1yIeH5yZxGYgPrqT6xeFSkjh5Zl6R/0fUeOPfMg57L6CIwSvBEee3CSY3IGdEklD5DOU0AfhXdAtHa5js=
+X-Received: by 2002:a19:e012:0:b0:502:9dc3:9c68 with SMTP id
+ x18-20020a19e012000000b005029dc39c68mr597128lfg.63.1694563853416; Tue, 12 Sep
+ 2023 17:10:53 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230912224654.6556-1-puranjay12@gmail.com> <20230912224654.6556-6-puranjay12@gmail.com>
- <ZQDuVTSycDcjDkvi@shell.armlinux.org.uk>
-In-Reply-To: <ZQDuVTSycDcjDkvi@shell.armlinux.org.uk>
-From:   Puranjay Mohan <puranjay12@gmail.com>
-Date:   Wed, 13 Sep 2023 01:16:44 +0200
-Message-ID: <CANk7y0iFdgHgu+RXYJvP3swaRS+-Lr0CgOAdcQWtjs4VkrOzdQ@mail.gmail.com>
+ <ZQDuVTSycDcjDkvi@shell.armlinux.org.uk> <CANk7y0iFdgHgu+RXYJvP3swaRS+-Lr0CgOAdcQWtjs4VkrOzdQ@mail.gmail.com>
+In-Reply-To: <CANk7y0iFdgHgu+RXYJvP3swaRS+-Lr0CgOAdcQWtjs4VkrOzdQ@mail.gmail.com>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Tue, 12 Sep 2023 17:10:42 -0700
+Message-ID: <CAADnVQLzbyG3xWVDFyTsDPRSC=fnAskaeyc1erQVLYo_b6Lg_w@mail.gmail.com>
 Subject: Re: [PATCH bpf-next 5/6] bpf, arm32: Always zero extend for LDX with B/H/W
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
+To:     Puranjay Mohan <puranjay12@gmail.com>
+Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
+        Alexei Starovoitov <ast@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
         Andrii Nakryiko <andrii@kernel.org>,
         Martin KaFai Lau <martin.lau@linux.dev>,
@@ -78,70 +79,73 @@ Cc:     Alexei Starovoitov <ast@kernel.org>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
         Albert Ou <aou@eecs.berkeley.edu>,
-        Wang YanQing <udknight@gmail.com>, bpf@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, netdev@vger.kernel.org
+        Wang YanQing <udknight@gmail.com>, bpf <bpf@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-parisc@vger.kernel.org,
+        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Network Development <netdev@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Wed, Sep 13, 2023 at 1:04=E2=80=AFAM Russell King (Oracle)
-<linux@armlinux.org.uk> wrote:
+On Tue, Sep 12, 2023 at 4:17=E2=80=AFPM Puranjay Mohan <puranjay12@gmail.co=
+m> wrote:
 >
-> On Tue, Sep 12, 2023 at 10:46:53PM +0000, Puranjay Mohan wrote:
-> > The JITs should not depend on the verifier for zero extending the upper
-> > 32 bits of the destination register when loading a byte, half-word, or
-> > word.
+> On Wed, Sep 13, 2023 at 1:04=E2=80=AFAM Russell King (Oracle)
+> <linux@armlinux.org.uk> wrote:
 > >
-> > A following patch will make the verifier stop patching zext instruction=
-s
-> > after LDX.
+> > On Tue, Sep 12, 2023 at 10:46:53PM +0000, Puranjay Mohan wrote:
+> > > The JITs should not depend on the verifier for zero extending the upp=
+er
+> > > 32 bits of the destination register when loading a byte, half-word, o=
+r
+> > > word.
+> > >
+> > > A following patch will make the verifier stop patching zext instructi=
+ons
+> > > after LDX.
+> >
+> > This was introduced by:
+> >
+> > 163541e6ba34 ("arm: bpf: eliminate zero extension code-gen")
+> >
+> > along with an additional function. So three points:
+> >
+> > 1) the commit should probably explain why it has now become undesirable
+> > to access this verifier state, whereas it appears it was explicitly
+> > added to permit this optimisation.
 >
-> This was introduced by:
+> I added some details in the cover letter.
 >
-> 163541e6ba34 ("arm: bpf: eliminate zero extension code-gen")
+> For the complete discussion see: [1]
 >
-> along with an additional function. So three points:
+> > 2) you state that jits should not depend on this state, but the above
+> > commit adds more references than you're removing, so aren't there still
+> > references to the verifier remaining after this patch? I count a total
+> > of 10, and the patch below removes three.
 >
-> 1) the commit should probably explain why it has now become undesirable
-> to access this verifier state, whereas it appears it was explicitly
-> added to permit this optimisation.
-
-I added some details in the cover letter.
-
-For the complete discussion see: [1]
-
-> 2) you state that jits should not depend on this state, but the above
-> commit adds more references than you're removing, so aren't there still
-> references to the verifier remaining after this patch? I count a total
-> of 10, and the patch below removes three.
-
-The JITs should not depend on this state for LDX (loading
-a B/H/W.
-This patch removes the usage only for LDX.
-
-> 3) what about the bpf_jit_needs_zext() function that was added to
-> support the export of this zext state?
-
-That is still applicable, The verifier will still emit zext
-instructions for other
-instructions like BPF_ALU / BPF_ALU64
-
+> The JITs should not depend on this state for LDX (loading
+> a B/H/W.
+> This patch removes the usage only for LDX.
 >
-> Essentially, the logic stated in the commit message doesn't seem to be
-> reflected by the proposed code change.
+> > 3) what about the bpf_jit_needs_zext() function that was added to
+> > support the export of this zext state?
+>
+> That is still applicable, The verifier will still emit zext
+> instructions for other
+> instructions like BPF_ALU / BPF_ALU64
+>
+> >
+> > Essentially, the logic stated in the commit message doesn't seem to be
+> > reflected by the proposed code change.
+>
+> I will try to provide more information.
+> Currently I have asked Alexei if we really need this in [2].
+> I still think this optimization is useful and we should keep it.
 
-I will try to provide more information.
-Currently I have asked Alexei if we really need this in [2].
-I still think this optimization is useful and we should keep it.
-
-Thanks,
-Puranjay
-
-[1] https://lore.kernel.org/all/CANk7y0j2f-gPgZwd+YfTL71-6wfvky+f=3DkBC_ccq=
-sS0EHAysyA@mail.gmail.com/
-[2] https://lore.kernel.org/bpf/CANk7y0hK9sQJ-kRx3nQpVJSxpP=3DNzzFaLitOYq8=
-=3DPb6Dvk9fpg@mail.gmail.com/
+Right. subreg tracking is indeed functional for narrow loads.
+Let's drop this patch set.
