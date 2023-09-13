@@ -2,150 +2,123 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 111F379DCFA
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 Sep 2023 02:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40A4879DD25
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Sep 2023 02:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231166AbjIMALA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 12 Sep 2023 20:11:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49552 "EHLO
+        id S230105AbjIMA2m (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 12 Sep 2023 20:28:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbjIMAK7 (ORCPT
+        with ESMTP id S229589AbjIMA2l (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 12 Sep 2023 20:10:59 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74DBD10F2;
-        Tue, 12 Sep 2023 17:10:55 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-5009d4a4897so10577925e87.0;
-        Tue, 12 Sep 2023 17:10:55 -0700 (PDT)
+        Tue, 12 Sep 2023 20:28:41 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7A4C10CC;
+        Tue, 12 Sep 2023 17:28:37 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-68fcb4dc8a9so2321455b3a.2;
+        Tue, 12 Sep 2023 17:28:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694563854; x=1695168654; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lDU5pSKkCf+ROG6Vvo9qMmmrl9dENDhQwvux9jW53fk=;
-        b=CVyz6mj2IOl6ZWa3h6yHaDn88UJAmI459eSDxjXlKtaJpQjW8BHLm24w1AgA3xQoMD
-         pHQ1FD5hSRFV4Xh1BKAQwXaXK2jpUHQc6eYZG7jrCtRupzu/fzVFENNDLJxbyGyJ9PPc
-         fH/itVFaXbbnVIg2ipf6s3T4Z3FWpYM5E92nRP5HN4nl4xePNf7aehiFIfDvKHxQe60G
-         KIko1QarmwKnGHdil8Tke9T1AhD8vEqc4nrECcj9FMBCrwUj5MW79lKUvWCEyifkNRLO
-         MZJaljWTb4MWNi7if4UbMmGkK5djCeup7IR0PIM7gvUSojs4fWXXLEJLkHoil9VsfbN2
-         Rw6g==
+        d=gmail.com; s=20221208; t=1694564917; x=1695169717; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vhVRggmduCOuF925CMHCHBXtEyOEK3orQpWlelUcV6E=;
+        b=LGpV93vWkpvMs/YgmURAJNwIbCzZwxaHa8EImci5CMi/dfpHDDiTPFe1S1oLQovC1Y
+         RV8OOuSMd4TXT2GW5tLdILTN0kNOdh/Z4eETruq61Mr+M+aNjq/hRddMXtJ3/hOOUaDG
+         OregxVU+pLtvrPyEBxIeB7WnvL2x33qMRYJQajsbX6EKOrC2UtqwKLxTegr0Xcpqi6yN
+         +uyaOasOCwOcrbJPrhoX3c9M8j0JN1X9lFY94vN+gtmE5J79AAhoSsHAEcKdu/StNcYS
+         DNTsQN5e0NyvvYHC18xpvvsDKBUxFHq1m05qJRpy4b9+rHNyQzlk0iHN7V5NXqRxR0x0
+         LaNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694563854; x=1695168654;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lDU5pSKkCf+ROG6Vvo9qMmmrl9dENDhQwvux9jW53fk=;
-        b=l0M+Z+wKqg7JyIRRqf2kZDB9klGYcgIEWQFTkcpD7DCvsGRR+8CeSwSOf9a1WH/cH9
-         LlTGbASgkT1vnXCFzMvA1K9r5ooeFbNCpfeAtJcT8xGhGjnL9+tC44rXafxRVjf/Teoz
-         2Xpf1k69c5FzZ6ji/SYsKjOxL+v57doli++52S9qpIwbL7yT/ECNsMe8g1usQM9TsJmP
-         RZd0pQZSiZsRHCyuuk0BB3DoS0JoFWmh7zbJI9w8tN7bgyNNGxo6lyWX2BXg9H/SBO6I
-         J9quGX1vVKZsYbJ12wOBSgtjCIhJatqOPN7MnEGX6YXHawGl6sVf9Jgno1Z5RUNp1Z+3
-         wLWQ==
-X-Gm-Message-State: AOJu0YxJjhiJybii4mTJt1SajdD7QgAw7Ea6GdpAgu9uOEYk/liR8DW0
-        +r0Fq5Xn+poy7KEypk1YjRPR+eJOYsla0MbC+aA=
-X-Google-Smtp-Source: AGHT+IE0DJ1yIeH5yZxGYgPrqT6xeFSkjh5Zl6R/0fUeOPfMg57L6CIwSvBEee3CSY3IGdEklD5DOU0AfhXdAtHa5js=
-X-Received: by 2002:a19:e012:0:b0:502:9dc3:9c68 with SMTP id
- x18-20020a19e012000000b005029dc39c68mr597128lfg.63.1694563853416; Tue, 12 Sep
- 2023 17:10:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694564917; x=1695169717;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vhVRggmduCOuF925CMHCHBXtEyOEK3orQpWlelUcV6E=;
+        b=qDNDFcyjYAydCx5m0mpukJxKPRZ328+vVElGo6JR15sNmbgLnuULclbzsn57pfcGEn
+         fjC9bBwNm8upq1+RHKvu6koya17zaXaNpW7hVw+I9xOqidzV0L9AHdxLKOk/BAmvHzS0
+         54RD3hpCyz7NuOsJA44TDQJXcLINH9ezdFoo2uUdEIQ6RFkvhDpO1uT0Z54Xdgwua3Ax
+         69rL+hvMCW/ZqeZ/pMgnZkKk+++BVntzoLpVZvjN5iF8vFFY4SdOI7vU4Btpf1Hv4ACR
+         TQvNuf+Y5OBwB8o0i45xVDTqTFBg+5WGgZnFs5RWUTK4jFy59TdTbkFK1HTL6qS9gpG/
+         ijcQ==
+X-Gm-Message-State: AOJu0YyZVIvsGIq8diUwO+85nvqqF7JZd4dJBMWeaEzF6t8dT3ts5Yi4
+        SJT/3WGfdSJVouw/Af5aFVJke72fXBQ=
+X-Google-Smtp-Source: AGHT+IEBZnQLXEt0KIbDgCMgCEh4GuL17Auf1WF5BNJZ8qXAnnanaFv1TrLKJDks+1AinRVyeTf32Q==
+X-Received: by 2002:a05:6a00:178c:b0:68e:482b:5a9d with SMTP id s12-20020a056a00178c00b0068e482b5a9dmr1592567pfg.8.1694564917147;
+        Tue, 12 Sep 2023 17:28:37 -0700 (PDT)
+Received: from debian.me ([103.124.138.83])
+        by smtp.gmail.com with ESMTPSA id cl8-20020a056a0032c800b0068fb783d0c6sm5234168pfb.141.2023.09.12.17.28.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Sep 2023 17:28:36 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id DEF7383061BF; Wed, 13 Sep 2023 07:25:54 +0700 (WIB)
+Date:   Wed, 13 Sep 2023 07:25:54 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
+        Linux PARISC <linux-parisc@vger.kernel.org>,
+        Linux Memory Management List <linux-mm@kvack.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>
+Cc:     Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: Possible 6.5 regression: Huge values for "commited memory"
+Message-ID: <ZQEBkjSgdXSOMq3t@debian.me>
+References: <1694366957@msgid.manchmal.in-ulm.de>
 MIME-Version: 1.0
-References: <20230912224654.6556-1-puranjay12@gmail.com> <20230912224654.6556-6-puranjay12@gmail.com>
- <ZQDuVTSycDcjDkvi@shell.armlinux.org.uk> <CANk7y0iFdgHgu+RXYJvP3swaRS+-Lr0CgOAdcQWtjs4VkrOzdQ@mail.gmail.com>
-In-Reply-To: <CANk7y0iFdgHgu+RXYJvP3swaRS+-Lr0CgOAdcQWtjs4VkrOzdQ@mail.gmail.com>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Tue, 12 Sep 2023 17:10:42 -0700
-Message-ID: <CAADnVQLzbyG3xWVDFyTsDPRSC=fnAskaeyc1erQVLYo_b6Lg_w@mail.gmail.com>
-Subject: Re: [PATCH bpf-next 5/6] bpf, arm32: Always zero extend for LDX with B/H/W
-To:     Puranjay Mohan <puranjay12@gmail.com>
-Cc:     "Russell King (Oracle)" <linux@armlinux.org.uk>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>,
-        Yonghong Song <yonghong.song@linux.dev>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Shubham Bansal <illusionist.neo@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Luke Nelson <luke.r.nels@gmail.com>,
-        Xi Wang <xi.wang@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Wang YanQing <udknight@gmail.com>, bpf <bpf@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-parisc@vger.kernel.org,
-        ppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Network Development <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="z/ZVDhp9NzC+/dQk"
+Content-Disposition: inline
+In-Reply-To: <1694366957@msgid.manchmal.in-ulm.de>
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Sep 12, 2023 at 4:17=E2=80=AFPM Puranjay Mohan <puranjay12@gmail.co=
-m> wrote:
->
-> On Wed, Sep 13, 2023 at 1:04=E2=80=AFAM Russell King (Oracle)
-> <linux@armlinux.org.uk> wrote:
-> >
-> > On Tue, Sep 12, 2023 at 10:46:53PM +0000, Puranjay Mohan wrote:
-> > > The JITs should not depend on the verifier for zero extending the upp=
-er
-> > > 32 bits of the destination register when loading a byte, half-word, o=
-r
-> > > word.
-> > >
-> > > A following patch will make the verifier stop patching zext instructi=
-ons
-> > > after LDX.
-> >
-> > This was introduced by:
-> >
-> > 163541e6ba34 ("arm: bpf: eliminate zero extension code-gen")
-> >
-> > along with an additional function. So three points:
-> >
-> > 1) the commit should probably explain why it has now become undesirable
-> > to access this verifier state, whereas it appears it was explicitly
-> > added to permit this optimisation.
->
-> I added some details in the cover letter.
->
-> For the complete discussion see: [1]
->
-> > 2) you state that jits should not depend on this state, but the above
-> > commit adds more references than you're removing, so aren't there still
-> > references to the verifier remaining after this patch? I count a total
-> > of 10, and the patch below removes three.
->
-> The JITs should not depend on this state for LDX (loading
-> a B/H/W.
-> This patch removes the usage only for LDX.
->
-> > 3) what about the bpf_jit_needs_zext() function that was added to
-> > support the export of this zext state?
->
-> That is still applicable, The verifier will still emit zext
-> instructions for other
-> instructions like BPF_ALU / BPF_ALU64
->
-> >
-> > Essentially, the logic stated in the commit message doesn't seem to be
-> > reflected by the proposed code change.
->
-> I will try to provide more information.
-> Currently I have asked Alexei if we really need this in [2].
-> I still think this optimization is useful and we should keep it.
 
-Right. subreg tracking is indeed functional for narrow loads.
-Let's drop this patch set.
+--z/ZVDhp9NzC+/dQk
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sun, Sep 10, 2023 at 07:48:23PM +0200, Christoph Biedl wrote:
+> Hello,
+>=20
+> For the time being, just an observation: I monitor various parameters on
+> my systems, and among them is "Committed memory", the Committed_AS value
+> in /proc/meminfo.
+>=20
+> Since upgrading to the 6.5.x series, I noticed the value there grows way
+> higher values then previously in hppa, even if the machine is idle.
+> Values seem to rise up to around 1.6 Gbyte, long-term average is rather
+> 200-300 Mbyte. Also, I cannot see any memory hogs in top. The workload
+> hasn't changed in months.
+
+Upgrading from what version?
+
+Also, can you describe your setup? And what is the value of `Committed_AS`
+on the kernel before you upgrade? (Hint: paste full /proc/meminfo from
+both old and new kernel.)
+
+>=20
+> To sum it up, I reckon something went wrong in the memory usage
+> accounting. Is this already on radar, or should I start bisecting? That
+> might take a lot of time, though.
+>=20
+
+You can certainly do bisection (see Documentation/admin-guide/bug-bisect.rst
+in the kernel sources for how to do that).
+
+Thanks.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--z/ZVDhp9NzC+/dQk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZQEBjQAKCRD2uYlJVVFO
+o8oPAQCr9xeAJQEx9/dp7rTccFhd5ag5yJt8QisGJVRhdwx9EgD9HuyG6/uCcvwy
+gP90l2jBVPt1HLUeUt6BY7VMcLZvPwg=
+=C/3F
+-----END PGP SIGNATURE-----
+
+--z/ZVDhp9NzC+/dQk--
