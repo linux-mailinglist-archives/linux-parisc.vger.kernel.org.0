@@ -2,155 +2,152 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA93579F7EE
-	for <lists+linux-parisc@lfdr.de>; Thu, 14 Sep 2023 04:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFFB47A03C3
+	for <lists+linux-parisc@lfdr.de>; Thu, 14 Sep 2023 14:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233886AbjINCYv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 13 Sep 2023 22:24:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40460 "EHLO
+        id S238023AbjINM1K (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 14 Sep 2023 08:27:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233483AbjINCYu (ORCPT
+        with ESMTP id S237745AbjINM1J (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 13 Sep 2023 22:24:50 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC9A198;
-        Wed, 13 Sep 2023 19:24:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F841C433C7;
-        Thu, 14 Sep 2023 02:24:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694658286;
-        bh=traoJTyA0GnqPdbwWPW0u5/RrCWzv703PFaKmzg6di8=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=dRyHjGtNk/YMdNs8cVw1m1xwaSlfoX1FLI8mKGuHqKbRjvbl4DsL2zH6HzoVPPOK+
-         Y3kbkTH0465sd9jTzj1fnMgYYfrZNzpdnS65gTYg1/4mC/Q2wZNOCtVyRvHhE4Gs/r
-         SGGnfV9OS4/KHHw3o9ShXK8Gk3DaYWqvLYSaWxO8JJp2ZU6WxCK3k3tPN5Dbt5FCGe
-         y2L2/rYF69Wmi4xPHXT3gvEdF+xXlVakk7qi1SGYP2grIzBgU0su9DNxezx0fzkVoc
-         I/7lxFn4d0T1jyDaIxdv0YMv7hgn8RehOIPVL0yOQb3H16ydC3h9lwSv2YxNy+zd2a
-         eURdy2kSPknlg==
-Content-Type: multipart/mixed; boundary="------------zPUgE2h3WJYekH07ls6McJAe"
-Message-ID: <bed98fc9-fb84-4912-6c73-5b7db575c375@kernel.org>
-Date:   Thu, 14 Sep 2023 11:24:43 +0900
+        Thu, 14 Sep 2023 08:27:09 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6BF31FC9;
+        Thu, 14 Sep 2023 05:27:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1694694421;
+        bh=IKd/xoLaYMNT3G43ojUHtX33LcBflkrUDAX5TgQ89VQ=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=rYiR5HRfpS/tMJ5vZ04WGHK5tqlEmN3zl7YBnuBIj4iDXvSjRcMk3Bm1xQR4G2xqA
+         ch/6vWdPHmOC2BUMMk4XX30GKkFETwPb6UKi6HR3vSS9M+ZGF48pqFYfp4X0b6Xnoc
+         3IT8Xs1CRfVJWHkXJOg3XffMJXWhIzBrBfe0rLT/1FOwmVJNKXhzU+07wARKckah+G
+         1nYEufulJtii1DdLYzWI+dlftci66s6CJLfGerDALqoTxKf5zQo5DIOqkNkz913pHl
+         hiwkYuo8iIaiLSkIq8iYXaa9BldBulkzz3WoyK+kyoqd71CY/sNwj3K8X+Pby7L5LJ
+         Ni+zJOD6zygLg==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rmc544Ldlz4wxN;
+        Thu, 14 Sep 2023 22:26:48 +1000 (AEST)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+        "Mehta, Sohil" <sohil.mehta@intel.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>
+Cc:     "svens@linux.ibm.com" <svens@linux.ibm.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "schwab@linux-m68k.org" <schwab@linux-m68k.org>,
+        "brgerst@gmail.com" <brgerst@gmail.com>,
+        "alexander.shishkin@linux.intel.com" 
+        <alexander.shishkin@linux.intel.com>,
+        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "monstr@monstr.eu" <monstr@monstr.eu>,
+        "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "glaubitz@physik.fu-berlin.de" <glaubitz@physik.fu-berlin.de>,
+        "dalias@libc.org" <dalias@libc.org>,
+        "lukas.bulwahn@gmail.com" <lukas.bulwahn@gmail.com>,
+        "rdunlap@infradead.org" <rdunlap@infradead.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "hca@linux.ibm.com" <hca@linux.ibm.com>,
+        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "arnd@arndb.de" <arnd@arndb.de>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "ebiederm@xmission.com" <ebiederm@xmission.com>,
+        "Lutomirski, Andy" <luto@kernel.org>,
+        "jolsa@kernel.org" <jolsa@kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "geert@linux-m68k.org" <geert@linux-m68k.org>,
+        "hpa@zytor.com" <hpa@zytor.com>,
+        "James.Bottomley@HansenPartnership.com" 
+        <James.Bottomley@HansenPartnership.com>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "ink@jurassic.park.msu.ru" <ink@jurassic.park.msu.ru>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
+        "broonie@kernel.org" <broonie@kernel.org>,
+        "Hunter, Adrian" <adrian.hunter@intel.com>,
+        "acme@kernel.org" <acme@kernel.org>,
+        "ysato@users.sourceforge.jp" <ysato@users.sourceforge.jp>,
+        "deller@gmx.de" <deller@gmx.de>,
+        "debug@rivosinc.com" <debug@rivosinc.com>,
+        "rmclure@linux.ibm.com" <rmclure@linux.ibm.com>,
+        "gor@linux.ibm.com" <gor@linux.ibm.com>,
+        "slyich@gmail.com" <slyich@gmail.com>,
+        "npiggin@gmail.com" <npiggin@gmail.com>,
+        "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
+        "chris@zankel.net" <chris@zankel.net>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "mattst88@gmail.com" <mattst88@gmail.com>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "jcmvbkbc@gmail.com" <jcmvbkbc@gmail.com>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
+        "irogers@google.com" <irogers@google.com>,
+        "namhyung@kernel.org" <namhyung@kernel.org>,
+        "will@kernel.org" <will@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>
+Subject: Re: [PATCH 2/2] arch: Reserve map_shadow_stack() syscall number for
+ all architectures
+In-Reply-To: <8b7106881fa227a64b4e951c6b9240a7126ac4a2.camel@intel.com>
+References: <20230911180210.1060504-1-sohil.mehta@intel.com>
+ <20230911180210.1060504-3-sohil.mehta@intel.com>
+ <8b7106881fa227a64b4e951c6b9240a7126ac4a2.camel@intel.com>
+Date:   Thu, 14 Sep 2023 22:26:47 +1000
+Message-ID: <871qf17xfc.fsf@mail.lhotse>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] linux/export: fix reference to exported functions for
- parisc64
-Content-Language: en-US
-To:     John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc:     linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kbuild@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>
-References: <20230905190828.790400-1-masahiroy@kernel.org>
- <c8a92dc8-de78-7484-bcc8-d4a91bec77de@bell.net>
- <c6568683-86b4-c48d-ed37-f1f87677eb44@bell.net>
- <97859bf1-c8c3-7294-8322-b0c9c408ba5e@bell.net>
- <CAK7LNAR_4rVgAQToSoYmbgYnWoSpowcrKi2ciiH9HyhJUGdmWg@mail.gmail.com>
- <CAK7LNAQQ1Vp4YtvU8Bq9aE+NWxnnOTX2dcZ5Gc9fC+vjRmCe4w@mail.gmail.com>
- <CAK7LNATktSBFe=7cE8kHEGx2R90iVV6AJsCfgg5ZD2+ssMmzow@mail.gmail.com>
- <040a0941-936b-87ab-aedd-5a933383b500@bell.net>
- <b919c7fd-babb-5557-dd8d-c2b8bb428d54@bell.net>
- <4fee8886-daa3-fb03-f9e7-89358fb5fc38@bell.net>
- <b9ceba24-345e-20dc-783b-3759a9819359@bell.net>
- <10887293-fa2e-83e1-9305-487905a8afd2@kernel.org>
- <3e4040cf-bb54-7652-72cc-0ad2d1288cb8@bell.net>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <3e4040cf-bb54-7652-72cc-0ad2d1288cb8@bell.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------zPUgE2h3WJYekH07ls6McJAe
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+"Edgecombe, Rick P" <rick.p.edgecombe@intel.com> writes:
+> On Mon, 2023-09-11 at 18:02 +0000, Sohil Mehta wrote:
+>> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl
+>> b/arch/powerpc/kernel/syscalls/syscall.tbl
+>> index 20e50586e8a2..2767b8a42636 100644
+>> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
+>> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+>> @@ -539,3 +539,4 @@
+>> =C2=A0450=C2=A0=C2=A0=C2=A0=C2=A0nospu=C2=A0=C2=A0=C2=A0set_mempolicy_ho=
+me_node=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sys_set_mempol=
+icy_hom
+>> e_node
+>> =C2=A0451=C2=A0=C2=A0=C2=A0=C2=A0common=C2=A0=C2=A0cachestat=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sys_cachestat
+>> =C2=A0452=C2=A0=C2=A0=C2=A0=C2=A0common=C2=A0=C2=A0fchmodat2=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sys_fchmodat2
+>> +453=C2=A0=C2=A0=C2=A0=C2=A0common=C2=A0=C2=A0map_shadow_stack=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0sys_map_shadow_stack
+>
+> I noticed in powerpc, the not implemented syscalls are manually mapped
+> to sys_ni_syscall. It also has some special extra sys_ni_syscall()
+> implementation bits to handle both ARCH_HAS_SYSCALL_WRAPPER and
+> !ARCH_HAS_SYSCALL_WRAPPER. So wondering if it might need special
+> treatment. Did you see those parts?
 
-On 9/14/23 09:29, John David Anglin wrote:
-> I think the issue is with the root ST373207LW drive.  The console output indicates that the
-> ROOT drive doesn't exist when the boot fails.
-> 
-> Your change only appeared to affect actual SCSI drives.  That's why I tried disabling CDL.
->>
->> Could you send a full dmesg output for a clean boot and for a failed one so that
->> I can compare ?
-> I'll try to get this together tomorrow.
+I don't think it needs any special treatment. It's processed by the same
+script as other arches (scripts/syscalltbl.sh). So if there's no compat
+or native entry it will default to sys_ni_syscall.
 
-Please try the attached patch. That should address the issue with your drive.
+I think it's just habit/historical that we always spell out sys_ni_syscall.
 
-
--- 
-Damien Le Moal
-Western Digital Research
-
---------------zPUgE2h3WJYekH07ls6McJAe
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-scsi-Do-no-try-to-probe-for-CDL-on-old-drives.patch"
-Content-Disposition: attachment;
- filename="0001-scsi-Do-no-try-to-probe-for-CDL-on-old-drives.patch"
-Content-Transfer-Encoding: base64
-
-RnJvbSA5NGQwNWNlNTFkNWM4YTZmNDczODNhZmQxNDEzNGYzYzc3OWQ4OWUyIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBEYW1pZW4gTGUgTW9hbCA8ZGxlbW9hbEBrZXJuZWwu
-b3JnPgpEYXRlOiBUaHUsIDE0IFNlcCAyMDIzIDExOjA4OjU4ICswOTAwClN1YmplY3Q6IFtQ
-QVRDSF0gc2NzaTogRG8gbm8gdHJ5IHRvIHByb2JlIGZvciBDREwgb24gb2xkIGRyaXZlcwoK
-U29tZSBvbGQgZHJpdmVzIChlLmcuIGFuIFVsdHJhMzIwIFNDU0kgZGlzayBhcyByZXBvcnRl
-ZCBieSBKb2huKSBkbyBub3QKc2VlbSB0byBleGVjdXRlIE1BSU5URU5BTkNFX0lOIC8gTUlf
-UkVQT1JUX1NVUFBPUlRFRF9PUEVSQVRJT05fQ09ERVMKY29tbWFuZHMgY29ycmVjdGx5IGFu
-ZCBoYW5nIHdoZW4gYSBub24temVybyBzZXJ2aWNlIGFjdGlvbiBpcyBzcGVjaWZpZWQKKG9u
-ZSBjb21tYW5kIGZvcm1hdCB3aXRoIHNlcnZpY2UgYWN0aW9uIGNhc2UgaW4gc2NzaV9yZXBv
-cnRfb3Bjb2RlKCkpLgoKQ3VycmVudGx5LCBDREwgcHJvYmluZyB3aXRoIHNjc2lfY2RsX2No
-ZWNrX2NtZCgpIGlzIHRoZSBvbmx5IGNhbGxlcgp1c2luZyBhIG5vbiB6ZXJvIHNlcnZpY2Ug
-YWN0aW9uIGZvciBzY3NpX3JlcG9ydF9vcGNvZGUoKS4gVG8gYXZvaWQKaXNzdWVzIHdpdGgg
-dGhlc2Ugb2xkIGRyaXZlcywgZG8gbm90IGF0dGVtcHQgQ0RMIHByb2JlIGlmIHRoZSBkZXZp
-Y2UKcmVwb3J0cyBzdXBwb3J0IGZvciBhbiBTUEMgdmVyc2lvbiBsb3dlciB0aGFuIDUgKENE
-TCB3YXMgaW50cm9kdWNlZCBpbgpTUEMtNSkuIFRvIGtlZXAgdGhpbmdzIHdvcmtpbmcgd2l0
-aCBBVEEgZGV2aWNlcyB3aGljaCBwcm9iZSBmb3IgdGhlIENETApUMkEgYW5kIFQyQiBwYWdl
-cyBpbnRyb2R1Y2VkIHdpdGggU1BDLTYsIG1vZGlmeSBhdGFfc2NzaW9wX2lucV9zdGQoKSB0
-bwpjbGFpbSBTUEMtNiB2ZXJzaW9uIGNvbXBhdGliaWxpdHkgZm9yIEFUQSBkcml2ZXMgc3Vw
-cG9ydGluZyBDREwuCgppbmNsdWRlL3Njc2kvc2NzaS5oIGlzIGFsc28gbW9kaWZpZWQgdG8g
-YWRkIHRoZSBtaXNzaW5nIGRlZmluaXRpb25zIGZvcgp0aGUgU0NTSV9TUENfNCBhbmQgU0NT
-SV9TUENfNSB2ZXJzaW9ucy4gU0NTSV9TUENfNiBpcyBub3QgYWRkZWQgYXMsCm9kZGx5LCB0
-aGUgbGF0ZXN0IFNQQy02IHNwZWNpZmljYXRpb24gZGVmaW5lcyB0aGUgc2FtZSA3aCB2ZXJz
-aW9uIGNvZGUKYXMgU1BDLTUuCgpSZXBvcnRlZC1ieTogSm9obiBEYXZpZCBBbmdsaW4gPGRh
-dmUuYW5nbGluQGJlbGwubmV0PgpGaXhlczogNjI0ODg1MjA5ZjMxICgic2NzaTogY29yZTog
-RGV0ZWN0IHN1cHBvcnQgZm9yIGNvbW1hbmQgZHVyYXRpb24gbGltaXRzIikKQ2M6IHN0YWJs
-ZUB2Z2VyLmtlcm5lbC5vcmcKU2lnbmVkLW9mZi1ieTogRGFtaWVuIExlIE1vYWwgPGRsZW1v
-YWxAa2VybmVsLm9yZz4KLS0tCiBkcml2ZXJzL2F0YS9saWJhdGEtc2NzaS5jIHwgIDMgKysr
-CiBkcml2ZXJzL3Njc2kvc2NzaS5jICAgICAgIHwgMTEgKysrKysrKysrKysKIGluY2x1ZGUv
-c2NzaS9zY3NpLmggICAgICAgfCAgMiArKwogMyBmaWxlcyBjaGFuZ2VkLCAxNiBpbnNlcnRp
-b25zKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hdGEvbGliYXRhLXNjc2kuYyBiL2RyaXZl
-cnMvYXRhL2xpYmF0YS1zY3NpLmMKaW5kZXggOTJhZTRiNGYzMGFjLi42NTRlZTlhMGMwNjQg
-MTAwNjQ0Ci0tLSBhL2RyaXZlcnMvYXRhL2xpYmF0YS1zY3NpLmMKKysrIGIvZHJpdmVycy9h
-dGEvbGliYXRhLXNjc2kuYwpAQCAtMTgyOCw2ICsxODI4LDkgQEAgc3RhdGljIHVuc2lnbmVk
-IGludCBhdGFfc2NzaW9wX2lucV9zdGQoc3RydWN0IGF0YV9zY3NpX2FyZ3MgKmFyZ3MsIHU4
-ICpyYnVmKQogCQloZHJbMl0gPSAweDc7IC8qIGNsYWltIFNQQy01IHZlcnNpb24gY29tcGF0
-aWJpbGl0eSAqLwogCX0KIAorCWlmIChhcmdzLT5kZXYtPmZsYWdzICYgQVRBX0RGTEFHX0NE
-TCkKKwkJaGRyWzJdID0gMHg3OyAvKiBjbGFpbSBTUEMtNiB2ZXJzaW9uIGNvbXBhdGliaWxp
-dHkgKi8KKwogCW1lbWNweShyYnVmLCBoZHIsIHNpemVvZihoZHIpKTsKIAltZW1jcHkoJnJi
-dWZbOF0sICJBVEEgICAgICIsIDgpOwogCWF0YV9pZF9zdHJpbmcoYXJncy0+aWQsICZyYnVm
-WzE2XSwgQVRBX0lEX1BST0QsIDE2KTsKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc2NzaS9zY3Np
-LmMgYi9kcml2ZXJzL3Njc2kvc2NzaS5jCmluZGV4IGQwOTExYmMyODY2My4uODkzNjdjNGJm
-MGVmIDEwMDY0NAotLS0gYS9kcml2ZXJzL3Njc2kvc2NzaS5jCisrKyBiL2RyaXZlcnMvc2Nz
-aS9zY3NpLmMKQEAgLTYxMyw2ICs2MTMsMTcgQEAgdm9pZCBzY3NpX2NkbF9jaGVjayhzdHJ1
-Y3Qgc2NzaV9kZXZpY2UgKnNkZXYpCiAJYm9vbCBjZGxfc3VwcG9ydGVkOwogCXVuc2lnbmVk
-IGNoYXIgKmJ1ZjsKIAorCS8qCisJICogU3VwcG9ydCBmb3IgQ0RMIHdhcyBkZWZpbmVkIGlu
-IFNQQy01LiBJZ25vcmUgZGV2aWNlcyByZXBvcnRpbmcgYW4KKwkgKiBsb3dlciBTUEMgdmVy
-c2lvbi4gVGhpcyBhbHNvIGF2b2lkcyBwcm9ibGVtcyB3aXRoIG9sZCBkcml2ZXMgY2hva2lu
-ZworCSAqIG9uIE1BSU5URU5BTkNFX0lOIC8gTUlfUkVQT1JUX1NVUFBPUlRFRF9PUEVSQVRJ
-T05fQ09ERVMgd2l0aCBhCisJICogc2VydmljZSBhY3Rpb24gc3BlY2lmaWVkLCBhcyBkb25l
-IGluIHNjc2lfY2RsX2NoZWNrX2NtZCgpLgorCSAqLworCWlmIChzZGV2LT5zY3NpX2xldmVs
-IDwgU0NTSV9TUENfNSkgeworCQlzZGV2LT5jZGxfc3VwcG9ydGVkID0gMDsKKwkJcmV0dXJu
-OworCX0KKwogCWJ1ZiA9IGttYWxsb2MoU0NTSV9DRExfQ0hFQ0tfQlVGX0xFTiwgR0ZQX0tF
-Uk5FTCk7CiAJaWYgKCFidWYpIHsKIAkJc2Rldi0+Y2RsX3N1cHBvcnRlZCA9IDA7CmRpZmYg
-LS1naXQgYS9pbmNsdWRlL3Njc2kvc2NzaS5oIGIvaW5jbHVkZS9zY3NpL3Njc2kuaAppbmRl
-eCBlYzA5MzU5NGJhNTMuLjM5ZjZiYzdiZmYwZiAxMDA2NDQKLS0tIGEvaW5jbHVkZS9zY3Np
-L3Njc2kuaAorKysgYi9pbmNsdWRlL3Njc2kvc2NzaS5oCkBAIC0xNTcsNiArMTU3LDggQEAg
-ZW51bSBzY3NpX2Rpc3Bvc2l0aW9uIHsKICNkZWZpbmUgU0NTSV8zICAgICAgICAgIDQgICAg
-ICAgIC8qIFNQQyAqLwogI2RlZmluZSBTQ1NJX1NQQ18yICAgICAgNQogI2RlZmluZSBTQ1NJ
-X1NQQ18zICAgICAgNgorI2RlZmluZSBTQ1NJX1NQQ180CTcKKyNkZWZpbmUgU0NTSV9TUENf
-NQk4CiAKIC8qCiAgKiBJTlEgUEVSSVBIRVJBTCBRVUFMSUZJRVJTCi0tIAoyLjQxLjAKCg==
-
-
---------------zPUgE2h3WJYekH07ls6McJAe--
+cheers
