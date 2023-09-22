@@ -2,56 +2,56 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34E1A7AB744
-	for <lists+linux-parisc@lfdr.de>; Fri, 22 Sep 2023 19:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13ED47AB766
+	for <lists+linux-parisc@lfdr.de>; Fri, 22 Sep 2023 19:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231716AbjIVR3T (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 22 Sep 2023 13:29:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36738 "EHLO
+        id S233253AbjIVR3n (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 22 Sep 2023 13:29:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232916AbjIVR3Q (ORCPT
+        with ESMTP id S233026AbjIVR3R (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 22 Sep 2023 13:29:16 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9F921B6
-        for <linux-parisc@vger.kernel.org>; Fri, 22 Sep 2023 10:29:06 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-69101022969so2251437b3a.3
-        for <linux-parisc@vger.kernel.org>; Fri, 22 Sep 2023 10:29:06 -0700 (PDT)
+        Fri, 22 Sep 2023 13:29:17 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14E9FCD1
+        for <linux-parisc@vger.kernel.org>; Fri, 22 Sep 2023 10:29:07 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-690bf8fdd1aso2212622b3a.2
+        for <linux-parisc@vger.kernel.org>; Fri, 22 Sep 2023 10:29:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1695403746; x=1696008546; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1695403747; x=1696008547; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jsPm5p8OVWWQhvwQRnJAR5En1I13+6E+l5lagSHHfoE=;
-        b=PlSIN8FmnOTcSZTQ//UJdOk4CJQWcDW9wR3D+7xBohFxAFQZziU3sDcxUmvfCLG5Jr
-         VrBV+Xvm6mD89RlsQrWlk6cwYGPFjk1QK9o3W0kvaLHD0V6BCs8CcucKgqSAW3rlu1cv
-         v9CitUGc5ZX7lcvprHSEzRHkd8YcDaye8qf00=
+        bh=H8wcxdgkYAvkCOCoP6EB5xh89rywD8lhufIcjStIsos=;
+        b=K9gwfT3q/qgboUPNthyJid9JOGy1mcVoGccSt914InaP28QcC/on0g3lNtGgwcry6p
+         ErxmNSrbihsHEelKeNEqYEw+TX37ed7kY1MdLA3fqR4G7GXSkgJ/R4VyeQK2MOBWBF6z
+         t9JxmsvJLC0m0ls0rpLgqGLhix9VJIURcN2aI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695403746; x=1696008546;
+        d=1e100.net; s=20230601; t=1695403747; x=1696008547;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jsPm5p8OVWWQhvwQRnJAR5En1I13+6E+l5lagSHHfoE=;
-        b=qUWYDy/PsWS3aJXWSONBPTdr3a8XELRjwbGHZG4KJ4dWoJ2LNRUA7usVNPzKhorgZm
-         00Hk/Ji8oekEM1h2amdS/SF+eTep/fJsCD3muE5XUPQ9DB1ejFkMrLeh5SPegyk0V4ey
-         y6dDirCNGYPspg30JQp21e0CZN4i7R1Qa6W/UXUbezAkIKSV/eMdfXKgNMnUJqjoadvt
-         4sKbZ3SeSNcC8jTbs+wDsrC10rhUY3zgmCxRFGVhPSyK2/7SlG67NjR6Kl5v+I9RxR5b
-         h6IkexJHZzJreUIV0VHHB7I5Pij8/vPKY4RxI8yuBR7CWRbulKt71ZKYI9V92V8bbDEO
-         7ybg==
-X-Gm-Message-State: AOJu0YyjN6KP0ScgfEyR+d4iSAo0pjSUmVyGHT64j2sun+12kFCcjRAZ
-        lkrzLbiUaXX45mF7oqsoQU4c6w==
-X-Google-Smtp-Source: AGHT+IFhNOh9g/WXdqswrmGr0TKvoPB0737xQYMJJhDHZ7Y+VorzevCDjiJpuL21VUW6bsODv6GaNA==
-X-Received: by 2002:a17:90a:1197:b0:268:18e:9dfa with SMTP id e23-20020a17090a119700b00268018e9dfamr351769pja.5.1695403746060;
-        Fri, 22 Sep 2023 10:29:06 -0700 (PDT)
+        bh=H8wcxdgkYAvkCOCoP6EB5xh89rywD8lhufIcjStIsos=;
+        b=uBkABfKIzEqSthzhbSAQJjz+p1j1CxhsJVQ07B0w7rWJgMoY44xjenBjBjcTWukceV
+         XqVxr400u3RciCEl5Wo9DMahDrdZSVT6agmvmYZGl+0Ulja1I2tjafd+XUnlGhMMK6dZ
+         HvCqEEcyiLvWbt4TvHHK2iFrjKLm2s9Kp6DnjcmZHSkJfbrHE/OzNr4MFRmgrOzZ+bWs
+         DXcqdeXj8xm3tZRK/Wjed4nbzxbnMYwZIU2tfcAh/h+asBhCtuARFZgyuVs24zk1ne6d
+         b3dO4o0oywLBKS/ndet2E1kjvEQXALINX8OJ2wDzBg6VdNC+t1NHZ9ogk9RypjPOy4eN
+         ia5A==
+X-Gm-Message-State: AOJu0YxqpPHNZMN7KbK7QLzrfF51HSTN/J+LjVfc0+xvZf3u/e3ZeaJx
+        +3/o5oOPgXlB6/dT+8mtD6rK/w==
+X-Google-Smtp-Source: AGHT+IElpZNjY2TGipiQutTff+ugw0APbFwNtO/dCFekhNu4FwvwZxuRlHmJbXr+4aj61TxA1EODzw==
+X-Received: by 2002:a17:90b:350a:b0:267:f094:afcf with SMTP id ls10-20020a17090b350a00b00267f094afcfmr382935pjb.12.1695403747365;
+        Fri, 22 Sep 2023 10:29:07 -0700 (PDT)
 Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id t6-20020a17090abc4600b00276bde3b8cesm5199670pjv.15.2023.09.22.10.29.00
+        by smtp.gmail.com with ESMTPSA id on16-20020a17090b1d1000b0026cecddfc58sm5168623pjb.42.2023.09.22.10.29.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 22 Sep 2023 10:29:03 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Jakub Kicinski <kuba@kernel.org>
 Cc:     Kees Cook <keescook@chromium.org>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
@@ -60,8 +60,8 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Martin KaFai Lau <martin.lau@kernel.org>,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Alexei Starovoitov <ast@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
         "K. Y. Srinivasan" <kys@microsoft.com>,
         Haiyang Zhang <haiyangz@microsoft.com>,
         Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
@@ -79,26 +79,26 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-rdma@vger.kernel.org, dev@openvswitch.org,
         linux-parisc@vger.kernel.org, llvm@lists.linux.dev,
         linux-hardening@vger.kernel.org
-Subject: [PATCH 05/14] net: enetc: Annotate struct enetc_int_vector with __counted_by
-Date:   Fri, 22 Sep 2023 10:28:47 -0700
-Message-Id: <20230922172858.3822653-5-keescook@chromium.org>
+Subject: [PATCH 06/14] net: hisilicon: Annotate struct rcb_common_cb with __counted_by
+Date:   Fri, 22 Sep 2023 10:28:48 -0700
+Message-Id: <20230922172858.3822653-6-keescook@chromium.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230922172449.work.906-kees@kernel.org>
 References: <20230922172449.work.906-kees@kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1453; i=keescook@chromium.org;
- h=from:subject; bh=NFekoCD1Jndm5KHIwVT2SInoZJX6zogZTm9dOrowHzQ=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlDc7W8CYHJBq+iZChIknbZLiTR3vO/ABrVlFx0
- 5vu41SusMWJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZQ3O1gAKCRCJcvTf3G3A
- JmMYD/9COcX3uXskEKki372umoZXpS81TFgyqr1SaYIobu+5/nsnHubNj4XIFIxtkKLQ9x9iJNr
- IGdgXYn2Ne+XjjnR2+5XdpYSVYBhpwMps87h8MkXg3FgVtutsJSrhDEKlalntK4k8P9/tEqbe5V
- s6/2BskuqXGJHZntea0S9oGq10CGovJ5oyy4N1B2ipZQ14jv2qyZJ/lL/L7Q1aceJAE0WCEhhlO
- ewuaoB4Iaj1WVPn8GmFZWHflwlLoeFYnDxWVtW/H9p1oAJbaNHvU5uaKdOs4wZmZtVealaxZifp
- DQvaHczxdEA/tAnbrF6p4+WcJlKt3/9Icc0gj7E9oH5U6B+L15s9vqreUMO7oLmuL8aZvODffmt
- Ij1zFTVn4YdJS/plXhp20WXehVFBbKACLxaSMDoZzAKtEyPU6PXeaNxRbhcgJbShgddSkKTUYWP
- eokdZ178LoIMhSB2zIB02vsPNIewOqKwQ9sJb3K+8fgUVP1PNSUJtgPxYmcO/8Rgb69FwD+w/YW
- U4BvwhJZ4C/8DUXSM7dMugskhUaorg2i0VNx/i8UMKoL19+6vpEdmgzWJAmKG0fzPbZPtx0/pQh
- 6PJff6pa1RRmV9QDJQuRueIM2N4jPj2I500uPYvFks3+UgRgZI5TlteIopHrUU9XbzdtZlI1afV Qrj7qVw0gAScGlA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1460; i=keescook@chromium.org;
+ h=from:subject; bh=1a7NieutkFX6AaDPkEeHOZVHEoHBt5bQcCIJutpCWUw=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlDc7WrIx18IVUGp+00bkbeA7+GMMa1sOqiyBAN
+ /AV74Ua6mWJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZQ3O1gAKCRCJcvTf3G3A
+ JtWVD/0YjudsxRE+Gn/6ufjGzrUTJPOLYENG3QXjmKKMjykihDhpS8roKUz2639IJQ3ofG2lpRk
+ pXxt1nWBR3nqg+5tD17nHNX5VrKywlSBPf5mb3whcLu+0iyWDcCOXNHRNmjXVj4DsvbXClNK+s2
+ axrhXO/7+2urhIqPiZBSj8fZ+gMdMkGrkTBOpVOlpXCI+ALT+DTMX6XrGCT9blczSojxLyMi+fR
+ 56bjaJ5DQmkfNVF9FbmQqkz1kvtSMt8EJZgAJQvO3Co2nhnYjG6aWv7Co4NraY1+y/uXZ5UM0Wf
+ CS3m75U8q7P31UyY0cYZZBAOAGYs7vDBolcGl0mkgZpmulcb2JGvtrCQtJbSX67BqG6ABbzt0ua
+ D+v6y10gAogt3nTCEqz+86wi6NATANnhftFkrO/hMg5JH1ULZskFkOHKabuV8Q0h2ZtE5tIcnuJ
+ MmFspm4sTsM9Wt/0MPN1VfS0UYoTpeMjQEpZYVztnxaTa4vFLrLf3YCRTllV0iflQJtbLe671v0
+ SepA6Jp/5ELNjbuHEwQ3U04XAtLLSsXxaHj9U/t0HrxsKL7gOXQ0lPrqAVCgVPw9PRh/cNTIIky
+ mCWwUUCQMoVQOj63jYvTKofBHWWpzbkDdCd6A6q0o3QG3sbwrilQzwD1k6NViARVdu8Js0Qo++i 4um6OXwKgBbqLEA==
 X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -117,12 +117,12 @@ their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
 (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
 functions).
 
-As found with Coccinelle[1], add __counted_by for struct enetc_int_vector.
+As found with Coccinelle[1], add __counted_by for struct rcb_common_cb.
 
 [1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
 
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Yisen Zhuang <yisen.zhuang@huawei.com>
+Cc: Salil Mehta <salil.mehta@huawei.com>
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Eric Dumazet <edumazet@google.com>
 Cc: Jakub Kicinski <kuba@kernel.org>
@@ -130,22 +130,22 @@ Cc: Paolo Abeni <pabeni@redhat.com>
 Cc: netdev@vger.kernel.org
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.h | 2 +-
+ drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
-index 7439739cd81a..a9c2ff22431c 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-@@ -297,7 +297,7 @@ struct enetc_int_vector {
- 	char name[ENETC_INT_NAME_MAX];
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h
+index a9f805925699..c1e9b6997853 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h
++++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h
+@@ -108,7 +108,7 @@ struct rcb_common_cb {
+ 	u32 ring_num;
+ 	u32 desc_num; /*  desc num per queue*/
  
- 	struct enetc_bdr rx_ring;
--	struct enetc_bdr tx_ring[];
-+	struct enetc_bdr tx_ring[] __counted_by(count_tx_rings);
- } ____cacheline_aligned_in_smp;
+-	struct ring_pair_cb ring_pair_cb[];
++	struct ring_pair_cb ring_pair_cb[] __counted_by(ring_num);
+ };
  
- struct enetc_cls_rule {
+ int hns_rcb_buf_size2type(u32 buf_size);
 -- 
 2.34.1
 
