@@ -2,235 +2,165 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BFE67AB6DF
-	for <lists+linux-parisc@lfdr.de>; Fri, 22 Sep 2023 19:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1F897AB735
+	for <lists+linux-parisc@lfdr.de>; Fri, 22 Sep 2023 19:29:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229863AbjIVRJ5 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 22 Sep 2023 13:09:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57898 "EHLO
+        id S231976AbjIVR3O (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 22 Sep 2023 13:29:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230348AbjIVRJ4 (ORCPT
+        with ESMTP id S232690AbjIVR3L (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 22 Sep 2023 13:09:56 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681A3199
-        for <linux-parisc@vger.kernel.org>; Fri, 22 Sep 2023 10:09:48 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-9ad8a822508so296378866b.0
-        for <linux-parisc@vger.kernel.org>; Fri, 22 Sep 2023 10:09:48 -0700 (PDT)
+        Fri, 22 Sep 2023 13:29:11 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C68ED1BC
+        for <linux-parisc@vger.kernel.org>; Fri, 22 Sep 2023 10:29:03 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-690d8fb3b7eso2254465b3a.1
+        for <linux-parisc@vger.kernel.org>; Fri, 22 Sep 2023 10:29:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695402587; x=1696007387; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YZMr1kN15ref1wUYr4E6kS3JTBkLGuuuWxsn4v7voMQ=;
-        b=OX56MkhYo96iSH/9jTtGmowa0IWzk2k5Qm+D9h7oPJOjJ/+Zsko+SIn9DNNw33kZ0F
-         a1NC0h7yfuFZekYPR50aSDIkD/lyzGW/pcJUXLxVvGnqplA4AxTwoqqe3X31dVef8StM
-         KDrBAEzwp5I0HqGKrSRHFTrrhWlf+5wls8mZbwjU5eL8dwNEsaFxZPt/KoDmdFuIDvDv
-         Tx4RYM0g/D0MzcS75yveTi1qJZgbvpkfBEEYorNb4I9V0T260/jrCtnzyVlHRd4yHkxz
-         HsjgZgFPTKZB0LrQb3QDGf6/RebAJi30u5vWLYIsZtjfFNLmia/XD09ljRrFSAI8tIZC
-         4/3w==
+        d=chromium.org; s=google; t=1695403743; x=1696008543; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c8+zsDKqPYa5khoeQ/X2KkaY8mmY8r9M3Aj1MNqbUX4=;
+        b=PLUE5dDTqFZ7VWtRtpwVm9vtlfkwNL8vm5+TsbEpX4W9qLxjD3SFs+58HPEu/XteGz
+         MCx9O7xaoxTNLet5Z4OaiMPRwxAUCBZdQ8DarEJ3GdmPNnwtJBBqEctDmkm4XFTbNqKc
+         93hoJPOkUOrgybb0baWj/GLs2XjeIkT5RSgyw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695402587; x=1696007387;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YZMr1kN15ref1wUYr4E6kS3JTBkLGuuuWxsn4v7voMQ=;
-        b=llJBGVCl1ROes9U/acwUAYi/G2tVtiufbuF5A40pSa0H90qdmyKzIpEdUVF7oXFlHi
-         /cTJEjWwrWMKrmDRvitiKw+ucvBvq801V6jZoIwQKKSz3eCUgI9Q0ec74cte6omdrcgY
-         tYpDxLcuRs/r7EGZqBJ9kZdv9FHyt2ikNx2Mx/JCPCjxutDKxEHXhQ5PRYngQeg9fK9x
-         W9VZ12fMbaLSn4Y+ux8Bs66l7EkRDtTZ/YX0jXsoY6N2cJwEs+RcY+Y1jaXhV0d3XjE5
-         2rcVu08ePbcBMd6OvONwB0meLjNaxg08EI9uKkq7mKfnV5Pv4xnq1oO3L0PqU5t/Divo
-         +32g==
-X-Gm-Message-State: AOJu0YwUea2aq4zy38Xw5lG0WZ2xpZm9/w/vA13VdNX7wi0JnlY7rGFv
-        VqSu9evnnCP0HTt/S79ehRxBmIvealnm+jk46XLXsw==
-X-Google-Smtp-Source: AGHT+IH4/kuj4pc7LLnOeIo2zssiCuHuC210f94Y24I1r6FA5L9LiUH2koVLT71RUpM7wLJf6p3XQNKYGbF6emeCse8=
-X-Received: by 2002:a17:907:985b:b0:9a2:1ce5:1243 with SMTP id
- jj27-20020a170907985b00b009a21ce51243mr7710566ejc.60.1695402586369; Fri, 22
- Sep 2023 10:09:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230922115804.2043771-1-ryan.roberts@arm.com>
- <20230922115804.2043771-3-ryan.roberts@arm.com> <20230922161404.GA23332@willie-the-truck>
- <32052cb7-91f1-461d-a226-2cd2fcf34ad2@arm.com>
-In-Reply-To: <32052cb7-91f1-461d-a226-2cd2fcf34ad2@arm.com>
-From:   Axel Rasmussen <axelrasmussen@google.com>
-Date:   Fri, 22 Sep 2023 10:09:08 -0700
-Message-ID: <CAJHvVcgq9mJFgy=M1J546XboTu2=SWMdbQM457xUtD1kba4xew@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] arm64: hugetlb: Fix set_huge_pte_at() to work with
- all swap entries
-To:     Ryan Roberts <ryan.roberts@arm.com>
-Cc:     Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        d=1e100.net; s=20230601; t=1695403743; x=1696008543;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c8+zsDKqPYa5khoeQ/X2KkaY8mmY8r9M3Aj1MNqbUX4=;
+        b=ltup2cklQDkPQUjuUH73sS+56euMbtSjn8Eej0YR85Q2tmHWK4nvRkIty5kiMvtsM1
+         CwsybZeV/lVwzHNJZrxfBk0gBgGzZUFXRGxvZfrXfEaULqh763/Y1W9+2bXlY5xlulAM
+         LdE//MVO4+J8FQv5k8gsfugSimNQvXbcoGa2W0pK+6v9cbPRIFVvQerp0oGotlQYNsj/
+         5oI/BQxQbd4GkxNNaVT0Qu5bYh5wIC9Q7pwd074PLy8eX0XpsX8ACXUz/7RE4faZxl3n
+         B7NTDfFmr5Qq6jKWn/aCMnvmIZtGeM2m5OotfPX1o7g8iC9mNqexQrmT40y7niIuEO0B
+         LdVQ==
+X-Gm-Message-State: AOJu0YyhiYAkp/47RWL02jqshvlGuEFrlkU/vXzvbvwjbQTtivLtW4hb
+        fzY6gkK4DYbmc4TDx9Xmit7rwA==
+X-Google-Smtp-Source: AGHT+IHy7einxOZJqzMeGrtUp41zCyAYhfTGbgIj6G7ktKqXoRq3UXI9VRRfBIaYo38BL3FmkYPa8A==
+X-Received: by 2002:a05:6a00:847:b0:68a:5e5b:e450 with SMTP id q7-20020a056a00084700b0068a5e5be450mr72319pfk.26.1695403743180;
+        Fri, 22 Sep 2023 10:29:03 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id y10-20020a056a001c8a00b006926e3dc2besm2777741pfw.108.2023.09.22.10.28.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Sep 2023 10:29:00 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <muchun.song@linux.dev>,
-        SeongJae Park <sj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Peter Xu <peterx@redhat.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        David Ahern <dsahern@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+        Long Li <longli@microsoft.com>,
+        Ajay Sharma <sharmaajay@microsoft.com>,
+        Alex Elder <elder@kernel.org>,
+        Pravin B Shelar <pshelar@ovn.org>,
+        Shaokun Zhang <zhangshaokun@hisilicon.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, Simon Horman <horms@kernel.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org,
+        dev@openvswitch.org, linux-parisc@vger.kernel.org,
+        llvm@lists.linux.dev, linux-hardening@vger.kernel.org
+Subject: [PATCH 00/14] Batch 1: Annotate structs with __counted_by
+Date:   Fri, 22 Sep 2023 10:28:42 -0700
+Message-Id: <20230922172449.work.906-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2504; i=keescook@chromium.org;
+ h=from:subject:message-id; bh=tD+5se4WoWIAJwEPLvlJBN6wlUKoasq6Szn6nibv1zQ=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlDc7Wu+d5o7777Jp53tWR0nER5gmlkAVoVjoqh
+ J5JIlgoeMOJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZQ3O1gAKCRCJcvTf3G3A
+ JrqqEACeFuiUMDgjhvtyqa9O/ntgqeTDML08nWyLGJ79aRe6YFXyHEddM/LbmREWkrtJUThTPL+
+ 5cqYB5ebSIzmAdm4jbres07kHLFvt+2wcfmJa92BLomL4uPyqTUFXgn1mSYnLrb14IzV3e88Sx0
+ dEDq9SHrXgKyFWkQfaC7RzupSY7nGw1X1Fv3+vLo/ofLr89BRjbc1wH0tOJMrBPr7asUo/F7eG2
+ 7lxjFPkC1mLDulQotR5dcnl637i1mztV/DHfJlCRJQwcUcE/rH65VJ6UPC1PCNvc+eqL/CMKwKM
+ T9iKyVQLU0gOVexJO+FPe5rDRoi/YrXfznJqI0MZx9L7MnZqanTpbTbIIWmdObv8ciWWZz3S8K/
+ yHSIfhDofc7jQmUJnSJywpwkeAUyF50SOAkYngCVfxzswzgtYznLShCCbrSr2PLyVIU3xwoNL1F
+ GJNRC4AJkef4eAA0hMVt6HF0UypVDq3Kvny+Q0xdl+MznPGBX1NQuKAvUri7Y8KGZ4yVf9N80Lt
+ 88tUHrZopBg7iXoM1qSKMZPHxRK5nqMN/qqfUi48CEB5SZ8IzvOnLAvs7qd5FBCO4P3/yH8OWBy
+ blZo4EB4+EAYhVbu8a/RM7O+YjAH2q2muPkUv7s/sP9KxF8m7FHQgFogan1njOplS3zYEN8SVhu
+ HgXxG8g LJHlR5Bg==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Looks correct to me - thanks for the fix!
+Hi,
 
-Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+This is the batch 1 of patches touching netdev for preparing for
+the coming implementation by GCC and Clang of the __counted_by
+attribute. Flexible array members annotated with __counted_by can have
+their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
+(for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
+functions).
 
-On Fri, Sep 22, 2023 at 9:41=E2=80=AFAM Ryan Roberts <ryan.roberts@arm.com>=
- wrote:
->
-> On 22/09/2023 17:14, Will Deacon wrote:
-> > On Fri, Sep 22, 2023 at 12:58:04PM +0100, Ryan Roberts wrote:
-> >> When called with a swap entry that does not embed a PFN (e.g.
-> >> PTE_MARKER_POISONED or PTE_MARKER_UFFD_WP), the previous implementatio=
-n
-> >> of set_huge_pte_at() would either cause a BUG() to fire (if
-> >> CONFIG_DEBUG_VM is enabled) or cause a dereference of an invalid addre=
-ss
-> >> and subsequent panic.
-> >>
-> >> arm64's huge pte implementation supports multiple huge page sizes, som=
-e
-> >> of which are implemented in the page table with multiple contiguous
-> >> entries. So set_huge_pte_at() needs to work out how big the logical pt=
-e
-> >> is, so that it can also work out how many physical ptes (or pmds) need
-> >> to be written. It previously did this by grabbing the folio out of the
-> >> pte and querying its size.
-> >>
-> >> However, there are cases when the pte being set is actually a swap
-> >> entry. But this also used to work fine, because for huge ptes, we only
-> >> ever saw migration entries and hwpoison entries. And both of these typ=
-es
-> >> of swap entries have a PFN embedded, so the code would grab that and
-> >> everything still worked out.
-> >>
-> >> But over time, more calls to set_huge_pte_at() have been added that se=
-t
-> >> swap entry types that do not embed a PFN. And this causes the code to =
-go
-> >> bang. The triggering case is for the uffd poison test, commit
-> >> 99aa77215ad0 ("selftests/mm: add uffd unit test for UFFDIO_POISON"),
-> >> which causes a PTE_MARKER_POISONED swap entry to be set, coutesey of
-> >> commit 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for
-> >> hugetlbfs") - added in v6.5-rc7. Although review shows that there are
-> >> other call sites that set PTE_MARKER_UFFD_WP (which also has no PFN),
-> >> these don't trigger on arm64 because arm64 doesn't support UFFD WP.
-> >>
-> >> Arguably, the root cause is really due to commit 18f3962953e4 ("mm:
-> >> hugetlb: kill set_huge_swap_pte_at()"), which aimed to simplify the
-> >> interface to the core code by removing set_huge_swap_pte_at() (which
-> >> took a page size parameter) and replacing it with calls to
-> >> set_huge_pte_at() where the size was inferred from the folio, as
-> >> descibed above. While that commit didn't break anything at the time, i=
-t
-> >> did break the interface because it couldn't handle swap entries withou=
-t
-> >> PFNs. And since then new callers have come along which rely on this
-> >> working. But given the brokeness is only observable after commit
-> >> 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs"),
-> >> that one gets the Fixes tag.
-> >>
-> >> Now that we have modified the set_huge_pte_at() interface to pass the
-> >> huge page size in the previous patch, we can trivially fix this issue.
-> >>
-> >> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> >> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for huget=
-lbfs")
-> >> Cc: <stable@vger.kernel.org> # 6.5+
-> >> ---
-> >>  arch/arm64/mm/hugetlbpage.c | 17 +++--------------
-> >>  1 file changed, 3 insertions(+), 14 deletions(-)
-> >>
-> >> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> >> index a7f8c8db3425..13fd592228b1 100644
-> >> --- a/arch/arm64/mm/hugetlbpage.c
-> >> +++ b/arch/arm64/mm/hugetlbpage.c
-> >> @@ -241,13 +241,6 @@ static void clear_flush(struct mm_struct *mm,
-> >>      flush_tlb_range(&vma, saddr, addr);
-> >>  }
-> >>
-> >> -static inline struct folio *hugetlb_swap_entry_to_folio(swp_entry_t e=
-ntry)
-> >> -{
-> >> -    VM_BUG_ON(!is_migration_entry(entry) && !is_hwpoison_entry(entry)=
-);
-> >> -
-> >> -    return page_folio(pfn_to_page(swp_offset_pfn(entry)));
-> >> -}
-> >> -
-> >>  void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
-> >>                          pte_t *ptep, pte_t pte, unsigned long sz)
-> >>  {
-> >> @@ -257,13 +250,10 @@ void set_huge_pte_at(struct mm_struct *mm, unsig=
-ned long addr,
-> >>      unsigned long pfn, dpfn;
-> >>      pgprot_t hugeprot;
-> >>
-> >> -    if (!pte_present(pte)) {
-> >> -            struct folio *folio;
-> >> -
-> >> -            folio =3D hugetlb_swap_entry_to_folio(pte_to_swp_entry(pt=
-e));
-> >> -            ncontig =3D num_contig_ptes(folio_size(folio), &pgsize);
-> >> +    ncontig =3D num_contig_ptes(sz, &pgsize);
-> >>
-> >> -            for (i =3D 0; i < ncontig; i++, ptep++)
-> >> +    if (!pte_present(pte)) {
-> >> +            for (i =3D 0; i < ncontig; i++, ptep++, addr +=3D pgsize)
-> >>                      set_pte_at(mm, addr, ptep, pte);
-> >
-> > Our set_pte_at() doesn't use 'addr' for anything and the old code didn'=
-t
-> > even bother to increment it here! I'm fine adding that, but it feels
-> > unrelated to the issue which this patch is actually fixing.
->
-> True. I agree its not strictly necessary and will presumably be optimized=
- out.
-> But I'm not sure that having knowledge that the implementation doesn't us=
-e it is
-> a good reason not to call the interface correctly. I'll leave it as I've =
-done it
-> if that's ok.
->
-> >
-> > Either way:
-> >
-> > Acked-by: Will Deacon <will@kernel.org>
->
-> Thanks!
->
-> >
-> > Will
->
+As found with Coccinelle[1], add __counted_by to structs that would
+benefit from the annotation.
+
+Since the element count member must be set before accessing the annotated
+flexible array member, some patches also move the member's initialization
+earlier. (These are noted in the individual patches.)
+
+-Kees
+
+[1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
+
+
+Kees Cook (14):
+  ipv4: Annotate struct fib_info with __counted_by
+  ipv4/igmp: Annotate struct ip_sf_socklist with __counted_by
+  ipv6: Annotate struct ip6_sf_socklist with __counted_by
+  net: hns: Annotate struct ppe_common_cb with __counted_by
+  net: enetc: Annotate struct enetc_int_vector with __counted_by
+  net: hisilicon: Annotate struct rcb_common_cb with __counted_by
+  net: mana: Annotate struct mana_rxq with __counted_by
+  net: ipa: Annotate struct ipa_power with __counted_by
+  net: mana: Annotate struct hwc_dma_buf with __counted_by
+  net: openvswitch: Annotate struct dp_meter_instance with __counted_by
+  net: enetc: Annotate struct enetc_psfp_gate with __counted_by
+  net: openvswitch: Annotate struct dp_meter with __counted_by
+  net: tulip: Annotate struct mediatable with __counted_by
+  net: sched: Annotate struct tc_pedit with __counted_by
+
+ drivers/net/ethernet/dec/tulip/tulip.h            | 2 +-
+ drivers/net/ethernet/freescale/enetc/enetc.h      | 2 +-
+ drivers/net/ethernet/freescale/enetc/enetc_qos.c  | 2 +-
+ drivers/net/ethernet/hisilicon/hns/hns_dsaf_ppe.h | 2 +-
+ drivers/net/ethernet/hisilicon/hns/hns_dsaf_rcb.h | 2 +-
+ drivers/net/ipa/ipa_power.c                       | 2 +-
+ include/linux/igmp.h                              | 2 +-
+ include/net/if_inet6.h                            | 2 +-
+ include/net/ip_fib.h                              | 2 +-
+ include/net/mana/hw_channel.h                     | 2 +-
+ include/net/mana/mana.h                           | 2 +-
+ net/openvswitch/meter.h                           | 4 ++--
+ net/sched/act_pedit.c                             | 2 +-
+ 13 files changed, 14 insertions(+), 14 deletions(-)
+
+-- 
+2.34.1
+
