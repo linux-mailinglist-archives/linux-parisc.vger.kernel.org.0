@@ -2,98 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EC557AC1B3
-	for <lists+linux-parisc@lfdr.de>; Sat, 23 Sep 2023 14:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BEB77AC34B
+	for <lists+linux-parisc@lfdr.de>; Sat, 23 Sep 2023 17:39:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231392AbjIWMJa (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 23 Sep 2023 08:09:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46156 "EHLO
+        id S231908AbjIWPjK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 23 Sep 2023 11:39:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231313AbjIWMJa (ORCPT
+        with ESMTP id S229946AbjIWPjK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 23 Sep 2023 08:09:30 -0400
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2F7C19F
-        for <linux-parisc@vger.kernel.org>; Sat, 23 Sep 2023 05:09:23 -0700 (PDT)
-Received: by mail-io1-xd2a.google.com with SMTP id ca18e2360f4ac-79f9bad1a44so78971239f.2
-        for <linux-parisc@vger.kernel.org>; Sat, 23 Sep 2023 05:09:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1695470963; x=1696075763; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XAvg21g6nbbw1h+/pTYxIjGaQhk7mPIWAIow3O+el8w=;
-        b=DLxn7//6yHMxeoMVTrr0qYfohGScaeS52o7/UDk+9PW6VThFl68e7D6/DbtAvdd89d
-         j4tPcCOJdhW7AV9sEMT1a9YVpIa+LScQn5xrcjXeP37Wdw/wFTi6kNGdSm+uvfNLea7h
-         iXPnp5mpMKN8gLjueJl3kO8wLSx9cueoTjppc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695470963; x=1696075763;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XAvg21g6nbbw1h+/pTYxIjGaQhk7mPIWAIow3O+el8w=;
-        b=D0CRO3J6S35UtiZpzK3Gs8bdEjmq4PgWriaf4YGXvMEMuepdYLFgV4Olw2u3asixe+
-         4BANHhGC3vojoh4Ac8uPTmFZe+ZSsbgy/+YY+hWFyS3iJyiA4sT6IttIWkBUVTBKaJb5
-         mMQzGsJP5fMmzWPi5Ncz83UF+3Xy1H/p/pSBzIhHtNedrGH9f5FB5oFo6Lu3RDNQP1X0
-         DnPz1OXYv3WBxFi+tuOh5MTY3QUuSqdtS6xX6g5GleVZxU6x4ny+oUsHnFUw1UGXupvO
-         MkUwFb2Xk5zYISEcjlo/4lZW5bYTtMGR6gJ31Nt9GmfkBZnF+T7M5kEXNSkOH67vqnvz
-         aHVg==
-X-Gm-Message-State: AOJu0Yx4arUfHZa7FQr/O/mF97F93Grq6V2jP4Qi6so0d+X4Dv2Qhrh8
-        qE7f1VkcLjn9eIecySvlAr3dAA==
-X-Google-Smtp-Source: AGHT+IFsU/+zIHTFsRo6MskEzPa2bwVmahshwKY2z15uRkbrNeJwUhIadfi6G6UMDY5d9luXaBJ4hQ==
-X-Received: by 2002:a5e:8d0c:0:b0:790:f866:d71b with SMTP id m12-20020a5e8d0c000000b00790f866d71bmr2106815ioj.13.1695470963122;
-        Sat, 23 Sep 2023 05:09:23 -0700 (PDT)
-Received: from [10.211.55.3] (c-98-61-227-136.hsd1.mn.comcast.net. [98.61.227.136])
-        by smtp.googlemail.com with ESMTPSA id ft16-20020a056638661000b0043a21abd491sm1610905jab.120.2023.09.23.05.09.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 Sep 2023 05:09:21 -0700 (PDT)
-Message-ID: <6f52f36c-be16-2427-c19f-0e8b3dd2ff5f@ieee.org>
-Date:   Sat, 23 Sep 2023 07:09:19 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 08/14] net: ipa: Annotate struct ipa_power with
- __counted_by
-Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>, Jakub Kicinski <kuba@kernel.org>
-Cc:     Alex Elder <elder@kernel.org>,
+        Sat, 23 Sep 2023 11:39:10 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51EE8100;
+        Sat, 23 Sep 2023 08:39:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2139BC433C8;
+        Sat, 23 Sep 2023 15:38:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695483543;
+        bh=44aW6DcKJaHGXelf02UJMtFK5RbIa4QmGjb00e/7p/A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fw2A/tcOcobQiglJay8dvPT5bEfVdzbbmq0FwMYYkRDEvMMNze6l5vdxXC61b2ule
+         JFCwMCsxrAuMW6D9gVnh2enWSeUtDeXGmVEjWBDuVv9KbPW1MRt9tzybn9NNKJQMj2
+         y3Lc/W+nmmCK2KsTrqRVvz29GuwFbt1mGULYw6jBfPPwRcYXpuSga9okI5ya4zHkUD
+         tynDeAbBph8ozw0L4VOesv/AFGSBeSrp7QqXSV98fLRWfSHzHFilN6nNqox4/XsFqb
+         GBdnrmPrEZw+uXG8gLcDpColobXRcu9WsCK8bgQKX9ms+oqH3fV0ph2eOZh795NWNU
+         moLZ9gWnlnDaA==
+Date:   Sat, 23 Sep 2023 18:38:08 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Song Liu <song@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
         "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        David Ahern <dsahern@kernel.org>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "K. Y. Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-        Long Li <longli@microsoft.com>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        Pravin B Shelar <pshelar@ovn.org>,
-        Shaokun Zhang <zhangshaokun@hisilicon.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, Simon Horman <horms@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        linux-rdma@vger.kernel.org, dev@openvswitch.org,
-        linux-parisc@vger.kernel.org, llvm@lists.linux.dev,
-        linux-hardening@vger.kernel.org
-References: <20230922172449.work.906-kees@kernel.org>
- <20230922172858.3822653-8-keescook@chromium.org>
-From:   Alex Elder <elder@ieee.org>
-In-Reply-To: <20230922172858.3822653-8-keescook@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nadav Amit <nadav.amit@gmail.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Will Deacon <will@kernel.org>, bpf@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-modules@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v3 02/13] mm: introduce execmem_text_alloc() and
+ execmem_free()
+Message-ID: <20230923153808.GI3303@kernel.org>
+References: <20230918072955.2507221-1-rppt@kernel.org>
+ <20230918072955.2507221-3-rppt@kernel.org>
+ <CAPhsuW5-=H1V=VXUYxyGnUdJuNUpRt44QmpwjkDUD=9i0itjuw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPhsuW5-=H1V=VXUYxyGnUdJuNUpRt44QmpwjkDUD=9i0itjuw@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -101,53 +81,53 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 9/22/23 12:28 PM, Kees Cook wrote:
-> Prepare for the coming implementation by GCC and Clang of the __counted_by
-> attribute. Flexible array members annotated with __counted_by can have
-> their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
-> (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
-> functions).
+On Thu, Sep 21, 2023 at 03:34:18PM -0700, Song Liu wrote:
+> On Mon, Sep 18, 2023 at 12:30 AM Mike Rapoport <rppt@kernel.org> wrote:
+> >
 > 
-> As found with Coccinelle[1], add __counted_by for struct ipa_power.
-
-Looks good, thanks.
-
-Reviewed-by: Alex Elder <elder@linaro.org>
-
-Note that there is some interaction between struct ipa_power_data
-and struct ipa_power (the former is used to initialize the latter).
-Both of these contain flexible arrays counted by another field in
-the structure.  It seems possible that the way these are initialized
-might need slight modification to allow the compiler to do its
-enforcement; if that's the case, please reach out to me.
-
-					-Alex
-
-
-> [1] https://github.com/kees/kernel-tools/blob/trunk/coccinelle/examples/counted_by.cocci
+> [...]
 > 
-> Cc: Alex Elder <elder@kernel.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> Cc: netdev@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
-> ---
->   drivers/net/ipa/ipa_power.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> > diff --git a/arch/s390/kernel/module.c b/arch/s390/kernel/module.c
+> > index 42215f9404af..db5561d0c233 100644
+> > --- a/arch/s390/kernel/module.c
+> > +++ b/arch/s390/kernel/module.c
+> > @@ -21,6 +21,7 @@
+> >  #include <linux/moduleloader.h>
+> >  #include <linux/bug.h>
+> >  #include <linux/memory.h>
+> > +#include <linux/execmem.h>
+> >  #include <asm/alternative.h>
+> >  #include <asm/nospec-branch.h>
+> >  #include <asm/facility.h>
+> > @@ -76,7 +77,7 @@ void *module_alloc(unsigned long size)
+> >  #ifdef CONFIG_FUNCTION_TRACER
+> >  void module_arch_cleanup(struct module *mod)
+> >  {
+> > -       module_memfree(mod->arch.trampolines_start);
+> > +       execmem_free(mod->arch.trampolines_start);
+> >  }
+> >  #endif
+> >
+> > @@ -510,7 +511,7 @@ static int module_alloc_ftrace_hotpatch_trampolines(struct module *me,
+> >
+> >         size = FTRACE_HOTPATCH_TRAMPOLINES_SIZE(s->sh_size);
+> >         numpages = DIV_ROUND_UP(size, PAGE_SIZE);
+> > -       start = module_alloc(numpages * PAGE_SIZE);
+> > +       start = execmem_text_alloc(EXECMEM_FTRACE, numpages * PAGE_SIZE);
 > 
-> diff --git a/drivers/net/ipa/ipa_power.c b/drivers/net/ipa/ipa_power.c
-> index 0eaa7a7f3343..e223886123ce 100644
-> --- a/drivers/net/ipa/ipa_power.c
-> +++ b/drivers/net/ipa/ipa_power.c
-> @@ -67,7 +67,7 @@ struct ipa_power {
->   	spinlock_t spinlock;	/* used with STOPPED/STARTED power flags */
->   	DECLARE_BITMAP(flags, IPA_POWER_FLAG_COUNT);
->   	u32 interconnect_count;
-> -	struct icc_bulk_data interconnect[];
-> +	struct icc_bulk_data interconnect[] __counted_by(interconnect_count);
->   };
->   
->   /* Initialize interconnects required for IPA operation */
+> This should be EXECMEM_MODULE_TEXT?
 
+This is an ftrace trampoline, so I think it should be FTRACE type of
+allocation.
+ 
+> Thanks,
+> Song
+> 
+> >         if (!start)
+> >                 return -ENOMEM;
+> >         set_memory_rox((unsigned long)start, numpages);
+> [...]
+
+-- 
+Sincerely yours,
+Mike.
