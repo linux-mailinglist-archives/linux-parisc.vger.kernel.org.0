@@ -2,45 +2,44 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E98617AC8D1
-	for <lists+linux-parisc@lfdr.de>; Sun, 24 Sep 2023 15:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DAE57AC981
+	for <lists+linux-parisc@lfdr.de>; Sun, 24 Sep 2023 15:32:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230358AbjIXNUG (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 24 Sep 2023 09:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46154 "EHLO
+        id S231267AbjIXNcT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 24 Sep 2023 09:32:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230325AbjIXNTn (ORCPT
+        with ESMTP id S231311AbjIXNbq (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 24 Sep 2023 09:19:43 -0400
+        Sun, 24 Sep 2023 09:31:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 497F110EB;
-        Sun, 24 Sep 2023 06:17:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB1EC433CB;
-        Sun, 24 Sep 2023 13:17:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC16F3A87;
+        Sun, 24 Sep 2023 06:19:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B45FC433C7;
+        Sun, 24 Sep 2023 13:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695561478;
-        bh=bjOuFc5oRRZarY9pBsGbWGzxVE3cv/ySCwSk7YVSDEg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ToVLBlmhVInFlrjsq2OQ1jy1AX3v2B1UTqQAP2RxN/TXUIywmWY7TkOc4N+FZLOD/
-         9YgC7slafAL/WIHUe629BOz00azwDYfcOMlAnUlyBXgNyrWzLGlH6ZOiwianPhq5jf
-         OfuVA158JUhCkDQpXXZEU2yobFfM7TtQv1pcZEx+eZBprG3AxZKdlBwCBzuD7toK/e
-         1+q2xrfoJ0tJGQNPne/OYaDcTnII95gU+Gw2ejpw4tPCmAfurv9uwKTl2zHSZKPgXn
-         L0TEZfvGXxKhiNyE7Mxl6pm+R185xRLuX6moXkmZwdjjCqanV2SVpI/YszdX5ArE2b
-         sUUqKUGcGYKIA==
+        s=k20201202; t=1695561540;
+        bh=/0DxeFclJanmHoVCa2JuctmAc4IoTLcES89kTw6xPoU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=psCznLbE00vO5iBzy3hah1OTK/41um+QTYPmgHjCMtdCslsyeCvkxvUiz/tb2PUPL
+         DZ/PNzR+0oQmzz7gpnLXJIVJMbd4MEYNlecpqvOndNoTA6WT/H85/LjpsKF6xiQW0l
+         Zhi/2tuBiap1JFjZSRLBHHvUB8c5PynkQWKIm+I2le3PmWleMwizyZ4X+yUWjD3ofK
+         pBx6HiKUIBE9mQmNyQX4t1Qai4AUa8TSKQEpi+j4akU8Rkq3GbwaiwCcxZ/8gl6on8
+         v+udwmEhOHRyqwlAGfnu2tDvrnBS7IIDrwc1vrkYv9JT837B37mA6zdVkZPBS1tzDJ
+         BvxZqW2Y2Mdfw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com, linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 05/28] parisc: irq: Make irq_stack_union static to avoid sparse warning
-Date:   Sun, 24 Sep 2023 09:17:22 -0400
-Message-Id: <20230924131745.1275960-5-sashal@kernel.org>
+        James.Bottomley@HansenPartnership.com, airlied@redhat.com,
+        linux-parisc@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.15 01/18] parisc: sba: Fix compile warning wrt list of SBA devices
+Date:   Sun, 24 Sep 2023 09:18:38 -0400
+Message-Id: <20230924131857.1276330-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230924131745.1275960-1-sashal@kernel.org>
-References: <20230924131745.1275960-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.55
+X-stable-base: Linux 5.15.133
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,27 +53,46 @@ X-Mailing-List: linux-parisc@vger.kernel.org
 
 From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit b1bef1388c427cdad7331a9c8eb4ebbbe5b954b0 ]
+[ Upstream commit eb3255ee8f6f4691471a28fbf22db5e8901116cd ]
+
+Fix this makecheck warning:
+drivers/parisc/sba_iommu.c:98:19: warning: symbol 'sba_list'
+	was not declared. Should it be static?
 
 Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/include/asm/ropes.h | 3 +++
+ drivers/char/agp/parisc-agp.c   | 2 --
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
-index b05055f3ba4b8..9ddb2e3970589 100644
---- a/arch/parisc/kernel/irq.c
-+++ b/arch/parisc/kernel/irq.c
-@@ -368,7 +368,7 @@ union irq_stack_union {
- 	volatile unsigned int lock[1];
+diff --git a/arch/parisc/include/asm/ropes.h b/arch/parisc/include/asm/ropes.h
+index 8e51c775c80a6..62399c7ea94a1 100644
+--- a/arch/parisc/include/asm/ropes.h
++++ b/arch/parisc/include/asm/ropes.h
+@@ -86,6 +86,9 @@ struct sba_device {
+ 	struct ioc		ioc[MAX_IOC];
  };
  
--DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
-+static DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
- 		.slock = { 1,1,1,1 },
- 	};
- #endif
++/* list of SBA's in system, see drivers/parisc/sba_iommu.c */
++extern struct sba_device *sba_list;
++
+ #define ASTRO_RUNWAY_PORT	0x582
+ #define IKE_MERCED_PORT		0x803
+ #define REO_MERCED_PORT		0x804
+diff --git a/drivers/char/agp/parisc-agp.c b/drivers/char/agp/parisc-agp.c
+index 514f9f287a781..c6f181702b9a7 100644
+--- a/drivers/char/agp/parisc-agp.c
++++ b/drivers/char/agp/parisc-agp.c
+@@ -394,8 +394,6 @@ find_quicksilver(struct device *dev, void *data)
+ static int __init
+ parisc_agp_init(void)
+ {
+-	extern struct sba_device *sba_list;
+-
+ 	int err = -1;
+ 	struct parisc_device *sba = NULL, *lba = NULL;
+ 	struct lba_device *lbadev = NULL;
 -- 
 2.40.1
 
