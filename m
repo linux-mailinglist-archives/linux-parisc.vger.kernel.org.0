@@ -2,49 +2,40 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C98C37AC989
-	for <lists+linux-parisc@lfdr.de>; Sun, 24 Sep 2023 15:32:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 810957AD722
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 Sep 2023 13:43:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231792AbjIXNce (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 24 Sep 2023 09:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38322 "EHLO
+        id S229589AbjIYLnT (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 25 Sep 2023 07:43:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230526AbjIXNcF (ORCPT
+        with ESMTP id S229538AbjIYLnS (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 24 Sep 2023 09:32:05 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D382B5B84;
-        Sun, 24 Sep 2023 06:20:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B68C433BB;
-        Sun, 24 Sep 2023 13:20:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695561657;
-        bh=OTE0OTbb8GhgTkY+kGlP6RqkSIA+gOgD7lqkw3P/ZDs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WO1XzPLOrMHZaujN0/nhz6hYFntKt/kqBycxM+RQh+sxmv/swHUHEXpSHFca+D3IZ
-         kBaEbH3vV+e5q9fRdyb0A0wQ+HC1/crMmvf9Y2Rlaj4ymYVH0nslZqyTfOzJKAIZHE
-         Zv+zDTO4n5PocZL+qzV9u6faBc8rDh9DmHjA5OqaaWJpEbExfzRPgUW7INkK5ZcY9d
-         i03vMNF2ZFe1VndHUVr2Wkn1ba3l97mHIF4dbDAIH1fSSkHTO4x6OM8V2oFiDcTPn6
-         DOISke5Vhk8Tt7HP8cDKwK+YxG7SdO2zcr5YGXkYq6smdiPa13NF3k6bRYxDMZN5bo
-         CFuhFxXUqFSIA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>,
-        James.Bottomley@HansenPartnership.com, linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 3/6] parisc: irq: Make irq_stack_union static to avoid sparse warning
-Date:   Sun, 24 Sep 2023 09:20:46 -0400
-Message-Id: <20230924132050.1277021-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230924132050.1277021-1-sashal@kernel.org>
-References: <20230924132050.1277021-1-sashal@kernel.org>
+        Mon, 25 Sep 2023 07:43:18 -0400
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B18CFDF
+        for <linux-parisc@vger.kernel.org>; Mon, 25 Sep 2023 04:43:11 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:ee18:727e:6235:2ac2])
+        by baptiste.telenet-ops.be with bizsmtp
+        id qBj82A00H4XpEKH01Bj80h; Mon, 25 Sep 2023 13:43:09 +0200
+Received: from geert (helo=localhost)
+        by ramsan.of.borg with local-esmtp (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1qkjzY-004Xre-MD;
+        Mon, 25 Sep 2023 13:43:08 +0200
+Date:   Mon, 25 Sep 2023 13:43:08 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     linux-kernel@vger.kernel.org
+cc:     linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-parport@lists.infradead.org, linux-sh@vger.kernel.org
+Subject: Re: Build regressions/improvements in v6.6-rc3
+In-Reply-To: <20230925113220.3627083-1-geert@linux-m68k.org>
+Message-ID: <687a5a25-65c4-f571-6626-2fdf9e843415@linux-m68k.org>
+References: <CAHk-=wjrZgxjHZuXwrGeFnng_whUmtToCWE5GQ+HORhGSeiX8g@mail.gmail.com> <20230925113220.3627083-1-geert@linux-m68k.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.326
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,29 +43,43 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+On Mon, 25 Sep 2023, Geert Uytterhoeven wrote:
+> JFYI, when comparing v6.6-rc3[1] to v6.6-rc2[3], the summaries are:
+>  - build errors: +11/-4
 
-[ Upstream commit b1bef1388c427cdad7331a9c8eb4ebbbe5b954b0 ]
+   + error: modpost: ".L872" [drivers/mtd/nand/raw/nand.ko] undefined!:  => N/A
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/parisc/kernel/irq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+parisc-gcc13/parisc-allmodconfig (seen before)
 
-diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
-index c152c30c2d06d..11c1505775f87 100644
---- a/arch/parisc/kernel/irq.c
-+++ b/arch/parisc/kernel/irq.c
-@@ -392,7 +392,7 @@ union irq_stack_union {
- 	volatile unsigned int lock[1];
- };
- 
--DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
-+static DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
- 		.slock = { 1,1,1,1 },
- 	};
- #endif
--- 
-2.40.1
+   + error: modpost: "ebus_dma_enable" [drivers/parport/parport_pc.ko] undefined!:  => N/A
+   + error: modpost: "ebus_dma_irq_enable" [drivers/parport/parport_pc.ko] undefined!:  => N/A
+   + error: modpost: "ebus_dma_prepare" [drivers/parport/parport_pc.ko] undefined!:  => N/A
+   + error: modpost: "ebus_dma_register" [drivers/parport/parport_pc.ko] undefined!:  => N/A
+   + error: modpost: "ebus_dma_request" [drivers/parport/parport_pc.ko] undefined!:  => N/A
+   + error: modpost: "ebus_dma_residue" [drivers/parport/parport_pc.ko] undefined!:  => N/A
+   + error: modpost: "ebus_dma_unregister" [drivers/parport/parport_pc.ko] undefined!:  => N/A
+   + error: modpost: "ns87303_lock" [drivers/parport/parport_pc.ko] undefined!:  => N/A
 
+sparc64-gcc{5,11,12,13}/sparc-allmodconfig (seen before)
+
+   + {standard input}: Error: expected comma after name `xpcs_co' in .size directive:  => 1100
+
+sh4-gcc1[12]/sh-all{mod,yes}config (ICE)
+
+   + {standard input}: Error: pcrel too far:  => 932, 940, 939
+
+sh4-gcc1[12]/sh-allyesconfig (ICE)
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/6465e260f48790807eef06b583b38ca9789b6072/ (all 239 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/ce9ecca0238b140b88f43859b211c9fdfd8e5b70/ (237 out of 239 configs)
+
+Gr{oetje,eeting}s,
+
+ 						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
