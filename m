@@ -2,43 +2,92 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5F817AFE40
-	for <lists+linux-parisc@lfdr.de>; Wed, 27 Sep 2023 10:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 412017B096B
+	for <lists+linux-parisc@lfdr.de>; Wed, 27 Sep 2023 17:57:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229885AbjI0IZV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 27 Sep 2023 04:25:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43254 "EHLO
+        id S232494AbjI0P5k (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 27 Sep 2023 11:57:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230253AbjI0IZH (ORCPT
+        with ESMTP id S231974AbjI0P5j (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 27 Sep 2023 04:25:07 -0400
-Received: from mail.commercesolutions.pl (unknown [162.19.155.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EEF53C06
-        for <linux-parisc@vger.kernel.org>; Wed, 27 Sep 2023 01:12:30 -0700 (PDT)
-Received: by mail.commercesolutions.pl (Postfix, from userid 1002)
-        id 91C74241F9; Wed, 27 Sep 2023 08:11:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=commercesolutions.pl;
-        s=mail; t=1695802332;
-        bh=PcMncQpBfIZCnTOfZJY5G1G+gaLn4c9QPfFvoXrE4rA=;
-        h=Date:From:To:Subject:From;
-        b=PUPCiCKiG3i/+yAvQYya2xMCLay37MqzJ5VCv0m0zWluV56QHTam54FJ5zVLBlpZc
-         DALroDJbTj+5gclBPEiCLc/RiYqPfJcI2uT0kQWAnTxjvh5n81nTJIW8dDztte25kr
-         jdM62ZWHi+FHzfyOEDqfi+JCAotqnVSzsE2JOIArwaiZjsIAxlzrDaCQLgEravmEUg
-         8XOSzcj6x0jpJLqJVjMD+Kfg7P6qoal0hGrqIYwzLrB5GEC9cclUVcUmXeSety3v6A
-         Nw9h4dkXsfVX5w7IYULxWpJxSMQgG7mP8jZljifgSLXxokW1C/gHub9icBUIQ1+dhM
-         jLbLnwg8Fr41A==
-Received: by mail.commercesolutions.pl for <linux-parisc@vger.kernel.org>; Wed, 27 Sep 2023 08:11:00 GMT
-Message-ID: <20230927064500-0.1.8x.1py0e.0.3qfah80iil@commercesolutions.pl>
-Date:   Wed, 27 Sep 2023 08:11:00 GMT
-From:   "Kamil Tralewski" <kamil.tralewski@commercesolutions.pl>
-To:     <linux-parisc@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.commercesolutions.pl
+        Wed, 27 Sep 2023 11:57:39 -0400
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C5313A
+        for <linux-parisc@vger.kernel.org>; Wed, 27 Sep 2023 08:57:38 -0700 (PDT)
+Received: by mail-oi1-x234.google.com with SMTP id 5614622812f47-3ae55c2e12bso2049186b6e.0
+        for <linux-parisc@vger.kernel.org>; Wed, 27 Sep 2023 08:57:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1695830257; x=1696435057; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=U12JJAnjiahk1YYSHY2AOK7uoafy6UzrARbQWR95I14=;
+        b=bf2cz5qAyxBKuen4poe4AulrKtPhVsoYbGpbG87L6/WPrnH2OUdWaQMyL1qFw2LJFV
+         PGxYn/tUIqrbHPLFOCSTCOhB3IU1f2Yml2KnwFGBQGhQs4abfsooawFYQcKD1xPigsYM
+         UH9PDmXrOq3W4PL856fvR58aZd65waeoseMzw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695830257; x=1696435057;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U12JJAnjiahk1YYSHY2AOK7uoafy6UzrARbQWR95I14=;
+        b=KEcHzdgmbNjcqWW8nkNBsq+3+brolRGgcQRhY5KfDWIR0rZnPgruMqPhgqoloV0Edg
+         uMwaXST0UkF8SgW4LP4MpLuOkkrhZKz7lg97VSxiUAXfvYUPrVYz+kWSdYkLQpd2c397
+         E84Dsk83w1lAvdqsT7yjQE9Wt8sEYn75lYoyFdfqVfKQ2RDP/uY1Ji4ihMk1YrKExCaS
+         MbSxLvdZ0haILra2LdyrUmxjSeYENRDu79M47bunIgVDViJdPqGp93W9JGIiFI/55zs1
+         F3gi+6hbGi9vi73Gkg0oQtIo7vNpE3tNvriCcWEA5eH/I+K54GmtSJuorFBQoBjrlXi+
+         K8KA==
+X-Gm-Message-State: AOJu0Yz33jqC+7uxgFJ4NiLy7O+rieujQNW1ZYrahCpiWUTKbSFi5wTR
+        UTyWpX4u9s0S59B1KcbUO16m5A==
+X-Google-Smtp-Source: AGHT+IEwJW0cXq1CpxTK5Y460G4lfkt5QpcCMRT3yT0/yChvW5lXfO7XfXAcPyN2gr3gGMerxBJmgQ==
+X-Received: by 2002:a05:6808:1807:b0:3a0:5e17:4311 with SMTP id bh7-20020a056808180700b003a05e174311mr2931489oib.5.1695830257420;
+        Wed, 27 Sep 2023 08:57:37 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id bf25-20020a056a000d9900b00690ca4356f1sm11628516pfb.198.2023.09.27.08.57.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Sep 2023 08:57:36 -0700 (PDT)
+Date:   Wed, 27 Sep 2023 08:57:36 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Jamal Hadi Salim <jhs@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Ahern <dsahern@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+        Long Li <longli@microsoft.com>,
+        Ajay Sharma <sharmaajay@microsoft.com>,
+        Alex Elder <elder@kernel.org>,
+        Pravin B Shelar <pshelar@ovn.org>,
+        Shaokun Zhang <zhangshaokun@hisilicon.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, Simon Horman <horms@kernel.org>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org,
+        dev@openvswitch.org, linux-parisc@vger.kernel.org,
+        llvm@lists.linux.dev, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH 00/14] Batch 1: Annotate structs with __counted_by
+Message-ID: <202309270854.67756EAC2@keescook>
+References: <20230922172449.work.906-kees@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230922172449.work.906-kees@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,18 +95,49 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Fri, Sep 22, 2023 at 10:28:42AM -0700, Kees Cook wrote:
+> This is the batch 1 of patches touching netdev for preparing for
+> the coming implementation by GCC and Clang of the __counted_by
+> attribute. Flexible array members annotated with __counted_by can have
+> their accesses bounds-checked at run-time checking via CONFIG_UBSAN_BOUNDS
+> (for array indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family
+> functions).
+> 
+> As found with Coccinelle[1], add __counted_by to structs that would
+> benefit from the annotation.
+> 
+> Since the element count member must be set before accessing the annotated
+> flexible array member, some patches also move the member's initialization
+> earlier. (These are noted in the individual patches.)
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+Hi, just checking on this batch of changes. Is it possible to take the
+1-13 subset:
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+> Kees Cook (14):
+>   ipv4: Annotate struct fib_info with __counted_by
+>   ipv4/igmp: Annotate struct ip_sf_socklist with __counted_by
+>   ipv6: Annotate struct ip6_sf_socklist with __counted_by
+>   net: hns: Annotate struct ppe_common_cb with __counted_by
+>   net: enetc: Annotate struct enetc_int_vector with __counted_by
+>   net: hisilicon: Annotate struct rcb_common_cb with __counted_by
+>   net: mana: Annotate struct mana_rxq with __counted_by
+>   net: ipa: Annotate struct ipa_power with __counted_by
+>   net: mana: Annotate struct hwc_dma_buf with __counted_by
+>   net: openvswitch: Annotate struct dp_meter_instance with __counted_by
+>   net: enetc: Annotate struct enetc_psfp_gate with __counted_by
+>   net: openvswitch: Annotate struct dp_meter with __counted_by
+>   net: tulip: Annotate struct mediatable with __counted_by
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+I'll respin 14 and add it to the next batch:
 
-Pozdrawiam
-Kamil Tralewski
+>   net: sched: Annotate struct tc_pedit with __counted_by
+
+After these 13, there are  32 more patches to various drivers and
+protocols...
+
+Thanks!
+
+-Kees
+
+-- 
+Kees Cook
