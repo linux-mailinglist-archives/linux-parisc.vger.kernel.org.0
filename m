@@ -2,129 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92AC67AFCE7
-	for <lists+linux-parisc@lfdr.de>; Wed, 27 Sep 2023 09:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5F817AFE40
+	for <lists+linux-parisc@lfdr.de>; Wed, 27 Sep 2023 10:25:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230218AbjI0HsQ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 27 Sep 2023 03:48:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40468 "EHLO
+        id S229885AbjI0IZV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 27 Sep 2023 04:25:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230140AbjI0Hrj (ORCPT
+        with ESMTP id S230253AbjI0IZH (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 27 Sep 2023 03:47:39 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 768541B7;
-        Wed, 27 Sep 2023 00:47:38 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id E4DC51F8BD;
-        Wed, 27 Sep 2023 07:47:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1695800856; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nyztPihry+uYWVQVQilr9GF3JEmaojYG/GDs/5jbvgg=;
-        b=rHGHbynxiC201XZf419py+7wmacbnv7TvFX6pL8BmBQmCu3jxALTfunKlMmemhQB/UwxLE
-        ZBlrt/jR3yfiS91k3QpYnT4cwDdvDPBerZS3ZYz+kiQi5Pluj4lT8s0BTpbDFcXEmUL0Fx
-        a8n5SMYiuhtFUsaNX1X1DMzIKlXz9fw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1695800856;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nyztPihry+uYWVQVQilr9GF3JEmaojYG/GDs/5jbvgg=;
-        b=bsi9xPfXPtJYkKZOeDjG2LSjbZRJca7H7r4qHipe8HYJhIj+7lJt/AV335m+SgoLhaLaI/
-        1rVsDDIKV9XQxyAA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A8F431338F;
-        Wed, 27 Sep 2023 07:47:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 4PVRKBjeE2XvUQAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Wed, 27 Sep 2023 07:47:36 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     deller@gmx.de, javierm@redhat.com, sam@ravnborg.org, arnd@arndb.de,
-        daniel@ffwll.ch
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-nvidia@lists.surfsouth.com, linux-omap@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 46/46] fbdev/vt8623fb: Initialize fb_ops to fbdev I/O-memory helpers
-Date:   Wed, 27 Sep 2023 09:27:19 +0200
-Message-ID: <20230927074722.6197-47-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230927074722.6197-1-tzimmermann@suse.de>
-References: <20230927074722.6197-1-tzimmermann@suse.de>
+        Wed, 27 Sep 2023 04:25:07 -0400
+Received: from mail.commercesolutions.pl (unknown [162.19.155.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EEF53C06
+        for <linux-parisc@vger.kernel.org>; Wed, 27 Sep 2023 01:12:30 -0700 (PDT)
+Received: by mail.commercesolutions.pl (Postfix, from userid 1002)
+        id 91C74241F9; Wed, 27 Sep 2023 08:11:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=commercesolutions.pl;
+        s=mail; t=1695802332;
+        bh=PcMncQpBfIZCnTOfZJY5G1G+gaLn4c9QPfFvoXrE4rA=;
+        h=Date:From:To:Subject:From;
+        b=PUPCiCKiG3i/+yAvQYya2xMCLay37MqzJ5VCv0m0zWluV56QHTam54FJ5zVLBlpZc
+         DALroDJbTj+5gclBPEiCLc/RiYqPfJcI2uT0kQWAnTxjvh5n81nTJIW8dDztte25kr
+         jdM62ZWHi+FHzfyOEDqfi+JCAotqnVSzsE2JOIArwaiZjsIAxlzrDaCQLgEravmEUg
+         8XOSzcj6x0jpJLqJVjMD+Kfg7P6qoal0hGrqIYwzLrB5GEC9cclUVcUmXeSety3v6A
+         Nw9h4dkXsfVX5w7IYULxWpJxSMQgG7mP8jZljifgSLXxokW1C/gHub9icBUIQ1+dhM
+         jLbLnwg8Fr41A==
+Received: by mail.commercesolutions.pl for <linux-parisc@vger.kernel.org>; Wed, 27 Sep 2023 08:11:00 GMT
+Message-ID: <20230927064500-0.1.8x.1py0e.0.3qfah80iil@commercesolutions.pl>
+Date:   Wed, 27 Sep 2023 08:11:00 GMT
+From:   "Kamil Tralewski" <kamil.tralewski@commercesolutions.pl>
+To:     <linux-parisc@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.commercesolutions.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Initialize the instance of struct fb_ops with fbdev initializer
-macros for framebuffers in I/O address space. Set the read/write,
-draw and mmap callbacks to the correct implementation and avoid
-implicit defaults. Also select the necessary I/O helpers in Kconfig.
+Dzie=C5=84 dobry,
 
-Fbdev drivers sometimes rely on the callbacks being NULL for a
-default implementation to be invoked; hence requiring the I/O
-helpers to be built in any case. Setting all callbacks in all
-drivers explicitly will allow to make the I/O helpers optional.
-This benefits systems that do not use these functions.
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-No functional changes.
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- drivers/video/fbdev/Kconfig    | 1 +
- drivers/video/fbdev/vt8623fb.c | 2 ++
- 2 files changed, 3 insertions(+)
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index dab0e49a66d20..20e0167bf20c9 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -1359,6 +1359,7 @@ config FB_VT8623
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
- 	select FB_CFB_IMAGEBLIT
-+	select FB_IOMEM_FOPS
- 	select FB_TILEBLITTING
- 	select FB_SVGALIB
- 	select VGASTATE
-diff --git a/drivers/video/fbdev/vt8623fb.c b/drivers/video/fbdev/vt8623fb.c
-index 034333ee6e455..f8d022cb61e8d 100644
---- a/drivers/video/fbdev/vt8623fb.c
-+++ b/drivers/video/fbdev/vt8623fb.c
-@@ -644,6 +644,7 @@ static const struct fb_ops vt8623fb_ops = {
- 	.owner		= THIS_MODULE,
- 	.fb_open	= vt8623fb_open,
- 	.fb_release	= vt8623fb_release,
-+	__FB_DEFAULT_IOMEM_OPS_RDWR,
- 	.fb_check_var	= vt8623fb_check_var,
- 	.fb_set_par	= vt8623fb_set_par,
- 	.fb_setcolreg	= vt8623fb_setcolreg,
-@@ -652,6 +653,7 @@ static const struct fb_ops vt8623fb_ops = {
- 	.fb_fillrect	= vt8623fb_fillrect,
- 	.fb_copyarea	= cfb_copyarea,
- 	.fb_imageblit	= vt8623fb_imageblit,
-+	__FB_DEFAULT_IOMEM_OPS_MMAP,
- 	.fb_get_caps    = svga_get_caps,
- };
- 
--- 
-2.42.0
-
+Pozdrawiam
+Kamil Tralewski
