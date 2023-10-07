@@ -2,35 +2,55 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A4347BC99A
-	for <lists+linux-parisc@lfdr.de>; Sat,  7 Oct 2023 20:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FCB57BC9B2
+	for <lists+linux-parisc@lfdr.de>; Sat,  7 Oct 2023 22:14:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343782AbjJGSxW (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 7 Oct 2023 14:53:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39806 "EHLO
+        id S1344046AbjJGUON (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 7 Oct 2023 16:14:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjJGSxV (ORCPT
+        with ESMTP id S1343782AbjJGUOM (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 7 Oct 2023 14:53:21 -0400
+        Sat, 7 Oct 2023 16:14:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6911493;
-        Sat,  7 Oct 2023 11:53:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F4EC433C7;
-        Sat,  7 Oct 2023 18:53:18 +0000 (UTC)
-Date:   Sat, 7 Oct 2023 20:53:15 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C54D1BC;
+        Sat,  7 Oct 2023 13:14:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 67E9EC433C7;
+        Sat,  7 Oct 2023 20:14:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696709651;
+        bh=r8YPN/InWGmKUZHjbOzGQzJdmasY6fpsO3Odc4dBKFA=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=aWkNn2i4mVYkAZxRGWmnd1Ho2W8661UsARTc9bniKx2Kw+ITz+MrbTaAI98WhToYk
+         ulTTi6FtKCBFKX+rTm5ukem2WpNtUyGSfesikXMldTN6DsPA+D41TLnWfLtqvCDsC+
+         fnCjJgX5eX58+M90tBy4G9spIJ54G9OP9BpIPiI1D2byPk1uY4UPUS+oLxhXY6IsCl
+         94R6RcHHj7LKTHkYDg4NSmSor98ZwOGAtEJcoJiHBmBu30KeoO36oOqMK35lcXSD2d
+         ogtZcs0P/dcZS09/Mrx/ryhmUn21l0rOsofq+mXA8ahv9vYi2wjycIXQFZNhHztwK/
+         5ZqJmUl7Rz9rQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 55014C41671;
+        Sat,  7 Oct 2023 20:14:11 +0000 (UTC)
+Subject: Re: [GIT PULL] parisc architecture fixes for v6.6-rc5
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <ZSGpG0hwU9O5S9vD@p100>
+References: <ZSGpG0hwU9O5S9vD@p100>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <ZSGpG0hwU9O5S9vD@p100>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.6-rc5
+X-PR-Tracked-Commit-Id: 914988e099fc658436fbd7b8f240160c352b6552
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: b9ddbb0cde2adcedda26045cc58f31316a492215
+Message-Id: <169670965132.5032.6796898628901651255.pr-tracker-bot@kernel.org>
+Date:   Sat, 07 Oct 2023 20:14:11 +0000
+To:     Helge Deller <deller@gmx.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
         James Bottomley <James.Bottomley@hansenpartnership.com>,
         John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture fixes for v6.6-rc5
-Message-ID: <ZSGpG0hwU9O5S9vD@p100>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -38,46 +58,15 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+The pull request you sent on Sat, 7 Oct 2023 20:53:15 +0200:
 
-please pull two parisc fixes kernel 6.6-rc5 which fix
-* randome memory faults on pre-PA8800 CPUs, and
-* boot issues.
-Both patches are tagged for stable series.
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.6-rc5
 
-They have been in for-next since kernel 6.6-rc2 without
-any issues.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/b9ddbb0cde2adcedda26045cc58f31316a492215
 
-Thanks!
-Helge
+Thank you!
 
-----------------------------------------------------------------
-The following changes since commit ce9ecca0238b140b88f43859b211c9fdfd8e5b70:
-
-  Linux 6.6-rc2 (2023-09-17 14:40:24 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.6-rc5
-
-for you to fetch changes up to 914988e099fc658436fbd7b8f240160c352b6552:
-
-  parisc: Restore __ldcw_align for PA-RISC 2.0 processors (2023-10-07 20:30:16 +0200)
-
-----------------------------------------------------------------
-parisc architecture fixes for kernel v6.6-rc5:
-
-* fix random faults in mmap'd memory on pre PA8800 processors
-* fix boot crash with nr_cpus=1 on kernel command line
-
-----------------------------------------------------------------
-Helge Deller (1):
-      parisc: Fix crash with nr_cpus=1 option
-
-John David Anglin (1):
-      parisc: Restore __ldcw_align for PA-RISC 2.0 processors
-
- arch/parisc/include/asm/ldcw.h           | 37 +++++++++++++++++---------------
- arch/parisc/include/asm/spinlock_types.h |  5 -----
- arch/parisc/kernel/smp.c                 |  4 +++-
- 3 files changed, 23 insertions(+), 23 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
