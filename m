@@ -2,179 +2,106 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 273E37BF472
-	for <lists+linux-parisc@lfdr.de>; Tue, 10 Oct 2023 09:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89427BF542
+	for <lists+linux-parisc@lfdr.de>; Tue, 10 Oct 2023 10:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442446AbjJJHiA (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 10 Oct 2023 03:38:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54954 "EHLO
+        id S234634AbjJJIGj (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 10 Oct 2023 04:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442324AbjJJHh7 (ORCPT
+        with ESMTP id S234631AbjJJIGi (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 10 Oct 2023 03:37:59 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DBA39E;
-        Tue, 10 Oct 2023 00:37:57 -0700 (PDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39A79XvC020878;
-        Tue, 10 Oct 2023 07:37:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : references : date : in-reply-to : message-id : mime-version :
- content-type; s=pp1; bh=5aaW2dPRZNtep/xpizNo1N37xs+hP26eCD8NQHP4dYg=;
- b=fVtGrVHngctrT1pbGLa4kXC6Fe5YJewBoz+fvd2PlEeRlwxFa8Mz8htlgo7LyeE5ZKxo
- c38UNaXtlvi9WBRAV/TfG4SKfPb4XcA+Hbld4wCXOaoJTNV2SbPzFI5HGTPFPnrhOkuz
- i+YzokrsJB6sw/l2hFqMyvVR7xdXygmj1olabaYPAf+NZfRUu6ndv/LPY5Er8eJImBtA
- U9r8/auWcw6/6ciwOREGLWgjdv+uTA6uft3ai5yHqErbT2l3rHRRts1J7YocsGqZqScZ
- OCiu5nb92oYYMMDAZNTDF5zdFqt9utJzeOSvHKZyurFYuaX/3geRwZTDR8N1jW9Y/2nh KQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tn1yq1513-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 10 Oct 2023 07:37:04 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39A79caK021024;
-        Tue, 10 Oct 2023 07:37:03 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tn1yq150m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 10 Oct 2023 07:37:03 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39A4lurn028185;
-        Tue, 10 Oct 2023 07:37:02 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkj1xy0hm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 10 Oct 2023 07:37:02 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-        by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39A7ax5Y22086166
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 10 Oct 2023 07:36:59 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0F70A20040;
-        Tue, 10 Oct 2023 07:36:59 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4797420043;
-        Tue, 10 Oct 2023 07:36:58 +0000 (GMT)
-Received: from tuxmaker.linux.ibm.com (unknown [9.152.85.9])
-        by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-        Tue, 10 Oct 2023 07:36:58 +0000 (GMT)
-From:   Sven Schnelle <svens@linux.ibm.com>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
-        loongarch@lists.linux.dev, sparclinux@vger.kernel.org,
-        x86@kernel.org, Albert Ou <aou@eecs.berkeley.edu>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>
-Subject: Re: [PATCH 4/5] kbuild: unify vdso_install rules
-References: <20231009124210.1064021-1-masahiroy@kernel.org>
-        <20231009124210.1064021-4-masahiroy@kernel.org>
-Date:   Tue, 10 Oct 2023 09:36:57 +0200
-In-Reply-To: <20231009124210.1064021-4-masahiroy@kernel.org> (Masahiro
-        Yamada's message of "Mon, 9 Oct 2023 21:42:09 +0900")
-Message-ID: <yt9dfs2judwm.fsf@linux.ibm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.0.50 (gnu/linux)
+        Tue, 10 Oct 2023 04:06:38 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1848AF
+        for <linux-parisc@vger.kernel.org>; Tue, 10 Oct 2023 01:06:36 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2c189dabcc3so63391581fa.1
+        for <linux-parisc@vger.kernel.org>; Tue, 10 Oct 2023 01:06:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696925195; x=1697529995; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=46Qd00mqgwhkkW6amCqEXLEzCc/q28cqM0GW7xvshDA=;
+        b=Dla307GcsQ7mzgoyvpW6ZUi0JvGSyJVUbZjR7HyxfVCwV+pXBOcf2tL0AOCybiQgTX
+         Tl6dFtqq6DWEizNiXBGshBm5l4wNFuYI1czrga52h+fxw8WejM/NpIDBJ6Tm9d/p3E36
+         EYwG9lLk/1ecv+Rtv/iBni6tBByr0aWKYkPZ+ndkXZeGg18/NaiHFtzrp4EuDn+oVaXP
+         zEO6IEk+NAGx4YquCzMr0DKMNGJD4zz8l+6bzbEgyEBgR7j3wMj6i/IPjF3Tp9dOh58R
+         Uy/4b+0bt+PEuImp7GTH3Cbx+vDYrD/WIKjdiVGfyicoBH6PvXUb/RIDTJ4xESYzgFuj
+         dZxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696925195; x=1697529995;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=46Qd00mqgwhkkW6amCqEXLEzCc/q28cqM0GW7xvshDA=;
+        b=nmLuBuHGwPZRa3u0fcVyKrDqnk8QwhHAVrLEdHH7OH8hNcXp27NzjJwHhI+sTqAJ56
+         5a4IeSfeWKK2FVpURD6XLrttv4GMxkrMl0c9KA892Qa7Dl3BZIvwSM9ZxHOZuDWjhaXD
+         zZEYjoOHq48SMH0JXmBuVfGppv1Aejzu6ShXmLUonzmOZRW1ewqw6x7CvyjCuH/6MbIW
+         KZefkdum+ogi4SOPbtkokBac1GT+dDvUbUZpOMBQzSzjLuUeto+m5ZA6TRvd5GBOENSq
+         e/U4B2/Tok/7Zbsk0xX9UyMEejXByo/XPhWw1hauJGeJQ0eMexrvkSnuxAqru3OTyRNK
+         4R9g==
+X-Gm-Message-State: AOJu0YysWj8TJv5oezDsJdzBeEpWUPJU63CAPqO7vQ5CEqGT53PAkkxE
+        EUBbz/K/bAeEX4Gb5YN2rGP39J+JbUUfN8gr670=
+X-Google-Smtp-Source: AGHT+IE0DYM4+1ZEIl2J7FEFO6rwRBC3LBDWWTWM7roJIVYohCQa21ZEHtzGkM0/APOwFVyeM7ztT7PrB7iy50/pg5Y=
+X-Received: by 2002:a2e:9090:0:b0:2c1:7473:f3e0 with SMTP id
+ l16-20020a2e9090000000b002c17473f3e0mr16207973ljg.43.1696925194648; Tue, 10
+ Oct 2023 01:06:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _CGlDQcO5kaF2u-illDRNoa12BhAMAB3
-X-Proofpoint-GUID: 5Ae0OhPocEUKJk2CSLcSZHHAMy_Wm0U-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-10_04,2023-10-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=931
- bulkscore=0 clxscore=1011 suspectscore=0 adultscore=0 priorityscore=1501
- malwarescore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310100056
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6520:4029:b0:272:238c:7260 with HTTP; Tue, 10 Oct 2023
+ 01:06:34 -0700 (PDT)
+Reply-To: saguadshj564@gmail.com
+From:   Ms Nadage Lassou <nadagelassou7@gmail.com>
+Date:   Tue, 10 Oct 2023 09:06:34 +0100
+Message-ID: <CAGkZahBBJMV4_LO6z3BpTRJ8_JEaEzHMrumbZHJF3EsXdMFp1A@mail.gmail.com>
+Subject: ATTENTION FOR BENEFIT.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        SUBJ_ATTENTION,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [2a00:1450:4864:20:0:0:0:232 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [nadagelassou7[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [nadagelassou7[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [saguadshj564[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Masahiro Yamada <masahiroy@kernel.org> writes:
+Greetings.
 
-> Currently, there is no standard implementation for vdso_install,
-> leading to various issues:
->
->  1. Code duplication
->
->     Many architectures duplicate similar code just for copying files
->     to the install destination.
->
->     Some architectures (arm, sparc, x86) create build-id symlinks,
->     introducing more code duplication.
->
->  2. Accidental updates of in-tree build artifacts
->
->     The vdso_install rule depends on the vdso files to install.
->     It may update in-tree build artifacts. This can be problematic,
->     as explained in commit 19514fc665ff ("arm, kbuild: make
->     "make install" not depend on vmlinux").
->
->  3. Broken code in some architectures
->
->     Makefile code is often copied from one architecture to another
->     without proper adaptation or testing.
->
->     The previous commits removed broken code from csky, UML, and parisc.
->
->     Another issue is that 'make vdso_install' for ARCH=s390 installs
->     vdso64, but not vdso32.
->
-> To address these problems, this commit introduces the generic vdso_install.
->
-> Architectures that support vdso_install need to define vdso-install-y
-> in arch/*/Makefile.
->
-> vdso-install-y lists the files to install. For example, arch/x86/Makefile
-> looks like this:
->
->   vdso-install-$(CONFIG_X86_64)           += arch/x86/entry/vdso/vdso64.so.dbg
->   vdso-install-$(CONFIG_X86_X32_ABI)      += arch/x86/entry/vdso/vdsox32.so.dbg
->   vdso-install-$(CONFIG_X86_32)           += arch/x86/entry/vdso/vdso32.so.dbg
->   vdso-install-$(CONFIG_IA32_EMULATION)   += arch/x86/entry/vdso/vdso32.so.dbg
->
-> These files will be installed to $(MODLIB)/vdso/ with the .dbg suffix,
-> if exists, stripped away.
->
-> vdso-install-y can optionally take the second field after the colon
-> separator. This is needed because some architectures install vdso
-> files as a different base name.
->
-> The following is a snippet from arch/arm64/Makefile.
->
->   vdso-install-$(CONFIG_COMPAT_VDSO)      += arch/arm64/kernel/vdso32/vdso.so.dbg:vdso32.so
->
-> This will rename vdso.so.dbg to vdso32.so during installation. If such
-> architectures change their implementation so that the file names match,
-> this workaround will go away.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-
-Acked-by: Sven Schnelle <svens@linux.ibm.com> # s390
+I have something important to tell you.
+i will send you the details once i hear from you.
+Thanks,
+Ms Nadage Lassou
