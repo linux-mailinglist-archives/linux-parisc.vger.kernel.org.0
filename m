@@ -2,349 +2,106 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A6E87D1F89
-	for <lists+linux-parisc@lfdr.de>; Sat, 21 Oct 2023 22:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A487D28E4
+	for <lists+linux-parisc@lfdr.de>; Mon, 23 Oct 2023 05:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232003AbjJUUcz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 21 Oct 2023 16:32:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38258 "EHLO
+        id S233218AbjJWDJL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sun, 22 Oct 2023 23:09:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbjJUUcy (ORCPT
+        with ESMTP id S233272AbjJWDIz (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 21 Oct 2023 16:32:54 -0400
-Received: from dellerweb.de (dellerweb.de [173.249.48.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DDCAC9
-        for <linux-parisc@vger.kernel.org>; Sat, 21 Oct 2023 13:32:51 -0700 (PDT)
-Received: from mx3210.localdomain (unknown [142.126.114.79])
-        by dellerweb.de (Postfix) with ESMTPSA id 3F32C1600195;
-        Sat, 21 Oct 2023 22:32:46 +0200 (CEST)
-Received: by mx3210.localdomain (Postfix, from userid 1000)
-        id ED43522011C; Sat, 21 Oct 2023 20:32:43 +0000 (UTC)
-Date:   Sat, 21 Oct 2023 20:32:43 +0000
-From:   John David Anglin <dave@parisc-linux.org>
-To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>
-Subject: Re: [PATCH v3] parisc: Add nop instructions after TLB inserts
-Message-ID: <ZTQ1a22wN0BPulfE@mx3210.localdomain>
-References: <ZTLnw6cIVbPovI5l@mx3210.localdomain>
+        Sun, 22 Oct 2023 23:08:55 -0400
+X-Greylist: delayed 91 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 22 Oct 2023 20:08:29 PDT
+Received: from omta39.uswest2.a.cloudfilter.net (omta39.uswest2.a.cloudfilter.net [35.89.44.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2357D6B
+        for <linux-parisc@vger.kernel.org>; Sun, 22 Oct 2023 20:08:29 -0700 (PDT)
+Received: from eig-obgw-5001a.ext.cloudfilter.net ([10.0.29.139])
+        by cmsmtp with ESMTPS
+        id tt8RqHnCOL9AgulHOqhofh; Mon, 23 Oct 2023 03:06:58 +0000
+Received: from 162-240-83-27.unifiedlayer.com ([137.59.148.200])
+        by cmsmtp with ESMTPS
+        id ulHNqnhHQTbebulHNq73DU; Mon, 23 Oct 2023 03:06:58 +0000
+X-Authority-Analysis: v=2.4 cv=E8LeGIRl c=1 sm=1 tr=0 ts=6535e352
+ a=MgGYFET5X96nYrQ76toljg==:117 a=/5CYD1hNzocxg58dEBddTw==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=kj9zAlcOel0A:10 a=bhdUkHdE2iEA:10 a=lUDAUsI-kUQA:10
+ a=9m64_h_j2zU8ieQoq-sA:9 a=CjuIK1q_8ugA:10
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=35686686.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Dm1nus89JLbD/65ItGQLhdR/UwQLhddPM+BxEJ7yOwM=; b=MN+yXIwHiRnBgKpXu8GtKgH+yZ
+        zpyuGTnBtvuEKayduiQo0EgNm3JCXVPaUNb0hpZOcsUkBapsrtfW84xC04OXbshCjPyXX57MO/85L
+        4PXC4jRcJzzaX7lGfY2Yf4s0yWcB2jiyYSB0/tTSVno1FgigW/lNbpZkxA4TGW7vHq/OyOs0K+Dp1
+        QFqQvtTJOQHPpldYV4y07bp66TynO9+bwAS77xCyCy0r3F4TEKgUbK3g2At1eoj1yIoAvrz3TRAtJ
+        wmyjbwdUtwi/nzWndZwB8cJAkXzv7W1iqFDcX8Nv5MzXEk5RA9zpXEQVHKK9La5U7AZKjyrwTlL64
+        DJWZBumA==;
+Received: from md-hk-12.webhostbox.net ([137.59.148.200]:50410)
+        by md-hk-12.webhostbox.net with esmtpa (Exim 4.96.2)
+        (envelope-from <jc@35686686.com>)
+        id 1qulHA-003XJ4-0B;
+        Mon, 23 Oct 2023 08:36:44 +0530
+Received: from [181.214.94.254]
+ by 35686686.com
+ with HTTP (HTTP/1.1 POST); Mon, 23 Oct 2023 08:36:36 +0530
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="wZbC24IxgILFtDcJ"
-Content-Disposition: inline
-In-Reply-To: <ZTLnw6cIVbPovI5l@mx3210.localdomain>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Date:   Mon, 23 Oct 2023 11:06:36 +0800
+From:   jc@35686686.com
+To:     undisclosed-recipients:;
+Subject: LOAN SCHEME
+Reply-To: info@kafurinvestment.com
+Mail-Reply-To: info@kafurinvestment.com
+User-Agent: Roundcube Webmail/1.6.0
+Message-ID: <0337743eb695ab1bd07d3ca2f79a4e90@35686686.com>
+X-Sender: jc@35686686.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - md-hk-12.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - 35686686.com
+X-BWhitelist: no
+X-Source-IP: 137.59.148.200
+X-Source-L: No
+X-Exim-ID: 1qulHA-003XJ4-0B
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: md-hk-12.webhostbox.net [137.59.148.200]:50410
+X-Source-Auth: jc@35686686.com
+X-Email-Count: 35
+X-Org:  HG=dishared_whb_net_legacy;ORG=directi;
+X-Source-Cap: ZmJkZXN4amc7Ymx1ZWhvc3Q7bWQtaGstMTIud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfF3ua8xvta0PL6ZI6qxce85M5L5qWLnjODUFXMSv1paLGGjSFw70d/aEiOfP+3wDu1hGP2o2VccgNiZg0+ZomQmwD8WuhqCEiZtjZiZiD/1WHs0c5S2j
+ KXe45SDbrqPa93mPf9NtGL4qdijW1ENRQUaOmDs+dqpRko2mHBK6DrZgo52wexymTg+q2DPjOGwDM4BKTOgjVnDr1n5KdRnt5XcTW4ZnX+Y8MWCMw8CGlhLZ
+X-Spam-Status: No, score=1.5 required=5.0 tests=BAYES_50,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_NONE,SUBJ_ALL_CAPS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
+Greetings:
 
---wZbC24IxgILFtDcJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I am Mr. Faheem Badawi, working as a project facilitator for (Kafur 
+Project Management Services) also, with numerous investors worldwide. As 
+a means of widening our global portfolio we would like to know if you 
+have any project(s) requiring funding. We also offer business, personal 
+and home loans to finance new projects as well as expansion capital.
 
-Backport for v6.1.59.
+For more updates on the mode of operation send a reply.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
----
+Waiting for your prompt response.
 
-diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-index 0e5ebfe8d9d2..4e4787a73b65 100644
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -35,6 +35,24 @@
- 	.level 2.0
- #endif
-=20
-+/*
-+ * We need seven instructions after a TLB insert for it to take effect.
-+ * The PA8800/PA8900 processors are an exception and need 12 instructions.
-+ * The RFI changes both IAOQ_Back and IAOQ_Front, so it counts as one.
-+ */
-+#ifdef CONFIG_64BIT
-+#define NUM_PIPELINE_INSNS    12
-+#else
-+#define NUM_PIPELINE_INSNS    7
-+#endif
-+
-+	/* Insert num nops */
-+	.macro	insert_nops num
-+	.rept \num
-+	nop
-+	.endr
-+	.endm
-+
- 	/* Get aligned page_table_lock address for this mm from cr28/tr4 */
- 	.macro  get_ptl reg
- 	mfctl	%cr28,\reg
-@@ -414,26 +432,23 @@
- 3:
- 	.endm
-=20
--	/* Release page_table_lock without reloading lock address.
-+	/* Release page_table_lock if for user space.
- 	   Note that the values in the register spc are limited to
- 	   NR_SPACE_IDS (262144). Thus, the stw instruction always
- 	   stores a nonzero value even when register spc is 64 bits.
- 	   We use an ordered store to ensure all prior accesses are
--	   performed prior to releasing the lock. */
--	.macro		ptl_unlock0	spc,tmp
--#ifdef CONFIG_TLB_PTLOCK
--98:	or,COND(=3D)	%r0,\spc,%r0
--	stw,ma		\spc,0(\tmp)
--99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
--#endif
--	.endm
--
--	/* Release page_table_lock. */
--	.macro		ptl_unlock1	spc,tmp
-+	   performed prior to releasing the lock. Note stw may not
-+	   be executed, so we provide one extra nop when
-+	   CONFIG_TLB_PTLOCK is defined.*/
-+	.macro		ptl_unlock	spc,tmp
- #ifdef CONFIG_TLB_PTLOCK
- 98:	get_ptl		\tmp
--	ptl_unlock0	\spc,\tmp
-+	or,COND(=3D)	%r0,\spc,%r0
-+	stw,ma		\spc,0(\tmp)
- 99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
-+	insert_nops	NUM_PIPELINE_INSNS - 3
-+#else
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- #endif
- 	.endm
-=20
-@@ -1125,7 +1140,7 @@ dtlb_miss_20w:
- =09
- 	idtlbt          pte,prot
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1134,6 +1149,7 @@ dtlb_check_alias_20w:
-=20
- 	idtlbt          pte,prot
-=20
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
-=20
-@@ -1151,7 +1167,7 @@ nadtlb_miss_20w:
-=20
- 	idtlbt          pte,prot
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1160,6 +1176,7 @@ nadtlb_check_alias_20w:
-=20
- 	idtlbt          pte,prot
-=20
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
-=20
-@@ -1185,7 +1202,7 @@ dtlb_miss_11:
-=20
- 	mtsp		t1, %sr1	/* Restore sr1 */
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1195,6 +1212,7 @@ dtlb_check_alias_11:
- 	idtlba          pte,(va)
- 	idtlbp          prot,(va)
-=20
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
-=20
-@@ -1218,7 +1236,7 @@ nadtlb_miss_11:
-=20
- 	mtsp		t1, %sr1	/* Restore sr1 */
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1228,6 +1246,7 @@ nadtlb_check_alias_11:
- 	idtlba          pte,(va)
- 	idtlbp          prot,(va)
-=20
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
-=20
-@@ -1247,7 +1266,7 @@ dtlb_miss_20:
-=20
- 	idtlbt          pte,prot
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1256,6 +1275,7 @@ dtlb_check_alias_20:
- =09
- 	idtlbt          pte,prot
-=20
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
-=20
-@@ -1275,7 +1295,7 @@ nadtlb_miss_20:
- =09
- 	idtlbt		pte,prot
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1284,6 +1304,7 @@ nadtlb_check_alias_20:
-=20
- 	idtlbt          pte,prot
-=20
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
-=20
-@@ -1320,7 +1341,7 @@ itlb_miss_20w:
- =09
- 	iitlbt          pte,prot
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1344,7 +1365,7 @@ naitlb_miss_20w:
-=20
- 	iitlbt          pte,prot
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1353,6 +1374,7 @@ naitlb_check_alias_20w:
-=20
- 	iitlbt		pte,prot
-=20
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
-=20
-@@ -1378,7 +1400,7 @@ itlb_miss_11:
-=20
- 	mtsp		t1, %sr1	/* Restore sr1 */
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1402,7 +1424,7 @@ naitlb_miss_11:
-=20
- 	mtsp		t1, %sr1	/* Restore sr1 */
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1412,6 +1434,7 @@ naitlb_check_alias_11:
- 	iitlba          pte,(%sr0, va)
- 	iitlbp          prot,(%sr0, va)
-=20
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
-=20
-@@ -1432,7 +1455,7 @@ itlb_miss_20:
-=20
- 	iitlbt          pte,prot
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1452,7 +1475,7 @@ naitlb_miss_20:
-=20
- 	iitlbt          pte,prot
-=20
--	ptl_unlock1	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1461,6 +1484,7 @@ naitlb_check_alias_20:
-=20
- 	iitlbt          pte,prot
-=20
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
-=20
-@@ -1482,7 +1506,7 @@ dbit_trap_20w:
- 	=09
- 	idtlbt          pte,prot
-=20
--	ptl_unlock0	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
- #else
-@@ -1508,7 +1532,7 @@ dbit_trap_11:
-=20
- 	mtsp            t1, %sr1     /* Restore sr1 */
-=20
--	ptl_unlock0	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
-=20
-@@ -1528,7 +1552,7 @@ dbit_trap_20:
- =09
- 	idtlbt		pte,prot
-=20
--	ptl_unlock0	spc,t0
-+	ptl_unlock	spc,t0
- 	rfir
- 	nop
- #endif
-
---wZbC24IxgILFtDcJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmU0NWMACgkQXb/Nrl8Z
-TfHf8A/8C6zR86r81qOPNVzOey8L/Dx6ExW9suLs7u07m1iMJziIstmIImGVB8nS
-fD97DJDCxiDu7kkddtVbqq18vl5ZxGMRWzTvq8TU6cbsSEBtr9baBKiBmi/6w3gF
-hS8+GIMl4mr066SBGe1v49KK8G29lBPgtOeT8UP4giOXxpIQ1p1fQlRsSk3abBUA
-nocf49anTBPpRmBXiXd5PjiO/2tm/owQbABiQcKNWV/i7y/R8cf1ebyZVpfmRzbM
-V77+C7xIV2mngAJptnPS7iTnHihxveO45WjZikxgVX6JjNYO1/VsYD2mNENvOWmR
-TpXKWyaNjyYLyNscHEtCxsT7rwH6iloIQxbJoVbOTtbPNzFjKiMisOC26QCWwSue
-KtgeaRSDppo/B+psngw7ZNmJF5oRmGG5iirIIXDZSDTsm8wC8C3BiMoDLbEzqEN0
-0HwWd+wur+SRc+DV8Jlyb5d40v+ifxcUxrvbaKknTP7PPu6ozmM8gKZW9Kc9LBkK
-/Qkxga/KVPbMnuljTMJTRYpvnwbweD5BwDDujx6yevVI3XHFSGf0EOpgCTwhfYmJ
-SPdFe2dEdsDh5qYHJ4gT6fHHTLdXTW7sV2tNQopTtLWgjUc0wBcBPMvgNUidCFEe
-/3e4O8fpMlye1NesVRs5aytJ9q0r7I1BFBrnhlyo2kq99hEJG9o=
-=Ug95
------END PGP SIGNATURE-----
-
---wZbC24IxgILFtDcJ--
+Kind regards,
+Faheem Badawi.
+(Financial Advisory - KPMS)
