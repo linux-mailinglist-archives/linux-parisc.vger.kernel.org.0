@@ -2,106 +2,273 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86A487D28E4
-	for <lists+linux-parisc@lfdr.de>; Mon, 23 Oct 2023 05:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D59C7D3D28
+	for <lists+linux-parisc@lfdr.de>; Mon, 23 Oct 2023 19:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233218AbjJWDJL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sun, 22 Oct 2023 23:09:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34964 "EHLO
+        id S230044AbjJWROd (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 23 Oct 2023 13:14:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233272AbjJWDIz (ORCPT
+        with ESMTP id S229452AbjJWROc (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sun, 22 Oct 2023 23:08:55 -0400
-X-Greylist: delayed 91 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 22 Oct 2023 20:08:29 PDT
-Received: from omta39.uswest2.a.cloudfilter.net (omta39.uswest2.a.cloudfilter.net [35.89.44.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2357D6B
-        for <linux-parisc@vger.kernel.org>; Sun, 22 Oct 2023 20:08:29 -0700 (PDT)
-Received: from eig-obgw-5001a.ext.cloudfilter.net ([10.0.29.139])
-        by cmsmtp with ESMTPS
-        id tt8RqHnCOL9AgulHOqhofh; Mon, 23 Oct 2023 03:06:58 +0000
-Received: from 162-240-83-27.unifiedlayer.com ([137.59.148.200])
-        by cmsmtp with ESMTPS
-        id ulHNqnhHQTbebulHNq73DU; Mon, 23 Oct 2023 03:06:58 +0000
-X-Authority-Analysis: v=2.4 cv=E8LeGIRl c=1 sm=1 tr=0 ts=6535e352
- a=MgGYFET5X96nYrQ76toljg==:117 a=/5CYD1hNzocxg58dEBddTw==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=kj9zAlcOel0A:10 a=bhdUkHdE2iEA:10 a=lUDAUsI-kUQA:10
- a=9m64_h_j2zU8ieQoq-sA:9 a=CjuIK1q_8ugA:10
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=35686686.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Dm1nus89JLbD/65ItGQLhdR/UwQLhddPM+BxEJ7yOwM=; b=MN+yXIwHiRnBgKpXu8GtKgH+yZ
-        zpyuGTnBtvuEKayduiQo0EgNm3JCXVPaUNb0hpZOcsUkBapsrtfW84xC04OXbshCjPyXX57MO/85L
-        4PXC4jRcJzzaX7lGfY2Yf4s0yWcB2jiyYSB0/tTSVno1FgigW/lNbpZkxA4TGW7vHq/OyOs0K+Dp1
-        QFqQvtTJOQHPpldYV4y07bp66TynO9+bwAS77xCyCy0r3F4TEKgUbK3g2At1eoj1yIoAvrz3TRAtJ
-        wmyjbwdUtwi/nzWndZwB8cJAkXzv7W1iqFDcX8Nv5MzXEk5RA9zpXEQVHKK9La5U7AZKjyrwTlL64
-        DJWZBumA==;
-Received: from md-hk-12.webhostbox.net ([137.59.148.200]:50410)
-        by md-hk-12.webhostbox.net with esmtpa (Exim 4.96.2)
-        (envelope-from <jc@35686686.com>)
-        id 1qulHA-003XJ4-0B;
-        Mon, 23 Oct 2023 08:36:44 +0530
-Received: from [181.214.94.254]
- by 35686686.com
- with HTTP (HTTP/1.1 POST); Mon, 23 Oct 2023 08:36:36 +0530
+        Mon, 23 Oct 2023 13:14:32 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08BBF94;
+        Mon, 23 Oct 2023 10:14:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43161C433C9;
+        Mon, 23 Oct 2023 17:14:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698081270;
+        bh=Ja8s9hHWNsMl9rR/A2vkVRwGBByDHecu9TUfTmLK5O0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=MeuEwtvuDFO5yp5iwwuVEJNzg9RfG0g2iSphmorTs1YHktZPSgAIBmOgSnoaQJdHm
+         nUlWIMj2sV40TRQksuLqdyoEUZOrZ4YgskSrGgA2/nhb9IFL78IFLLm5ChkY8qJxOI
+         XvSk9ecB7rzX1Id68w7pVTn+QD7K44RzxoL0JXDRTA8j3sh2U4yTDlfwo97LvPAH00
+         RUnsGssWWAdudZuWTwU1hLYa0ovrTsWm97cFrfjCEL0C5VQBb75ldMMm5wnopS8rdo
+         ma5otrvqzXBMC9YyKDYNnhopzPnGbtq133bDGxB7c+u2v5Gw+ZIgVNda5UvccMxt+p
+         Sq/U+bn87cRzw==
+Date:   Mon, 23 Oct 2023 18:14:20 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nadav Amit <nadav.amit@gmail.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Puranjay Mohan <puranjay12@gmail.com>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Song Liu <song@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>, bpf@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-modules@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+        netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v3 04/13] mm/execmem, arch: convert remaining overrides
+ of module_alloc to execmem
+Message-ID: <20231023171420.GA4041@willie-the-truck>
+References: <20230918072955.2507221-1-rppt@kernel.org>
+ <20230918072955.2507221-5-rppt@kernel.org>
 MIME-Version: 1.0
-Date:   Mon, 23 Oct 2023 11:06:36 +0800
-From:   jc@35686686.com
-To:     undisclosed-recipients:;
-Subject: LOAN SCHEME
-Reply-To: info@kafurinvestment.com
-Mail-Reply-To: info@kafurinvestment.com
-User-Agent: Roundcube Webmail/1.6.0
-Message-ID: <0337743eb695ab1bd07d3ca2f79a4e90@35686686.com>
-X-Sender: jc@35686686.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - md-hk-12.webhostbox.net
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - 35686686.com
-X-BWhitelist: no
-X-Source-IP: 137.59.148.200
-X-Source-L: No
-X-Exim-ID: 1qulHA-003XJ4-0B
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: md-hk-12.webhostbox.net [137.59.148.200]:50410
-X-Source-Auth: jc@35686686.com
-X-Email-Count: 35
-X-Org:  HG=dishared_whb_net_legacy;ORG=directi;
-X-Source-Cap: ZmJkZXN4amc7Ymx1ZWhvc3Q7bWQtaGstMTIud2ViaG9zdGJveC5uZXQ=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfF3ua8xvta0PL6ZI6qxce85M5L5qWLnjODUFXMSv1paLGGjSFw70d/aEiOfP+3wDu1hGP2o2VccgNiZg0+ZomQmwD8WuhqCEiZtjZiZiD/1WHs0c5S2j
- KXe45SDbrqPa93mPf9NtGL4qdijW1ENRQUaOmDs+dqpRko2mHBK6DrZgo52wexymTg+q2DPjOGwDM4BKTOgjVnDr1n5KdRnt5XcTW4ZnX+Y8MWCMw8CGlhLZ
-X-Spam-Status: No, score=1.5 required=5.0 tests=BAYES_50,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_NONE,SUBJ_ALL_CAPS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230918072955.2507221-5-rppt@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Greetings:
+Hi Mike,
 
-I am Mr. Faheem Badawi, working as a project facilitator for (Kafur 
-Project Management Services) also, with numerous investors worldwide. As 
-a means of widening our global portfolio we would like to know if you 
-have any project(s) requiring funding. We also offer business, personal 
-and home loans to finance new projects as well as expansion capital.
+On Mon, Sep 18, 2023 at 10:29:46AM +0300, Mike Rapoport wrote:
+> From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> 
+> Extend execmem parameters to accommodate more complex overrides of
+> module_alloc() by architectures.
+> 
+> This includes specification of a fallback range required by arm, arm64
+> and powerpc and support for allocation of KASAN shadow required by
+> arm64, s390 and x86.
+> 
+> The core implementation of execmem_alloc() takes care of suppressing
+> warnings when the initial allocation fails but there is a fallback range
+> defined.
+> 
+> Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> ---
+>  arch/arm/kernel/module.c     | 38 ++++++++++++---------
+>  arch/arm64/kernel/module.c   | 57 ++++++++++++++------------------
+>  arch/powerpc/kernel/module.c | 52 ++++++++++++++---------------
+>  arch/s390/kernel/module.c    | 52 +++++++++++------------------
+>  arch/x86/kernel/module.c     | 64 +++++++++++-------------------------
+>  include/linux/execmem.h      | 14 ++++++++
+>  mm/execmem.c                 | 43 ++++++++++++++++++++++--
+>  7 files changed, 167 insertions(+), 153 deletions(-)
 
-For more updates on the mode of operation send a reply.
+[...]
 
-Waiting for your prompt response.
+> diff --git a/arch/arm64/kernel/module.c b/arch/arm64/kernel/module.c
+> index dd851297596e..cd6320de1c54 100644
+> --- a/arch/arm64/kernel/module.c
+> +++ b/arch/arm64/kernel/module.c
+> @@ -20,6 +20,7 @@
+>  #include <linux/random.h>
+>  #include <linux/scs.h>
+>  #include <linux/vmalloc.h>
+> +#include <linux/execmem.h>
+>  
+>  #include <asm/alternative.h>
+>  #include <asm/insn.h>
+> @@ -108,46 +109,38 @@ static int __init module_init_limits(void)
+>  
+>  	return 0;
+>  }
+> -subsys_initcall(module_init_limits);
+>  
+> -void *module_alloc(unsigned long size)
+> +static struct execmem_params execmem_params __ro_after_init = {
+> +	.ranges = {
+> +		[EXECMEM_DEFAULT] = {
+> +			.flags = EXECMEM_KASAN_SHADOW,
+> +			.alignment = MODULE_ALIGN,
+> +		},
+> +	},
+> +};
+> +
+> +struct execmem_params __init *execmem_arch_params(void)
+>  {
+> -	void *p = NULL;
+> +	struct execmem_range *r = &execmem_params.ranges[EXECMEM_DEFAULT];
+>  
+> -	/*
+> -	 * Where possible, prefer to allocate within direct branch range of the
+> -	 * kernel such that no PLTs are necessary.
+> -	 */
 
-Kind regards,
-Faheem Badawi.
-(Financial Advisory - KPMS)
+Why are you removing this comment? I think you could just move it next
+to the part where we set a 128MiB range.
+
+> -	if (module_direct_base) {
+> -		p = __vmalloc_node_range(size, MODULE_ALIGN,
+> -					 module_direct_base,
+> -					 module_direct_base + SZ_128M,
+> -					 GFP_KERNEL | __GFP_NOWARN,
+> -					 PAGE_KERNEL, 0, NUMA_NO_NODE,
+> -					 __builtin_return_address(0));
+> -	}
+> +	module_init_limits();
+
+Hmm, this used to be run from subsys_initcall(), but now you're running
+it _really_ early, before random_init(), so randomization of the module
+space is no longer going to be very random if we don't have early entropy
+from the firmware or the CPU, which is likely to be the case on most SoCs.
+
+>  
+> -	if (!p && module_plt_base) {
+> -		p = __vmalloc_node_range(size, MODULE_ALIGN,
+> -					 module_plt_base,
+> -					 module_plt_base + SZ_2G,
+> -					 GFP_KERNEL | __GFP_NOWARN,
+> -					 PAGE_KERNEL, 0, NUMA_NO_NODE,
+> -					 __builtin_return_address(0));
+> -	}
+> +	r->pgprot = PAGE_KERNEL;
+>  
+> -	if (!p) {
+> -		pr_warn_ratelimited("%s: unable to allocate memory\n",
+> -				    __func__);
+> -	}
+> +	if (module_direct_base) {
+> +		r->start = module_direct_base;
+> +		r->end = module_direct_base + SZ_128M;
+>  
+> -	if (p && (kasan_alloc_module_shadow(p, size, GFP_KERNEL) < 0)) {
+> -		vfree(p);
+> -		return NULL;
+> +		if (module_plt_base) {
+> +			r->fallback_start = module_plt_base;
+> +			r->fallback_end = module_plt_base + SZ_2G;
+> +		}
+> +	} else if (module_plt_base) {
+> +		r->start = module_plt_base;
+> +		r->end = module_plt_base + SZ_2G;
+>  	}
+>  
+> -	/* Memory is intended to be executable, reset the pointer tag. */
+> -	return kasan_reset_tag(p);
+> +	return &execmem_params;
+>  }
+>  
+>  enum aarch64_reloc_op {
+
+[...]
+
+> diff --git a/include/linux/execmem.h b/include/linux/execmem.h
+> index 44e213625053..806ad1a0088d 100644
+> --- a/include/linux/execmem.h
+> +++ b/include/linux/execmem.h
+> @@ -32,19 +32,33 @@ enum execmem_type {
+>  	EXECMEM_TYPE_MAX,
+>  };
+>  
+> +/**
+> + * enum execmem_module_flags - options for executable memory allocations
+> + * @EXECMEM_KASAN_SHADOW:	allocate kasan shadow
+> + */
+> +enum execmem_range_flags {
+> +	EXECMEM_KASAN_SHADOW	= (1 << 0),
+> +};
+> +
+>  /**
+>   * struct execmem_range - definition of a memory range suitable for code and
+>   *			  related data allocations
+>   * @start:	address space start
+>   * @end:	address space end (inclusive)
+> + * @fallback_start:	start of the range for fallback allocations
+> + * @fallback_end:	end of the range for fallback allocations (inclusive)
+>   * @pgprot:	permissions for memory in this address space
+>   * @alignment:	alignment required for text allocations
+> + * @flags:	options for memory allocations for this range
+>   */
+>  struct execmem_range {
+>  	unsigned long   start;
+>  	unsigned long   end;
+> +	unsigned long   fallback_start;
+> +	unsigned long   fallback_end;
+>  	pgprot_t        pgprot;
+>  	unsigned int	alignment;
+> +	enum execmem_range_flags flags;
+>  };
+>  
+>  /**
+> diff --git a/mm/execmem.c b/mm/execmem.c
+> index f25a5e064886..a8c2f44d0133 100644
+> --- a/mm/execmem.c
+> +++ b/mm/execmem.c
+> @@ -11,12 +11,46 @@ static void *execmem_alloc(size_t size, struct execmem_range *range)
+>  {
+>  	unsigned long start = range->start;
+>  	unsigned long end = range->end;
+> +	unsigned long fallback_start = range->fallback_start;
+> +	unsigned long fallback_end = range->fallback_end;
+>  	unsigned int align = range->alignment;
+>  	pgprot_t pgprot = range->pgprot;
+> +	bool kasan = range->flags & EXECMEM_KASAN_SHADOW;
+> +	unsigned long vm_flags  = VM_FLUSH_RESET_PERMS;
+> +	bool fallback  = !!fallback_start;
+> +	gfp_t gfp_flags = GFP_KERNEL;
+> +	void *p;
+>  
+> -	return __vmalloc_node_range(size, align, start, end,
+> -				   GFP_KERNEL, pgprot, VM_FLUSH_RESET_PERMS,
+> -				   NUMA_NO_NODE, __builtin_return_address(0));
+> +	if (PAGE_ALIGN(size) > (end - start))
+> +		return NULL;
+> +
+> +	if (kasan)
+> +		vm_flags |= VM_DEFER_KMEMLEAK;
+
+Hmm, I don't think we passed this before on arm64, should we have done?
+
+Will
