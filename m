@@ -2,163 +2,160 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01D0C7D5B74
-	for <lists+linux-parisc@lfdr.de>; Tue, 24 Oct 2023 21:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6A6F7D7EAA
+	for <lists+linux-parisc@lfdr.de>; Thu, 26 Oct 2023 10:41:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344088AbjJXT3D (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 24 Oct 2023 15:29:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38664 "EHLO
+        id S229785AbjJZIlM (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 26 Oct 2023 04:41:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234736AbjJXT3C (ORCPT
+        with ESMTP id S234854AbjJZIlE (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 24 Oct 2023 15:29:02 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AC0710D3;
-        Tue, 24 Oct 2023 12:29:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=4y6l7G1s0Dqeh+0zp9FkvmwtEOSFGk+0AxUmVITMGPU=; b=DtkWRF3bmONSx32KVn6ChvxqI2
-        u16XWvdfg/5pScH/5dNy7MZzEuQM6lSUzqd632z1Ah6E0EXL0ZDVxeNrjefPodzVuHe8LE30ZUOxc
-        ynQdnLV6CRnNzRke0MCL1Dsm3nCLqUX500XhUr0pRHQsjzRcIJS6tPIGxJfePtgxo5h6+HqithRzO
-        ME7uEgNuCsnLh/16YcmBRUCb1HSbefoNKFgjh9sok9tyCuiBOmle2d/zkCDTk438cLD03S2yBO8bL
-        sGnAoFnOhJr91vckXF5qi2Q/jfyomzUMGuw1rIWP6pD1VltxAlpxOTCoiIQYP90MMgcgDaVNQtEqe
-        b/akFbdA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:48356)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.96)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1qvN5B-0004q9-0c;
-        Tue, 24 Oct 2023 20:28:53 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1qvN58-0006FV-Kl; Tue, 24 Oct 2023 20:28:50 +0100
-Date:   Tue, 24 Oct 2023 20:28:50 +0100
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-        x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
-        linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        jianyong.wu@arm.com, justin.he@arm.com,
-        James Morse <james.morse@arm.com>
-Subject: Re: [RFC PATCH v3 00/39] ACPI/arm64: add support for virtual
- cpuhotplug
-Message-ID: <ZTga8sDSJ+Tg80Fs@shell.armlinux.org.uk>
-References: <ZTffkAdOqL2pI2la@shell.armlinux.org.uk>
- <CAJZ5v0j-73_+9U3ngDAf9w1ADDhBTKctJdWboqUk-okH2TQGyg@mail.gmail.com>
+        Thu, 26 Oct 2023 04:41:04 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A868C10E;
+        Thu, 26 Oct 2023 01:41:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6AFC433C8;
+        Thu, 26 Oct 2023 08:40:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698309661;
+        bh=CKweGyf2oPo/e/UZLG1WYH3zEQnVvPRR68BdbBl/TGo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=oRC27PQC2plQ2QFtxeYNcapuTdKaVmbmEUR0m69y9zSqXieqEvU2U8HaibfItzWZF
+         yERD96v5VwCZUJZD6El6ZorfVxYGGBw2vENxYrzOh3JNxfzIcWV8Hyo/98RmvjYp1O
+         Ink1QwB6gOI9hZMPLodFMqMmfk4UUgDFD2PT2vR0MIfYSLtLLeyvF4ch6/DBDJ+K3Z
+         0bfW6e3KP7yJWPzCmJpvtwgF2RV+VsKMprb/vimV6IovW84by85aPvP9y1WYUJyow3
+         BUjvGbMWEhiJ9hRAr+vd5AhVyyu5+qGt0miVwVbaUWHgtUSofxp310DRt0OzuziAvf
+         CCAilLzZ675cA==
+Date:   Thu, 26 Oct 2023 11:40:39 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc:     "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mcgrof@kernel.org" <mcgrof@kernel.org>,
+        "deller@gmx.de" <deller@gmx.de>,
+        "bjorn@kernel.org" <bjorn@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "nadav.amit@gmail.com" <nadav.amit@gmail.com>,
+        "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "hca@linux.ibm.com" <hca@linux.ibm.com>,
+        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>,
+        "puranjay12@gmail.com" <puranjay12@gmail.com>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "palmer@dabbelt.com" <palmer@dabbelt.com>,
+        "chenhuacai@kernel.org" <chenhuacai@kernel.org>,
+        "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-trace-kernel@vger.kernel.org" 
+        <linux-trace-kernel@vger.kernel.org>,
+        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+        "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "rostedt@goodmis.org" <rostedt@goodmis.org>,
+        "will@kernel.org" <will@kernel.org>,
+        "dinguyen@kernel.org" <dinguyen@kernel.org>,
+        "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "song@kernel.org" <song@kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>
+Subject: Re: [PATCH v3 03/13] mm/execmem, arch: convert simple overrides of
+ module_alloc to execmem
+Message-ID: <20231026084039.GJ2824@kernel.org>
+References: <20230918072955.2507221-1-rppt@kernel.org>
+ <20230918072955.2507221-4-rppt@kernel.org>
+ <607927885bb8ca12d4cd5787f01207c256cc8798.camel@intel.com>
+ <00277a3acb36d2309156264c7e8484071bc91614.camel@intel.com>
+ <20231005052622.GD3303@kernel.org>
+ <b26d0a201bf631831a956450ebbccc3c16521133.camel@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0j-73_+9U3ngDAf9w1ADDhBTKctJdWboqUk-okH2TQGyg@mail.gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <b26d0a201bf631831a956450ebbccc3c16521133.camel@intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Tue, Oct 24, 2023 at 08:26:58PM +0200, Rafael J. Wysocki wrote:
-> On Tue, Oct 24, 2023 at 5:15 PM Russell King (Oracle)
-> <linux@armlinux.org.uk> wrote:
-> >
-> > Hi,
-> >
-> > I'm posting James' patch set updated with most of the review comments
-> > from his RFC v2 series back in September. Individual patches have a
-> > changelog attached at the bottom of the commit message. Those which
-> > I have finished updating have my S-o-b on them, those which still have
-> > outstanding review comments from RFC v2 do not. In some of these cases
-> > I've asked questions and am waiting for responses.
-> >
-> > I'm posting this as RFC v3 because there's still some unaddressed
-> > comments and it's clearly not ready for merging. Even if it was ready
-> > to be merged, it is too late in this development cycle to be taking
-> > this change in, so there would be little point posting it non-RFC.
-> > Also James stated that he's waiting for confirmation from the
-> > Kubernetes/Kata folk - I have no idea what the status is there.
-> >
-> > I will be sending each patch individually to a wider audience
-> > appropriate for that patch - apologies to those missing out on this
-> > cover message. I have added more mailing lists to the series with the
-> > exception of the acpica list in a hope of this cover message also
-> > reaching those folk.
-> >
-> > The changes that aren't included are:
-> >
-> > 1. Updates for my patch that was merged via Thomas (thanks!):
-> >    c4dd854f740c cpu-hotplug: Provide prototypes for arch CPU registration
-> >    rather than having this change spread through James' patches.
-> >
-> > 2. New patch - simplification of PA-RISC's smp_prepare_boot_cpu()
-> >
-> > 3. Moved "ACPI: Use the acpi_device_is_present() helper in more places"
-> >    and "ACPI: Rename acpi_scan_device_not_present() to be about
-> >    enumeration" to the beginning of the series - these two patches are
-> >    already queued up for merging into 6.7.
-> >
-> > 4. Moved "arm64, irqchip/gic-v3, ACPI: Move MADT GICC enabled check into
-> >    a helper" to the beginning of the series, which has been submitted,
-> >    but as yet the fate of that posting isn't known.
-> >
-> > The first four patches in this series are provided for completness only.
-> >
-> > There is an additional patch in James' git tree that isn't in the set
-> > of patches that James posted: "ACPI: processor: Only call
-> > arch_unregister_cpu() if HOTPLUG_CPU is selected" which looks to me to
-> > be a workaround for arch_unregister_cpu() being under the ifdef. I've
-> > commented on this on the RFC v2 posting making a suggestion, but as yet
-> > haven't had any response.
-> >
-> > I've included almost all of James' original covering body below the
-> > diffstat.
-> >
-> > The reason that I'm doing this is to help move this code forward so
-> > hopefully it can be merged - which is why I have been keen to dig out
-> > from James' patches anything that can be merged and submit it
-> > separately, since this is a feature for which some users have a
-> > definite need for.
+Hi Rick,
+
+Sorry for the delay, I was a bit preoccupied with $stuff.
+
+On Thu, Oct 05, 2023 at 06:09:07PM +0000, Edgecombe, Rick P wrote:
+> On Thu, 2023-10-05 at 08:26 +0300, Mike Rapoport wrote:
+> > On Wed, Oct 04, 2023 at 03:39:26PM +0000, Edgecombe, Rick P wrote:
+> > > On Tue, 2023-10-03 at 17:29 -0700, Rick Edgecombe wrote:
+> > > > It seems a bit weird to copy all of this. Is it trying to be
+> > > > faster
+> > > > or
+> > > > something?
+> > > > 
+> > > > Couldn't it just check r->start in execmem_text/data_alloc() path
+> > > > and
+> > > > switch to EXECMEM_DEFAULT if needed then? The
+> > > > execmem_range_is_data()
+> > > > part that comes later could be added to the logic there too. So
+> > > > this
+> > > > seems like unnecessary complexity to me or I don't see the
+> > > > reason.
+> > > 
+> > > I guess this is a bad idea because if you have the full size array
+> > > sitting around anyway you might as well use it and reduce the
+> > > exec_mem_alloc() logic.
+> > 
+> > That's was the idea, indeed. :)
+> > 
+> > > Just looking at it from the x86 side (and
+> > > similar) though, where there is actually only one execmem_range and
+> > > it
+> > > building this whole array with identical data and it seems weird.
+> > 
+> > Right, most architectures have only one range, but to support all
+> > variants
+> > that we have, execmem has to maintain the whole array.
 > 
-> I've gone through the series and there is at least one thing in it
-> that concerns me a lot and some others that at least appear to be
-> really questionable.
+> What about just having an index into a smaller set of ranges. The
+> module area and the extra JIT area. So ->ranges can be size 3
+> (statically allocated in the arch code) for three areas and then the
+> index array can be size EXECMEM_TYPE_MAX. The default 0 value of the
+> indexing array will point to the default area and any special areas can
+> be set in the index point to the desired range.
 > 
-> I need more time to send comments which I'm not going to do before the
-> 6.7 merge window (sorry), but from what I can say right now, this is
-> not looking good.
+> Looking at how it would do for x86 and arm64, it looks maybe a bit
+> better to me. A little bit less code and memory usage, and a bit easier
+> to trace the configuration through to the final state (IMO). What do
+> you think? Very rough, on top of this series, below.
 
-Thanks for having a look - there was the feeling that this was ready
-for merging based on the review comments from the previous series sent
-by James.
+I like your suggestion to only have definitions of actual ranges in arch
+code and index array to redirect allocation requests to the right range.
+I'll make the next version along the lines of your patch.
 
-However, when I sent this series, I did notice that some mailing lists
-were missing, so I guess that's could be why you haven't commented
-before, and we find out now that there are major concerns.
+> As I was playing around with this, I was also wondering why it needs
+> two copies of struct execmem_params: one returned from the arch code
+> and one in exec mem. 
 
-My interest in it is because my employer wants to be able to hotplug
-CPUs in a virtual machine, and this saga with aarch64 has been running
-for years with different approaches ending up dead in the water. I
-hope your concerns do not result in this approach being entirely
-scrapped, and there can be some solution found.
+No actual reason, one copy is enough, thanks for catching this.
 
-I think James Morse will need to be involved in addressing your
-concerns since he has the detailed background about the history of
-this series. However, James seemed to fall totally silent after the
-last posting back in September, so whether that is possible is
-currently unknown.
+> And why the temporary arch copy is ro_after_init,
+> but the final execmem.c copy is not ro_after_init?
 
+I just missed it, thanks for pointing out.
+ 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Sincerely yours,
+Mike.
