@@ -2,70 +2,75 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7DB67D926A
-	for <lists+linux-parisc@lfdr.de>; Fri, 27 Oct 2023 10:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98EC97D9DF0
+	for <lists+linux-parisc@lfdr.de>; Fri, 27 Oct 2023 18:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235220AbjJ0IoL (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 27 Oct 2023 04:44:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42048 "EHLO
+        id S231675AbjJ0QYZ (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 27 Oct 2023 12:24:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345714AbjJ0In4 (ORCPT
+        with ESMTP id S231302AbjJ0QYY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 27 Oct 2023 04:43:56 -0400
-Received: from mail.okerlenbiz.com (mail.okerlenbiz.com [54.36.101.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A76B2122
-        for <linux-parisc@vger.kernel.org>; Fri, 27 Oct 2023 01:43:02 -0700 (PDT)
-Received: by mail.okerlenbiz.com (Postfix, from userid 1002)
-        id 30A37A2A16; Fri, 27 Oct 2023 08:42:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=okerlenbiz.com;
-        s=mail; t=1698396181;
-        bh=sxkamsLepnJSy5ikFDKOiyq8RChcIfs44Djo0bti1MM=;
-        h=Date:From:To:Subject:From;
-        b=WqBQQ2nC33Op10LgMT0moxbKHiRyflRYkmTR5OiJbpRKFLSbxPGIBxonEaT72krms
-         kOlO1obTzP/CDoGV/EMZTdUbjyUI4FicASHON4FVfif0I/5/wEDtXy2eWJfbqQ0s9a
-         zulZJ/STiJAuhrHjP5wDUUaIvm2+cc3BBwz1aw5H9S5vTgBF0xZ0+Tu83NjLZl3dgj
-         nC5e1TyrW4HziUM+yf3aye96uFz2hM01y+w8sD/Yso2azGLG3ZlgkFsZgvdi4Q7rJo
-         vIpNNJEVRpYWzhaAbHbqGo7pFgUQ1utWTZFLXOeO9p6pyc+osTmNHTUfJZbBwsNnx7
-         JL/dOhPnkAzaQ==
-Received: by mail.okerlenbiz.com for <linux-parisc@vger.kernel.org>; Fri, 27 Oct 2023 08:42:34 GMT
-Message-ID: <20231027083712-0.1.6j.8p89.0.o5976omp4q@okerlenbiz.com>
-Date:   Fri, 27 Oct 2023 08:42:34 GMT
-From:   "Philipp Raber" <philipp.raber@okerlenbiz.com>
-To:     <linux-parisc@vger.kernel.org>
-Subject: Metalworking and welding
-X-Mailer: mail.okerlenbiz.com
+        Fri, 27 Oct 2023 12:24:24 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF31E5;
+        Fri, 27 Oct 2023 09:24:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A6AC433C7;
+        Fri, 27 Oct 2023 16:24:16 +0000 (UTC)
+Date:   Fri, 27 Oct 2023 17:24:12 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+        loongarch@lists.linux.dev, sparclinux@vger.kernel.org,
+        x86@kernel.org, Albert Ou <aou@eecs.berkeley.edu>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>
+Subject: Re: [PATCH 4/5] kbuild: unify vdso_install rules
+Message-ID: <ZTvkLIVmC3fnxX9p@arm.com>
+References: <20231009124210.1064021-1-masahiroy@kernel.org>
+ <20231009124210.1064021-4-masahiroy@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231009124210.1064021-4-masahiroy@kernel.org>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Good morning,
+On Mon, Oct 09, 2023 at 09:42:09PM +0900, Masahiro Yamada wrote:
+> Currently, there is no standard implementation for vdso_install,
+> leading to various issues:
+[...]
+>  arch/arm64/Makefile                    |  9 ++----
+>  arch/arm64/kernel/vdso/Makefile        | 10 ------
+>  arch/arm64/kernel/vdso32/Makefile      | 10 ------
 
-We specialize in serial production of metal elements.
+For arm64:
 
-You do not have to resort to the services of subcontractors - we offer yo=
-u comprehensive services
-Support from design to production to transportation, which guarantees sho=
-rt delivery times orders and lower costs.
-
-We have an extensive machine park and a large team of specialists, thanks=
- to which we can offer services such as laser sheet metal cutting, pipe a=
-nd profile bending, welding and powder coating.
-
-The main area of our production is currently storage and transport trolle=
-ys. We produce transport pallets, scissor lifts, furniture elements, buil=
-ding formwork and much more.
-
-If you have any need regarding this, please send me a message.
-
-
-Greetings
-Philipp Raber
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
