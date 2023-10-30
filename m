@@ -2,79 +2,53 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7FC87DB9BE
-	for <lists+linux-parisc@lfdr.de>; Mon, 30 Oct 2023 13:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD4DE7DBC87
+	for <lists+linux-parisc@lfdr.de>; Mon, 30 Oct 2023 16:25:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229456AbjJ3MUo (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 30 Oct 2023 08:20:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41354 "EHLO
+        id S232176AbjJ3PZs (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 30 Oct 2023 11:25:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232531AbjJ3MUn (ORCPT
+        with ESMTP id S233646AbjJ3PZr (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 30 Oct 2023 08:20:43 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7466C9;
-        Mon, 30 Oct 2023 05:20:40 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-53d9f001b35so7014859a12.2;
-        Mon, 30 Oct 2023 05:20:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698668439; x=1699273239; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tRAvOgi6qogXEjImiUor+DkPqw1Ot9Ogtre0wvi5M6k=;
-        b=nqcCLdy5BkfZ2ly+kvgp4RantdlvoU4aMWj2ag9y62CfeIFVxBhT4sDv8MWxxHhQz6
-         AwOjnIq0UrQE6WfcY4MoQR4Q9aHmkCLPpe05h7UhWsb1yTbYx5N/n8vMAeqa+7Z3mFBK
-         sakoRSaiZya+jKItdc8TbAS0Tsnl+qRa0fK9m0gYKnh9eobWDKUE4KT0SyOqhvLx1zue
-         /8rDcyS0eX1MLFNRwds0vKf+RbKFKYroq2hGVuuqXotl2YR0+KmNLn96d3aahl6Pmf+d
-         A6ODm5bw3BennCXc+dZpagOltGe4tQ+SxCgxTQ6NmxpuWe/gz0Y/bVjOe+V5j+h18KZH
-         Zq4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698668439; x=1699273239;
-        h=content-transfer-encoding:in-reply-to:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tRAvOgi6qogXEjImiUor+DkPqw1Ot9Ogtre0wvi5M6k=;
-        b=XqEaZzdyqBQkCdeitvkanUmaT3WpkpKZYIbpLtTymS6ZlnkpE8pQKraKYlrEqxkPhO
-         iiahUaALC53aBIfI2nyAxJ1hBkAODODk/Col2Qke8wynAJc9NGtdw+H8BUMFh8USGPAV
-         gIpFSHFRPNFOgJBjzeC9Xiem2JsDrlOJ4qHTXkA26bHmKrIRfa6u9yqWNuJruPrqXQLp
-         Zwyo4XQg/EfFMqaJdCg938G33ozjGJ8QjcVUpWEauj7BR1xWXhI0WjObbPqY6uYiF3ox
-         ftOynquIH065e/s10l8hXEiaPyu2adru8lb9kbryHiJ34i/87S22gzxxMtksqsASg4cN
-         j9dw==
-X-Gm-Message-State: AOJu0YwriaYqxZ9iNBs6p8Xqdmi+owWA3v9IJ53EghsMwPQt7gdqclTT
-        +gliFFhPCa/Rv5dsF/8ubSY=
-X-Google-Smtp-Source: AGHT+IEA4HEagqHQDt4CQKteRzlCff1bThN0D10TLJ2IhOR2hdu91b9A3yPlJ/I94joRwFOXZlnzxA==
-X-Received: by 2002:a17:907:72c5:b0:9b2:f941:6916 with SMTP id du5-20020a17090772c500b009b2f9416916mr8109533ejc.17.1698668439086;
-        Mon, 30 Oct 2023 05:20:39 -0700 (PDT)
-Received: from [192.168.0.105] (5401D598.dsl.pool.telekom.hu. [84.1.213.152])
-        by smtp.gmail.com with ESMTPSA id ci6-20020a170906c34600b009a1dbf55665sm5802219ejb.161.2023.10.30.05.20.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Oct 2023 05:20:38 -0700 (PDT)
-From:   Kira <nyakov13@gmail.com>
-X-Google-Original-From: Kira <Nyakov13@gmail.com>
-Message-ID: <566c0155-4f80-43ec-be2c-2d1ad631bf25@gmail.com>
-Date:   Mon, 30 Oct 2023 13:20:36 +0100
+        Mon, 30 Oct 2023 11:25:47 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C66ACDA;
+        Mon, 30 Oct 2023 08:25:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF14FC433C8;
+        Mon, 30 Oct 2023 15:25:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1698679544;
+        bh=btyjpiEdwQ+MufjXyopFOcMveHsu8z12SIfdV1MwW1E=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NB0Wy7AqZMyCyTj7jPHOyVOmMcV2xXkZ9p/0mLLlOk8ctevt0m08Wy5FWx0uvRNzp
+         zQ4ePKjZSEYIDgB0vLHw05dy6x8M/Nkt/yAYI8CzutUxSYoIaGSXMNxzxhCs7/dS8C
+         wKbp2P2FYs76TuQo1aSSsk62hEfdI2Hl6DsZ/1VE=
+Date:   Mon, 30 Oct 2023 16:25:40 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Benjamin Poirier <benjamin.poirier@gmail.com>
+Cc:     Kira <nyakov13@gmail.com>, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Manish Chopra <manishc@marvell.com>,
+        GR-Linux-NIC-Dev@marvell.com, Coiby Xu <coiby.xu@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Sven Joachim <svenjoac@gmx.de>,
+        Ian Kent <raven@themaw.net>, netdev@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-staging@lists.linux.dev
+Subject: Re: [PATCH] staging: Revert "staging: qlge: Retire the driver"
+Message-ID: <2023103001-drew-parmesan-c61a@gregkh>
+References: <20231030150400.74178-1-benjamin.poirier@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To:     benjamin.poirier@gmail.com
-Cc:     James.Bottomley@HansenPartnership.com, coiby.xu@gmail.com,
-        corbet@lwn.net, davem@davemloft.net, deller@gmx.de,
-        edumazet@google.com, error27@gmail.com, gregkh@linuxfoundation.org,
-        kuba@kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-staging@lists.linux.dev, manishc@marvell.com,
-        nandhakumar.singaram@gmail.com, netdev@vger.kernel.org,
-        pabeni@redhat.com, raven@themaw.net, ricardoapl.dev@gmail.com,
-        sumitraartsy@gmail.com, svenjoac@gmx.de
-References: <20231020124457.312449-3-benjamin.poirier@gmail.com>
-Subject: Re: [PATCH 2/2] staging: qlge: Retire the driver
-Content-Language: en-US, ru-RU
-In-Reply-To: <20231020124457.312449-3-benjamin.poirier@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231030150400.74178-1-benjamin.poirier@gmail.com>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,19 +56,48 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-I have a couple of QLogic QLE8142 10GbE Converged Network adapters.
+On Tue, Oct 31, 2023 at 02:04:00AM +1100, Benjamin Poirier wrote:
+> This reverts commit 875be090928d19ff4ae7cbaadb54707abb3befdf.
+> 
+> On All Hallows' Eve, fear and cower for it is the return of the undead
+> driver.
+> 
+> There was a report [1] from a user of a QLE8142 device. They would like for
+> the driver to remain in the kernel. Therefore, revert the removal of the
+> qlge driver.
+> 
+> [1] https://lore.kernel.org/netdev/566c0155-4f80-43ec-be2c-2d1ad631bf25@gmail.com/
 
-They are pretty old yes, but also working well and energy efficient. 
-They still can be considered as modern hardware because they was so 
-advance back in the days.
+Who's going to maintain this?
 
-And I think there is a lots of them out there, maybe not in 
-production(but somewhere still is), but in used market.
+> Reported by: Kira <nyakov13@gmail.com>
+> Signed-off-by: Benjamin Poirier <benjamin.poirier@gmail.com>
+> ---
+> 
+> Notes:
+>     Once the removal and revert show up in the net-next tree, I plan to send a
+>     followup patch to move the driver to drivers/net/ as discussed earlier:
+>     https://lore.kernel.org/netdev/20231019074237.7ef255d7@kernel.org/
 
-So it will be really nice if drivers were still in kernel.
+are you going to be willing to maintain this and keep it alive?
 
+I'm all this, if you want to, but I would like it out of staging.  So
+how about applying this, and a follow-on one that moves it there once
+-rc1 is out?  And it probably should be in the 'net' tree, as you don't
+want 6.7 to come out without the driver at all, right?
 
-With best regards
+> +QLOGIC QLGE 10Gb ETHERNET DRIVER
+> +M:	Manish Chopra <manishc@marvell.com>
+> +M:	GR-Linux-NIC-Dev@marvell.com
+> +M:	Coiby Xu <coiby.xu@gmail.com>
+> +L:	netdev@vger.kernel.org
+> +S:	Supported
+> +F:	Documentation/networking/device_drivers/qlogic/qlge.rst
+> +F:	drivers/staging/qlge/
 
-Kira.
+It's obvious taht these people are not maintaining this code, so they
+should be dropped from the MAINTAINERS file as well.
 
+thanks,
+
+greg k-h
