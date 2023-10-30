@@ -2,120 +2,138 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 444D97DBF57
-	for <lists+linux-parisc@lfdr.de>; Mon, 30 Oct 2023 18:51:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A1C77DC004
+	for <lists+linux-parisc@lfdr.de>; Mon, 30 Oct 2023 19:42:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231949AbjJ3RvU (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 30 Oct 2023 13:51:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40212 "EHLO
+        id S229795AbjJ3Smp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Mon, 30 Oct 2023 14:42:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229780AbjJ3RvT (ORCPT
+        with ESMTP id S229537AbjJ3Smo (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 30 Oct 2023 13:51:19 -0400
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A412B4;
-        Mon, 30 Oct 2023 10:51:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Ni1GPgCl8w8Lwh/aSdbo/ks9Sgjz4jtglOS0ql7XSO4=; b=01c617rJlquZVt2QBAZvsxfiUn
-        We9Aa2YJR/FiIGF2DchKsF4HTzXH4x13XmbhOFjuOjjTLrSvKEbbIiIVeMQu4u7PR8HN2WFJmMyfQ
-        C6J8t3czF4AKG2F9u13+0fCagYzgASIqbySFKQ8DbW1a5cFRQtx6yrNueDmBMUQgJ3HEoQfA/tW2Y
-        6zKGiVKt5ORIV3bWGHSyvSBoiOH7RlM0U2llB7+2OXH2TD8iVukcZ8K6w4/w+3LY6bhMz5YBBMP6H
-        5M32zkEld5QtXKRKatFhDhrcgT9/IEWXaX/fsQh6kfxMZP7g104aTS23og0hO0W/VM5RGC4DF0bOO
-        lTqzoc7Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50422)
-        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.96)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1qxWPr-0001wo-2E;
-        Mon, 30 Oct 2023 17:51:07 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1qxWPn-0004Co-Sm; Mon, 30 Oct 2023 17:51:03 +0000
-Date:   Mon, 30 Oct 2023 17:51:03 +0000
-From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
-To:     Miguel Luis <miguel.luis@oracle.com>
-Cc:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "loongarch@lists.linux.dev" <loongarch@lists.linux.dev>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "acpica-devel@lists.linuxfoundation.org" 
-        <acpica-devel@lists.linuxfoundation.org>,
-        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        "jianyong.wu@arm.com" <jianyong.wu@arm.com>,
-        "justin.he@arm.com" <justin.he@arm.com>,
-        James Morse <james.morse@arm.com>
-Subject: Re: [RFC PATCH v3 00/39] ACPI/arm64: add support for virtual
- cpuhotplug
-Message-ID: <ZT/tB0ykr8JJd+E4@shell.armlinux.org.uk>
-References: <ZTffkAdOqL2pI2la@shell.armlinux.org.uk>
- <C2C5C292-AD2C-4D98-8225-39ABE68C5395@oracle.com>
+        Mon, 30 Oct 2023 14:42:44 -0400
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6022AC6;
+        Mon, 30 Oct 2023 11:42:42 -0700 (PDT)
+Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1ef370c2e1aso3250364fac.2;
+        Mon, 30 Oct 2023 11:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698691361; x=1699296161; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IqH2MDi7AS7ELU7awEeKmSV+na9z+gufigYPz4kD/JA=;
+        b=d2tMAD+vWnOQP81Wi+R/8mGen9PWvNB+geMPKf9+FaUwa0JUfe8cA+Yjy5dy4UnhGi
+         zy24NYDPCER0Pc1mQXeBJOKrSUZarbTD4PaL6QgSQWigGnkp9wn42KdT735ARTzQXBBF
+         jCqxI5wjpiFgp4u9dmPL4h+0+4hsYpk9G97ugcKsWo/fEgTEMdo++xkCah1JF+/AHCZv
+         aL0xgMB3UxGD3Pzy9hpgSdHzownt8b62cvRHgB45I0uBDEutgZlr7M9B3aCRSXe/4VF1
+         LnrKOTx6UAIIs9Fa23ZVpnRwUkfMeOFLxvQnfBk4QHPB18r1fRcygd2zjqCQSFDkNECq
+         xGXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698691361; x=1699296161;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IqH2MDi7AS7ELU7awEeKmSV+na9z+gufigYPz4kD/JA=;
+        b=aG1hQBSbE0+3c2Bonm/uNn21V3NiXwzL7zXZSRDpVubLbfwsC1blzTUkk1/ZIxm1N6
+         RPMDaWK1RheDz826fDTXoZipd/9XZTgTuQBTI8wB6UjWBjXA2KjvWY/mOSUUnTjZgfx6
+         n0Dj+i6gybUS69KVSR4i98JnyWnWNz4Mc419MV7LJtK8YgV4NbLuzGv1rgVHCjrGopKv
+         RiJihNbSBIqr4Y8EhN5qpkzwT4T7fkJbEMM2aE1Qft7DzfyAK7/mW1yzZplKtVRzLZW+
+         TBfuri1+nTrMNP9DSv8kl/GtmM0ngVkfRAZZ5iBP40B6tGXFDaFHuuxlNjwlaAfhr0/J
+         kVFg==
+X-Gm-Message-State: AOJu0Yz6K9cas+qfPNhUodEkzst2itPv2ttXgbLxLKsfuXJkQhj80rXj
+        u6nnJzB/fUtcgVEf9Yuu5qo=
+X-Google-Smtp-Source: AGHT+IHIWUOtyavBIkY9CuNaKTneVZ9xeme/ndVJ216kK7foJS/nyOc35SqVApiTEFpV1cN5621OWg==
+X-Received: by 2002:a05:6871:7505:b0:1e9:fd9b:735 with SMTP id ny5-20020a056871750500b001e9fd9b0735mr12630857oac.56.1698691361396;
+        Mon, 30 Oct 2023 11:42:41 -0700 (PDT)
+Received: from localhost (modemcable065.128-200-24.mc.videotron.ca. [24.200.128.65])
+        by smtp.gmail.com with ESMTPSA id r21-20020ac85215000000b00417fa0cd77esm3638949qtn.80.2023.10.30.11.42.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Oct 2023 11:42:41 -0700 (PDT)
+Date:   Mon, 30 Oct 2023 14:42:40 -0400
+From:   Benjamin Poirier <benjamin.poirier@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc:     Kira <nyakov13@gmail.com>, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Manish Chopra <manishc@marvell.com>,
+        GR-Linux-NIC-Dev@marvell.com, Coiby Xu <coiby.xu@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Sven Joachim <svenjoac@gmx.de>,
+        Ian Kent <raven@themaw.net>, netdev@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-staging@lists.linux.dev
+Subject: Re: [PATCH] staging: Revert "staging: qlge: Retire the driver"
+Message-ID: <ZT_5IB1z0Ol03tnh@d3>
+References: <20231030150400.74178-1-benjamin.poirier@gmail.com>
+ <2023103001-drew-parmesan-c61a@gregkh>
+ <ZT_YntDOYEdlpx5x@d3>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <C2C5C292-AD2C-4D98-8225-39ABE68C5395@oracle.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <ZT_YntDOYEdlpx5x@d3>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On Mon, Oct 30, 2023 at 04:41:19PM +0000, Miguel Luis wrote:
-> Hi Russell,
+On 2023-10-30 12:33 -0400, Benjamin Poirier wrote:
+> On 2023-10-30 16:25 +0100, Greg Kroah-Hartman wrote:
+> > On Tue, Oct 31, 2023 at 02:04:00AM +1100, Benjamin Poirier wrote:
+> > > This reverts commit 875be090928d19ff4ae7cbaadb54707abb3befdf.
+> > > 
+> > > On All Hallows' Eve, fear and cower for it is the return of the undead
+> > > driver.
+> > > 
+> > > There was a report [1] from a user of a QLE8142 device. They would like for
+> > > the driver to remain in the kernel. Therefore, revert the removal of the
+> > > qlge driver.
+> > > 
+> > > [1] https://lore.kernel.org/netdev/566c0155-4f80-43ec-be2c-2d1ad631bf25@gmail.com/
+> > 
+> > Who's going to maintain this?
 > 
-> Tested on QEMU, based on Salil's RFC v2 [1], running with KVM.
-> - boot
-> - hotplug up to 'maxcpus'
-> - hotunplug down to the number of boot cpus
-> - hotplug vcpus and migrate with vcpus offline
-> - hotplug vcpus and migrate with vcpus online
-> - hotplug vcpus then unplug vcpus then migrate
-> - successive live migrations (up until 6)
+> I was planning to update the MAINTAINERS entry to
+> S:	Orphan
+> when moving it back to drivers/net/. Would you prefer that I do that
+> change in a second patch right after the revert in staging? That would
+> certainly make things clearer.
 > 
-> Feel free to add:
-> Tested-by: Miguel Luis <miguel.luis@oracle.com>
+> > > Reported by: Kira <nyakov13@gmail.com>
+> > > Signed-off-by: Benjamin Poirier <benjamin.poirier@gmail.com>
+> > > ---
+> > > 
+> > > Notes:
+> > >     Once the removal and revert show up in the net-next tree, I plan to send a
+> > >     followup patch to move the driver to drivers/net/ as discussed earlier:
+> > >     https://lore.kernel.org/netdev/20231019074237.7ef255d7@kernel.org/
+> > 
+> > are you going to be willing to maintain this and keep it alive?
 > 
-> Thank you
-> Miguel
+> No.
 > 
-> [1] https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta@huawei.com/
+> > I'm all this, if you want to, but I would like it out of staging.  So
+> 
+> I'd like it out of staging as well. Since nobody wants to maintain it, I
+> think it should be deleted. However, my understanding is that Jakub is
+> willing to take it back into drivers/net/ as-is given that there is at
+> least one user. Jakub, did I understand that correctly?
+> 
+> > how about applying this, and a follow-on one that moves it there once
+> > -rc1 is out?  And it probably should be in the 'net' tree, as you don't
+> > want 6.7 to come out without the driver at all, right?
+> 
+> Right about making sure 6.7 includes the driver. The 'net' tree is
+> usually for fixes hence why I would send to net-next. So the driver
+> would still be in staging for 6.7 (if you include the revert in your
+> 6.7-rc1 submission) and would be back in drivers/net/ for 6.8.
 
-That's good news, thanks for testing!
-
-I've pushed out an updated series against v6.6 earlier today in case
-anyone wants something specifically against v6.6, but I don't think
-there is any pressing reason to re-test. The only ACPI change
-between the two is:
-
-9b311b7313d6 ACPI: NFIT: Install Notify() handler before getting NFIT table
-
-and the only arm64 changes are in dts files. Nothing significant in
-kernel/ and nothing in drivers/base/.
-
-So I think at this point, I will pause waiting for 6.7-rc1 (which
-I'll do an updated patch set, since it will include changes queued
-up) and hopefully followed by Rafael's comments. Maybe James will
-also have some time to work on this again.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Rereading, I think I misunderstood your suggestion. You're suggesting
+that I submit the revert through the net tree rather than the staging
+tree. That sounds good. I'll do that once the removal shows up there.
