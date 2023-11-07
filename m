@@ -2,162 +2,139 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 889777E32D5
-	for <lists+linux-parisc@lfdr.de>; Tue,  7 Nov 2023 03:15:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17A797E391A
+	for <lists+linux-parisc@lfdr.de>; Tue,  7 Nov 2023 11:29:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230208AbjKGCP1 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Mon, 6 Nov 2023 21:15:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45700 "EHLO
+        id S233642AbjKGK3K (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Tue, 7 Nov 2023 05:29:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229646AbjKGCP1 (ORCPT
+        with ESMTP id S230089AbjKGK3K (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Mon, 6 Nov 2023 21:15:27 -0500
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44F0610F;
-        Mon,  6 Nov 2023 18:15:24 -0800 (PST)
-Received: by mail-qk1-x72f.google.com with SMTP id af79cd13be357-7788fb06997so361732685a.0;
-        Mon, 06 Nov 2023 18:15:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699323323; x=1699928123; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fk4C8pGkEaO0aYtx+9DFxGow47hYHSHoEQjYuyisEbA=;
-        b=dix+WuV7WEQduGPYlPNqifTplPY8MSlOy5NxoThRP5XJ1gZ8Joho1r3lrNqEd2C4Qe
-         l+jQN5cLHIibrxMSWl9JsJ9HKJVUjpgQd3a8Kts+mcCsidWyXn7JPcJQLqzlvLNWB+Tr
-         JW7wpvVR+N2yRLXDd37kP94dH760u6PnvKi/QUv965voohrJchnFr83X39gxlPCZ7Z5T
-         5VefmRV3C3T4HxpCGG4EzhcCIcmDvUDalJubIGUaBFaErJyPiiMkQZAmoc7tZEDiOrqJ
-         +Dc/KpkwROrIWMD8qhwCtRRIRoiM4aFwO/NnoOHwVyoNRMHEwqHquyBKKJDC5GggpiFv
-         yVzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699323323; x=1699928123;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fk4C8pGkEaO0aYtx+9DFxGow47hYHSHoEQjYuyisEbA=;
-        b=h53jP+XZTRnd815XfUGDsyBnHGsv6mYSAEzNkTN0qQI1ooGTkD9Ghj3LDSCfiSEtgY
-         pshvuHBCzSgicqnVJeWmaL38kQyfbYGsyZ5i/bPQnG+M8IfR28I90zOyYjzXUtdsSWf9
-         wokeqY8vlUqQ+Zfeiip4R05n0rLt+/efHA3cj5FxiVfYanUFWj0ePPuxXjPqYt7kamry
-         YTCDfSFyaLa6mldeVYZUooOk+YnXndC03fZD0UisseD+SmcBSezMZZ7cjanV1HaZluVu
-         +TpkxVaiuf/mdMR4rusAP+yPK7whIycnqvB283zak56WlxIXbtQLDpcV8wgCb+dc99I6
-         srlw==
-X-Gm-Message-State: AOJu0YxDZyOhyvpt2MIdQMMyMgtZ9xeDgv3DZG28L1kuZWy4l6fTmmYc
-        AX3JYZnfS3nLhJKhoUCY3M0=
-X-Google-Smtp-Source: AGHT+IEsbtgEtm1ThrU0RGNHI2w6rhkc5V3NUgJtzFwqjIS7wWzE7nSayyO4ZlyBcgrFPy4Qz6FqbA==
-X-Received: by 2002:a05:620a:40ca:b0:779:f0a1:3128 with SMTP id g10-20020a05620a40ca00b00779f0a13128mr37320412qko.63.1699323323340;
-        Mon, 06 Nov 2023 18:15:23 -0800 (PST)
-Received: from localhost (modemcable065.128-200-24.mc.videotron.ca. [24.200.128.65])
-        by smtp.gmail.com with ESMTPSA id bs10-20020a05620a470a00b00777611164c6sm3829790qkb.15.2023.11.06.18.15.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Nov 2023 18:15:23 -0800 (PST)
-Date:   Mon, 6 Nov 2023 21:15:21 -0500
-From:   Benjamin Poirier <benjamin.poirier@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Kira <nyakov13@gmail.com>, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Manish Chopra <manishc@marvell.com>,
-        GR-Linux-NIC-Dev@marvell.com, Coiby Xu <coiby.xu@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Sven Joachim <svenjoac@gmx.de>,
-        Ian Kent <raven@themaw.net>, netdev@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-staging@lists.linux.dev
-Subject: Re: [PATCH] staging: Revert "staging: qlge: Retire the driver"
-Message-ID: <ZUmduQ_xKMHF6IY9@d3>
-References: <20231030150400.74178-1-benjamin.poirier@gmail.com>
- <2023110655-swarm-parka-177d@gregkh>
+        Tue, 7 Nov 2023 05:29:10 -0500
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA3DEF7;
+        Tue,  7 Nov 2023 02:29:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+        Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=mnU5AkoHae2A4t/6hUnkAeF1QeR2fa8gldl6fabdpys=; b=Xvbg8rVwQvptDasFluB1GivJJR
+        lkmYK9tHPkK3vfKg66aLbO07r9lL+qDWdsMtP1fVlOa8E6KTkOYoEs2lwy4BuATJgRxBHul9tXxli
+        QGqH/a1GwQbXH4Ty2qge3vzSS6Lc2LavAFmQ5ENfzpAimPTrAHwq4g364DPRdQkTj0tDP0qjcdxfK
+        STyjqt1AJWeyZh74VX0SvsNhUiKdGJQ5F9Q8X2OntVFa17qD+omT8nLqUX52QnKNsc7MXWynhIz17
+        xiLH8jwcSjSqGdcRk8+6xspJu1Yko/6rlvG1nsItzUsrSafRMYvzk7lo3JLicVij5zIccje25TllF
+        GUWgjCdw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37708)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1r0JKK-0000DJ-2j;
+        Tue, 07 Nov 2023 10:28:56 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1r0JKF-0006qX-KE; Tue, 07 Nov 2023 10:28:51 +0000
+Date:   Tue, 7 Nov 2023 10:28:51 +0000
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+        x86@kernel.org, linux-csky@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-parisc@vger.kernel.org
+Cc:     Albert Ou <aou@eecs.berkeley.edu>, Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guo Ren <guoren@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        James Morse <james.morse@arm.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        jianyong.wu@arm.com, justin.he@arm.com,
+        Len Brown <lenb@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>
+Subject: [PATCH RFC 00/22] Initial cleanups for vCPU hotplug
+Message-ID: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2023110655-swarm-parka-177d@gregkh>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023-11-06 07:54 +0100, Greg Kroah-Hartman wrote:
-> On Tue, Oct 31, 2023 at 02:04:00AM +1100, Benjamin Poirier wrote:
-> > This reverts commit 875be090928d19ff4ae7cbaadb54707abb3befdf.
-> > 
-> > On All Hallows' Eve, fear and cower for it is the return of the undead
-> > driver.
-> > 
-> > There was a report [1] from a user of a QLE8142 device. They would like for
-> > the driver to remain in the kernel. Therefore, revert the removal of the
-> > qlge driver.
-> > 
-> > [1] https://lore.kernel.org/netdev/566c0155-4f80-43ec-be2c-2d1ad631bf25@gmail.com/
-> 
-> <snip>
-> 
-> > --- /dev/null
-> > +++ b/drivers/staging/qlge/TODO
-> > @@ -0,0 +1,28 @@
-> > +* commit 7c734359d350 ("qlge: Size RX buffers based on MTU.", v2.6.33-rc1)
-> > +  introduced dead code in the receive routines, which should be rewritten
-> > +  anyways by the admission of the author himself, see the comment above
-> > +  qlge_build_rx_skb(). That function is now used exclusively to handle packets
-> > +  that underwent header splitting but it still contains code to handle non
-> > +  split cases.
-> > +* truesize accounting is incorrect (ex: a 9000B frame has skb->truesize 10280
-> > +  while containing two frags of order-1 allocations, ie. >16K)
-> > +* while in that area, using two 8k buffers to store one 9k frame is a poor
-> > +  choice of buffer size.
-> > +* in the "chain of large buffers" case, the driver uses an skb allocated with
-> > +  head room but only puts data in the frags.
-> > +* rename "rx" queues to "completion" queues. Calling tx completion queues "rx
-> > +  queues" is confusing.
-> > +* struct rx_ring is used for rx and tx completions, with some members relevant
-> > +  to one case only
-> > +* the flow control implementation in firmware is buggy (sends a flood of pause
-> > +  frames, resets the link, device and driver buffer queues become
-> > +  desynchronized), disable it by default
-> > +* the driver has a habit of using runtime checks where compile time checks are
-> > +  possible (ex. qlge_free_rx_buffers())
-> > +* reorder struct members to avoid holes if it doesn't impact performance
-> > +* use better-suited apis (ex. use pci_iomap() instead of ioremap())
-> > +* remove duplicate and useless comments
-> > +* fix weird line wrapping (all over, ex. the qlge_set_routing_reg() calls in
-> > +  qlge_set_multicast_list()).
-> > +* remove useless casts (ex. memset((void *)mac_iocb_ptr, ...))
-> > +* fix checkpatch issues
-> 
-> In looking at this again, are you sure you all want this in the tree?
-> I'm glad to take the revert but ONLY if you are willing to then take a
-> "move this to drivers/net/" patch for the code as well, WITH an actual
-> maintainer and developer who is willing to do the work for this code.
-> 
-> In all the years that this has been in the staging tree, the listed
-> maintainers have not been active at all from what I can remember, and
-> obviously the above list of "things to fix" have not really been worked
-> on at all.
-> 
-> So why should it be added back?  I understand there is at least one
-> reported user, but for drivers in the staging tree, that's not a good
-> reason to keep them around if there is not an actual maintainer that is
-> willing to do the work.
-> 
-> Which reminds me, we should probably sweep the drivers/staging/ tree
-> again to see what we can remove given a lack of real development.
-> Normally we do that every other year or so, and this driver would fall
-> into the "no one is doing anything with it" category and should be
-> dropped.
+Hi,
 
-Thank you for revisiting this topic. I agree with you that it's better
-not to add orphaned code back into the kernel. I didn't want users to be
-left out in the cold by the removal of the driver, so I just created a
-dkms package as a fallback:
-https://github.com/gobenji/qlge-dkms
+Rather than posting the entire set of vCPU kernel patches, this is a
+subset of those patches which I hope will be able to be appropriately
+queued for the next merge window. I am also hoping that nothing here
+is covered by Rafael's concerns he alluded to in his response to the
+RFC v3 series.
 
-People who want to use qlge with the latest kernel can use that package.
-Since the driver code is not mainline quality and there isn't much
-willingness to invest in its improvement, I think it's fitting that the
-code lives out of tree. Of course, if somebody takes ownership of the
-code and substantially improves it, they can submit it back to netdev.
+This series aims to switch most architectures over to using generic CPU
+devices rather than arch specific implementations, which I think is
+worthwhile doing even if the vCPU hotplug series needs further work.
+
+Since this series changes the init order (node_dev_init() vs
+cpu_dev_init()) and later on in the vCPU hotplug series move the
+location that CPUs are registered, the first two patches head off
+problems with register_cpu_capacity_sysctl() and the intel_epb code.
+These two were ordered later in the original series.
+
+The next pair of patches are new and remove the exports of
+arch_*register_cpu() which are not necessary - these functions are only
+called from non-modular code - drivers/base/cpu.c and acpi_processor.c
+both of which can only be built-in.
+
+The majority of the other patches come from the vCPU hotplug RFC v3
+series I posted earlier, rebased on Linus' current tip, but with some
+new patches adding arch_cpu_is_hotpluggable() as the remaining
+arch_register_cpu() functions only differ in the setting of the
+hotpluggable member of the CPU device - so let's get generic code
+doing that and provide a way for an architecture to specify whether a
+CPU is hotpluggable.
+
+I would appreciate testing reports on loongarch, riscv and x86
+platforms please.
+
+Thanks!
+
+ arch/arm64/Kconfig               |  1 +
+ arch/arm64/include/asm/cpu.h     |  1 -
+ arch/arm64/kernel/setup.c        | 13 ++-----------
+ arch/loongarch/Kconfig           |  2 ++
+ arch/loongarch/kernel/topology.c | 42 ++--------------------------------------
+ arch/riscv/Kconfig               |  1 +
+ arch/riscv/kernel/setup.c        | 18 ++---------------
+ arch/x86/Kconfig                 |  2 ++
+ arch/x86/include/asm/cpu.h       |  4 ----
+ arch/x86/kernel/cpu/intel_epb.c  |  2 +-
+ arch/x86/kernel/topology.c       | 33 ++-----------------------------
+ drivers/acpi/Kconfig             |  1 -
+ drivers/acpi/acpi_processor.c    | 18 -----------------
+ drivers/base/arch_topology.c     | 38 ++++++++++++++++++++++++------------
+ drivers/base/cpu.c               | 39 +++++++++++++++++++++++++++++--------
+ drivers/base/init.c              |  2 +-
+ drivers/base/node.c              |  7 -------
+ include/linux/cpu.h              |  5 +++++
+ 18 files changed, 78 insertions(+), 151 deletions(-)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
