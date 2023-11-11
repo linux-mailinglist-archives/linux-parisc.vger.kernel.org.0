@@ -2,186 +2,106 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 779107E8CD4
-	for <lists+linux-parisc@lfdr.de>; Sat, 11 Nov 2023 22:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D43277E8CD8
+	for <lists+linux-parisc@lfdr.de>; Sat, 11 Nov 2023 22:28:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229588AbjKKVVr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 11 Nov 2023 16:21:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57040 "EHLO
+        id S229548AbjKKV2M convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Sat, 11 Nov 2023 16:28:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjKKVVq (ORCPT
+        with ESMTP id S229436AbjKKV2L (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 11 Nov 2023 16:21:46 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D693C30F9;
-        Sat, 11 Nov 2023 13:21:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1699737687; x=1700342487; i=deller@gmx.de;
-        bh=id1n3yVKcUBZD+QqMa5A1cM8mAHPt2EURLm7pJ7XxFw=;
-        h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
-        b=iMWemk+qizRCVa678H/5i6iOCTRdekGNF4PV/N8OUAgPlyjURl3Kp2Rs5qo2bWIl
-         RZJ2NHb1PT+CpRo66nH1bw+CHdB6mT51NF220QW5OPS/1G3XhABrDiO6fx+2fffX3
-         QYC28g/sr5j2PQ2htowy2iVE5IJdusysaglr/RdGuhhLT5ncUz4YBgsz5TdPMfoa6
-         Z2YgB5oA6sIlvLOP5IuADU/ct4gx56E/8A3mKAmwjNTQjGttyuc3j29CrGaSeXu/A
-         PYw9IVpuUxS77DbEidNQTq+qRwqOqCrp5qI354QT2K36OukxhRWZc360l1tGnkhGY
-         oNJxOIA1gybmxmaTYQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.146.111]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M7JzQ-1r31LP0hUi-007hvw; Sat, 11
- Nov 2023 22:21:27 +0100
-Message-ID: <71ab4fa2-311f-4221-9f50-2f49f2f80b5c@gmx.de>
-Date:   Sat, 11 Nov 2023 22:21:25 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bisected stability regression in 6.6
-Content-Language: en-US
-To:     matoro <matoro_mailinglist_kernel@matoro.tk>,
+        Sat, 11 Nov 2023 16:28:11 -0500
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3429F;
+        Sat, 11 Nov 2023 13:28:08 -0800 (PST)
+References: <75318812c588816e0c741b4cd094524f@matoro.tk>
+ <71ab4fa2-311f-4221-9f50-2f49f2f80b5c@gmx.de>
+User-agent: mu4e 1.10.8; emacs 30.0.50
+From:   Sam James <sam@gentoo.org>
+To:     Helge Deller <deller@gmx.de>
+Cc:     matoro <matoro_mailinglist_kernel@matoro.tk>,
         linux-parisc@vger.kernel.org,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Sam James <sam@gentoo.org>
-References: <75318812c588816e0c741b4cd094524f@matoro.tk>
-From:   Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
- HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
- r+8w6mkccOM9GhoPU0vMaD/UVJcJQzvrxVHO8EHS36aUkjKd6cOpdVbCt3qx8cEhCmaFEO6u
- CL+k5AZQoABbFQEBocZE1/lSYzaHkcHrjn4cQjc3CffXnUVYwlo8EYOtAHgMDC39s9a7S90L
- 69l6G73lYBD/Br5lnDPlG6dKfGFZZpQ1h8/x+Qz366Ojfq9MuuRJg7ZQpe6foiOtqwKym/zV
- dVvSdOOc5sHSpfwu5+BVAAyBd6hw4NddlAQUjHSRs3zJ9OfrEx2d3mIfXZ7+pMhZ7qX0Axlq
- Lq+B5cfLpzkPAgKn11tfXFxP+hcPHIts0bnDz4EEp+HraW+oRCH2m57Y9zhcJTOJaLw4YpTY
- GRUlF076vZ2Hz/xMEvIJddRGId7UXZgH9a32NDf+BUjWEZvFt1wFSW1r7zb7oGCwZMy2LI/G
- aHQv/N0NeFMd28z+deyxd0k1CGefHJuJcOJDVtcE1rGQ43aDhWSpXvXKDj42vFD2We6uIo9D
- 1VNre2+uAxFzqqf026H6cH8hin9Vnx7p3uq3Dka/Y/qmRFnKVQARAQABzRxIZWxnZSBEZWxs
- ZXIgPGRlbGxlckBnbXguZGU+wsGRBBMBCAA7AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
- FiEERUSCKCzZENvvPSX4Pl89BKeiRgMFAl3J1zsCGQEACgkQPl89BKeiRgNK7xAAg6kJTPje
- uBm9PJTUxXaoaLJFXbYdSPfXhqX/BI9Xi2VzhwC2nSmizdFbeobQBTtRIz5LPhjk95t11q0s
- uP5htzNISPpwxiYZGKrNnXfcPlziI2bUtlz4ke34cLK6MIl1kbS0/kJBxhiXyvyTWk2JmkMi
- REjR84lCMAoJd1OM9XGFOg94BT5aLlEKFcld9qj7B4UFpma8RbRUpUWdo0omAEgrnhaKJwV8
- qt0ULaF/kyP5qbI8iA2PAvIjq73dA4LNKdMFPG7Rw8yITQ1Vi0DlDgDT2RLvKxEQC0o3C6O4
- iQq7qamsThLK0JSDRdLDnq6Phv+Yahd7sDMYuk3gIdoyczRkXzncWAYq7XTWl7nZYBVXG1D8
- gkdclsnHzEKpTQIzn/rGyZshsjL4pxVUIpw/vdfx8oNRLKj7iduf11g2kFP71e9v2PP94ik3
- Xi9oszP+fP770J0B8QM8w745BrcQm41SsILjArK+5mMHrYhM4ZFN7aipK3UXDNs3vjN+t0zi
- qErzlrxXtsX4J6nqjs/mF9frVkpv7OTAzj7pjFHv0Bu8pRm4AyW6Y5/H6jOup6nkJdP/AFDu
- 5ImdlA0jhr3iLk9s9WnjBUHyMYu+HD7qR3yhX6uWxg2oB2FWVMRLXbPEt2hRGq09rVQS7DBy
- dbZgPwou7pD8MTfQhGmDJFKm2jvOwU0EXchrcwEQAOsDQjdtPeaRt8EP2pc8tG+g9eiiX9Sh
- rX87SLSeKF6uHpEJ3VbhafIU6A7hy7RcIJnQz0hEUdXjH774B8YD3JKnAtfAyuIU2/rOGa/v
- UN4BY6U6TVIOv9piVQByBthGQh4YHhePSKtPzK9Pv/6rd8H3IWnJK/dXiUDQllkedrENXrZp
- eLUjhyp94ooo9XqRl44YqlsrSUh+BzW7wqwfmu26UjmAzIZYVCPCq5IjD96QrhLf6naY6En3
- ++tqCAWPkqKvWfRdXPOz4GK08uhcBp3jZHTVkcbo5qahVpv8Y8mzOvSIAxnIjb+cklVxjyY9
- dVlrhfKiK5L+zA2fWUreVBqLs1SjfHm5OGuQ2qqzVcMYJGH/uisJn22VXB1c48yYyGv2HUN5
- lC1JHQUV9734I5cczA2Gfo27nTHy3zANj4hy+s/q1adzvn7hMokU7OehwKrNXafFfwWVK3OG
- 1dSjWtgIv5KJi1XZk5TV6JlPZSqj4D8pUwIx3KSp0cD7xTEZATRfc47Yc+cyKcXG034tNEAc
- xZNTR1kMi9njdxc1wzM9T6pspTtA0vuD3ee94Dg+nDrH1As24uwfFLguiILPzpl0kLaPYYgB
- wumlL2nGcB6RVRRFMiAS5uOTEk+sJ/tRiQwO3K8vmaECaNJRfJC7weH+jww1Dzo0f1TP6rUa
- fTBRABEBAAHCwXYEGAEIACAWIQRFRIIoLNkQ2+89Jfg+Xz0Ep6JGAwUCXchrcwIbDAAKCRA+
- Xz0Ep6JGAxtdEAC54NQMBwjUNqBNCMsh6WrwQwbg9tkJw718QHPw43gKFSxFIYzdBzD/YMPH
- l+2fFiefvmI4uNDjlyCITGSM+T6b8cA7YAKvZhzJyJSS7pRzsIKGjhk7zADL1+PJei9p9idy
- RbmFKo0dAL+ac0t/EZULHGPuIiavWLgwYLVoUEBwz86ZtEtVmDmEsj8ryWw75ZIarNDhV74s
- BdM2ffUJk3+vWe25BPcJiaZkTuFt+xt2CdbvpZv3IPrEkp9GAKof2hHdFCRKMtgxBo8Kao6p
- Ws/Vv68FusAi94ySuZT3fp1xGWWf5+1jX4ylC//w0Rj85QihTpA2MylORUNFvH0MRJx4mlFk
- XN6G+5jIIJhG46LUucQ28+VyEDNcGL3tarnkw8ngEhAbnvMJ2RTx8vGh7PssKaGzAUmNNZiG
- MB4mPKqvDZ02j1wp7vthQcOEg08z1+XHXb8ZZKST7yTVa5P89JymGE8CBGdQaAXnqYK3/yWf
- FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
- 4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
- ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <75318812c588816e0c741b4cd094524f@matoro.tk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:I1ZfSchkAcCQUY5n4C3yeIgUKl1IfHIezvnO8OYf4N/65jY80Tw
- ARgfRaydZhxKXNqZTLRRfN7ZNkangu/0/g/F5B9N4UwQBkev+q/r+5tSqOs46WMZAyUB33C
- qYI89OmLWCpTWUfdTevolJso3bVXu7CxIyFVl0EgGWHmMLk4U5USANxKNF2LRKuv+QQgZO5
- rKIoWscfIeXNft4oXeSsQ==
-UI-OutboundReport: notjunk:1;M01:P0:cVZ/Ypwlg0E=;ugSyBFczcm8jGz4hwEB4ab2+Uw0
- Rl9J1xwoQgDjzFVzF6bMlCfyWeURIhIehNKHH7YqxBgql31eXIckudOqc9I19mpn7r33ZyUin
- Cv/Kh+NNjKPhO+UtmwyT4/tYQdq0oNulxrfYmyGzThibY5OcL+zD2an2FPxH+oaHuzgeBbHSr
- EZvQcXrnqB6SgurExgFnKEKqMDThRUh5cD6L5h24AsRdEToxXdGSCZV9R1/Bf1EgOZHSNC3nr
- dPyStDveEv3/Ub1dHC3e47ZNwDTMJjFJbmwOijAo3pla7Q/zP5SIsbvQR3g9aWZafxUhMGy2Y
- QvjAXHX6YMZ9heMky/26o6UjJu0zjY6tPWZlSChTjLwOn63JOZHX2AxH7RX8M4RugW2QwrbCl
- e4HAt3TWDQANKefz8CyjUvnFZmOwWZjKihuyCgjoLJoL5z3epAUkZu4N9nGM4q1qgWOU/X3QF
- aJ1BVu+guqJoR7OUptQSuxgLRVh+L5h1Ht2ZwPs1hI75kEmGVHZq7qFhOOxlXuuQEm7Xu3Azl
- eDmLX96FZuYOqQC3YgbaIY2zBDFev0AGmn1jmkA7Wom2P8ewbsJtDWZVF2zVGNczJXOm0XnlK
- IXJwJCyMTBJU+MB6jbmwDEjseWK+ap4dEWP/jhfLx/87i960Nemsh8Keur1zFwGEdwbxX9VGX
- FmRfgrjBNWAo5+lG3bAbKvEX/zdr9XYY4g9ybipaSuLrPO5n+1ppcUFW8jsRlU0eediB5O/tS
- RlAuVXrU9JKg9xdRmd48CTiNBNla5Mw7JKTNXcqXbPykryrm9Pt893TtByg0yIbJI7VFkkrUi
- Cf/mISe8tORlnPV4d5Z3DgZFXTfn7Mq1cWwzoiHCsMiffAgCj42peP9uayxszxFijCUZlv/Sq
- WqOgGUDBDoAUGCM+IMDXH1nVeZdEtP+e3rERThCgpZoRbmQ/kw06Rc11w7dmqjv5W/iSbtc3W
- fbV+Aw==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Subject: Re: Bisected stability regression in 6.6
+Date:   Sat, 11 Nov 2023 21:27:54 +0000
+Organization: Gentoo
+In-reply-to: <71ab4fa2-311f-4221-9f50-2f49f2f80b5c@gmx.de>
+Message-ID: <87edgw6kuz.fsf@gentoo.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 11/11/23 07:31, matoro wrote:
-> Hi Helge, I have bisected a regression in 6.6 which is causing
-> userspace segfaults at a significantly increased rate in kernel 6.6.
-> There seems to be a pathological case triggered by the ninja build
-> tool.  The test case I have been using is cmake with ninja backend to
-> attempt to build the nghttp2 package.  In 6.6, this segfaults, not at
-> the same location every time, but with enough reliability that I was
-> able to use it as a bisection regression case, including immediately
-> after a reboot.  In the kernel log, these show up as "trap #15: Data
-> TLB miss fault" messages.  Now these messages can and do show up in
-> 6.5 causing segfaults, but never immediately after a reboot and
-> infrequently enough that the system is stable.  With kernel 6.6 I am
-> completely unable to build nghttp2 under any circumstances.
->
-> I have bisected this down to the following commit:
->
-> $ git bisect good
-> 3033cd4307681c60db6d08f398a64484b36e0b0f is the first bad commit
-> commit 3033cd4307681c60db6d08f398a64484b36e0b0f
-> Author: Helge Deller <deller@gmx.de>
-> Date:=C2=A0=C2=A0 Sat Aug 19 00:53:28 2023 +0200
->
->  =C2=A0=C2=A0=C2=A0 parisc: Use generic mmap top-down layout and brk ran=
-domization
->
->  =C2=A0=C2=A0=C2=A0 parisc uses a top-down layout by default that exactl=
-y fits the generic
->  =C2=A0=C2=A0=C2=A0 functions, so get rid of arch specific code and use =
-the generic version
->  =C2=A0=C2=A0=C2=A0 by selecting ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT.
->
->  =C2=A0=C2=A0=C2=A0 Note that on parisc the stack always grows up and a =
-"unlimited stack"
->  =C2=A0=C2=A0=C2=A0 simply means that the value as defined in CONFIG_STA=
-CK_MAX_DEFAULT_SIZE_MB
->  =C2=A0=C2=A0=C2=A0 should be used. So RLIM_INFINITY is not an indicator=
- to use the legacy
->  =C2=A0=C2=A0=C2=A0 memory layout.
->
->  =C2=A0=C2=A0=C2=A0 Signed-off-by: Helge Deller <deller@gmx.de>
->
->  =C2=A0arch/parisc/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 17 +++++++++++++
->  =C2=A0arch/parisc/kernel/process.c=C2=A0=C2=A0=C2=A0 | 14 -----------
->  =C2=A0arch/parisc/kernel/sys_parisc.c | 54 +---------------------------=
--------------
->  =C2=A0mm/util.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 |=C2=A0 5 +++-
->  =C2=A04 files changed, 22 insertions(+), 68 deletions(-)
 
-Thanks for your report!
-I think it's quite unlikely that this patch introduces such a bad regressi=
-on.
-I'd suspect some other bad commmit, but I'll try to reproduce.
+Helge Deller <deller@gmx.de> writes:
 
-In any case, do you have CONFIG_BPF_JIT enabled? If so, could you try
-to reproduce with CONFIG_BPF_JIT disabled?
-The JIT is quite new in v6.6 and I did face some crashes and disabling
-it helped me so far.
+> On 11/11/23 07:31, matoro wrote:
+>> Hi Helge, I have bisected a regression in 6.6 which is causing
+>> userspace segfaults at a significantly increased rate in kernel 6.6.
+>> There seems to be a pathological case triggered by the ninja build
+>> tool.  The test case I have been using is cmake with ninja backend to
+>> attempt to build the nghttp2 package.  In 6.6, this segfaults, not at
+>> the same location every time, but with enough reliability that I was
+>> able to use it as a bisection regression case, including immediately
+>> after a reboot.  In the kernel log, these show up as "trap #15: Data
+>> TLB miss fault" messages.  Now these messages can and do show up in
+>> 6.5 causing segfaults, but never immediately after a reboot and
+>> infrequently enough that the system is stable.  With kernel 6.6 I am
+>> completely unable to build nghttp2 under any circumstances.
+>>
+>> I have bisected this down to the following commit:
+>>
+>> $ git bisect good
+>> 3033cd4307681c60db6d08f398a64484b36e0b0f is the first bad commit
+>> commit 3033cd4307681c60db6d08f398a64484b36e0b0f
+>> Author: Helge Deller <deller@gmx.de>
+>> Date:   Sat Aug 19 00:53:28 2023 +0200
+>>
+>>      parisc: Use generic mmap top-down layout and brk randomization
+>>
+>>      parisc uses a top-down layout by default that exactly fits the generic
+>>      functions, so get rid of arch specific code and use the generic version
+>>      by selecting ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT.
+>>
+>>      Note that on parisc the stack always grows up and a "unlimited stack"
+>>      simply means that the value as defined in CONFIG_STACK_MAX_DEFAULT_SIZE_MB
+>>      should be used. So RLIM_INFINITY is not an indicator to use the legacy
+>>      memory layout.
+>>
+>>      Signed-off-by: Helge Deller <deller@gmx.de>
+>>
+>>   arch/parisc/Kconfig             | 17 +++++++++++++
+>>   arch/parisc/kernel/process.c    | 14 -----------
+>>   arch/parisc/kernel/sys_parisc.c | 54 +----------------------------------------
+>>   mm/util.c                       |  5 +++-
+>>   4 files changed, 22 insertions(+), 68 deletions(-)
+>
+> Thanks for your report!
+> I think it's quite unlikely that this patch introduces such a bad regression.
+> I'd suspect some other bad commmit, but I'll try to reproduce.
 
-> I have tried applying ad4aa06e1d92b06ed56c7240252927bd60632efe
-> ("parisc: Add nop instructions after TLB inserts") on top of 6.6, but
-> it does NOT fix the issue.
+matoro, does a revert apply cleanly? Does it help?
 
-Ok.
+>
+> In any case, do you have CONFIG_BPF_JIT enabled? If so, could you try
+> to reproduce with CONFIG_BPF_JIT disabled?
+> The JIT is quite new in v6.6 and I did face some crashes and disabling
+> it helped me so far.
+>
+>> I have tried applying ad4aa06e1d92b06ed56c7240252927bd60632efe
+>> ("parisc: Add nop instructions after TLB inserts") on top of 6.6, but
+>> it does NOT fix the issue.
+>
+> Ok.
+>
+> Helge
 
-Helge
