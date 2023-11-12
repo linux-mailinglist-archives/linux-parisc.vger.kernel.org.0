@@ -2,54 +2,54 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF6547E8D8D
-	for <lists+linux-parisc@lfdr.de>; Sun, 12 Nov 2023 00:33:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 093F77E8DB5
+	for <lists+linux-parisc@lfdr.de>; Sun, 12 Nov 2023 01:55:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229809AbjKKXdx (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 11 Nov 2023 18:33:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33048 "EHLO
+        id S229876AbjKLAzv (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 11 Nov 2023 19:55:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjKKXdx (ORCPT
+        with ESMTP id S229869AbjKLAzu (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 11 Nov 2023 18:33:53 -0500
-Received: from matoro.tk (unknown [IPv6:2600:1700:4b10:9d80::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6FF022D64;
-        Sat, 11 Nov 2023 15:33:48 -0800 (PST)
-DKIM-Signature: a=rsa-sha256; bh=3lLVyM+GUUWWbM7o58Cgp2uwn+hDrzsIki7REo9oUSE=;
- c=relaxed/relaxed; d=matoro.tk;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@matoro.tk; s=20230917; t=1699745622; v=1; x=1700177622;
- b=UDMaOS2E0UeYagEIjJCmSUZV5xnjwoUjQdTIDxsLBuUnGgEcpJEGtFIyQ21ybzCKumHxsh3A
- 2pDyOXmRzxHgN2zekg0NljTDPrI6zsGDDoo4oL6VGnSXBcZQ5hN323yn372abjH+6/l3StAWF/B
- F3g16KKjhjvGcaLRa8qMIHSl5WdeC2s5kZdbrcER6IAcLWHMlazurmOlgHiwdedz3S9iYO+Ry44
- ln2bnmFDwP34RA1rqMgj5H8xzq25H7mLvE81Dh3MtIONtuNg8wRCdAH3lwiCCEMryyBdJ0IvDSx
- yQQ8d++7H/2oKuX+7XSUV0+Im1G/cr5uxHNfF1mxdIF2I6cDFj7NaYkwTbj/1tvgY7GtDEwcyFs
- mkTDQObAvlesHfQterEFDIFykFR3PwsH6fAPC7FlIhJuebTN1UXFSPyM53gt8Ddyl01X5mRBB7v
- Dc20hq4jAvOXr57uQOUVrM3GfrHVN/J5ZH694xGtL7zg+HuDCVdXnvNVmd9Gh4yE3WEjEfEM/2i
- EAiqRB+s/E3VHWnjSiiXMcSwNYJ2YP0eGn0aNuW1mehSERPGBpapc35avUEfwePWI7+kY9e+b8x
- 3PTp8vH2wCoFYR5Uix7tR0IYQSL3OLx+q08u45QRVKbKIbbiHmX3iPeC97T8akIdI6zm60xkWr8
- 6WuZmu0/VkU=
-Received: by matoro.tk (envelope-sender
- <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id 68e9f17b; Sat, 11 Nov
- 2023 18:33:42 -0500
+        Sat, 11 Nov 2023 19:55:50 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2894930F9;
+        Sat, 11 Nov 2023 16:55:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8B3C5C433A9;
+        Sun, 12 Nov 2023 00:55:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699750546;
+        bh=XrSajqyIX/GMIupsbLdryjwZSJcnce+GPP7KDkPQhtc=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=eWIdIwNOLNdqkngfPRmCRaOwzQqWEdVf4fyQfsJ9hX51PDQ3bhmSI9QZtsMgYrcIF
+         8aHZMYs4gOL/4gSqcMm7IRvWe1PcqRpqOtwPinsNQE/yPNH1jAjAZc0qUF+cE2rkNp
+         nglRwyteoICzPFjGnf2iZ6kKToydLI7h8VBgwrPRWc0yrSSWvf4CHXHy6ARxGcy9DF
+         YIFq9xAbPweOOdZvVR9AfcNgB3Ga1hsegS0aAjb+9DN11BMP4pAVieNjxsE9qae8rb
+         FS/26AIT3WSbus8G7Vwa6iQL37+L3sU0hhWl6PyV4EpenSbokJHdqOpR8gqAekhlG3
+         5K+C9ET1I0p3w==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 68EEAE0008E;
+        Sun, 12 Nov 2023 00:55:46 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Date:   Sat, 11 Nov 2023 18:33:42 -0500
-From:   matoro <matoro_mailinglist_kernel@matoro.tk>
-To:     Sam James <sam@gentoo.org>
-Cc:     Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: Bisected stability regression in 6.6
-In-Reply-To: <87edgw6kuz.fsf@gentoo.org>
-References: <75318812c588816e0c741b4cd094524f@matoro.tk>
- <71ab4fa2-311f-4221-9f50-2f49f2f80b5c@gmx.de> <87edgw6kuz.fsf@gentoo.org>
-Message-ID: <9a84b68e9a538a66842dccc5efb8bdf8@matoro.tk>
-X-Sender: matoro_mailinglist_kernel@matoro.tk
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+Subject: Re: [PATCH v2 1/2] kbuild: unify vdso_install rules
+From:   patchwork-bot+linux-riscv@kernel.org
+Message-Id: <169975054642.11360.1289704479646976676.git-patchwork-notify@kernel.org>
+Date:   Sun, 12 Nov 2023 00:55:46 +0000
+References: <20231014105436.2119702-1-masahiroy@kernel.org>
+In-Reply-To: <20231014105436.2119702-1-masahiroy@kernel.org>
+To:     Masahiro Yamada <masahiroy@kernel.org>
+Cc:     linux-riscv@lists.infradead.org, linux-kbuild@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+        loongarch@lists.linux.dev, sparclinux@vger.kernel.org,
+        x86@kernel.org, svens@linux.ibm.com, nicolas@fjasle.eu,
+        guoren@kernel.org, deller@gmx.de
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,75 +57,31 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 2023-11-11 16:27, Sam James wrote:
-> Helge Deller <deller@gmx.de> writes:
-> 
->> On 11/11/23 07:31, matoro wrote:
->>> Hi Helge, I have bisected a regression in 6.6 which is causing
->>> userspace segfaults at a significantly increased rate in kernel 6.6.
->>> There seems to be a pathological case triggered by the ninja build
->>> tool.  The test case I have been using is cmake with ninja backend to
->>> attempt to build the nghttp2 package.  In 6.6, this segfaults, not at
->>> the same location every time, but with enough reliability that I was
->>> able to use it as a bisection regression case, including immediately
->>> after a reboot.  In the kernel log, these show up as "trap #15: Data
->>> TLB miss fault" messages.  Now these messages can and do show up in
->>> 6.5 causing segfaults, but never immediately after a reboot and
->>> infrequently enough that the system is stable.  With kernel 6.6 I am
->>> completely unable to build nghttp2 under any circumstances.
->>> 
->>> I have bisected this down to the following commit:
->>> 
->>> $ git bisect good
->>> 3033cd4307681c60db6d08f398a64484b36e0b0f is the first bad commit
->>> commit 3033cd4307681c60db6d08f398a64484b36e0b0f
->>> Author: Helge Deller <deller@gmx.de>
->>> Date:   Sat Aug 19 00:53:28 2023 +0200
->>> 
->>>      parisc: Use generic mmap top-down layout and brk randomization
->>> 
->>>      parisc uses a top-down layout by default that exactly fits the 
->>> generic
->>>      functions, so get rid of arch specific code and use the generic 
->>> version
->>>      by selecting ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT.
->>> 
->>>      Note that on parisc the stack always grows up and a "unlimited stack"
->>>      simply means that the value as defined in 
->>> CONFIG_STACK_MAX_DEFAULT_SIZE_MB
->>>      should be used. So RLIM_INFINITY is not an indicator to use the 
->>> legacy
->>>      memory layout.
->>> 
->>>      Signed-off-by: Helge Deller <deller@gmx.de>
->>> 
->>>   arch/parisc/Kconfig             | 17 +++++++++++++
->>>   arch/parisc/kernel/process.c    | 14 -----------
->>>   arch/parisc/kernel/sys_parisc.c | 54 
->>> +----------------------------------------
->>>   mm/util.c                       |  5 +++-
->>>   4 files changed, 22 insertions(+), 68 deletions(-)
->> 
->> Thanks for your report!
->> I think it's quite unlikely that this patch introduces such a bad 
->> regression.
->> I'd suspect some other bad commmit, but I'll try to reproduce.
-> 
-> matoro, does a revert apply cleanly? Does it help?
+Hello:
 
-Yes, I just tested this and it cleanly reverts on linux-6.6.y and the revert 
-does fix the issue.
+This series was applied to riscv/linux.git (fixes)
+by Masahiro Yamada <masahiroy@kernel.org>:
 
->> 
->> In any case, do you have CONFIG_BPF_JIT enabled? If so, could you try
->> to reproduce with CONFIG_BPF_JIT disabled?
->> The JIT is quite new in v6.6 and I did face some crashes and disabling
->> it helped me so far.
->> 
->>> I have tried applying ad4aa06e1d92b06ed56c7240252927bd60632efe
->>> ("parisc: Add nop instructions after TLB inserts") on top of 6.6, but
->>> it does NOT fix the issue.
->> 
->> Ok.
->> 
->> Helge
+On Sat, 14 Oct 2023 19:54:35 +0900 you wrote:
+> Currently, there is no standard implementation for vdso_install,
+> leading to various issues:
+> 
+>  1. Code duplication
+> 
+>     Many architectures duplicate similar code just for copying files
+>     to the install destination.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2,1/2] kbuild: unify vdso_install rules
+    https://git.kernel.org/riscv/c/56769ba4b297
+  - [v2,2/2] kbuild: unify no-compiler-targets and no-sync-config-targets
+    https://git.kernel.org/riscv/c/9d361173edc4
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
