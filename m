@@ -2,172 +2,170 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D0DD7E8DDC
-	for <lists+linux-parisc@lfdr.de>; Sun, 12 Nov 2023 02:22:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B6947E8E47
+	for <lists+linux-parisc@lfdr.de>; Sun, 12 Nov 2023 05:22:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229588AbjKLBWf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 11 Nov 2023 20:22:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52802 "EHLO
+        id S229939AbjKLEWK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 11 Nov 2023 23:22:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjKLBWe (ORCPT
+        with ESMTP id S229601AbjKLEWK (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 11 Nov 2023 20:22:34 -0500
-Received: from mx.treblig.org (mx.treblig.org [IPv6:2a00:1098:5b::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 309B430CF;
-        Sat, 11 Nov 2023 17:22:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-        ; s=bytemarkmx; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=yADV1ulXB9BsULTxUaygaf07JUsdLPV9Eeilk9tnlmo=; b=SIugYXvN6tvVYT8so2Ov6RbVlY
-        qT0NIYsCYiHmg2tBXYScZVjYlCToYA+8HvF+6zBkj2iAoPTEFsA6WerAKWsj1wHr4d3Hh/uklsD37
-        l7Ktel8sqe6oCqX90cPliC5EQwBofqmxa2jl/U84uHIG2ZJtRPMGjM1XhuvEH7h8yPn0+KaCaKiNq
-        R00bIZtskU37BjvxjQsKAo9Pp2fB+L2DXRf4PeuyNOuoVHP3wD2/dFhvb29GhgpqrDYjSXu21bGm2
-        /knIvyUYqRNxNvlgvJu+zdVBSg1fjacUaezyVFMRbp7KzL8ByG+RrI+81xqre1GsA10B+NKIyUjGV
-        6skWaoxA==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-        (envelope-from <dg@treblig.org>)
-        id 1r1zBD-008mui-2e;
-        Sun, 12 Nov 2023 01:22:27 +0000
-Date:   Sun, 12 Nov 2023 01:22:27 +0000
-From:   "Dr. David Alan Gilbert" <dave@treblig.org>
-To:     matoro <matoro_mailinglist_kernel@matoro.tk>,
-        HelgeDeller@treblig.org, deller@gmx.de
-Cc:     Sam James <sam@gentoo.org>, linux-parisc@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: Bisected stability regression in 6.6
-Message-ID: <ZVAo0wbqiSC3kB3-@gallifrey>
-References: <75318812c588816e0c741b4cd094524f@matoro.tk>
- <71ab4fa2-311f-4221-9f50-2f49f2f80b5c@gmx.de>
- <87edgw6kuz.fsf@gentoo.org>
- <9a84b68e9a538a66842dccc5efb8bdf8@matoro.tk>
+        Sat, 11 Nov 2023 23:22:10 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 232AB30D1;
+        Sat, 11 Nov 2023 20:22:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF58C433AB;
+        Sun, 12 Nov 2023 04:22:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699762926;
+        bh=FJL4JNEf9Nr1DoflQgnKi0tfP9lyYuVjCmmad2iv8TA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=FacYEZCQKy7zh6VsDp47yhkL+9he5Y+BzcuRtc1i6KHlTBkqaeroQJJDPLMRFLWD9
+         QNhskha1onUHVMj2O/qk8mK8c0vJZhiTXumXWS0CGWZks5ZJFrR6dvkAIDGJkCeV/t
+         6amg22+gEIHVdyPSQgk0L9lJZr+X87dXFazyXH2ThFIzgEMWpLCJskz/nC6CtTqsA+
+         Z9NTC9QINWCby1hgnVCHVFMOnhZXaqZYk/4H/uttsH8za+SgromnkZZytr79DMdLq5
+         z6fSwHr0XX/U0fb4cdcZFZDuYKieV7M2bNXh4VB6zTAsNqvA0mOlgafeRuwkTVq4La
+         Yez2M8oVwyWiQ==
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-52bd9ddb741so5252690a12.0;
+        Sat, 11 Nov 2023 20:22:06 -0800 (PST)
+X-Gm-Message-State: AOJu0Yw1fRuDc9XcvafNK/1x/b/M4Fh4EyZo0KDm9eGurcS/rIWfQqv0
+        VjXPKVOG7l2f08dG09H3CibhTWMVH9X87+xsUQs=
+X-Google-Smtp-Source: AGHT+IGKtBb4zpepnAgJWTPQf4OFL8Yxg0IypTLD7L38xtqORdph/fQnU2/w9oi/MfemCZAy/+rZ76w/2ug+y+JaBNQ=
+X-Received: by 2002:a05:6402:3d9:b0:53f:731a:e513 with SMTP id
+ t25-20020a05640203d900b0053f731ae513mr2174574edw.25.1699762924720; Sat, 11
+ Nov 2023 20:22:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9a84b68e9a538a66842dccc5efb8bdf8@matoro.tk>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-12-amd64 (x86_64)
-X-Uptime: 01:20:00 up 57 days,  4:18,  1 user,  load average: 0.00, 0.00, 0.00
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20231108125843.3806765-1-arnd@kernel.org> <20231108125843.3806765-13-arnd@kernel.org>
+In-Reply-To: <20231108125843.3806765-13-arnd@kernel.org>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Sat, 11 Nov 2023 23:21:53 -0500
+X-Gmail-Original-Message-ID: <CAJF2gTSEziwKn+f6DfZXRuzW1SXaWraKL2HdXMRkEOGyuHq3MQ@mail.gmail.com>
+Message-ID: <CAJF2gTSEziwKn+f6DfZXRuzW1SXaWraKL2HdXMRkEOGyuHq3MQ@mail.gmail.com>
+Subject: Re: [PATCH 12/22] csky: fix arch_jump_label_transform_static override
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kbuild@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Geoff Levand <geoff@infradead.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
+        Helge Deller <deller@gmx.de>,
+        Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Timur Tabi <timur@kernel.org>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+        Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
+        Kees Cook <keescook@chromium.org>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-trace-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-bcachefs@vger.kernel.org,
+        linux-mtd@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-* matoro (matoro_mailinglist_kernel@matoro.tk) wrote:
-> On 2023-11-11 16:27, Sam James wrote:
-> > Helge Deller <deller@gmx.de> writes:
-> > 
-> > > On 11/11/23 07:31, matoro wrote:
-> > > > Hi Helge, I have bisected a regression in 6.6 which is causing
-> > > > userspace segfaults at a significantly increased rate in kernel 6.6.
-> > > > There seems to be a pathological case triggered by the ninja build
-> > > > tool.  The test case I have been using is cmake with ninja backend to
-> > > > attempt to build the nghttp2 package.  In 6.6, this segfaults, not at
-> > > > the same location every time, but with enough reliability that I was
-> > > > able to use it as a bisection regression case, including immediately
-> > > > after a reboot.  In the kernel log, these show up as "trap #15: Data
-> > > > TLB miss fault" messages.  Now these messages can and do show up in
-> > > > 6.5 causing segfaults, but never immediately after a reboot and
-> > > > infrequently enough that the system is stable.  With kernel 6.6 I am
-> > > > completely unable to build nghttp2 under any circumstances.
-> > > > 
-> > > > I have bisected this down to the following commit:
-> > > > 
-> > > > $ git bisect good
-> > > > 3033cd4307681c60db6d08f398a64484b36e0b0f is the first bad commit
-> > > > commit 3033cd4307681c60db6d08f398a64484b36e0b0f
-> > > > Author: Helge Deller <deller@gmx.de>
-> > > > Date:   Sat Aug 19 00:53:28 2023 +0200
-> > > > 
-> > > >      parisc: Use generic mmap top-down layout and brk randomization
-> > > > 
-> > > >      parisc uses a top-down layout by default that exactly fits
-> > > > the generic
-> > > >      functions, so get rid of arch specific code and use the
-> > > > generic version
-> > > >      by selecting ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT.
-> > > > 
-> > > >      Note that on parisc the stack always grows up and a "unlimited stack"
-> > > >      simply means that the value as defined in
-> > > > CONFIG_STACK_MAX_DEFAULT_SIZE_MB
-> > > >      should be used. So RLIM_INFINITY is not an indicator to use
-> > > > the legacy
-> > > >      memory layout.
-> > > > 
-> > > >      Signed-off-by: Helge Deller <deller@gmx.de>
-> > > > 
-> > > >   arch/parisc/Kconfig             | 17 +++++++++++++
-> > > >   arch/parisc/kernel/process.c    | 14 -----------
-> > > >   arch/parisc/kernel/sys_parisc.c | 54
-> > > > +----------------------------------------
-> > > >   mm/util.c                       |  5 +++-
-> > > >   4 files changed, 22 insertions(+), 68 deletions(-)
-> > > 
-> > > Thanks for your report!
-> > > I think it's quite unlikely that this patch introduces such a bad
-> > > regression.
-> > > I'd suspect some other bad commmit, but I'll try to reproduce.
-> > 
-> > matoro, does a revert apply cleanly? Does it help?
-> 
-> Yes, I just tested this and it cleanly reverts on linux-6.6.y and the revert
-> does fix the issue.
+On Wed, Nov 8, 2023 at 8:02=E2=80=AFAM Arnd Bergmann <arnd@kernel.org> wrot=
+e:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> The arch_jump_label_transform_static() function in csky was originally me=
+ant to
+> override the generic __weak function, but that got changed to an #ifndef =
+check.
+>
+> This showed up as a missing-prototype warning:
+> arch/csky/kernel/jump_label.c:43:6: error: no previous prototype for 'arc=
+h_jump_label_transform_static' [-Werror=3Dmissing-prototypes]
+>
+> Change the method to use the new method of having a #define and a prototy=
+pe
+> for the global function.
+>
+> Fixes: 7e6b9db27de9 ("jump_label: make initial NOP patching the special c=
+ase")
+> Fixes: 4e8bb4ba5a55 ("csky: Add jump-label implementation")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/csky/include/asm/jump_label.h | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/arch/csky/include/asm/jump_label.h b/arch/csky/include/asm/j=
+ump_label.h
+> index d488ba6084bc..98a3f4b168bd 100644
+> --- a/arch/csky/include/asm/jump_label.h
+> +++ b/arch/csky/include/asm/jump_label.h
+> @@ -43,5 +43,10 @@ static __always_inline bool arch_static_branch_jump(st=
+ruct static_key *key,
+>         return true;
+>  }
+>
+> +enum jump_label_type;
+> +void arch_jump_label_transform_static(struct jump_entry *entry,
+> +                                     enum jump_label_type type);
+> +#define arch_jump_label_transform_static arch_jump_label_transform_stati=
+c
+> +
+>  #endif  /* __ASSEMBLY__ */
+>  #endif /* __ASM_CSKY_JUMP_LABEL_H */
+> --
+> 2.39.2
+>
+>
+Thank you!
+Reviewed-by: Guo Ren <guoren@kernel.org>
 
-Helge:
-  In that patch is:
-
-diff --git a/mm/util.c b/mm/util.c
-index dd12b9531ac4c..8810206444977 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -396,7 +396,10 @@ static int mmap_is_legacy(struct rlimit *rlim_stack)
-        if (current->personality & ADDR_COMPAT_LAYOUT)
-                return 1;
-
--       if (rlim_stack->rlim_cur == RLIM_INFINITY)
-+       /* On parisc the stack always grows up - so a unlimited stack should
-+        * not be an indicator to use the legacy memory layout. */
-+       if (rlim_stack->rlim_cur == RLIM_INFINITY &&
-+               !IS_ENABLED(CONFIG_STACK_GROWSUP))
-                return 1;
-
-        return sysctl_legacy_va_layout;
-
-is that:
-   '!IS_ENABLED(CONFIG_STACK_GROWSUP))'
-
- the right way around?
-
-That feels inverted to me;  non-parisc don't have that config
-set, so !IS_ENABLED... is true,  so they return 1 instead of checking
-the flag?
-
-Dave
-
-> > > 
-> > > In any case, do you have CONFIG_BPF_JIT enabled? If so, could you try
-> > > to reproduce with CONFIG_BPF_JIT disabled?
-> > > The JIT is quite new in v6.6 and I did face some crashes and disabling
-> > > it helped me so far.
-> > > 
-> > > > I have tried applying ad4aa06e1d92b06ed56c7240252927bd60632efe
-> > > > ("parisc: Add nop instructions after TLB inserts") on top of 6.6, but
-> > > > it does NOT fix the issue.
-> > > 
-> > > Ok.
-> > > 
-> > > Helge
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+--=20
+Best Regards
+ Guo Ren
