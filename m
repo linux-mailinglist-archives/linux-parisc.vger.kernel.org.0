@@ -2,108 +2,119 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49A7D7EB3D5
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 Nov 2023 16:35:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7277A7EB47D
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 Nov 2023 17:09:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232277AbjKNPfK (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Tue, 14 Nov 2023 10:35:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59802 "EHLO
+        id S233779AbjKNQJZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Tue, 14 Nov 2023 11:09:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233671AbjKNPfJ (ORCPT
+        with ESMTP id S233320AbjKNQJY (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Tue, 14 Nov 2023 10:35:09 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8A7121
-        for <linux-parisc@vger.kernel.org>; Tue, 14 Nov 2023 07:35:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1699976106;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=CfaOCzpQNXPNdiOU6+O8brbk3lbOzOfrbuJX1VTIoz4=;
-        b=bjcbWw5vTW1sKf7Nr9IdQApA/aql3VRqAvk0AmKVS+jWR2UiEcpSadE7gWt1fPW4rEyYAx
-        vFpU6tQ866DmmRsb2+dh8aoDNHXlHeSkBEWir790INg3kP2U/XsEqpzt2t+TLc82pjMs7Y
-        JuHLat077gIU5nV41TdGtrPxR5ZLPmY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-62-AhpM6uI5MrejJ0TU97gRjg-1; Tue, 14 Nov 2023 10:34:23 -0500
-X-MC-Unique: AhpM6uI5MrejJ0TU97gRjg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 038751022EE4;
-        Tue, 14 Nov 2023 15:33:26 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.231])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id DBC7A1C060B0;
-        Tue, 14 Nov 2023 15:33:22 +0000 (UTC)
-From:   Baoquan He <bhe@redhat.com>
-To:     linux-kernel@vger.kernel.org
+        Tue, 14 Nov 2023 11:09:24 -0500
+X-Greylist: delayed 355 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Nov 2023 08:09:21 PST
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AC2712C
+        for <linux-parisc@vger.kernel.org>; Tue, 14 Nov 2023 08:09:21 -0800 (PST)
+Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+        by unirelay09.hostedemail.com (Postfix) with ESMTP id 5849480ADD;
+        Tue, 14 Nov 2023 16:03:24 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf17.hostedemail.com (Postfix) with ESMTPA id B79FD17;
+        Tue, 14 Nov 2023 16:03:19 +0000 (UTC)
+Message-ID: <1e7863ec4e4ab10b84fd0e64f30f8464d2e484a3.camel@perches.com>
+Subject: Re: [PATCH 1/7] kexec_file: add kexec_file flag to control debug
+ printing
+From:   Joe Perches <joe@perches.com>
+To:     Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
 Cc:     kexec@lists.infradead.org, x86@kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-parisc@vger.kernel.org, Baoquan He <bhe@redhat.com>
-Subject: [PATCH 7/7] kexec_file, parisc: print out debugging message if required
-Date:   Tue, 14 Nov 2023 23:32:53 +0800
-Message-ID: <20231114153253.241262-8-bhe@redhat.com>
-In-Reply-To: <20231114153253.241262-1-bhe@redhat.com>
+        linux-parisc@vger.kernel.org
+Date:   Tue, 14 Nov 2023 08:03:17 -0800
+In-Reply-To: <20231114153253.241262-2-bhe@redhat.com>
 References: <20231114153253.241262-1-bhe@redhat.com>
+         <20231114153253.241262-2-bhe@redhat.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Rspamd-Queue-Id: B79FD17
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
+        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Rspamd-Server: rspamout06
+X-Stat-Signature: hfguyu43qitk9i95uumxmjn7sq3qxaae
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1+TPCSBX5eIBtFS7cutbFXyyoB+lO2Ea1A=
+X-HE-Tag: 1699977799-197779
+X-HE-Meta: U2FsdGVkX199MxvfdP2OiWMaMCgnF+zen3H+uDaMOt+eo18KFoigVkpo/j1mPnNdRxZsnaKbc/2TMWhhtZ1WYbE4xnaRnZ9D8ImVTw0nNbwHPVmM8K50LsJ54PlQr2IROfdWLMnnNPpRHRTXWI450/26vHlRs47bJHW69JfdozUlDgILIKSRfePjUbHAIXoIKr9/NzIpcA6QdsnzFrKhA8GVb/HExMWgTm+7q60/jyGC6TQFrwo3I1762UXDKC1ld2/TBOn7K4fNFKAezne04n/qoyaeJN2h75PDcDpXFrJm8izGV0wc97AWTmYxsKdc
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-loading related codes.
+On Tue, 2023-11-14 at 23:32 +0800, Baoquan He wrote:
+> When specifying 'kexec -c -d', kexec_load interface will print loading
+> information, e.g the regions where kernel/initrd/purgatory/cmdline
+> are put, the memmap passed to 2nd kernel taken as system RAM ranges,
+> and printing all contents of struct kexec_segment, etc. These are
+> very helpful for analyzing or positioning what's happening when
+> kexec/kdump itself failed. The debugging printing for kexec_load
+> interface is made in user space utility kexec-tools.
+> 
+> Whereas, with kexec_file_load interface, 'kexec -s -d' print nothing.
+> Because kexec_file code is mostly implemented in kernel space, and the
+> debugging printing functionality is missed. It's not convenient when
+> debugging kexec/kdump loading and jumping with kexec_file_load
+> interface.
+> 
+> Now add KEXEC_FILE_DEBUG to kexec_file flag to control the debugging
+> message printing. And add global variable kexec_file_dbg_print and
+> macro kexec_dprintk() to facilitate the printing.
+> 
+> This is a preparation, later kexec_dprintk() will be used to replace the
+> existing pr_debug(). Once 'kexec -s -d' is specified, it will print out
+> kexec/kdump loading information. If '-d' is not specified, it regresses
+> to pr_debug().
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
----
- arch/parisc/kernel/kexec_file.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Not quite as pr_debug is completely eliminated with
+zero object size when DEBUG is not #defined.
 
-diff --git a/arch/parisc/kernel/kexec_file.c b/arch/parisc/kernel/kexec_file.c
-index 8c534204f0fd..011545898da7 100644
---- a/arch/parisc/kernel/kexec_file.c
-+++ b/arch/parisc/kernel/kexec_file.c
-@@ -38,7 +38,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 	for (i = 0; i < image->nr_segments; i++)
- 		image->segment[i].mem = __pa(image->segment[i].mem);
- 
--	pr_debug("Loaded the kernel at 0x%lx, entry at 0x%lx\n",
-+	kexec_dprintk("Loaded the kernel at 0x%lx, entry at 0x%lx\n",
- 		 kernel_load_addr, image->start);
- 
- 	if (initrd != NULL) {
-@@ -51,7 +51,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 		if (ret)
- 			goto out;
- 
--		pr_debug("Loaded initrd at 0x%lx\n", kbuf.mem);
-+		kexec_dprintk("Loaded initrd at 0x%lx\n", kbuf.mem);
- 		image->arch.initrd_start = kbuf.mem;
- 		image->arch.initrd_end = kbuf.mem + initrd_len;
- 	}
-@@ -68,7 +68,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 		if (ret)
- 			goto out;
- 
--		pr_debug("Loaded cmdline at 0x%lx\n", kbuf.mem);
-+		kexec_dprintk("Loaded cmdline at 0x%lx\n", kbuf.mem);
- 		image->arch.cmdline = kbuf.mem;
- 	}
- out:
--- 
-2.41.0
+Now the object size will be larger and contain the
+formats in .text.
+
+[]
+> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+[]
+> @@ -264,6 +264,18 @@ arch_kexec_apply_relocations(struct purgatory_info *pi, Elf_Shdr *section,
+>  	return -ENOEXEC;
+>  }
+>  #endif
+> +
+> +extern bool kexec_file_dbg_print;
+> +
+> +#define kexec_dprintk(fmt, args...)			\
+> +	do {						\
+> +		if (kexec_file_dbg_print)		\
+> +			printk(KERN_INFO fmt, ##args);	\
+> +		else					\
+> +			printk(KERN_DEBUG fmt, ##args);	\
+> +	} while (0)
+> +
+> +
+
+I don't know how many of these printks exist and if
+overall object size matters but using
+
+#define kexec_dprintkfmt, ...)					\
+	printk("%s" fmt,					\
+	       kexec_file_dbg_print ? KERN_INFO : KERN_DEBUG,	\
+	       ##__VA_ARGS__)
+
+should reduce overall object size by eliminating the
+mostly duplicated format in .text which differs only
+by the KERN_<PREFIX>
+
 
