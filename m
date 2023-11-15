@@ -2,62 +2,62 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66FBD7EC2E4
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 Nov 2023 13:51:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7EDF7EC32B
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Nov 2023 14:00:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343800AbjKOMvV (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 15 Nov 2023 07:51:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53090 "EHLO
+        id S1343854AbjKONAp (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 15 Nov 2023 08:00:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343717AbjKOMvV (ORCPT
+        with ESMTP id S1343880AbjKONAl (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 15 Nov 2023 07:51:21 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B216E6
-        for <linux-parisc@vger.kernel.org>; Wed, 15 Nov 2023 04:51:17 -0800 (PST)
+        Wed, 15 Nov 2023 08:00:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 067CA19B
+        for <linux-parisc@vger.kernel.org>; Wed, 15 Nov 2023 05:00:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1700052676;
+        s=mimecast20190719; t=1700053236;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=ehFjwhsPPcv7nimSjR09jzg4Dqe1DEZTTTAxghtYd8o=;
-        b=Li7vBIckN0jSl6O+UzRlH9meV8DXaKk6AOfSd9pUv3OswdDkbpkiWEgxanobhQSe4FgEZs
-        sCCrze/WLh/b17DRe2/pRXK9RX8eDYuWLV7+nyNiBz+RUYIZbZYQ8w8Vrw18IEjA04l9AH
-        qUkhU7COLHorZdp7vCsZXey9OhdUKuY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-378-LR_rUWiCNDKtUhiOdXXDbA-1; Wed,
- 15 Nov 2023 07:51:13 -0500
-X-MC-Unique: LR_rUWiCNDKtUhiOdXXDbA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        bh=MsmoLDm3Vg05W8pfD2SPdYXQ50SnWlB0SUHodkqBzuQ=;
+        b=BRAn2IS6lgjL3BzDJOwwwKFJhZ59iTCBqBM0GrvTiaUFaF6R1d2fmJJU2imr/arPj438p8
+        M7xRly3jEgAISw2h4xoVejN7H7A6sacjc/XaMJoDB8BKFrFoN+AtAR+iV2EM+Zw9mN03vn
+        oYlLZVottdEa2FWQ5nu7Bfxe1HJ3XNg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-625-1eLEqSY3OeWVW86v4Tny6A-1; Wed, 15 Nov 2023 08:00:32 -0500
+X-MC-Unique: 1eLEqSY3OeWVW86v4Tny6A-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9AB1C1C068CA;
-        Wed, 15 Nov 2023 12:51:10 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C3AC4810FC1;
+        Wed, 15 Nov 2023 13:00:31 +0000 (UTC)
 Received: from localhost (unknown [10.72.112.9])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id E5CD41121307;
-        Wed, 15 Nov 2023 12:51:09 +0000 (UTC)
-Date:   Wed, 15 Nov 2023 20:51:06 +0800
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id BA6FF492BFD;
+        Wed, 15 Nov 2023 13:00:30 +0000 (UTC)
+Date:   Wed, 15 Nov 2023 21:00:27 +0800
 From:   Baoquan He <bhe@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     kexec@lists.infradead.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-parisc@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] kexec_file: add kexec_file flag to control debug
- printing
-Message-ID: <ZVS+usu5jCveUIiv@MiWiFi-R3L-srv>
-References: <20231114153253.241262-1-bhe@redhat.com>
- <20231114153253.241262-2-bhe@redhat.com>
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        akpm@linux-foundation.org, ebiederm@xmission.com,
+        takahiro.akashi@linaro.org
+Subject: [PATCH v2 1/2] resource: add walk_system_ram_res_rev()
+Message-ID: <ZVTA6z/06cLnWKUz@MiWiFi-R3L-srv>
+References: <20231114091658.228030-1-bhe@redhat.com>
+ <20231114091658.228030-2-bhe@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231114153253.241262-2-bhe@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+In-Reply-To: <20231114091658.228030-2-bhe@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,110 +66,114 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-When specifying 'kexec -c -d', kexec_load interface will print loading
-information, e.g the regions where kernel/initrd/purgatory/cmdline
-are put, the memmap passed to 2nd kernel taken as system RAM ranges,
-and printing all contents of struct kexec_segment, etc. These are
-very helpful for analyzing or positioning what's happening when
-kexec/kdump itself failed. The debugging printing for kexec_load
-interface is made in user space utility kexec-tools.
+This function, being a variant of walk_system_ram_res() introduced in
+commit 8c86e70acead ("resource: provide new functions to walk through
+resources"), walks through a list of all the resources of System RAM
+in reversed order, i.e., from higher to lower.
 
-Whereas, with kexec_file_load interface, 'kexec -s -d' print nothing.
-Because kexec_file code is mostly implemented in kernel space, and the
-debugging printing functionality is missed. It's not convenient when
-debugging kexec/kdump loading and jumping with kexec_file_load
-interface.
+It will be used in kexec_file code to load kernel, initrd etc when
+preparing kexec reboot.
 
-Now add KEXEC_FILE_DEBUG to kexec_file flag to control the debugging
-message printing. And add global variable kexec_file_dbg_print and
-macro kexec_dprintk() to facilitate the printing.
-
-This is a preparation, later kexec_dprintk() will be used to replace the
-existing pr_debug(). Once 'kexec -s -d' is specified, it will print out
-kexec/kdump loading information at KERN_INFO level. If '-d' is not
-specified, it regresses to print message at KERN_DEBUG level.
-
+Signed-off-by: AKASHI Takahiro <takahiro.akashi@linaro.org>
 Signed-off-by: Baoquan He <bhe@redhat.com>
 ---
 v1->v2:
-- Rewrite the kexec_dprintk() macro as Joe suggested to reduce kernel
-  text size.
+- Use kvrealloc() to reallocate memory instead of kvcalloc(), this
+  simplifies code. Suggested by Andrew.
 
- include/linux/kexec.h      | 10 +++++++++-
- include/uapi/linux/kexec.h |  1 +
- kernel/kexec_file.c        |  5 +++++
- 3 files changed, 15 insertions(+), 1 deletion(-)
+ include/linux/ioport.h |  3 +++
+ kernel/resource.c      | 57 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 60 insertions(+)
 
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index 8227455192b7..66997efe36f1 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -264,6 +264,14 @@ arch_kexec_apply_relocations(struct purgatory_info *pi, Elf_Shdr *section,
- 	return -ENOEXEC;
- }
- #endif
-+
-+extern bool kexec_file_dbg_print;
-+
-+#define kexec_dprintk(fmt, ...)					\
-+	printk("%s" fmt,					\
-+	       kexec_file_dbg_print ? KERN_INFO : KERN_DEBUG,	\
-+	       ##__VA_ARGS__)
-+
- #endif /* CONFIG_KEXEC_FILE */
+diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+index 14f5cfabbbc8..db7fe25f3370 100644
+--- a/include/linux/ioport.h
++++ b/include/linux/ioport.h
+@@ -331,6 +331,9 @@ extern int
+ walk_system_ram_res(u64 start, u64 end, void *arg,
+ 		    int (*func)(struct resource *, void *));
+ extern int
++walk_system_ram_res_rev(u64 start, u64 end, void *arg,
++			int (*func)(struct resource *, void *));
++extern int
+ walk_iomem_res_desc(unsigned long desc, unsigned long flags, u64 start, u64 end,
+ 		    void *arg, int (*func)(struct resource *, void *));
  
- #ifdef CONFIG_KEXEC_ELF
-@@ -403,7 +411,7 @@ bool kexec_load_permitted(int kexec_image_type);
+diff --git a/kernel/resource.c b/kernel/resource.c
+index 866ef3663a0b..e8a244300e5b 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -27,6 +27,8 @@
+ #include <linux/mount.h>
+ #include <linux/resource_ext.h>
+ #include <uapi/linux/magic.h>
++#include <linux/string.h>
++#include <linux/vmalloc.h>
+ #include <asm/io.h>
  
- /* List of defined/legal kexec file flags */
- #define KEXEC_FILE_FLAGS	(KEXEC_FILE_UNLOAD | KEXEC_FILE_ON_CRASH | \
--				 KEXEC_FILE_NO_INITRAMFS)
-+				 KEXEC_FILE_NO_INITRAMFS | KEXEC_FILE_DEBUG)
  
- /* flag to track if kexec reboot is in progress */
- extern bool kexec_in_progress;
-diff --git a/include/uapi/linux/kexec.h b/include/uapi/linux/kexec.h
-index 01766dd839b0..c17bb096ea68 100644
---- a/include/uapi/linux/kexec.h
-+++ b/include/uapi/linux/kexec.h
-@@ -25,6 +25,7 @@
- #define KEXEC_FILE_UNLOAD	0x00000001
- #define KEXEC_FILE_ON_CRASH	0x00000002
- #define KEXEC_FILE_NO_INITRAMFS	0x00000004
-+#define KEXEC_FILE_DEBUG	0x00000008
- 
- /* These values match the ELF architecture values.
-  * Unless there is a good reason that should continue to be the case.
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index f9a419cd22d4..4c35500ae40a 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -38,6 +38,8 @@ void set_kexec_sig_enforced(void)
- }
- #endif
- 
-+bool kexec_file_dbg_print;
-+
- static int kexec_calculate_store_digests(struct kimage *image);
- 
- /* Maximum size in bytes for kernel/initrd files. */
-@@ -123,6 +125,8 @@ void kimage_file_post_load_cleanup(struct kimage *image)
- 	 */
- 	kfree(image->image_loader_data);
- 	image->image_loader_data = NULL;
-+
-+	kexec_file_dbg_print = false;
+@@ -429,6 +431,61 @@ int walk_system_ram_res(u64 start, u64 end, void *arg,
+ 				     func);
  }
  
- #ifdef CONFIG_KEXEC_SIG
-@@ -278,6 +282,7 @@ kimage_file_alloc_init(struct kimage **rimage, int kernel_fd,
- 	if (!image)
- 		return -ENOMEM;
- 
-+	kexec_file_dbg_print = !!(flags & KEXEC_FILE_DEBUG);
- 	image->file_mode = 1;
- 
- 	if (kexec_on_panic) {
++/*
++ * This function, being a variant of walk_system_ram_res(), calls the @func
++ * callback against all memory ranges of type System RAM which are marked as
++ * IORESOURCE_SYSTEM_RAM and IORESOUCE_BUSY in reversed order, i.e., from
++ * higher to lower.
++ */
++int walk_system_ram_res_rev(u64 start, u64 end, void *arg,
++				int (*func)(struct resource *, void *))
++{
++	struct resource res, *rams;
++	int rams_size = 16, i;
++	unsigned long flags;
++	int ret = -1;
++
++	/* create a list */
++	rams = kvcalloc(rams_size, sizeof(struct resource), GFP_KERNEL);
++	if (!rams)
++		return ret;
++
++	flags = IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
++	i = 0;
++	while ((start < end) &&
++		(!find_next_iomem_res(start, end, flags, IORES_DESC_NONE, &res))) {
++		if (i >= rams_size) {
++			/* re-alloc */
++			struct resource *rams_new;
++
++			rams_new = kvrealloc(rams, rams_size * sizeof(struct resource),
++					     (rams_size + 16) * sizeof(struct resource),
++					     GFP_KERNEL);
++			if (!rams_new)
++				goto out;
++
++			rams = rams_new;
++			rams_size += 16;
++		}
++
++		rams[i].start = res.start;
++		rams[i++].end = res.end;
++
++		start = res.end + 1;
++	}
++
++	/* go reverse */
++	for (i--; i >= 0; i--) {
++		ret = (*func)(&rams[i], arg);
++		if (ret)
++			break;
++	}
++
++out:
++	kvfree(rams);
++	return ret;
++}
++
+ /*
+  * This function calls the @func callback against all memory ranges, which
+  * are ranges marked as IORESOURCE_MEM and IORESOUCE_BUSY.
 -- 
 2.41.0
 
