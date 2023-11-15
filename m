@@ -2,57 +2,56 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F28F7ED56C
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 Nov 2023 22:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23AF67ED670
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Nov 2023 22:58:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344927AbjKOVFr (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Wed, 15 Nov 2023 16:05:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39500 "EHLO
+        id S235055AbjKOV6a (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Wed, 15 Nov 2023 16:58:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235754AbjKOVF0 (ORCPT
+        with ESMTP id S233601AbjKOV6a (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Wed, 15 Nov 2023 16:05:26 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8A80213F;
-        Wed, 15 Nov 2023 13:05:13 -0800 (PST)
+        Wed, 15 Nov 2023 16:58:30 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E20D0A9;
+        Wed, 15 Nov 2023 13:58:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700082314; x=1731618314;
+  t=1700085506; x=1731621506;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=HZaP63qR51WdI944Jzx+qswTuQEwasjcvHgL6QGSQhs=;
-  b=Avv+xlY+k0ejGxsDCkzZmzDrHsmphujqtKqvMFSFYGHtg/hU5I3KpJ40
-   Bifl4LvvNUgEgZEJtvjETz3B5kHtQLWop6bqGTVUlFVuuqKxIZ/lc4rKz
-   BOWR7QaR0IAimOKfS5oLgTHgO/mU5b6+YEEBMBw4fpTLCnFAEHQHK6HbZ
-   CgYLS2FO2IBuRpAEDLhIGSNlvPgBVb4zC9I7YFz1+OxL01ImlOPEQNh0n
-   pzc9zjK3gNgQmQedQ1ZtCYs3Y0FW/mjrB1O2LZB7y1oz0HZefA1UWq1zb
-   gcoKgoTym8kE+o8iLs9ebOxvPSni2QMNZKml9hlzZXgwCL3QQLxfNQDcD
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="4032594"
+  bh=Td6rqxMaLlzRdRD/IYOyHFFg+IU/kkNOBGZuEnKora0=;
+  b=esPMbB7JnYgWO2OGas9ToICiuQ7yKBlfX9BVVflLg2GvfIzrUuIqLizJ
+   mEx7/z1iEvAJPGkgzSDkPvMV32WFVPtSjh303stndk2fFSBLmuxgWqJK8
+   2LhKkUShspms9U0o20U7/+1ylFAOwpsnxoLJXZVNuo+ioB/i/ftq25+eU
+   AGIrMUumq2fn6DHOhl3Wn2kuKgQQs7A06QVx1N2Ug76YVuiS7Mta5kjG3
+   wleppv/ZgNGSeOCCbFz0feaWsX0Yl/Kjm+OadlKCeHwUjYC1pu+9RXNiY
+   jDqC1x+HtGw/vnEmXxr+q5Fl5qpLjWygvRMIZafEQEbWGdmv4qCdNXN/F
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="390756838"
 X-IronPort-AV: E=Sophos;i="6.03,306,1694761200"; 
-   d="scan'208";a="4032594"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 13:05:13 -0800
+   d="scan'208";a="390756838"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 13:58:26 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="888699475"
+X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="882525588"
 X-IronPort-AV: E=Sophos;i="6.03,306,1694761200"; 
-   d="scan'208";a="888699475"
+   d="scan'208";a="882525588"
 Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 15 Nov 2023 13:05:08 -0800
+  by fmsmga002.fm.intel.com with ESMTP; 15 Nov 2023 13:58:24 -0800
 Received: from kbuild by b8de5498638e with local (Exim 4.96)
         (envelope-from <lkp@intel.com>)
-        id 1r3N4M-0000p6-1l;
-        Wed, 15 Nov 2023 21:05:06 +0000
-Date:   Thu, 16 Nov 2023 05:04:43 +0800
+        id 1r3Ntu-0000t2-0q;
+        Wed, 15 Nov 2023 21:58:22 +0000
+Date:   Thu, 16 Nov 2023 05:57:47 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        kexec@lists.infradead.org, x86@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
+Cc:     oe-kbuild-all@lists.linux.dev, kexec@lists.infradead.org,
+        x86@kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
         linux-parisc@vger.kernel.org, Baoquan He <bhe@redhat.com>
 Subject: Re: [PATCH 2/7] kexec_file: print out debugging message if required
-Message-ID: <202311160431.BXPc7NO9-lkp@intel.com>
+Message-ID: <202311160502.jnu7b8KF-lkp@intel.com>
 References: <20231114153253.241262-3-bhe@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -82,57 +81,26 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec_file-add
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
 patch link:    https://lore.kernel.org/r/20231114153253.241262-3-bhe%40redhat.com
 patch subject: [PATCH 2/7] kexec_file: print out debugging message if required
-config: hexagon-comet_defconfig (https://download.01.org/0day-ci/archive/20231116/202311160431.BXPc7NO9-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231116/202311160431.BXPc7NO9-lkp@intel.com/reproduce)
+config: x86_64-randconfig-002-20231115 (https://download.01.org/0day-ci/archive/20231116/202311160502.jnu7b8KF-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231116/202311160502.jnu7b8KF-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311160431.BXPc7NO9-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311160502.jnu7b8KF-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   In file included from kernel/crash_core.c:13:
-   In file included from include/linux/kexec.h:19:
-   In file included from arch/hexagon/include/asm/io.h:337:
-   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __raw_readb(PCI_IOBASE + addr);
-                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-   #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-                                                     ^
-   In file included from kernel/crash_core.c:13:
-   In file included from include/linux/kexec.h:19:
-   In file included from arch/hexagon/include/asm/io.h:337:
-   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-                                                           ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-   #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-                                                     ^
-   In file included from kernel/crash_core.c:13:
-   In file included from include/linux/kexec.h:19:
-   In file included from arch/hexagon/include/asm/io.h:337:
-   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writeb(value, PCI_IOBASE + addr);
-                               ~~~~~~~~~~ ^
-   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-                                                         ~~~~~~~~~~ ^
-   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-           __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-                                                         ~~~~~~~~~~ ^
->> kernel/crash_core.c:412:3: error: call to undeclared function 'kexec_dprintk'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-                   kexec_dprintk("Crash PT_LOAD ELF header. phdr=%p vaddr=0x%llx, paddr=0x%llx, "
-                   ^
-   6 warnings and 1 error generated.
+   kernel/crash_core.c: In function 'crash_prepare_elf64_headers':
+>> kernel/crash_core.c:412:17: error: implicit declaration of function 'kexec_dprintk'; did you mean '_dev_printk'? [-Werror=implicit-function-declaration]
+     412 |                 kexec_dprintk("Crash PT_LOAD ELF header. phdr=%p vaddr=0x%llx, paddr=0x%llx, "
+         |                 ^~~~~~~~~~~~~
+         |                 _dev_printk
+   cc1: some warnings being treated as errors
 
 
-vim +/kexec_dprintk +412 kernel/crash_core.c
+vim +412 kernel/crash_core.c
 
    323	
    324	int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_map,
