@@ -2,46 +2,50 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8F117EF4BB
-	for <lists+linux-parisc@lfdr.de>; Fri, 17 Nov 2023 15:48:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ADA97EF4CF
+	for <lists+linux-parisc@lfdr.de>; Fri, 17 Nov 2023 15:55:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231499AbjKQOsf (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Fri, 17 Nov 2023 09:48:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36224 "EHLO
+        id S231442AbjKQO4A (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Fri, 17 Nov 2023 09:56:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230513AbjKQOse (ORCPT
+        with ESMTP id S230513AbjKQOz7 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Fri, 17 Nov 2023 09:48:34 -0500
+        Fri, 17 Nov 2023 09:55:59 -0500
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A31A93;
-        Fri, 17 Nov 2023 06:48:30 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B4C1189
+        for <linux-parisc@vger.kernel.org>; Fri, 17 Nov 2023 06:55:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1700232504; x=1700837304; i=deller@gmx.de;
-        bh=Rhzr/tXislpaEcjUqBvx/o590da//8yYsjL1uA8Urh0=;
+        t=1700232938; x=1700837738; i=deller@gmx.de;
+        bh=j2S5VsbBOdURQ3/nzf6it0mNsGcPCQJvVimVwo8XZPw=;
         h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
          In-Reply-To;
-        b=QuXEvFwSt4rzdi/fXlKMesz96+8DL21zBrJu8qBlX2z1772pZa5h9U1OXeClaVBF
-         qjZetUZogJ/RW5CNY46WEzR2kWJWakcXZ5zeGWlKHr8CldNQX8k7cm/YG8TxcAWY8
-         1MUkRkhfK6N1xWbYsb9R5NsCDspW4DnMyzKegYqd+DwVDMapMf0dCmWsPCTSo3tBn
-         dyCI+8fSzzak47OBQhIMc+sm5AMABTmSTNEUFMai8+ozmFrWFciX2w7fMEFReWoQp
-         gKmx9R0GjE9PaW89j8/5nkNKzrf2gy9YIRRtujr5RS5yLukHuHPuFdt/2MTzvOM5h
-         tFdGOcdu67ArpIUFGA==
+        b=f5V3NUds9Y6JcLLUi3Lwr8gwgZjnRnNG2ezyq/zXnRkP6bovuo6A+0IQAgCxDXAd
+         RjuIVCMcjKmshHHfw996nHRx1SUa7rY/SPllkKBfcH24yjtA89yM2Ed7WIIAha8uU
+         tRyARDvQn5qCIs8mOWJJ2fGC+SbqAIMzPgiuR4wKgooSY7AayxsjlKpyyi3ORtxNV
+         IE5mVmt5dAZwYbEg90hNfrRaK4rJ46jna9ljDGTdys/ZRXn5z1HH9i2QN+b7BF974
+         Hl185V6JggrEYLsl5UHsBCG6iYL67V0/cAJd2X1o+pgBdI5Zh1CLsCtFszhzexM74
+         JFWcUHpN1XJ0Zyn57g==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.60] ([94.134.147.146]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M8ykW-1qxvri2BfC-0068y0; Fri, 17
- Nov 2023 15:48:24 +0100
-Message-ID: <cbfda101-9ba6-4130-88e8-be49e15df642@gmx.de>
-Date:   Fri, 17 Nov 2023 15:48:21 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M2wL0-1r55eP3YNA-003Oqu; Fri, 17
+ Nov 2023 15:55:37 +0100
+Message-ID: <0cec0dfb-7a13-41fb-8498-3844102d18a5@gmx.de>
+Date:   Fri, 17 Nov 2023 15:55:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: Replace strlcpy() with strscpy()
+Subject: Re: prctl call wrongly succeeds on HPPA?
 Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc:     Azeem Shaikh <azeemshaikh38@gmail.com>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-References: <20231116191336.work.986-kees@kernel.org>
+To:     John David Anglin <dave.anglin@bell.net>,
+        Sam James <sam@gentoo.org>
+Cc:     "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>
+References: <87lebjz9z6.fsf@gentoo.org> <875y2jro9a.fsf@gentoo.org>
+ <0fec2446-a523-486f-9df7-4c6af9e2e0e3@gmx.de>
+ <7409ec05-7a28-45fe-9604-519de5ae934e@bell.net>
+ <cf75a1e4-c269-4530-b3aa-b02a81597acb@gmx.de>
+ <b0a524df-9dab-4038-981f-33fc69043c1c@bell.net> <87sf5d8f9h.fsf@gentoo.org>
+ <9bc4615d-122b-4c12-9537-b2eddc753a32@bell.net> <87leb58d45.fsf@gentoo.org>
+ <7b4b838d-a3c2-40b4-b21e-0e5e73187bff@bell.net>
 From:   Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -86,28 +90,28 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20231116191336.work.986-kees@kernel.org>
+In-Reply-To: <7b4b838d-a3c2-40b4-b21e-0e5e73187bff@bell.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:r3Rwf/595U6LU+stnCdyFJu9RcB2mdBe2iKZMzKmyliSUm2uqVl
- meG/8Q5gWsvKQaayqV2ZZIDJj40x5i/wq4aHy/0vpG89QvJ7vLT9XvsKYNYh4Ohtzv93iOV
- OTpWcJlv7reBLBQ23k9CxVj4Tl1bln27eqg8ko6I0rghoETc4tN1cEQviKdcG9KO6moesQO
- +J38gTi4FvC8sAypm2goQ==
-UI-OutboundReport: notjunk:1;M01:P0:cbNoU/VWvvE=;xqXuioAPBeoc5hSy71OfIm6IQ2Q
- o6ZMvUCKs/4BYoZuVa1ju8E5EIhKL1ztUOfYJVBPPEaB53hDFirgkrLyS3+BvE9iHdJAmnSh3
- Rdb6Xi+9BkeFrONpzHmACUUpdruccX52msOa7UNlm64nem6My0wMeJGr1lLE7Ybn77CX7l8bg
- gxzamyammX8udf1nGy9jCjpzkrSQKq1yCaX3lEI+ZYJ3UuMLjIHzM2ynNyySR3MorNj1aRJRg
- WxjzHY4a8EnAXdwtK7verWVgyC64N2yjAlKQSUfDbNmAi+6uT5SOO3Uem7Q24APxilKSt1tvD
- wLOyB/yGMOPib1UgvPTia5Xpb5IT+Z80SH5DKq1axEHafTF7ou2OapjGzukUZ7i6tw6hG8JTf
- j46qq3vfhvifzzMioBzfKpZZQCY9f+ZwWBGmiwk6fxHkQoFWQavZ1lxeJVCwWn2KvV2T3Nt1U
- F0ZLZuJ0ZqSdTi09P/c5GjZAP4K0dMZFdSKyxaXVG21m5IDpfkG8BVkT5xA6EwbC2gzXkmURJ
- sg4/Pka06LrAaNEFCr6VzB72jkqeAsxeHKlZkRJih/wQbPMxQGSivq1/rgcMao6RQ/T3lSyE8
- OlwtMTNREb3ikqQYFZDKizWr05ojc/9G3nP+kbOlpYYYDi/oavqb4UORGDYDnxfpePKDmeIfo
- fIAiEl1XtUbnJAvRXRR5aabQf9gGRsxNgherpcElLIfqYZmAVHJYkcMAm0OV2r1b75RflGOFy
- Q/XTsw8E+qp/3PD+rzHOhJWDz8WGEaVKFPG3piEcVaFf49uIahc9toGLf3X2myTTKJ4ydNa3a
- Yvy8QdZnRK85u6SpLqB7EtF2go+lQmTdsrk/dpBYstAXnTT8PU+c0X/3kPn/ciJrUktmtelCV
- /n20uFGuDmL4URtcvOyMJkdUAdp60vF3ajEoXSIBggo1Vmq3R9xGUUkQV9ULOzhuMRxBc9vJq
- hS8rcQ==
+X-Provags-ID: V03:K1:XV2vo2K6LgeJUzoJGRYHjKRAXO7RUM7lrKPNB444VdWs/koLVub
+ mqrF25nVMgk2XIzKgw/joJzuKDlbTxlVi4YJinEwZ0WjTO4h8xl+3nRx+MMgm9HvVv95vk9
+ zJ1Lrx9Cje22vysSaNhXuubUY+X0U74K7aMt9iNqgKAXHhL6uVXvAMS2eWHzu7h6i2ecUQm
+ JXe9kTymTuyQ/ij4ug3Dw==
+UI-OutboundReport: notjunk:1;M01:P0:/uV+rtua4UI=;tDl8/XS7KAtrzqUwCnnUouHAa/o
+ q98Sd6t/+YR8kKs03ew+A8YzOsMziSEuKpWZZG6muA2arBDFWR9sgXnGsX9i5AdShcdNziJ4R
+ ehuoL7U43CNrxQktExzF9jt4KVjnKX05kjM9QTF8fnv3DcYxujSzLSZpGADuSDBBIpi7bY95n
+ ip4lLr1K5JrDvHEKU7QTyJL55CEhWL2Ulhhr8DHEV11aNcXGf9+acf1VzAOyTYL4Bt2fLN9HV
+ g7TET8I5VNyriEFCJQtghU9YDxhzt2smakWVWzVKat95kca02x0T8CH0ROI5DRMaRwwc0A0A4
+ Gh3APrBUp2ZvTttG5tKwjjzj+/L9480oMdqRyMzjyE6wvvIGIv4ImRrXoBUOgR9sGtsklWwSJ
+ 4QG/qS7woCSaX9j6L6nhm6kEqZ4pVPQU/neHLoxs2bdBn4JazmTr4dqBrzwAFxtpSdy4P5PfI
+ u7Q97DtfUqK41lZEwG6BzYKfkH7sVy7hGEnxPl0iZZfEUW3CBizhQuzCJmSgoHhYe3fmCcsKP
+ fVjtwjhp1TDLKbH7fkuXE4nAwvj5ZVpLRQRIT7L3piDdyWMt4U4H8qR1Q4tAusDK/5z5Jz2Ia
+ /odRy1poiCgkWwnXrwsWwihBjqyw/VsV5SNQOSf1JdEv9TqOaJSG3hq+GzNwdHPZHTsrmaUfp
+ K/RqUsbs72g6X6y5WKzwXBcn1nagUOyGBUvqufGTU++JvVzHA1pR1t9dbnZmR20pron1o0ScK
+ fGpGQes7lo1Xt8QczsnBNwMwtw67o2atQU+UOKNfl9CT+rFEdZIqa10UpzbNALb0qHYieOfcM
+ DxWsL+MxGXSgnHKxV1AjCo0TPb++4XD4hmEGl89A6sPvDTVtVMxH90nR6xb7J0Pa7ymkp2IDU
+ jQiVFMX9s7ayPTzKf9RCO3My0XN/L2cPsg4pBDTnsQVmql326b76+Nk/U3kDaiPtWQcQqzhU2
+ JjEQ/k7xoF5R/zCh/pafn5NaU4s=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
@@ -119,45 +123,102 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-On 11/16/23 20:13, Kees Cook wrote:
-> strlcpy() reads the entire source buffer first. This read may exceed
-> the destination size limit. This is both inefficient and can lead
-> to linear read overflows if a source string is not NUL-terminated[1].
-> Additionally, it returns the size of the source string, not the
-> resulting size of the destination string. In an effort to remove strlcpy=
-()
-> completely[2], replace strlcpy() here with strscpy().
+On 11/11/23 00:02, John David Anglin wrote:
+> On 2023-11-10 5:16 p.m., Sam James wrote:
+>> John David Anglin <dave.anglin@bell.net> writes:
+>>
+>>> On 2023-11-10 4:32 p.m., Sam James wrote:
+>>>> John David Anglin <dave.anglin@bell.net> writes:
+>>>>
+>>>>> On 2023-11-10 3:38 p.m., Helge Deller wrote:
+>>>>>> On 11/10/23 21:12, John David Anglin wrote:
+>>>>>>> On 2023-11-10 3:01 p.m., Helge Deller wrote:
+>>>>>>>>>> On=C2=A0HPPA,=C2=A0we=C2=A0still=C2=A0need=C2=A0executable=C2=
+=A0stacks,=C2=A0so=C2=A0this=C2=A0option=C2=A0doesn't=C2=A0work
+>>>>>>>>>> and=C2=A0leads=C2=A0to=C2=A0a=C2=A0segfault=C2=A0on=C2=A0boot.
+>>>>>>>> For=C2=A0kernel=C2=A0we=C2=A0don't=C2=A0need=C2=A0it=C2=A0any=C2=
+=A0longer.
+>>>>>>>> But=C2=A0there=C2=A0might=C2=A0be=C2=A0dependencies=C2=A0on=C2=A0=
+glibc=C2=A0version=C2=A0and/or=C2=A0combination.
+>>>>>>>> So,=C2=A0I've=C2=A0currently=C2=A0lost=C2=A0overview=C2=A0if=C2=
+=A0we=C2=A0still=C2=A0need=C2=A0executable=C2=A0stacks...
+>>>>>>> FWIW, I recently changed gcc-14 to enable GNU stack notes and fixe=
+d a bug in the
+>>>>>>> 32-bit PA 2.0 trampoline template.=C2=A0 All execute stack tests i=
+n glibc now pass with gcc-14.
+>>>>>> Yes, I saw your commits.
+>>>>>> So, any code compiled with >=3D gcc-14 should be fine with non-writ=
+eable stacks?
+>>>>> Not exactly.=C2=A0 An executable stack is still needed for nested fu=
+nctions.=C2=A0 They are still called
+>>>>> via a stack trampoline.=C2=A0 The GNU stack note indicates whether a=
+n object needs an executable
+>>>>> stack or not.=C2=A0 These notes are collected by linker.=C2=A0 The g=
+libc loader determines whether to setup
+>>>>> an executable stack or not.
+>>>>>> It would be easier if it would be a glibc dependency (for distribut=
+ion maintainers)...
+>>>>> I'm not aware of any glibc dependency...
+>>>>>
+>>>>> I think once gcc-14 becomes the default compiler, we will have to en=
+able GNU stack notes in
+>>>>> previous gcc versions.=C2=A0 We will still have executable stacks un=
+til everything is rebuilt.
+>>>> We will need to update that default in Binutils too, I think. That
+>>>> configure arg is working OK for me, but I did not try systemd yet.
+>>> Currently, there are no architecture dependencies in the ld --enable-w=
+arn-execstack and --enable-default-execstack
+>>> configure options.=C2=A0 The -z execstack and -z noexecstack ld option=
+s can override the GNU notes, or lack thereof.=C2=A0 We
+>>> may have to fix some assembly code.=C2=A0 Maybe binutils should be bui=
+lt with --enable-warn-execstack once we switch
+>>> to gcc-14.=C2=A0 I don't think we want --enable-default-execstack afte=
+r switching to gcc-14.
+>> Are you sure? I just did some more digging now...
+>> * It looks like targets can set elf_backend_default_execstack in
+>> bfd/elf-*.c to override the default, see e.g. 81cd0a49c9e5f28c0fec391e4=
+49ea3272077c432 for cris.
+>> * See acd65fa610df09a0954b8fecdadf546215263c5d where HPPA's default got=
+ changed.
+>> * ld/configure.tgt still has some suppression for HPPA's default for
+>> warnings.
+>>
+>> I think we may need to, in due course, set elf_backend_default_execstac=
+k
+>> in bfd/elf32-hppa.c, and then drop those bits in ld/configure.tgt too?
+> You are right about both.=C2=A0 We have in ld/configure.tgt:
+> if test "${ac_default_ld_warn_execstack}" =3D 2; then
+>  =C2=A0 case "${targ}" in
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # The HPPA port needs to support older k=
+ernels that
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # use executable stacks for signals and =
+syscalls.
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Many MIPS targets use executable stack=
+s.
+>  =C2=A0=C2=A0=C2=A0 hppa*-*-* | \
+>  =C2=A0=C2=A0=C2=A0 mips*-*-*)
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ac_default_ld_warn_execstack=3D0
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ;;
+>  =C2=A0=C2=A0=C2=A0 *)
+>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ;;
+>  =C2=A0 esac
+> fi
 >
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#str=
-lcpy [1]
-> Link: https://github.com/KSPP/linux/issues/89 [2]
-> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Azeem Shaikh <azeemshaikh38@gmail.com>
-> Cc: linux-parisc@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+> We also may need:
+> #define elf_backend_default_execstack 0
+> in elf32-hppa.c at some point.
+>
+> I think when GNU stack notes are present, they determine whether the sta=
+ck in an executable will be executable or not.
+> But I could be wrong =F0=9F=99=81
+>
+> I'll try building binutils with gcc-14.
 
-applied.
+Did it worked?
 
-Thanks!
+Btw, I added a small section about executable stacks in the TODO
+section of the wiki:
+https://parisc.wiki.kernel.org/index.php/TODO#executable_stack
+
 Helge
-
-> ---
->   arch/parisc/kernel/processor.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/process=
-or.c
-> index 29e2750f86a4..e95a977ba5f3 100644
-> --- a/arch/parisc/kernel/processor.c
-> +++ b/arch/parisc/kernel/processor.c
-> @@ -383,7 +383,7 @@ show_cpuinfo (struct seq_file *m, void *v)
->   	char cpu_name[60], *p;
->
->   	/* strip PA path from CPU name to not confuse lscpu */
-> -	strlcpy(cpu_name, per_cpu(cpu_data, 0).dev->name, sizeof(cpu_name));
-> +	strscpy(cpu_name, per_cpu(cpu_data, 0).dev->name, sizeof(cpu_name));
->   	p =3D strrchr(cpu_name, '[');
->   	if (p)
->   		*(--p) =3D 0;
 
