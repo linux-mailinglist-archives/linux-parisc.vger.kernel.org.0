@@ -2,118 +2,102 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E54F77EE735
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Nov 2023 20:13:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F25CA7EEA7A
+	for <lists+linux-parisc@lfdr.de>; Fri, 17 Nov 2023 01:55:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229464AbjKPTNt (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Thu, 16 Nov 2023 14:13:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60302 "EHLO
+        id S229775AbjKQAzz (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Thu, 16 Nov 2023 19:55:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbjKPTNs (ORCPT
+        with ESMTP id S229437AbjKQAzy (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Thu, 16 Nov 2023 14:13:48 -0500
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81231D4D
-        for <linux-parisc@vger.kernel.org>; Thu, 16 Nov 2023 11:13:45 -0800 (PST)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6b7f0170d7bso1127779b3a.2
-        for <linux-parisc@vger.kernel.org>; Thu, 16 Nov 2023 11:13:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1700162025; x=1700766825; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YYlw/v9GVrPaC0s5UN9J8tYY4w/hsJ/PA3URh3Q8lJ8=;
-        b=VooWjFQEZrJhPPuYBpbhtwGwIQgYGz6kH0inZ+g8mS1ynD+fdwb6NjYBvWs9iWLgRA
-         9ik1hqeGW392s0wHuBgzAVv4Xio9IUo+99d0h2n98vq8bpiwCBIJ/zqooC//Mm0N22HC
-         L067ds04wmKvRFf/0yGr9nxObGiDNf+s7KhrQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700162025; x=1700766825;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YYlw/v9GVrPaC0s5UN9J8tYY4w/hsJ/PA3URh3Q8lJ8=;
-        b=rZUfut3U7WrYN18crYMN37ZFZGHCrDCa+fYTuOzU2pVmXqJUUt8rezmRi6TWCAJntQ
-         4iHIfVPkZledltt+AhQGZr88r9yYLHJg5rizHrpe7AaaoNGxM3tlrgjsmVOps0U829AR
-         1uOINwoJrRgNV1BefUNjsCy+p6YM7px8o7B/OKwWXGlc/I+qv+Dx3rV4FPXLuktnCD7T
-         tmTV44HFBlA1ab6+t5nzh3ChmiFZkmpHrvfIEDn5mkt76XFnYLrcZERfvkoq6HuXiSJv
-         H9iWgUEIZnsnvQEEJCMqJ5P6t4/ndMj0MrIQZdWgGzgrrH35YSCdQ4M45hzz8W+T/MvP
-         rvlQ==
-X-Gm-Message-State: AOJu0YxRiNb8OAT7v5x0rVNqeOn7vE7jGrtSG9j20BqetTBxUjKeG3Mb
-        jyrGhx/fEw3/uVTiaayIfFXe/g==
-X-Google-Smtp-Source: AGHT+IFgcVG7tXCPsOyhSSlGhDJFcKq7oCg9wEnCj3YoT8Jr/uvJFGRO8OknbrQ7So0WvGIkyFeWIQ==
-X-Received: by 2002:a05:6a00:4099:b0:6b4:231b:a45c with SMTP id bw25-20020a056a00409900b006b4231ba45cmr21865074pfb.26.1700162024994;
-        Thu, 16 Nov 2023 11:13:44 -0800 (PST)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id p11-20020a056a000a0b00b0068fb8e18971sm77330pfh.130.2023.11.16.11.13.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Nov 2023 11:13:44 -0800 (PST)
-From:   Kees Cook <keescook@chromium.org>
-To:     "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc:     Kees Cook <keescook@chromium.org>, Helge Deller <deller@gmx.de>,
-        Azeem Shaikh <azeemshaikh38@gmail.com>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH] parisc: Replace strlcpy() with strscpy()
-Date:   Thu, 16 Nov 2023 11:13:40 -0800
-Message-Id: <20231116191336.work.986-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+        Thu, 16 Nov 2023 19:55:54 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 757D7129
+        for <linux-parisc@vger.kernel.org>; Thu, 16 Nov 2023 16:55:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1700182550;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=4LapoxfhvOL55w/2dX60cKVAQiuf12D1o1P52tBY/F0=;
+        b=Z94NJnS5du95x478LzGsUkM3aE8+XyYc4jqwGdXPDn6Ql4MYyRVa8YOh7W++g7b7f2+rBy
+        xdrnwuGzpDGquQ3q3DhyLULs/z3s4wGp4vqgjoGP3eKBZh65LFYv3gluFGDW/yHsdURlHQ
+        Lk6UD+9uQX4HtQn259l++x20bSuG+pw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-hlErw1ZmNAuXtPqs3bx_HQ-1; Thu,
+ 16 Nov 2023 19:55:49 -0500
+X-MC-Unique: hlErw1ZmNAuXtPqs3bx_HQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B851238149B2;
+        Fri, 17 Nov 2023 00:55:48 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.24])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id EF2591C060AE;
+        Fri, 17 Nov 2023 00:55:47 +0000 (UTC)
+Date:   Fri, 17 Nov 2023 08:55:44 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     kernel test robot <lkp@intel.com>
+Cc:     linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev,
+        kexec@lists.infradead.org, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        linux-parisc@vger.kernel.org
+Subject: Re: [PATCH 4/7] kexec_file, arm64: print out debugging message if
+ required
+Message-ID: <ZVa6EDP8EI2jWhQL@MiWiFi-R3L-srv>
+References: <20231114153253.241262-5-bhe@redhat.com>
+ <202311160022.QM6xJYSy-lkp@intel.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1424; i=keescook@chromium.org;
- h=from:subject:message-id; bh=BzD7pn1JfYRhaoY80hkyIKEr+mEu4xES2K8u21WGIyk=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBlVmnklqIN5lZaW0f7xYsyH3WQSBx8zE4Qk3JQ/
- qbccTS4bEWJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZVZp5AAKCRCJcvTf3G3A
- Jnc2EACuCUkbrGx9lSJGiaQGUafTwnelfTeuI404evq3xhBAjJHJhJCJ+uvTDfi1Pckk2n1LUMD
- QXo8pj48wa+jy9NQ0Q5+RSxyunjEvpbMaTRjmoVF1rlSMM42iCMihT/xBpWAm7LC8Gxr1551HxM
- eJ9I0uEQz+/MdFjBtxRO7YC2HAcwGsvuIrD5hHXD2mm4PbdQ8KdnoGY7iSWBpXd59Dwc+2V3DsC
- GrZTQ7LpjjsfziVRhVi7NmwSKE3FfcSd8fv3prm/DJl3SUAABh7IZFP3JvaSOG6oh3cP5lM2VzV
- 2JKNorakX5VGe0Lq9GYpFGY4+XEkLljxIvYXYkgxjnbhM0KtRzB3mySyTAVMiRWOGzh0cJX2+KA
- 8648KnwAHCIQKaOiY4wmF9YraK4DvjN8PTn38IXBQHipgJRXnXzbnDV9FybPxIeGdGYWPddV0/t
- SW8RXJ1Hv45wcANMdcpQ0g/6ZefeupFqVhrooMYOtnDIJUPAI0zSTLY44X1g/p5+LDIcT3VRyKz
- tqDDQx4/rU0UKiq1Y7V1vV2XtRJUHOIzJFdrSFaZCR655E2EaMqtHJdA612nQpspQl00NFCnmuH
- lBR2AZwCTYXLXJM2ia3p+h88JWMY+EGFjyBzF9P0yPp/IlqVr1v/sTnCrjdHTArUtOo51sDYTUm
- GjKamcX 6VghP7eg==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202311160022.QM6xJYSy-lkp@intel.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-strlcpy() reads the entire source buffer first. This read may exceed
-the destination size limit. This is both inefficient and can lead
-to linear read overflows if a source string is not NUL-terminated[1].
-Additionally, it returns the size of the source string, not the
-resulting size of the destination string. In an effort to remove strlcpy()
-completely[2], replace strlcpy() here with strscpy().
+On 11/16/23 at 12:58am, kernel test robot wrote:
+> Hi Baoquan,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on arm64/for-next/core]
+> [also build test WARNING on tip/x86/core powerpc/next powerpc/fixes linus/master v6.7-rc1 next-20231115]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec_file-add-kexec_file-flag-to-control-debug-printing/20231114-234003
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
+> patch link:    https://lore.kernel.org/r/20231114153253.241262-5-bhe%40redhat.com
+> patch subject: [PATCH 4/7] kexec_file, arm64: print out debugging message if required
+> config: arm64-randconfig-001-20231115 (https://download.01.org/0day-ci/archive/20231116/202311160022.QM6xJYSy-lkp@intel.com/config)
+> compiler: aarch64-linux-gcc (GCC) 13.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231116/202311160022.QM6xJYSy-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202311160022.QM6xJYSy-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>    arch/arm64/kernel/machine_kexec.c: In function '_kexec_image_info':
+> >> arch/arm64/kernel/machine_kexec.c:35:23: warning: unused variable 'i' [-Wunused-variable]
+>       35 |         unsigned long i;
+>          |                       ^
 
-Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy [1]
-Link: https://github.com/KSPP/linux/issues/89 [2]
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Azeem Shaikh <azeemshaikh38@gmail.com>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
- arch/parisc/kernel/processor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/parisc/kernel/processor.c b/arch/parisc/kernel/processor.c
-index 29e2750f86a4..e95a977ba5f3 100644
---- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -383,7 +383,7 @@ show_cpuinfo (struct seq_file *m, void *v)
- 	char cpu_name[60], *p;
- 
- 	/* strip PA path from CPU name to not confuse lscpu */
--	strlcpy(cpu_name, per_cpu(cpu_data, 0).dev->name, sizeof(cpu_name));
-+	strscpy(cpu_name, per_cpu(cpu_data, 0).dev->name, sizeof(cpu_name));
- 	p = strrchr(cpu_name, '[');
- 	if (p)
- 		*(--p) = 0;
--- 
-2.34.1
+Yes, this is an obvious one missed, will fix and update in new post,
+thanks.
 
