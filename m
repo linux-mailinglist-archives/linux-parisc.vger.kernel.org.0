@@ -2,36 +2,78 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FC397F0222
-	for <lists+linux-parisc@lfdr.de>; Sat, 18 Nov 2023 19:57:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9103A7F025D
+	for <lists+linux-parisc@lfdr.de>; Sat, 18 Nov 2023 20:27:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjKRS5l (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 18 Nov 2023 13:57:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33444 "EHLO
+        id S230157AbjKRT1I (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
+        Sat, 18 Nov 2023 14:27:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjKRS5l (ORCPT
+        with ESMTP id S229723AbjKRT1I (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 18 Nov 2023 13:57:41 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA5F1AF;
-        Sat, 18 Nov 2023 10:57:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1606C433C8;
-        Sat, 18 Nov 2023 18:57:35 +0000 (UTC)
-Date:   Sat, 18 Nov 2023 19:57:33 +0100
-From:   Helge Deller <deller@gmx.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        John David Anglin <dave.anglin@bell.net>
-Cc:     Kees Cook <keescook@chromium.org>, Sam James <sam@gentoo.org>
-Subject: [GIT PULL v2] parisc architecture fixes for v6.7-rc2
-Message-ID: <ZVkJHUynkuBxVb7S@p100>
+        Sat, 18 Nov 2023 14:27:08 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D607182;
+        Sat, 18 Nov 2023 11:27:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700335624; x=1731871624;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7oM0Oe15GY24uVXAs/p2DnzhDDjC2fzvA/A3qyVQxc4=;
+  b=nhXlTlRsRYCFhwRG7XT//XdNTNhByJiaZIAZfBzj8AuLXEXrI5U1woLJ
+   aRajIZdfAgtvgjfOFEfGU65DLSMkFvVGGh8daGyB9xRI0T3/3gqI4SLIh
+   vP4eBkrZ2UO8ILboq/dLXgPMHa7cLD0e+b4ubdK+sdS0+PAth6pRMLUla
+   Ii1Ho55lyJCNQcsedi0MmA/Br+OhFcypC0Vkkv9zNYj11hcagKZ37NMAc
+   JTmR7lvLtg6rPYdcTqTFX7WNMXfNJPbmMxhenHaqteADiw8DZjUoeTflB
+   1Jgr4kmf7uz7RerXNgODuoF1cut2MShHHVolGNwExB5MSxV5rbTu1ueBk
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10898"; a="4554067"
+X-IronPort-AV: E=Sophos;i="6.04,209,1695711600"; 
+   d="scan'208";a="4554067"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2023 11:27:04 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,209,1695711600"; 
+   d="scan'208";a="13795239"
+Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
+  by orviesa001.jf.intel.com with ESMTP; 18 Nov 2023 11:26:59 -0800
+Received: from kbuild by b8de5498638e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1r4Qxz-0004Cf-3C;
+        Sat, 18 Nov 2023 19:26:55 +0000
+Date:   Sun, 19 Nov 2023 03:26:17 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Arnd Bergmann <arnd@arndb.de>
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-hexagon@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        linux-m68k@lists.linux-m68k.org,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        linux-arm-kernel@lists.infradead.org,
+        Brian Cain <bcain@quicinc.com>, linux-parisc@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] asm/io: remove unnecessary xlate_dev_mem_ptr() and
+ unxlate_dev_mem_ptr()
+Message-ID: <202311190352.yqCpBjIn-lkp@intel.com>
+References: <20231118100827.1599422-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+In-Reply-To: <20231118100827.1599422-1-wangkefeng.wang@huawei.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -39,54 +81,109 @@ Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Linus,
+Hi Kefeng,
 
-please pull three small additional parisc fixes for kernel 6.7-rc2,
-two of those are tagged for stable series.
+kernel test robot noticed the following build errors:
 
-This is v2 of the pull request with the changes to the prctl() patch
-as requested by you.
+[auto build test ERROR on soc/for-next]
+[also build test ERROR on geert-m68k/for-next geert-m68k/for-linus deller-parisc/for-next powerpc/next powerpc/fixes linus/master v6.7-rc1 next-20231117]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-On parisc we still sometimes need writeable stacks, e.g. if programs aren't
-compiled with gcc-14. To avoid issues with the upcoming systemd-254 we
-therefore have to disable prctl(PR_SET_MDWE) for now (for parisc only).
+url:    https://github.com/intel-lab-lkp/linux/commits/Kefeng-Wang/asm-io-remove-unnecessary-xlate_dev_mem_ptr-and-unxlate_dev_mem_ptr/20231118-183038
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
+patch link:    https://lore.kernel.org/r/20231118100827.1599422-1-wangkefeng.wang%40huawei.com
+patch subject: [PATCH] asm/io: remove unnecessary xlate_dev_mem_ptr() and unxlate_dev_mem_ptr()
+config: mips-db1xxx_defconfig (https://download.01.org/0day-ci/archive/20231119/202311190352.yqCpBjIn-lkp@intel.com/config)
+compiler: mipsel-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231119/202311190352.yqCpBjIn-lkp@intel.com/reproduce)
 
-The other two patches are minor: a bugfix for the soft power-off on qemu
-with 64-bit kernel and prefer strscpy() over strlcpy().
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311190352.yqCpBjIn-lkp@intel.com/
 
-Thanks!
-Helge
+All error/warnings (new ones prefixed by >>):
 
-----------------------------------------------------------------
-The following changes since commit b85ea95d086471afb4ad062012a4d73cd328fa86:
+   drivers/char/mem.c: In function 'read_mem':
+>> drivers/char/mem.c:159:31: error: implicit declaration of function 'xlate_dev_mem_ptr' [-Werror=implicit-function-declaration]
+     159 |                         ptr = xlate_dev_mem_ptr(p);
+         |                               ^~~~~~~~~~~~~~~~~
+>> drivers/char/mem.c:159:29: warning: assignment to 'void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     159 |                         ptr = xlate_dev_mem_ptr(p);
+         |                             ^
+>> drivers/char/mem.c:164:25: error: implicit declaration of function 'unxlate_dev_mem_ptr' [-Werror=implicit-function-declaration]
+     164 |                         unxlate_dev_mem_ptr(p, ptr);
+         |                         ^~~~~~~~~~~~~~~~~~~
+   drivers/char/mem.c: In function 'write_mem':
+   drivers/char/mem.c:235:29: warning: assignment to 'void *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     235 |                         ptr = xlate_dev_mem_ptr(p);
+         |                             ^
+   cc1: some warnings being treated as errors
 
-  Linux 6.7-rc1 (2023-11-12 16:19:07 -0800)
 
-are available in the Git repository at:
+vim +/xlate_dev_mem_ptr +159 drivers/char/mem.c
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.7-rc2
+^1da177e4c3f41 Linus Torvalds                2005-04-16  133  
+22ec1a2aea73b9 Kees Cook                     2017-12-01  134  	bounce = kmalloc(PAGE_SIZE, GFP_KERNEL);
+22ec1a2aea73b9 Kees Cook                     2017-12-01  135  	if (!bounce)
+22ec1a2aea73b9 Kees Cook                     2017-12-01  136  		return -ENOMEM;
+22ec1a2aea73b9 Kees Cook                     2017-12-01  137  
+^1da177e4c3f41 Linus Torvalds                2005-04-16  138  	while (count > 0) {
+fa29e97bb8c70f Wu Fengguang                  2009-12-14  139  		unsigned long remaining;
+b5b38200ebe548 Kees Cook                     2018-03-27  140  		int allowed, probe;
+fa29e97bb8c70f Wu Fengguang                  2009-12-14  141  
+f222318e9c3a31 Wu Fengguang                  2009-12-14  142  		sz = size_inside_page(p, count);
+^1da177e4c3f41 Linus Torvalds                2005-04-16  143  
+22ec1a2aea73b9 Kees Cook                     2017-12-01  144  		err = -EPERM;
+a4866aa812518e Kees Cook                     2017-04-05  145  		allowed = page_is_allowed(p >> PAGE_SHIFT);
+a4866aa812518e Kees Cook                     2017-04-05  146  		if (!allowed)
+22ec1a2aea73b9 Kees Cook                     2017-12-01  147  			goto failed;
+22ec1a2aea73b9 Kees Cook                     2017-12-01  148  
+22ec1a2aea73b9 Kees Cook                     2017-12-01  149  		err = -EFAULT;
+a4866aa812518e Kees Cook                     2017-04-05  150  		if (allowed == 2) {
+a4866aa812518e Kees Cook                     2017-04-05  151  			/* Show zeros for restricted memory. */
+a4866aa812518e Kees Cook                     2017-04-05  152  			remaining = clear_user(buf, sz);
+a4866aa812518e Kees Cook                     2017-04-05  153  		} else {
+^1da177e4c3f41 Linus Torvalds                2005-04-16  154  			/*
+a4866aa812518e Kees Cook                     2017-04-05  155  			 * On ia64 if a page has been mapped somewhere as
+a4866aa812518e Kees Cook                     2017-04-05  156  			 * uncached, then it must also be accessed uncached
+a4866aa812518e Kees Cook                     2017-04-05  157  			 * by the kernel or data corruption may occur.
+^1da177e4c3f41 Linus Torvalds                2005-04-16  158  			 */
+^1da177e4c3f41 Linus Torvalds                2005-04-16 @159  			ptr = xlate_dev_mem_ptr(p);
+e045fb2a988a9a venkatesh.pallipadi@intel.com 2008-03-18  160  			if (!ptr)
+22ec1a2aea73b9 Kees Cook                     2017-12-01  161  				goto failed;
+a4866aa812518e Kees Cook                     2017-04-05  162  
+fe557319aa06c2 Christoph Hellwig             2020-06-17  163  			probe = copy_from_kernel_nofault(bounce, ptr, sz);
+e045fb2a988a9a venkatesh.pallipadi@intel.com 2008-03-18 @164  			unxlate_dev_mem_ptr(p, ptr);
+b5b38200ebe548 Kees Cook                     2018-03-27  165  			if (probe)
+22ec1a2aea73b9 Kees Cook                     2017-12-01  166  				goto failed;
+22ec1a2aea73b9 Kees Cook                     2017-12-01  167  
+22ec1a2aea73b9 Kees Cook                     2017-12-01  168  			remaining = copy_to_user(buf, bounce, sz);
+a4866aa812518e Kees Cook                     2017-04-05  169  		}
+a4866aa812518e Kees Cook                     2017-04-05  170  
+fa29e97bb8c70f Wu Fengguang                  2009-12-14  171  		if (remaining)
+22ec1a2aea73b9 Kees Cook                     2017-12-01  172  			goto failed;
+e045fb2a988a9a venkatesh.pallipadi@intel.com 2008-03-18  173  
+^1da177e4c3f41 Linus Torvalds                2005-04-16  174  		buf += sz;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  175  		p += sz;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  176  		count -= sz;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  177  		read += sz;
+8619e5bdeee8b2 Tetsuo Handa                  2019-08-26  178  		if (should_stop_iteration())
+8619e5bdeee8b2 Tetsuo Handa                  2019-08-26  179  			break;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  180  	}
+22ec1a2aea73b9 Kees Cook                     2017-12-01  181  	kfree(bounce);
+^1da177e4c3f41 Linus Torvalds                2005-04-16  182  
+^1da177e4c3f41 Linus Torvalds                2005-04-16  183  	*ppos += read;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  184  	return read;
+22ec1a2aea73b9 Kees Cook                     2017-12-01  185  
+22ec1a2aea73b9 Kees Cook                     2017-12-01  186  failed:
+22ec1a2aea73b9 Kees Cook                     2017-12-01  187  	kfree(bounce);
+22ec1a2aea73b9 Kees Cook                     2017-12-01  188  	return err;
+^1da177e4c3f41 Linus Torvalds                2005-04-16  189  }
+^1da177e4c3f41 Linus Torvalds                2005-04-16  190  
 
-for you to fetch changes up to 793838138c157d4c49f4fb744b170747e3dabf58:
-
-  prctl: Disable prctl(PR_SET_MDWE) on parisc (2023-11-18 19:35:31 +0100)
-
-----------------------------------------------------------------
-parisc architecture fixes for kernel v6.7-rc2:
-
-- Fix power soft-off on qemu
-- Disable prctl(PR_SET_MDWE) since parisc sometimes still needs
-  writeable stacks
-- Use strscpy instead of strlcpy in show_cpuinfo()
-
-----------------------------------------------------------------
-Helge Deller (2):
-      parisc/power: Fix power soft-off when running on qemu
-      prctl: Disable prctl(PR_SET_MDWE) on parisc
-
-Kees Cook (1):
-      parisc: Replace strlcpy() with strscpy()
-
- arch/parisc/kernel/processor.c | 2 +-
- drivers/parisc/power.c         | 2 +-
- kernel/sys.c                   | 4 ++++
- 3 files changed, 6 insertions(+), 2 deletions(-)
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
