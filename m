@@ -2,193 +2,133 @@ Return-Path: <linux-parisc-owner@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C85117F0426
-	for <lists+linux-parisc@lfdr.de>; Sun, 19 Nov 2023 04:14:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D36187F0615
+	for <lists+linux-parisc@lfdr.de>; Sun, 19 Nov 2023 13:12:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbjKSDO0 (ORCPT <rfc822;lists+linux-parisc@lfdr.de>);
-        Sat, 18 Nov 2023 22:14:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
+        id S229659AbjKSMM3 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-parisc@lfdr.de>); Sun, 19 Nov 2023 07:12:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229610AbjKSDO0 (ORCPT
+        with ESMTP id S229454AbjKSMM3 (ORCPT
         <rfc822;linux-parisc@vger.kernel.org>);
-        Sat, 18 Nov 2023 22:14:26 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2260DB3;
-        Sat, 18 Nov 2023 19:14:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700363662; x=1731899662;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DgMR+20joI22QFpxuYG34MFkzxuJ+eU5dAVuggNsAkY=;
-  b=crKG24SEVzDB+/qpn5UkJtaCvz4M5b+dCf1WRzbgH/97u50JW2nzuMR2
-   OsiyuOcCJqNzgEKS7AzwKzQUzoQm5dN2FmgRCakBDYJATQjlVWC39UQl0
-   O+WjvD0TTEcmq6wZwUePSt61/FoKDnFL8BkLoEj67fJgmUla1hTxflQro
-   0it5PAlXhVj/JDPWqnCgUUGK5DpHc74ShAz7iAqoMTAIXKkJkhbsaqp4W
-   om2CW063g7wFvgC1mfE8i5jsOx1+jwrA5bVPjkPiY1/tk2oYMR+JiIQ1/
-   kmW07znCra8rmfHDNFj8/dRKLsgP1N56aEksIrEjn/TZ8DEGcxXyK29Fu
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10898"; a="370812188"
-X-IronPort-AV: E=Sophos;i="6.04,209,1695711600"; 
-   d="scan'208";a="370812188"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2023 19:14:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10898"; a="800823006"
-X-IronPort-AV: E=Sophos;i="6.04,209,1695711600"; 
-   d="scan'208";a="800823006"
-Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
-  by orsmga001.jf.intel.com with ESMTP; 18 Nov 2023 19:14:14 -0800
-Received: from kbuild by b8de5498638e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1r4YGC-0004aP-0K;
-        Sun, 19 Nov 2023 03:14:12 +0000
-Date:   Sun, 19 Nov 2023 11:13:56 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-hexagon@vger.kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Stanislav Kinsburskii <stanislav.kinsburskii@gmail.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        linux-m68k@lists.linux-m68k.org,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        linux-arm-kernel@lists.infradead.org,
-        Brian Cain <bcain@quicinc.com>, linux-parisc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] asm/io: remove unnecessary xlate_dev_mem_ptr() and
- unxlate_dev_mem_ptr()
-Message-ID: <202311191145.pppExJS6-lkp@intel.com>
-References: <20231118100827.1599422-1-wangkefeng.wang@huawei.com>
+        Sun, 19 Nov 2023 07:12:29 -0500
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25169115
+        for <linux-parisc@vger.kernel.org>; Sun, 19 Nov 2023 04:12:25 -0800 (PST)
+References: <87lebjz9z6.fsf@gentoo.org> <875y2jro9a.fsf@gentoo.org>
+ <0fec2446-a523-486f-9df7-4c6af9e2e0e3@gmx.de>
+ <7409ec05-7a28-45fe-9604-519de5ae934e@bell.net>
+ <cf75a1e4-c269-4530-b3aa-b02a81597acb@gmx.de>
+ <b0a524df-9dab-4038-981f-33fc69043c1c@bell.net>
+ <87sf5d8f9h.fsf@gentoo.org>
+ <9bc4615d-122b-4c12-9537-b2eddc753a32@bell.net>
+ <87leb58d45.fsf@gentoo.org>
+ <7b4b838d-a3c2-40b4-b21e-0e5e73187bff@bell.net>
+ <0cec0dfb-7a13-41fb-8498-3844102d18a5@gmx.de>
+User-agent: mu4e 1.10.8; emacs 30.0.50
+From:   Sam James <sam@gentoo.org>
+To:     Helge Deller <deller@gmx.de>
+Cc:     John David Anglin <dave.anglin@bell.net>,
+        Sam James <sam@gentoo.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>
+Subject: Re: prctl call wrongly succeeds on HPPA?
+Date:   Sun, 19 Nov 2023 12:11:36 +0000
+Organization: Gentoo
+In-reply-to: <0cec0dfb-7a13-41fb-8498-3844102d18a5@gmx.de>
+Message-ID: <87ttpij61m.fsf@gentoo.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231118100827.1599422-1-wangkefeng.wang@huawei.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-parisc.vger.kernel.org>
 X-Mailing-List: linux-parisc@vger.kernel.org
 
-Hi Kefeng,
 
-kernel test robot noticed the following build errors:
+Helge Deller <deller@gmx.de> writes:
 
-[auto build test ERROR on soc/for-next]
-[also build test ERROR on geert-m68k/for-next geert-m68k/for-linus deller-parisc/for-next powerpc/next powerpc/fixes linus/master v6.7-rc1 next-20231117]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> On 11/11/23 00:02, John David Anglin wrote:
+>> On 2023-11-10 5:16 p.m., Sam James wrote:
+>>> John David Anglin <dave.anglin@bell.net> writes:
+>>>
+>>>> On 2023-11-10 4:32 p.m., Sam James wrote:
+>>>>> John David Anglin <dave.anglin@bell.net> writes:
+>>>>>
+>>>>>> On 2023-11-10 3:38 p.m., Helge Deller wrote:
+>>>>>>> On 11/10/23 21:12, John David Anglin wrote:
+>>>>>>>> On 2023-11-10 3:01 p.m., Helge Deller wrote:
+>>>>>>>>>>> On HPPA, we still need executable stacks, so this option doesn't work
+>>>>>>>>>>> and leads to a segfault on boot.
+>>>>>>>>> For kernel we don't need it any longer.
+>>>>>>>>> But there might be dependencies on glibc version and/or combination.
+>>>>>>>>> So, I've currently lost overview if we still need executable stacks...
+>>>>>>>> FWIW, I recently changed gcc-14 to enable GNU stack notes and fixed a bug in the
+>>>>>>>> 32-bit PA 2.0 trampoline template.  All execute stack tests in glibc now pass with gcc-14.
+>>>>>>> Yes, I saw your commits.
+>>>>>>> So, any code compiled with >= gcc-14 should be fine with non-writeable stacks?
+>>>>>> Not exactly.  An executable stack is still needed for nested functions.  They are still called
+>>>>>> via a stack trampoline.  The GNU stack note indicates whether an object needs an executable
+>>>>>> stack or not.  These notes are collected by linker.  The glibc loader determines whether to setup
+>>>>>> an executable stack or not.
+>>>>>>> It would be easier if it would be a glibc dependency (for distribution maintainers)...
+>>>>>> I'm not aware of any glibc dependency...
+>>>>>>
+>>>>>> I think once gcc-14 becomes the default compiler, we will have to enable GNU stack notes in
+>>>>>> previous gcc versions.  We will still have executable stacks until everything is rebuilt.
+>>>>> We will need to update that default in Binutils too, I think. That
+>>>>> configure arg is working OK for me, but I did not try systemd yet.
+>>>> Currently, there are no architecture dependencies in the ld --enable-warn-execstack and --enable-default-execstack
+>>>> configure options.  The -z execstack and -z noexecstack ld options can override the GNU notes, or lack thereof.  We
+>>>> may have to fix some assembly code.  Maybe binutils should be built with --enable-warn-execstack once we switch
+>>>> to gcc-14.  I don't think we want --enable-default-execstack after switching to gcc-14.
+>>> Are you sure? I just did some more digging now...
+>>> * It looks like targets can set elf_backend_default_execstack in
+>>> bfd/elf-*.c to override the default, see e.g. 81cd0a49c9e5f28c0fec391e449ea3272077c432 for cris.
+>>> * See acd65fa610df09a0954b8fecdadf546215263c5d where HPPA's default got changed.
+>>> * ld/configure.tgt still has some suppression for HPPA's default for
+>>> warnings.
+>>>
+>>> I think we may need to, in due course, set elf_backend_default_execstack
+>>> in bfd/elf32-hppa.c, and then drop those bits in ld/configure.tgt too?
+>> You are right about both.  We have in ld/configure.tgt:
+>> if test "${ac_default_ld_warn_execstack}" = 2; then
+>>    case "${targ}" in
+>>        # The HPPA port needs to support older kernels that
+>>        # use executable stacks for signals and syscalls.
+>>        # Many MIPS targets use executable stacks.
+>>      hppa*-*-* | \
+>>      mips*-*-*)
+>>        ac_default_ld_warn_execstack=0
+>>        ;;
+>>      *)
+>>        ;;
+>>    esac
+>> fi
+>>
+>> We also may need:
+>> #define elf_backend_default_execstack 0
+>> in elf32-hppa.c at some point.
+>>
+>> I think when GNU stack notes are present, they determine whether the stack in an executable will be executable or not.
+>> But I could be wrong 🙁
+>>
+>> I'll try building binutils with gcc-14.
+>
+> Did it worked?
+>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Kefeng-Wang/asm-io-remove-unnecessary-xlate_dev_mem_ptr-and-unxlate_dev_mem_ptr/20231118-183038
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
-patch link:    https://lore.kernel.org/r/20231118100827.1599422-1-wangkefeng.wang%40huawei.com
-patch subject: [PATCH] asm/io: remove unnecessary xlate_dev_mem_ptr() and unxlate_dev_mem_ptr()
-config: mips-mtx1_defconfig (https://download.01.org/0day-ci/archive/20231119/202311191145.pppExJS6-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231119/202311191145.pppExJS6-lkp@intel.com/reproduce)
+In addition to my other email: while I am doing GCC 14 test builds for
+Dave's patch, I am including the Binutils changes (just local hacks for
+now) to play with fixed stack notes too, so I will let you both know if
+there's any problems with that too.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311191145.pppExJS6-lkp@intel.com/
+> Btw, I added a small section about executable stacks in the TODO
+> section of the wiki:
+> https://parisc.wiki.kernel.org/index.php/TODO#executable_stack
+>
+> Helge
 
-All errors (new ones prefixed by >>):
-
->> drivers/char/mem.c:159:10: error: call to undeclared function 'xlate_dev_mem_ptr'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-                           ptr = xlate_dev_mem_ptr(p);
-                                 ^
->> drivers/char/mem.c:159:8: error: incompatible integer to pointer conversion assigning to 'void *' from 'int' [-Wint-conversion]
-                           ptr = xlate_dev_mem_ptr(p);
-                               ^ ~~~~~~~~~~~~~~~~~~~~
->> drivers/char/mem.c:164:4: error: call to undeclared function 'unxlate_dev_mem_ptr'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-                           unxlate_dev_mem_ptr(p, ptr);
-                           ^
-   drivers/char/mem.c:235:10: error: call to undeclared function 'xlate_dev_mem_ptr'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-                           ptr = xlate_dev_mem_ptr(p);
-                                 ^
-   drivers/char/mem.c:235:8: error: incompatible integer to pointer conversion assigning to 'void *' from 'int' [-Wint-conversion]
-                           ptr = xlate_dev_mem_ptr(p);
-                               ^ ~~~~~~~~~~~~~~~~~~~~
-   drivers/char/mem.c:243:4: error: call to undeclared function 'unxlate_dev_mem_ptr'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-                           unxlate_dev_mem_ptr(p, ptr);
-                           ^
-   6 errors generated.
-
-
-vim +/xlate_dev_mem_ptr +159 drivers/char/mem.c
-
-^1da177e4c3f41 Linus Torvalds                2005-04-16  133  
-22ec1a2aea73b9 Kees Cook                     2017-12-01  134  	bounce = kmalloc(PAGE_SIZE, GFP_KERNEL);
-22ec1a2aea73b9 Kees Cook                     2017-12-01  135  	if (!bounce)
-22ec1a2aea73b9 Kees Cook                     2017-12-01  136  		return -ENOMEM;
-22ec1a2aea73b9 Kees Cook                     2017-12-01  137  
-^1da177e4c3f41 Linus Torvalds                2005-04-16  138  	while (count > 0) {
-fa29e97bb8c70f Wu Fengguang                  2009-12-14  139  		unsigned long remaining;
-b5b38200ebe548 Kees Cook                     2018-03-27  140  		int allowed, probe;
-fa29e97bb8c70f Wu Fengguang                  2009-12-14  141  
-f222318e9c3a31 Wu Fengguang                  2009-12-14  142  		sz = size_inside_page(p, count);
-^1da177e4c3f41 Linus Torvalds                2005-04-16  143  
-22ec1a2aea73b9 Kees Cook                     2017-12-01  144  		err = -EPERM;
-a4866aa812518e Kees Cook                     2017-04-05  145  		allowed = page_is_allowed(p >> PAGE_SHIFT);
-a4866aa812518e Kees Cook                     2017-04-05  146  		if (!allowed)
-22ec1a2aea73b9 Kees Cook                     2017-12-01  147  			goto failed;
-22ec1a2aea73b9 Kees Cook                     2017-12-01  148  
-22ec1a2aea73b9 Kees Cook                     2017-12-01  149  		err = -EFAULT;
-a4866aa812518e Kees Cook                     2017-04-05  150  		if (allowed == 2) {
-a4866aa812518e Kees Cook                     2017-04-05  151  			/* Show zeros for restricted memory. */
-a4866aa812518e Kees Cook                     2017-04-05  152  			remaining = clear_user(buf, sz);
-a4866aa812518e Kees Cook                     2017-04-05  153  		} else {
-^1da177e4c3f41 Linus Torvalds                2005-04-16  154  			/*
-a4866aa812518e Kees Cook                     2017-04-05  155  			 * On ia64 if a page has been mapped somewhere as
-a4866aa812518e Kees Cook                     2017-04-05  156  			 * uncached, then it must also be accessed uncached
-a4866aa812518e Kees Cook                     2017-04-05  157  			 * by the kernel or data corruption may occur.
-^1da177e4c3f41 Linus Torvalds                2005-04-16  158  			 */
-^1da177e4c3f41 Linus Torvalds                2005-04-16 @159  			ptr = xlate_dev_mem_ptr(p);
-e045fb2a988a9a venkatesh.pallipadi@intel.com 2008-03-18  160  			if (!ptr)
-22ec1a2aea73b9 Kees Cook                     2017-12-01  161  				goto failed;
-a4866aa812518e Kees Cook                     2017-04-05  162  
-fe557319aa06c2 Christoph Hellwig             2020-06-17  163  			probe = copy_from_kernel_nofault(bounce, ptr, sz);
-e045fb2a988a9a venkatesh.pallipadi@intel.com 2008-03-18 @164  			unxlate_dev_mem_ptr(p, ptr);
-b5b38200ebe548 Kees Cook                     2018-03-27  165  			if (probe)
-22ec1a2aea73b9 Kees Cook                     2017-12-01  166  				goto failed;
-22ec1a2aea73b9 Kees Cook                     2017-12-01  167  
-22ec1a2aea73b9 Kees Cook                     2017-12-01  168  			remaining = copy_to_user(buf, bounce, sz);
-a4866aa812518e Kees Cook                     2017-04-05  169  		}
-a4866aa812518e Kees Cook                     2017-04-05  170  
-fa29e97bb8c70f Wu Fengguang                  2009-12-14  171  		if (remaining)
-22ec1a2aea73b9 Kees Cook                     2017-12-01  172  			goto failed;
-e045fb2a988a9a venkatesh.pallipadi@intel.com 2008-03-18  173  
-^1da177e4c3f41 Linus Torvalds                2005-04-16  174  		buf += sz;
-^1da177e4c3f41 Linus Torvalds                2005-04-16  175  		p += sz;
-^1da177e4c3f41 Linus Torvalds                2005-04-16  176  		count -= sz;
-^1da177e4c3f41 Linus Torvalds                2005-04-16  177  		read += sz;
-8619e5bdeee8b2 Tetsuo Handa                  2019-08-26  178  		if (should_stop_iteration())
-8619e5bdeee8b2 Tetsuo Handa                  2019-08-26  179  			break;
-^1da177e4c3f41 Linus Torvalds                2005-04-16  180  	}
-22ec1a2aea73b9 Kees Cook                     2017-12-01  181  	kfree(bounce);
-^1da177e4c3f41 Linus Torvalds                2005-04-16  182  
-^1da177e4c3f41 Linus Torvalds                2005-04-16  183  	*ppos += read;
-^1da177e4c3f41 Linus Torvalds                2005-04-16  184  	return read;
-22ec1a2aea73b9 Kees Cook                     2017-12-01  185  
-22ec1a2aea73b9 Kees Cook                     2017-12-01  186  failed:
-22ec1a2aea73b9 Kees Cook                     2017-12-01  187  	kfree(bounce);
-22ec1a2aea73b9 Kees Cook                     2017-12-01  188  	return err;
-^1da177e4c3f41 Linus Torvalds                2005-04-16  189  }
-^1da177e4c3f41 Linus Torvalds                2005-04-16  190  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
