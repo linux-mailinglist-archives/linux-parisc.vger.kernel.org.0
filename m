@@ -1,115 +1,101 @@
-Return-Path: <linux-parisc+bounces-53-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-55-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281F17F6AF1
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 Nov 2023 04:37:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B176A7F6CAE
+	for <lists+linux-parisc@lfdr.de>; Fri, 24 Nov 2023 08:16:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E06C8280DF0
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 Nov 2023 03:37:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0E411C208DC
+	for <lists+linux-parisc@lfdr.de>; Fri, 24 Nov 2023 07:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D0E23A5;
-	Fri, 24 Nov 2023 03:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UkRT7gcP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8D05239;
+	Fri, 24 Nov 2023 07:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C0FF10F0
-	for <linux-parisc@vger.kernel.org>; Thu, 23 Nov 2023 19:37:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1700797050;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CfaOCzpQNXPNdiOU6+O8brbk3lbOzOfrbuJX1VTIoz4=;
-	b=UkRT7gcP4+M58V5l0TgFtmlURRe9ja3jani/lyiQKfKJUYgGYlEGelY5YAXpbDHnO4jQVN
-	mhkMRskT6YH/oD/G7Y4Ak7r2KxNhckQIhyeSDzQ5QpMlP8cd5BMVW8iZurPtr2U+8psJp0
-	Secif1FWEMsSEjJGFyo24nzbfyjwfsI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-F2GfJlqvM5iLOFSDvp8tzg-1; Thu,
- 23 Nov 2023 22:37:26 -0500
-X-MC-Unique: F2GfJlqvM5iLOFSDvp8tzg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A55773813F26;
-	Fri, 24 Nov 2023 03:37:25 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.8])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 3262A492BE7;
-	Fri, 24 Nov 2023 03:37:20 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: kexec@lists.infradead.org,
-	x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-parisc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	joe@perches.com,
-	nathan@kernel.org,
-	yujie.liu@intel.com,
-	Baoquan He <bhe@redhat.com>
-Subject: [PATCH v2 7/7] kexec_file, parisc: print out debugging message if required
-Date: Fri, 24 Nov 2023 11:36:42 +0800
-Message-ID: <20231124033642.520686-8-bhe@redhat.com>
-In-Reply-To: <20231124033642.520686-1-bhe@redhat.com>
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2258BD5E;
+	Thu, 23 Nov 2023 23:16:52 -0800 (PST)
+Received: from omf01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CC5C409CB;
+	Fri, 24 Nov 2023 07:16:50 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf01.hostedemail.com (Postfix) with ESMTPA id 8CAE160009;
+	Fri, 24 Nov 2023 07:16:47 +0000 (UTC)
+Message-ID: <971ed2ceaeeba882d2b4c39015ee5ae5db3f5e82.camel@perches.com>
+Subject: Re: [PATCH v2 2/7] kexec_file: print out debugging message if
+ required
+From: Joe Perches <joe@perches.com>
+To: Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
+Cc: kexec@lists.infradead.org, x86@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org, 
+	akpm@linux-foundation.org, nathan@kernel.org, yujie.liu@intel.com
+Date: Thu, 23 Nov 2023 23:16:46 -0800
+In-Reply-To: <20231124033642.520686-3-bhe@redhat.com>
 References: <20231124033642.520686-1-bhe@redhat.com>
+	 <20231124033642.520686-3-bhe@redhat.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+X-Rspamd-Queue-Id: 8CAE160009
+X-Stat-Signature: r4oqtahenar8h64oxpqpoeo1n6zbhmda
+X-Rspamd-Server: rspamout08
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX19c0OHTlDrKhb/Xt6M9rvhAh1ufC3tVTnk=
+X-HE-Tag: 1700810207-170549
+X-HE-Meta: U2FsdGVkX1+zlhNkZ9x3SOlShl6+X96epMaKjfHehHKyBsMtcvgR7F6Ii1tgURKZMXTJ4v77gzWxOCKJjrZ32dyx27aEd7KJtn+JaKan9d1JoOg5vx5spjNriOlsrJsAsKTNWoXgbsaaF0Aw9htJa6iNVZZnaP/omO8ddnk/a1hUgTJ/UY7dIv6hTgWYnyt0dTxqhxdXpQIY0i9zYhv989Np0jXyZefmSBvNLtvm6dtRPbiigZYQ2nQLsoXdSGX2/vxVXndB66Niab3Fp1e04lrREsrM7se2cR96ydP7F6f9OXdC0ttkSA5n1SXD5cD7
 
-Replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-loading related codes.
+On Fri, 2023-11-24 at 11:36 +0800, Baoquan He wrote:
+> Replace pr_debug() with the newly added kexec_dprintk() in kexec_file
+> loading related codes.
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
----
- arch/parisc/kernel/kexec_file.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+trivia for pr_debug -> kexec_dprintk conversions for
+the entire patch set:
 
-diff --git a/arch/parisc/kernel/kexec_file.c b/arch/parisc/kernel/kexec_file.c
-index 8c534204f0fd..011545898da7 100644
---- a/arch/parisc/kernel/kexec_file.c
-+++ b/arch/parisc/kernel/kexec_file.c
-@@ -38,7 +38,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 	for (i = 0; i < image->nr_segments; i++)
- 		image->segment[i].mem = __pa(image->segment[i].mem);
- 
--	pr_debug("Loaded the kernel at 0x%lx, entry at 0x%lx\n",
-+	kexec_dprintk("Loaded the kernel at 0x%lx, entry at 0x%lx\n",
- 		 kernel_load_addr, image->start);
- 
- 	if (initrd != NULL) {
-@@ -51,7 +51,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 		if (ret)
- 			goto out;
- 
--		pr_debug("Loaded initrd at 0x%lx\n", kbuf.mem);
-+		kexec_dprintk("Loaded initrd at 0x%lx\n", kbuf.mem);
- 		image->arch.initrd_start = kbuf.mem;
- 		image->arch.initrd_end = kbuf.mem + initrd_len;
- 	}
-@@ -68,7 +68,7 @@ static void *elf_load(struct kimage *image, char *kernel_buf,
- 		if (ret)
- 			goto out;
- 
--		pr_debug("Loaded cmdline at 0x%lx\n", kbuf.mem);
-+		kexec_dprintk("Loaded cmdline at 0x%lx\n", kbuf.mem);
- 		image->arch.cmdline = kbuf.mem;
- 	}
- out:
--- 
-2.41.0
+> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+[]
+> @@ -551,9 +551,12 @@ int crash_prepare_elf64_headers(struct crash_mem *me=
+m, int need_kernel_map,
+>  		phdr->p_filesz =3D phdr->p_memsz =3D mend - mstart + 1;
+>  		phdr->p_align =3D 0;
+>  		ehdr->e_phnum++;
+> -		pr_debug("Crash PT_LOAD ELF header. phdr=3D%p vaddr=3D0x%llx, paddr=3D=
+0x%llx, sz=3D0x%llx e_phnum=3D%d p_offset=3D0x%llx\n",
+> +#ifdef CONFIG_KEXEC_FILE
+> +		kexec_dprintk("Crash PT_LOAD ELF header. phdr=3D%p vaddr=3D0x%llx, pad=
+dr=3D0x%llx, "
+> +			"sz=3D0x%llx e_phnum=3D%d p_offset=3D0x%llx\n",
+>  			phdr, phdr->p_vaddr, phdr->p_paddr, phdr->p_filesz,
+>  			ehdr->e_phnum, phdr->p_offset);
+
+It's good form to rewrap continuation lines to the open parenthesis
+
+> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+[]
+> @@ -389,11 +391,12 @@ SYSCALL_DEFINE5(kexec_file_load, int, kernel_fd, in=
+t, initrd_fd,
+>  	if (ret)
+>  		goto out;
+> =20
+> +	kexec_dprintk("nr_segments =3D %lu\n", image->nr_segments);
+>  	for (i =3D 0; i < image->nr_segments; i++) {
+>  		struct kexec_segment *ksegment;
+> =20
+>  		ksegment =3D &image->segment[i];
+> -		pr_debug("Loading segment %d: buf=3D0x%p bufsz=3D0x%zx mem=3D0x%lx mem=
+sz=3D0x%zx\n",
+> +		kexec_dprintk("segment[%d]: buf=3D0x%p bufsz=3D0x%zx mem=3D0x%lx memsz=
+=3D0x%zx\n",
+>  			 i, ksegment->buf, ksegment->bufsz, ksegment->mem,
+>  			 ksegment->memsz);
+
+here too etc...
 
 
