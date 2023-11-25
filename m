@@ -1,165 +1,126 @@
-Return-Path: <linux-parisc+bounces-66-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-67-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313FE7F76C3
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 Nov 2023 15:43:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F0557F8F76
+	for <lists+linux-parisc@lfdr.de>; Sat, 25 Nov 2023 22:27:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC0D8B21328
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 Nov 2023 14:43:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB2721F20D4A
+	for <lists+linux-parisc@lfdr.de>; Sat, 25 Nov 2023 21:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E564F2D7B5;
-	Fri, 24 Nov 2023 14:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5E030643;
+	Sat, 25 Nov 2023 21:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DbuLnQ1O"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h5MdFxkX"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E82286B6
-	for <linux-parisc@vger.kernel.org>; Fri, 24 Nov 2023 14:43:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076B2C433CA;
-	Fri, 24 Nov 2023 14:43:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700837021;
-	bh=A5jorDEldyCVDWSZyZ0AJHq11wmlWXwFBpIDRg8t55Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbuLnQ1OeUxAgMncDrcR0Hji4J17P63s9Xv8bjH8WSh9oKgZgzDiJ+EYUcivgn/Zw
-	 Vn4XX+OJxaXGI7sTIi2hzr/mOyIFBdqnDY2CQHo2kDzao0gr1jxcnK7ejdtn9J2o8R
-	 0MX+BrcXs/2kfR1KKT952opkTD4p5HzxHOamMxClmgeXfOGbcEXlhPX20aEKQsWDS2
-	 M8B3uyvlX5KMVC1IKkxVX81JosnazYOhoy+9PakvO/SvkHvxsLvvdARpbU5LgPBWgi
-	 pS8D73o7+T6rin8U+JiI87yB/kC7Fd4QlY22ztd+nuFKGlxgkwTiHvOzwibwbFaLPo
-	 yyBwYfPWms6NQ==
-From: deller@kernel.org
-To: linux-parisc@vger.kernel.org
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PATCH 8/8] parisc: Reduce size of __bug_table[] on 64-bit kernel by half
-Date: Fri, 24 Nov 2023 15:41:13 +0100
-Message-ID: <20231124144158.158993-16-deller@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231124144158.158993-1-deller@kernel.org>
-References: <20231124144158.158993-1-deller@kernel.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058CAEA;
+	Sat, 25 Nov 2023 13:27:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700947629; x=1732483629;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2msMvypUB/fdSacdfq9Xd4cZCJy1Df5Vy8rcx7wAbvU=;
+  b=h5MdFxkXps8xxIIEmvAqNKS83qsdCj8x/2AgIa9dS8iTCdNIsmttHvkU
+   tQOX3JbiR3gC+BewDnsvd/CeqkpdRGcj20M9QGxa9aF6PQg9v/5Bznnkh
+   5+vmQb8ICobEpU7SIusv0Jcy6rBTae8gMrJWAv3t351Thr3G22kgQbkhr
+   Zim7NxRT4KEqULS0oF4ssQz9yO1DsTs4RgIwKH/P7ZuqNml6fW68+EaPj
+   5NL2tgAvm4hTX6cI0cw8VrTNYXtjZCMgr660S1RQTlrXAaff7wiqLZC2V
+   pF5qzw8OoIGEXe0JX/OCpeomWKsT3a1uzCOg4vCyxHcZODF4SjxiVLH2j
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10905"; a="5698985"
+X-IronPort-AV: E=Sophos;i="6.04,227,1695711600"; 
+   d="scan'208";a="5698985"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2023 13:27:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10905"; a="761258825"
+X-IronPort-AV: E=Sophos;i="6.04,227,1695711600"; 
+   d="scan'208";a="761258825"
+Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 25 Nov 2023 13:27:04 -0800
+Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1r70B3-0004RK-3B;
+	Sat, 25 Nov 2023 21:27:01 +0000
+Date: Sun, 26 Nov 2023 05:26:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	kexec@lists.infradead.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-parisc@vger.kernel.org, akpm@linux-foundation.org,
+	joe@perches.com, nathan@kernel.org, yujie.liu@intel.com,
+	Baoquan He <bhe@redhat.com>
+Subject: Re: [PATCH v2 4/7] kexec_file, arm64: print out debugging message if
+ required
+Message-ID: <202311260548.1HaxcDnE-lkp@intel.com>
+References: <20231124033642.520686-5-bhe@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231124033642.520686-5-bhe@redhat.com>
 
-From: Helge Deller <deller@gmx.de>
+Hi Baoquan,
 
-Enable GENERIC_BUG_RELATIVE_POINTERS which will store 32-bit relative
-offsets to the bug address and the source file name instead of 64-bit
-absolute addresses. This effectively reduces the size of the
-__bug_table[] array by half on 64-bit kernels.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- arch/parisc/Kconfig           |  7 +++++--
- arch/parisc/include/asm/bug.h | 34 +++++++++++++++++-----------------
- 2 files changed, 22 insertions(+), 19 deletions(-)
+[auto build test ERROR on arm64/for-next/core]
+[also build test ERROR on tip/x86/core powerpc/next powerpc/fixes linus/master v6.7-rc2 next-20231124]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index a7c9c0e69e5a..d14ccc948a29 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -115,9 +115,12 @@ config ARCH_HAS_ILOG2_U64
- 	default n
- 
- config GENERIC_BUG
--	bool
--	default y
-+	def_bool y
- 	depends on BUG
-+	select GENERIC_BUG_RELATIVE_POINTERS if 64BIT
-+
-+config GENERIC_BUG_RELATIVE_POINTERS
-+	bool
- 
- config GENERIC_HWEIGHT
- 	bool
-diff --git a/arch/parisc/include/asm/bug.h b/arch/parisc/include/asm/bug.h
-index b9cad0bb4461..1641ff9a8b83 100644
---- a/arch/parisc/include/asm/bug.h
-+++ b/arch/parisc/include/asm/bug.h
-@@ -17,26 +17,27 @@
- #define	PARISC_BUG_BREAK_ASM	"break 0x1f, 0x1fff"
- #define	PARISC_BUG_BREAK_INSN	0x03ffe01f  /* PARISC_BUG_BREAK_ASM */
- 
--#if defined(CONFIG_64BIT)
--#define ASM_WORD_INSN		".dword\t"
-+#ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
-+# define __BUG_REL(val) ".word " __stringify(val) " - ."
- #else
--#define ASM_WORD_INSN		".word\t"
-+# define __BUG_REL(val) ".word " __stringify(val)
- #endif
- 
-+
- #ifdef CONFIG_DEBUG_BUGVERBOSE
- #define BUG()								\
- 	do {								\
- 		asm volatile("\n"					\
- 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
- 			     "\t.pushsection __bug_table,\"a\"\n"	\
--			     "\t.align %4\n"				\
--			     "2:\t" ASM_WORD_INSN "1b, %c0\n"		\
-+			     "\t.align 4\n"				\
-+			     "2:\t" __BUG_REL(1b) "\n"			\
-+			     "\t" __BUG_REL(%c0)  "\n"			\
- 			     "\t.short %1, %2\n"			\
--			     "\t.blockz %3-2*%4-2*2\n"			\
-+			     "\t.blockz %3-2*4-2*2\n"			\
- 			     "\t.popsection"				\
- 			     : : "i" (__FILE__), "i" (__LINE__),	\
--			     "i" (0), "i" (sizeof(struct bug_entry)),	\
--			     "i" (sizeof(long)) );			\
-+			     "i" (0), "i" (sizeof(struct bug_entry)) );	\
- 		unreachable();						\
- 	} while(0)
- 
-@@ -54,15 +55,15 @@
- 		asm volatile("\n"					\
- 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
- 			     "\t.pushsection __bug_table,\"a\"\n"	\
--			     "\t.align %4\n"				\
--			     "2:\t" ASM_WORD_INSN "1b, %c0\n"		\
-+			     "\t.align 4\n"				\
-+			     "2:\t" __BUG_REL(1b) "\n"			\
-+			     "\t" __BUG_REL(%c0)  "\n"			\
- 			     "\t.short %1, %2\n"			\
--			     "\t.blockz %3-2*%4-2*2\n"			\
-+			     "\t.blockz %3-2*4-2*2\n"			\
- 			     "\t.popsection"				\
- 			     : : "i" (__FILE__), "i" (__LINE__),	\
- 			     "i" (BUGFLAG_WARNING|(flags)),		\
--			     "i" (sizeof(struct bug_entry)),		\
--			     "i" (sizeof(long)) );			\
-+			     "i" (sizeof(struct bug_entry)) );		\
- 	} while(0)
- #else
- #define __WARN_FLAGS(flags)						\
-@@ -71,13 +72,12 @@
- 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
- 			     "\t.pushsection __bug_table,\"a\"\n"	\
- 			     "\t.align %2\n"				\
--			     "2:\t" ASM_WORD_INSN "1b\n"		\
-+			     "2:\t" __BUG_REL(1b) "\n"			\
- 			     "\t.short %0\n"				\
--			     "\t.blockz %1-%2-2\n"			\
-+			     "\t.blockz %1-4-2\n"			\
- 			     "\t.popsection"				\
- 			     : : "i" (BUGFLAG_WARNING|(flags)),		\
--			     "i" (sizeof(struct bug_entry)),		\
--			     "i" (sizeof(long)) );			\
-+			     "i" (sizeof(struct bug_entry)) );		\
- 	} while(0)
- #endif
- 
+url:    https://github.com/intel-lab-lkp/linux/commits/Baoquan-He/kexec_file-add-kexec_file-flag-to-control-debug-printing/20231124-113942
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-next/core
+patch link:    https://lore.kernel.org/r/20231124033642.520686-5-bhe%40redhat.com
+patch subject: [PATCH v2 4/7] kexec_file, arm64: print out debugging message if required
+config: arm64-randconfig-001-20231126 (https://download.01.org/0day-ci/archive/20231126/202311260548.1HaxcDnE-lkp@intel.com/config)
+compiler: clang version 14.0.6 (https://github.com/llvm/llvm-project.git f28c006a5895fc0e329fe15fead81e37457cb1d1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231126/202311260548.1HaxcDnE-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311260548.1HaxcDnE-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> arch/arm64/kernel/machine_kexec.c:35:2: error: implicit declaration of function 'kexec_dprintk' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+           kexec_dprintk("%s:%d:\n", func, line);
+           ^
+   1 error generated.
+
+
+vim +/kexec_dprintk +35 arch/arm64/kernel/machine_kexec.c
+
+    27	
+    28	/**
+    29	 * kexec_image_info - For debugging output.
+    30	 */
+    31	#define kexec_image_info(_i) _kexec_image_info(__func__, __LINE__, _i)
+    32	static void _kexec_image_info(const char *func, int line,
+    33		const struct kimage *kimage)
+    34	{
+  > 35		kexec_dprintk("%s:%d:\n", func, line);
+    36		kexec_dprintk("  kexec kimage info:\n");
+    37		kexec_dprintk("    type:        %d\n", kimage->type);
+    38		kexec_dprintk("    head:        %lx\n", kimage->head);
+    39		kexec_dprintk("    kern_reloc: %pa\n", &kimage->arch.kern_reloc);
+    40		kexec_dprintk("    el2_vectors: %pa\n", &kimage->arch.el2_vectors);
+    41	}
+    42	
+
 -- 
-2.42.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
