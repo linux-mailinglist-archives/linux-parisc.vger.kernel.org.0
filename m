@@ -1,71 +1,96 @@
-Return-Path: <linux-parisc+bounces-70-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-71-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B73C7F94C0
-	for <lists+linux-parisc@lfdr.de>; Sun, 26 Nov 2023 19:03:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5237F9C26
+	for <lists+linux-parisc@lfdr.de>; Mon, 27 Nov 2023 09:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC866B20C1C
-	for <lists+linux-parisc@lfdr.de>; Sun, 26 Nov 2023 18:03:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A9B7B2093E
+	for <lists+linux-parisc@lfdr.de>; Mon, 27 Nov 2023 08:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917998C13;
-	Sun, 26 Nov 2023 18:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE7820F9;
+	Mon, 27 Nov 2023 08:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hqn6AJAZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="yufLAChD"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723AC3D7C
-	for <linux-parisc@vger.kernel.org>; Sun, 26 Nov 2023 18:03:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F19E7C433C7;
-	Sun, 26 Nov 2023 18:03:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701021800;
-	bh=Gg5Y8fFkPZFunUuSW0JeQ9r0V4qzjdDkY3C8H17USiQ=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=hqn6AJAZaRTHPIktwMJ4bbX6FV0Da94c8dXmXIPCt7uiCd1QWgEDFkwNdgHr5Qabr
-	 B2V1QeutPMFGj7bA7jI28bL8yk16mqoa5bIYZnFu3HaWa3Ir7J+JiH4RhDZP10Favp
-	 OX7Is46Yj0eP8MuWqA5bU5YyDOcVBM8VyEG/SJKnlkvxaCrVD91aeFDM4Pa2ZKyeca
-	 s4FXKFTO/C9FNOz3hZeLPyFZvM/S15nkgNrEM3Ii1Ml/TRZ+NkBCwnty4r9UfOLUlE
-	 Sq+btNvGSTTvRKk+hpPKP5NRbiEyHluJjj+tKxi20S7zzz9e9WFgiu7NosAiqjSA2h
-	 UKwDBdfM2Q6eQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DC619EAA958;
-	Sun, 26 Nov 2023 18:03:19 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture fixes for v6.7-rc3
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <ZWN6qUkUEewrKNOe@p100>
-References: <ZWN6qUkUEewrKNOe@p100>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <ZWN6qUkUEewrKNOe@p100>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.7-rc3
-X-PR-Tracked-Commit-Id: 43266838515d30dc0c45d5c7e6e7edacee6cce92
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: d2da77f431ac49b5763b88751a75f70daa46296c
-Message-Id: <170102179989.12031.198762284192392864.pr-tracker-bot@kernel.org>
-Date: Sun, 26 Nov 2023 18:03:19 +0000
-To: Helge Deller <deller@gmx.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, John David Anglin <dave.anglin@bell.net>
+Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B04C111
+	for <linux-parisc@vger.kernel.org>; Mon, 27 Nov 2023 00:57:52 -0800 (PST)
+Received: by mail-vk1-xa33.google.com with SMTP id 71dfb90a1353d-4af6a700087so1139452e0c.0
+        for <linux-parisc@vger.kernel.org>; Mon, 27 Nov 2023 00:57:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701075471; x=1701680271; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Q3a/gp0k8Xr24VWAVkFjnZAQbXQVNc8sm8eV5Fej3d0=;
+        b=yufLAChDj9RN7rEs7pvz37PwOkjlxXw2veCZBn/kT8ZeGDOsQdKerKh5evKH8dvbXM
+         gqS0SBq4QiEyHlkbQHswNW1sOvl0n1yaj6qdh5yTsb5tMVnNZ3X4Re2Q4o4BL9P+S3sj
+         jDtjUtswG4m7sodXvxUL74b827RytT5IlFTL7Rsi+mAE6abTnzqxB85xpQM5SKufD7I/
+         VcTva3Ats9RaonsQyK1EKcu2+eYpwL90EaGt/eu54yd5yQADh5jt1u4VLC6EyFjpea6/
+         WeE4Sm2+HMUUujjORkDWIJwN1Tdc9oVkZz8393bodcB7KetcwJa2OZzxKvN29P7zyGm+
+         gtJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701075471; x=1701680271;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q3a/gp0k8Xr24VWAVkFjnZAQbXQVNc8sm8eV5Fej3d0=;
+        b=DlUQZkAFJyhakLLy1O5+7bJtkmlG37jU9fk6OZHZ71uGJosxig+qpsEIHqX8OiFrCi
+         AgYs8vZgGN3hjG7fTPI9wenrq5GqsGbBIVZkajcKPhLehTclkDDWk6GdPGKt0MthWGQW
+         X21VZeZ36CaasSz1mvOtUVvFjde6UxlRL3vUBiWgviqwkpDtqQijBL7YzFfczQDbDCVL
+         03Kdqc3zUsiue8eco7SVU228gGkmNncY8CDN2JNJtcBWpHWbUCbK+y9UH3TKafbHVSy6
+         eBHEART4l2eRw9sDms8Tj/kgSqnqDekc5Srhwibcfm6cYpRCTaSvkRvWSq8jD5TAod+I
+         q5NA==
+X-Gm-Message-State: AOJu0Yw5FsTRgHgMWtbL+C7C/Nv9o1EKraHhlcxfUyKzjc3zQONQFWFw
+	dN2jNZGdy5gf+YCLSXyWNAG1WBOscpOo5WAfYueRVw==
+X-Google-Smtp-Source: AGHT+IFv95af33s1Ivrbna3UuLQx1RVxE1lA8CxAKNGR1f+9OlWM5+Mw0oXtBMJb+qYB4sJZRWgnDMtvK5EbVnJyJ9Q=
+X-Received: by 2002:a05:6122:3106:b0:496:2e22:29e3 with SMTP id
+ cg6-20020a056122310600b004962e2229e3mr11176649vkb.1.1701075471346; Mon, 27
+ Nov 2023 00:57:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 27 Nov 2023 14:27:40 +0530
+Message-ID: <CA+G9fYsM4Aa1smp2Xahf=z2WOGpXsAC3GzUW06HJN9pucm837Q@mail.gmail.com>
+Subject: parisc: bug.h:71:17: error: invalid 'asm': operand number out of range
+To: open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	linux-parisc <linux-parisc@vger.kernel.org>, regressions@lists.linux.dev
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Helge Deller <deller@gmx.de>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	John David Anglin <dave.anglin@bell.net>
+Content-Type: text/plain; charset="UTF-8"
 
-The pull request you sent on Sun, 26 Nov 2023 18:04:41 +0100:
+The parisc tinyconfig built with gcc-11 failed on mainline v6.7-rc3.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.7-rc3
+git_describe: v6.7-rc3
+git_repo: https://gitlab.com/Linaro/lkft/mirrors/torvalds/linux-mainline
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/d2da77f431ac49b5763b88751a75f70daa46296c
+parisc:
+  build:
+    * gcc-11-tinyconfig
 
-Thank you!
+In file included from lib/math/int_log.c:14:
+lib/math/int_log.c: In function 'intlog2':
+arch/parisc/include/asm/bug.h:71:17: error: invalid 'asm': operand
+number out of range
+   71 |                 asm volatile("\n"
+         \
+      |                 ^~~
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.7-rc3/testrun/21323529/suite/build/test/gcc-11-tinyconfig/log
+ - https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.7-rc3/testrun/21323529/suite/build/test/gcc-11-tinyconfig/history/
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2Yk9c7RsS6V5pdDdOYzHSrlpZQk/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
