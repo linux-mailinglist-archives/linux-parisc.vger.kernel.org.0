@@ -1,104 +1,103 @@
-Return-Path: <linux-parisc+bounces-95-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-96-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A02D7FBE55
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Nov 2023 16:42:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9B97FDB55
+	for <lists+linux-parisc@lfdr.de>; Wed, 29 Nov 2023 16:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14D572826A7
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 Nov 2023 15:42:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E7821C20818
+	for <lists+linux-parisc@lfdr.de>; Wed, 29 Nov 2023 15:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0481E49B;
-	Tue, 28 Nov 2023 15:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A1C34541;
+	Wed, 29 Nov 2023 15:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="z16DHxP0"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KSMNxT4G"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 416D612A;
-	Tue, 28 Nov 2023 07:42:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=IMKJEnNn+G4rdqFGH3iRHztZa/N2RADNEAueBo8O0cY=; b=z16DHxP08aFFFJ47LD9uxtJpsn
-	+t0RB0TyQ2KyCYVbEMXvvjymQCwHExD6/vKRXzXzkjojJ7IP2XE8qmxVC8cAHrtCd0+IIrVCm7qdN
-	ZdkxE7l6xOULssxdV73BHOuaELu62t9SvZuDP9ZN1aCfYYnQMrGlQxH4qVoIMelPnGvcPnaF38Pkr
-	h5A/PWeMHMTxSr3BM1Zuta51o2q+gTVoiMVbBs0Dc0KEwgofXauGinHENQ/qNDFrdL2D7Y0vYeL4i
-	sMNspndTH56fozoySkkm+Xwt+BdU09U7Sw0FK8bN/SgdK1YxaDQXRaJcCIRC8UP2EoMRf9O+b1H83
-	t070MZQg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54994)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1r80E9-0007Xq-1d;
-	Tue, 28 Nov 2023 15:42:21 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1r80EA-00034k-5Y; Tue, 28 Nov 2023 15:42:22 +0000
-Date: Tue, 28 Nov 2023 15:42:22 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
-	x86@kernel.org, linux-csky@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
-	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	jianyong.wu@arm.com, justin.he@arm.com,
-	James Morse <james.morse@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH RFC 02/22] x86: intel_epb: Don't rely on link order
-Message-ID: <ZWYKXvbAck9kQ+iy@shell.armlinux.org.uk>
-References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
- <E1r0JKq-00CTwZ-Mh@rmk-PC.armlinux.org.uk>
- <20231128144059.000042c8@Huawei.com>
+Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.219])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id E5EC026A4;
+	Wed, 29 Nov 2023 07:25:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id; bh=UPZvZWVao0sExJphY6
+	iK/2uDTmwrQQRv+cgzaIF0dp0=; b=KSMNxT4GPPRCEOpgve90N0x7jjZoVu2qry
+	2BhIkk3wUy3OKVvpgFMX9h68DRlGIbjTMsKndt0x5I8Mwys54dLhi9C7EVzYQRXr
+	k2TVDarBI+IxfdN0xD9eb+EiIYPgYB2g0WeF/zn32lna0q7+m2Mnspc0QU1ETvIr
+	Hoyhc3kc0=
+Received: from localhost.localdomain (unknown [39.144.190.126])
+	by zwqz-smtp-mta-g1-0 (Coremail) with SMTP id _____wD3v+H7V2dlgmDOBQ--.15191S2;
+	Wed, 29 Nov 2023 23:25:48 +0800 (CST)
+From: Haoran Liu <liuhaoran14@163.com>
+To: James.Bottomley@HansenPartnership.com
+Cc: deller@gmx.de,
+	linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoran Liu <liuhaoran14@163.com>
+Subject: [PATCH] [parisc] superio: Add error handling for request_region in superio_init
+Date: Wed, 29 Nov 2023 07:25:46 -0800
+Message-Id: <20231129152546.34962-1-liuhaoran14@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID:_____wD3v+H7V2dlgmDOBQ--.15191S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cr1xWr47GFy3tr15GFWUtwb_yoW8Zry5pa
+	y3Cws5ArW8Zw1xZ34kXa93XFnY9anayFyUG3ZrK34fZF4rGrWjyr4rt3WYvFy5u3y7Jw13
+	ZFn8GryfCF1jva7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ptg4zPUUUUU=
+X-CM-SenderInfo: xolxxtxrud0iqu6rljoofrz/1tbiwhw3glc661-fYAAAsN
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231128144059.000042c8@Huawei.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Nov 28, 2023 at 02:40:59PM +0000, Jonathan Cameron wrote:
-> On Tue, 07 Nov 2023 10:29:28 +0000
-> Russell King <rmk+kernel@armlinux.org.uk> wrote:
-> 
-> > From: James Morse <james.morse@arm.com>
-> > 
-> > intel_epb_init() is called as a subsys_initcall() to register cpuhp
-> > callbacks. The callbacks make use of get_cpu_device() which will return
-> > NULL unless register_cpu() has been called. register_cpu() is called
-> > from topology_init(), which is also a subsys_initcall().
-> > 
-> > This is fragile. Moving the register_cpu() to a different
-> > subsys_initcall()  leads to a NULL dereference during boot.
-> > 
-> > Make intel_epb_init() a late_initcall(), user-space can't provide a
-> > policy before this point anyway.
-> > 
-> > Signed-off-by: James Morse <james.morse@arm.com>
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> 
-> Seems reasonable. FWIW
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This patch introduces error handling for the request_region call in the
+superio_init function within drivers/parisc/superio.c. Prior to this patch,
+the function did not handle the scenario where request_region might fail,
+potentially leading to resource conflicts.
 
-Thanks, however this has already been merged into the tip tree since
-Rafael suggested sending it separately.
+Although the error addressed by this patch may not occur in the current
+environment, I still suggest implementing these error handling routines
+if the function is not highly time-sensitive. As the environment evolves
+or the code gets reused in different contexts, there's a possibility that
+these errors might occur. Addressing them now can prevent potential
+debugging efforts in the future, which could be quite resource-intensive.
 
+Signed-off-by: Haoran Liu <liuhaoran14@163.com>
+---
+ drivers/parisc/superio.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/parisc/superio.c b/drivers/parisc/superio.c
+index e973c6893203..36c01e70671d 100644
+--- a/drivers/parisc/superio.c
++++ b/drivers/parisc/superio.c
+@@ -187,9 +187,23 @@ superio_init(struct pci_dev *pcidev)
+ 	sio->acpi_base &= ~1;
+ 	printk(KERN_INFO PFX "ACPI at 0x%x\n", sio->acpi_base);
+ 
+-	request_region (IC_PIC1, 0x1f, "pic1");
+-	request_region (IC_PIC2, 0x1f, "pic2");
+-	request_region (sio->acpi_base, 0x1f, "acpi");
++	if (!request_region(IC_PIC1, 0x1f, "pic1")) {
++		printk(KERN_ERR PFX "request_region failed for pic1\n");
++		return;
++	}
++
++	if (!request_region(IC_PIC2, 0x1f, "pic2")) {
++		printk(KERN_ERR PFX "request_region failed for pic2\n");
++		release_region(IC_PIC1, 0x1f);
++		return;
++	}
++
++	if (!request_region(sio->acpi_base, 0x1f, "acpi")) {
++		printk(KERN_ERR PFX "request_region failed for acpi\n");
++		release_region(IC_PIC1, 0x1f);
++		release_region(IC_PIC2, 0x1f);
++		return;
++	}
+ 
+ 	/* Enable the legacy I/O function */
+ 	pci_read_config_word (pdev, PCI_COMMAND, &word);
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.17.1
+
 
