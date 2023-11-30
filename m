@@ -1,82 +1,92 @@
-Return-Path: <linux-parisc+bounces-105-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-106-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377E87FE76C
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Nov 2023 03:52:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C2F7FEEA9
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 Nov 2023 13:10:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44869B20C01
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Nov 2023 02:52:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78B271C20C2A
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 Nov 2023 12:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B3A38C;
-	Thu, 30 Nov 2023 02:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F159845C18;
+	Thu, 30 Nov 2023 12:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="GbSXqQ+v"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF790CC;
-	Wed, 29 Nov 2023 18:52:29 -0800 (PST)
-Received: from omf05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0CD43406F7;
-	Thu, 30 Nov 2023 02:52:28 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf05.hostedemail.com (Postfix) with ESMTPA id 2F8892000D;
-	Thu, 30 Nov 2023 02:52:25 +0000 (UTC)
-Message-ID: <81c62af671ebbfad61dd46aa056050a56bf535a2.camel@perches.com>
-Subject: Re: [PATCH v3 2/7] kexec_file: print out debugging message if
- required
-From: Joe Perches <joe@perches.com>
-To: Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org
-Cc: kexec@lists.infradead.org, x86@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org, 
-	akpm@linux-foundation.org, nathan@kernel.org
-Date: Wed, 29 Nov 2023 18:52:24 -0800
-In-Reply-To: <20231130023955.5257-3-bhe@redhat.com>
-References: <20231130023955.5257-1-bhe@redhat.com>
-	 <20231130023955.5257-3-bhe@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 152D3C1;
+	Thu, 30 Nov 2023 04:10:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=2TjoRav92l6lGBHcgQ1IFwrVpqblxm0gDdEjjO9i59E=; b=GbSXqQ+vl+tK08waHI4y515wqP
+	Q86qDI1AgJw1pLC5ZapIOzsHoJpbnsFqID0QXfxFNjS8NE1MxyGJvaPAqP8UXgXPG+OkIiwqvFlE5
+	DgMw0T2oet8bb4vL8QGSd9PVtRm2H4WDDGvigxdO5dtwqWYIgGY2ZdIGbI4X/r0gW1UEzOMr2Dmde
+	viBSuF8wOnZothwOKj7mlCWoQjHiCqAqz6lM/4ThVWLIR5o09TLvAb3QvQ8+pRelrxSE2XAmAfbqe
+	GcIF1ksl2SBgzx/SYAZ9ZHOSd1E0v1qAotFN0UA7XzmyxTTFDemZpu8Qw++hpXqEzqrc9ikD4vd5b
+	kcwkIMUQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51064)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1r8frh-0001gG-1i;
+	Thu, 30 Nov 2023 12:09:57 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1r8frg-00050Q-P4; Thu, 30 Nov 2023 12:09:56 +0000
+Date: Thu, 30 Nov 2023 12:09:56 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
+	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH RFC 14/22] arm64: convert to arch_cpu_is_hotpluggable()
+Message-ID: <ZWh7lA9+goBzAprN@shell.armlinux.org.uk>
+References: <ZUoRY33AAHMc5ThW@shell.armlinux.org.uk>
+ <E1r0JLq-00CTxq-CF@rmk-PC.armlinux.org.uk>
+ <20231128151115.00007726@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 2F8892000D
-X-Stat-Signature: gwk7qi3h7jx8h1ywf1jic8xo76gqerwm
-X-Rspamd-Server: rspamout01
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19dPUefOesSFHLQCs3wqOW/oGlv3aC7z+4=
-X-HE-Tag: 1701312745-366478
-X-HE-Meta: U2FsdGVkX18k/ADXByHc+CtueZc2/kIRg2iYeavR6SwxdbkG44laEheGJWfEZEWXVPPjQNlGsgWVgExQ2v2SkjkkfNjpPwEMSuNPMyCDovT0AEEC3qeJ3Q3CanYRUyaIkLf9UCVzbPHogNji1emX5sy1KMlEpsNMU2L1IT5Ygh0f8/d2RbC7l5Zlkk01sF8weznUFCSh7sTGbvtjt1bjs0D9vOhDdBlZRMDNhbUzmGZ+P97DoYPvnsvnrduPVTPJ/denAd96V06q4DDxaFl1zt06dspwDHAATuNX205GsU5+pYEk/u0vlxrjfS1T3iX3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231128151115.00007726@Huawei.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, 2023-11-30 at 10:39 +0800, Baoquan He wrote:
-> Replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-> loading related codes.
+On Tue, Nov 28, 2023 at 03:11:15PM +0000, Jonathan Cameron wrote:
+> On Tue, 07 Nov 2023 10:30:30 +0000
+> "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk> wrote:
+> 
+> > Convert arm64 to use the arch_cpu_is_hotpluggable() helper rather than
+> > arch_register_cpu().
+> > 
+> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Ah. Or previous patch needs a forwards reference to the tweaking
+> of it it here.
+> 
+> Maybe just smash the 2 together with a Co-developed: ?
 
-trivia:
+I wanted to keep the two separate to preserve the authorship of the
+individual patches, so I'll take the former. Thanks.
 
-> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-[]
-> @@ -551,9 +551,12 @@ int crash_prepare_elf64_headers(struct crash_mem *me=
-m, int need_kernel_map,
->  		phdr->p_filesz =3D phdr->p_memsz =3D mend - mstart + 1;
->  		phdr->p_align =3D 0;
->  		ehdr->e_phnum++;
-> -		pr_debug("Crash PT_LOAD ELF header. phdr=3D%p vaddr=3D0x%llx, paddr=3D=
-0x%llx, sz=3D0x%llx e_phnum=3D%d p_offset=3D0x%llx\n",
-> -			phdr, phdr->p_vaddr, phdr->p_paddr, phdr->p_filesz,
-> -			ehdr->e_phnum, phdr->p_offset);
-> +#ifdef CONFIG_KEXEC_FILE
-> +		kexec_dprintk("Crash PT_LOAD ELF header. phdr=3D%p vaddr=3D0x%llx, pad=
-dr=3D0x%llx, "
-> +			      "sz=3D0x%llx e_phnum=3D%d p_offset=3D0x%llx\n",
-> +			      phdr, phdr->p_vaddr, phdr->p_paddr, phdr->p_filesz,
-> +			      ehdr->e_phnum, phdr->p_offset);
-> +#endif
-
-Perhaps run checkpatch and coalesce the format string.
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
