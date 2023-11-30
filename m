@@ -1,119 +1,149 @@
-Return-Path: <linux-parisc+bounces-125-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-126-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22607FF840
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Nov 2023 18:31:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E297FFAA4
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 Nov 2023 20:01:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CE05281690
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Nov 2023 17:31:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17A9428179C
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 Nov 2023 19:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7AF47A5A;
-	Thu, 30 Nov 2023 17:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17F75FEF5;
+	Thu, 30 Nov 2023 19:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iWA41sSn"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="NyM/qDdL"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D511E0;
-	Thu, 30 Nov 2023 09:30:57 -0800 (PST)
-Received: by mail-oi1-x22e.google.com with SMTP id 5614622812f47-3b842c1511fso725499b6e.1;
-        Thu, 30 Nov 2023 09:30:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701365456; x=1701970256; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z5YRUv/f6nb2mEoxA9rov/7w4nJ9wOVnYZN9JamrwUs=;
-        b=iWA41sSnAvNYx51mJyPXszdWm7Q0uCOrDFlFKhS+ypwcndpE4qeSdlYrQFwiyNsVOQ
-         qOnzxrCVCYaDu3VMF0PIbUcUEjX3EtrqEDOMmG3ObBbkZfEywgzraOFEuvX7GxUXMbyq
-         FbMVYcrfT6Yw675gIst5btvue/nmgvYGJeBK9+o1tbP4NZg9kY964tmL0Bh4sFulcK4v
-         oqoGfjtwCvOxDhwDO5A3pdxB+tVatp7aHy8Ak9SreO8ACAjlQS532vKRtAvULbVmPH1h
-         MQx3jzlGyzlmEsqQ2QiKZYoKQctn47DgBwWI/I2NezeaMuNOFPbrlL+RFrviD9cso/ly
-         SuPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701365456; x=1701970256;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z5YRUv/f6nb2mEoxA9rov/7w4nJ9wOVnYZN9JamrwUs=;
-        b=wZFajKsNYMe59cT8ljwkKMpCTQM8HcpmGkgS2D4ww1G+WRZon4yDT2qOH2W7v0c53z
-         xt0DfcCQdQ+TrbmJAkOV4Lp5m9jmRdNPrp2okl6Ys575oLOybcfnjaH+VB1c6eLs6SyV
-         /QOg+GYxjbnQszCPus41w6dYoN+5i8C3alK3RtfAKNlw5Q466eEl3Mnlh9a+mQRjSl7F
-         hfrdwIHOPOlIVgU6hn+bSLpTcCACKGXpUijDhe0My6GGp2emoyTIup7+DsOwXKLg/1Ha
-         E/7Ekxg0oHL03Q9AGbiWsmh4xDfDSjgNJjaUwnC902LJayGKufhFZ6idrhrwCM830tib
-         OYPw==
-X-Gm-Message-State: AOJu0YwC/t++G4KbXMXdqNnUtuMWGVLYvkxJcY7Q4L5C9Q7n/s9gnqrB
-	jS6Pz+eii6nHg2WQ2Q4xwwhUx8lOTRg=
-X-Google-Smtp-Source: AGHT+IEnsEy4DAK9uP7174pLgRWpsJcBmvH7Opw9P5zmGTO/iRNwRfk0QxYcClZGaY4qfeqbBCi45g==
-X-Received: by 2002:a05:6808:3a0d:b0:3b6:d639:35b0 with SMTP id gr13-20020a0568083a0d00b003b6d63935b0mr287110oib.50.1701365456518;
-        Thu, 30 Nov 2023 09:30:56 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id i13-20020a54408d000000b003b2e2d134a5sm243807oii.35.2023.11.30.09.30.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 09:30:55 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 30 Nov 2023 09:30:53 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: deller@kernel.org
-Cc: linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 8/8] parisc: Reduce size of __bug_table[] on 64-bit
- kernel by half
-Message-ID: <ef74368d-1fd6-4fd0-81dc-bcf04892cc13@roeck-us.net>
-References: <20231124144158.158993-1-deller@kernel.org>
- <20231124144158.158993-16-deller@kernel.org>
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92083194;
+	Thu, 30 Nov 2023 11:01:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1701370851; x=1701975651; i=deller@gmx.de;
+	bh=ooHn1Zil5tkkFFQbJhhHFi1FB1rr4PIqPkGwIIU10LA=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=NyM/qDdLoCO74PomviXpvI0USb5KdWPDXJ6Vqu612Wq1ZNmiwi20IzkXGrHTmEcA
+	 2mEkiIXNZNkeU+E4554F7kSE1xDLeYAla8f9UDgjOJgJhzEEKqNR5IFPPYTxVgIFU
+	 aek4PwKVeImHsc5xXoqaA/h5z+3LCjP/Jusi5qvOy9L5TvzopMFkQBiKjow/4WAb+
+	 0CL2aUdryUDg18M+Zp89iq78ekiOC6q2w8IbtQKelmxmR7zw4/Z87wmv9/fcIM4xF
+	 xCQ2px2m83jHDuVBSifgjPnEi+aOGJhWJn9jCLWXtunplbNPJCfMjJu/ehIvGFy0v
+	 56d1SBrBryJCcqTM4g==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.154.31]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1ML9uK-1qrepl2DPG-00IChc; Thu, 30
+ Nov 2023 20:00:51 +0100
+Message-ID: <61579b26-88b5-428a-b818-5021e528471d@gmx.de>
+Date: Thu, 30 Nov 2023 20:00:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231124144158.158993-16-deller@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 8/8] parisc: Reduce size of __bug_table[] on 64-bit kernel
+ by half
+To: Guenter Roeck <linux@roeck-us.net>, deller@kernel.org
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231124144158.158993-1-deller@kernel.org>
+ <20231124144158.158993-16-deller@kernel.org>
+ <ef74368d-1fd6-4fd0-81dc-bcf04892cc13@roeck-us.net>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <ef74368d-1fd6-4fd0-81dc-bcf04892cc13@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:UwWBXqDUUqtUN7oWJKr1Y6S0zBbnbzKbhwwt/mTbEAGcS7AQ6zV
+ SfpPfaIh66IG5dguQZE7TYXlYxNnRTeOqSuDS7ZdvtmcY/EWWjMqKnzJVHnXU6GLpHqq9PF
+ 6rwJHN/H33wOoW4XJRw8nRXO0qXT9bz5pb0JlQJ7InxBArZsN+Dzjkr/BYsU5ojzQME973X
+ ZRwQ7+c574qfRFQOggqtg==
+UI-OutboundReport: notjunk:1;M01:P0:xUm4U2HacQQ=;PNpsCPjYNrK6T8+9cVtXOfKQDT4
+ zDS+ETQ0BEyuSE47q44OcwdHUxKGDKXovPJAb4iRvgNzntUHBd4Md+kJK/6Ikl5JfQNMkV+Wh
+ ayLIMLS4x7Pst2ADKVfPhgEllShAzouVV52SX/Q/bAJW9QTEeCmODmoy649hjNIlwir3C8ARY
+ Dv0zL3ar+2EsFpZ0Eg5L9vo6m96IoMj7+yIPQdub9YyWUUEZiXatxMM+V1mi810+iCaFv9ZwR
+ N14NWCTNvTZyHT50s70zBZSU+iXRWm7077C0en6ftfydhjUnyYl3OiPkA2+1YgcK/tHW39Hud
+ UdJPZMrTorTcBAz/oLMCQLrT2xHamT+cVkOxGFp1an6yb6H8oAJSkKpBIo7dkL9n9PJJ5pHmI
+ TwZ0yHt/IGBZNixy4pJ9LiRQbQoHQULOdUxmTvhFLGVpzrBlM+b9bPUmq3oXF569x0SABMbO/
+ 5t6RilikgyUCKlCBWv96tBvqvwgCndUXKoWPzLvbIZNrgnCLucfgNT2H1nWXQcoIIpztp50ee
+ Q/WipL5NE6QsCm5G4fiWRLmCrvXATXttMrxIub8iBAPbgiaT/QZK48Lwv1soiSRiWEIk6rELe
+ UwP82rm4m8QIr/IV8FkY6Msz0eMROBrslTfrA7yMW4ckGZLSHlkGFAVwGZQCKcMbGiwyABz6M
+ EEAepg/yMMJPiDXVrpdiLCR0Ve/uEpYvcSPNnyY+FnS0Cz86ZawXSjpHsyags/4gaqwyD4lMn
+ NkMRvGK1s8nRMH1p4R+ALoa403HYFkdcs+n5SimDJfkZI3cgLX6ROzBcMkdPBgadhW3VlqVha
+ U5Y9OrTWYC7zp7Uqbwst0A3fTwsiHkgsIn+5dYgBXqEHyTl3/uGEriQQTfwekNW9VQPl3N2XA
+ rKUgrhz8TVuOYT5ncCXINes8c14iI6Lx57RkvDDyP07WqI53hDVsAVO6MuvcZEnWdQYR4p1Lu
+ yM1CcQ==
 
-On Fri, Nov 24, 2023 at 03:41:13PM +0100, deller@kernel.org wrote:
-> From: Helge Deller <deller@gmx.de>
-> 
-> Enable GENERIC_BUG_RELATIVE_POINTERS which will store 32-bit relative
-> offsets to the bug address and the source file name instead of 64-bit
-> absolute addresses. This effectively reduces the size of the
-> __bug_table[] array by half on 64-bit kernels.
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
+On 11/30/23 18:30, Guenter Roeck wrote:
+> On Fri, Nov 24, 2023 at 03:41:13PM +0100, deller@kernel.org wrote:
+>> From: Helge Deller <deller@gmx.de>
+>>
+>> Enable GENERIC_BUG_RELATIVE_POINTERS which will store 32-bit relative
+>> offsets to the bug address and the source file name instead of 64-bit
+>> absolute addresses. This effectively reduces the size of the
+>> __bug_table[] array by half on 64-bit kernels.
+>>
+>> Signed-off-by: Helge Deller <deller@gmx.de>
+>
+> With this patch in mainline, parisc:tinyconfig fails to build.
+>
+> ecurity/commoncap.c: In function 'cap_capset':
+> arch/parisc/include/asm/bug.h:71:17: error: invalid 'asm': operand numbe=
+r out of range
+>     71 |                 asm volatile("\n"                              =
+         \
+>        |                 ^~~
+>
+> and many similar errors. Bisect log attached.
 
-With this patch in mainline, parisc:tinyconfig fails to build.
+Yes, problem was reported already and fix is in my for-next git tree:
 
-ecurity/commoncap.c: In function 'cap_capset':
-arch/parisc/include/asm/bug.h:71:17: error: invalid 'asm': operand number out of range
-   71 |                 asm volatile("\n"                                       \
-      |                 ^~~
+https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/co=
+mmit/?h=3Dfor-next&id=3D487635756198cad563feb47539c6a37ea57f1dae
 
-and many similar errors. Bisect log attached.
-
-Guenter
-
----
-# bad: [3b47bc037bd44f142ac09848e8d3ecccc726be99] Merge tag 'pinctrl-v6.7-2' of git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-pinctrl
-# good: [98b1cc82c4affc16f5598d4fa14b1858671b2263] Linux 6.7-rc2
-git bisect start 'HEAD' 'v6.7-rc2'
-# good: [f1a09972a45ae63efbd1587337c4be13b1893330] Merge tag 'ata-6.7-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata
-git bisect good f1a09972a45ae63efbd1587337c4be13b1893330
-# good: [090472ed9c922e699dc61dd601a9b376a64f4390] Merge tag 'usb-6.7-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb
-git bisect good 090472ed9c922e699dc61dd601a9b376a64f4390
-# bad: [2cc14f52aeb78ce3f29677c2de1f06c0e91471ab] Linux 6.7-rc3
-git bisect bad 2cc14f52aeb78ce3f29677c2de1f06c0e91471ab
-# good: [4892711acee0915a8a4ae02e1af3dc70ce000024] Merge tag 'x86-urgent-2023-11-26' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
-git bisect good 4892711acee0915a8a4ae02e1af3dc70ce000024
-# bad: [43266838515d30dc0c45d5c7e6e7edacee6cce92] parisc: Reduce size of the bug_table on 64-bit kernel by half
-git bisect bad 43266838515d30dc0c45d5c7e6e7edacee6cce92
-# good: [07eecff8ae78df7f28800484d31337e1f9bfca3a] parisc: Mark jump_table naturally aligned
-git bisect good 07eecff8ae78df7f28800484d31337e1f9bfca3a
-# good: [c9fcb2b65c2849e8ff3be23fd8828312fb68dc19] parisc: Ensure 32-bit alignment on parisc unwind section
-git bisect good c9fcb2b65c2849e8ff3be23fd8828312fb68dc19
-# good: [e5f3e299a2b1e9c3ece24a38adfc089aef307e8a] parisc: Drop the HP-UX ENOSYM and EREMOTERELEASE error codes
-git bisect good e5f3e299a2b1e9c3ece24a38adfc089aef307e8a
-# first bad commit: [43266838515d30dc0c45d5c7e6e7edacee6cce92] parisc: Reduce size of the bug_table on 64-bit kernel by half
+Thanks!
+Helge
 
