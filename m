@@ -1,41 +1,39 @@
-Return-Path: <linux-parisc+bounces-143-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-144-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35283804519
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 Dec 2023 03:39:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A68A806125
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 Dec 2023 22:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E368728140E
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 Dec 2023 02:39:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31B5AB20FB9
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 Dec 2023 21:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4F3CA6E;
-	Tue,  5 Dec 2023 02:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35926FCE9;
+	Tue,  5 Dec 2023 21:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="UKN9Zley"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-torrgo001.bell.net (mta-tor-005.bell.net [209.71.212.37])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AEDACE
-	for <linux-parisc@vger.kernel.org>; Mon,  4 Dec 2023 18:39:54 -0800 (PST)
-X-RG-CM-BuS: 0
-X-RG-CM-SC: 0
-X-RG-CM: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 6566B24E03E7E37A
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvkedrudejjedggeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuuefgnffnpdfqfgfvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomheplfhohhhnucffrghvihguucetnhhglhhinhcuoegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvtheqnecuggftrfgrthhtvghrnhepjeelffffjeehgffgueehleegfeegueeigedtkeffgeduueetffegffejudekgfeunecukfhppedugedvrdduvdeirdduudegrdejleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedugedvrdduvdeirdduudegrdejledpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepgedprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrhesghhmgidruggvpdhrtghpthhtoheplhhinhhugidqphgrrhhishgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggtkhdquhhsrdhnvghtpdhrvghvkffrpegsrhgrshdqsggrshgvqdhothifrghonhdtledtieifqdhgrhgtqddtfedqudegvddquddviedquddugedqjeel
-	rdgushhlrdgsvghllhdrtggrpdgruhhthhgpuhhsvghrpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvth
-X-CM-Envelope: MS4xfO9iYDcpkdxukirGxgPA8GQc+tXZMUuFWfQhImezWgxqyt4Ce3tDT6dvcaAAJR5xtbeqw1t/dA/WUHRICHAcUtvQxKTEDo2EFSnvi3uUQ4AAA9Fee6lf
- lmtz0iWm63R7B1K5hsXQj8uKXkHZ598ZwiWw9sJoLQyUb8ebWABSahKCnLpcIlfc7b5ZI6kaR4JmF+7UfSDDmaQqnlKI8cDsxt00OlO/oVSSEt3HpUtHdwje
- IDZBt7HOed1m2kSUe0aIbdSMLiFiLQ20KRD4CRrSFgJmkFSbCpmPeP0AutxYSwgAAwCrXwImWn+DlMCNFMDOIA==
-X-RazorGate-Vade-Verdict: clean 0
-X-CM-Analysis: v=2.4 cv=Buj+fab5 c=1 sm=1 tr=0 ts=656e8d6c
- a=qwLmA0wx3TwW38sY+xTbUA==:117 a=qwLmA0wx3TwW38sY+xTbUA==:17
- a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=hH9IfAf9vLiwDcBGrIAA:9 a=QEXdDO2ut3YA:10
- a=9gvnlMMaQFpL9xblJ6ne:22
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.126.114.79) by cmx-torrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
-        id 6566B24E03E7E37A; Mon, 4 Dec 2023 21:39:40 -0500
-Message-ID: <a52d08a9-1114-4d0c-8d10-508d6d49627b@bell.net>
-Date: Mon, 4 Dec 2023 21:39:39 -0500
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A0C71BC
+	for <linux-parisc@vger.kernel.org>; Tue,  5 Dec 2023 13:59:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1701813535; x=1702418335; i=deller@gmx.de;
+	bh=91LX44jY/mI2LqKU/DdofWNjRcJhkhpOf0PrlUI7WFg=;
+	h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+	b=UKN9ZleyHEXEdtrM0Z5IFAil/6XHamfx1FU55jxHJaQkdGc2rIcdJIFBe5jFiWh6
+	 QUYrEwSaTAU7f/RiYFV8BK7o/tY4snepcTuFppk4vvYAk8wFiRyLNxYlq3MjJ41Wc
+	 GElSt+1o3VABb+uR3CPRQxwJPFP7P5thPiMZz67mY78o4XbiPPrb4WQ7vWgnRWbMs
+	 lIOz9HtUmR+W882dA4N80GBQX2TpcJ8XxYh13hcVXVLdtZLsO1OSCOQSi6lRKr3JF
+	 XMNdx5WmNgEtoT9CVFfCP1ByZgKn2iw2e0aSy0gSwLFGxANPGCqIY4g3mXVBSA8vc
+	 35mMGHimHvgieZXaLw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.147.78]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MgesQ-1rklX90e8C-00h86F; Tue, 05
+ Dec 2023 22:58:55 +0100
+Message-ID: <b1c864a0-cdda-409a-94c2-1a2cb827f7e1@gmx.de>
+Date: Tue, 5 Dec 2023 22:58:53 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -45,74 +43,112 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: 64-bit userspace root file system for hppa64
 Content-Language: en-US
-To: Guenter Roeck <linux@roeck-us.net>,
+To: John David Anglin <dave.anglin@bell.net>,
+ Guenter Roeck <linux@roeck-us.net>,
  Parisc List <linux-parisc@vger.kernel.org>
-Cc: Helge Deller <deller@gmx.de>
 References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
-From: John David Anglin <dave.anglin@bell.net>
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- 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
- T70V9SSrl2hiw38vRzsl
-In-Reply-To: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
+ <a52d08a9-1114-4d0c-8d10-508d6d49627b@bell.net>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <a52d08a9-1114-4d0c-8d10-508d6d49627b@bell.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:u2G13rFRCH8Ii+4E+PSvImtj7MJlLv2HIAwztOXkIrUhogSX/DY
+ RAcaG34c04TIBEbYb25VTfBwYbS09hzb7cn1O9yKagjWZdgICZtZnWqji+2IQUZUQaY+bIY
+ YRmxpeNrgubf4i0/Z3FTD2YyrLbw+un4Jyqx4K3N4qufBALeE9teWoTwN3xhp+7tPpkqbGN
+ mz4DjBNR3zZO0aUOVBH8g==
+UI-OutboundReport: notjunk:1;M01:P0:OuJzHm6wuws=;sXczFcrVfxAcNTHw+aALMzmbxn3
+ GEC6cQ6XO4weGBuBzZ35Cc+vnlTZ5udRF+uVrmNRVCNjRqes50nIDAIbQhHgJPMZRF3klmS8b
+ N8TUSaEJParSUedRVwy0OMtiL/0R4e8SxZqOu1xF6dp17KLsELnof6SrjzfDh+oKQdh5KjCko
+ aCQhhW43eCZbkQzHiYweucTSStWy+fN4UAMdRTO9eCA9zQdNWdiXZo5aJ8vjzOsQdvMGhPwdZ
+ aUqnCleTgzc4VOVyX7R0B5hC1h49Q1T7MXgLG9/wcn6bTYeBc+ZUl/2+Uvti7PUyzOUAlzIu7
+ P/kBHbsFdxeZECK36aL5SJ3CTfOxZhrxWDYTp5wa0Hui1OAV218YzXh1Xc/gzVtjj7ovkvzHb
+ 7Mjm1PIqWfysMAAuRWbLa/OzPfgp/VScZwdkz0gq2w/g+5MDh+ecJfEjl4Oj4iL4Ifwb6dPFO
+ /frWk39FewFMyWywvK4l0453a7Lr9YYJBXc5zsUm3iG1a62FVQu4Z0qy0sqjrHfjRQ33Gj4fk
+ zx6d0x90FumfjoCjoDP8wEFU+eE5SnFOFJP8pzojjlxERoirBwtYn7wWcaTA87BQXpmyEgBj7
+ uWAc0EOyY3OKZroIn5EAknxaWlzEVhUktaISlAAA4DiGgVlHzCP2Ij2Tkr8u+o/ByNywmOsc3
+ UVMXodOLmeIHdU95hIEgYKD6oJwuGfpaN1myS2RdAMGEKJ7+lz8K1Y7qI+RnDWNVBeqM9vwDi
+ E1UWmQiYYzNDR772HsosM7qUTMGqPH9FnU4fyFwRuGY21odmABi2pCbjNtVwT+uRf0wsNB+6p
+ 8SRh6un9UJWZhmiuP8gt/AU5zj6vChg6wwCgYRsG0c4ZviHdZg/ELs/r0wVMD9nl7O7OCSudu
+ j7x05M7yZlDRJCPUqMNtSpNp1eWX+91OTjTBlyUcyhzUfxGoCCpo9tUbZJbSah4Xf7xq8H7G/
+ kK3xmQ==
 
-On 2023-12-04 8:08 p.m., Guenter Roeck wrote:
-> I started to play with the new qemu hppa64 emulation. It works pretty well with 32-bit
-> userspace images. Unfortunately, I have not been able to create a 64-bit userspace
-> root file system. I am stuck trying to build glibc and/or uclibc-ng.
+On 12/5/23 03:39, John David Anglin wrote:
+> On 2023-12-04 8:08 p.m., Guenter Roeck wrote:
+>> I=C2=A0started=C2=A0to=C2=A0play=C2=A0with=C2=A0the=C2=A0new=C2=A0qemu=
+=C2=A0hppa64=C2=A0emulation.
+
+This emulation is in the first row planned to be able to
+be used with 64-bit kernels (until we hopefully once get
+64-bit userspace).
+Sadly there still seems to be a bug in the emulation
+so that it fails when the kernel is built with specific
+modules.... :-(
+I still don't know where the bug is though.
+
+> It=C2=A0works=C2=A0pretty=C2=A0well=C2=A0with=C2=A032-bit
+>> userspace=C2=A0images.=C2=A0Unfortunately,=C2=A0I=C2=A0have=C2=A0not=C2=
+=A0been=C2=A0able=C2=A0to=C2=A0create=C2=A0a=C2=A064-bit=C2=A0userspace
+>> root=C2=A0file=C2=A0system.=C2=A0I=C2=A0am=C2=A0stuck=C2=A0trying=C2=A0=
+to=C2=A0build=C2=A0glibc=C2=A0and/or=C2=A0uclibc-ng.
+>>
+>> Does=C2=A0anyone=C2=A0happen=C2=A0to=C2=A0know=C2=A0how=C2=A0to=C2=A0bu=
+ild=C2=A064=C2=A0bit=C2=A0userspace=C2=A0images=C2=A0for=C2=A0hppa64,=C2=
+=A0or=C2=A0more
+>> specifically=C2=A0how=C2=A0to=C2=A0configure=C2=A0glibc=C2=A0and/or=C2=
+=A0uclibc-ng=C2=A0for=C2=A0it=C2=A0?
+> As far as I know, no one has ported glibc to hppa64.=C2=A0 I started wor=
+king on it a few months
+> ago but a lot more work is needed to get it working.
 >
-> Does anyone happen to know how to build 64 bit userspace images for hppa64, or more
-> specifically how to configure glibc and/or uclibc-ng for it ?
-As far as I know, no one has ported glibc to hppa64.  I started working on it a few months
-ago but a lot more work is needed to get it working.
+> I have a working 64-bit tool chain running on hpux but 64-bit hpux doesn=
+'t boot yet under qemu.
 
-I have a working 64-bit tool chain running on hpux but 64-bit hpux doesn't boot yet under qemu.
+Yep. 32- and 64-bit HP-UX is currently broken in the 64-bit enabled
+qemu.
 
-Regards,
-Dave
-
--- 
-John David Anglin  dave.anglin@bell.net
+Helge
 
 
