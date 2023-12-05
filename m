@@ -1,40 +1,62 @@
-Return-Path: <linux-parisc+bounces-145-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-146-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E0E806190
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 Dec 2023 23:18:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F55806226
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 Dec 2023 23:52:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 065661C20AF5
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 Dec 2023 22:18:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 088FD1F21460
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 Dec 2023 22:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1396ABB2;
-	Tue,  5 Dec 2023 22:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9ADD3FE4C;
+	Tue,  5 Dec 2023 22:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="mduCJ1FM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KzApKLyJ"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7DC21A5
-	for <linux-parisc@vger.kernel.org>; Tue,  5 Dec 2023 14:18:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1701814677; x=1702419477; i=deller@gmx.de;
-	bh=yGZRrzsE1ner5B7J8acRhSc6QkpA8lOdedwNknEeLoA=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=mduCJ1FMpzvIjoTQK5ekSlkFmpt3Na+klnMzatJGojRCDAuqU0q6z58eJ8EOtD/c
-	 H+YVXiLeTGWSLjK6Sczq7gnmAoASwoFepJjeD8la+sdQQo2bgwBHh0XjsCEMXfnbX
-	 kdrBHmYMd9yKMWQC6sRkPV4Jza23LSy9KPc4hASte409uL7egH1/EpASswwsu20Xj
-	 IXCWrVXtKjPASMdTcTQbd6xoMHUlvoqeyufT1XKHtUAc6Yfz/FcJp9+D5F4K1/DQ9
-	 RSo0CIt3KZcy0lR2JLcjaBwM1VVwqXJZ/jIxd/M3ma0Y3ur0piWmdm9lSPJah7yDU
-	 7w/rlXpE3Xpk14P1lA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([94.134.147.78]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N4hvR-1rHPtK1agp-011h0c; Tue, 05
- Dec 2023 23:17:57 +0100
-Message-ID: <939d6c5c-567a-4db2-bb2d-7bca12f66fe8@gmx.de>
-Date: Tue, 5 Dec 2023 23:17:56 +0100
+Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9329B5
+	for <linux-parisc@vger.kernel.org>; Tue,  5 Dec 2023 14:52:52 -0800 (PST)
+Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-58d4968c362so3944043eaf.0
+        for <linux-parisc@vger.kernel.org>; Tue, 05 Dec 2023 14:52:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701816772; x=1702421572; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=aQaWJaFkK30ya49jw6sgdDKOexZEsk0Dl6HhmWmn6Ig=;
+        b=KzApKLyJuZIrC8HqqPHMuBvEWsUA3s2C6rJaV99w4uykZyrRfuCFlVPvdVUQvLGEBI
+         x+q09thx5oN+7aAIn+RjJBk2DrtUyfsr+4prfzzKJD/6fFqooFD2SxsBj1IRYZwgFjTb
+         5F80oVE+3hs90ym7NcatILN52u988+aiYEvinB0XlzJVA1iXyYKxvHssYrvWHkwO5RGf
+         nBktrZhrVnGdIrxB9IwsCoMxS5lOWTE0GFcFshtmEQ0kNu6yRIrD4KunVSeE0D+S9idq
+         FWcs+X14UCATgSK1jfe/w5kgaE6ac2L+ovpebxds33nuqHlSBI896OTa0wHVbEnbfWXE
+         /PAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701816772; x=1702421572;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aQaWJaFkK30ya49jw6sgdDKOexZEsk0Dl6HhmWmn6Ig=;
+        b=AytV7CBAz57U9C19EY6sxtDMuQzaolnqyPdEckKJ0W6/7cc7LLaVj6C9VOsCVgpZcG
+         K4abjhvfflVwYxtfLyDy86trdYbCXhZ1JmaBNFoWIbaXLxWxC3wnTo50rV1WHWv+c6Up
+         dJeqvPN5KmIYNeAPohHI+85DuiCcasHE8yM2tVGDcJqvbnd4sSq8P2c0rvxzRo6ibIrv
+         7QSfk5HniAdsPyz8CuIhclqsF9W56MkCrZvwS5aLCrgxEJ6JUJ+PzDp6Uk4EQaMJ6Dum
+         T7qqwPZQ0B8HwpkZKPSaK6tDFbm6otGRh6754iuy8BE91LdEdrLk0wO+XW/ZFxz6V9dP
+         xRlQ==
+X-Gm-Message-State: AOJu0YyjsO+QWw7s9DZO+o+J5mEdbxOEsjBEZ94rlq6ReiJfpaqLrsyD
+	K6NcK54+uUj4MfZPK0mHzsiM46v2xu4=
+X-Google-Smtp-Source: AGHT+IHf0uDOoyhJJkAyZD7IFK457vt5mOvulRcUkaHRPnzacUfEvH5dy+FXbX+M+u9PTOGUR2yyQw==
+X-Received: by 2002:a05:6820:1ac4:b0:58d:97ad:4c00 with SMTP id bu4-20020a0568201ac400b0058d97ad4c00mr74066oob.6.1701816771960;
+        Tue, 05 Dec 2023 14:52:51 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y25-20020a4a2d19000000b00581fc1af0a7sm2535427ooy.28.2023.12.05.14.52.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Dec 2023 14:52:51 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <aeceb922-b6e9-4814-919e-6a82fb869f63@roeck-us.net>
+Date: Tue, 5 Dec 2023 14:52:50 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -42,137 +64,96 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [parisc] superio: Add error handling for request_region
- in superio_init
+Subject: Re: 64-bit userspace root file system for hppa64
 Content-Language: en-US
-To: Haoran Liu <liuhaoran14@163.com>
-Cc: linux-parisc@vger.kernel.org
-References: <20231129152546.34962-1-liuhaoran14@163.com>
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20231129152546.34962-1-liuhaoran14@163.com>
+To: Helge Deller <deller@gmx.de>, John David Anglin <dave.anglin@bell.net>,
+ Parisc List <linux-parisc@vger.kernel.org>
+References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
+ <a52d08a9-1114-4d0c-8d10-508d6d49627b@bell.net>
+ <b1c864a0-cdda-409a-94c2-1a2cb827f7e1@gmx.de>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <b1c864a0-cdda-409a-94c2-1a2cb827f7e1@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:P+JRKBIQIUOaBeJtdmuE7JrQwM8LYolRWppSTU0dc9YpNgeVAbI
- JSASuCrHlLgX33I/atDPM384tU7JLrPfXJ5yzUogdi1rFQgSYHPzkqrhIekTX1NXmpVmLT7
- O+zQOpo3mflBHtV87MBYB46N6PWbGJfjxQplrskvRlPiU9RG5cQt6Ia3jLIYoFcToCpgFhH
- 2ReR3A3UFW1Kt6ynAtIag==
-UI-OutboundReport: notjunk:1;M01:P0:k+fP8ehYVts=;1fm1Aw3ABA3ZZLrBj1Y3Q7Iq206
- i7iE8u5vyB69AUdaKrUKfsMVUOT7+eWTxBzxx46y+6Pigad0iurBk72JOjgCAuOM9aE8zoA+G
- EG+AdXNPkaqmVgUfxWjVByZjCLV8Ups8+asG/WYwUJI58shTnbjh1yA+MerhlaT2dQedR6tuO
- CC+FfYqaSSDM1YhRr21dOfpot2UlF1lbT3z+JeqxWrZdx4Mf9BX83WBuLc0JTLAMOth2hqCDT
- a1c3JlaF6mGXrJuLsIjB/DPDRCDP3s96I9huB72UHo3Z2seImnEb0Hm5PIWU4ECmk3KHDz2nA
- pTVTyQQFNCDMxhXWtBOsJEX2kJ+xyh7RwXf1U/wliHNHfPZhEBR5s8x2piEqH5UsYjP45IfyM
- nmEc/DTW+jsogfo7t5a1HSc9LcXzPmynIdtLB5fy0iYHYFI+KeaPRCHjGTzVn6CHzuRzowwNb
- eBrOImJbG9DQg0N6jyeJt/8FlrJcYaMKvUHp8ewiWAfFuqJo8vmduGU8PWoAijdxmhTfya0oN
- dD2fgmMzfsbSXyPM1mqqK2ZfkudchD9j/9BZEoo0Ui+RnTK4l3L06Sh5In8gIhTHLQ4RW6Kg0
- ASXWSSJUlKeIZ3GuppRw9m3iv50N/eDAqIPajtGDe5Yx70ctQhSdfBi169DIQdhYcCvruNSYr
- W07frfkC+SQwVapfQWdJGtgcYjsMopS0M/ObkRpvUIwg+YCPVGuKZko3GVqJnpWHs2YFKGl/4
- GNWq7DMjjnmRXQM41UnJLHr6DdvUB65mWJTxccz1Kic3xb2/OMLKla0ILrlNRUtei11EX0he0
- fvLvSanUMzJlhEMxWs+f3M8SLY+ZJILyw1iEmBajrua7MR5ZSnx9d3jnS0SmBBFxXzB41QeUz
- ei1pV8hi/iA3X7sqMtykNXFLurpu8ziYU7gD/d1gYMtowv3tZF434X6BgxDl+ng1y201/21Mz
- +BLOHw==
+Content-Transfer-Encoding: 8bit
 
-On 11/29/23 16:25, Haoran Liu wrote:
-> This patch introduces error handling for the request_region call in the
-> superio_init function within drivers/parisc/superio.c. Prior to this pat=
-ch,
-> the function did not handle the scenario where request_region might fail=
-,
-> potentially leading to resource conflicts.
->
-> Although the error addressed by this patch may not occur in the current
-> environment, I still suggest implementing these error handling routines
-> if the function is not highly time-sensitive. As the environment evolves
-> or the code gets reused in different contexts, there's a possibility tha=
-t
-> these errors might occur. Addressing them now can prevent potential
-> debugging efforts in the future, which could be quite resource-intensive=
-.
->
-> Signed-off-by: Haoran Liu <liuhaoran14@163.com>
-> ---
->   drivers/parisc/superio.c | 20 +++++++++++++++++---
->   1 file changed, 17 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/parisc/superio.c b/drivers/parisc/superio.c
-> index e973c6893203..36c01e70671d 100644
-> --- a/drivers/parisc/superio.c
-> +++ b/drivers/parisc/superio.c
-> @@ -187,9 +187,23 @@ superio_init(struct pci_dev *pcidev)
->   	sio->acpi_base &=3D ~1;
->   	printk(KERN_INFO PFX "ACPI at 0x%x\n", sio->acpi_base);
->
-> -	request_region (IC_PIC1, 0x1f, "pic1");
-> -	request_region (IC_PIC2, 0x1f, "pic2");
-> -	request_region (sio->acpi_base, 0x1f, "acpi");
-> +	if (!request_region(IC_PIC1, 0x1f, "pic1")) {
-> +		printk(KERN_ERR PFX "request_region failed for pic1\n");
+Hi Helge,
 
-Maybe you want to use pr_err() instead here ?
+On 12/5/23 13:58, Helge Deller wrote:
+> On 12/5/23 03:39, John David Anglin wrote:
+>> On 2023-12-04 8:08 p.m., Guenter Roeck wrote:
+>>> I started to play with the new qemu hppa64 emulation.
+> 
+> This emulation is in the first row planned to be able to
+> be used with 64-bit kernels (until we hopefully once get
+> 64-bit userspace).
+> Sadly there still seems to be a bug in the emulation
+> so that it fails when the kernel is built with specific
+> modules.... :-(
+> I still don't know where the bug is though.
+> 
 
-Helge
+I don't try to build / load modules, so I don't see that problem.
 
+Couple of observations:
+- There are spurious issues if I enable more than one CPU.
+   I am not sure if that is realistic (the emulated systems seem to be
+   single-CPU systems), so I dropped those tests. Historically
+   (with older kernels and/or older versions of qemu), multi-core boots
+   didn't work at all (they were slower than single-core),
+   so there is definitely an improvement, but it isn't stable enough
+   to use for kernel regression testing.
+- The e1000 and e1000-82544gc network interfaces don't work
+   (those work fine with the 32-bit emulation)
+- ne2k_pci doesn't work anywhere. I get either a hang or a spinlock recursion
+   error if I try.
+- Not sure it if is worth mentioning: There may be hung task crashes in
+   usb_start_wait_urb/usb_kill_urb during shutdown when booting from usb
+   or when using an usb network interface. That happens with all emulations,
+   though, and is not parisc specific.
 
-> +		return;
-> +	}
-> +
-> +	if (!request_region(IC_PIC2, 0x1f, "pic2")) {
-> +		printk(KERN_ERR PFX "request_region failed for pic2\n");
-> +		release_region(IC_PIC1, 0x1f);
-> +		return;
-> +	}
-> +
-> +	if (!request_region(sio->acpi_base, 0x1f, "acpi")) {
-> +		printk(KERN_ERR PFX "request_region failed for acpi\n");
-> +		release_region(IC_PIC1, 0x1f);
-> +		release_region(IC_PIC2, 0x1f);
-> +		return;
-> +	}
->
->   	/* Enable the legacy I/O function */
->   	pci_read_config_word (pdev, PCI_COMMAND, &word);
+Guenter
 
 
