@@ -1,62 +1,62 @@
-Return-Path: <linux-parisc+bounces-174-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-175-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CBC80AD97
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 21:11:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CEC880ADD5
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 21:28:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A21D31C2080C
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 20:11:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE8EB281648
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 20:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7764F8AD;
-	Fri,  8 Dec 2023 20:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C167557311;
+	Fri,  8 Dec 2023 20:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ITnuV+Tu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EexjI5xT"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F434F1
-	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 12:11:10 -0800 (PST)
-Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-3b9e2d50e61so1207266b6e.2
-        for <linux-parisc@vger.kernel.org>; Fri, 08 Dec 2023 12:11:10 -0800 (PST)
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4196110E6
+	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 12:28:42 -0800 (PST)
+Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-59067f03282so1200101eaf.0
+        for <linux-parisc@vger.kernel.org>; Fri, 08 Dec 2023 12:28:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702066269; x=1702671069; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702067321; x=1702672121; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=sf1mgcMu9TuF2qsBJcXMfw2ah23jAu9kzgq0p62xD/A=;
-        b=ITnuV+TuYGFpOECzON2gvqP9Bgx+JJk7+q9gDigmGyvhbRBON/zWOANj5JTmJtXRNY
-         biV4h7NKktJtH9l+bEP0ajcoLghZuVGyqT4YviOvgLUX86hUhqRUikrceEq3bTfz8kTR
-         /Ta9Ur1IQhffl3rzTPNc8SzAiEzFG2j6cmjpOlOSVpaS2GpfBhzfBI+Fnr7TZjmVlG2u
-         EismveEAl2s3o7zigk7+MNblAcu9RHwDRlT8pOfSRjg/2TISZRl6fWw8z/exGBPkn3/Y
-         peWGdEtr0a7p59B42XXSS2WJxQXjAiOgXncs31v5CegG3l6rMoOWfKsjt8Leb4VZKPwD
-         SmLA==
+        bh=TO5fne+oqPVw/Q9fYq+La3QRl4K3jJOgi3bHme3/gI0=;
+        b=EexjI5xTTwvv5f50+dTRSoAVYUjhueOBBmtcONZOO/2kKAjVasV95YwLmtwxcYCb4k
+         tQGOIIDxhKQKxpQLAwuGhqdSZ3uE02RGP8xtFaRtcPcKH/VAMvQ0j0NTEGdMNItKtJzB
+         DnxsNSwIDKBFh2dP3MiM0+I/A0VqbA8982HapR58qL4uo2bYF6xfzAOyuzp1RD8uMj3/
+         LCd1EVbus1VsqWSOZn2QXdbVuSAhfz4jmofF4eMbGW1J/O6raM/7CDatUosv0ML2sJkX
+         rKELVMavi/oHrEUPN1uCDPK53UIGA3t0dm9xIz8RS6DR7xbtbdyx3O3SKnStToREljhW
+         JydA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702066269; x=1702671069;
+        d=1e100.net; s=20230601; t=1702067321; x=1702672121;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=sf1mgcMu9TuF2qsBJcXMfw2ah23jAu9kzgq0p62xD/A=;
-        b=OdElBoBd+pie+EDOXRiL8nJoKKAlRhk482G0RNs1P3emG9GDp7QbG9QgUZ42go6S4s
-         G0zcidthq1Fy+z888Zvx1eyKVL96Tx9e+HaMyr7NnVcBPKzxwjQME3gkppC5nff2dh8h
-         5gl2+kchVpM3Z+gebV5MKoRr4AOrZgU1orCw2hXxGuMswHNH2Ql1ubIjZY3FIoXjSz9K
-         ngK/3NeqDSVaKDRs9piINZeKAevTwjsRhnDVzn+Q//Cv/VVbZAresHdFCzQ8b5RojBK4
-         uQr69BmAHQq7ebWtoEJc6YGfmSRNOK65XjC0JD80ccYrqNs1gidl4wTLGakZEx6ASinF
-         +T7g==
-X-Gm-Message-State: AOJu0YzxmYm1ACLVTaFUOhYhXh2X52kwNrBzPZ+tLaPyzCE69jUuWcON
-	Fv211C6RzoB1Y0qKuWf2ses=
-X-Google-Smtp-Source: AGHT+IGgSzABQ8lw/A+kTnQEAnrO8VlMN2rVoYXcyU5CyMiWIrhTv6hL8KNqO5U2CfatPch40rWYBA==
-X-Received: by 2002:a05:6808:1412:b0:3b8:b063:9b6e with SMTP id w18-20020a056808141200b003b8b0639b6emr731690oiv.96.1702066269555;
-        Fri, 08 Dec 2023 12:11:09 -0800 (PST)
+        bh=TO5fne+oqPVw/Q9fYq+La3QRl4K3jJOgi3bHme3/gI0=;
+        b=vnew9S9R9qfB307u1qBegeqlOtwAdBYsXHBECvAf9UqwyQKFPhegzAypq9ssfFksUT
+         qzcnVuH6G+Z355OGAzRsdxGyZz7M9U7oiB1qOG1NkJUBkMSUaqeSC7N5CXvN1ydqALbz
+         X/7QUhlmmPiYAuWNoh3TTCSuuZwhGI7WQMuyvfNHtRWTOtJBnIWw+jbYn439PgNL0jrD
+         IaJIYUjos3Lq7UOM2b+97px5cQCjKYfMGtuY1XgoKIS2hex3uDvm67udWnsvP9mJ58Kp
+         u5VcALPatN3Evkgq6hq64sfMsNZGT5SOhaJPn3krAsEOECHeVVxObOg4TE0OixDEsVkN
+         2zOA==
+X-Gm-Message-State: AOJu0YyUg/dV//S6x1RG5YG8V0XzFOFawH9HZ2Ps2PH3Sz43V6nU/J6k
+	vE7NmQYeUtx95kVaJ+CeE2o=
+X-Google-Smtp-Source: AGHT+IH0dW5Llo28FYtCSdXiBUrQbGOzdZzcFMVHr2VW4ChE4Y8loh/L4LyfiYmcOQQLlQ2i5Z84Wg==
+X-Received: by 2002:a05:6820:220d:b0:581:ea96:f800 with SMTP id cj13-20020a056820220d00b00581ea96f800mr945928oob.6.1702067321498;
+        Fri, 08 Dec 2023 12:28:41 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h6-20020a056808014600b003b9d5e265f1sm464748oie.2.2023.12.08.12.11.08
+        by smtp.gmail.com with ESMTPSA id v17-20020a056820005100b0059091609e98sm279810oob.34.2023.12.08.12.28.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Dec 2023 12:11:09 -0800 (PST)
+        Fri, 08 Dec 2023 12:28:41 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <8bdc89de-90a5-4b7a-b6d1-2e3bd9fa7314@roeck-us.net>
-Date: Fri, 8 Dec 2023 12:11:08 -0800
+Message-ID: <4ba17f2d-632c-4c49-a9d0-46324b5e5d7e@roeck-us.net>
+Date: Fri, 8 Dec 2023 12:28:39 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -66,9 +66,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: 64-bit userspace root file system for hppa64
 Content-Language: en-US
-To: Helge Deller <deller@gmx.de>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- John David Anglin <dave.anglin@bell.net>,
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Helge Deller <deller@gmx.de>, John David Anglin <dave.anglin@bell.net>,
  Parisc List <linux-parisc@vger.kernel.org>
 References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <a52d08a9-1114-4d0c-8d10-508d6d49627b@bell.net>
@@ -83,7 +82,10 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <11088c05-eaf8-48ca-8767-bc55e78e1350@gmx.de>
  <9e5599dc-06ba-47ca-bdc1-8b612694a95e@ilande.co.uk>
  <5d811129-ca84-4f7f-bbc6-8f5fa0ce06c0@roeck-us.net>
- <55d40485-2aff-4cf5-a379-623bb3b10b7f@gmx.de>
+ <97729a4b-5ef7-42ad-897d-a57cd9a5a5bf@ilande.co.uk>
+ <a68b234a-c202-44ca-bb45-5cbb86b5729b@gmx.de>
+ <ae5e04f4-3979-4a6e-8cff-58f69e41fb08@gmx.de>
+ <015b31ba-f440-4fb1-af0c-265f484bc91a@ilande.co.uk>
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
@@ -128,76 +130,92 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <55d40485-2aff-4cf5-a379-623bb3b10b7f@gmx.de>
+In-Reply-To: <015b31ba-f440-4fb1-af0c-265f484bc91a@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 12/8/23 07:54, Helge Deller wrote:
-[ ... ]
-
+On 12/8/23 11:55, Mark Cave-Ayland wrote:
+> On 08/12/2023 19:37, Helge Deller wrote:
 > 
-> Does qemu-hppa boot for you with those patches?
-> Even with those I see the discs are found, but later I get:
-> [    8.519780] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787975: comm swapper/0: iget: checksum invalid
-> [    8.545363] Starting init: /sbin/init exists but couldn't execute it (error -67)
-> [    8.546339] Run /etc/init as init process
-> [    8.561422] Run /bin/init as init process
-> [    8.574649] Run /bin/sh as init process
-> [    8.580495] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787980: comm swapper/0: iget: checksum invalid
-> [    8.586170] Starting init: /bin/sh exists but couldn't execute it (error -67)
+>> On 12/8/23 20:26, Helge Deller wrote:
+>>>> Yeah that's one of the many bugs which should be fixed by my latest
+>>>> series. I've pushed the current version of my branch with the ESP
+>>>> rewrite to https://github.com/mcayland/qemu/tree/esp-rework-testing
+>>>> if you would both like to give it a test.
+>>>
+>>> Tried it with qemu-hppa:
+>>>
+>>> [    4.257547] am53c974 0000:00:04.0: enabling SERR and PARITY (0107 -> 0147)
+>>> [    4.917824] am53c974 0000:00:04.0: esp0: regs[(ptrval):(ptrval)] irq[70]
+>>> [    4.918704] am53c974 0000:00:04.0: esp0: is a AM53C974, 40 MHz (ccf=0), SCSI ID 15
+>>> [    8.010626] scsi host1: esp
+>>> [    8.026345] scsi 1:0:0:0: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
+>>> [    8.032066] scsi target1:0:0: Beginning Domain Validation
+>>> [    8.043254] scsi target1:0:0: Domain Validation skipping write tests
+>>> [    8.044284] scsi target1:0:0: Ending Domain Validation
+>>> [    8.123681] sd 1:0:0:0: Power-on or device reset occurred
+>>> [    8.134707] sd 1:0:0:0: [sda] 209715200 512-byte logical blocks: (107 GB/100 GiB)
+>>> [    8.140043] sd 1:0:0:0: [sda] Write Protect is off
+>>> [    8.144759] sd 1:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+>>> [    8.205316]  sda: sda1 sda2 sda3 < sda5 sda6 >
+>>> [    8.222763] sd 1:0:0:0: [sda] Attached SCSI disk
+>>> [    8.231170] sd 1:0:0:0: Attached scsi generic sg0 type 0
+>> ...> [    8.679666] Freeing unused kernel image (initmem) memory: 3072K
+>>> [    8.680679] Write protected read-only-after-init data: 2k
+>>> [    8.681338] Run /sbin/init as init process
+>>> [    8.731576] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787975: comm swapper/0: iget: checksum invalid
+>>> [    8.736664] scsi host1: Spurious irq, sreg=10.
+>>> [    8.760106] Starting init: /sbin/init exists but couldn't execute it (error -67)
+>>
+>> The driver isn't so bad in general.
+>>
+>> With my current seabios-hppa from
+>> https://github.com/hdeller/seabios-hppa/tree/devel
+>> and booting like this:
+>>
+>> ./qemu-system-hppa -drive file=../qemu-images/hdd.img.new,if=none,id=d0  -serial mon:stdio -smp cpus=3  -machine C3700  -nographic  -snapshot -device dc390,id=scsi -device scsi-hd,bus=scsi.0,drive=d0  -bios ../seabios-hppa/out/hppa-firmware.img
+>>
+>>
+>> it actually can *partly* boot from disc:
+>> ...
+>> Selected kernel: /vmlinux from partition 2
+>> Selected ramdisk: /initrd.img from partition 2
+>> ELF64 executable
+>> Segment 0 load 0x000e0000 size 5171564 mediaptr 0x1000
+>> Segment 1 load 0x01a00000 size 25012 mediaptr 0x4f0000
+>> Loading ramdisk 23869192 bytes @ 3e92a000...
+>>
+>> Decompressing Linux... XZ-compressed data is corrupt
+>>   -- System halted
+>>
+>> So, it can read partition table, even load some sectors, but
+>> the data returned can be corrupt, as the "XZ-compressed data is corrupt"
+>> message states.
+>> This fits with the CRC checksum errors I saw when booting
+>> from ext4 disc.
+>>
+>> Is the dc390/esp driver functional on other big-endian machines?
+> 
+> Yes it is, in fact the majority of my test images were from SPARC/m68k (including a hppa image) and the series in its current form passes all my boot tests except for an x86 DOS image with ASPI.
+> 
+> The command line I used for testing hppa is below:
+> 
+> ./qemu-system-hppa \
+>      -kernel vmlinux-parisc \
+>      -no-reboot \
+>      -snapshot \
+>      -device am53c974,id=scsi \
+>      -device scsi-hd,bus=scsi.0,drive=d0 \
+>      -drive file=rootfs.ext2-parisc,format=raw,if=none,id=d0 \
+>      -append "panic=-1 slub_debug=FZPUA root=/dev/sda console=ttyS0,115200" \
+>      -nographic -monitor null
+> 
+> If you are still seeing errors then I'd suspect an issue with the hppa CPU emulation or the esp-pci device.
 > 
 
-This is what I get when trying to boot from an ext4 file system:
-
-[   30.664669] Unaligned handler failed, ret = -14
-[   30.665314]       _______________________________
-[   30.665314]      < Your System ate a SPARC! Gah! >
-[   30.665314]       -------------------------------
-[   30.665314]              \   ^__^
-[   30.665314]                  (__)\       )\/\
-[   30.665314]                   U  ||----w |
-[   30.665314]                      ||     ||
-[   30.665925] ip (pid 689): Unaligned data reference (code 28)
-[   30.666282] CPU: 0 PID: 689 Comm: ip Tainted: G                 N 6.7.0-rc4-64bit+ #1
-[   30.666487] Hardware name: 9000/785/C3700
-[   30.666724]
-[   30.666812]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-[   30.666978] PSW: 00001000000001001111111100001111 Tainted: G                 N
-[   30.667164] r00-03  000000ff0804ff0f 00000000413f57c0 00000000401e15c0 00000000451d8d60
-[   30.667351] r04-07  00000000412d5fc0 00000000451d8c78 00000000411bcfe0 00000000417813f8
-[   30.667511] r08-11  000000004128e7c0 0000000000000010 00000000000000a0 0000000073c00008
-[   30.667665] r12-15  0000000000000000 0000000000000cc0 0000000043086000 0000000041f29640
-[   30.667817] r16-19  0000000000000040 00000000451d8a10 0000000041ede0c0 0000000000000000
-[   30.667968] r20-23  ffffffffffe00009 0000000073c00008 000000006bc23fd9 000000000fc212c1
-[   30.668119] r24-27  0000000000000000 0000000000000008 081e0241371e0200 00000000412d5fc0
-[   30.668273] r28-31  0000000000000000 00000000451d8e00 00000000451d8e30 00000000f8ce25bc
-[   30.669027] sr00-03  0000000000016c00 0000000000000000 0000000000000000 0000000000016c00
-[   30.669292] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[   30.669523]
-[   30.669615] IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000401e160c 00000000401e15ec
-[   30.669870]  IIR: 0fe010dc    ISR: 0000000000000000  IOR: 00000000f8ce25bc
-[   30.670072]  CPU:        0   CR30: 0000000043086000 CR31: 0000000000000000
-[   30.670270]  ORIG_R28: 00000000402a48b8
-[   30.670407]  IAOQ[0]: unwind_once+0x5dc/0x5e0
-[   30.671165]  IAOQ[1]: unwind_once+0x5bc/0x5e0
-[   30.671332]  RP(r2): unwind_once+0x590/0x5e0
-[   30.671575] Backtrace:
-[   30.671804]  [<00000000401e482c>] walk_stackframe.constprop.0+0xb4/0x138
-[   30.672059]  [<00000000401e48e8>] arch_stack_walk+0x38/0x50
-[   30.672232]  [<00000000402a8a8c>] stack_trace_save+0x5c/0x78
-[   30.673233]  [<00000000403b2cc4>] set_track_prepare+0x5c/0xa0
-[   30.673694]  [<00000000403ba8ec>] ___slab_alloc+0x554/0x930
-[   30.673917]  [<00000000403bad28>] __slab_alloc.constprop.0+0x60/0x88
-[   30.674141]  [<00000000403bb354>] kmem_cache_alloc+0xf4/0x280
-[   30.674342]  [<0000000040389d10>] __anon_vma_prepare+0x98/0x2d0
-[   30.674554]  [<0000000040374f50>] __handle_mm_fault+0x410/0xe00
-[   30.674752]  [<0000000040375a6c>] handle_mm_fault+0x12c/0x230
-[   30.674947]  [<00000000401cc6e0>] do_page_fault+0x1c0/0x708
-[   30.675173]  [<00000000401d0b90>] handle_interruption+0xa88/0xbc0
-[   30.675367]  [<00000000411bd000>] arch_atomic64_add+0x20/0xb0
-
-That is also seen randomly when booting from other controllers, so it is
-not specific to the scsi driver.
+I suspect it has more to do with ext4 vs. ext2 because ext2 works just fine for me
+while I get unaligned access crashes with ext4. I started some tests with btrfs
+and f2fs in addition to ext2 to see how those are doing.
 
 Guenter
 
