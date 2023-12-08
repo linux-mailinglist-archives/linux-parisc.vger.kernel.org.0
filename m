@@ -1,46 +1,46 @@
-Return-Path: <linux-parisc+bounces-169-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-170-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E93B80AD4F
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 20:45:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFEF280AD64
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 20:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B4FAB20AEA
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 19:45:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C1501C20752
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 19:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751CD50241;
-	Fri,  8 Dec 2023 19:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74558481D4;
+	Fri,  8 Dec 2023 19:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=ilande.co.uk header.i=@ilande.co.uk header.b="Re8AZhUf"
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=ilande.co.uk header.i=@ilande.co.uk header.b="YPyN9Es2"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from mail.ilande.co.uk (mail.ilande.co.uk [IPv6:2001:41c9:1:41f::167])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFB521738
-	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 11:45:27 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D0AC1732
+	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 11:55:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
 	In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
 	Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=leaRuXoVPsFh+f/i/5VgJ58xiyHEmvhficl2bW9EVfY=; b=Re8AZhUf7dSf2mR91Xe5RDJzxz
-	gbU8Yt/U+YAzpBfc4/0Y5mRXUFS06T05ZFu3KEjZsHTtIbLffT6rfEz7xHD+x7gA4WjdgKQIKD1RC
-	8+60YnRqgoMKX+axXcxU3N1EwVpM6gBqwZP9PXZbamS60XX4YGcjDMvO4tFARGRKSwQYo3bwVft0G
-	S/Z89e1pE+2goYO1sj2JERqSV2vBx7sIa9Il3uTm49UHZ8O0EHWUO2rfh2jIumUsy44/9zjQaZrz0
-	giiEpg5DqSqnkkvrRrBe+nDkK8JIe1ILI+KWvv6MF3P22FoMv/KU5TeFL96TiQxHiUxYLwlR7n/PY
-	G7HBmPVJyptsMYGeE4ts+euNkrx4/YfLn5Iuet4tLnEYd2Pb8gUzJMzSz4AxO7oiRRDnqDQ+TEeHP
-	KBe5PCx1P8M0+pBNgi34sRg9bS53pJKghjT+MjueUM70WO6hYxcwU/3FjzQVf3RBt8SqzbqRZyOF4
-	KQRhdXPETv49HRM7ypg/m+Oc54/gwYS0ClW6RO7Cue2GlWv9FBXxNNorY5ZIFsHBwBzJLoP2v9/Rz
-	JPVOlw+rzl6BINXtoYdA2quoJabSPJ+PKj9y982Z1OdO9lW7BzGIXTDykyopssZDMkq121V6VULOs
-	syH3KGGot/jAP492+6EPuwqF4TXafFGrQKOKJFQTo=;
+	bh=CMhH7qEC3ljtTHbllWCmz5zjU0986YcFsk4ujqFwI+k=; b=YPyN9Es2v0BuIwwKEbrKhESUbu
+	YjrSoPEbSIfq08DHvi2KJzFjVaTysmlHYlSoLWlxL3xanW1oga+svhq3RXCwSA5NxF0Ov1P82XBgH
+	PL7ZLjlhX08u5EjiQwMYg/JRi2baZDAQ+0ObTn5vPI97Ta3fHQhFZRKIBbFzfrmj2Jug+9HTG+mEf
+	r/c9r0FAQeObJpLCzU0XK4ys27ATDf+ZafJNf2fXHgl+eKSAEQ7RwF+ePg2E9hjri5wEsZshYSENG
+	NCWbZlNoAO+M709aWM5JIBw5rj+KRlTVVBbDFTZafY47zG3xIpS9Td0Zmi6xH9ig3K7/suhRhYVZ5
+	8OIEgoJkBsd+H5nAPVub2ufbg+5mDT5Cf2S3QC1HIRE+uEqUAbdRQzpwWM5KqnVajcx+A8SZQDSW/
+	9hlNBZ+rY0tXpAjPnX3j1GliPl8IZf4nWq5GlM1OCMy+ppVZ/wSsP0EdumLXveP51lA4NPg+s94iF
+	llfPGMgm+J9KcXmqTdBBpq2LyEmcp+M4+jD/WH7gk2fWxmfLHmBGASUk6GxAQmQ2OgYa522kYxiJB
+	0SU8x5A184VaEbCFxUGeGxQ2nqx3+E8AeDCr3imc1db84zz64imDDBprw8WGVZDe+xlKa9LpgcbJp
+	pZRhcmtrb3QIpO0VWD+wVxrvGYT46iJPGYgo3kfhY=;
 Received: from [2a00:23c4:8bb0:f100:9601:9e38:9395:46ea]
 	by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
 	(Exim 4.92)
 	(envelope-from <mark.cave-ayland@ilande.co.uk>)
-	id 1rBgmS-0008np-Ml; Fri, 08 Dec 2023 19:45:04 +0000
-Message-ID: <60939e7b-643d-497e-a3dd-974513851959@ilande.co.uk>
-Date: Fri, 8 Dec 2023 19:45:19 +0000
+	id 1rBgvz-0008r3-Hd; Fri, 08 Dec 2023 19:54:55 +0000
+Message-ID: <015b31ba-f440-4fb1-af0c-265f484bc91a@ilande.co.uk>
+Date: Fri, 8 Dec 2023 19:55:09 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -67,6 +67,7 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <5d811129-ca84-4f7f-bbc6-8f5fa0ce06c0@roeck-us.net>
  <97729a4b-5ef7-42ad-897d-a57cd9a5a5bf@ilande.co.uk>
  <a68b234a-c202-44ca-bb45-5cbb86b5729b@gmx.de>
+ <ae5e04f4-3979-4a6e-8cff-58f69e41fb08@gmx.de>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -92,7 +93,7 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <a68b234a-c202-44ca-bb45-5cbb86b5729b@gmx.de>
+In-Reply-To: <ae5e04f4-3979-4a6e-8cff-58f69e41fb08@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:9601:9e38:9395:46ea
@@ -102,227 +103,90 @@ Subject: Re: 64-bit userspace root file system for hppa64
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 
-On 08/12/2023 19:26, Helge Deller wrote:
+On 08/12/2023 19:37, Helge Deller wrote:
 
-> On 12/8/23 19:53, Mark Cave-Ayland wrote:
->> On 08/12/2023 14:58, Guenter Roeck wrote:
+> On 12/8/23 20:26, Helge Deller wrote:
+>>> Yeah that's one of the many bugs which should be fixed by my latest
+>>> series. I've pushed the current version of my branch with the ESP
+>>> rewrite to https://github.com/mcayland/qemu/tree/esp-rework-testing
+>>> if you would both like to give it a test.
 >>
->>> On 12/8/23 00:01, Mark Cave-Ayland wrote:
->>>> On 07/12/2023 21:47, Helge Deller wrote:
->>>>
->>>>> (looping in Mark Cave-Ayland, since he did some work on qemu esp driver)
->>>>
->>>> Thanks for the ping!
->>>>
->>>>> On 12/7/23 22:08, Guenter Roeck wrote:
->>>>>> Hi Helge,
->>>>>>
->>>>>> On 12/6/23 13:43, Helge Deller wrote:
->>>>>>> On 12/6/23 21:19, Guenter Roeck wrote:
->>>>>>>> On 12/6/23 09:00, Helge Deller wrote:
->>>>>>>> [ ... ]
->>>>>>>>>> Is it worth testing with multiple CPUs ? I can re-enable it and
->>>>>>>>>> check more closely if you think it makes sense. If so, what number
->>>>>>>>>> of CPUs would you recommend ?
->>>>>>>>>
->>>>>>>>> I think 4 CPUs is realistic.
->>>>>>>>> But I agree, that you probably see more issues.
->>>>>>>>>
->>>>>>>>> Generally the assumption was, that the different caches on parisc
->>>>>>>>> may trigger SMP issues, but given that those issues can be seen on
->>>>>>>>> qemu, it indicates that there are generic SMP issues too.
->>>>>>>>>
->>>>>>>>
->>>>>>>> Ok, I ran some tests overnight with 2-8 CPUs. Turns out the system is quite
->>>>>>>> stable,
->>>>>>>
->>>>>>> cool!
->>>>>>>
->>>>>>>> with the exception of SCSI controllers. Some fail completely, others
->>>>>>>> rarely. Here is a quick summary:
->>>>>>>>
->>>>>>>> - am53c974 fails with "Spurious irq, sreg=00", followed by "Aborting command"
->>>>>>>>    and a hung task crash.
->>>>>>>> - megasas and megasas-gen2 fail with
->>>>>>>>    "scsi host1: scsi scan: INQUIRY result too short (5), using 36"
->>>>>>>>    followed by
->>>>>>>>    "megaraid_sas 0000:00:04.0: Unknown command completed!"
->>>>>>>>    and a hung task crash
->>>>>>>> - mptsas1068 fails completely (no kernel log message seen)
->>>>>>>> - dc390 and lsi* report random "Spurious irq, sreg=00" messages and timeouts
->>>>>>>
->>>>>>> I think none of those drivers have ever been tested
->>>>>>> on physical hardware either.
->>>>>>> So I'm astonished that it even worked that far :-)
->>>>>>>
->>>>>> I actually do have a dc390 board somewhere. I used it some time ago to improve
->>>>>> the emulation.
->>>>>
->>>>> Do you have a physical hppa box too?
->>>>>
->>>>>>> Based on kernel sources, the "Spurious irq, sreg=%02x." error can only happen 
->>>>>>> for the
->>>>>>> am53c974 driver. Are you sure you see this message for dc390 and lsi* too?
->>>>>>>
->>>>>> am53c974 and dc390 use the same driver. lsi* doesn't, and doesn't have a problem
->>>>>> either. Sorry, I confused that with some old notes.
->>>>>>
->>>>>> Either case, I think I found the problem. After handling an interrupt, the Linux
->>>>>> driver checks if another interrupt is pending. It does that by checking the
->>>>>> DMA_DONE bit in the DMA status register. If that bit is set, it re-enters the
->>>>>> interrupt handler. Problem with that is that the emulation sets DMA_DONE
->>>>>> prematurely, before it sets the command done bit in the interrupt status register
->>>>>> and before it sets the interrupt pending bit in the status register. As result,
->>>>>> DMA_DONE is set but IRQ_PENDING isn't, and the spurious interrupt is reported.
->>>>>> I fixed that up in my code and will test it for some time and with various
->>>>>> architectures before I send a patch.
->>>>
->>>> I'm actually in the process of putting the finishing touches to a large rewrite 
->>>> of QEMU's core ESP emulation since there are a number of known issues with the 
->>>> existing version. In particular there are problems with the SCSI phase being set 
->>>> incorrectly after reading ESP_INTR and ESP_RSTAT's STAT_TC not being correct. 
->>>> Note that this is just the ESP core rather than the ESP PCI device.
->>>>
->>>> If you are interested, I could try and find a few minutes to tidy it up a bit 
->>>> more and push a testing branch to Github?
->>>>
->>>
->>> Sure, I'll be happy to give your changes a try.
->>>
->>> FWIW, the change I made to fix the spurious interrupt problem is
->>>
->>> diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
->>> index 6794acaebc..f624398c55 100644
->>> --- a/hw/scsi/esp-pci.c
->>> +++ b/hw/scsi/esp-pci.c
->>> @@ -286,9 +286,6 @@ static void esp_pci_dma_memory_rw(PCIESPState *pci, uint8_t 
->>> *buf, int len,
->>>       /* update status registers */
->>>       pci->dma_regs[DMA_WBC] -= len;
->>>       pci->dma_regs[DMA_WAC] += len;
->>> -    if (pci->dma_regs[DMA_WBC] == 0) {
->>> -        pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
->>> -    }
->>>   }
->>>
->>> I tested that with several platforms. There are no more spurious interrupts
->>> after that change, and no other errors either.
+>> Tried it with qemu-hppa:
 >>
->> I suspect that this is papering over the real issue, since it appears the code 
->> being removed sets the DMA completion bit when then the PCI DMA transfer counter 
->> reaches zero.
->>
->>> Regarding TC after reading the interrupt register, I carry the following
->>> patch locally.
->>>
->>> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
->>> index 9b11d8c573..f0cd8705a7 100644
->>> --- a/hw/scsi/esp.c
->>> +++ b/hw/scsi/esp.c
->>> @@ -986,7 +986,7 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
->>>            */
->>>           val = s->rregs[ESP_RINTR];
->>>           s->rregs[ESP_RINTR] = 0;
->>> -        s->rregs[ESP_RSTAT] &= ~STAT_TC;
->>> +        // s->rregs[ESP_RSTAT] &= ~STAT_TC;
->>>
->>> The comment above that code says "Clear sequence step, interrupt register
->>> and all status bits except TC", which is quite the opposite of what the code
->>> is doing because it clears TC and nothing else. I never spent the time
->>> trying to figure out how to fix that properly; clearing the other bits
->>> like the comment suggests doesn't work (STAT_INT needs to be set for
->>> esp_lower_irq() to work, and clearing the other bits results in transfer
->>> failures).
->>
->> Yeah that's one of the many bugs which should be fixed by my latest
->> series. I've pushed the current version of my branch with the ESP
->> rewrite to https://github.com/mcayland/qemu/tree/esp-rework-testing
->> if you would both like to give it a test.
+>> [    4.257547] am53c974 0000:00:04.0: enabling SERR and PARITY (0107 -> 0147)
+>> [    4.917824] am53c974 0000:00:04.0: esp0: regs[(ptrval):(ptrval)] irq[70]
+>> [    4.918704] am53c974 0000:00:04.0: esp0: is a AM53C974, 40 MHz (ccf=0), SCSI ID 15
+>> [    8.010626] scsi host1: esp
+>> [    8.026345] scsi 1:0:0:0: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 
+>> ANSI: 5
+>> [    8.032066] scsi target1:0:0: Beginning Domain Validation
+>> [    8.043254] scsi target1:0:0: Domain Validation skipping write tests
+>> [    8.044284] scsi target1:0:0: Ending Domain Validation
+>> [    8.123681] sd 1:0:0:0: Power-on or device reset occurred
+>> [    8.134707] sd 1:0:0:0: [sda] 209715200 512-byte logical blocks: (107 GB/100 GiB)
+>> [    8.140043] sd 1:0:0:0: [sda] Write Protect is off
+>> [    8.144759] sd 1:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't 
+>> support DPO or FUA
+>> [    8.205316]  sda: sda1 sda2 sda3 < sda5 sda6 >
+>> [    8.222763] sd 1:0:0:0: [sda] Attached SCSI disk
+>> [    8.231170] sd 1:0:0:0: Attached scsi generic sg0 type 0
+> ...> [    8.679666] Freeing unused kernel image (initmem) memory: 3072K
+>> [    8.680679] Write protected read-only-after-init data: 2k
+>> [    8.681338] Run /sbin/init as init process
+>> [    8.731576] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787975: comm 
+>> swapper/0: iget: checksum invalid
+>> [    8.736664] scsi host1: Spurious irq, sreg=10.
+>> [    8.760106] Starting init: /sbin/init exists but couldn't execute it (error -67)
 > 
-> Tried it with qemu-hppa:
+> The driver isn't so bad in general.
 > 
-> [    1.062381] sym53c8xx 0000:00:00.0: enabling SERR and PARITY (0107 -> 0147)
-> [    1.066381] sym0: <895a> rev 0x0 at pci 0000:00:00.0 irq 66
-> [    1.073919] sym0: No NVRAM, ID 7, Fast-40, LVD, parity checking
-> [    1.080618] sym0: SCSI BUS has been reset.
-> [    1.085325] scsi host0: sym-2.2.3
-> [    4.257547] am53c974 0000:00:04.0: enabling SERR and PARITY (0107 -> 0147)
-> [    4.917824] am53c974 0000:00:04.0: esp0: regs[(ptrval):(ptrval)] irq[70]
-> [    4.918704] am53c974 0000:00:04.0: esp0: is a AM53C974, 40 MHz (ccf=0), SCSI ID 15
-> [    8.010626] scsi host1: esp
-> [    8.026345] scsi 1:0:0:0: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 
-> ANSI: 5
-> [    8.032066] scsi target1:0:0: Beginning Domain Validation
-> [    8.043254] scsi target1:0:0: Domain Validation skipping write tests
-> [    8.044284] scsi target1:0:0: Ending Domain Validation
-> [    8.094991] megasas: 07.727.03.00-rc1
-> [    8.097635] mpt3sas version 43.100.00.00 loaded
-> [    8.109417] st: Version 20160209, fixed bufsize 32768, s/g segs 256
-> [    8.123681] sd 1:0:0:0: Power-on or device reset occurred
-> [    8.134707] sd 1:0:0:0: [sda] 209715200 512-byte logical blocks: (107 GB/100 GiB)
-> [    8.140043] sd 1:0:0:0: [sda] Write Protect is off
-> [    8.144759] sd 1:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't 
-> support DPO or FUA
-> [    8.205316]  sda: sda1 sda2 sda3 < sda5 sda6 >
-> [    8.222763] sd 1:0:0:0: [sda] Attached SCSI disk
-> [    8.231170] sd 1:0:0:0: Attached scsi generic sg0 type 0
-> [    8.237107] LASI 82596 driver - Revision: 1.30
-> [    8.238440] Fusion MPT base driver 3.04.20
-> [    8.239024] Copyright (c) 1999-2008 LSI Corporation
-> [    8.240965] Fusion MPT SPI Host driver 3.04.20
-> [    8.243040] Fusion MPT SAS Host driver 3.04.20
-> [    8.245172] Fusion MPT misc device (ioctl) driver 3.04.20
-> [    8.247849] mptctl: Registered with Fusion MPT base driver
-> [    8.248791] mptctl: /dev/mptctl @ (major,minor=10,220)
-> [    8.258484] HP SDC: No SDC found.
-> [    8.271496] rtc-generic rtc-generic: registered as rtc0
-> [    8.274606] rtc-generic rtc-generic: setting system clock to 2023-12-08T19:25:10 
-> UTC (1702063510)
-> [    8.278926] device-mapper: uevent: version 1.0.3
-> [    8.284893] device-mapper: ioctl: 4.48.0-ioctl (2023-03-01) initialised: 
-> dm-devel@redhat.com
-> [    8.288890] hid: raw HID events driver (C) Jiri Kosina
-> [    8.302272] usbcore: registered new interface driver usbhid
-> [    8.303494] usbhid: USB HID core driver
-> [    8.308155] NET: Registered PF_INET6 protocol family
-> [    8.337076] Segment Routing with IPv6
-> [    8.338476] In-situ OAM (IOAM) with IPv6
-> [    8.340887] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
-> [    8.351957] NET: Registered PF_PACKET protocol family
-> [    8.596153] EXT4-fs (sda5): mounted filesystem 
-> f035d934-31b6-430e-b23d-a818f9baaf2e ro with ordered data mode. Quota mode: none.
-> [    8.599184] VFS: Mounted root (ext4 filesystem) readonly on device 8:5.
-> [    8.609270] devtmpfs: mounted
-> [    8.679666] Freeing unused kernel image (initmem) memory: 3072K
-> [    8.680679] Write protected read-only-after-init data: 2k
-> [    8.681338] Run /sbin/init as init process
-> [    8.731576] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787975: comm 
-> swapper/0: iget: checksum invalid
-> [    8.736664] scsi host1: Spurious irq, sreg=10.
-> [    8.760106] Starting init: /sbin/init exists but couldn't execute it (error -67)
-> [    8.760773] Run /etc/init as init process
-> [    8.768268] Run /bin/init as init process
-> [    8.775050] Run /bin/sh as init process
-> [    8.777917] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787980: comm 
-> swapper/0: iget: checksum invalid
-> [    8.779882] scsi host1: Spurious irq, sreg=10.
-> [    8.780532] scsi host1: Spurious irq, sreg=13.
-> [    8.781094] Starting init: /bin/sh exists but couldn't execute it (error -67)
-> [    8.781934] Kernel panic - not syncing: No working init found.  Try passing init= 
-> option to kernel. See Linux Documentation/admin-guide/init.rst for guidance.
-> [    8.782740] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc4-32bit #2434
-> [    8.782740] Hardware name: 9000/785/C3700
-> [    8.782740] Backtrace:
-> [    8.782740]  [<104080f0>] show_stack+0x54/0x6c
-> [    8.782740]  [<10c09498>] dump_stack_lvl+0x58/0x7c
-> [    8.782740]  [<10c094d8>] dump_stack+0x1c/0x2c
-> [    8.782740]  [<10bf5698>] panic+0x130/0x2d4
-> [    8.782740]  [<10c0a024>] kernel_init+0x14c/0x150
-> [    8.782740]  [<1040201c>] ret_from_kernel_thread+0x1c/0x24
+> With my current seabios-hppa from
+> https://github.com/hdeller/seabios-hppa/tree/devel
+> and booting like this:
+> 
+> ./qemu-system-hppa -drive file=../qemu-images/hdd.img.new,if=none,id=d0  -serial 
+> mon:stdio -smp cpus=3  -machine C3700  -nographic  -snapshot -device dc390,id=scsi 
+> -device scsi-hd,bus=scsi.0,drive=d0  -bios ../seabios-hppa/out/hppa-firmware.img
+> 
+> 
+> it actually can *partly* boot from disc:
+> ...
+> Selected kernel: /vmlinux from partition 2
+> Selected ramdisk: /initrd.img from partition 2
+> ELF64 executable
+> Segment 0 load 0x000e0000 size 5171564 mediaptr 0x1000
+> Segment 1 load 0x01a00000 size 25012 mediaptr 0x4f0000
+> Loading ramdisk 23869192 bytes @ 3e92a000...
+> 
+> Decompressing Linux... XZ-compressed data is corrupt
+>   -- System halted
+> 
+> So, it can read partition table, even load some sectors, but
+> the data returned can be corrupt, as the "XZ-compressed data is corrupt"
+> message states.
+> This fits with the CRC checksum errors I saw when booting
+> from ext4 disc.
+> 
+> Is the dc390/esp driver functional on other big-endian machines?
 
-Ah that's a shame, I was really hoping that would solve the issue. Unless there is 
-something amiss with the esp-pci device? I haven't really spent any time looking at 
-the PCI DMA implementation.
+Yes it is, in fact the majority of my test images were from SPARC/m68k (including a 
+hppa image) and the series in its current form passes all my boot tests except for an 
+x86 DOS image with ASPI.
+
+The command line I used for testing hppa is below:
+
+./qemu-system-hppa \
+     -kernel vmlinux-parisc \
+     -no-reboot \
+     -snapshot \
+     -device am53c974,id=scsi \
+     -device scsi-hd,bus=scsi.0,drive=d0 \
+     -drive file=rootfs.ext2-parisc,format=raw,if=none,id=d0 \
+     -append "panic=-1 slub_debug=FZPUA root=/dev/sda console=ttyS0,115200" \
+     -nographic -monitor null
+
+If you are still seeing errors then I'd suspect an issue with the hppa CPU emulation 
+or the esp-pci device.
 
 
 ATB,
