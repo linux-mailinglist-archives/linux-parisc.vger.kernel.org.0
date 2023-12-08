@@ -1,62 +1,46 @@
-Return-Path: <linux-parisc+bounces-165-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-166-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B8780A9E2
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 17:58:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970CB80AC82
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 19:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 281B61F21008
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 16:58:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A0E51F21006
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 18:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2767E37151;
-	Fri,  8 Dec 2023 16:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AD141230;
+	Fri,  8 Dec 2023 18:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GIpbmGXz"
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=ilande.co.uk header.i=@ilande.co.uk header.b="yIyMjc5R"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED3FBBA
-	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 08:58:44 -0800 (PST)
-Received: by mail-oi1-x231.google.com with SMTP id 5614622812f47-3b9dc3215d2so1207884b6e.0
-        for <linux-parisc@vger.kernel.org>; Fri, 08 Dec 2023 08:58:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702054724; x=1702659524; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=8pElGRGKspE/BuMs+kJkkdFonG3hYaHABz1CCxyXuP0=;
-        b=GIpbmGXzCRnVSovjEQSGzLAmVexGCPqjU5ASe+XlSkjjxAAZ8paaIyIBYjeoIefolK
-         ASTxAEJvwGaZATNwyXEp372F4SYZIk8brnYiriGMZzWeweXdcoFrkCGsmCZjm5rnmQ5X
-         +1GvD/0UIGjFTAxh/4+xadcL73UMWl7a1pqGsEzR8xSDmDFyElGcu0mg0EOE5MRjT2IT
-         KGSosH+US0S9FZfY0S1WWYsRbjtLR/6qq5erjsdgxF8bOAk7+B0Z8BM/D0LDRCPkeWl1
-         o/MaMiPIeSjQsMYwCHjiGKA6VreY+g0lSEMSgLndMxBnCQkwgVzyHb5cVqKCvBqDC8uu
-         +xSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702054724; x=1702659524;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8pElGRGKspE/BuMs+kJkkdFonG3hYaHABz1CCxyXuP0=;
-        b=dl6FQyxewrxf86IlbWxL4YV/7AZhJmSyAqx6tkcCOc2seQ70RMw6lXwjazgOeRXe7O
-         1xH6KC6q5SKhawDPbQg6EdbssixRAUS3Nip1i+Yi4FenBcY3DRpt9AFtyo2VdDR7CU/5
-         OYEbAUIKyAWv7zKAr56dCnWoPzJNC/fJ2bMETSUEOECva6UjlMGcHxywaL2bGJ/Wj7O9
-         y/jnT2/9KjjzwSn0sfu4gwDgIv6CsmcoUG/O3fyvL8MM/Id4i1SMZgj+gWtKBguK6gVM
-         8kp+8hrF06LPcNpuXw2O9OyExYWmw+hHYI9c7s3K6iiRlsYYGY9xIqS8wLNnoOy7ph/h
-         RQWA==
-X-Gm-Message-State: AOJu0YwrKs8H3xbLy3jeUrvrU5BJezESGnYRvjCNxhzoJPk+v770YZGM
-	98B1jIhqH2f+707k83tOFqtHRinrcRM=
-X-Google-Smtp-Source: AGHT+IGasz8rbNI/I/vLuI1aJGSQnETuufQ+cftFV+66pzihpb7aRxG3tzAlgH1pGLUN49imjJ0Stw==
-X-Received: by 2002:a05:6808:169e:b0:3b8:b3b4:679e with SMTP id bb30-20020a056808169e00b003b8b3b4679emr351633oib.39.1702054724198;
-        Fri, 08 Dec 2023 08:58:44 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id bx33-20020a0568081b2100b003b2f2724c48sm381990oib.11.2023.12.08.08.58.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Dec 2023 08:58:43 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <8d6e8a92-ae68-4150-b25a-1d371120e6cf@roeck-us.net>
-Date: Fri, 8 Dec 2023 08:58:41 -0800
+Received: from mail.ilande.co.uk (mail.ilande.co.uk [IPv6:2001:41c9:1:41f::167])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC50611F
+	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 10:54:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=paYW0gl/KPX4UI5+0VmrkQJr3zdxSJwsITOe1TqwH48=; b=yIyMjc5RwWMULNCdERidXlANWC
+	KAIIN1mdssxehwqDcdsNYQmDGlqtcZ4Aefjchz3gYe5BmdpnLwwSNBeq/bhBuxs0W/0P1JedtYfHv
+	eD1K5tekonLefGNlSJx9ZmnX+gOHu/5cH8qUoOp02VfSOUi2KJr3yytrQLlUFchNx6smI1dQ8gqHE
+	oWGS2JM8o5aLOC0PyTJ5YaPELk4+GilMlq6KHgbDF2NRkYLJixKnmXkEOYU/t/5TT+2k3NM5OLkAr
+	NeW7E8jerbvE/efstX1879A1o4jEvioDdOlN8yy3Zvm35ev7i7HfAqvDPOfocsMWd1iAQ6YW7ozWi
+	NGwoQ+8bb+7QLuDKkdRG9yataZIkW10HufEznC6HDLoumLNO1H0YK0R0wmeci7YmTARrlTuAnzJQC
+	OfY0BTIKXzHApIknxdiYAqpMp7IcfcDIgWKU0puYh2iEcbsvjhWNTEgDte7jCnv8REMXnJK7V/laj
+	mff+VfoqSFM9CG6IrfZMcCuBq5MJCIKj8ztEQKZ3D5+7eJ7Tt18f4B5YKDVbVYuE3b6ns91M5s8kW
+	t+UXLPNUYha9keu9ATCflRs5rEMIRy6GLWXa+QgIqVV+jQbNDp0kVpTEr3mDp08Mq/H84AFagtyiC
+	SXGGiLKjrM1oTBhP9IRj3lq7E/1VnizNC9frQkraE=;
+Received: from [2a00:23c4:8bb0:f100:9601:9e38:9395:46ea]
+	by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	(Exim 4.92)
+	(envelope-from <mark.cave-ayland@ilande.co.uk>)
+	id 1rBfyJ-0008YT-L2; Fri, 08 Dec 2023 18:53:15 +0000
+Message-ID: <97729a4b-5ef7-42ad-897d-a57cd9a5a5bf@ilande.co.uk>
+Date: Fri, 8 Dec 2023 18:53:26 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -64,10 +48,7 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: 64-bit userspace root file system for hppa64
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+To: Guenter Roeck <linux@roeck-us.net>, Helge Deller <deller@gmx.de>,
  John David Anglin <dave.anglin@bell.net>,
  Parisc List <linux-parisc@vger.kernel.org>
 References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
@@ -83,116 +64,178 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <11088c05-eaf8-48ca-8767-bc55e78e1350@gmx.de>
  <9e5599dc-06ba-47ca-bdc1-8b612694a95e@ilande.co.uk>
  <5d811129-ca84-4f7f-bbc6-8f5fa0ce06c0@roeck-us.net>
- <55d40485-2aff-4cf5-a379-623bb3b10b7f@gmx.de>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <55d40485-2aff-4cf5-a379-623bb3b10b7f@gmx.de>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <5d811129-ca84-4f7f-bbc6-8f5fa0ce06c0@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:9601:9e38:9395:46ea
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+X-Spam-Level: 
+Subject: Re: 64-bit userspace root file system for hppa64
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 
-On 12/8/23 07:54, Helge Deller wrote:
-[ ... ]
+On 08/12/2023 14:58, Guenter Roeck wrote:
 
->> FWIW, the change I made to fix the spurious interrupt problem is
+> On 12/8/23 00:01, Mark Cave-Ayland wrote:
+>> On 07/12/2023 21:47, Helge Deller wrote:
 >>
->> diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
->> index 6794acaebc..f624398c55 100644
->> --- a/hw/scsi/esp-pci.c
->> +++ b/hw/scsi/esp-pci.c
->> @@ -286,9 +286,6 @@ static void esp_pci_dma_memory_rw(PCIESPState *pci, uint8_t *buf, int len,
->>       /* update status registers */
->>       pci->dma_regs[DMA_WBC] -= len;
->>       pci->dma_regs[DMA_WAC] += len;
->> -    if (pci->dma_regs[DMA_WBC] == 0) {
->> -        pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
->> -    }
->>   }
+>>> (looping in Mark Cave-Ayland, since he did some work on qemu esp driver)
 >>
->> I tested that with several platforms. There are no more spurious interrupts
->> after that change, and no other errors either.
+>> Thanks for the ping!
 >>
->> Regarding TC after reading the interrupt register, I carry the following
->> patch locally.
+>>> On 12/7/23 22:08, Guenter Roeck wrote:
+>>>> Hi Helge,
+>>>>
+>>>> On 12/6/23 13:43, Helge Deller wrote:
+>>>>> On 12/6/23 21:19, Guenter Roeck wrote:
+>>>>>> On 12/6/23 09:00, Helge Deller wrote:
+>>>>>> [ ... ]
+>>>>>>>> Is it worth testing with multiple CPUs ? I can re-enable it and
+>>>>>>>> check more closely if you think it makes sense. If so, what number
+>>>>>>>> of CPUs would you recommend ?
+>>>>>>>
+>>>>>>> I think 4 CPUs is realistic.
+>>>>>>> But I agree, that you probably see more issues.
+>>>>>>>
+>>>>>>> Generally the assumption was, that the different caches on parisc
+>>>>>>> may trigger SMP issues, but given that those issues can be seen on
+>>>>>>> qemu, it indicates that there are generic SMP issues too.
+>>>>>>>
+>>>>>>
+>>>>>> Ok, I ran some tests overnight with 2-8 CPUs. Turns out the system is quite
+>>>>>> stable,
+>>>>>
+>>>>> cool!
+>>>>>
+>>>>>> with the exception of SCSI controllers. Some fail completely, others
+>>>>>> rarely. Here is a quick summary:
+>>>>>>
+>>>>>> - am53c974 fails with "Spurious irq, sreg=00", followed by "Aborting command"
+>>>>>>    and a hung task crash.
+>>>>>> - megasas and megasas-gen2 fail with
+>>>>>>    "scsi host1: scsi scan: INQUIRY result too short (5), using 36"
+>>>>>>    followed by
+>>>>>>    "megaraid_sas 0000:00:04.0: Unknown command completed!"
+>>>>>>    and a hung task crash
+>>>>>> - mptsas1068 fails completely (no kernel log message seen)
+>>>>>> - dc390 and lsi* report random "Spurious irq, sreg=00" messages and timeouts
+>>>>>
+>>>>> I think none of those drivers have ever been tested
+>>>>> on physical hardware either.
+>>>>> So I'm astonished that it even worked that far :-)
+>>>>>
+>>>> I actually do have a dc390 board somewhere. I used it some time ago to improve
+>>>> the emulation.
+>>>
+>>> Do you have a physical hppa box too?
+>>>
+>>>>> Based on kernel sources, the "Spurious irq, sreg=%02x." error can only happen 
+>>>>> for the
+>>>>> am53c974 driver. Are you sure you see this message for dc390 and lsi* too?
+>>>>>
+>>>> am53c974 and dc390 use the same driver. lsi* doesn't, and doesn't have a problem
+>>>> either. Sorry, I confused that with some old notes.
+>>>>
+>>>> Either case, I think I found the problem. After handling an interrupt, the Linux
+>>>> driver checks if another interrupt is pending. It does that by checking the
+>>>> DMA_DONE bit in the DMA status register. If that bit is set, it re-enters the
+>>>> interrupt handler. Problem with that is that the emulation sets DMA_DONE
+>>>> prematurely, before it sets the command done bit in the interrupt status register
+>>>> and before it sets the interrupt pending bit in the status register. As result,
+>>>> DMA_DONE is set but IRQ_PENDING isn't, and the spurious interrupt is reported.
+>>>> I fixed that up in my code and will test it for some time and with various
+>>>> architectures before I send a patch.
 >>
->> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
->> index 9b11d8c573..f0cd8705a7 100644
->> --- a/hw/scsi/esp.c
->> +++ b/hw/scsi/esp.c
->> @@ -986,7 +986,7 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
->>            */
->>           val = s->rregs[ESP_RINTR];
->>           s->rregs[ESP_RINTR] = 0;
->> -        s->rregs[ESP_RSTAT] &= ~STAT_TC;
->> +        // s->rregs[ESP_RSTAT] &= ~STAT_TC;
+>> I'm actually in the process of putting the finishing touches to a large rewrite of 
+>> QEMU's core ESP emulation since there are a number of known issues with the 
+>> existing version. In particular there are problems with the SCSI phase being set 
+>> incorrectly after reading ESP_INTR and ESP_RSTAT's STAT_TC not being correct. Note 
+>> that this is just the ESP core rather than the ESP PCI device.
 >>
->> The comment above that code says "Clear sequence step, interrupt register
->> and all status bits except TC", which is quite the opposite of what the code
->> is doing because it clears TC and nothing else. I never spent the time
->> trying to figure out how to fix that properly; clearing the other bits
->> like the comment suggests doesn't work (STAT_INT needs to be set for
->> esp_lower_irq() to work, and clearing the other bits results in transfer
->> failures).
+>> If you are interested, I could try and find a few minutes to tidy it up a bit more 
+>> and push a testing branch to Github?
+>>
 > 
-> Does qemu-hppa boot for you with those patches?
+> Sure, I'll be happy to give your changes a try.
+> 
+> FWIW, the change I made to fix the spurious interrupt problem is
+> 
+> diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
+> index 6794acaebc..f624398c55 100644
+> --- a/hw/scsi/esp-pci.c
+> +++ b/hw/scsi/esp-pci.c
+> @@ -286,9 +286,6 @@ static void esp_pci_dma_memory_rw(PCIESPState *pci, uint8_t *buf, 
+> int len,
+>       /* update status registers */
+>       pci->dma_regs[DMA_WBC] -= len;
+>       pci->dma_regs[DMA_WAC] += len;
+> -    if (pci->dma_regs[DMA_WBC] == 0) {
+> -        pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
+> -    }
+>   }
+> 
+> I tested that with several platforms. There are no more spurious interrupts
+> after that change, and no other errors either.
 
-Yes, tested with both 32 bit and 64 bit kernels.
+I suspect that this is papering over the real issue, since it appears the code being 
+removed sets the DMA completion bit when then the PCI DMA transfer counter reaches zero.
 
-> Even with those I see the discs are found, but later I get:
-> [    8.519780] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787975: comm swapper/0: iget: checksum invalid
-> [    8.545363] Starting init: /sbin/init exists but couldn't execute it (error -67)
-> [    8.546339] Run /etc/init as init process
-> [    8.561422] Run /bin/init as init process
-> [    8.574649] Run /bin/sh as init process
-> [    8.580495] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787980: comm swapper/0: iget: checksum invalid
-> [    8.586170] Starting init: /bin/sh exists but couldn't execute it (error -67)
+> Regarding TC after reading the interrupt register, I carry the following
+> patch locally.
+> 
+> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+> index 9b11d8c573..f0cd8705a7 100644
+> --- a/hw/scsi/esp.c
+> +++ b/hw/scsi/esp.c
+> @@ -986,7 +986,7 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
+>            */
+>           val = s->rregs[ESP_RINTR];
+>           s->rregs[ESP_RINTR] = 0;
+> -        s->rregs[ESP_RSTAT] &= ~STAT_TC;
+> +        // s->rregs[ESP_RSTAT] &= ~STAT_TC;
+> 
+> The comment above that code says "Clear sequence step, interrupt register
+> and all status bits except TC", which is quite the opposite of what the code
+> is doing because it clears TC and nothing else. I never spent the time
+> trying to figure out how to fix that properly; clearing the other bits
+> like the comment suggests doesn't work (STAT_INT needs to be set for
+> esp_lower_irq() to work, and clearing the other bits results in transfer
+> failures).
 
--67 is EBADMSG on parisc which is used by ext4 for "Bad CRC detected",
-so that matches the "checksum invalid" message. I don't see that
-with my root file system, but then mine is a simple ext2 file system.
-I'll generate an ext4 root file system and let you know how that goes.
+Yeah that's one of the many bugs which should be fixed by my latest series. I've 
+pushed the current version of my branch with the ESP rewrite to 
+https://github.com/mcayland/qemu/tree/esp-rework-testing if you would both like to 
+give it a test.
 
-Guenter
+
+ATB,
+
+Mark.
 
 
