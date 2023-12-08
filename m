@@ -1,62 +1,47 @@
-Return-Path: <linux-parisc+bounces-161-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-162-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34B4809682
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 00:21:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E79E809E78
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 09:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FD7C1C20AD4
-	for <lists+linux-parisc@lfdr.de>; Thu,  7 Dec 2023 23:21:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE65D1F214AC
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 08:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F004B152;
-	Thu,  7 Dec 2023 23:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CCC79FE;
+	Fri,  8 Dec 2023 08:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TJoSvK+M"
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=ilande.co.uk header.i=@ilande.co.uk header.b="saQT6I8/"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F1591712
-	for <linux-parisc@vger.kernel.org>; Thu,  7 Dec 2023 15:21:02 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1d04dba2781so12790155ad.3
-        for <linux-parisc@vger.kernel.org>; Thu, 07 Dec 2023 15:21:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701991261; x=1702596061; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=ojP+dw84rJoSbWff18+mFycgArGPAerA9MgsFA2H520=;
-        b=TJoSvK+MPqJvQAB41cnSQIM/kloU/J3OVwuF1rVfNlNZgvWgr7qejzfy0JxlsZekRY
-         cEWEQ889eZ6E1GNlc7lzbyDEzbB1wqNZJ1qp+JdWpH6hXjWaWIbggTdoC6LFVe1ng6Cq
-         2/W5kJhDhAJX2vhqH/HG+8eHVIUMpZ0cz74yUXlgtgK5Q+T//kHganPkZrAcCRSSJVDw
-         oevchtxtJ7c+RR9fwH9/o8aIqzEWMV9KbODBwz5xCtPjZATTIzrVxTvizx1Sgt4b572e
-         hfJMnkczp9khymGXTZ5QxVGGZyAd1edBgeA2dwU0B51TKjJlIuC/hCgb+rsYe6vm5dLP
-         g9hQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701991261; x=1702596061;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ojP+dw84rJoSbWff18+mFycgArGPAerA9MgsFA2H520=;
-        b=Fuct0KTpa6q70eyA2cLA3dBakYpZz3r/T17xbPxQTMjfdtskxEExz72k5280JCr0Oi
-         S16dGas/KJxgkOsUrzdp+j7RKlR9r4s9b/XUJKOwy8jZLSLKXG8QVJieTapl8bpcPVLh
-         +AMK0CosQ0SrfkN40HNalThTEK9FiuIme6N34ZAxoXh2JtrM7+W7Mje9kdxjJK2GQIb1
-         17TV8+OkpvR7y+v4WaN1k8g6RUwgndZPLl/I9KQWDLwiyjpaeT78hziU8WReD4FZxVd3
-         UIBuMagElsKPvOLSyRBKiPE5sQuFhB+3CTr6swvQG+EBZxf5NUm2gRGKWAc4KLmYjqBF
-         MaTw==
-X-Gm-Message-State: AOJu0YzDwjjOSQlshn1pSXjfsK+v4g9KOSZEhwb1GxI/aXHjoINILLDS
-	ZPDVFDqXygjxK24mqyIYO/A=
-X-Google-Smtp-Source: AGHT+IGaZF1DLjn/eN9VpT1iYFic2QMwPV3FH4ePdA9+46g9+ZOMSOG5kGnwjga2PY3dsRdAJowCpQ==
-X-Received: by 2002:a17:902:e749:b0:1cf:aff5:8934 with SMTP id p9-20020a170902e74900b001cfaff58934mr3044954plf.48.1701991261377;
-        Thu, 07 Dec 2023 15:21:01 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id f17-20020a170902ce9100b001cfb99d8b82sm350306plg.136.2023.12.07.15.21.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Dec 2023 15:21:00 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <564051f0-37f5-419e-9ac3-84f56f029209@roeck-us.net>
-Date: Thu, 7 Dec 2023 15:20:25 -0800
+X-Greylist: delayed 2538 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 08 Dec 2023 00:43:59 PST
+Received: from mail.ilande.co.uk (mail.ilande.co.uk [IPv6:2001:41c9:1:41f::167])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22AF9172E
+	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 00:43:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=6kUbR5SaZroc74/W7cjByzRYcDP0z/StjSkI4ptQ8RE=; b=saQT6I8/+Yc4h1fVBzL1Nvwhqb
+	YRtYsVsEUvpkJmPcShaAdO3vVwm9tNFc0r1BvD+FHKKOdRYymcrYkbPK4rBvSyrqgCoiCm2hWdJE4
+	CBh37e2fjymHkxQfRvQnp9vF0x7X7SG2IxCbp7zN39LZx5M3ns+dpyEoZcs3SPc8kGdZz3BS7T5rc
+	/CStH/JwMRWI1+GAg9jCDpJEDqfrVHPpCx6oUq0pLotLH/26+KEfKpt3bqu56xww1d72ijjQpOTzv
+	hNTplqB+LU3CJMurNZeOfbL9PtTRtgVp1H/PEr9gp2VcASKwVQi7hiRQdYsZXqdKnaGlV149pOCKm
+	56E44OZVvpxTs8rrOVodSRJShrmiosRk9EdTJSn4bqBpJ3pPnMY1/snGsrOcrNw4QsPB1u8+46fWZ
+	dsj0eOdAaoZJmMzDLtNRHHYEPJn0G1I3FAx1ETAcXXwnTC2bq3alrT+Ao9VmaEHVHEePXtEB1JbmL
+	mgS4HpF8Vk/+2s83YOzXObORAxfK/A5iulmG+iTQs5x1t/8YQwrqk9ttNaCi3BtF96arh/Mr4TLDl
+	ME6jbtJd7BAZe12V5F9Y03mKIG6v7p0KXY82EYN9ykU3PoUcKLJ5Fsvxh3TWBwigYva+oEsGHhhI9
+	BZ6i+lJXX4ogLhYPpUc6UakDG7DcOAcPE6qvYMUV4=;
+Received: from [2a00:23c4:8bb0:f100:71ee:fee5:cc6c:f984]
+	by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	(Exim 4.92)
+	(envelope-from <mark.cave-ayland@ilande.co.uk>)
+	id 1rBVnO-0004Vv-49; Fri, 08 Dec 2023 08:01:14 +0000
+Message-ID: <9e5599dc-06ba-47ca-bdc1-8b612694a95e@ilande.co.uk>
+Date: Fri, 8 Dec 2023 08:01:29 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -64,11 +49,9 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: 64-bit userspace root file system for hppa64
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, John David Anglin <dave.anglin@bell.net>,
- Parisc List <linux-parisc@vger.kernel.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: Helge Deller <deller@gmx.de>, Guenter Roeck <linux@roeck-us.net>,
+ John David Anglin <dave.anglin@bell.net>,
+ Parisc List <linux-parisc@vger.kernel.org>
 References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <a52d08a9-1114-4d0c-8d10-508d6d49627b@bell.net>
  <b1c864a0-cdda-409a-94c2-1a2cb827f7e1@gmx.de>
@@ -80,57 +63,48 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <4b6ef6f3-c3db-48fe-a3ee-1d874d510c7e@gmx.de>
  <12740a29-5827-4a62-8acf-a7b1b14f7099@roeck-us.net>
  <11088c05-eaf8-48ca-8767-bc55e78e1350@gmx.de>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
 In-Reply-To: <11088c05-eaf8-48ca-8767-bc55e78e1350@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:71ee:fee5:cc6c:f984
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+X-Spam-Level: 
+Subject: Re: 64-bit userspace root file system for hppa64
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 
-On 12/7/23 13:47, Helge Deller wrote:
+On 07/12/2023 21:47, Helge Deller wrote:
+
 > (looping in Mark Cave-Ayland, since he did some work on qemu esp driver)
-> 
+
+Thanks for the ping!
+
 > On 12/7/23 22:08, Guenter Roeck wrote:
 >> Hi Helge,
 >>
@@ -177,9 +151,6 @@ On 12/7/23 13:47, Helge Deller wrote:
 > 
 > Do you have a physical hppa box too?
 > 
-
-No, I used that on an old PC with "real" PCI slots.
-
 >>> Based on kernel sources, the "Spurious irq, sreg=%02x." error can only happen for the
 >>> am53c974 driver. Are you sure you see this message for dc390 and lsi* too?
 >>>
@@ -195,17 +166,19 @@ No, I used that on an old PC with "real" PCI slots.
 >> DMA_DONE is set but IRQ_PENDING isn't, and the spurious interrupt is reported.
 >> I fixed that up in my code and will test it for some time and with various
 >> architectures before I send a patch.
-> 
-> Thanks for testing.
-> But I wonder if the Linux kernel driver needs (on physical hardware!) some more
-> cache flushing too. I see it uses dma_alloc_coherent(), but I don't see
-> dma_sync_single_for_device() or dma_sync_sg_for_cpu().
-> Those are needed for dma on hppa...
-> 
 
-Ah, testing that is beyond my capabilities. All I know is that it worked fine on
-an old PC running Linux.
+I'm actually in the process of putting the finishing touches to a large rewrite of 
+QEMU's core ESP emulation since there are a number of known issues with the existing 
+version. In particular there are problems with the SCSI phase being set incorrectly 
+after reading ESP_INTR and ESP_RSTAT's STAT_TC not being correct. Note that this is 
+just the ESP core rather than the ESP PCI device.
 
-Guenter
+If you are interested, I could try and find a few minutes to tidy it up a bit more 
+and push a testing branch to Github?
+
+
+ATB,
+
+Mark.
 
 
