@@ -1,62 +1,62 @@
-Return-Path: <linux-parisc+bounces-184-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-185-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B7080AF86
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 23:14:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6170880AFA2
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 23:25:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E28901F2136C
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 22:14:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 019D0B20A12
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 22:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FF65915B;
-	Fri,  8 Dec 2023 22:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9459858AD8;
+	Fri,  8 Dec 2023 22:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z17IgwAv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fH9oD5UO"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C258B118
-	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 14:14:25 -0800 (PST)
-Received: by mail-oi1-x22e.google.com with SMTP id 5614622812f47-3b9e1a3e3f0so1324086b6e.1
-        for <linux-parisc@vger.kernel.org>; Fri, 08 Dec 2023 14:14:25 -0800 (PST)
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E7A61710
+	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 14:25:46 -0800 (PST)
+Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1fb9a22b4a7so1447005fac.3
+        for <linux-parisc@vger.kernel.org>; Fri, 08 Dec 2023 14:25:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702073665; x=1702678465; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702074346; x=1702679146; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=rvIe4tHLBYdBmdxL3+qBxWhWpjnJbSDcEkPXgZmbxFo=;
-        b=Z17IgwAvBvWK+5P1CKo30AIaSOq9n2h/mn0C+ZUekJBmq4Cy0OhQfc+EkSe20o3ClV
-         xHZ/1DnoXah56CXJa4LeO1SIWbz6tZstHxz8QtAKyJnc/JJHQIskiqwYRcf8yXOS0xtb
-         hWhPbS8Vt/lUK0cN3vLXs4C+/cVAxm+ghFISZCh46ZlzkGOPEHzFxVeQqx1DE0yzst1r
-         xW4hq8pxoqnrzg6X4yAOxw4aOFwCnCDCSrCDl0EEsEHMAIexvJcxitEFEAw0bvpc0Q6N
-         WiaW8vz89SZMS/Eq0iflcyOXZW54zSIoWwiX1jl2vwt/psEJ/Tj0eEXHZXE/KKLkCYE1
-         /zaw==
+        bh=YEllq4bgnkAFiPQy1g7p7sYFlNsiYRpASwL0WImHMv4=;
+        b=fH9oD5UOu6KWwm4DCJYDpMMap4Lt8L/8//+fuzZ0JntuvePmaNrGqGX+6khXbAJ27+
+         xMuU3y542lhb/GDW4DbxrPDY0wtGhGoF+NRYP6lUnV1nmDNNLfBprdFsSpFxt2hRmaAJ
+         PXsYKZPJr4upGTjlVmGun0zeZPeTvJdEhQyl3iKUlk5JiKyiwIwDTWs2Jwxdp5viYTQ6
+         XWndMTCiOosdfi2Q5FBWZMAlggHEsXxJTLJMhsdyBCIxXvZrUjW90GXow3hYk/biEFix
+         OoHd+76Ba9SygOgHEl/GZEOr+meg/bqmDJWPKLzkp2s15QbQRJfw5MaY5dN/qejZdKZ/
+         j2Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702073665; x=1702678465;
+        d=1e100.net; s=20230601; t=1702074346; x=1702679146;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rvIe4tHLBYdBmdxL3+qBxWhWpjnJbSDcEkPXgZmbxFo=;
-        b=SRA8sl9+7ZCdnldrMlYcFZZ9nGL5bDR2EufLalal9GXfJVONlfsY2d0xNXrw1PxRZN
-         aIxLDD2dxyzJKkKTx9jcIpp4u/rpdTcip8z+4T8rU14iCVDX0BitZenRQhed5DyStCKL
-         jbF8LITFJfXCtS79ClbEcG/hA/vlcypnr4Rv1Dit8QukBj8xNZNfx4IO0IdWUOcSOdHN
-         KAdThgRCV756j/Aw8zOYKnH8809WCOfjBpxoEuGT4v3P6D5hG1723N6iYG1O1fuJi2g9
-         t1IMshGGQuFuWfrz7z1xNanSslCT/vueWGbOIGzVEkNQXKwiYdjNE7l03nR5ut/KP9/p
-         /edg==
-X-Gm-Message-State: AOJu0YzSHi3Rq6yGkM+/trP1n8xZxurRqjCUZgyg4ToK4ZgRUKhfd7zG
-	ayeZ2AfEkDCL71XEqL6xOMQ=
-X-Google-Smtp-Source: AGHT+IGik2N0Y6SFBsJZpmMH4Zion8ojOa6WwhyjG1yTt21mdH1G8amTESUg8p1RfBgQrUcA1op6mQ==
-X-Received: by 2002:a05:6871:64c9:b0:1fb:75b:99bc with SMTP id rk9-20020a05687164c900b001fb075b99bcmr775177oab.107.1702073665088;
-        Fri, 08 Dec 2023 14:14:25 -0800 (PST)
+        bh=YEllq4bgnkAFiPQy1g7p7sYFlNsiYRpASwL0WImHMv4=;
+        b=bbdlHpRVPFB/bKiw7R0pfVOXrGJjZ51WyVmT69t4qL5trBBfLBBa3XEkdJ+nynhusL
+         sqAHvd5NZRj57z76TXELiTr7epR20Do6/b3HggIXznd2TGE6GzFL777u7taBfUb30Kvm
+         wQk6qLMxynv0VLRmhe88zosqTRIfbcxCLH621Ox2dythl7MT7E4Cdf1NqZAHSaqmdlVE
+         JsNId/rWjPpCOSqLgTaRyIwrXHYS+H30hBQ0gh5KLpURDyUnaM7rAhTIVvTOv0Gm5b+G
+         JxWV2KcczJVUgyryCHss1A8hoHv81f2tXFzcdr2mXO124akPzPNtvuq4S3eW7/gpoAJI
+         Ql4g==
+X-Gm-Message-State: AOJu0YyE32ivKS5o5SF/6769DXLSD2+IW7b8vfrXCNcPj9ePLyiXQjwW
+	ywztYX4l82iAXR4BL9GIECc=
+X-Google-Smtp-Source: AGHT+IFRLvET+5bdit2p8UBCX0NQQZkxRrINgdzvfaBxTjLQdybuoH83CG/wbekNYJO4/l6csXRijQ==
+X-Received: by 2002:a05:6871:693:b0:1fb:75b:99c1 with SMTP id l19-20020a056871069300b001fb075b99c1mr893165oao.112.1702074345856;
+        Fri, 08 Dec 2023 14:25:45 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id lv18-20020a056871439200b001fb24a0c23csm629017oab.35.2023.12.08.14.14.23
+        by smtp.gmail.com with ESMTPSA id hf15-20020a0568707a0f00b001fae2d2630dsm628478oab.18.2023.12.08.14.25.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Dec 2023 14:14:23 -0800 (PST)
+        Fri, 08 Dec 2023 14:25:45 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <cc2bf1f0-e16e-41ca-ab13-70f5c5c3519a@roeck-us.net>
-Date: Fri, 8 Dec 2023 14:14:22 -0800
+Message-ID: <d572471c-79ee-46b5-911c-1b1086aa94f2@roeck-us.net>
+Date: Fri, 8 Dec 2023 14:25:44 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -66,8 +66,9 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: 64-bit userspace root file system for hppa64
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Helge Deller <deller@gmx.de>, John David Anglin <dave.anglin@bell.net>,
+To: Helge Deller <deller@gmx.de>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ John David Anglin <dave.anglin@bell.net>,
  Parisc List <linux-parisc@vger.kernel.org>
 References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <a52d08a9-1114-4d0c-8d10-508d6d49627b@bell.net>
@@ -82,11 +83,10 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <11088c05-eaf8-48ca-8767-bc55e78e1350@gmx.de>
  <9e5599dc-06ba-47ca-bdc1-8b612694a95e@ilande.co.uk>
  <5d811129-ca84-4f7f-bbc6-8f5fa0ce06c0@roeck-us.net>
- <97729a4b-5ef7-42ad-897d-a57cd9a5a5bf@ilande.co.uk>
- <a68b234a-c202-44ca-bb45-5cbb86b5729b@gmx.de>
- <60939e7b-643d-497e-a3dd-974513851959@ilande.co.uk>
- <7b9179e7-b3ee-4dad-b90d-e1d0892b564f@roeck-us.net>
- <141b57db-1830-499b-ac4f-ea91ac68115d@ilande.co.uk>
+ <55d40485-2aff-4cf5-a379-623bb3b10b7f@gmx.de>
+ <8bdc89de-90a5-4b7a-b6d1-2e3bd9fa7314@roeck-us.net>
+ <ade25e81-2d1a-416a-9f02-1944aa03261c@ilande.co.uk>
+ <c3c70dbd-d139-4fff-8de4-ef531214ac2e@gmx.de>
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
@@ -131,30 +131,96 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <141b57db-1830-499b-ac4f-ea91ac68115d@ilande.co.uk>
+In-Reply-To: <c3c70dbd-d139-4fff-8de4-ef531214ac2e@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/8/23 13:20, Mark Cave-Ayland wrote:
-
-[ ... ]
-
->>>
+On 12/8/23 14:05, Helge Deller wrote:
+> On 12/8/23 22:23, Mark Cave-Ayland wrote:
+>> On 08/12/2023 20:11, Guenter Roeck wrote:
 >>
->> The "technical manual" for AM53C974 from AMD states that an interrupt is supposed
->> to be generated when the DMA DONE bit is set. The esp-pci code does not do that.
+>>> On 12/8/23 07:54, Helge Deller wrote:
+>>> [ ... ]
+>>>
+>>>>
+>>>> Does qemu-hppa boot for you with those patches?
+>>>> Even with those I see the discs are found, but later I get:
+>>>> [    8.519780] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787975: comm swapper/0: iget: checksum invalid
+>>>> [    8.545363] Starting init: /sbin/init exists but couldn't execute it (error -67)
+>>>> [    8.546339] Run /etc/init as init process
+>>>> [    8.561422] Run /bin/init as init process
+>>>> [    8.574649] Run /bin/sh as init process
+>>>> [    8.580495] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787980: comm swapper/0: iget: checksum invalid
+>>>> [    8.586170] Starting init: /bin/sh exists but couldn't execute it (error -67)
+>>>>
+>>>
+>>> This is what I get when trying to boot from an ext4 file system:
+>>>
+>>> [   30.664669] Unaligned handler failed, ret = -14
+>>> [   30.665314]       _______________________________
+>>> [   30.665314]      < Your System ate a SPARC! Gah! >
+>>> [   30.665314]       -------------------------------
+>>> [   30.665314]              \   ^__^
+>>> [   30.665314]                  (__)\       )\/\
+>>> [   30.665314]                   U  ||----w |
+>>> [   30.665314]                      ||     ||
+>>> [   30.665925] ip (pid 689): Unaligned data reference (code 28)
+>>> [   30.666282] CPU: 0 PID: 689 Comm: ip Tainted: G                 N 6.7.0-rc4-64bit+ #1
+>>> [   30.666487] Hardware name: 9000/785/C3700
+>>> [   30.666724]
+>>> [   30.666812]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+>>> [   30.666978] PSW: 00001000000001001111111100001111 Tainted: G                 N
+>>> [   30.667164] r00-03  000000ff0804ff0f 00000000413f57c0 00000000401e15c0 00000000451d8d60
+>>> [   30.667351] r04-07  00000000412d5fc0 00000000451d8c78 00000000411bcfe0 00000000417813f8
+>>> [   30.667511] r08-11  000000004128e7c0 0000000000000010 00000000000000a0 0000000073c00008
+>>> [   30.667665] r12-15  0000000000000000 0000000000000cc0 0000000043086000 0000000041f29640
+>>> [   30.667817] r16-19  0000000000000040 00000000451d8a10 0000000041ede0c0 0000000000000000
+>>> [   30.667968] r20-23  ffffffffffe00009 0000000073c00008 000000006bc23fd9 000000000fc212c1
+>>> [   30.668119] r24-27  0000000000000000 0000000000000008 081e0241371e0200 00000000412d5fc0
+>>> [   30.668273] r28-31  0000000000000000 00000000451d8e00 00000000451d8e30 00000000f8ce25bc
+>>> [   30.669027] sr00-03  0000000000016c00 0000000000000000 0000000000000000 0000000000016c00
+>>> [   30.669292] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>>> [   30.669523]
+>>> [   30.669615] IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000401e160c 00000000401e15ec
+>>> [   30.669870]  IIR: 0fe010dc    ISR: 0000000000000000  IOR: 00000000f8ce25bc
+>>> [   30.670072]  CPU:        0   CR30: 0000000043086000 CR31: 0000000000000000
+>>> [   30.670270]  ORIG_R28: 00000000402a48b8
+>>> [   30.670407]  IAOQ[0]: unwind_once+0x5dc/0x5e0
+>>> [   30.671165]  IAOQ[1]: unwind_once+0x5bc/0x5e0
+>>> [   30.671332]  RP(r2): unwind_once+0x590/0x5e0
+>>> [   30.671575] Backtrace:
+>>> [   30.671804]  [<00000000401e482c>] walk_stackframe.constprop.0+0xb4/0x138
+>>> [   30.672059]  [<00000000401e48e8>] arch_stack_walk+0x38/0x50
+>>> [   30.672232]  [<00000000402a8a8c>] stack_trace_save+0x5c/0x78
+>>> [   30.673233]  [<00000000403b2cc4>] set_track_prepare+0x5c/0xa0
+>>> [   30.673694]  [<00000000403ba8ec>] ___slab_alloc+0x554/0x930
+>>> [   30.673917]  [<00000000403bad28>] __slab_alloc.constprop.0+0x60/0x88
+>>> [   30.674141]  [<00000000403bb354>] kmem_cache_alloc+0xf4/0x280
+>>> [   30.674342]  [<0000000040389d10>] __anon_vma_prepare+0x98/0x2d0
+>>> [   30.674554]  [<0000000040374f50>] __handle_mm_fault+0x410/0xe00
+>>> [   30.674752]  [<0000000040375a6c>] handle_mm_fault+0x12c/0x230
+>>> [   30.674947]  [<00000000401cc6e0>] do_page_fault+0x1c0/0x708
+>>> [   30.675173]  [<00000000401d0b90>] handle_interruption+0xa88/0xbc0
+>>> [   30.675367]  [<00000000411bd000>] arch_atomic64_add+0x20/0xb0
+>>>
+>>> That is also seen randomly when booting from other controllers, so it is
+>>> not specific to the scsi driver.
+>>
+>> This certainly feels like a CPU emulation bug, for example checksums
+>> as used by ext4 may make use of optimised instructions for
+>> performance which aren't commonly used.>
 > 
-> Yeah that seems odd. I'm currently having a look at http://www.bitsavers.org/components/amd/_dataSheets/1993_53c974_PCscsi.pdf to understand a bit more as to how the PCI DMA block works.
+> Although CPU emulation bug might be true (I suspect something like that too),
+> this specific crash is due to a bug in the unwind_once() function.
+> This patch:
+> https://github.com/hdeller/linux/commit/3c4092001f4c2e9c842afd60d1391a0b6ed4565e
+> should fix it. It's in my for-next tree.
+> But it doesn't crash on physical hardware, so some kind of emulation bug
+> is still there too.
 > 
-Yes, that is the document I was referring to.
 
-I tried your patch series. Without the esp-pci patch it keeps failing
-with spurious interrupts and with subsequent command aborts. With the
-esp-pci patch applied it works just fine. This only applies to ext2
-images. ext4, btrfs, and f2fs fail badly with C3700 and a 64-bit kernel,
-but that does not seem to be related to the esp driver.
-
-Next step will be to test 32-bit kernels with both C3700 and B160L.
+ext4, f2fs, and btrfs work fine for me with a 32-bit kernel. I'll try the 64-bit
+tests again with your kernel patch applied.
 
 Guenter
 
