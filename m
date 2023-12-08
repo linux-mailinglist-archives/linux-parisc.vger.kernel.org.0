@@ -1,62 +1,39 @@
-Return-Path: <linux-parisc+bounces-187-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-188-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE2380B075
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 Dec 2023 00:15:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A3B780B09F
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 Dec 2023 00:36:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFD661C20AC2
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 23:15:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB2031C20A51
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 23:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1585733C;
-	Fri,  8 Dec 2023 23:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49035ABA2;
+	Fri,  8 Dec 2023 23:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XzE2tYrA"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="J0DYexW5"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-oa1-x35.google.com (mail-oa1-x35.google.com [IPv6:2001:4860:4864:20::35])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3B1C90
-	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 15:15:30 -0800 (PST)
-Received: by mail-oa1-x35.google.com with SMTP id 586e51a60fabf-1fb71880f12so1616734fac.0
-        for <linux-parisc@vger.kernel.org>; Fri, 08 Dec 2023 15:15:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702077330; x=1702682130; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=bNleUVEWLc23CovIHsjpmcnY0KBnSW3n8J8Uq7wqRYM=;
-        b=XzE2tYrAo6ifi5+t0U5VSvtFHs411g8bR3JLKtF8cETkp2IBy3fLWi3NMch9EkNAFu
-         PuGPEi7ONI1VLmWDQuws4Uu75fIkbfU/bs67kVwiyxYxiVT92w4zcQHt8SzxHidWWw0o
-         fm0n+NmcNL7S15zHkm+za/H2ltgxnTuotYYyE5wb9SLmiV1RivQcIiMY+99xd0aK9ecF
-         rX4vO8Y6xMCBiKLh6M9zT0x/2xhAzKYzHp71P1KgsPN0E/7gX63nQMxAjZSxNvPhNHNY
-         id8daY2ovwVQce91VyGp+4hxZC/CphUd/0dIafDiapIJmth7AKwugQDp3zjMHxy+xlsj
-         POyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702077330; x=1702682130;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bNleUVEWLc23CovIHsjpmcnY0KBnSW3n8J8Uq7wqRYM=;
-        b=VfjZ62/UFTZ9jhHo9w471fi8VSJuW/aK1mrHOBHHJIBYDOQ7AgX5yL+b4lkewUegYw
-         KMbvw1MHlvny0fvNBiR+LyHCBBumrpTPZT5WDca8lhGp8V027HKp+LQgmS4Zno9DxZtO
-         070TJufJws7cZxBQsEyrqg+bByqa3MroBYmgIgr7v0idxRf7HjJjj7p/uho8vKld3JE5
-         whCZzqcsaNVny8Ml+MbKLMFSnl1QTdgZVqUGFK1VYrt3rZhhOSM8dTH3smUoq9qcEdGk
-         w892QNlGA7qCnuELFSnWxyb2+NeKnzIEbOUOKVxce350GpV554jqZ405J8aTTnI7SLFi
-         dxXg==
-X-Gm-Message-State: AOJu0YwjoRa8E0O4gbbkQFgMKkikKNBwU1gSaB/u2MlN6q1Y3Ri2jJ5m
-	8+nhp5vN1F79P1xZb4vRZ5wzCoMnwvE=
-X-Google-Smtp-Source: AGHT+IH1b17OY2T9Z98XPwpYYhkGlJomvWHIVVFx+JVH3c5MZ/8vw0JihpMW7RKmg+QSsS3AoTW/gw==
-X-Received: by 2002:a05:6871:a69f:b0:1fb:75a:77b7 with SMTP id wh31-20020a056871a69f00b001fb075a77b7mr900423oab.104.1702077329576;
-        Fri, 08 Dec 2023 15:15:29 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id hg5-20020a056870790500b001fa1db68eecsm665008oab.4.2023.12.08.15.15.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Dec 2023 15:15:28 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <e08760ee-f99d-4d98-a96e-50cab679cbc0@roeck-us.net>
-Date: Fri, 8 Dec 2023 15:15:27 -0800
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28185171E
+	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 15:36:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1702078563; x=1702683363; i=deller@gmx.de;
+	bh=ymtPJZHRK+nrrjwauJMt92YNprvnBwfPzSoSfKrY2IU=;
+	h=X-UI-Sender-Class:Date:Subject:From:To:References:In-Reply-To;
+	b=J0DYexW5Q6Lf6U8bvAWcoIzl8cdYjP/TW4Ib/x58kjdYP8FRb7TTMpQkXWfI8KXX
+	 zsunQ86Vlrr0h/uEEFyY31/ANxumiPZ9/3z9rVXovp5AeT7sklhFwR6AYWJjqO8YO
+	 F5O2FdOIHzuauLs4qVoFS1PbQgkvSv1y7QGSoJqyvHeIVfIbq1Soq0KaOEsG05Q+I
+	 be34kW5HTu0g9JaByAGa72HdNBFmqNnsk+xspTnw38IsS0Ox7id+dh899qYtuAu4B
+	 XIuLN7pUZxWTRFv2PAySvBbB0q5qdMZHdr4rOeNL/PmzVw6ttKKEJfSKltsZSMRxH
+	 EtvYD2yG1qz8oNrEoQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.158.195]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MNbkv-1qrChc33l5-00P5Bz; Sat, 09
+ Dec 2023 00:36:03 +0100
+Message-ID: <df586906-2950-4b55-b26a-50e75d25f195@gmx.de>
+Date: Sat, 9 Dec 2023 00:36:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -66,12 +43,11 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: 64-bit userspace root file system for hppa64
 Content-Language: en-US
-To: Helge Deller <deller@gmx.de>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- John David Anglin <dave.anglin@bell.net>,
- Parisc List <linux-parisc@vger.kernel.org>
+From: Helge Deller <deller@gmx.de>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Guenter Roeck <linux@roeck-us.net>, John David Anglin
+ <dave.anglin@bell.net>, Parisc List <linux-parisc@vger.kernel.org>
 References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
- <a52d08a9-1114-4d0c-8d10-508d6d49627b@bell.net>
  <b1c864a0-cdda-409a-94c2-1a2cb827f7e1@gmx.de>
  <aeceb922-b6e9-4814-919e-6a82fb869f63@roeck-us.net>
  <6199c59b-1307-48c2-ae9a-254ab2d578c0@gmx.de>
@@ -83,174 +59,217 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <11088c05-eaf8-48ca-8767-bc55e78e1350@gmx.de>
  <9e5599dc-06ba-47ca-bdc1-8b612694a95e@ilande.co.uk>
  <5d811129-ca84-4f7f-bbc6-8f5fa0ce06c0@roeck-us.net>
- <55d40485-2aff-4cf5-a379-623bb3b10b7f@gmx.de>
- <8bdc89de-90a5-4b7a-b6d1-2e3bd9fa7314@roeck-us.net>
- <ade25e81-2d1a-416a-9f02-1944aa03261c@ilande.co.uk>
- <c3c70dbd-d139-4fff-8de4-ef531214ac2e@gmx.de>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <c3c70dbd-d139-4fff-8de4-ef531214ac2e@gmx.de>
+ <97729a4b-5ef7-42ad-897d-a57cd9a5a5bf@ilande.co.uk>
+ <a68b234a-c202-44ca-bb45-5cbb86b5729b@gmx.de>
+ <ae5e04f4-3979-4a6e-8cff-58f69e41fb08@gmx.de>
+ <015b31ba-f440-4fb1-af0c-265f484bc91a@ilande.co.uk>
+ <4ba17f2d-632c-4c49-a9d0-46324b5e5d7e@roeck-us.net>
+ <68c3b5c9-4986-48c6-9cdb-52da59486e4c@ilande.co.uk>
+ <f3777cce-31af-4632-9480-bc1f78285d2f@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <f3777cce-31af-4632-9480-bc1f78285d2f@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:mLLWVjQtjXpXdzH2nWL/5+DfZu0peD4iw+fKZZcMPo93CSTqV65
+ P3UGqgcN7/hjYikNjmtBfMt49HuX5yeF3O+iHyO15z9NV4F3YkOn2akCc1taKpczSWzpY4x
+ c4F/kZwjK8SFJlv3cgCIBGhEEXdVkFHwjAxTk2fnfhpST9xjv/apDt8f9MK8cmyYeMfP3d7
+ HRw3TnUldIexh/lhei1Fg==
+UI-OutboundReport: notjunk:1;M01:P0:bj19em0mPwA=;OGS9jkr09plYma+auYdQPq0moum
+ 6DlzrKVa9r+YzdMuNXFzFFTP1GACWTUStnH3S9JSN7TwwC2vpeMNcn91hFMBW7i+UE6V0aLAy
+ GoyVCczS1o7smwu8LEn8njsxe9IibqmkM6iVkyejnuetDzTD/LipeMepKto4EpFN8aDYmJzSG
+ DvHz3ZbSrnwhTPasYeyUq6Z538U3NRzpO2CMIx/DhRxAsIAxYZ2XthTMCaDBxU2/auCkOF9bU
+ Fgfg1DJU5lQ0jhiTGknxv8a1Hui0dOl/Bxo09Qziw1W7zMkzOTXUQBxDK5hGWyOfFeyq/qSd6
+ Bul4jmjjWuYwp6joQIGMD0X6svncAn6qjNojVd+V+LwGbaq/d02y2lQOV7/ywHGgK3ZtKOFye
+ 6ZHFMZaAGdwOOJj4pKmphJGbxMylM9uNr+/5A7VpKrYBm5sMZoImjodujE4qH/hyRQiSVFx2C
+ f7/15qTl5W7raGarK4Erjf10Z8kkKisC7+u6fD2rLEtLgzUCkDpjtFLw4nU+IS84JUJLd4QZI
+ 0TFKZITgY3sB5JHLDfneaXA64y3KMzo6wm0khQQCqAIz6AvvCNwkzFirU5M47ILukJE8GCEYV
+ zfrdHMko30atnG8fTXBD0s7MlBo15XlChiFYa42tLja5ccc6H5m1IMVujEzQU3iI96qr9k0YO
+ TKIWZMUxc1nhS5EjHeIjQKKXKuSkjOXkwv2HdeQ1iOE9u4O0cZCIxpOJiLoUv8y7MIeZBInFv
+ uGZmg9TYvGVGI2HKYv5jWaj/bV5OhoMwLaL8Hw9RF2FS90WYn0UWFhr2L/NXShDldar0CBxyu
+ N8edJHxQ1gEtLjeC6+K475o8c3pKy+LFa1qokKOQ7go0ciFICwzfMlWYCAePbRT/6dsho80Y4
+ SRcsKnFEl/S00PEtSe4xt+xyM2D5H5jHszebZEiH34Qfdol/0rpqmUzIBvG4LMQGvzqcfN5vv
+ DVkHUb+aniZGJLNaVePKqw+wovM=
 
-On 12/8/23 14:05, Helge Deller wrote:
-> On 12/8/23 22:23, Mark Cave-Ayland wrote:
->> On 08/12/2023 20:11, Guenter Roeck wrote:
->>
->>> On 12/8/23 07:54, Helge Deller wrote:
->>> [ ... ]
->>>
+On 12/8/23 23:09, Helge Deller wrote:
+> On 12/8/23 22:25, Mark Cave-Ayland wrote:
+>> On 08/12/2023 20:28, Guenter Roeck wrote:
+>>> On 12/8/23 11:55, Mark Cave-Ayland wrote:
+>>>> On 08/12/2023 19:37, Helge Deller wrote:
 >>>>
->>>> Does qemu-hppa boot for you with those patches?
->>>> Even with those I see the discs are found, but later I get:
->>>> [    8.519780] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787975: comm swapper/0: iget: checksum invalid
->>>> [    8.545363] Starting init: /sbin/init exists but couldn't execute it (error -67)
->>>> [    8.546339] Run /etc/init as init process
->>>> [    8.561422] Run /bin/init as init process
->>>> [    8.574649] Run /bin/sh as init process
->>>> [    8.580495] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787980: comm swapper/0: iget: checksum invalid
->>>> [    8.586170] Starting init: /bin/sh exists but couldn't execute it (error -67)
+>>>>> On 12/8/23 20:26, Helge Deller wrote:
+>>>>>>> Yeah that's one of the many bugs which should be fixed by my lates=
+t
+>>>>>>> series. I've pushed the current version of my branch with the ESP
+>>>>>>> rewrite to https://github.com/mcayland/qemu/tree/esp-rework-testin=
+g
+>>>>>>> if you would both like to give it a test.
+>>>>>>
+>>>>>> Tried it with qemu-hppa:
+>>>>>>
+>>>>>> [=C2=A0=C2=A0=C2=A0 4.257547] am53c974 0000:00:04.0: enabling SERR =
+and PARITY (0107 -> 0147)
+>>>>>> [=C2=A0=C2=A0=C2=A0 4.917824] am53c974 0000:00:04.0: esp0: regs[(pt=
+rval):(ptrval)] irq[70]
+>>>>>> [=C2=A0=C2=A0=C2=A0 4.918704] am53c974 0000:00:04.0: esp0: is a AM5=
+3C974, 40 MHz (ccf=3D0), SCSI ID 15
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.010626] scsi host1: esp
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.026345] scsi 1:0:0:0: Direct-Access=C2=A0=C2=
+=A0=C2=A0=C2=A0 QEMU=C2=A0=C2=A0=C2=A0=C2=A0 QEMU HARDDISK=C2=A0=C2=A0=C2=
+=A0 2.5+ PQ: 0 ANSI: 5
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.032066] scsi target1:0:0: Beginning Domain Va=
+lidation
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.043254] scsi target1:0:0: Domain Validation s=
+kipping write tests
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.044284] scsi target1:0:0: Ending Domain Valid=
+ation
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.123681] sd 1:0:0:0: Power-on or device reset =
+occurred
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.134707] sd 1:0:0:0: [sda] 209715200 512-byte =
+logical blocks: (107 GB/100 GiB)
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.140043] sd 1:0:0:0: [sda] Write Protect is of=
+f
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.144759] sd 1:0:0:0: [sda] Write cache: enable=
+d, read cache: enabled, doesn't support DPO or FUA
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.205316]=C2=A0 sda: sda1 sda2 sda3 < sda5 sda6=
+ >
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.222763] sd 1:0:0:0: [sda] Attached SCSI disk
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.231170] sd 1:0:0:0: Attached scsi generic sg0=
+ type 0
+>>>>> ...> [=C2=A0=C2=A0=C2=A0 8.679666] Freeing unused kernel image (init=
+mem) memory: 3072K
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.680679] Write protected read-only-after-init =
+data: 2k
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.681338] Run /sbin/init as init process
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.731576] EXT4-fs error (device sda5): ext4_loo=
+kup:1855: inode #787975: comm swapper/0: iget: checksum invalid
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.736664] scsi host1: Spurious irq, sreg=3D10.
+>>>>>> [=C2=A0=C2=A0=C2=A0 8.760106] Starting init: /sbin/init exists but =
+couldn't execute it (error -67)
+>>>>>
+>>>>> The driver isn't so bad in general.
+>>>>>
+>>>>> With my current seabios-hppa from
+>>>>> https://github.com/hdeller/seabios-hppa/tree/devel
+>>>>> and booting like this:
+>>>>>
+>>>>> ./qemu-system-hppa -drive file=3D../qemu-images/hdd.img.new,if=3Dnon=
+e,id=3Dd0=C2=A0 -serial mon:stdio -smp cpus=3D3=C2=A0 -machine C3700=C2=A0=
+ -nographic=C2=A0 -snapshot -device dc390,id=3Dscsi -device scsi-hd,bus=3D=
+scsi.0,drive=3Dd0=C2=A0 -bios ../seabios-hppa/out/hppa-firmware.img
+>>>>>
+>>>>>
+>>>>> it actually can *partly* boot from disc:
+>>>>> ...
+>>>>> Selected kernel: /vmlinux from partition 2
+>>>>> Selected ramdisk: /initrd.img from partition 2
+>>>>> ELF64 executable
+>>>>> Segment 0 load 0x000e0000 size 5171564 mediaptr 0x1000
+>>>>> Segment 1 load 0x01a00000 size 25012 mediaptr 0x4f0000
+>>>>> Loading ramdisk 23869192 bytes @ 3e92a000...
+>>>>>
+>>>>> Decompressing Linux... XZ-compressed data is corrupt
+>>>>> =C2=A0=C2=A0-- System halted
+>>>>>
+>>>>> So, it can read partition table, even load some sectors, but
+>>>>> the data returned can be corrupt, as the "XZ-compressed data is corr=
+upt"
+>>>>> message states.
+>>>>> This fits with the CRC checksum errors I saw when booting
+>>>>> from ext4 disc.
+>>>>>
+>>>>> Is the dc390/esp driver functional on other big-endian machines?
+>>>>
+>>>> Yes it is, in fact the majority of my test images were from SPARC/m68=
+k (including a hppa image) and the series in its current form passes all m=
+y boot tests except for an x86 DOS image with ASPI.
+>>>>
+>>>> The command line I used for testing hppa is below:
+>>>>
+>>>> ./qemu-system-hppa \
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -kernel vmlinux-parisc \
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -no-reboot \
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -snapshot \
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -device am53c974,id=3Dscsi \
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -device scsi-hd,bus=3Dscsi.0,drive=3Dd0 \
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -drive file=3Drootfs.ext2-parisc,format=3Dra=
+w,if=3Dnone,id=3Dd0 \
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -append "panic=3D-1 slub_debug=3DFZPUA root=
+=3D/dev/sda console=3DttyS0,115200" \
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -nographic -monitor null
+>>>>
+>>>> If you are still seeing errors then I'd suspect an issue with the hpp=
+a CPU emulation or the esp-pci device.
 >>>>
 >>>
->>> This is what I get when trying to boot from an ext4 file system:
->>>
->>> [   30.664669] Unaligned handler failed, ret = -14
->>> [   30.665314]       _______________________________
->>> [   30.665314]      < Your System ate a SPARC! Gah! >
->>> [   30.665314]       -------------------------------
->>> [   30.665314]              \   ^__^
->>> [   30.665314]                  (__)\       )\/\
->>> [   30.665314]                   U  ||----w |
->>> [   30.665314]                      ||     ||
->>> [   30.665925] ip (pid 689): Unaligned data reference (code 28)
->>> [   30.666282] CPU: 0 PID: 689 Comm: ip Tainted: G                 N 6.7.0-rc4-64bit+ #1
->>> [   30.666487] Hardware name: 9000/785/C3700
->>> [   30.666724]
->>> [   30.666812]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
->>> [   30.666978] PSW: 00001000000001001111111100001111 Tainted: G                 N
->>> [   30.667164] r00-03  000000ff0804ff0f 00000000413f57c0 00000000401e15c0 00000000451d8d60
->>> [   30.667351] r04-07  00000000412d5fc0 00000000451d8c78 00000000411bcfe0 00000000417813f8
->>> [   30.667511] r08-11  000000004128e7c0 0000000000000010 00000000000000a0 0000000073c00008
->>> [   30.667665] r12-15  0000000000000000 0000000000000cc0 0000000043086000 0000000041f29640
->>> [   30.667817] r16-19  0000000000000040 00000000451d8a10 0000000041ede0c0 0000000000000000
->>> [   30.667968] r20-23  ffffffffffe00009 0000000073c00008 000000006bc23fd9 000000000fc212c1
->>> [   30.668119] r24-27  0000000000000000 0000000000000008 081e0241371e0200 00000000412d5fc0
->>> [   30.668273] r28-31  0000000000000000 00000000451d8e00 00000000451d8e30 00000000f8ce25bc
->>> [   30.669027] sr00-03  0000000000016c00 0000000000000000 0000000000000000 0000000000016c00
->>> [   30.669292] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
->>> [   30.669523]
->>> [   30.669615] IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000401e160c 00000000401e15ec
->>> [   30.669870]  IIR: 0fe010dc    ISR: 0000000000000000  IOR: 00000000f8ce25bc
->>> [   30.670072]  CPU:        0   CR30: 0000000043086000 CR31: 0000000000000000
->>> [   30.670270]  ORIG_R28: 00000000402a48b8
->>> [   30.670407]  IAOQ[0]: unwind_once+0x5dc/0x5e0
->>> [   30.671165]  IAOQ[1]: unwind_once+0x5bc/0x5e0
->>> [   30.671332]  RP(r2): unwind_once+0x590/0x5e0
->>> [   30.671575] Backtrace:
->>> [   30.671804]  [<00000000401e482c>] walk_stackframe.constprop.0+0xb4/0x138
->>> [   30.672059]  [<00000000401e48e8>] arch_stack_walk+0x38/0x50
->>> [   30.672232]  [<00000000402a8a8c>] stack_trace_save+0x5c/0x78
->>> [   30.673233]  [<00000000403b2cc4>] set_track_prepare+0x5c/0xa0
->>> [   30.673694]  [<00000000403ba8ec>] ___slab_alloc+0x554/0x930
->>> [   30.673917]  [<00000000403bad28>] __slab_alloc.constprop.0+0x60/0x88
->>> [   30.674141]  [<00000000403bb354>] kmem_cache_alloc+0xf4/0x280
->>> [   30.674342]  [<0000000040389d10>] __anon_vma_prepare+0x98/0x2d0
->>> [   30.674554]  [<0000000040374f50>] __handle_mm_fault+0x410/0xe00
->>> [   30.674752]  [<0000000040375a6c>] handle_mm_fault+0x12c/0x230
->>> [   30.674947]  [<00000000401cc6e0>] do_page_fault+0x1c0/0x708
->>> [   30.675173]  [<00000000401d0b90>] handle_interruption+0xa88/0xbc0
->>> [   30.675367]  [<00000000411bd000>] arch_atomic64_add+0x20/0xb0
->>>
->>> That is also seen randomly when booting from other controllers, so it is
->>> not specific to the scsi driver.
+>>> I suspect it has more to do with ext4 vs. ext2 because ext2 works just=
+ fine for me
+>>> while I get unaligned access crashes with ext4. I started some tests w=
+ith btrfs
+>>> and f2fs in addition to ext2 to see how those are doing.
 >>
->> This certainly feels like a CPU emulation bug, for example checksums
->> as used by ext4 may make use of optimised instructions for
->> performance which aren't commonly used.>
-> 
-> Although CPU emulation bug might be true (I suspect something like that too),
-> this specific crash is due to a bug in the unwind_once() function.
-> This patch:
-> https://github.com/hdeller/linux/commit/3c4092001f4c2e9c842afd60d1391a0b6ed4565e
-> should fix it. It's in my for-next tree.
+>> That sounds really useful, thanks for testing.
+>
+> I think there are multiple issues.
+> Most likely some CPU emulation bug, maybe happens in CRC checksumming.
+>
+> Nevertheless, with this command:
+> ./qemu-system-hppa -drive file=3D../qemu-images/hdd.img.new,if=3Dnone,id=
+=3Dd0=C2=A0 -serial mon:stdio -smp cpus=3D3=C2=A0 -machine C3700=C2=A0 -no=
+graphic=C2=A0 -snapshot -device am53c974,id=3Dscsi -device scsi-hd,bus=3Ds=
+csi.0,drive=3Dd0=C2=A0 -bios ../seabios-hppa/out/hppa-firmware.img
+> I get this error:
+> Decompressing Linux... XZ-compressed data is corrupt
+>
+> Replacing the scsi driver "am53c974" by "lsi53c895a" does boot.
+> At this stage no linux kernel is loaded yet, it's just the seabios-hppa
+> which loaded some scsi blocks into memory.
 
-With that patch on top of the mainline kernel (5e3f5b81de80c98) I get
+Does the esp driver has a limit of only being able to
+load max. 64kb at once (per SCSI command) ?
+By reducing to 64kb, booting directly from Seabios-hppa
+now works for me.
 
-[   16.778983] Run /sbin/init as init process
-[   16.795086] process '/bin/busybox' started with executable stack
-[   16.906327] CPU: 0 PID: 605 Comm: init Tainted: G                 N 6.7.0-rc4-64bit+ #1
-[   16.906577] Hardware name: 9000/785/C3700
-[   16.906813]
-[   16.906896]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-[   16.907042] PSW: 00001000000001101111100000001110 Tainted: G                 N
-[   16.907241] r00-03  000000ff0806f80e 00000000413931a0 00000000413564a0 00000000f922f180
-[   16.907421] r04-07  000000004135f9a0 0000000043560010 0000000041cd2120 000000004486af90
-[   16.907570] r08-11  0000000000000000 00000000435604c0 fffffffffffffe00 000000004138e9a0
-[   16.907713] r12-15  000000004020682c fffffffffffffe00 0000000000000006 0000000000000000
-[   16.907855] r16-19  0000000000000000 0000000000000000 0000000000000000 00000003ef990eec
-[   16.907998] r20-23  0000000000000000 000000006d640000 0000000000000000 0000000041cd2a30
-[   16.908141] r24-27  0000000041cd2a30 000000004486af90 0000000043560010 000000004135f9a0
-[   16.908283] r28-31  00000000413599a0 0000000043508580 00000000451dc080 ffffffffc0000000
-[   16.908443] sr00-03  0000000000000400 0000000000000000 0000000000000000 0000000000000800
-[   16.908600] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[   16.908600]
-[   16.908600] IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000413564a0 00000000413564a4
-[   16.908600]  IIR: 00000000    ISR: 0000000000000000  IOR: 00000000413564a0
-[   16.908600]  CPU:        0   CR30: 000000004486af90 CR31: 0000000000000000
-[   16.908600]  ORIG_R28: 0000000000000000
-[   16.908600]  IAOQ[0]: sys_vfork_wrapper+0x58/0x60
-[   16.908600]  IAOQ[1]: 0x401cae9c00000000
-[   16.908600]  RP(r2): sys_vfork_wrapper+0x58/0x60
-[   16.908600] Backtrace:
-
-That keeps repeating forever until I abort the emulation.
-This is with initramfs, no drives involved.
-
-I also tried your entire for-next branch, but unfortunately that doesn't compile
-for me.
-
-Guenter
-
+Helge
 
