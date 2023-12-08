@@ -1,62 +1,62 @@
-Return-Path: <linux-parisc+bounces-185-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-186-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6170880AFA2
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 23:25:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 510BF80AFBC
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 23:39:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 019D0B20A12
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 22:25:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA4441F21224
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 22:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9459858AD8;
-	Fri,  8 Dec 2023 22:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A25E1EB24;
+	Fri,  8 Dec 2023 22:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fH9oD5UO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kY/XuwID"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E7A61710
-	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 14:25:46 -0800 (PST)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1fb9a22b4a7so1447005fac.3
-        for <linux-parisc@vger.kernel.org>; Fri, 08 Dec 2023 14:25:46 -0800 (PST)
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE4D810CA
+	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 14:39:25 -0800 (PST)
+Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6d9d59d6676so1700228a34.1
+        for <linux-parisc@vger.kernel.org>; Fri, 08 Dec 2023 14:39:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702074346; x=1702679146; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1702075165; x=1702679965; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=YEllq4bgnkAFiPQy1g7p7sYFlNsiYRpASwL0WImHMv4=;
-        b=fH9oD5UOu6KWwm4DCJYDpMMap4Lt8L/8//+fuzZ0JntuvePmaNrGqGX+6khXbAJ27+
-         xMuU3y542lhb/GDW4DbxrPDY0wtGhGoF+NRYP6lUnV1nmDNNLfBprdFsSpFxt2hRmaAJ
-         PXsYKZPJr4upGTjlVmGun0zeZPeTvJdEhQyl3iKUlk5JiKyiwIwDTWs2Jwxdp5viYTQ6
-         XWndMTCiOosdfi2Q5FBWZMAlggHEsXxJTLJMhsdyBCIxXvZrUjW90GXow3hYk/biEFix
-         OoHd+76Ba9SygOgHEl/GZEOr+meg/bqmDJWPKLzkp2s15QbQRJfw5MaY5dN/qejZdKZ/
-         j2Jg==
+        bh=L5HvC3TZH9hEIi8jrVnq0KQu7vU28DQPQkKCBt3zrq0=;
+        b=kY/XuwIDAF3W7tJ6SRTf9SFLQeCqg7J2m9jOWlJ6+ecYDNY1pQzR7RwXrXRr3wBrmh
+         pSwpB6BMOKKAMsm8kGog7ANP8MW6w+vKOHi9U+uq6RN592yoG3CE8Gn819XhLalVGigV
+         /Nv1nnxo7Nf67y4nSkZTkulFBUdXvGd8fpvcbxEowoIbCczlWeorbO7S0dKeEAZbriJA
+         pcv80gbBAFLO1S/kpioefWoQPeaHmB4JwiKqq8PgMnB6iyzgv+X3eylR2Wt6Gsilw+GP
+         lrFNHU8USh96EN4WritfxEjDdZpQ1zYTo9EsV348zVbJ09VnfMZBrN+KmKPrYcPBvAHj
+         UMug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702074346; x=1702679146;
+        d=1e100.net; s=20230601; t=1702075165; x=1702679965;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YEllq4bgnkAFiPQy1g7p7sYFlNsiYRpASwL0WImHMv4=;
-        b=bbdlHpRVPFB/bKiw7R0pfVOXrGJjZ51WyVmT69t4qL5trBBfLBBa3XEkdJ+nynhusL
-         sqAHvd5NZRj57z76TXELiTr7epR20Do6/b3HggIXznd2TGE6GzFL777u7taBfUb30Kvm
-         wQk6qLMxynv0VLRmhe88zosqTRIfbcxCLH621Ox2dythl7MT7E4Cdf1NqZAHSaqmdlVE
-         JsNId/rWjPpCOSqLgTaRyIwrXHYS+H30hBQ0gh5KLpURDyUnaM7rAhTIVvTOv0Gm5b+G
-         JxWV2KcczJVUgyryCHss1A8hoHv81f2tXFzcdr2mXO124akPzPNtvuq4S3eW7/gpoAJI
-         Ql4g==
-X-Gm-Message-State: AOJu0YyE32ivKS5o5SF/6769DXLSD2+IW7b8vfrXCNcPj9ePLyiXQjwW
-	ywztYX4l82iAXR4BL9GIECc=
-X-Google-Smtp-Source: AGHT+IFRLvET+5bdit2p8UBCX0NQQZkxRrINgdzvfaBxTjLQdybuoH83CG/wbekNYJO4/l6csXRijQ==
-X-Received: by 2002:a05:6871:693:b0:1fb:75b:99c1 with SMTP id l19-20020a056871069300b001fb075b99c1mr893165oao.112.1702074345856;
-        Fri, 08 Dec 2023 14:25:45 -0800 (PST)
+        bh=L5HvC3TZH9hEIi8jrVnq0KQu7vU28DQPQkKCBt3zrq0=;
+        b=nDavn4f6yYzQ/a6YU1Sm0lBjwmUD3wsLc3/39YMPtUcdgvBxoWENmfEEK0erHA8JTT
+         ++JlAu6Y4WZ18Xehw3K51xZPvIkU60GoxceJ9ARMfbz1Qj2AuDCD8skX7Ug4QM0S5Ji8
+         vuPujR7zmjJs/84POtrI7s928F7zydvGnRcvdQcwvjqI/+z40fXYO3WE2rGrZj7ihicb
+         sK8pKuhu2wVzxBJXmPIPB5JSIirUFzLuuQjC8tCI3pgi2bWA8PaJXXDPiZii3PtnbF7w
+         rHmjx0ZkZXtBp5pcFMmzLrFw12MpgTmgjAOnVoPQi1o60+c+OmNIiVS58ZKqwZvl3v+v
+         a8cw==
+X-Gm-Message-State: AOJu0YwD3RXkH0adxv5sa/fWP5BvPGHIKxoRofyMG1Jnqry/nLHlR8SH
+	guEY9O3eQGSTFoNd4hLXkGU=
+X-Google-Smtp-Source: AGHT+IGlhV8pmMi8/dcteU+xlKGBVlmV/61aBemEdGbGYAZjFAawKDQ4HWXuLQoLouktB54sVFvSUw==
+X-Received: by 2002:a05:6830:1051:b0:6d9:f1cd:b135 with SMTP id b17-20020a056830105100b006d9f1cdb135mr835660otp.24.1702075164946;
+        Fri, 08 Dec 2023 14:39:24 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id hf15-20020a0568707a0f00b001fae2d2630dsm628478oab.18.2023.12.08.14.25.44
+        by smtp.gmail.com with ESMTPSA id w2-20020a9d6742000000b006ce46212341sm477516otm.54.2023.12.08.14.39.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Dec 2023 14:25:45 -0800 (PST)
+        Fri, 08 Dec 2023 14:39:24 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <d572471c-79ee-46b5-911c-1b1086aa94f2@roeck-us.net>
-Date: Fri, 8 Dec 2023 14:25:44 -0800
+Message-ID: <a34f9bf4-b6b1-4dda-b35e-dbc6f0b6468d@roeck-us.net>
+Date: Fri, 8 Dec 2023 14:39:23 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -66,9 +66,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: 64-bit userspace root file system for hppa64
 Content-Language: en-US
-To: Helge Deller <deller@gmx.de>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- John David Anglin <dave.anglin@bell.net>,
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Helge Deller <deller@gmx.de>, John David Anglin <dave.anglin@bell.net>,
  Parisc List <linux-parisc@vger.kernel.org>
 References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <a52d08a9-1114-4d0c-8d10-508d6d49627b@bell.net>
@@ -83,10 +82,9 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <11088c05-eaf8-48ca-8767-bc55e78e1350@gmx.de>
  <9e5599dc-06ba-47ca-bdc1-8b612694a95e@ilande.co.uk>
  <5d811129-ca84-4f7f-bbc6-8f5fa0ce06c0@roeck-us.net>
- <55d40485-2aff-4cf5-a379-623bb3b10b7f@gmx.de>
- <8bdc89de-90a5-4b7a-b6d1-2e3bd9fa7314@roeck-us.net>
- <ade25e81-2d1a-416a-9f02-1944aa03261c@ilande.co.uk>
- <c3c70dbd-d139-4fff-8de4-ef531214ac2e@gmx.de>
+ <97729a4b-5ef7-42ad-897d-a57cd9a5a5bf@ilande.co.uk>
+ <40888af0-8493-4ac2-94c6-08fc02b51444@roeck-us.net>
+ <e12ffe60-5f32-4e72-beee-addec31b4775@ilande.co.uk>
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
@@ -131,96 +129,140 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <c3c70dbd-d139-4fff-8de4-ef531214ac2e@gmx.de>
+In-Reply-To: <e12ffe60-5f32-4e72-beee-addec31b4775@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 12/8/23 14:05, Helge Deller wrote:
-> On 12/8/23 22:23, Mark Cave-Ayland wrote:
->> On 08/12/2023 20:11, Guenter Roeck wrote:
->>
->>> On 12/8/23 07:54, Helge Deller wrote:
->>> [ ... ]
->>>
->>>>
->>>> Does qemu-hppa boot for you with those patches?
->>>> Even with those I see the discs are found, but later I get:
->>>> [    8.519780] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787975: comm swapper/0: iget: checksum invalid
->>>> [    8.545363] Starting init: /sbin/init exists but couldn't execute it (error -67)
->>>> [    8.546339] Run /etc/init as init process
->>>> [    8.561422] Run /bin/init as init process
->>>> [    8.574649] Run /bin/sh as init process
->>>> [    8.580495] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787980: comm swapper/0: iget: checksum invalid
->>>> [    8.586170] Starting init: /bin/sh exists but couldn't execute it (error -67)
->>>>
->>>
->>> This is what I get when trying to boot from an ext4 file system:
->>>
->>> [   30.664669] Unaligned handler failed, ret = -14
->>> [   30.665314]       _______________________________
->>> [   30.665314]      < Your System ate a SPARC! Gah! >
->>> [   30.665314]       -------------------------------
->>> [   30.665314]              \   ^__^
->>> [   30.665314]                  (__)\       )\/\
->>> [   30.665314]                   U  ||----w |
->>> [   30.665314]                      ||     ||
->>> [   30.665925] ip (pid 689): Unaligned data reference (code 28)
->>> [   30.666282] CPU: 0 PID: 689 Comm: ip Tainted: G                 N 6.7.0-rc4-64bit+ #1
->>> [   30.666487] Hardware name: 9000/785/C3700
->>> [   30.666724]
->>> [   30.666812]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
->>> [   30.666978] PSW: 00001000000001001111111100001111 Tainted: G                 N
->>> [   30.667164] r00-03  000000ff0804ff0f 00000000413f57c0 00000000401e15c0 00000000451d8d60
->>> [   30.667351] r04-07  00000000412d5fc0 00000000451d8c78 00000000411bcfe0 00000000417813f8
->>> [   30.667511] r08-11  000000004128e7c0 0000000000000010 00000000000000a0 0000000073c00008
->>> [   30.667665] r12-15  0000000000000000 0000000000000cc0 0000000043086000 0000000041f29640
->>> [   30.667817] r16-19  0000000000000040 00000000451d8a10 0000000041ede0c0 0000000000000000
->>> [   30.667968] r20-23  ffffffffffe00009 0000000073c00008 000000006bc23fd9 000000000fc212c1
->>> [   30.668119] r24-27  0000000000000000 0000000000000008 081e0241371e0200 00000000412d5fc0
->>> [   30.668273] r28-31  0000000000000000 00000000451d8e00 00000000451d8e30 00000000f8ce25bc
->>> [   30.669027] sr00-03  0000000000016c00 0000000000000000 0000000000000000 0000000000016c00
->>> [   30.669292] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
->>> [   30.669523]
->>> [   30.669615] IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000401e160c 00000000401e15ec
->>> [   30.669870]  IIR: 0fe010dc    ISR: 0000000000000000  IOR: 00000000f8ce25bc
->>> [   30.670072]  CPU:        0   CR30: 0000000043086000 CR31: 0000000000000000
->>> [   30.670270]  ORIG_R28: 00000000402a48b8
->>> [   30.670407]  IAOQ[0]: unwind_once+0x5dc/0x5e0
->>> [   30.671165]  IAOQ[1]: unwind_once+0x5bc/0x5e0
->>> [   30.671332]  RP(r2): unwind_once+0x590/0x5e0
->>> [   30.671575] Backtrace:
->>> [   30.671804]  [<00000000401e482c>] walk_stackframe.constprop.0+0xb4/0x138
->>> [   30.672059]  [<00000000401e48e8>] arch_stack_walk+0x38/0x50
->>> [   30.672232]  [<00000000402a8a8c>] stack_trace_save+0x5c/0x78
->>> [   30.673233]  [<00000000403b2cc4>] set_track_prepare+0x5c/0xa0
->>> [   30.673694]  [<00000000403ba8ec>] ___slab_alloc+0x554/0x930
->>> [   30.673917]  [<00000000403bad28>] __slab_alloc.constprop.0+0x60/0x88
->>> [   30.674141]  [<00000000403bb354>] kmem_cache_alloc+0xf4/0x280
->>> [   30.674342]  [<0000000040389d10>] __anon_vma_prepare+0x98/0x2d0
->>> [   30.674554]  [<0000000040374f50>] __handle_mm_fault+0x410/0xe00
->>> [   30.674752]  [<0000000040375a6c>] handle_mm_fault+0x12c/0x230
->>> [   30.674947]  [<00000000401cc6e0>] do_page_fault+0x1c0/0x708
->>> [   30.675173]  [<00000000401d0b90>] handle_interruption+0xa88/0xbc0
->>> [   30.675367]  [<00000000411bd000>] arch_atomic64_add+0x20/0xb0
->>>
->>> That is also seen randomly when booting from other controllers, so it is
->>> not specific to the scsi driver.
->>
->> This certainly feels like a CPU emulation bug, for example checksums
->> as used by ext4 may make use of optimised instructions for
->> performance which aren't commonly used.>
+On 12/8/23 13:19, Mark Cave-Ayland wrote:
+> On 08/12/2023 19:56, Guenter Roeck wrote:
 > 
-> Although CPU emulation bug might be true (I suspect something like that too),
-> this specific crash is due to a bug in the unwind_once() function.
-> This patch:
-> https://github.com/hdeller/linux/commit/3c4092001f4c2e9c842afd60d1391a0b6ed4565e
-> should fix it. It's in my for-next tree.
-> But it doesn't crash on physical hardware, so some kind of emulation bug
-> is still there too.
+>> On 12/8/23 10:53, Mark Cave-Ayland wrote:
+>>> On 08/12/2023 14:58, Guenter Roeck wrote:
+>>>
+>>>> On 12/8/23 00:01, Mark Cave-Ayland wrote:
+>>>>> On 07/12/2023 21:47, Helge Deller wrote:
+>>>>>
+>>>>>> (looping in Mark Cave-Ayland, since he did some work on qemu esp driver)
+>>>>>
+>>>>> Thanks for the ping!
+>>>>>
+>>>>>> On 12/7/23 22:08, Guenter Roeck wrote:
+>>>>>>> Hi Helge,
+>>>>>>>
+>>>>>>> On 12/6/23 13:43, Helge Deller wrote:
+>>>>>>>> On 12/6/23 21:19, Guenter Roeck wrote:
+>>>>>>>>> On 12/6/23 09:00, Helge Deller wrote:
+>>>>>>>>> [ ... ]
+>>>>>>>>>>> Is it worth testing with multiple CPUs ? I can re-enable it and
+>>>>>>>>>>> check more closely if you think it makes sense. If so, what number
+>>>>>>>>>>> of CPUs would you recommend ?
+>>>>>>>>>>
+>>>>>>>>>> I think 4 CPUs is realistic.
+>>>>>>>>>> But I agree, that you probably see more issues.
+>>>>>>>>>>
+>>>>>>>>>> Generally the assumption was, that the different caches on parisc
+>>>>>>>>>> may trigger SMP issues, but given that those issues can be seen on
+>>>>>>>>>> qemu, it indicates that there are generic SMP issues too.
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Ok, I ran some tests overnight with 2-8 CPUs. Turns out the system is quite
+>>>>>>>>> stable,
+>>>>>>>>
+>>>>>>>> cool!
+>>>>>>>>
+>>>>>>>>> with the exception of SCSI controllers. Some fail completely, others
+>>>>>>>>> rarely. Here is a quick summary:
+>>>>>>>>>
+>>>>>>>>> - am53c974 fails with "Spurious irq, sreg=00", followed by "Aborting command"
+>>>>>>>>>    and a hung task crash.
+>>>>>>>>> - megasas and megasas-gen2 fail with
+>>>>>>>>>    "scsi host1: scsi scan: INQUIRY result too short (5), using 36"
+>>>>>>>>>    followed by
+>>>>>>>>>    "megaraid_sas 0000:00:04.0: Unknown command completed!"
+>>>>>>>>>    and a hung task crash
+>>>>>>>>> - mptsas1068 fails completely (no kernel log message seen)
+>>>>>>>>> - dc390 and lsi* report random "Spurious irq, sreg=00" messages and timeouts
+>>>>>>>>
+>>>>>>>> I think none of those drivers have ever been tested
+>>>>>>>> on physical hardware either.
+>>>>>>>> So I'm astonished that it even worked that far :-)
+>>>>>>>>
+>>>>>>> I actually do have a dc390 board somewhere. I used it some time ago to improve
+>>>>>>> the emulation.
+>>>>>>
+>>>>>> Do you have a physical hppa box too?
+>>>>>>
+>>>>>>>> Based on kernel sources, the "Spurious irq, sreg=%02x." error can only happen for the
+>>>>>>>> am53c974 driver. Are you sure you see this message for dc390 and lsi* too?
+>>>>>>>>
+>>>>>>> am53c974 and dc390 use the same driver. lsi* doesn't, and doesn't have a problem
+>>>>>>> either. Sorry, I confused that with some old notes.
+>>>>>>>
+>>>>>>> Either case, I think I found the problem. After handling an interrupt, the Linux
+>>>>>>> driver checks if another interrupt is pending. It does that by checking the
+>>>>>>> DMA_DONE bit in the DMA status register. If that bit is set, it re-enters the
+>>>>>>> interrupt handler. Problem with that is that the emulation sets DMA_DONE
+>>>>>>> prematurely, before it sets the command done bit in the interrupt status register
+>>>>>>> and before it sets the interrupt pending bit in the status register. As result,
+>>>>>>> DMA_DONE is set but IRQ_PENDING isn't, and the spurious interrupt is reported.
+>>>>>>> I fixed that up in my code and will test it for some time and with various
+>>>>>>> architectures before I send a patch.
+>>>>>
+>>>>> I'm actually in the process of putting the finishing touches to a large rewrite of QEMU's core ESP emulation since there are a number of known issues with the existing version. In particular there are problems with the SCSI phase being set incorrectly after reading ESP_INTR and ESP_RSTAT's STAT_TC not being correct. Note that this is just the ESP core rather than the ESP PCI device.
+>>>>>
+>>>>> If you are interested, I could try and find a few minutes to tidy it up a bit more and push a testing branch to Github?
+>>>>>
+>>>>
+>>>> Sure, I'll be happy to give your changes a try.
+>>>>
+>>>> FWIW, the change I made to fix the spurious interrupt problem is
+>>>>
+>>>> diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
+>>>> index 6794acaebc..f624398c55 100644
+>>>> --- a/hw/scsi/esp-pci.c
+>>>> +++ b/hw/scsi/esp-pci.c
+>>>> @@ -286,9 +286,6 @@ static void esp_pci_dma_memory_rw(PCIESPState *pci, uint8_t *buf, int len,
+>>>>       /* update status registers */
+>>>>       pci->dma_regs[DMA_WBC] -= len;
+>>>>       pci->dma_regs[DMA_WAC] += len;
+>>>> -    if (pci->dma_regs[DMA_WBC] == 0) {
+>>>> -        pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
+>>>> -    }
+>>>>   }
+>>>>
+>>>> I tested that with several platforms. There are no more spurious interrupts
+>>>> after that change, and no other errors either.
+>>>
+>>> I suspect that this is papering over the real issue, since it appears the code being removed sets the DMA completion bit when then the PCI DMA transfer counter reaches zero.
+>>>
+>>
+>> DMA_STAT_DONE is also set in esp_pci_command_complete(), so it doesn't get lost.
+> 
+> That doesn't seem right from a QEMU perspective: the command_complete callback is invoked when the SCSI layer has completed its data transfer to the emulated device, or immediately if there is no data phase. From a DMA perspective triggering an interrupt when the byte counter is zero feels like it should be the correct behaviour.
+> 
+>> Problem is that the Linux kernel driver assumes that the interrupt status bit
+>> is set in parallel with DMA_STAT_DONE. The spurious interrupt is seen because
+>> that is not the case. There may be a better solution, of course. I'll be happy
+>> to give it a try if you find a better solution.
+> 
+> Could you provide a github link to the file/line in question so I can have a look?
 > 
 
-ext4, f2fs, and btrfs work fine for me with a 32-bit kernel. I'll try the 64-bit
-tests again with your kernel patch applied.
+Assuming you mean the Linux kernel:
+
+In esp_scsi.c:
+
+The interrupt loop is in scsi_esp_intr(). It calls esp->ops->irq_pending(esp))
+to check if another interrupt is pending. Subsequently, it calls __esp_interrupt()
+to handle it. __esp_interrupt() calls esp_check_spur_intr(), which expects ESP_INTR_SR
+to be set.
+
+The irq_pending function is am53c974.c:pci_esp_irq_pending(). It checks the DMA status
+register and assumes that an interrupt is pending if any of (ESP_DMA_STAT_ERROR |
+ESP_DMA_STAT_ABORT | ESP_DMA_STAT_DONE | ESP_DMA_STAT_SCSIINT) is set in the DMA
+status register.
+
+Hope this helps,
 
 Guenter
 
