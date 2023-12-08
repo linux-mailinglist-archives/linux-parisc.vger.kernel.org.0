@@ -1,46 +1,46 @@
-Return-Path: <linux-parisc+bounces-177-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-178-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A05780AEBB
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 22:19:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CCF80AEC9
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 22:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAE201F21042
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 21:19:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 672671F21042
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Dec 2023 21:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA2057332;
-	Fri,  8 Dec 2023 21:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EFC563BE;
+	Fri,  8 Dec 2023 21:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=ilande.co.uk header.i=@ilande.co.uk header.b="F0kAPOyk"
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=ilande.co.uk header.i=@ilande.co.uk header.b="G6UaTDI5"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from mail.ilande.co.uk (mail.ilande.co.uk [IPv6:2001:41c9:1:41f::167])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57996A9
-	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 13:19:21 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 483DA193
+	for <linux-parisc@vger.kernel.org>; Fri,  8 Dec 2023 13:20:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
 	In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
 	Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=pJ/13SvedFoWKyBynTI+GMePmUvk4t09PDY71c7dARM=; b=F0kAPOykea66aFThu6lOuHOypq
-	dLFCwlREfiN4zjnQcH7pg7o6VnDr4FVnKvzheCkx576/jjDCmvK1ZSP0NCq2omsXo4uJLUDmQ9Cw0
-	mcQSpg1XOtw+OUfY2T0L85pDW0Z0iKXagLHd4W1rY7FKry4zsuOaOSCIfDrVaMu5u7X4dN93X1+qu
-	wKcNrQrtncOA7MoNfpnKNWQ9E89/4C3LyxxgaW4mLTFJ9LBC9Po0TYA+qs7bxkI4flgMX3ztcI1kd
-	1FWcG+AKKOoQxokDWVCC99lOHH0EXPD8ehfQiQrGyfBxrCmX74C7mcYsOBSbUsyazO0C3ojKrbRud
-	UCb5VFrJO5kdElSbdvFHfoa5HSOxa8wQOHsrjHgFEdHuQd0WFOBJY0VKpV9iXz9zeu0ffr9PyN1jY
-	GGwwTIswWPdnzy96cLmQszDw8Ac2Phk8IlSGQ3n4v3956j7lAn4SNi15GwyIABBg8ouTQ9MT777Dt
-	6ew1YVwvZWrWWXm4PAS8i6QxNjhwzpVVYXFS9xobaziIo3KFqL+97PhVbHisoMj6q04Ps7dohYDPu
-	C7moxzyy0mYKpR133w3wuDXZuJBW+5UihXumWIFDZNTsT5nfIi3nbn7gyKQI8Bwxa380cxL9DcOCr
-	WUoEVuwuvkOgxhl/pVg/gNSv3FA6XeU5gU9+WDm0s=;
+	bh=+mQyrnxoNeBAAYKZCJMW+stzt4J7ny5l5ySQE03WOKY=; b=G6UaTDI5XmehtO1bs5KuhAaolX
+	j2v8xDjuALxRcYs+kttDSYSUvr7JyKgtKqhU3XjZymTVfFdeJ6tqgGbeZU2pJUEuHaO9ffyh6Dp/i
+	EcLxGMO9Ku9mPcdmMT+tiE2zTJI/IVw71uyJMvsaeaEpV5gjvSGL6TllPhU18XI7jSo+pk/wfjVNw
+	qB/aWa0pP52hnyqmvEzz8DcKTz48F6VuOEP197ZHJi80Hjk42C+OWmRCSQfaedrcnfPN/lpbVQcIL
+	2iBXDl1gEaG/AIFruCF09n7AnUZfbfNYbfte73Js70Shl3c0PoIG6flowI13swW3lSeHeHDez4XRp
+	C+QAR0qeGNvdEmwpjBXKh9ILkIhjLRxymDOkOx/gVo4yILSFDqSRy+NvLn2cqcJZdPGubnUMvsoMP
+	UvV09rUeN9TCaWRcBZJMUKEOK48aL5S6n74IAZLMavEyutrc0e8cJJi+0M2ODxWecnbtkA7/0TkEp
+	D1+JIp3XV3Jgp+xv+JQxle4YE1FMNQ0QR67+DBc1rnKQPYYR1zNtx53DwiZJpbQqmz281j3b1ucBr
+	tKkISFflcHAOEUl2VRNuic5biJBVoxj2Gt2nYVQvq1eKMc45IigVSErLECJBAtnXE9BSvKlQwfvw4
+	0FvBr9qOO1N/VUdAxI64FuK3f+k7lKkpIS1JRLUtk=;
 Received: from [2a00:23c4:8bb0:f100:9601:9e38:9395:46ea]
 	by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
 	(Exim 4.92)
 	(envelope-from <mark.cave-ayland@ilande.co.uk>)
-	id 1rBiFM-0009Id-3a; Fri, 08 Dec 2023 21:18:56 +0000
-Message-ID: <e12ffe60-5f32-4e72-beee-addec31b4775@ilande.co.uk>
-Date: Fri, 8 Dec 2023 21:19:13 +0000
+	id 1rBiGg-0009Id-Hr; Fri, 08 Dec 2023 21:20:22 +0000
+Message-ID: <141b57db-1830-499b-ac4f-ea91ac68115d@ilande.co.uk>
+Date: Fri, 8 Dec 2023 21:20:37 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -66,7 +66,9 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <9e5599dc-06ba-47ca-bdc1-8b612694a95e@ilande.co.uk>
  <5d811129-ca84-4f7f-bbc6-8f5fa0ce06c0@roeck-us.net>
  <97729a4b-5ef7-42ad-897d-a57cd9a5a5bf@ilande.co.uk>
- <40888af0-8493-4ac2-94c6-08fc02b51444@roeck-us.net>
+ <a68b234a-c202-44ca-bb45-5cbb86b5729b@gmx.de>
+ <60939e7b-643d-497e-a3dd-974513851959@ilande.co.uk>
+ <7b9179e7-b3ee-4dad-b90d-e1d0892b564f@roeck-us.net>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -92,7 +94,7 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <40888af0-8493-4ac2-94c6-08fc02b51444@roeck-us.net>
+In-Reply-To: <7b9179e7-b3ee-4dad-b90d-e1d0892b564f@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:9601:9e38:9395:46ea
@@ -102,130 +104,238 @@ Subject: Re: 64-bit userspace root file system for hppa64
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 
-On 08/12/2023 19:56, Guenter Roeck wrote:
-
-> On 12/8/23 10:53, Mark Cave-Ayland wrote:
->> On 08/12/2023 14:58, Guenter Roeck wrote:
+On 08/12/2023 20:09, Guenter Roeck wrote:
+> On 12/8/23 11:45, Mark Cave-Ayland wrote:
+>> On 08/12/2023 19:26, Helge Deller wrote:
 >>
->>> On 12/8/23 00:01, Mark Cave-Ayland wrote:
->>>> On 07/12/2023 21:47, Helge Deller wrote:
+>>> On 12/8/23 19:53, Mark Cave-Ayland wrote:
+>>>> On 08/12/2023 14:58, Guenter Roeck wrote:
 >>>>
->>>>> (looping in Mark Cave-Ayland, since he did some work on qemu esp driver)
->>>>
->>>> Thanks for the ping!
->>>>
->>>>> On 12/7/23 22:08, Guenter Roeck wrote:
->>>>>> Hi Helge,
+>>>>> On 12/8/23 00:01, Mark Cave-Ayland wrote:
+>>>>>> On 07/12/2023 21:47, Helge Deller wrote:
 >>>>>>
->>>>>> On 12/6/23 13:43, Helge Deller wrote:
->>>>>>> On 12/6/23 21:19, Guenter Roeck wrote:
->>>>>>>> On 12/6/23 09:00, Helge Deller wrote:
->>>>>>>> [ ... ]
->>>>>>>>>> Is it worth testing with multiple CPUs ? I can re-enable it and
->>>>>>>>>> check more closely if you think it makes sense. If so, what number
->>>>>>>>>> of CPUs would you recommend ?
->>>>>>>>>
->>>>>>>>> I think 4 CPUs is realistic.
->>>>>>>>> But I agree, that you probably see more issues.
->>>>>>>>>
->>>>>>>>> Generally the assumption was, that the different caches on parisc
->>>>>>>>> may trigger SMP issues, but given that those issues can be seen on
->>>>>>>>> qemu, it indicates that there are generic SMP issues too.
->>>>>>>>>
->>>>>>>>
->>>>>>>> Ok, I ran some tests overnight with 2-8 CPUs. Turns out the system is quite
->>>>>>>> stable,
->>>>>>>
->>>>>>> cool!
->>>>>>>
->>>>>>>> with the exception of SCSI controllers. Some fail completely, others
->>>>>>>> rarely. Here is a quick summary:
->>>>>>>>
->>>>>>>> - am53c974 fails with "Spurious irq, sreg=00", followed by "Aborting command"
->>>>>>>>    and a hung task crash.
->>>>>>>> - megasas and megasas-gen2 fail with
->>>>>>>>    "scsi host1: scsi scan: INQUIRY result too short (5), using 36"
->>>>>>>>    followed by
->>>>>>>>    "megaraid_sas 0000:00:04.0: Unknown command completed!"
->>>>>>>>    and a hung task crash
->>>>>>>> - mptsas1068 fails completely (no kernel log message seen)
->>>>>>>> - dc390 and lsi* report random "Spurious irq, sreg=00" messages and timeouts
->>>>>>>
->>>>>>> I think none of those drivers have ever been tested
->>>>>>> on physical hardware either.
->>>>>>> So I'm astonished that it even worked that far :-)
->>>>>>>
->>>>>> I actually do have a dc390 board somewhere. I used it some time ago to improve
->>>>>> the emulation.
->>>>>
->>>>> Do you have a physical hppa box too?
->>>>>
->>>>>>> Based on kernel sources, the "Spurious irq, sreg=%02x." error can only happen 
->>>>>>> for the
->>>>>>> am53c974 driver. Are you sure you see this message for dc390 and lsi* too?
->>>>>>>
->>>>>> am53c974 and dc390 use the same driver. lsi* doesn't, and doesn't have a problem
->>>>>> either. Sorry, I confused that with some old notes.
+>>>>>>> (looping in Mark Cave-Ayland, since he did some work on qemu esp driver)
 >>>>>>
->>>>>> Either case, I think I found the problem. After handling an interrupt, the Linux
->>>>>> driver checks if another interrupt is pending. It does that by checking the
->>>>>> DMA_DONE bit in the DMA status register. If that bit is set, it re-enters the
->>>>>> interrupt handler. Problem with that is that the emulation sets DMA_DONE
->>>>>> prematurely, before it sets the command done bit in the interrupt status register
->>>>>> and before it sets the interrupt pending bit in the status register. As result,
->>>>>> DMA_DONE is set but IRQ_PENDING isn't, and the spurious interrupt is reported.
->>>>>> I fixed that up in my code and will test it for some time and with various
->>>>>> architectures before I send a patch.
+>>>>>> Thanks for the ping!
+>>>>>>
+>>>>>>> On 12/7/23 22:08, Guenter Roeck wrote:
+>>>>>>>> Hi Helge,
+>>>>>>>>
+>>>>>>>> On 12/6/23 13:43, Helge Deller wrote:
+>>>>>>>>> On 12/6/23 21:19, Guenter Roeck wrote:
+>>>>>>>>>> On 12/6/23 09:00, Helge Deller wrote:
+>>>>>>>>>> [ ... ]
+>>>>>>>>>>>> Is it worth testing with multiple CPUs ? I can re-enable it and
+>>>>>>>>>>>> check more closely if you think it makes sense. If so, what number
+>>>>>>>>>>>> of CPUs would you recommend ?
+>>>>>>>>>>>
+>>>>>>>>>>> I think 4 CPUs is realistic.
+>>>>>>>>>>> But I agree, that you probably see more issues.
+>>>>>>>>>>>
+>>>>>>>>>>> Generally the assumption was, that the different caches on parisc
+>>>>>>>>>>> may trigger SMP issues, but given that those issues can be seen on
+>>>>>>>>>>> qemu, it indicates that there are generic SMP issues too.
+>>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> Ok, I ran some tests overnight with 2-8 CPUs. Turns out the system is quite
+>>>>>>>>>> stable,
+>>>>>>>>>
+>>>>>>>>> cool!
+>>>>>>>>>
+>>>>>>>>>> with the exception of SCSI controllers. Some fail completely, others
+>>>>>>>>>> rarely. Here is a quick summary:
+>>>>>>>>>>
+>>>>>>>>>> - am53c974 fails with "Spurious irq, sreg=00", followed by "Aborting command"
+>>>>>>>>>>    and a hung task crash.
+>>>>>>>>>> - megasas and megasas-gen2 fail with
+>>>>>>>>>>    "scsi host1: scsi scan: INQUIRY result too short (5), using 36"
+>>>>>>>>>>    followed by
+>>>>>>>>>>    "megaraid_sas 0000:00:04.0: Unknown command completed!"
+>>>>>>>>>>    and a hung task crash
+>>>>>>>>>> - mptsas1068 fails completely (no kernel log message seen)
+>>>>>>>>>> - dc390 and lsi* report random "Spurious irq, sreg=00" messages and timeouts
+>>>>>>>>>
+>>>>>>>>> I think none of those drivers have ever been tested
+>>>>>>>>> on physical hardware either.
+>>>>>>>>> So I'm astonished that it even worked that far :-)
+>>>>>>>>>
+>>>>>>>> I actually do have a dc390 board somewhere. I used it some time ago to improve
+>>>>>>>> the emulation.
+>>>>>>>
+>>>>>>> Do you have a physical hppa box too?
+>>>>>>>
+>>>>>>>>> Based on kernel sources, the "Spurious irq, sreg=%02x." error can only 
+>>>>>>>>> happen for the
+>>>>>>>>> am53c974 driver. Are you sure you see this message for dc390 and lsi* too?
+>>>>>>>>>
+>>>>>>>> am53c974 and dc390 use the same driver. lsi* doesn't, and doesn't have a problem
+>>>>>>>> either. Sorry, I confused that with some old notes.
+>>>>>>>>
+>>>>>>>> Either case, I think I found the problem. After handling an interrupt, the Linux
+>>>>>>>> driver checks if another interrupt is pending. It does that by checking the
+>>>>>>>> DMA_DONE bit in the DMA status register. If that bit is set, it re-enters the
+>>>>>>>> interrupt handler. Problem with that is that the emulation sets DMA_DONE
+>>>>>>>> prematurely, before it sets the command done bit in the interrupt status 
+>>>>>>>> register
+>>>>>>>> and before it sets the interrupt pending bit in the status register. As result,
+>>>>>>>> DMA_DONE is set but IRQ_PENDING isn't, and the spurious interrupt is reported.
+>>>>>>>> I fixed that up in my code and will test it for some time and with various
+>>>>>>>> architectures before I send a patch.
+>>>>>>
+>>>>>> I'm actually in the process of putting the finishing touches to a large rewrite 
+>>>>>> of QEMU's core ESP emulation since there are a number of known issues with the 
+>>>>>> existing version. In particular there are problems with the SCSI phase being 
+>>>>>> set incorrectly after reading ESP_INTR and ESP_RSTAT's STAT_TC not being 
+>>>>>> correct. Note that this is just the ESP core rather than the ESP PCI device.
+>>>>>>
+>>>>>> If you are interested, I could try and find a few minutes to tidy it up a bit 
+>>>>>> more and push a testing branch to Github?
+>>>>>>
+>>>>>
+>>>>> Sure, I'll be happy to give your changes a try.
+>>>>>
+>>>>> FWIW, the change I made to fix the spurious interrupt problem is
+>>>>>
+>>>>> diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
+>>>>> index 6794acaebc..f624398c55 100644
+>>>>> --- a/hw/scsi/esp-pci.c
+>>>>> +++ b/hw/scsi/esp-pci.c
+>>>>> @@ -286,9 +286,6 @@ static void esp_pci_dma_memory_rw(PCIESPState *pci, uint8_t 
+>>>>> *buf, int len,
+>>>>>       /* update status registers */
+>>>>>       pci->dma_regs[DMA_WBC] -= len;
+>>>>>       pci->dma_regs[DMA_WAC] += len;
+>>>>> -    if (pci->dma_regs[DMA_WBC] == 0) {
+>>>>> -        pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
+>>>>> -    }
+>>>>>   }
+>>>>>
+>>>>> I tested that with several platforms. There are no more spurious interrupts
+>>>>> after that change, and no other errors either.
 >>>>
->>>> I'm actually in the process of putting the finishing touches to a large rewrite 
->>>> of QEMU's core ESP emulation since there are a number of known issues with the 
->>>> existing version. In particular there are problems with the SCSI phase being set 
->>>> incorrectly after reading ESP_INTR and ESP_RSTAT's STAT_TC not being correct. 
->>>> Note that this is just the ESP core rather than the ESP PCI device.
+>>>> I suspect that this is papering over the real issue, since it appears the code 
+>>>> being removed sets the DMA completion bit when then the PCI DMA transfer counter 
+>>>> reaches zero.
 >>>>
->>>> If you are interested, I could try and find a few minutes to tidy it up a bit 
->>>> more and push a testing branch to Github?
+>>>>> Regarding TC after reading the interrupt register, I carry the following
+>>>>> patch locally.
+>>>>>
+>>>>> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+>>>>> index 9b11d8c573..f0cd8705a7 100644
+>>>>> --- a/hw/scsi/esp.c
+>>>>> +++ b/hw/scsi/esp.c
+>>>>> @@ -986,7 +986,7 @@ uint64_t esp_reg_read(ESPState *s, uint32_t saddr)
+>>>>>            */
+>>>>>           val = s->rregs[ESP_RINTR];
+>>>>>           s->rregs[ESP_RINTR] = 0;
+>>>>> -        s->rregs[ESP_RSTAT] &= ~STAT_TC;
+>>>>> +        // s->rregs[ESP_RSTAT] &= ~STAT_TC;
+>>>>>
+>>>>> The comment above that code says "Clear sequence step, interrupt register
+>>>>> and all status bits except TC", which is quite the opposite of what the code
+>>>>> is doing because it clears TC and nothing else. I never spent the time
+>>>>> trying to figure out how to fix that properly; clearing the other bits
+>>>>> like the comment suggests doesn't work (STAT_INT needs to be set for
+>>>>> esp_lower_irq() to work, and clearing the other bits results in transfer
+>>>>> failures).
 >>>>
+>>>> Yeah that's one of the many bugs which should be fixed by my latest
+>>>> series. I've pushed the current version of my branch with the ESP
+>>>> rewrite to https://github.com/mcayland/qemu/tree/esp-rework-testing
+>>>> if you would both like to give it a test.
 >>>
->>> Sure, I'll be happy to give your changes a try.
+>>> Tried it with qemu-hppa:
 >>>
->>> FWIW, the change I made to fix the spurious interrupt problem is
->>>
->>> diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
->>> index 6794acaebc..f624398c55 100644
->>> --- a/hw/scsi/esp-pci.c
->>> +++ b/hw/scsi/esp-pci.c
->>> @@ -286,9 +286,6 @@ static void esp_pci_dma_memory_rw(PCIESPState *pci, uint8_t 
->>> *buf, int len,
->>>       /* update status registers */
->>>       pci->dma_regs[DMA_WBC] -= len;
->>>       pci->dma_regs[DMA_WAC] += len;
->>> -    if (pci->dma_regs[DMA_WBC] == 0) {
->>> -        pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
->>> -    }
->>>   }
->>>
->>> I tested that with several platforms. There are no more spurious interrupts
->>> after that change, and no other errors either.
+>>> [    1.062381] sym53c8xx 0000:00:00.0: enabling SERR and PARITY (0107 -> 0147)
+>>> [    1.066381] sym0: <895a> rev 0x0 at pci 0000:00:00.0 irq 66
+>>> [    1.073919] sym0: No NVRAM, ID 7, Fast-40, LVD, parity checking
+>>> [    1.080618] sym0: SCSI BUS has been reset.
+>>> [    1.085325] scsi host0: sym-2.2.3
+>>> [    4.257547] am53c974 0000:00:04.0: enabling SERR and PARITY (0107 -> 0147)
+>>> [    4.917824] am53c974 0000:00:04.0: esp0: regs[(ptrval):(ptrval)] irq[70]
+>>> [    4.918704] am53c974 0000:00:04.0: esp0: is a AM53C974, 40 MHz (ccf=0), SCSI ID 15
+>>> [    8.010626] scsi host1: esp
+>>> [    8.026345] scsi 1:0:0:0: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 
+>>> 0 ANSI: 5
+>>> [    8.032066] scsi target1:0:0: Beginning Domain Validation
+>>> [    8.043254] scsi target1:0:0: Domain Validation skipping write tests
+>>> [    8.044284] scsi target1:0:0: Ending Domain Validation
+>>> [    8.094991] megasas: 07.727.03.00-rc1
+>>> [    8.097635] mpt3sas version 43.100.00.00 loaded
+>>> [    8.109417] st: Version 20160209, fixed bufsize 32768, s/g segs 256
+>>> [    8.123681] sd 1:0:0:0: Power-on or device reset occurred
+>>> [    8.134707] sd 1:0:0:0: [sda] 209715200 512-byte logical blocks: (107 GB/100 GiB)
+>>> [    8.140043] sd 1:0:0:0: [sda] Write Protect is off
+>>> [    8.144759] sd 1:0:0:0: [sda] Write cache: enabled, read cache: enabled, 
+>>> doesn't support DPO or FUA
+>>> [    8.205316]  sda: sda1 sda2 sda3 < sda5 sda6 >
+>>> [    8.222763] sd 1:0:0:0: [sda] Attached SCSI disk
+>>> [    8.231170] sd 1:0:0:0: Attached scsi generic sg0 type 0
+>>> [    8.237107] LASI 82596 driver - Revision: 1.30
+>>> [    8.238440] Fusion MPT base driver 3.04.20
+>>> [    8.239024] Copyright (c) 1999-2008 LSI Corporation
+>>> [    8.240965] Fusion MPT SPI Host driver 3.04.20
+>>> [    8.243040] Fusion MPT SAS Host driver 3.04.20
+>>> [    8.245172] Fusion MPT misc device (ioctl) driver 3.04.20
+>>> [    8.247849] mptctl: Registered with Fusion MPT base driver
+>>> [    8.248791] mptctl: /dev/mptctl @ (major,minor=10,220)
+>>> [    8.258484] HP SDC: No SDC found.
+>>> [    8.271496] rtc-generic rtc-generic: registered as rtc0
+>>> [    8.274606] rtc-generic rtc-generic: setting system clock to 
+>>> 2023-12-08T19:25:10 UTC (1702063510)
+>>> [    8.278926] device-mapper: uevent: version 1.0.3
+>>> [    8.284893] device-mapper: ioctl: 4.48.0-ioctl (2023-03-01) initialised: 
+>>> dm-devel@redhat.com
+>>> [    8.288890] hid: raw HID events driver (C) Jiri Kosina
+>>> [    8.302272] usbcore: registered new interface driver usbhid
+>>> [    8.303494] usbhid: USB HID core driver
+>>> [    8.308155] NET: Registered PF_INET6 protocol family
+>>> [    8.337076] Segment Routing with IPv6
+>>> [    8.338476] In-situ OAM (IOAM) with IPv6
+>>> [    8.340887] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+>>> [    8.351957] NET: Registered PF_PACKET protocol family
+>>> [    8.596153] EXT4-fs (sda5): mounted filesystem 
+>>> f035d934-31b6-430e-b23d-a818f9baaf2e ro with ordered data mode. Quota mode: none.
+>>> [    8.599184] VFS: Mounted root (ext4 filesystem) readonly on device 8:5.
+>>> [    8.609270] devtmpfs: mounted
+>>> [    8.679666] Freeing unused kernel image (initmem) memory: 3072K
+>>> [    8.680679] Write protected read-only-after-init data: 2k
+>>> [    8.681338] Run /sbin/init as init process
+>>> [    8.731576] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787975: comm 
+>>> swapper/0: iget: checksum invalid
+>>> [    8.736664] scsi host1: Spurious irq, sreg=10.
+>>> [    8.760106] Starting init: /sbin/init exists but couldn't execute it (error -67)
+>>> [    8.760773] Run /etc/init as init process
+>>> [    8.768268] Run /bin/init as init process
+>>> [    8.775050] Run /bin/sh as init process
+>>> [    8.777917] EXT4-fs error (device sda5): ext4_lookup:1855: inode #787980: comm 
+>>> swapper/0: iget: checksum invalid
+>>> [    8.779882] scsi host1: Spurious irq, sreg=10.
+>>> [    8.780532] scsi host1: Spurious irq, sreg=13.
+>>> [    8.781094] Starting init: /bin/sh exists but couldn't execute it (error -67)
+>>> [    8.781934] Kernel panic - not syncing: No working init found.  Try passing 
+>>> init= option to kernel. See Linux Documentation/admin-guide/init.rst for guidance.
+>>> [    8.782740] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc4-32bit #2434
+>>> [    8.782740] Hardware name: 9000/785/C3700
+>>> [    8.782740] Backtrace:
+>>> [    8.782740]  [<104080f0>] show_stack+0x54/0x6c
+>>> [    8.782740]  [<10c09498>] dump_stack_lvl+0x58/0x7c
+>>> [    8.782740]  [<10c094d8>] dump_stack+0x1c/0x2c
+>>> [    8.782740]  [<10bf5698>] panic+0x130/0x2d4
+>>> [    8.782740]  [<10c0a024>] kernel_init+0x14c/0x150
+>>> [    8.782740]  [<1040201c>] ret_from_kernel_thread+0x1c/0x24
 >>
->> I suspect that this is papering over the real issue, since it appears the code 
->> being removed sets the DMA completion bit when then the PCI DMA transfer counter 
->> reaches zero.
+>> Ah that's a shame, I was really hoping that would solve the issue. Unless there is 
+>> something amiss with the esp-pci device? I haven't really spent any time looking at 
+>> the PCI DMA implementation.
 >>
 > 
-> DMA_STAT_DONE is also set in esp_pci_command_complete(), so it doesn't get lost.
+> The "technical manual" for AM53C974 from AMD states that an interrupt is supposed
+> to be generated when the DMA DONE bit is set. The esp-pci code does not do that.
 
-That doesn't seem right from a QEMU perspective: the command_complete callback is 
-invoked when the SCSI layer has completed its data transfer to the emulated device, 
-or immediately if there is no data phase. From a DMA perspective triggering an 
-interrupt when the byte counter is zero feels like it should be the correct behaviour.
-
-> Problem is that the Linux kernel driver assumes that the interrupt status bit
-> is set in parallel with DMA_STAT_DONE. The spurious interrupt is seen because
-> that is not the case. There may be a better solution, of course. I'll be happy
-> to give it a try if you find a better solution.
-
-Could you provide a github link to the file/line in question so I can have a look?
+Yeah that seems odd. I'm currently having a look at 
+http://www.bitsavers.org/components/amd/_dataSheets/1993_53c974_PCscsi.pdf to 
+understand a bit more as to how the PCI DMA block works.
 
 
 ATB,
