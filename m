@@ -1,62 +1,39 @@
-Return-Path: <linux-parisc+bounces-196-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-197-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15FCF80B649
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 Dec 2023 21:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 361AF80B6A9
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 Dec 2023 22:59:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37A391C2085C
-	for <lists+linux-parisc@lfdr.de>; Sat,  9 Dec 2023 20:34:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48B981C20839
+	for <lists+linux-parisc@lfdr.de>; Sat,  9 Dec 2023 21:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B0E1BDED;
-	Sat,  9 Dec 2023 20:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2091D549;
+	Sat,  9 Dec 2023 21:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MMfchabT"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="M+iFQ4NX"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B26B19AA
-	for <linux-parisc@vger.kernel.org>; Sat,  9 Dec 2023 12:34:35 -0800 (PST)
-Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6d9d29a2332so1579641a34.0
-        for <linux-parisc@vger.kernel.org>; Sat, 09 Dec 2023 12:34:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702154074; x=1702758874; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=0ekv8zDJYAXizSto8TdPBur08zRzb2OdTqhoYcR0iHI=;
-        b=MMfchabTVY/iiYKWk7w0+19PBPFu0p7v0qHXQDGtu9YNQ4dqds3FNlVAWThRGpugoJ
-         ioMs+NIxlBsKAJKhmO8mIAT2F7j+sh3iBQk09qSs8n9y3kmow2lvaV1zQJx3CQXb/JI7
-         mRR2KoIZLYwLSrs9PhPUO3JMTJqe0EIP5sqOtLFgl/2Sw8T4D7mhnPeFxVgSIEOh6DSB
-         WCwS9vK/eAXbF1XA2rL7jSODQEYgyu32UVm6B2V9CaBZqQ8eje29kgB7CfC6F+IwOgwE
-         jWKab4TG4Vz4BYHoiNYKcE/5PaSjvbUADfCM5Qui5fNNa0EtjwhwEr6ixVOz1QkUvAhz
-         AbLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702154074; x=1702758874;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0ekv8zDJYAXizSto8TdPBur08zRzb2OdTqhoYcR0iHI=;
-        b=QvrrGcRKudpQW9jLyAzZoKoKjOi5e7Vymp7wSan5UUYZA52diY4WXyoxOdm/S1Vn2+
-         ZaL7Qp8arMcuIWvrSfzWZAlrGlG0Q88RrZJS5Xesh7GWlHWiwcdS+4igZQXaDzUXO4h+
-         0EH9ru2FPrx5xJvre7Jl6u3ccevb4AKHGg/bQ7CgDDAdtOoeWNZi85cVon6D1o0wuXh4
-         jFRx9wfpnjXB1jih4EoD2SoR4slSv4jlXhP1KN2AEJCApQvMbTvJorDlwWBDUrRkMtgU
-         9p6z7dk0N98x3fsmoX06UeF2f4IcI+knja2b5WQtstf16zkg+vpNWfGvu+yNsq7A+AkY
-         GvRA==
-X-Gm-Message-State: AOJu0YwvJxdhVExS7zo5HIIjwaHkZFHT2YN6ExYLE96HECp2eJffDXUG
-	KH4wI8SNFpdtsn6bMZfCHHAdNN/Fmb8=
-X-Google-Smtp-Source: AGHT+IE/h9/v9CEZMT+9m1gC63gFZjsyPtZUkhyksD80BHstKlooatEDW+f74UA2t3OybOMz5HmO2Q==
-X-Received: by 2002:a05:6830:26ef:b0:6d9:d132:7ff with SMTP id m47-20020a05683026ef00b006d9d13207ffmr1398318otu.15.1702154074001;
-        Sat, 09 Dec 2023 12:34:34 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id m18-20020a9d6ad2000000b006d7e23c58b6sm900664otq.38.2023.12.09.12.34.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 09 Dec 2023 12:34:32 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <25e7ad49-7711-418d-b5a8-88515cb1a4a6@roeck-us.net>
-Date: Sat, 9 Dec 2023 12:34:31 -0800
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51BF4103
+	for <linux-parisc@vger.kernel.org>; Sat,  9 Dec 2023 13:59:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1702159124; x=1702763924; i=deller@gmx.de;
+	bh=PcloEVtYr0rQYkLMl+csrod5mRgF7Gz/3AyVR2dkk/k=;
+	h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+	b=M+iFQ4NXqCzn6gQ6PBridd4lCTCcTnbX3a1/q4s/gfmGjXktjE0S6iLT1ltZJLdp
+	 Z08CzTbzFWy+9a9TGYLfXIfrzGetcSMIQsCFSBQ0Cea6InoQYLaO6kGDAjTUr65o+
+	 aU6afC+KX3mlvmxwAUGHU2+WfPMpwBKFMlhGjrUzYn1d466bxXGHsZxuWI3nYlMW8
+	 gyXnEoqd76OvAq3Rw8BtvQHiAtz5M3IIT4TK7pxGPudyWeS80PK40l8XmmWLf/KJT
+	 OLGlDSqoEwNsorfqVP5nqJCS+fLi5V+V6v9Z7Tznq/LtpI8p2yb78oiMhUfJJlQa7
+	 V5Yac77y3rrUSQPCsQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.152.43]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mjj87-1rfLId1lzn-00lBdG; Sat, 09
+ Dec 2023 22:58:44 +0100
+Message-ID: <3b82d9e7-5b26-4154-a253-9bbbb04cf617@gmx.de>
+Date: Sat, 9 Dec 2023 22:58:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -67,14 +44,9 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: 64-bit userspace root file system for hppa64
 Content-Language: en-US
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Helge Deller <deller@gmx.de>, John David Anglin <dave.anglin@bell.net>,
- Parisc List <linux-parisc@vger.kernel.org>
+ Guenter Roeck <linux@roeck-us.net>, John David Anglin
+ <dave.anglin@bell.net>, Parisc List <linux-parisc@vger.kernel.org>
 References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
- <a52d08a9-1114-4d0c-8d10-508d6d49627b@bell.net>
- <b1c864a0-cdda-409a-94c2-1a2cb827f7e1@gmx.de>
- <aeceb922-b6e9-4814-919e-6a82fb869f63@roeck-us.net>
- <6199c59b-1307-48c2-ae9a-254ab2d578c0@gmx.de>
- <0f9710fc-8246-4265-a32f-ebc4fa3eefde@roeck-us.net>
  <41052280-bb9f-4fa4-a3d4-ed23a1fcdbd1@gmx.de>
  <c56601c1-f89a-463a-93df-db93133e8315@roeck-us.net>
  <4b6ef6f3-c3db-48fe-a3ee-1d874d510c7e@gmx.de>
@@ -83,218 +55,209 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <9e5599dc-06ba-47ca-bdc1-8b612694a95e@ilande.co.uk>
  <5d811129-ca84-4f7f-bbc6-8f5fa0ce06c0@roeck-us.net>
  <97729a4b-5ef7-42ad-897d-a57cd9a5a5bf@ilande.co.uk>
- <40888af0-8493-4ac2-94c6-08fc02b51444@roeck-us.net>
- <e12ffe60-5f32-4e72-beee-addec31b4775@ilande.co.uk>
- <a34f9bf4-b6b1-4dda-b35e-dbc6f0b6468d@roeck-us.net>
- <65de3749-f3ae-4eea-9391-a2932a551bb2@ilande.co.uk>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <65de3749-f3ae-4eea-9391-a2932a551bb2@ilande.co.uk>
+ <a68b234a-c202-44ca-bb45-5cbb86b5729b@gmx.de>
+ <ae5e04f4-3979-4a6e-8cff-58f69e41fb08@gmx.de>
+ <015b31ba-f440-4fb1-af0c-265f484bc91a@ilande.co.uk>
+ <4ba17f2d-632c-4c49-a9d0-46324b5e5d7e@roeck-us.net>
+ <68c3b5c9-4986-48c6-9cdb-52da59486e4c@ilande.co.uk>
+ <f3777cce-31af-4632-9480-bc1f78285d2f@gmx.de>
+ <df586906-2950-4b55-b26a-50e75d25f195@gmx.de>
+ <8f1f2bf0-29aa-410a-8ecb-af61ba9c6dad@ilande.co.uk>
+ <9d064661-3568-47f8-890c-4c05027e9999@gmx.de>
+ <b22d59ff-bb79-4660-834a-ebbcd10c5ac8@gmx.de>
+ <2924c887-0022-4cab-a986-0afd5f7a50f4@ilande.co.uk>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
+ HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
+ r+8w6mkccOM9GhoPU0vMaD/UVJcJQzvrxVHO8EHS36aUkjKd6cOpdVbCt3qx8cEhCmaFEO6u
+ CL+k5AZQoABbFQEBocZE1/lSYzaHkcHrjn4cQjc3CffXnUVYwlo8EYOtAHgMDC39s9a7S90L
+ 69l6G73lYBD/Br5lnDPlG6dKfGFZZpQ1h8/x+Qz366Ojfq9MuuRJg7ZQpe6foiOtqwKym/zV
+ dVvSdOOc5sHSpfwu5+BVAAyBd6hw4NddlAQUjHSRs3zJ9OfrEx2d3mIfXZ7+pMhZ7qX0Axlq
+ Lq+B5cfLpzkPAgKn11tfXFxP+hcPHIts0bnDz4EEp+HraW+oRCH2m57Y9zhcJTOJaLw4YpTY
+ GRUlF076vZ2Hz/xMEvIJddRGId7UXZgH9a32NDf+BUjWEZvFt1wFSW1r7zb7oGCwZMy2LI/G
+ aHQv/N0NeFMd28z+deyxd0k1CGefHJuJcOJDVtcE1rGQ43aDhWSpXvXKDj42vFD2We6uIo9D
+ 1VNre2+uAxFzqqf026H6cH8hin9Vnx7p3uq3Dka/Y/qmRFnKVQARAQABzRxIZWxnZSBEZWxs
+ ZXIgPGRlbGxlckBnbXguZGU+wsGRBBMBCAA7AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
+ FiEERUSCKCzZENvvPSX4Pl89BKeiRgMFAl3J1zsCGQEACgkQPl89BKeiRgNK7xAAg6kJTPje
+ uBm9PJTUxXaoaLJFXbYdSPfXhqX/BI9Xi2VzhwC2nSmizdFbeobQBTtRIz5LPhjk95t11q0s
+ uP5htzNISPpwxiYZGKrNnXfcPlziI2bUtlz4ke34cLK6MIl1kbS0/kJBxhiXyvyTWk2JmkMi
+ REjR84lCMAoJd1OM9XGFOg94BT5aLlEKFcld9qj7B4UFpma8RbRUpUWdo0omAEgrnhaKJwV8
+ qt0ULaF/kyP5qbI8iA2PAvIjq73dA4LNKdMFPG7Rw8yITQ1Vi0DlDgDT2RLvKxEQC0o3C6O4
+ iQq7qamsThLK0JSDRdLDnq6Phv+Yahd7sDMYuk3gIdoyczRkXzncWAYq7XTWl7nZYBVXG1D8
+ gkdclsnHzEKpTQIzn/rGyZshsjL4pxVUIpw/vdfx8oNRLKj7iduf11g2kFP71e9v2PP94ik3
+ Xi9oszP+fP770J0B8QM8w745BrcQm41SsILjArK+5mMHrYhM4ZFN7aipK3UXDNs3vjN+t0zi
+ qErzlrxXtsX4J6nqjs/mF9frVkpv7OTAzj7pjFHv0Bu8pRm4AyW6Y5/H6jOup6nkJdP/AFDu
+ 5ImdlA0jhr3iLk9s9WnjBUHyMYu+HD7qR3yhX6uWxg2oB2FWVMRLXbPEt2hRGq09rVQS7DBy
+ dbZgPwou7pD8MTfQhGmDJFKm2jvOwU0EXchrcwEQAOsDQjdtPeaRt8EP2pc8tG+g9eiiX9Sh
+ rX87SLSeKF6uHpEJ3VbhafIU6A7hy7RcIJnQz0hEUdXjH774B8YD3JKnAtfAyuIU2/rOGa/v
+ UN4BY6U6TVIOv9piVQByBthGQh4YHhePSKtPzK9Pv/6rd8H3IWnJK/dXiUDQllkedrENXrZp
+ eLUjhyp94ooo9XqRl44YqlsrSUh+BzW7wqwfmu26UjmAzIZYVCPCq5IjD96QrhLf6naY6En3
+ ++tqCAWPkqKvWfRdXPOz4GK08uhcBp3jZHTVkcbo5qahVpv8Y8mzOvSIAxnIjb+cklVxjyY9
+ dVlrhfKiK5L+zA2fWUreVBqLs1SjfHm5OGuQ2qqzVcMYJGH/uisJn22VXB1c48yYyGv2HUN5
+ lC1JHQUV9734I5cczA2Gfo27nTHy3zANj4hy+s/q1adzvn7hMokU7OehwKrNXafFfwWVK3OG
+ 1dSjWtgIv5KJi1XZk5TV6JlPZSqj4D8pUwIx3KSp0cD7xTEZATRfc47Yc+cyKcXG034tNEAc
+ xZNTR1kMi9njdxc1wzM9T6pspTtA0vuD3ee94Dg+nDrH1As24uwfFLguiILPzpl0kLaPYYgB
+ wumlL2nGcB6RVRRFMiAS5uOTEk+sJ/tRiQwO3K8vmaECaNJRfJC7weH+jww1Dzo0f1TP6rUa
+ fTBRABEBAAHCwXYEGAEIACAWIQRFRIIoLNkQ2+89Jfg+Xz0Ep6JGAwUCXchrcwIbDAAKCRA+
+ Xz0Ep6JGAxtdEAC54NQMBwjUNqBNCMsh6WrwQwbg9tkJw718QHPw43gKFSxFIYzdBzD/YMPH
+ l+2fFiefvmI4uNDjlyCITGSM+T6b8cA7YAKvZhzJyJSS7pRzsIKGjhk7zADL1+PJei9p9idy
+ RbmFKo0dAL+ac0t/EZULHGPuIiavWLgwYLVoUEBwz86ZtEtVmDmEsj8ryWw75ZIarNDhV74s
+ BdM2ffUJk3+vWe25BPcJiaZkTuFt+xt2CdbvpZv3IPrEkp9GAKof2hHdFCRKMtgxBo8Kao6p
+ Ws/Vv68FusAi94ySuZT3fp1xGWWf5+1jX4ylC//w0Rj85QihTpA2MylORUNFvH0MRJx4mlFk
+ XN6G+5jIIJhG46LUucQ28+VyEDNcGL3tarnkw8ngEhAbnvMJ2RTx8vGh7PssKaGzAUmNNZiG
+ MB4mPKqvDZ02j1wp7vthQcOEg08z1+XHXb8ZZKST7yTVa5P89JymGE8CBGdQaAXnqYK3/yWf
+ FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
+ 4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
+ ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
+In-Reply-To: <2924c887-0022-4cab-a986-0afd5f7a50f4@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:gQsEgfOcZwlF/W3VCwO9jsWPp+Od8bX/SUOEMGWmsf0XIYngH7d
+ 7xWlygbNuwQphCiKVEKJ68x0IUChzAeua7fRwPQccaPuW91BZaoiMyRfgmMEdyjYZYeAzmA
+ KofqO9HY+cPeW+iFY2aObWqNfyeYJVqJQ7CQAb4TgMMNxgsr2Yb7tPEpSLdDbzGeAOuASru
+ ByX3jnLGeOuLAEFDaK4YQ==
+UI-OutboundReport: notjunk:1;M01:P0:Cx8ASQ8f8aY=;W6TmCIDqpDVNIH634VW2oH/p884
+ pdBpsKGs6su5FehiaPcAkYuxPLnx1jsAGISvWbJ/t/Ybn2TBQ8HhVKlnwA+6jA4G6yVzAYN5p
+ lj5kOA1DlRqhPff8kplN3mYJLBdx9ZUCsol0m9XiCvQywx4kUj7rxLxtwdldqYo2oy4MNNG2+
+ MYEBsPPPN5FHDq/KNjLaZCP2puTtYnsPidm59UYBmrYOXKseYCfEcceDLes6TpAiQCxKr07Tz
+ sd1plTPWex4ebHk1TUedG1bfdxsHKPjYQqa3llyyxClMl68TAb7FXTsezciRxRHcx9OBue6nw
+ MtSKyabo79eE8Vtq/jw1I3Q3gAoHwRlc3zex4Z+RyxAKKvplm/TRQiZQg27qNQIo5c6mk3AXc
+ i2FLSuYAip9PIzfv4m1H791brqJm6Q5vmYS+WmJXt6l0SO0t/5qSBKZw4QoMOMUoc71yPbuAj
+ rIAc0y1o95ifpfwWNRmlo+zlbNIdewMHpN2amNRFSqtdlQGl4TTPI3OkikMKYWzDNEXn7f6bH
+ 8ByVsF2KBfu3oLHpI/C9K199P0aHmNnS9sFQ2e0FWhVRLL0YIFEs2FHuXAc6JqJTmLeT5CiyG
+ adWiZtxisvdQoLpbqwkZ8PKcMB5+xqfhwOCccFSjXRO0/kdl+Dpuqesbx5t2D0m7hckw+iVcR
+ hSKvWKxNH374BNjad1dAvDz+NvYW3Ku+/BhvAROp23KAHo4KXCUxeFdyrOhXQf2TJvfIjHIe8
+ Bmi4Ey7zZSOTa/XQj+kK3JYQpcjSLnnMp+9EZ9Lrt1txYSdtH9uxgMS9I4jqmiK2+aYQb3lRZ
+ g/V11WKuBMLPvIZLNWFR5dPd7tY432PPZ5x2WAhYRcH2J1dvVJFRr4iL9oFXUrd/nE7f2TTqE
+ 1C7rBvSiIKQrjsVe/UCwKoKpS+IwuBevwFCHQ7N5WsK74pX7yvjrgVuRYalt9VtnUSNfvUlaE
+ Th4SOA==
 
-On 12/9/23 12:23, Mark Cave-Ayland wrote:
-> On 08/12/2023 22:39, Guenter Roeck wrote:
-> 
->> On 12/8/23 13:19, Mark Cave-Ayland wrote:
->>> On 08/12/2023 19:56, Guenter Roeck wrote:
->>>
->>>> On 12/8/23 10:53, Mark Cave-Ayland wrote:
->>>>> On 08/12/2023 14:58, Guenter Roeck wrote:
->>>>>
->>>>>> On 12/8/23 00:01, Mark Cave-Ayland wrote:
->>>>>>> On 07/12/2023 21:47, Helge Deller wrote:
->>>>>>>
->>>>>>>> (looping in Mark Cave-Ayland, since he did some work on qemu esp driver)
->>>>>>>
->>>>>>> Thanks for the ping!
->>>>>>>
->>>>>>>> On 12/7/23 22:08, Guenter Roeck wrote:
->>>>>>>>> Hi Helge,
+On 12/9/23 19:56, Mark Cave-Ayland wrote:
+>>>>>>>>> The command line I used for testing hppa is below:
 >>>>>>>>>
->>>>>>>>> On 12/6/23 13:43, Helge Deller wrote:
->>>>>>>>>> On 12/6/23 21:19, Guenter Roeck wrote:
->>>>>>>>>>> On 12/6/23 09:00, Helge Deller wrote:
->>>>>>>>>>> [ ... ]
->>>>>>>>>>>>> Is it worth testing with multiple CPUs ? I can re-enable it and
->>>>>>>>>>>>> check more closely if you think it makes sense. If so, what number
->>>>>>>>>>>>> of CPUs would you recommend ?
->>>>>>>>>>>>
->>>>>>>>>>>> I think 4 CPUs is realistic.
->>>>>>>>>>>> But I agree, that you probably see more issues.
->>>>>>>>>>>>
->>>>>>>>>>>> Generally the assumption was, that the different caches on parisc
->>>>>>>>>>>> may trigger SMP issues, but given that those issues can be seen on
->>>>>>>>>>>> qemu, it indicates that there are generic SMP issues too.
->>>>>>>>>>>>
->>>>>>>>>>>
->>>>>>>>>>> Ok, I ran some tests overnight with 2-8 CPUs. Turns out the system is quite
->>>>>>>>>>> stable,
->>>>>>>>>>
->>>>>>>>>> cool!
->>>>>>>>>>
->>>>>>>>>>> with the exception of SCSI controllers. Some fail completely, others
->>>>>>>>>>> rarely. Here is a quick summary:
->>>>>>>>>>>
->>>>>>>>>>> - am53c974 fails with "Spurious irq, sreg=00", followed by "Aborting command"
->>>>>>>>>>>    and a hung task crash.
->>>>>>>>>>> - megasas and megasas-gen2 fail with
->>>>>>>>>>>    "scsi host1: scsi scan: INQUIRY result too short (5), using 36"
->>>>>>>>>>>    followed by
->>>>>>>>>>>    "megaraid_sas 0000:00:04.0: Unknown command completed!"
->>>>>>>>>>>    and a hung task crash
->>>>>>>>>>> - mptsas1068 fails completely (no kernel log message seen)
->>>>>>>>>>> - dc390 and lsi* report random "Spurious irq, sreg=00" messages and timeouts
->>>>>>>>>>
->>>>>>>>>> I think none of those drivers have ever been tested
->>>>>>>>>> on physical hardware either.
->>>>>>>>>> So I'm astonished that it even worked that far :-)
->>>>>>>>>>
->>>>>>>>> I actually do have a dc390 board somewhere. I used it some time ago to improve
->>>>>>>>> the emulation.
->>>>>>>>
->>>>>>>> Do you have a physical hppa box too?
->>>>>>>>
->>>>>>>>>> Based on kernel sources, the "Spurious irq, sreg=%02x." error can only happen for the
->>>>>>>>>> am53c974 driver. Are you sure you see this message for dc390 and lsi* too?
->>>>>>>>>>
->>>>>>>>> am53c974 and dc390 use the same driver. lsi* doesn't, and doesn't have a problem
->>>>>>>>> either. Sorry, I confused that with some old notes.
+>>>>>>>>> ./qemu-system-hppa \
+>>>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -kernel vmlinux-parisc \
+>>>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -no-reboot \
+>>>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -snapshot \
+>>>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -device am53c974,id=3Dscsi \
+>>>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -device scsi-hd,bus=3Dscsi.0,drive=3Dd0=
+ \
+>>>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -drive file=3Drootfs.ext2-parisc,format=
+=3Draw,if=3Dnone,id=3Dd0 \
+>>>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -append "panic=3D-1 slub_debug=3DFZPUA =
+root=3D/dev/sda console=3DttyS0,115200" \
+>>>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0 -nographic -monitor null
 >>>>>>>>>
->>>>>>>>> Either case, I think I found the problem. After handling an interrupt, the Linux
->>>>>>>>> driver checks if another interrupt is pending. It does that by checking the
->>>>>>>>> DMA_DONE bit in the DMA status register. If that bit is set, it re-enters the
->>>>>>>>> interrupt handler. Problem with that is that the emulation sets DMA_DONE
->>>>>>>>> prematurely, before it sets the command done bit in the interrupt status register
->>>>>>>>> and before it sets the interrupt pending bit in the status register. As result,
->>>>>>>>> DMA_DONE is set but IRQ_PENDING isn't, and the spurious interrupt is reported.
->>>>>>>>> I fixed that up in my code and will test it for some time and with various
->>>>>>>>> architectures before I send a patch.
->>>>>>>
->>>>>>> I'm actually in the process of putting the finishing touches to a large rewrite of QEMU's core ESP emulation since there are a number of known issues with the existing version. In particular there are problems with the SCSI phase being set incorrectly after reading ESP_INTR and ESP_RSTAT's STAT_TC not being correct. Note that this is just the ESP core rather than the ESP PCI device.
->>>>>>>
->>>>>>> If you are interested, I could try and find a few minutes to tidy it up a bit more and push a testing branch to Github?
->>>>>>>
->>>>>>
->>>>>> Sure, I'll be happy to give your changes a try.
->>>>>>
->>>>>> FWIW, the change I made to fix the spurious interrupt problem is
->>>>>>
->>>>>> diff --git a/hw/scsi/esp-pci.c b/hw/scsi/esp-pci.c
->>>>>> index 6794acaebc..f624398c55 100644
->>>>>> --- a/hw/scsi/esp-pci.c
->>>>>> +++ b/hw/scsi/esp-pci.c
->>>>>> @@ -286,9 +286,6 @@ static void esp_pci_dma_memory_rw(PCIESPState *pci, uint8_t *buf, int len,
->>>>>>       /* update status registers */
->>>>>>       pci->dma_regs[DMA_WBC] -= len;
->>>>>>       pci->dma_regs[DMA_WAC] += len;
->>>>>> -    if (pci->dma_regs[DMA_WBC] == 0) {
->>>>>> -        pci->dma_regs[DMA_STAT] |= DMA_STAT_DONE;
->>>>>> -    }
->>>>>>   }
->>>>>>
->>>>>> I tested that with several platforms. There are no more spurious interrupts
->>>>>> after that change, and no other errors either.
->>>>>
->>>>> I suspect that this is papering over the real issue, since it appears the code being removed sets the DMA completion bit when then the PCI DMA transfer counter reaches zero.
->>>>>
->>>>
->>>> DMA_STAT_DONE is also set in esp_pci_command_complete(), so it doesn't get lost.
->>>
->>> That doesn't seem right from a QEMU perspective: the command_complete callback is invoked when the SCSI layer has completed its data transfer to the emulated device, or immediately if there is no data phase. From a DMA perspective triggering an interrupt when the byte counter is zero feels like it should be the correct behaviour.
->>>
->>>> Problem is that the Linux kernel driver assumes that the interrupt status bit
->>>> is set in parallel with DMA_STAT_DONE. The spurious interrupt is seen because
->>>> that is not the case. There may be a better solution, of course. I'll be happy
->>>> to give it a try if you find a better solution.
->>>
->>> Could you provide a github link to the file/line in question so I can have a look?
->>>
->>
->> Assuming you mean the Linux kernel:
->>
->> In esp_scsi.c:
->>
->> The interrupt loop is in scsi_esp_intr(). It calls esp->ops->irq_pending(esp))
->> to check if another interrupt is pending. Subsequently, it calls __esp_interrupt()
->> to handle it. __esp_interrupt() calls esp_check_spur_intr(), which expects ESP_INTR_SR
->> to be set.
-> 
-> ESP_INTR_SR appears to be the SCSI bus reset bit? That doesn't seem to make sense here.
-> 
+...
+>> If I limit the disc transfer size of am53c974 to just 4K per transactio=
+n
+>> (like the patch below against Linux kernel 6.6.4), then qemu-hppa
+>> boots up nicely with qemu git head (and G=C3=BCnther's patches applied)=
+.
+>
+> Nice detective work :)
+>
+> If you're using the esp-rework-testing branch then the only patch you sh=
+ould need is the patch to esp-pci.c: otherwise if you also apply G=C3=BCnt=
+her's esp.c patch then you break the reset of the ESP_RSTAT flags when rea=
+ding ESP_RINTR. Can you confirm that this is the case in your tests?
+>
+>> No ext4 crc errors in this case.
+>> Mark, your git tree then still gives IRQ issues and other problems.
+>
+> Presumably this is just the "Spurious irq, sreg=3D%02x." errors, or are =
+you seeing something else?
 
-Sorry, I picked the wrong bit. s/ESP_INTR_SR/ESP_STAT_INTR/
+Mostly spurious irq:
 
-See drivers/scsi/esp_scsi.c around line 1009.
+[   41.561399] scsi host1: Spurious irq, sreg=3D10.
+[   41.562700] scsi host1: Spurious irq, sreg=3D13.
 
-                 if (!(esp->sreg & ESP_STAT_INTR)) {
-                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                         if (esp->ireg & ESP_INTR_SR)
-                                 return 1;
+But later too:
 
-                         /* If the DMA is indicating interrupt pending and the
-                          * ESP is not, the only possibility is a DMA error.
-                          */
-                         if (!esp->ops->dma_error(esp)) {
-                                 shost_printk(KERN_ERR, esp->host,
-                                              "Spurious irq, sreg=%02x.\n",
-                                              esp->sreg);
-                                 return -1;
-                         }
+[    **] (1 of 5) Job dev-disk-by\x2duuid-ac=E2=80=A6ice/start running (50=
+s / 1min 30s)
+[   72.700842] scsi host1: Aborting command [0000000016534e32:2a]
+[   72.700842] scsi host1: Current command [00000000320ffcdd:2a]
+[   72.700842] scsi host1: Queued command [0000000016534e32:2a]
+[   72.700842] scsi host1:  Active command [00000000320ffcdd:2a]
+[   72.700842] scsi host1: Dumping command log
+[   72.700842] scsi host1: ent[13] CMD val[01] sreg[92] seqreg[01] sreg2[0=
+0] ireg[10] ss[00] event[01]
+[   72.700842] scsi host1: ent[14] CMD val[10] sreg[92] seqreg[01] sreg2[0=
+0] ireg[10] ss[00] event[01]
+[   72.700842] scsi host1: ent[15] EVENT val[02] sreg[92] seqreg[01] sreg2=
+[00] ireg[10] ss[00] event[01]
+[   72.700842] scsi host1: ent[16] EVENT val[0d] sreg[90] seqreg[01] sreg2=
+[00] ireg[10] ss[00] event[02]
+[   72.700842] scsi host1: ent[17] EVENT val[04] sreg[90] seqreg[01] sreg2=
+[00] ireg[10] ss[00] event[0d]
+[   72.700842] scsi host1: ent[18] CMD val[90] sreg[90] seqreg[01] sreg2[0=
+0] ireg[10] ss[00] event[04]
+[   72.700842] scsi host1: ent[19] EVENT val[05] sreg[90] seqreg[01] sreg2=
+[00] ireg[10] ss[00] event[04]
+[   72.700842] scsi host1: ent[20] CMD val[01] sreg[93] seqreg[01] sreg2[0=
+0] ireg[10] ss[00] event[05]
+[   72.700842] scsi host1: ent[21] EVENT val[0d] sreg[93] seqreg[01] sreg2=
+[00] ireg[10] ss[00] event[05]
+[   72.700842] scsi host1: ent[22] CMD val[01] sreg[93] seqreg[01] sreg2[0=
+0] ireg[10] ss[00] event[0d]
+[   72.700842] scsi host1: ent[23] CMD val[11] sreg[93] seqreg[01] sreg2[0=
+0] ireg[10] ss[00] event[0d]
+[   72.700842] scsi host1: ent[24] EVENT val[0b] sreg[93] seqreg[01] sreg2=
+[00] ireg[10] ss[00] event[0d]
+[   72.700842] scsi host1: ent[25] CMD val[12] sreg[97] seqreg[01] sreg2[0=
+0] ireg[08] ss[00] event[0b]
+[   72.700842] scsi host1: ent[26] EVENT val[0c] sreg[97] seqreg[01] sreg2=
+[00] ireg[08] ss[00] event[0b]
+[   72.700842] scsi host1: ent[27] CMD val[44] sreg[97] seqreg[00] sreg2[0=
+0] ireg[20] ss[00] event[0c]
+[   72.700842] scsi host1: ent[28] CMD val[01] sreg[97] seqreg[00] sreg2[0=
+0] ireg[20] ss[02] event[0c]
+[   72.700842] scsi host1: ent[29] CMD val[43] sreg[97] seqreg[00] sreg2[0=
+0] ireg[20] ss[02] event[0c]
+[   72.700842] scsi host1: ent[30] EVENT val[0d] sreg[96] seqreg[01] sreg2=
+[00] ireg[18] ss[00] event[0c]
+[   72.700842] scsi host1: ent[31] EVENT val[09] sreg[96] seqreg[01] sreg2=
+[00] ireg[18] ss[00] event[0d]
+[   72.700842] scsi host1: ent[0] CMD val[01] sreg[96] seqreg[01] sreg2[00=
+] ireg[18] ss[00] event[09]
+[   72.700842] scsi host1: ent[1] CMD val[10] sreg[96] seqreg[01] sreg2[00=
+] ireg[18] ss[00] event[09]
+[   72.700842] scsi host1: ent[2] EVENT val[0a] sreg[96] seqreg[01] sreg2[=
+00] ireg[18] ss[00] event[09]
+[   72.700842] scsi host1: ent[3] CMD val[00] sreg[92] seqreg[01] sreg2[00=
+] ireg[10] ss[00] event[0a]
+[   72.700842] scsi host1: ent[4] EVENT val[0d] sreg[92] seqreg[01] sreg2[=
+00] ireg[10] ss[00] event[0a]
+[   72.700842] scsi host1: ent[5] EVENT val[01] sreg[92] seqreg[01] sreg2[=
+00] ireg[10] ss[00] event[0d]
+[   72.700842] scsi host1: ent[6] CMD val[01] sreg[92] seqreg[01] sreg2[00=
+] ireg[10] ss[00] event[01]
+[   72.700842] scsi host1: ent[7] CMD val[10] sreg[92] seqreg[01] sreg2[00=
+] ireg[10] ss[00] event[01]
+[   72.700842] scsi host1: ent[8] EVENT val[02] sreg[92] seqreg[01] sreg2[=
+00] ireg[10] ss[00] event[01]
+[   72.700842] scsi host1: ent[9] EVENT val[0d] sreg[90] seqreg[01] sreg2[=
+00] ireg[10] ss[00] event[02]
+[   72.700842] scsi host1: ent[10] EVENT val[04] sreg[90] seqreg[01] sreg2=
+[00] ireg[10] ss[00] event[0d]
+[   72.700842] scsi host1: ent[11] CMD val[90] sreg[90] seqreg[01] sreg2[0=
+0] ireg[10] ss[00] event[04]
+[   72.700842] scsi host1: ent[12] EVENT val[05] sreg[90] seqreg[01] sreg2=
+[00] ireg[10] ss[00] event[04]
+[   72.759532] scsi host1: Aborting command [00000000320ffcdd:2a]
+[   72.760847] scsi host1: Current command [00000000320ffcdd:2a]
+[   72.760847] scsi host1:  Active command [00000000320ffcdd:2a]
+[   72.760847] scsi host1: Dumping command log
+[   72.760847] scsi host1: ent[13] CMD val[01] sreg[92] seqreg[01] sreg2[0=
+0] ireg[10] ss[00] event[01]
+[   72.760847] scsi host1: ent[14] CMD val[10] sreg[92] seqreg[01] sreg2[0=
+0] ireg[10] ss[00] event[01]
+[   72.760847] scsi host1: ent[15] EVENT val[02] sreg[92] seqreg[01] sreg2=
+[00] ireg[10] ss[00] event[01]
+...
 
-
->> The irq_pending function is am53c974.c:pci_esp_irq_pending(). It checks the DMA status
->> register and assumes that an interrupt is pending if any of (ESP_DMA_STAT_ERROR |
->> ESP_DMA_STAT_ABORT | ESP_DMA_STAT_DONE | ESP_DMA_STAT_SCSIINT) is set in the DMA
->> status register.
-> 
-> Can you send me the output with "-nographic -trace 'esp*' -trace 'scsi*'" so I can see at what point in the ESP state machine the error is being generated?
-> 
-
-I'll give it a try.
-
-Guenter
-
+Helge
 
