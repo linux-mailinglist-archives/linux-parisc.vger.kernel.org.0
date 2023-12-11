@@ -1,39 +1,62 @@
-Return-Path: <linux-parisc+bounces-207-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-208-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CBD80D01A
-	for <lists+linux-parisc@lfdr.de>; Mon, 11 Dec 2023 16:54:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385D880D3AC
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 Dec 2023 18:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA8481C2095C
-	for <lists+linux-parisc@lfdr.de>; Mon, 11 Dec 2023 15:54:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA679B213F5
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 Dec 2023 17:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CA34BAAA;
-	Mon, 11 Dec 2023 15:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90E34E1A4;
+	Mon, 11 Dec 2023 17:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="r7MD5tlS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PHRhCYrj"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E423EA1
-	for <linux-parisc@vger.kernel.org>; Mon, 11 Dec 2023 07:54:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1702310037; x=1702914837; i=deller@gmx.de;
-	bh=cYtl+juPwlhwzglLQdU2/2aC/DFMzYM1P4bDGKGtbpE=;
-	h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
-	b=r7MD5tlSTbo21oa23iaA29RoohK6hEKgBf6tb+WigcEWCq8yoTjbL6ZXfmRTLNPT
-	 pKf8kE533Zen5iSbLlMHupPFRLg/eF+7S6ob4rr9eO0/gRKtbSyiXaQLf7UYkvI8j
-	 ClKiKHuqRW0a+4+R2nd2MxTcuf6hqlRbcjeBMfCGrLydGnkskkGMogl9eJSiUtmfC
-	 YMVpethKBghofBF2yWLqZljbASwxZXY1/RggQCh4E8bxVq6jsmQEPXQG5SbrlapK2
-	 md3DLqcUYVQx6NBhpB118IKMc+0V+UI0fz2aoiehkkeaFmd5Geeuh8aGRqLZRM34w
-	 rZxHzM14dCV8RpP7Ow==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([94.134.152.58]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MtwYu-1rVdV30LQi-00uMoW; Mon, 11
- Dec 2023 16:53:57 +0100
-Message-ID: <d68c9ade-9b5e-4ccc-ba72-4c5ef98750a5@gmx.de>
-Date: Mon, 11 Dec 2023 16:53:55 +0100
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94E5392
+	for <linux-parisc@vger.kernel.org>; Mon, 11 Dec 2023 09:26:10 -0800 (PST)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6ce32821a53so2614072b3a.0
+        for <linux-parisc@vger.kernel.org>; Mon, 11 Dec 2023 09:26:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702315570; x=1702920370; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=+yk5lldPRz0+pbbHMfh5zIlgSD3vb83vt+ouFAfiuXs=;
+        b=PHRhCYrjVAIy3ofp/ng1mUz42MHv4MvdOrcjZXi252GxIa4gjQx7RhhpqnIRU/DJRx
+         kw82wueWMB9v/Qba7l2BMQUlNWF2s5lEyT/Xiek3xHMKD8lR1PR28IhSq8vkZdqOdMUQ
+         VdiNw/tWbSIKy21/sEoThtvKIggMz7b3R/UwNv7XouAJCbin46G6RpMfCx+DiqjnuPUw
+         m2vPE5KYm7iKf7UZUbhA9jfPBzd5nPZZC52Z6PnpkDnHByf8BQH/ozRJ9AK+evbNFypm
+         gJSUaAsNi0PmoTjuS1BNGlfYx8KojejxKVthD+xU+dFjIiCRM3sqorurwxDvaJRI1ReE
+         KcbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702315570; x=1702920370;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+yk5lldPRz0+pbbHMfh5zIlgSD3vb83vt+ouFAfiuXs=;
+        b=dX3DR6tGxRh4zxyG1/A9+XxO6D3M/8ytriRuJSLHYAdj2ErD+mAaSTx/4ZMU+0Dj8U
+         HpxRZuFpsLHthsgitcI0k7186LeGFZJy4MCSPCzbb6Hi0DhhpnytaIiBqkgKI8kzIiP4
+         OwPKEfyteKbXRxO9+IARD2MNgenGdhOf5NUw0BreDPq2qkiXS7QydnUYD7RbMVglLyJj
+         X9za3rIZ29dBmFPHUXlDkLnSgX+++yIqEyN8z923F/1MPobc5G6GbmCHmyvwFRSh8Q0h
+         mqQg4ej85JYy/siM/uq0B/bYH4bkJVG9BrJ11iDqizzjxrCqJImy7JgdE7CfzOemGJcB
+         50yQ==
+X-Gm-Message-State: AOJu0Yy73XzB6hC8i36SDY7HcGhFeCnCNNbwT0JS9LeH32kRr7CmAQ51
+	fNb0445yi3Lqjug2F+2Zk/LHVE3nGQI=
+X-Google-Smtp-Source: AGHT+IHoUc77tdteLbwcPbThEaZK8I9vgUzjW5gM+SVKt6mtSB23rIct/GZYqhsTHNxwQfzxzNQfLg==
+X-Received: by 2002:a05:6a20:7d93:b0:18f:f637:99d1 with SMTP id v19-20020a056a207d9300b0018ff63799d1mr2448002pzj.57.1702315569924;
+        Mon, 11 Dec 2023 09:26:09 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id fb32-20020a056a002da000b006ce7ed5ba41sm6456032pfb.55.2023.12.11.09.26.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Dec 2023 09:26:09 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <6933d337-9ba8-4336-8638-d74321c7cbd7@roeck-us.net>
+Date: Mon, 11 Dec 2023 09:26:08 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -43,12 +66,11 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: 64-bit userspace root file system for hppa64
 Content-Language: en-US
-To: Guenter Roeck <linux@roeck-us.net>,
+To: Helge Deller <deller@gmx.de>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  John David Anglin <dave.anglin@bell.net>,
  Parisc List <linux-parisc@vger.kernel.org>
 References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
- <a68b234a-c202-44ca-bb45-5cbb86b5729b@gmx.de>
  <ae5e04f4-3979-4a6e-8cff-58f69e41fb08@gmx.de>
  <015b31ba-f440-4fb1-af0c-265f484bc91a@ilande.co.uk>
  <4ba17f2d-632c-4c49-a9d0-46324b5e5d7e@roeck-us.net>
@@ -67,124 +89,102 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <046e9f36-5086-4d87-8187-94558f52fef9@ilande.co.uk>
  <17a5173a-a596-4ea8-941b-3c9b5492e4b7@gmx.de>
  <e6420598-df13-41e5-b6f2-e469db5473db@roeck-us.net>
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
- HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
- r+8w6mkccOM9GhoPU0vMaD/UVJcJQzvrxVHO8EHS36aUkjKd6cOpdVbCt3qx8cEhCmaFEO6u
- CL+k5AZQoABbFQEBocZE1/lSYzaHkcHrjn4cQjc3CffXnUVYwlo8EYOtAHgMDC39s9a7S90L
- 69l6G73lYBD/Br5lnDPlG6dKfGFZZpQ1h8/x+Qz366Ojfq9MuuRJg7ZQpe6foiOtqwKym/zV
- dVvSdOOc5sHSpfwu5+BVAAyBd6hw4NddlAQUjHSRs3zJ9OfrEx2d3mIfXZ7+pMhZ7qX0Axlq
- Lq+B5cfLpzkPAgKn11tfXFxP+hcPHIts0bnDz4EEp+HraW+oRCH2m57Y9zhcJTOJaLw4YpTY
- GRUlF076vZ2Hz/xMEvIJddRGId7UXZgH9a32NDf+BUjWEZvFt1wFSW1r7zb7oGCwZMy2LI/G
- aHQv/N0NeFMd28z+deyxd0k1CGefHJuJcOJDVtcE1rGQ43aDhWSpXvXKDj42vFD2We6uIo9D
- 1VNre2+uAxFzqqf026H6cH8hin9Vnx7p3uq3Dka/Y/qmRFnKVQARAQABzRxIZWxnZSBEZWxs
- ZXIgPGRlbGxlckBnbXguZGU+wsGRBBMBCAA7AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
- FiEERUSCKCzZENvvPSX4Pl89BKeiRgMFAl3J1zsCGQEACgkQPl89BKeiRgNK7xAAg6kJTPje
- uBm9PJTUxXaoaLJFXbYdSPfXhqX/BI9Xi2VzhwC2nSmizdFbeobQBTtRIz5LPhjk95t11q0s
- uP5htzNISPpwxiYZGKrNnXfcPlziI2bUtlz4ke34cLK6MIl1kbS0/kJBxhiXyvyTWk2JmkMi
- REjR84lCMAoJd1OM9XGFOg94BT5aLlEKFcld9qj7B4UFpma8RbRUpUWdo0omAEgrnhaKJwV8
- qt0ULaF/kyP5qbI8iA2PAvIjq73dA4LNKdMFPG7Rw8yITQ1Vi0DlDgDT2RLvKxEQC0o3C6O4
- iQq7qamsThLK0JSDRdLDnq6Phv+Yahd7sDMYuk3gIdoyczRkXzncWAYq7XTWl7nZYBVXG1D8
- gkdclsnHzEKpTQIzn/rGyZshsjL4pxVUIpw/vdfx8oNRLKj7iduf11g2kFP71e9v2PP94ik3
- Xi9oszP+fP770J0B8QM8w745BrcQm41SsILjArK+5mMHrYhM4ZFN7aipK3UXDNs3vjN+t0zi
- qErzlrxXtsX4J6nqjs/mF9frVkpv7OTAzj7pjFHv0Bu8pRm4AyW6Y5/H6jOup6nkJdP/AFDu
- 5ImdlA0jhr3iLk9s9WnjBUHyMYu+HD7qR3yhX6uWxg2oB2FWVMRLXbPEt2hRGq09rVQS7DBy
- dbZgPwou7pD8MTfQhGmDJFKm2jvOwU0EXchrcwEQAOsDQjdtPeaRt8EP2pc8tG+g9eiiX9Sh
- rX87SLSeKF6uHpEJ3VbhafIU6A7hy7RcIJnQz0hEUdXjH774B8YD3JKnAtfAyuIU2/rOGa/v
- UN4BY6U6TVIOv9piVQByBthGQh4YHhePSKtPzK9Pv/6rd8H3IWnJK/dXiUDQllkedrENXrZp
- eLUjhyp94ooo9XqRl44YqlsrSUh+BzW7wqwfmu26UjmAzIZYVCPCq5IjD96QrhLf6naY6En3
- ++tqCAWPkqKvWfRdXPOz4GK08uhcBp3jZHTVkcbo5qahVpv8Y8mzOvSIAxnIjb+cklVxjyY9
- dVlrhfKiK5L+zA2fWUreVBqLs1SjfHm5OGuQ2qqzVcMYJGH/uisJn22VXB1c48yYyGv2HUN5
- lC1JHQUV9734I5cczA2Gfo27nTHy3zANj4hy+s/q1adzvn7hMokU7OehwKrNXafFfwWVK3OG
- 1dSjWtgIv5KJi1XZk5TV6JlPZSqj4D8pUwIx3KSp0cD7xTEZATRfc47Yc+cyKcXG034tNEAc
- xZNTR1kMi9njdxc1wzM9T6pspTtA0vuD3ee94Dg+nDrH1As24uwfFLguiILPzpl0kLaPYYgB
- wumlL2nGcB6RVRRFMiAS5uOTEk+sJ/tRiQwO3K8vmaECaNJRfJC7weH+jww1Dzo0f1TP6rUa
- fTBRABEBAAHCwXYEGAEIACAWIQRFRIIoLNkQ2+89Jfg+Xz0Ep6JGAwUCXchrcwIbDAAKCRA+
- Xz0Ep6JGAxtdEAC54NQMBwjUNqBNCMsh6WrwQwbg9tkJw718QHPw43gKFSxFIYzdBzD/YMPH
- l+2fFiefvmI4uNDjlyCITGSM+T6b8cA7YAKvZhzJyJSS7pRzsIKGjhk7zADL1+PJei9p9idy
- RbmFKo0dAL+ac0t/EZULHGPuIiavWLgwYLVoUEBwz86ZtEtVmDmEsj8ryWw75ZIarNDhV74s
- BdM2ffUJk3+vWe25BPcJiaZkTuFt+xt2CdbvpZv3IPrEkp9GAKof2hHdFCRKMtgxBo8Kao6p
- Ws/Vv68FusAi94ySuZT3fp1xGWWf5+1jX4ylC//w0Rj85QihTpA2MylORUNFvH0MRJx4mlFk
- XN6G+5jIIJhG46LUucQ28+VyEDNcGL3tarnkw8ngEhAbnvMJ2RTx8vGh7PssKaGzAUmNNZiG
- MB4mPKqvDZ02j1wp7vthQcOEg08z1+XHXb8ZZKST7yTVa5P89JymGE8CBGdQaAXnqYK3/yWf
- FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
- 4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
- ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <e6420598-df13-41e5-b6f2-e469db5473db@roeck-us.net>
+ <d68c9ade-9b5e-4ccc-ba72-4c5ef98750a5@gmx.de>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <d68c9ade-9b5e-4ccc-ba72-4c5ef98750a5@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+XrGsWArZwUP2DhPaAtQTKluGkxjq5UWBpVCulQN3TiU9jkcafo
- RZvMahsDUs/ndw4Fj9XVDGGRLzj6FwZMiY1hy8SP8kcY5jhBVOpCnbYbmUlUBPD6YCkmFw0
- MmM29PgayMyN1L4cnDOs1XCfjGT5IPXsXjzXlC0++U84cr7PqCaaI5iLAfU3y+ljxBMwfdB
- S/psEXeWSgxFXGEJKhEHg==
-UI-OutboundReport: notjunk:1;M01:P0:GGJTzy8droQ=;9qDwGPKcpEgM9mBNcxqGvkahA25
- 8PUWeSl1jELyDn+W/gbtNrmMQkgRyoSpoyW1q/L/BRN2C0zsaWp5xg3A3YNPAQpUjBF2sDRYk
- zqgxvqkOUp0Tctxb6ybYkL5wr/QDl6Qz0rg5rNjX+KkO9NNEtGs4RJB79Aqbzcy+lDc78U7Fp
- ybwEhNExhXCrxRVTHQd9U7mPLgFRpleR3Xymis49ySHbFPAPl+iYjQn6v6+iYeQEeFI2VgZ1r
- uWYHuyFnrU2G+tAjgdV2d48f71+iygDF621fui+izdN81O5GZofILOYGpKFJHfQuELH20Pp7N
- df69gWXngy/18UqP9qLCLlNom1SMYlXbNYeEIWDwsH6i07pPDvVYic+QvkKoc1YEB7cBARAjM
- crRaWNGDz0WBuLhAfYb+CICcWouvSDHhwF2QV+2WJVaQMGJ2DyJLzwY9Q/Dv1H7lKY1zDTqiI
- 5hTiFPZ/qFmnmfJsUj6oc4ovKInr6kBEyLlJYW1GQSO+zvkQkewM+RSa6PnZxNL4UEJHGxgoR
- IOWdJJPJ/bNbL6c8nbLehwSVj2gkHnQUs4Ovt+T3XyGZuqTvJy6fgVLmLmXp1cQLCWhWaGl67
- hRZPHXvIEoK1BmKoyoHLXu2Jcp8O1RiqeeTfMikMF4VfogKLZ3gt1ef4aZxIlTAmQ85ovLgcs
- ZKX6cdYD4AHLmGoSOldbg0w1woGLbsdBrrEVZhRTM0BgdDtQSlcgFjnqyBbHYSt73QeM8r+rt
- GCsNZWghF40HLVdiyGVhAX43WqFslTWELWtZ9BiD2FeQr2skGBjLWg+jLN5K0ViXpt8Yq4lb0
- qXqOesXuLmVLfs6DwC1pVPw6I8dVH0v6V/WNijT03tgzy+rPHww8K8tWlt46oFivBFwX29qTs
- oxF8m0/GHlV4EtjiKGMZJOyUwGRYuRlqdljZQqGHv72OgQzdottGt5tgNZX0n0QSgI6fPpaWY
- F+egOA==
+Content-Transfer-Encoding: 8bit
 
-On 12/10/23 22:59, Guenter Roeck wrote:
-> On 12/10/23 13:42, Helge Deller wrote:
-> [ ... ]> I actually don't know if null-bytes are transferred.
->> But ext4 reports CRC errors, so I added this hunk to the Linux kernel:
+On 12/11/23 07:53, Helge Deller wrote:
+> On 12/10/23 22:59, Guenter Roeck wrote:
+>> On 12/10/23 13:42, Helge Deller wrote:
+>> [ ... ]> I actually don't know if null-bytes are transferred.
+>>> But ext4 reports CRC errors, so I added this hunk to the Linux kernel:
+>>>
+>>> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+>>> index d7732320431a..9b12fbd44e06 100644
+>>> --- a/fs/ext4/inode.c
+>>> +++ b/fs/ext4/inode.c
+>>> @@ -4732,6 +4736,9 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+>>>          if (ret < 0)
+>>>                  goto bad_inode;
+>>>          raw_inode = ext4_raw_inode(&iloc);
+>>> +// printk("raw_info  provided %px %x\n", &raw_inode->i_checksum_lo, raw_inode->i_checksum_lo);
+>>> +// printk("  iloc->bh->b_data %px  iloc->offset %lx\n", iloc.bh->b_data, iloc.offset);
+>>> +if (raw_inode->i_checksum_lo == 0) asm(".word 0xfffdead0");
+>>>
+>>> The last line immediately stops qemu if the checksum is zero.
+>>> I start qemu with
+>>>   ./qemu-system-hppa -drive file=../qemu-images/hdd.img.new,if=none,id=d0 -kernel vmlinux  -append "root=/dev/sda5 console=ttyS0 single earlycon=pdc"  -serial mon:stdio -smp cpus=3  -machine C3700  -nographic  -snapshot -device am53c974,id=scsi -device scsi-hd,bus=scsi.0,drive=d0
+>>>
+>>> qemu aborts with the am53c974 driver.
+>>> If I use exactly the same command, but with the lsi53c895a driver instead of am53c974, it boots correctly.
+>>>
+>>> Any other idea?
+>>>
 >>
->> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
->> index d7732320431a..9b12fbd44e06 100644
->> --- a/fs/ext4/inode.c
->> +++ b/fs/ext4/inode.c
->> @@ -4732,6 +4736,9 @@ struct inode *__ext4_iget(struct super_block *sb,=
- unsigned long ino,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret < 0)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto bad_inode;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 raw_inode =3D ext4_raw=
-_inode(&iloc);
->> +// printk("raw_info=C2=A0 provided %px %x\n", &raw_inode->i_checksum_l=
-o, raw_inode->i_checksum_lo);
->> +// printk("=C2=A0 iloc->bh->b_data %px=C2=A0 iloc->offset %lx\n", iloc=
-.bh->b_data, iloc.offset);
->> +if (raw_inode->i_checksum_lo =3D=3D 0) asm(".word 0xfffdead0");
->>
->> The last line immediately stops qemu if the checksum is zero.
->> I start qemu with
->> =C2=A0=C2=A0./qemu-system-hppa -drive file=3D../qemu-images/hdd.img.new=
-,if=3Dnone,id=3Dd0 -kernel vmlinux=C2=A0 -append "root=3D/dev/sda5 console=
-=3DttyS0 single earlycon=3Dpdc"=C2=A0 -serial mon:stdio -smp cpus=3D3=C2=
-=A0 -machine C3700=C2=A0 -nographic=C2=A0 -snapshot -device am53c974,id=3D=
-scsi -device scsi-hd,bus=3Dscsi.0,drive=3Dd0
->>
->> qemu aborts with the am53c974 driver.
->> If I use exactly the same command, but with the lsi53c895a driver inste=
-ad of am53c974, it boots correctly.
->>
->> Any other idea?
->>
->
-> Does your code use scatter-gather DMA ?
+>> Does your code use scatter-gather DMA ?
+> 
+> Which code? The kernel which mounts the ext4 filesystem?
+> 
 
-Which code? The kernel which mounts the ext4 filesystem?
+Seabios. Sorry, I thought your problem was with that.
 
-> If so, that might explain the problem.
-> I don't think the qemu code implements that properly. I don't mean the M=
-DL version,
-> that isn't implemented at all. I mean the non-MDL version, where a singl=
-e SCSI
-> command requires multiple DMA transfers which have to be set up one by o=
-ne.
+>> If so, that might explain the problem.
+>> I don't think the qemu code implements that properly. I don't mean the MDL version,
+>> that isn't implemented at all. I mean the non-MDL version, where a single SCSI
+>> command requires multiple DMA transfers which have to be set up one by one.
+> 
+> Is there any way I could test, e.g. by disabling SG ?
+> 
 
-Is there any way I could test, e.g. by disabling SG ?
+No idea, but that makes me wonder if ext4 and other file systems somehow trigger SG
+operation while ext2 doesn't. I'll do some debugging along that line.
 
-Helge
+Guenter
+
 
 
