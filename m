@@ -1,39 +1,46 @@
-Return-Path: <linux-parisc+bounces-209-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-210-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF2680DD54
-	for <lists+linux-parisc@lfdr.de>; Mon, 11 Dec 2023 22:38:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B70280DD80
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 Dec 2023 22:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 456E41F21579
-	for <lists+linux-parisc@lfdr.de>; Mon, 11 Dec 2023 21:38:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 081582818BF
+	for <lists+linux-parisc@lfdr.de>; Mon, 11 Dec 2023 21:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152B154F83;
-	Mon, 11 Dec 2023 21:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D43354FA0;
+	Mon, 11 Dec 2023 21:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="al7dIGMP"
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=ilande.co.uk header.i=@ilande.co.uk header.b="yRHjTM1r"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D61D8D5
-	for <linux-parisc@vger.kernel.org>; Mon, 11 Dec 2023 13:38:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1702330700; x=1702935500; i=deller@gmx.de;
-	bh=ZIEjKyOGtznrQhSh8PeoWWwC7411vm4sUNttXrdmfA8=;
-	h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
-	b=al7dIGMPXSJIz/JSpjvyPDg7f7DQo1L4AHUAj1y1O/MZAFy/CuwnY9CKjl/EM2rK
-	 /BW+q7UqFJ0k8085TiVBPG/9DAhWS6VV3Vctyt4xBiZ2pAu3ukJWl8cH9IMUMeSQl
-	 Wi+z4VKittaxd/EqHPAEhFhdKD7+kHq50RSOps44qnPYN17n5ARDTX/mxIp3EDZpm
-	 BOAJhxTDpniax+h9cVvw0sWD+LZ5w815lG8HCFoKHdN76FhtlUW1+pi1rGobQ2ror
-	 phXiD/cLbVSSK/XfVL/6UxhNWgUJoLzafiH8r9r1b2OYI4YRruCaTef878QbroX5U
-	 n3gzIIsiX33MBY+ptw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([94.134.152.58]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MjjCF-1reUAC3qjD-00lCsc; Mon, 11
- Dec 2023 22:38:19 +0100
-Message-ID: <09b4445c-421b-4be0-a6bc-33fc05232d6d@gmx.de>
-Date: Mon, 11 Dec 2023 22:38:18 +0100
+Received: from mail.ilande.co.uk (mail.ilande.co.uk [IPv6:2001:41c9:1:41f::167])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1737BD
+	for <linux-parisc@vger.kernel.org>; Mon, 11 Dec 2023 13:47:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=gA7xEmKOSKdCsRcMN3XschFTqFs2ost6IgGf/J3cI6E=; b=yRHjTM1rgfibHSQ9GoIsmSPm9p
+	cv7VfUx8tXjgaNViQhvsIkWi9ibddqnJGq40Jt1C/h6CevdKChJhHUNeidPaWcn+WawOyVJNfxDjg
+	UWmEuanhgCzfaAuYxyNgwYaPdlDCjBhRHtJN1DySi890ML0nkNyud4j3uQyMWGpX1QyDvChE6OVxj
+	tCHMgtdYIc011q2wfYproELY0rFthzobCuQouf3beKxuQeXEpAyBu8VX57ophuRjKs82rNiAfbZkI
+	D8YafWqBjoIpK5xYpLIU+3Iseq64c1oGoKFkv0T+rqt/3bmpuhJbX2lhR/WkWnfCAAPxQCfExHzAO
+	5OuqK+ZYtKqHZTYmXq10YMdES4vfBKsbmloPhTFL2LgpsmyeTe3qkkpimfZiqwDH1XmYGh97kEFqR
+	2dS9urZOlw1Iy1NkFV95dzfY+nFOAE+lLFuV01tEQ5FM3Uzyxgjs7UlzELfSS04xWemXvBHPnq/wX
+	dlTFTBDZ/LHsh0QE6U/+42V5rJ0hOdoyIBZH9ICb9kra4TUzpCR6dS7LIDLpSvk01UEHqBJXLUWJj
+	UAHMjRXifoja39iRXQ4AMzJY53jQ7uL4dBjQnX3iZABDWb8s3bEO55k2zjZiNtrt3WzavScB1Ys9o
+	LGkGuUtTgJNXynbpMVp3U0WmqnKQqxygNrf7W7ry8=;
+Received: from [2a00:23c4:8bb0:f100:ab82:865e:c2ea:d7d9]
+	by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	(Exim 4.92)
+	(envelope-from <mark.cave-ayland@ilande.co.uk>)
+	id 1rCo6y-0000Of-3i; Mon, 11 Dec 2023 21:46:52 +0000
+Message-ID: <a377b148-68ac-4e18-8cd2-bd03cd7427c7@ilande.co.uk>
+Date: Mon, 11 Dec 2023 21:47:03 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -41,13 +48,13 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: 64-bit userspace root file system for hppa64
-Content-Language: en-US
-To: Guenter Roeck <linux@roeck-us.net>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+To: Helge Deller <deller@gmx.de>, Guenter Roeck <linux@roeck-us.net>,
  John David Anglin <dave.anglin@bell.net>,
  Parisc List <linux-parisc@vger.kernel.org>
 References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
+ <97729a4b-5ef7-42ad-897d-a57cd9a5a5bf@ilande.co.uk>
+ <a68b234a-c202-44ca-bb45-5cbb86b5729b@gmx.de>
+ <ae5e04f4-3979-4a6e-8cff-58f69e41fb08@gmx.de>
  <015b31ba-f440-4fb1-af0c-265f484bc91a@ilande.co.uk>
  <4ba17f2d-632c-4c49-a9d0-46324b5e5d7e@roeck-us.net>
  <68c3b5c9-4986-48c6-9cdb-52da59486e4c@ilande.co.uk>
@@ -64,144 +71,172 @@ References: <17dc79fa-4a38-44ee-a8ea-b523b2d99b26@roeck-us.net>
  <44dec9d0-8715-4ae6-8abc-31159529470d@gmx.de>
  <046e9f36-5086-4d87-8187-94558f52fef9@ilande.co.uk>
  <17a5173a-a596-4ea8-941b-3c9b5492e4b7@gmx.de>
- <e6420598-df13-41e5-b6f2-e469db5473db@roeck-us.net>
- <d68c9ade-9b5e-4ccc-ba72-4c5ef98750a5@gmx.de>
- <6933d337-9ba8-4336-8638-d74321c7cbd7@roeck-us.net>
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
- HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
- r+8w6mkccOM9GhoPU0vMaD/UVJcJQzvrxVHO8EHS36aUkjKd6cOpdVbCt3qx8cEhCmaFEO6u
- CL+k5AZQoABbFQEBocZE1/lSYzaHkcHrjn4cQjc3CffXnUVYwlo8EYOtAHgMDC39s9a7S90L
- 69l6G73lYBD/Br5lnDPlG6dKfGFZZpQ1h8/x+Qz366Ojfq9MuuRJg7ZQpe6foiOtqwKym/zV
- dVvSdOOc5sHSpfwu5+BVAAyBd6hw4NddlAQUjHSRs3zJ9OfrEx2d3mIfXZ7+pMhZ7qX0Axlq
- Lq+B5cfLpzkPAgKn11tfXFxP+hcPHIts0bnDz4EEp+HraW+oRCH2m57Y9zhcJTOJaLw4YpTY
- GRUlF076vZ2Hz/xMEvIJddRGId7UXZgH9a32NDf+BUjWEZvFt1wFSW1r7zb7oGCwZMy2LI/G
- aHQv/N0NeFMd28z+deyxd0k1CGefHJuJcOJDVtcE1rGQ43aDhWSpXvXKDj42vFD2We6uIo9D
- 1VNre2+uAxFzqqf026H6cH8hin9Vnx7p3uq3Dka/Y/qmRFnKVQARAQABzRxIZWxnZSBEZWxs
- ZXIgPGRlbGxlckBnbXguZGU+wsGRBBMBCAA7AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
- FiEERUSCKCzZENvvPSX4Pl89BKeiRgMFAl3J1zsCGQEACgkQPl89BKeiRgNK7xAAg6kJTPje
- uBm9PJTUxXaoaLJFXbYdSPfXhqX/BI9Xi2VzhwC2nSmizdFbeobQBTtRIz5LPhjk95t11q0s
- uP5htzNISPpwxiYZGKrNnXfcPlziI2bUtlz4ke34cLK6MIl1kbS0/kJBxhiXyvyTWk2JmkMi
- REjR84lCMAoJd1OM9XGFOg94BT5aLlEKFcld9qj7B4UFpma8RbRUpUWdo0omAEgrnhaKJwV8
- qt0ULaF/kyP5qbI8iA2PAvIjq73dA4LNKdMFPG7Rw8yITQ1Vi0DlDgDT2RLvKxEQC0o3C6O4
- iQq7qamsThLK0JSDRdLDnq6Phv+Yahd7sDMYuk3gIdoyczRkXzncWAYq7XTWl7nZYBVXG1D8
- gkdclsnHzEKpTQIzn/rGyZshsjL4pxVUIpw/vdfx8oNRLKj7iduf11g2kFP71e9v2PP94ik3
- Xi9oszP+fP770J0B8QM8w745BrcQm41SsILjArK+5mMHrYhM4ZFN7aipK3UXDNs3vjN+t0zi
- qErzlrxXtsX4J6nqjs/mF9frVkpv7OTAzj7pjFHv0Bu8pRm4AyW6Y5/H6jOup6nkJdP/AFDu
- 5ImdlA0jhr3iLk9s9WnjBUHyMYu+HD7qR3yhX6uWxg2oB2FWVMRLXbPEt2hRGq09rVQS7DBy
- dbZgPwou7pD8MTfQhGmDJFKm2jvOwU0EXchrcwEQAOsDQjdtPeaRt8EP2pc8tG+g9eiiX9Sh
- rX87SLSeKF6uHpEJ3VbhafIU6A7hy7RcIJnQz0hEUdXjH774B8YD3JKnAtfAyuIU2/rOGa/v
- UN4BY6U6TVIOv9piVQByBthGQh4YHhePSKtPzK9Pv/6rd8H3IWnJK/dXiUDQllkedrENXrZp
- eLUjhyp94ooo9XqRl44YqlsrSUh+BzW7wqwfmu26UjmAzIZYVCPCq5IjD96QrhLf6naY6En3
- ++tqCAWPkqKvWfRdXPOz4GK08uhcBp3jZHTVkcbo5qahVpv8Y8mzOvSIAxnIjb+cklVxjyY9
- dVlrhfKiK5L+zA2fWUreVBqLs1SjfHm5OGuQ2qqzVcMYJGH/uisJn22VXB1c48yYyGv2HUN5
- lC1JHQUV9734I5cczA2Gfo27nTHy3zANj4hy+s/q1adzvn7hMokU7OehwKrNXafFfwWVK3OG
- 1dSjWtgIv5KJi1XZk5TV6JlPZSqj4D8pUwIx3KSp0cD7xTEZATRfc47Yc+cyKcXG034tNEAc
- xZNTR1kMi9njdxc1wzM9T6pspTtA0vuD3ee94Dg+nDrH1As24uwfFLguiILPzpl0kLaPYYgB
- wumlL2nGcB6RVRRFMiAS5uOTEk+sJ/tRiQwO3K8vmaECaNJRfJC7weH+jww1Dzo0f1TP6rUa
- fTBRABEBAAHCwXYEGAEIACAWIQRFRIIoLNkQ2+89Jfg+Xz0Ep6JGAwUCXchrcwIbDAAKCRA+
- Xz0Ep6JGAxtdEAC54NQMBwjUNqBNCMsh6WrwQwbg9tkJw718QHPw43gKFSxFIYzdBzD/YMPH
- l+2fFiefvmI4uNDjlyCITGSM+T6b8cA7YAKvZhzJyJSS7pRzsIKGjhk7zADL1+PJei9p9idy
- RbmFKo0dAL+ac0t/EZULHGPuIiavWLgwYLVoUEBwz86ZtEtVmDmEsj8ryWw75ZIarNDhV74s
- BdM2ffUJk3+vWe25BPcJiaZkTuFt+xt2CdbvpZv3IPrEkp9GAKof2hHdFCRKMtgxBo8Kao6p
- Ws/Vv68FusAi94ySuZT3fp1xGWWf5+1jX4ylC//w0Rj85QihTpA2MylORUNFvH0MRJx4mlFk
- XN6G+5jIIJhG46LUucQ28+VyEDNcGL3tarnkw8ngEhAbnvMJ2RTx8vGh7PssKaGzAUmNNZiG
- MB4mPKqvDZ02j1wp7vthQcOEg08z1+XHXb8ZZKST7yTVa5P89JymGE8CBGdQaAXnqYK3/yWf
- FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
- 4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
- ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <6933d337-9ba8-4336-8638-d74321c7cbd7@roeck-us.net>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <17a5173a-a596-4ea8-941b-3c9b5492e4b7@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:G5u8CwqTb1pNNMzJ8s/5Rj66vEBzHkLvpr6XKRGgtpAp4d5UQCP
- ozb8iXp6VHfOOSXiPXZ3rLK1KnHw90ly2FeMxK7Egv779Gs1tNEVFBlvoOwLWlNPuELb6Zt
- CvRg6vneTUuZmH7kg1aJ4DTQSaTHs+8UlxXBDOylozA4QsovraX0iKphJaBlCugY8ZjMiiR
- fVJcMvEOmT4jvcRfFzbYQ==
-UI-OutboundReport: notjunk:1;M01:P0:JNocFxXkKHw=;Dp4AgH4J34NWQDjax104P1UBiIn
- PrzooF0p/1fJrpelcO6PROkK7AOpd2PgMVRDLHqZksOJBZ5IWA7fRaddc/sIR1ATI9DW494g9
- r7xWlLi0S6ltOeReefhvBNdCbCeWwfxtBHP+zmyTk2iWVu8CCYvIsMixfrl3oxLR0EI3Uvj9M
- hnQPOzhyVVx5nWbq8YIZUUWihmjruFtzQUXZalEfZ3iFRX9T1buZZ8mx2ThIG70sZJjtauC61
- 49F+Y5tkknYPl9Ajk4BJXuK55uJZW4zB17vTl0Q/dzrk7VhEM1sIFdUvtg2ZuLCTvPYZKl4zF
- o8wtGSh0R1C+/CLxilkHVy8Z7rt0vVHJrUrn2hyFX6rN5jfahX78p04WN0Jv7CYEcKrmZCZXj
- oOwfXWPZe7Dhxg9DTByYjkKzd2Du1kWg9uNmekFv6RGeoW7V+ndJk/21i3EbiHn6gks7EVO6c
- uAWJ7EFpvxhD+m1FLSxQUD6A3nUFm+WorQJVY/v4uMcrTlCLT5LuO+DcyzAcwhGnZBL/wVqF7
- pyuel8/6GBEz1vJKYzq0KxfSd0sjkpKCa/BolbLm3La+w0Epbh13G1T40ML/nXuXSprj8oqtK
- lPqXSqxNJdA0CtVUHDYGV3brixLbsvRWM5Y/YVPm1yLB6BZ48ETCEtZ9oQfQEzL9Opz9Ekm5v
- lUPUAnMD/9tZAnd7OfxHOLGqyzM4rqn0U8iP00CJP3IG9UX7HyYwSMfMhFBeUt+eKu2H5ShjW
- wOjnhHoc3Pvyqi5ef6Z6Tbd1e0MtlDQ0ReIE2a29N4JjDiOQtY3HC7Fwud+evqnIIuajFpHZ7
- zWqTzuWLUMWa7uRF1i7EmAXA0FoVLHFt9syF/EPviGO1Z/bY4ysy9auBBC5ijchPIvOsBRQB5
- aVnn4VxK8RPIJvRNyZRvAjWIhwX+iCeqEBOVD7OHrpVsOxFR5sAGwEEZDJA8UO9sCFVzsmJ6V
- pNMk8nVnM46CQ0ut4Qx2W+gnSOQ=
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb0:f100:ab82:865e:c2ea:d7d9
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+X-Spam-Level: 
+Subject: Re: 64-bit userspace root file system for hppa64
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 
-On 12/11/23 18:26, Guenter Roeck wrote:
-> On 12/11/23 07:53, Helge Deller wrote:
->> On 12/10/23 22:59, Guenter Roeck wrote:
->>> On 12/10/23 13:42, Helge Deller wrote:
->>> [ ... ]> I actually don't know if null-bytes are transferred.
->>>> But ext4 reports CRC errors, so I added this hunk to the Linux kernel=
-:
+On 10/12/2023 21:42, Helge Deller wrote:
+
+> On 12/10/23 22:15, Mark Cave-Ayland wrote:
+>> On 10/12/2023 15:47, Helge Deller wrote:
+>>
+>>> On 12/10/23 01:22, Mark Cave-Ayland wrote:
+>>>> On 09/12/2023 23:43, Helge Deller wrote:
 >>>>
->>>> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
->>>> index d7732320431a..9b12fbd44e06 100644
->>>> --- a/fs/ext4/inode.c
->>>> +++ b/fs/ext4/inode.c
->>>> @@ -4732,6 +4736,9 @@ struct inode *__ext4_iget(struct super_block *s=
-b, unsigned long ino,
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret < 0)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto bad_inode;
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 raw_inode =3D ext4_r=
-aw_inode(&iloc);
->>>> +// printk("raw_info=C2=A0 provided %px %x\n", &raw_inode->i_checksum=
-_lo, raw_inode->i_checksum_lo);
->>>> +// printk("=C2=A0 iloc->bh->b_data %px=C2=A0 iloc->offset %lx\n", il=
-oc.bh->b_data, iloc.offset);
->>>> +if (raw_inode->i_checksum_lo =3D=3D 0) asm(".word 0xfffdead0");
+>>>>> On 12/9/23 23:57, Guenter Roeck wrote:
+>>>>>> On 12/9/23 13:58, Helge Deller wrote:
+>>>>>>> On 12/9/23 19:56, Mark Cave-Ayland wrote:
+>>>>>>>>>>>>>>>> The command line I used for testing hppa is below:
+>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>> ./qemu-system-hppa \
+>>>>>>>>>>>>>>>>      -kernel vmlinux-parisc \
+>>>>>>>>>>>>>>>>      -no-reboot \
+>>>>>>>>>>>>>>>>      -snapshot \
+>>>>>>>>>>>>>>>>      -device am53c974,id=scsi \
+>>>>>>>>>>>>>>>>      -device scsi-hd,bus=scsi.0,drive=d0 \
+>>>>>>>>>>>>>>>>      -drive file=rootfs.ext2-parisc,format=raw,if=none,id=d0 \
+>>>>>>>>>>>>>>>>      -append "panic=-1 slub_debug=FZPUA root=/dev/sda 
+>>>>>>>>>>>>>>>> console=ttyS0,115200" \
+>>>>>>>>>>>>>>>>      -nographic -monitor null
+>>>>>>>>>>>>>>>>
+>>>>>>> ...
+>>>>>>>>> If I limit the disc transfer size of am53c974 to just 4K per transaction
+>>>>>>>>> (like the patch below against Linux kernel 6.6.4), then qemu-hppa
+>>>>>>>>> boots up nicely with qemu git head (and Günther's patches applied).
+>>>>>
+>>>>> A diff of the qemu traces shows, that at some stage
+>>>>> esp_transfer_data transfer() is called for 4k/transaction,
+>>>>> but is not started for 12k/transaction...
+>>>>>
+>>>>> Full traces are here:
+>>>>> http://www.dellerweb.de/qemu/qemu-bugs/FAIL
+>>>>> http://www.dellerweb.de/qemu/qemu-bugs/OK
+>>>>>
+>>>>> verify with:
+>>>>>   diff -u OK FAIL  | vi -
+>>>>> and go to line 2496:
+>>>>>
+>>>>> -STC: 1000    hi/mid/lo: 00/10/00
+>>>>> +STC: 3000    hi/mid/lo: 00/30/00
+>>>>>   esp_dma_enable Raise enable
+>>>>> -esp_handle_ti Transfer Information len 4096
+>>>>> +esp_handle_ti Transfer Information len 12288
+>>>>>   esp_raise_irq Raise IRQ
+>>>>>   esp_lower_drq Lower DREQ
+>>>>> -esp_transfer_data transfer 0/4096       <<<<<<<<<<< this seems missing for 12k
+>>>>>   esp_pci_dma_read reg[5]: 0x00000010
+>>>>>   esp_mem_readb reg[4]: 0x91
+>>>>>   esp_mem_readb reg[6]: 0x04
+>>>>> @@ -8081,21 +7111,22 @@
 >>>>
->>>> The last line immediately stops qemu if the checksum is zero.
->>>> I start qemu with
->>>> =C2=A0=C2=A0./qemu-system-hppa -drive file=3D../qemu-images/hdd.img.n=
-ew,if=3Dnone,id=3Dd0 -kernel vmlinux=C2=A0 -append "root=3D/dev/sda5 conso=
-le=3DttyS0 single earlycon=3Dpdc"=C2=A0 -serial mon:stdio -smp cpus=3D3=C2=
-=A0 -machine C3700=C2=A0 -nographic=C2=A0 -snapshot -device am53c974,id=3D=
-scsi -device scsi-hd,bus=3Dscsi.0,drive=3Dd0
->>>>
->>>> qemu aborts with the am53c974 driver.
->>>> If I use exactly the same command, but with the lsi53c895a driver ins=
-tead of am53c974, it boots correctly.
->>>>
->>>> Any other idea?
->>>>
+>>>> Thanks for the traces, but it looks as if they are from QEMU git
+>>>> master rather than the esp-rework-testing branch?
 >>>
->>> Does your code use scatter-gather DMA ?
+>>> Yes.
+>>>
+>>>> The existing code has a number of known issues so it would be good to
+>>>> eliminate those first if possible.
+>>> That's probably true, but I assume your new code is for qemu > 8.2,
+>>> while a few small fixes for 8.2 would be good to have too.
 >>
->> Which code? The kernel which mounts the ext4 filesystem?
+>> I'm not sure if that is possible, mainly because the ESP changes are dependent and 
+>> order sensitive on each other :/
+> 
+> Sure. I just thought of a simple patch before all your other changes.
+> But that's not priority.
+> 
+>> I've repushed the esp-rework-testing branch which contains an extra WIP commit I 
+>> hope should fix the "Spurious IRQ" messages based upon some traces and experiments 
+>> done by Guenter.
+> 
+> Will try soon.
+> 
+>>> Anyway, traces with your esp-rework-testing branch are here:
+>>> http://www.dellerweb.de/qemu/qemu-bugs/FAIL-esp-rework-testing-4k
+>>> -> transfer limited to 4k, boots up, fails later with spurious irqs
+>>> and traces.
+>>>
+>>> http://www.dellerweb.de/qemu/qemu-bugs/FAIL-esp-rework-testing-8k
+>>> -> transfers limited to 8k, fails to boot as empty pages are returned.
+>>> (same issue as with git head)
 >>
->
-> Seabios. Sorry, I thought your problem was with that.
+>> As far as I can tell looking at the traces, the 8k DMA transfers look
+>> to be correct so I'm wondering if either the DMA descriptors are
+>> incorrect or there is something else going on here. Can you give me
+>> some more information as to how you detect the empty pages?
+> 
+> I actually don't know if null-bytes are transferred.
+> But ext4 reports CRC errors, so I added this hunk to the Linux kernel:
+> 
+> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+> index d7732320431a..9b12fbd44e06 100644
+> --- a/fs/ext4/inode.c
+> +++ b/fs/ext4/inode.c
+> @@ -4732,6 +4736,9 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long 
+> ino,
+>          if (ret < 0)
+>                  goto bad_inode;
+>          raw_inode = ext4_raw_inode(&iloc);
+> +// printk("raw_info  provided %px %x\n", &raw_inode->i_checksum_lo, 
+> raw_inode->i_checksum_lo);
+> +// printk("  iloc->bh->b_data %px  iloc->offset %lx\n", iloc.bh->b_data, iloc.offset);
+> +if (raw_inode->i_checksum_lo == 0) asm(".word 0xfffdead0");
+> 
+> The last line immediately stops qemu if the checksum is zero.
+> I start qemu with
+>   ./qemu-system-hppa -drive file=../qemu-images/hdd.img.new,if=none,id=d0 -kernel 
+> vmlinux  -append "root=/dev/sda5 console=ttyS0 single earlycon=pdc"  -serial 
+> mon:stdio -smp cpus=3  -machine C3700  -nographic  -snapshot -device am53c974,id=scsi 
+> -device scsi-hd,bus=scsi.0,drive=d0
+> 
+> qemu aborts with the am53c974 driver.
+> If I use exactly the same command, but with the lsi53c895a driver instead of 
+> am53c974, it boots correctly.
+> 
+> Any other idea?
 
-Yes and no.
-My main intention was to test with the Linux kernel primarily.
-If this works, then it's easier to test the SeaBIOS code too.
+I'd try setting a breakpoint on esp_pci_dma_memory_write() if len > 4096, stepping 
+over pci_dma_rw() in esp_pci_dma_memory_rw() and then checking with the monitor that 
+the entire 8k transfer is present in memory using the "xp" command to check the start 
+and end of the data have been copied to physical memory.
 
->>> If so, that might explain the problem.
->>> I don't think the qemu code implements that properly. I don't mean the=
- MDL version,
->>> that isn't implemented at all. I mean the non-MDL version, where a sin=
-gle SCSI
->>> command requires multiple DMA transfers which have to be set up one by=
- one.
->>
->> Is there any way I could test, e.g. by disabling SG ?
->>
->
-> No idea, but that makes me wonder if ext4 and other file systems somehow=
- trigger SG
-> operation while ext2 doesn't. I'll do some debugging along that line.
+Is there an IOMMU involved here at all?
 
-Ok, thanks!
 
-Helge
+ATB,
+
+Mark.
 
 
