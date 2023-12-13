@@ -1,251 +1,182 @@
-Return-Path: <linux-parisc+bounces-215-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-216-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD48F8108B3
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 Dec 2023 04:23:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9828109AF
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Dec 2023 06:58:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78E921F21175
-	for <lists+linux-parisc@lfdr.de>; Wed, 13 Dec 2023 03:23:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1A301F217EA
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Dec 2023 05:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD3C6138;
-	Wed, 13 Dec 2023 03:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0CECA59;
+	Wed, 13 Dec 2023 05:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dx0fNPtR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pys9pTye"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42219B0
-	for <linux-parisc@vger.kernel.org>; Tue, 12 Dec 2023 19:23:18 -0800 (PST)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CB9BDC
+	for <linux-parisc@vger.kernel.org>; Tue, 12 Dec 2023 21:58:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702437797;
+	s=mimecast20190719; t=1702447081;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kJBrP/wuvom17BSUXW0NG0A84o2uJgCWtjNkzp2u12s=;
-	b=Dx0fNPtR7HcD2tznpS6HQrDWNi87tgak0hcVRYvaQtxgoTtF1yLbxZrcsWu1EaNzj4QrVW
-	SSSW5po8eCSzj/oTaM9at9+TZDNxf11rNxLkYp8Nf0eRLdqeSXZsaVVIiw47LHW7RgEi4R
-	elcbGnAdWeojmXIOKLuI19jCCHvtHsI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-656-qho-sWqZPYqtExHysk5vCA-1; Tue,
- 12 Dec 2023 22:23:11 -0500
-X-MC-Unique: qho-sWqZPYqtExHysk5vCA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=RUoeFpzGOqKTN9flZH6s2xBw5Pk9zJr+cPefMlD1aKs=;
+	b=Pys9pTyedstXNDELxN7U13Gf0KRInxaZjiSBbfKSYzXDRXv7239ulYdn3XFb1lHmtHfOQD
+	gW+ie3D/KfECfstQsQAPFIIxume2keAk+foPwlYI4tPTMmeFD50rK2IW3zK5kec71eja5I
+	4v/G/NP/fR9jt7QCb18xEh9oe6n+a2k=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-31-WAbzVqSrMWOIel7uGGUcPw-1; Wed, 13 Dec 2023 00:57:56 -0500
+X-MC-Unique: WAbzVqSrMWOIel7uGGUcPw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F9A43C29A62;
-	Wed, 13 Dec 2023 03:23:10 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.83])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 519BB2026D66;
-	Wed, 13 Dec 2023 03:23:09 +0000 (UTC)
-Date: Wed, 13 Dec 2023 11:23:06 +0800
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 39171185A783;
+	Wed, 13 Dec 2023 05:57:56 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.116.83])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 24DE41C060AF;
+	Wed, 13 Dec 2023 05:57:50 +0000 (UTC)
 From: Baoquan He <bhe@redhat.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Conor Dooley <conor.dooley@microchip.com>, linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org, x86@kernel.org,
+To: linux-kernel@vger.kernel.org
+Cc: kexec@lists.infradead.org,
+	x86@kernel.org,
 	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-parisc@vger.kernel.org, akpm@linux-foundation.org,
-	joe@perches.com, nathan@kernel.org
-Subject: Re: [PATCH v3 5/7] kexec_file, ricv: print out debugging message if
- required
-Message-ID: <ZXkjmrWOH1dLbHGB@MiWiFi-R3L-srv>
-References: <20231130023955.5257-1-bhe@redhat.com>
- <20231130023955.5257-6-bhe@redhat.com>
- <20231201-blog-blasphemy-985d2665903c@wendy>
- <ZW3yXWJ7rTrtZzyg@MiWiFi-R3L-srv>
- <20231204-liftoff-enclosure-d3e3daf0ab6e@spud>
- <ZXCVUD9cCYEShrrj@MiWiFi-R3L-srv>
- <20231206-pasta-embassy-c7250740b16c@spud>
- <ZXECHg37DRZ9BQsP@MiWiFi-R3L-srv>
+	linux-riscv@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-parisc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	joe@perches.com,
+	nathan@kernel.org,
+	conor@kernel.org,
+	Baoquan He <bhe@redhat.com>
+Subject: [PATCH v4 0/7] kexec_file: print out debugging message if required
+Date: Wed, 13 Dec 2023 13:57:40 +0800
+Message-ID: <20231213055747.61826-1-bhe@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZXECHg37DRZ9BQsP@MiWiFi-R3L-srv>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
-On 12/07/23 at 07:22am, Baoquan He wrote:
-> On 12/06/23 at 04:54pm, Conor Dooley wrote:
-> > On Wed, Dec 06, 2023 at 11:37:52PM +0800, Baoquan He wrote:
-> > > On 12/04/23 at 04:14pm, Conor Dooley wrote:
-> > > > On Mon, Dec 04, 2023 at 11:38:05PM +0800, Baoquan He wrote:
-> > > > > On 12/01/23 at 10:38am, Conor Dooley wrote:
-> > > > > > On Thu, Nov 30, 2023 at 10:39:53AM +0800, Baoquan He wrote:
-> > > > > > 
-> > > > > > $subject has a typo in the arch bit :)
-> > > > > 
-> > > > > Indeed, will fix if need report. Thanks for careful checking.
-> > > > > 
-> > > > > > 
-> > > > > > > Replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-> > > > > > > loading related codes.
-> > > > > > 
-> > > > > > Commit messages should be understandable in isolation, but this only
-> > > > > > explains (part of) what is obvious in the diff. Why is this change
-> > > > > > being made?
-> > > > > 
-> > > > > The purpose has been detailedly described in cover letter and patch 1
-> > > > > log. Andrew has picked these patches into his tree and grabbed the cover
-> > > > > letter log into the relevant commit for people's later checking. All
-> > > > > these seven patches will be present in mainline together. This is common
-> > > > > way when posting patch series? Please let me know if I misunderstand
-> > > > > anything.
-> > > > 
-> > > > Each patch having a commit message that explains why a change is being
-> > > > made is the expectation. It is especially useful to explain the why
-> > > > here, since it is not just a mechanical conversion of pr_debug()s as the
-> > > > commit message suggests.
-> > > 
-> > > Sounds reasonable. I rephrase the patch 3 log as below, do you think
-> > > it's OK to you?
-> > 
-> > Yes, but with one comment.
-> > 
-> > > 
-> > > I will also adjust patch logs on other ARCH once this one is done.
-> > > Thanks.
-> > > 
-> > > =============================
-> > > Subject: [PATCH v3 5/7] kexec_file, ricv: print out debugging message if required
-> > > 
-> > > Then when specifying '-d' for kexec_file_load interface, loaded
-> > > locations of kernel/initrd/cmdline etc can be printed out to help debug.
-> > > 
-> > > Here replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-> > > loading related codes.
-> > > 
-> > 
-> > > And also replace pr_notice() with kexec_dprintk() in elf_kexec_load()
-> > > because it's make sense to always print out loaded location of purgatory
->               ~
-> > > and device tree even though users don't expect the message.
-> 
-> Fixed typo:
-> ==========
-> 
-> And also replace pr_notice() with kexec_dprintk() in elf_kexec_load()
-> because it doesn't make sense to always print out loaded location of
-> purgatory and device tree even though users don't expect the message.
+Currently, specifying '-d' on kexec command will print a lot of debugging
+informationabout kexec/kdump loading with kexec_load interface.
 
-I will post v4 to include these suggested changes, please add comments
-if there's any concern. Thanks for reviewing.
+However, kexec_file_load prints nothing even though '-d' is specified.
+It's very inconvenient to debug or analyze the kexec/kdump loading when
+something wrong happened with kexec/kdump itself or develper want to
+check the kexec/kdump loading.
 
-> 
-> > 
-> > This seems to contradict what you said in your earlier mail, about
-> > moving these from notice to debug. I think you missed a negation in your
-> > new version of the commit message. What you said in response to me seems
-> > like a more complete explanation anyway:
-> 
-> Ah, I made mistake when typing, these printing is only for debugging,
-> so always printing out them is not suggested.
-> 
-> > 	always printing out the loaded location of purgatory and
-> > 	device tree doesn't make sense. It will be confusing when users
-> > 	see these even when they do normal kexec/kdump loading.
-> > 
-> > Thanks,
-> > Conor.
-> > 
-> > > And also remove kexec_image_info() because the content has been printed
-> > > out in generic code.
-> > > 
-> > > ============================
-> > > 
-> > > > 
-> > > > > > 
-> > > > > > > 
-> > > > > > > And also remove kexec_image_info() because the content has been printed
-> > > > > > > out in generic code.
-> > > > > > > 
-> > > > > > > Signed-off-by: Baoquan He <bhe@redhat.com>
-> > > > > > > ---
-> > > > > > >  arch/riscv/kernel/elf_kexec.c     | 11 ++++++-----
-> > > > > > >  arch/riscv/kernel/machine_kexec.c | 26 --------------------------
-> > > > > > >  2 files changed, 6 insertions(+), 31 deletions(-)
-> > > > > > > 
-> > > > > > > diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
-> > > > > > > index e60fbd8660c4..5bd1ec3341fe 100644
-> > > > > > > --- a/arch/riscv/kernel/elf_kexec.c
-> > > > > > > +++ b/arch/riscv/kernel/elf_kexec.c
-> > > > > > > @@ -216,7 +216,6 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
-> > > > > > >  	if (ret)
-> > > > > > >  		goto out;
-> > > > > > >  	kernel_start = image->start;
-> > > > > > > -	pr_notice("The entry point of kernel at 0x%lx\n", image->start);
-> > > > > > >  
-> > > > > > >  	/* Add the kernel binary to the image */
-> > > > > > >  	ret = riscv_kexec_elf_load(image, &ehdr, &elf_info,
-> > > > > > > @@ -252,8 +251,8 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
-> > > > > > >  		image->elf_load_addr = kbuf.mem;
-> > > > > > >  		image->elf_headers_sz = headers_sz;
-> > > > > > >  
-> > > > > > > -		pr_debug("Loaded elf core header at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
-> > > > > > > -			 image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
-> > > > > > > +		kexec_dprintk("Loaded elf core header at 0x%lx bufsz=0x%lx memsz=0x%lx\n",
-> > > > > > > +			      image->elf_load_addr, kbuf.bufsz, kbuf.memsz);
-> > > > > > >  
-> > > > > > >  		/* Setup cmdline for kdump kernel case */
-> > > > > > >  		modified_cmdline = setup_kdump_cmdline(image, cmdline,
-> > > > > > > @@ -275,6 +274,8 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
-> > > > > > >  		pr_err("Error loading purgatory ret=%d\n", ret);
-> > > > > > >  		goto out;
-> > > > > > >  	}
-> > > > > > > +	kexec_dprintk("Loaded purgatory at 0x%lx\n", kbuf.mem);
-> > > > > > > +
-> > > > > > >  	ret = kexec_purgatory_get_set_symbol(image, "riscv_kernel_entry",
-> > > > > > >  					     &kernel_start,
-> > > > > > >  					     sizeof(kernel_start), 0);
-> > > > > > > @@ -293,7 +294,7 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
-> > > > > > >  		if (ret)
-> > > > > > >  			goto out;
-> > > > > > >  		initrd_pbase = kbuf.mem;
-> > > > > > 
-> > > > > > > -		pr_notice("Loaded initrd at 0x%lx\n", initrd_pbase);
-> > > > > > > +		kexec_dprintk("Loaded initrd at 0x%lx\n", initrd_pbase);
-> > > > > > 
-> > > > > > This is not a pr_debug().
-> > > > > > 
-> > > > > > >  	}
-> > > > > > >  
-> > > > > > >  	/* Add the DTB to the image */
-> > > > > > > @@ -318,7 +319,7 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
-> > > > > > >  	}
-> > > > > > >  	/* Cache the fdt buffer address for memory cleanup */
-> > > > > > >  	image->arch.fdt = fdt;
-> > > > > > 
-> > > > > > > -	pr_notice("Loaded device tree at 0x%lx\n", kbuf.mem);
-> > > > > > > +	kexec_dprintk("Loaded device tree at 0x%lx\n", kbuf.mem);
-> > > > > > 
-> > > > > > Neither is this. Why are they being moved from pr_notice()?
-> > > > > 
-> > > > > You are right. 
-> > > > > 
-> > > > > While always printing out the loaded location of purgatory and
-> > > > > device tree doesn't make sense. It will be confusing when users
-> > > > > see these even when they do normal kexec/kdump loading. It should be
-> > > > > changed to pr_debug().
-> > > > > 
-> > > > > Which way do you suggest?
-> > > > > 1) change it back to pr_debug(), fix it in another patch;
-> > > > > 2) keep it as is in the patch;
-> > > > 
-> > > > Personally I think it is fine to change them all in one patch, but the
-> > > > rationale for converting pr_notice() to your new debug infrastructure
-> > > > needs to be in the commit message.
-> > > 
-> > > Sure, sounds good to me. I have changed the patch log to reflect this as
-> > > you suggested, please help check. Thanks again.
-> > > 
-> 
-> 
+In this patchset, a kexec_file flag is KEXEC_FILE_DEBUG added and checked
+in code. If it's passed in, debugging message of kexec_file code will be
+printed out and can be seen from console and dmesg. Otherwise, the
+debugging message is printed like beofre when pr_debug() is taken.
+
+Note:
+****
+=====
+1) The code in kexec-tools utility also need be changed to support
+passing KEXEC_FILE_DEBUG to kernel when 'kexec -s -d' is specified.
+The patch link is here:
+=========
+[PATCH] kexec_file: add kexec_file flag to support debug printing
+http://lists.infradead.org/pipermail/kexec/2023-November/028505.html
+
+2) s390 also has kexec_file code, while I am not sure what debugging
+information is necessary. So leave it to s390 developer.
+
+Test:
+****
+====
+Testing was done in v1 on x86_64 and arm64. For v4, tested on x86_64
+again. And on x86_64, the printed messages look like below:
+--------------------------------------------------------------
+kexec measurement buffer for the loaded kernel at 0x207fffe000.
+Loaded purgatory at 0x207fff9000
+Loaded boot_param, command line and misc at 0x207fff3000 bufsz=0x1180 memsz=0x1180
+Loaded 64bit kernel at 0x207c000000 bufsz=0xc88200 memsz=0x3c4a000
+Loaded initrd at 0x2079e79000 bufsz=0x2186280 memsz=0x2186280
+Final command line is: root=/dev/mapper/fedora_intel--knightslanding--lb--02-root ro
+rd.lvm.lv=fedora_intel-knightslanding-lb-02/root console=ttyS0,115200N81 crashkernel=256M
+E820 memmap:
+0000000000000000-000000000009a3ff (1)
+000000000009a400-000000000009ffff (2)
+00000000000e0000-00000000000fffff (2)
+0000000000100000-000000006ff83fff (1)
+000000006ff84000-000000007ac50fff (2)
+......
+000000207fff6150-000000207fff615f (128)
+000000207fff6160-000000207fff714f (1)
+000000207fff7150-000000207fff715f (128)
+000000207fff7160-000000207fff814f (1)
+000000207fff8150-000000207fff815f (128)
+000000207fff8160-000000207fffffff (1)
+nr_segments = 5
+segment[0]: buf=0x000000004e5ece74 bufsz=0x211 mem=0x207fffe000 memsz=0x1000
+segment[1]: buf=0x000000009e871498 bufsz=0x4000 mem=0x207fff9000 memsz=0x5000
+segment[2]: buf=0x00000000d879f1fe bufsz=0x1180 mem=0x207fff3000 memsz=0x2000
+segment[3]: buf=0x000000001101cd86 bufsz=0xc88200 mem=0x207c000000 memsz=0x3c4a000
+segment[4]: buf=0x00000000c6e38ac7 bufsz=0x2186280 mem=0x2079e79000 memsz=0x2187000
+kexec_file_load: type:0, start:0x207fff91a0 head:0x109e004002 flags:0x8
+---------------------------------------------------------------------------
+
+History:
+=========
+v3->v4:
+- Add the explanation about why kexec_dprintk() need be introduced to
+  replace pr_debug() in log of ARCH patch, suggested by Conor.
+- Mentioned why pr_notice() need be replaced with kexec_dprintk() in
+  function elf_kexec_load() of risc-v, Suggested by Conor.
+- Change breaking one message line into two back to one line, pointed
+  out by Joe.
+v2->v3:
+- Adjust all the indentation of continuation line to the open parenthesis
+  for all kexec_dprintk() call sites. Thank Joe to point this out.
+- Fix the LKP report that macro kexec_dprintk() is invalid when
+  CONFIG_KEXEC=Y, CONFIG_KEXEC_FILE=n, CONFIG_CRASH_DUMP=y.
+
+v1->v2:
+- Take the new format of kexec_dprintk() suggested by Joe which can
+  reduce kernel text size.
+- Fix building error of patch 2 in kernel/crash_core.c reported by LKP.
+- Fix building warning on arm64 in patch 4 reported by LKP.
+
+Baoquan He (7):
+  kexec_file: add kexec_file flag to control debug printing
+  kexec_file: print out debugging message if required
+  kexec_file, x86: print out debugging message if required
+  kexec_file, arm64: print out debugging message if required
+  kexec_file, ricv: print out debugging message if required
+  kexec_file, power: print out debugging message if required
+  kexec_file, parisc: print out debugging message if required
+
+ arch/arm64/kernel/kexec_image.c        |  6 +++---
+ arch/arm64/kernel/machine_kexec.c      | 26 ++++++--------------------
+ arch/arm64/kernel/machine_kexec_file.c | 12 ++++++------
+ arch/parisc/kernel/kexec_file.c        |  8 ++++----
+ arch/powerpc/kexec/elf_64.c            |  8 ++++----
+ arch/powerpc/kexec/file_load_64.c      | 18 +++++++++---------
+ arch/riscv/kernel/elf_kexec.c          | 11 ++++++-----
+ arch/riscv/kernel/machine_kexec.c      | 26 --------------------------
+ arch/x86/kernel/crash.c                |  4 ++--
+ arch/x86/kernel/kexec-bzimage64.c      | 23 ++++++++++++++---------
+ include/linux/kexec.h                  |  9 ++++++++-
+ include/uapi/linux/kexec.h             |  1 +
+ kernel/crash_core.c                    |  8 +++++---
+ kernel/kexec_core.c                    |  2 ++
+ kernel/kexec_file.c                    | 14 +++++++++++---
+ security/integrity/ima/ima_kexec.c     |  4 ++--
+ 16 files changed, 83 insertions(+), 97 deletions(-)
+
+-- 
+2.41.0
 
 
