@@ -1,109 +1,103 @@
-Return-Path: <linux-parisc+bounces-303-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-304-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93AF819219
-	for <lists+linux-parisc@lfdr.de>; Tue, 19 Dec 2023 22:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A75EE8197BA
+	for <lists+linux-parisc@lfdr.de>; Wed, 20 Dec 2023 05:23:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E9351F2446D
-	for <lists+linux-parisc@lfdr.de>; Tue, 19 Dec 2023 21:14:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C4271F26059
+	for <lists+linux-parisc@lfdr.de>; Wed, 20 Dec 2023 04:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B868B3D0A5;
-	Tue, 19 Dec 2023 21:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E405C20B06;
+	Wed, 20 Dec 2023 04:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jRCNuJB0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MJUj1EE+"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA4E3D0A7
-	for <linux-parisc@vger.kernel.org>; Tue, 19 Dec 2023 21:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-67f6729a57fso807536d6.1
-        for <linux-parisc@vger.kernel.org>; Tue, 19 Dec 2023 13:14:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703020446; x=1703625246; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=efdDlqQgem1GV68sY9Evu8RPx7CsBPJfCZoB2vl3zCQ=;
-        b=jRCNuJB0SYoYkW8ydNQZNMYxJr9dIvR1ZMXYY34MiMiRmL+qcgYXdRppIiI9Gx8LAv
-         jIqENS4g0JDA+7kRUQt916rhUzBYLDVVIzJqQvoD9h400R20j0sR5ITEu0mJux8oCvRJ
-         JL8o3AoXEqcYLGvaEhJVAQ8BSKXUQ25RIDVTGXWsP1J0jqGo8PyaCNOPOCIBz3SWLB9S
-         GYU807iUNJwL0s1cbpQ7d1DLC0pdO1t728nB/gcB1/eAC2AQA36jINQHya+eBwrFFfdN
-         7Lwx3lS5XQkdKz436+rOzfLfLmqX11SB4rSRMgSh38xeUlQYl3VzZ/LkHcj9HwMVSvon
-         xXBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703020446; x=1703625246;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=efdDlqQgem1GV68sY9Evu8RPx7CsBPJfCZoB2vl3zCQ=;
-        b=OVJTLCxnOmiupf/q7fql50PMJfh1Rp9DkEEPICOsaDjtWcm+6S3aZcOEdk6QGSlAog
-         p5SwfCK8P72L1rQrGCoSWxS8RuY29ize6R1M5rtduk6ltCUP0Im57J+cRF1EDBFfTax0
-         YEcuuOgYZsigm65A5DtlIJhi7xlKIsxcDp+Z51crAg36sE9vYGvK76QHWN5bLyHX/jND
-         8oNZ077QfvVK33OL9DZtcOsp5NoHAHoYxb8qGM0bHDuoWwJwjoQ+Na4+KF+eCMNHCKBy
-         853+f+0Ewu/x9z2IDZh4GeHRiBgHAQBgOZQ2jelUSG7qkH7HGSLr2GmZHDmD1xIKXb1n
-         Qaww==
-X-Gm-Message-State: AOJu0YyXI/tC3NV1WlVCkWhClo4I3Jghs19vnpEJy+f6kVZHUfXtgMPH
-	mrB+95ByQ7/wlsGgQgiiEG0yJ6eqCINxmvuZbUCDYmMzL/jSvCSTUcC9b6Ck
-X-Google-Smtp-Source: AGHT+IFobik1ylGwXr3iv3I5WAIKPqAnQhbfTy4ui2FkXLbr3sE8gKMG08pMKsxnMbUs2hiaAA4Q9JwpDHtcFlEsqrw=
-X-Received: by 2002:ad4:5ae9:0:b0:67a:a72d:fbc1 with SMTP id
- c9-20020ad45ae9000000b0067aa72dfbc1mr2384711qvh.63.1703020446393; Tue, 19 Dec
- 2023 13:14:06 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E63E208CB
+	for <linux-parisc@vger.kernel.org>; Wed, 20 Dec 2023 04:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1703046159;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G45CImyqsOOmdqDD2eGP+r9BP7+mm5bd9KiBb8nBAIM=;
+	b=MJUj1EE+tej8fVKvtTdE17KbEjDQmBhwD5m/CidJHLOQOX94GotyhB8QL9J6BOn745Ta5g
+	ZBK/YYgNYUW1yiLK5BMIz7X+0iPm9/POXTTY9gFSD1hXSoP7K+6dQ1aJH71V/MiN3B/q9a
+	Mitc2Dw6vFiLxOlhc6UhkAt7kQcw8Mg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-Tu1M_nxTPP6L7Ts-3ewPyw-1; Tue, 19 Dec 2023 23:22:34 -0500
+X-MC-Unique: Tu1M_nxTPP6L7Ts-3ewPyw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B6FA832D62;
+	Wed, 20 Dec 2023 04:22:33 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.38])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 83323492BE6;
+	Wed, 20 Dec 2023 04:22:32 +0000 (UTC)
+Date: Wed, 20 Dec 2023 12:22:29 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Conor Dooley <conor@kernel.org>, akpm@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-parisc@vger.kernel.org, joe@perches.com, nathan@kernel.org
+Subject: Re: [PATCH v4 5/7] kexec_file, ricv: print out debugging message if
+ required
+Message-ID: <ZYJsBW0Y7Y+XhSgf@MiWiFi-R3L-srv>
+References: <20231213055747.61826-1-bhe@redhat.com>
+ <20231213055747.61826-6-bhe@redhat.com>
+ <20231219-twitch-many-ca8877857182@spud>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+G9fYvq+wdDhTjR2YkULF-_-nQNPGzCeOON-08EbVyidj-J6w@mail.gmail.com>
- <CADYN=9+0stxkNLkqcbodZD879r8DACT1M-3QyZrt4JsrAi0E1Q@mail.gmail.com> <20231219204821.vok7nch6knn2bhgo@moria.home.lan>
-In-Reply-To: <20231219204821.vok7nch6knn2bhgo@moria.home.lan>
-From: Anders Roxell <anders.roxell@linaro.org>
-Date: Tue, 19 Dec 2023 22:13:55 +0100
-Message-ID: <CADYN=9+9xi8k5PxuHKaux-=-zRGei5xUfr+gJYTQWD13HD34sA@mail.gmail.com>
-Subject: Re: arch/parisc/mm/init.c:534:29: error: invalid application of
- 'sizeof' to incomplete type 'struct shmid64_ds'
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, 
-	Linux-Next Mailing List <linux-next@vger.kernel.org>, linux-parisc <linux-parisc@vger.kernel.org>, 
-	Linux Regressions <regressions@lists.linux.dev>, lkft-triage@lists.linaro.org, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231219-twitch-many-ca8877857182@spud>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 
-On Tue, 19 Dec 2023 at 21:48, Kent Overstreet <kent.overstreet@linux.dev> wrote:
->
+On 12/19/23 at 02:44pm, Conor Dooley wrote:
+> On Wed, Dec 13, 2023 at 01:57:45PM +0800, Baoquan He wrote:
+> > Then when specifying '-d' for kexec_file_load interface, loaded
+> > locations of kernel/initrd/cmdline etc can be printed out to help debug.
+> > 
+> > Here replace pr_debug() with the newly added kexec_dprintk() in kexec_file
+> > loading related codes.
+> > 
+> > And also replace pr_notice() with kexec_dprintk() in elf_kexec_load()
+> > because loaded location of purgatory and device tree are only printed
+> > out for debugging, it doesn't make sense to always print them out.
+> > 
+> > And also remove kexec_image_info() because the content has been printed
+> > out in generic code.
+> > 
+> > Signed-off-by: Baoquan He <bhe@redhat.com>
+> 
+> I'm sorry - I meant to look at this several days ago but I forgot.
+> Apart from the typo that crept back into $subject, this version explains
+> the rationale behind what you're changing a lot better, thanks.
 
-[...]
+Thanks for careful checking. I forgot the typo fixing you have pointed
+out in v3 reviewing.
 
-> > Revering this patch made it build.
->
-> Thanks, I've applied the following fixup:
+Hi Andrew,
 
-That fixed it.
+Could you help fix the typo in subject?
 
-> commit ab6400d24d17e5248cbb0db37a56745554e6b6a5
-> Author: Kent Overstreet <kent.overstreet@linux.dev>
-> Date:   Tue Dec 19 15:47:45 2023 -0500
->
->     fixup! shm: Slim down dependencies
->
+[PATCH v4 5/7] kexec_file, ricv: print out debugging message if required
+                           ~~~ s/ricv/riscv/
 
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-
-> diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-> index a2a3e89f2d9a..f876af56e13f 100644
-> --- a/arch/parisc/mm/init.c
-> +++ b/arch/parisc/mm/init.c
-> @@ -33,6 +33,7 @@
->  #include <asm/msgbuf.h>
->  #include <asm/sparsemem.h>
->  #include <asm/asm-offsets.h>
-> +#include <asm/shmbuf.h>
->
->  extern int  data_start;
->  extern void parisc_kernel_start(void); /* Kernel entry point in head.S */
 
