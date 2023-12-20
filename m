@@ -1,191 +1,66 @@
-Return-Path: <linux-parisc+bounces-308-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-310-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5066681A029
-	for <lists+linux-parisc@lfdr.de>; Wed, 20 Dec 2023 14:47:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A727A81A2F9
+	for <lists+linux-parisc@lfdr.de>; Wed, 20 Dec 2023 16:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75C921C224D7
-	for <lists+linux-parisc@lfdr.de>; Wed, 20 Dec 2023 13:47:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D29B11C238AE
+	for <lists+linux-parisc@lfdr.de>; Wed, 20 Dec 2023 15:46:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D0937171;
-	Wed, 20 Dec 2023 13:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66D341757;
+	Wed, 20 Dec 2023 15:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OpN/fXuz";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Hhkt8mNs";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="OpN/fXuz";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Hhkt8mNs"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AVC49m9F"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3CA21352;
-	Wed, 20 Dec 2023 13:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 121DB1F833;
-	Wed, 20 Dec 2023 13:46:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1703080008; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2ZHFG9n39YamI3wDgAPvpsSAtHsaelK95dDBu7E/CLY=;
-	b=OpN/fXuzsNCLHbSPfIm/K6pTlJHrpKlh0Jej2hzGMcE+EuC0jNBnYdLT8tOkcda41DUjpP
-	guz2EpRkU6dRt8B7lxeQs6PNp+HUjSf+RHWDDDdov79ISG0soJMO9cNsb05b+F6AptIpcB
-	D6LK6j8j/2r9fYSwynUkdLTrhFJ07nc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1703080008;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2ZHFG9n39YamI3wDgAPvpsSAtHsaelK95dDBu7E/CLY=;
-	b=Hhkt8mNsJeDOYIZmEnPliVnGPL+34SFz/vnmUkQr2iFh6eylIgjNBQibrSizLTXEZ2K2WD
-	lGzztGcmZ3zm+WBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1703080008; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2ZHFG9n39YamI3wDgAPvpsSAtHsaelK95dDBu7E/CLY=;
-	b=OpN/fXuzsNCLHbSPfIm/K6pTlJHrpKlh0Jej2hzGMcE+EuC0jNBnYdLT8tOkcda41DUjpP
-	guz2EpRkU6dRt8B7lxeQs6PNp+HUjSf+RHWDDDdov79ISG0soJMO9cNsb05b+F6AptIpcB
-	D6LK6j8j/2r9fYSwynUkdLTrhFJ07nc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1703080008;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2ZHFG9n39YamI3wDgAPvpsSAtHsaelK95dDBu7E/CLY=;
-	b=Hhkt8mNsJeDOYIZmEnPliVnGPL+34SFz/vnmUkQr2iFh6eylIgjNBQibrSizLTXEZ2K2WD
-	lGzztGcmZ3zm+WBA==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id D54AD13BA9;
-	Wed, 20 Dec 2023 13:46:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id mETwMkfwgmWZJwAAn2gu4w
-	(envelope-from <tzimmermann@suse.de>); Wed, 20 Dec 2023 13:46:47 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: deller@gmx.de,
-	James.Bottomley@HansenPartnership.com,
-	arnd@arndb.de
-Cc: linux-parisc@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 4/4] video/sticore: Remove info field from STI struct
-Date: Wed, 20 Dec 2023 14:22:57 +0100
-Message-ID: <20231220134639.8190-5-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231220134639.8190-1-tzimmermann@suse.de>
-References: <20231220134639.8190-1-tzimmermann@suse.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D984174A;
+	Wed, 20 Dec 2023 15:46:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC20AC433C7;
+	Wed, 20 Dec 2023 15:46:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1703087196;
+	bh=msAgnUJbaRwfm0a89d9Fghf3puPMYUbmDNZfg/0kRDo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AVC49m9FN7UGqMos9JDgfGONK9pW0mV8N1W5Vv3mUk6F8twDEkxVRjNuBW5IX5JUG
+	 0nLJsru7WPnunGTjb8v+22r3+58p8Imo1VC0eV03PaX/vc6dYu8/ZTuhs9iN6RDN2k
+	 DT9h9/+GrpK5JBrs2or6PwZlDKEuYDvIQ3LPCpIY=
+Date: Wed, 20 Dec 2023 07:46:34 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Baoquan He <bhe@redhat.com>
+Cc: Conor Dooley <conor@kernel.org>, linux-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
+ joe@perches.com, nathan@kernel.org
+Subject: Re: [PATCH v4 5/7] kexec_file, ricv: print out debugging message if
+ required
+Message-Id: <20231220074634.cd736ec567cd7adf1e4c6d7e@linux-foundation.org>
+In-Reply-To: <ZYJsBW0Y7Y+XhSgf@MiWiFi-R3L-srv>
+References: <20231213055747.61826-1-bhe@redhat.com>
+	<20231213055747.61826-6-bhe@redhat.com>
+	<20231219-twitch-many-ca8877857182@spud>
+	<ZYJsBW0Y7Y+XhSgf@MiWiFi-R3L-srv>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: 4.90
-X-Spamd-Result: default: False [4.90 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
-	 R_MISSING_CHARSET(2.50)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 RCPT_COUNT_SEVEN(0.00)[7];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	 FREEMAIL_TO(0.00)[gmx.de,HansenPartnership.com,arndb.de];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-0.00)[15.97%]
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: ****
-X-Spam-Flag: NO
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The info field in struct sti_struct was used to detect the default
-display device. That test is now done with the respective Linux device
-and the info field is unused. Remove it.
+On Wed, 20 Dec 2023 12:22:29 +0800 Baoquan He <bhe@redhat.com> wrote:
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
----
- drivers/video/fbdev/stifb.c | 3 ---
- include/video/sticore.h     | 4 ----
- 2 files changed, 7 deletions(-)
+> Could you help fix the typo in subject?
+> 
+> [PATCH v4 5/7] kexec_file, ricv: print out debugging message if required
+>                            ~~~ s/ricv/riscv/
 
-diff --git a/drivers/video/fbdev/stifb.c b/drivers/video/fbdev/stifb.c
-index 36e6bcab83aa..2de0e675fd15 100644
---- a/drivers/video/fbdev/stifb.c
-+++ b/drivers/video/fbdev/stifb.c
-@@ -1389,7 +1389,6 @@ static int __init stifb_init_fb(struct sti_struct *sti, int bpp_pref)
- 	}
- 
- 	/* save for primary gfx device detection & unregister_framebuffer() */
--	sti->info = info;
- 	if (register_framebuffer(fb->info) < 0)
- 		goto out_err4;
- 
-@@ -1417,7 +1416,6 @@ static int __init stifb_init_fb(struct sti_struct *sti, int bpp_pref)
- 	iounmap(info->screen_base);
- out_err0:
- 	framebuffer_release(info);
--	sti->info = NULL;
- 	return -ENXIO;
- }
- 
-@@ -1496,7 +1494,6 @@ stifb_cleanup(void)
- 		        framebuffer_release(info);
- 			dev_set_drvdata(sti->dev, NULL);
- 		}
--		sti->info = NULL;
- 	}
- }
- 
-diff --git a/include/video/sticore.h b/include/video/sticore.h
-index 9d993e22805d..823666af1871 100644
---- a/include/video/sticore.h
-+++ b/include/video/sticore.h
-@@ -3,7 +3,6 @@
- #define STICORE_H
- 
- struct device;
--struct fb_info;
- 
- /* generic STI structures & functions */
- 
-@@ -368,9 +367,6 @@ struct sti_struct {
- 	/* PCI data structures (pg. 17ff from sti.pdf) */
- 	u8 rm_entry[16]; /* pci region mapper array == pci config space offset */
- 
--	/* pointer to the fb_info where this STI device is used */
--	struct fb_info *info;
--
- 	/* pointer to the parent device */
- 	struct device *dev;
- 
--- 
-2.43.0
-
+I made that change.
 
