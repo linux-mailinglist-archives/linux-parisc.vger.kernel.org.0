@@ -1,103 +1,172 @@
-Return-Path: <linux-parisc+bounces-304-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-305-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75EE8197BA
-	for <lists+linux-parisc@lfdr.de>; Wed, 20 Dec 2023 05:23:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2851981A01F
+	for <lists+linux-parisc@lfdr.de>; Wed, 20 Dec 2023 14:47:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C4271F26059
-	for <lists+linux-parisc@lfdr.de>; Wed, 20 Dec 2023 04:23:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76DEDB2230D
+	for <lists+linux-parisc@lfdr.de>; Wed, 20 Dec 2023 13:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E405C20B06;
-	Wed, 20 Dec 2023 04:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B5B358A4;
+	Wed, 20 Dec 2023 13:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MJUj1EE+"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="CvP87Lp9";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3Ak8jNhl";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="W6ZQsU/y";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wTc+iQ6t"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E63E208CB
-	for <linux-parisc@vger.kernel.org>; Wed, 20 Dec 2023 04:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703046159;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G45CImyqsOOmdqDD2eGP+r9BP7+mm5bd9KiBb8nBAIM=;
-	b=MJUj1EE+tej8fVKvtTdE17KbEjDQmBhwD5m/CidJHLOQOX94GotyhB8QL9J6BOn745Ta5g
-	ZBK/YYgNYUW1yiLK5BMIz7X+0iPm9/POXTTY9gFSD1hXSoP7K+6dQ1aJH71V/MiN3B/q9a
-	Mitc2Dw6vFiLxOlhc6UhkAt7kQcw8Mg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-Tu1M_nxTPP6L7Ts-3ewPyw-1; Tue, 19 Dec 2023 23:22:34 -0500
-X-MC-Unique: Tu1M_nxTPP6L7Ts-3ewPyw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BA52D630;
+	Wed, 20 Dec 2023 13:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B6FA832D62;
-	Wed, 20 Dec 2023 04:22:33 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.38])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 83323492BE6;
-	Wed, 20 Dec 2023 04:22:32 +0000 (UTC)
-Date: Wed, 20 Dec 2023 12:22:29 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Conor Dooley <conor@kernel.org>, akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-parisc@vger.kernel.org, joe@perches.com, nathan@kernel.org
-Subject: Re: [PATCH v4 5/7] kexec_file, ricv: print out debugging message if
- required
-Message-ID: <ZYJsBW0Y7Y+XhSgf@MiWiFi-R3L-srv>
-References: <20231213055747.61826-1-bhe@redhat.com>
- <20231213055747.61826-6-bhe@redhat.com>
- <20231219-twitch-many-ca8877857182@spud>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1D6E622325;
+	Wed, 20 Dec 2023 13:46:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1703080008; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=V7rBKRF5U987GZ2V8rZcJdNb2y/t5gEqQqzMEkY87+0=;
+	b=CvP87Lp96ZVhf93/hO3DsuljHUILOS3KNAgoxKETii+o2l5q6E3h6DCvDV5gokHO9d5Z+J
+	EqN9MbnuF4V//nc8R++1ezMg/eS53MzD81wuNSB8vgfLwvJVewhno6gd8G9rO1ho6HKqqN
+	dz9+40ppv71zhCHdyrRnb1sOrUNcUCo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1703080008;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=V7rBKRF5U987GZ2V8rZcJdNb2y/t5gEqQqzMEkY87+0=;
+	b=3Ak8jNhlSRr9Pbh/PwzdWin3e9M9Tbf8Z+qbFEFZ1v9j/LOZo6qEq436tAtxZgYuSux0Am
+	RQLud70eryy2omBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1703080007; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=V7rBKRF5U987GZ2V8rZcJdNb2y/t5gEqQqzMEkY87+0=;
+	b=W6ZQsU/yggrAGOPSa2X/Kds/aUT6z90Mo30fuBRW7jmbJOBHQhIKfQY0OWYdZcm8viPqpD
+	lel+P0rVGiGjeb3R3IQqD9oVxmubZReaZeWcEz3s3MTaOJg1uNSzfHI1JUXC8x+jZGfqFC
+	NeN3DP75uaADwHkQ+aB54ElaO9KAZls=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1703080007;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=V7rBKRF5U987GZ2V8rZcJdNb2y/t5gEqQqzMEkY87+0=;
+	b=wTc+iQ6tLepEtqIn0nxfOKzjoh6QXPl0IjAvpJHQ7s4Ts1IwJhvJTQOvm0rNF4+exHA5n6
+	IhXPl+9saIJXH+BQ==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id DD91513A08;
+	Wed, 20 Dec 2023 13:46:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id 4W3VNEbwgmWZJwAAn2gu4w
+	(envelope-from <tzimmermann@suse.de>); Wed, 20 Dec 2023 13:46:46 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: deller@gmx.de,
+	James.Bottomley@HansenPartnership.com,
+	arnd@arndb.de
+Cc: linux-parisc@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/4] arch/parisc: Detect primary framebuffer from device
+Date: Wed, 20 Dec 2023 14:22:53 +0100
+Message-ID: <20231220134639.8190-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231219-twitch-many-ca8877857182@spud>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: ***
+X-Spamd-Bar: +++
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="W6ZQsU/y";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=wTc+iQ6t
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [3.49 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 TO_DN_SOME(0.00)[];
+	 R_MISSING_CHARSET(2.50)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FREEMAIL_TO(0.00)[gmx.de,HansenPartnership.com,arndb.de];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-0.00)[22.46%];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 FROM_HAS_DN(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmx.de];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: 3.49
+X-Rspamd-Queue-Id: 1D6E622325
+X-Spam-Flag: NO
 
-On 12/19/23 at 02:44pm, Conor Dooley wrote:
-> On Wed, Dec 13, 2023 at 01:57:45PM +0800, Baoquan He wrote:
-> > Then when specifying '-d' for kexec_file_load interface, loaded
-> > locations of kernel/initrd/cmdline etc can be printed out to help debug.
-> > 
-> > Here replace pr_debug() with the newly added kexec_dprintk() in kexec_file
-> > loading related codes.
-> > 
-> > And also replace pr_notice() with kexec_dprintk() in elf_kexec_load()
-> > because loaded location of purgatory and device tree are only printed
-> > out for debugging, it doesn't make sense to always print them out.
-> > 
-> > And also remove kexec_image_info() because the content has been printed
-> > out in generic code.
-> > 
-> > Signed-off-by: Baoquan He <bhe@redhat.com>
-> 
-> I'm sorry - I meant to look at this several days ago but I forgot.
-> Apart from the typo that crept back into $subject, this version explains
-> the rationale behind what you're changing a lot better, thanks.
+On parisc, change detection of the primary framebuffer to test for
+the Linux device instead of fbdev's fb_info in fb_is_primary_device().
+Makes the test independent from fbdev.
 
-Thanks for careful checking. I forgot the typo fixing you have pointed
-out in v3 reviewing.
+This patchset is part of a larger effort to clean up the low-level
+display handling. There are various functions that attempt to detect
+the system's primary framebuffer device, such as in vgaarb, [1]
+fbcon, [2] or fbmon. [3] This code should be unified in a single helper
+that implements the test. The function fb_is_primary_device() already
+does this, but requires fbdev on parisc. With the patchset applied, the
+parisc implementation tests directly with the Linux device. No fbdev is
+required.
 
-Hi Andrew,
+Patch 1 adds the framebuffer's Linux device to the STI ROM structures,
+which represents the graphics firmware. Patches 2 updates the stifb
+driver to refer to the correct Linux device. The device is used in
+patch 3 to change the test in fb_is_primary_device(). Patch 4 removes
+the obsolete fb_info from the STI ROM structures.
 
-Could you help fix the typo in subject?
+A later patchset will update the interface of fb_is_primary_device() to
+receive a Linux device instead of an instance of fb_info. This involves
+several architectures, so it better done in a separate patch.
 
-[PATCH v4 5/7] kexec_file, ricv: print out debugging message if required
-                           ~~~ s/ricv/riscv/
+[1] https://elixir.bootlin.com/linux/v6.6/source/drivers/pci/vgaarb.c#L557
+[2] https://elixir.bootlin.com/linux/v6.6/source/drivers/video/fbdev/core/fbcon.c#L2943
+[3] https://elixir.bootlin.com/linux/v6.6/source/drivers/video/fbdev/core/fbmon.c#L1503
+
+Thomas Zimmermann (4):
+  video/sticore: Store ROM device in STI struct
+  fbdev/stifb: Allocate fb_info instance with framebuffer_alloc()
+  arch/parisc: Detect primary video device from device instance
+  video/sticore: Remove info field from STI struct
+
+ arch/parisc/video/fbdev.c   |   2 +-
+ drivers/video/fbdev/stifb.c | 109 ++++++++++++++++++------------------
+ drivers/video/sticore.c     |   5 ++
+ include/video/sticore.h     |   6 +-
+ 4 files changed, 65 insertions(+), 57 deletions(-)
+
+
+base-commit: 8da6351b7194938a876184d34c4c0802e805d3cf
+-- 
+2.43.0
 
 
