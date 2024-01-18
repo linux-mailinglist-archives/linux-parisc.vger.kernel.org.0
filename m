@@ -1,133 +1,193 @@
-Return-Path: <linux-parisc+bounces-371-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-372-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CC4831530
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jan 2024 09:56:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F1983201A
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jan 2024 21:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 224791C21006
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jan 2024 08:56:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27BF31C257F3
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jan 2024 20:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A34B65B;
-	Thu, 18 Jan 2024 08:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352212E62B;
+	Thu, 18 Jan 2024 20:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=alu.unizg.hr header.i=@alu.unizg.hr header.b="A1jayF8Q";
+	dkim=pass (2048-bit key) header.d=alu.unizg.hr header.i=@alu.unizg.hr header.b="j/gOikvb"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE02125A7;
-	Thu, 18 Jan 2024 08:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B002A2E627;
+	Thu, 18 Jan 2024 20:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.235.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705568209; cv=none; b=GjwrvmQcDMbX8/kb177U87Gf3b4SSrv1C55T3f/lmdja/gKxVyo3sv8DKjn2qWpulmlId7fLtHVsehnovCcmS298gVDN1vm941qGBa9hE7Edm/i5t7qYG2rJEQuI4S2GioiJvNKOYjhqDS1Wg1WauphqalJKE4s1EkY+E3ddGbM=
+	t=1705608266; cv=none; b=Jz6kcavxHZHByFdPAxQJ05hfRM9cPsCyrEAV9qZo9tlkK3yJ+GtGILVX8gHGhn8ikO/30W072TOHzuSlDiGJp25j16oUswtU6VvK8AZcYrTKoZYV/2w+y2Y1ypGzu0kBqR3kAdBoCPKqRLrxeUz5T6lxklw2+Oyhz+fU7tLwWy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705568209; c=relaxed/simple;
-	bh=DKc/D2UkkHwXWH4OMtAGeleG7U/HKVCzA9yBkCaGT+0=;
-	h=Received:X-Google-DKIM-Signature:X-Gm-Message-State:
-	 X-Google-Smtp-Source:X-Received:Received:Received:X-Received:
-	 MIME-Version:References:In-Reply-To:From:Date:
-	 X-Gmail-Original-Message-ID:Message-ID:Subject:To:Cc:Content-Type:
-	 Content-Transfer-Encoding; b=NYXvvawTfbzrnhh0eSuAQ5GCvQTyepo8laaCRSgCMFytHGELNMMlYo5yfdSE67NdCHYruYCJYt4hXp3kWPPReB1SRCPX55tPAXKAVo9avbxAAPSRZJy5TNFJaIWSPUv7U2YZyXwiYoSyW55Geo7s/PgW8qqSPnEGkMEMMDfFfUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-5f0629e67f4so120156667b3.3;
-        Thu, 18 Jan 2024 00:56:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705568207; x=1706173007;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yUhp044KaG5kosWl9TplBzHfM0oWfk1S3xB5Nr0ifxs=;
-        b=FvWJE/IPvz4lef+pVbRhjQJ+a74ODWgOqPsnOqRMJhlUcMPUsJsYz/m0xDD+uQRZVb
-         M5Zcw4cvslSQwDr78Y/XbcKF6OhGQZDHfVTxydmSCLaI+NDMYqRFQGWfsckRH/xzLO0E
-         3y64QD6L2W7qMisjMQ2tWCn6X/+WcYscilCuf+Xn8LBjfbpxSYHjim6En7AddQ456u9k
-         5F7ccKKYRsKaCV/2cg4zC+09CMK4MRsjAmlYsEPFALMRJyIMTQY/PaKAMja9xS8PLOrC
-         2obhYP61iDQ6g0GPRSxIFWi7YjllZ5bMMWHX7Azrv/hhI77reGT2lUIGxBKOUVMq16Ek
-         Icww==
-X-Gm-Message-State: AOJu0YxtIUBYGvamLpgqEZ4z/rop1sanGLiHwdVxZ7Zu5QusJuNY6xN1
-	6mdNFiGXLM7+PNvO8haJPlhW1EL+IsifeiF/C9TG0AhcpWhbi72uW0sGjOHkWTM=
-X-Google-Smtp-Source: AGHT+IF6lL8EQfZZdv6kebQAfAHjechw+y9fjjKUjzfE0aS4EkBi7nItihgyegNwcHj3R9ZgnE0F/w==
-X-Received: by 2002:a0d:dbd4:0:b0:5ff:63e0:885b with SMTP id d203-20020a0ddbd4000000b005ff63e0885bmr418769ywe.76.1705568207309;
-        Thu, 18 Jan 2024 00:56:47 -0800 (PST)
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com. [209.85.219.175])
-        by smtp.gmail.com with ESMTPSA id v67-20020a814846000000b005ff88cbbc93sm286920ywa.111.2024.01.18.00.56.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jan 2024 00:56:47 -0800 (PST)
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-dc238cb1b17so1839225276.0;
-        Thu, 18 Jan 2024 00:56:47 -0800 (PST)
-X-Received: by 2002:a25:86c5:0:b0:dc2:42fc:135d with SMTP id
- y5-20020a2586c5000000b00dc242fc135dmr352561ybm.62.1705568206842; Thu, 18 Jan
- 2024 00:56:46 -0800 (PST)
+	s=arc-20240116; t=1705608266; c=relaxed/simple;
+	bh=COhXMdF3+eMsGttATIi38DB05n6Iu0a1pqC7yzI2boU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ucr3mhm5y/cvvLXqf2sQqhTnc0ZCBAi9m+kDh2fhhuZBAsWmDN2kE83ywYvOpm/ClSf0ubo67lYiDKXyBpzVjIXWoleWIqhuxaOLekH+VJvJoc2bnZ4k3O6Rg/zihViXL5mSrLddhmyBfVSKaqaHKcYow/yY64SFn8TatRIJT1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alu.unizg.hr; spf=pass smtp.mailfrom=alu.unizg.hr; dkim=pass (2048-bit key) header.d=alu.unizg.hr header.i=@alu.unizg.hr header.b=A1jayF8Q; dkim=pass (2048-bit key) header.d=alu.unizg.hr header.i=@alu.unizg.hr header.b=j/gOikvb; arc=none smtp.client-ip=161.53.235.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alu.unizg.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alu.unizg.hr
+Received: from localhost (localhost [127.0.0.1])
+	by domac.alu.hr (Postfix) with ESMTP id 3F2786019E;
+	Thu, 18 Jan 2024 21:04:15 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+	t=1705608255; bh=COhXMdF3+eMsGttATIi38DB05n6Iu0a1pqC7yzI2boU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=A1jayF8QuQG4CrL+drJbI+qkNLTjXQzU+eDifn/TwMc8PpwLP1JHsQKToJS2ck2ky
+	 eA83g3Pi53SKYfFm++BwmO/8uqU8NlL/1F8XszCc5f2pYwzAZ5Z5ihFc/oi4PGiPHv
+	 Y2Uyot9OXv9V+Wn13ZJkR065xsHsdU9s480DTRX/bYaWr5/8Z0fYdpr+k7laTDj0WT
+	 nOunha61Rc09tQF2FN1f7E2ZJgci1E81fb/Q3OJ6UAEgezxNugFiS2s3IbrgllHbU8
+	 bFAldZ37BRAPfaijo3euhQeFfXwQLEohsmwPmPkq+ItKWJJFM/kieZKt42fohtq1X+
+	 0VolhUwSNJMuQ==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+	by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id FFRGPimg4s5R; Thu, 18 Jan 2024 21:04:13 +0100 (CET)
+Received: from [192.168.178.20] (dh207-40-167.xnet.hr [88.207.40.167])
+	by domac.alu.hr (Postfix) with ESMTPSA id B694C6019B;
+	Thu, 18 Jan 2024 21:04:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+	t=1705608253; bh=COhXMdF3+eMsGttATIi38DB05n6Iu0a1pqC7yzI2boU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=j/gOikvbTlQUFW2rcpxBxkrxfjuxfp2hRJDRFlLWlGKIz4rmHNo6UCKhSCWMe3176
+	 qNbm723njL6MP34/hETkBQ0mIVHd+aYEJpPacF/MulHsb3SolvdMdDFmShcmZGd/xJ
+	 4O3SjhERBbckMzJSOLlV5QqXIkFbNCpi6dWaGSKuScEo+Y0abzoBesQudnbZzAdDA5
+	 rvVyAq3mg6VvrXhY5QJCTq3eHzrwXdr8Av1RozguaBJ+8hARN31fk4LUJHkv4+nWee
+	 XtiqTJF294exckpH5Sq5FEI/GnYzN2U/kBMNB1L5eqbuRfbcjcBXaHisRN9mW+FBe2
+	 oRhs5YMbC/AyA==
+Message-ID: <1fe9b78c-7fb5-4d7b-a754-afd563950829@alu.unizg.hr>
+Date: Thu, 18 Jan 2024 21:04:05 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118075756.10541-1-jirislaby@kernel.org> <20240118075756.10541-20-jirislaby@kernel.org>
-In-Reply-To: <20240118075756.10541-20-jirislaby@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 18 Jan 2024 09:56:35 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU5P9v9ofeeMA9M+kbHv2fSikChZCS3=tbaAZmG8dwF6A@mail.gmail.com>
-Message-ID: <CAMuHMdU5P9v9ofeeMA9M+kbHv2fSikChZCS3=tbaAZmG8dwF6A@mail.gmail.com>
-Subject: Re: [PATCH 19/45] tty: vt: make init parameter of consw::con_init() a bool
-To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Cc: gregkh@linuxfoundation.org, linux-serial@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Helge Deller <deller@gmx.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-parisc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG][BISECTED] Freeze at loading init ramdisk
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Helge Deller <deller@gmx.de>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Hans de Goede <hdegoede@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Javier Martinez Canillas <javierm@redhat.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Prathu Baronia <prathubaronia2011@gmail.com>, Sam Ravnborg
+ <sam@ravnborg.org>, Sui Jingfeng <suijingfeng@loongson.cn>,
+ Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org, linux-parisc@vger.kernel.org
+References: <8a6aa228-f2da-4dcd-93c1-e34614cd6471@alu.unizg.hr>
+ <cc813525-5484-443e-a40a-cb98f2ed4e1f@alu.unizg.hr>
+ <gevqxytidg5efylozindaqntkbl4yeoyzqnh5m3ylitmipgum3@sgmv7qieo7rs>
+Content-Language: en-US
+From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+In-Reply-To: <gevqxytidg5efylozindaqntkbl4yeoyzqnh5m3ylitmipgum3@sgmv7qieo7rs>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Jiri,
 
-On Thu, Jan 18, 2024 at 9:03=E2=80=AFAM Jiri Slaby (SUSE) <jirislaby@kernel=
-.org> wrote:
-> The 'init' parameter of consw::con_init() is true for the first call of
-> the hook on a particular console. So make the parameter a bool.
->
-> And document the hook.
->
-> Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-Thanks for your patch!
+On 1/18/24 08:45, Uwe Kleine-König wrote:
+> Hello Mirsad,
+> 
+> On Wed, Jan 17, 2024 at 07:47:49PM +0100, Mirsad Todorovac wrote:
+>> On 1/16/24 01:32, Mirsad Todorovac wrote:
+>>> On the Ubuntu 22.04 LTS Jammy platform, on a mainline vanilla torvalds tree kernel, the boot
+>>> freezes upon first two lines and before any systemd messages.
+>>>
+>>> (Please find the config attached.)
+>>>
+>>> Bisecting the bug led to this result:
+>>>
+>>> marvin@defiant:~/linux/kernel/linux_torvalds$ git bisect good
+>>> d97a78423c33f68ca6543de510a409167baed6f5 is the first bad commit
+>>> commit d97a78423c33f68ca6543de510a409167baed6f5
+>>> Merge: 61da593f4458 689237ab37c5
+>>> Author: Linus Torvalds <torvalds@linux-foundation.org>
+>>> Date:   Fri Jan 12 14:38:08 2024 -0800
+>>>
+>>> [...]
+>>>
+>>> Hope this helps.
+>>
+>> P.S.
+>>
+>> As I see that this is a larger merge commit, with 5K+ lines changed, I don't think I can
+>> bisect further to determine the culprit.
+> 
+> Actually it's not that hard. If a merge commit is the first bad commit
+> for a bisection, either the merge wasn't done correctly (less likely,
+> looking at d97a78423c33f68ca6543de510a409167baed6f5 I'd bet this isn't
+> the problem); or changes on different sides conflict or you did
+> something wrong during bisection.
+> 
+> To rule out the third option, you can just retest d97a78423c33,
+> 61da593f4458 and 689237ab37c5. If d97a78423c33 is the only bad one, you
+> did it right.
 
-> --- a/drivers/video/console/vgacon.c
-> +++ b/drivers/video/console/vgacon.c
-> @@ -367,7 +367,7 @@ static const char *vgacon_startup(void)
->         return display_desc;
->  }
->
-> -static void vgacon_init(struct vc_data *c, int init)
-> +static void vgacon_init(struct vc_data *c, bool init)
->  {
->         struct uni_pagedict *p;
->
+This was confirmed.
 
-Below, there is one more line to update:
+> Then to further debug the second option you can find out the offending
+> commit on each side with a bisection as follows, here for the RHS (i.e.
+> 689237ab37c5):
+> 
+> 	git bisect start 689237ab37c5 $(git merge-base 61da593f4458 689237ab37c5)
+> 
+> and then in each bisection step do:
+> 
+> 	git merge --no-commit 61da593f4458
+> 	test if the problem is present
+> 	git reset --hard
+> 	git bisect good/bad
+> 
+> In this case you get merge conflicts in drivers/video/fbdev/amba-clcd.c
+> and drivers/video/fbdev/vermilion/vermilion.c. In the assumption that
+> you don't have these enabled in your .config, you can just ignore these.
+> 
+> Side note: A problem during bisection can be that the .config changes
+> along the process. You should put your config into (say)
+> arch/x86/configs/lala_defconfig and do
+> 
+> 	make lala_defconfig
+> 
+> before building each step to prevent this.
 
-    -        /* set dimensions manually if init !=3D 0 since vc_resize()
-will fail */
-    +        /* set dimensions manually if init is true since
-vc_resize() will fail */
+I must have done something wrong:
 
-With the above fixed:
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+marvin@defiant:~/linux/kernel/linux_torvalds$ git bisect log
+# bad: [689237ab37c59b9909bc9371d7fece3081683fba] fbdev/intelfb: Remove driver
+# good: [de927f6c0b07d9e698416c5b287c521b07694cac] Merge tag 's390-6.8-1' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux
+git bisect start '689237ab37c5' 'de927f6c0b07d9e698416c5b287c521b07694cac'
+# good: [d9f25b59ed85ae45801cf45fe17eb269b0ef3038] fbdev: Remove support for Carillo Ranch driver
+git bisect good d9f25b59ed85ae45801cf45fe17eb269b0ef3038
+# good: [e2e0b838a1849f92612a8305c09aaf31bf824350] video/sticore: Remove info field from STI struct
+git bisect good e2e0b838a1849f92612a8305c09aaf31bf824350
+# good: [778e73d2411abc8f3a2d60dbf038acaec218792e] drm/hyperv: Remove firmware framebuffers with aperture helper
+git bisect good 778e73d2411abc8f3a2d60dbf038acaec218792e
+# good: [df67699c9cb0ceb70f6cc60630ca938c06773eda] firmware/sysfb: Clear screen_info state after consuming it
+git bisect good df67699c9cb0ceb70f6cc60630ca938c06773eda
+marvin@defiant:~/linux/kernel/linux_torvalds$
 
-Gr{oetje,eeting}s,
+with the error:
 
-                        Geert
+marvin@defiant:~/linux/kernel/linux_torvalds$ git bisect good
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+drivers/video/fbdev/amba-clcd.c: needs merge
+drivers/video/fbdev/vermilion/vermilion.c: needs merge
+error: you need to resolve your current index first
+marvin@defiant:~/linux/kernel/linux_torvalds$
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+Best regards,
+Mirsad
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+> Best regards
+> Uwe
+> 
 
