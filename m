@@ -1,226 +1,359 @@
-Return-Path: <linux-parisc+bounces-374-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-375-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278308320FF
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jan 2024 22:44:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AEC8333DE
+	for <lists+linux-parisc@lfdr.de>; Sat, 20 Jan 2024 12:25:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80EA0B21B97
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Jan 2024 21:44:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 960061F21BC0
+	for <lists+linux-parisc@lfdr.de>; Sat, 20 Jan 2024 11:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD143173E;
-	Thu, 18 Jan 2024 21:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C56DDA8;
+	Sat, 20 Jan 2024 11:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alu.unizg.hr header.i=@alu.unizg.hr header.b="qmBU8Ysd";
-	dkim=pass (2048-bit key) header.d=alu.unizg.hr header.i=@alu.unizg.hr header.b="JnTyWDD3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DhecMsjC"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFA52C197;
-	Thu, 18 Jan 2024 21:44:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.235.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F8ED304;
+	Sat, 20 Jan 2024 11:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705614283; cv=none; b=Qhy5iUscVuqxfdrmQv4gRU6UU++DIgym0+zVaecgPA1bBINAHu1mipNmrfwD7o9vuaxZBT7NY4evA/91/Xc+9iBgKs0D3Of3Zo7gkv9F8Vtn7hCTJydNZ1TpWZBSYHt5unL/FOV12Xaom+uVnDtSOmdvYvphmVUltNDotV+Peo0=
+	t=1705749944; cv=none; b=DiYR4NoGCZkfSzXCu5LvRafXrDSVDEbqTfnviWadf0Kku9IimsbqEWKMhBF2OqDGothpcl2WB+EWw4gOhOpOu7d5mIubaf/wUZE4SJ3M8mZaXUuOd93mdeuofRTiFH8o27d5C42U1FNyHDtXUQB9G3Dar4Iq+rr9/h9rJvrDWrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705614283; c=relaxed/simple;
-	bh=IS1yEaRMuerTQxizDzJWXJ8G5cZ1GL+CPG/5u9t2Fnw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f18GxhJSe++8HbS3CuzfHCo8dq0mwR/uaRQGjdCyh60II1Dfq+JYKk1RR1wcJYt8kbQWUoPk+FHEZtOCGIxwjlUkXMYYKW1HOvdwutMbhv+LB/Jf5kfWGyXjFNMwpTbC2l1iRjYOXLHBNA44xlvZDFyUmhr9zpJA9DEyTZAezIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alu.unizg.hr; spf=pass smtp.mailfrom=alu.unizg.hr; dkim=pass (2048-bit key) header.d=alu.unizg.hr header.i=@alu.unizg.hr header.b=qmBU8Ysd; dkim=pass (2048-bit key) header.d=alu.unizg.hr header.i=@alu.unizg.hr header.b=JnTyWDD3; arc=none smtp.client-ip=161.53.235.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alu.unizg.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alu.unizg.hr
-Received: from localhost (localhost [127.0.0.1])
-	by domac.alu.hr (Postfix) with ESMTP id 74432601A5;
-	Thu, 18 Jan 2024 22:44:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-	t=1705614275; bh=IS1yEaRMuerTQxizDzJWXJ8G5cZ1GL+CPG/5u9t2Fnw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qmBU8YsdJIZZgtpi5Zh0hAsUah5INpLoQmhgnJcrXZ31WfutbQzrzUEv2hhsxcr++
-	 wVwbxqD4R/rshgVeI5/+J+tHmZ/54tTItW13vrKZXaDgbajqkL20aAZCKLl7bvSTsp
-	 8FeOhSn1iP3LPQVcKAVlicTsknY7Go3tQJFSAd0+Zfn528vcc6WgeoUYx2ROQg4JjU
-	 yAEB0/gIZ5iN14tWWPoD3Kl5vGMDMoeA0uB5M1RigW0j7YY6QQJaLC+6YZWjcEkYRZ
-	 WKkJWfnYjLyK6U9QJFpZJ66+t2i68f4jWaVuoiB6dVtUnq7qouU0bmmM93tOTsxLZl
-	 7A10wK6m+7ZKQ==
-X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
-Received: from domac.alu.hr ([127.0.0.1])
-	by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id hj2rLTFDBh8j; Thu, 18 Jan 2024 22:44:33 +0100 (CET)
-Received: from [192.168.178.20] (dh207-40-167.xnet.hr [88.207.40.167])
-	by domac.alu.hr (Postfix) with ESMTPSA id BE6CC601A1;
-	Thu, 18 Jan 2024 22:44:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
-	t=1705614272; bh=IS1yEaRMuerTQxizDzJWXJ8G5cZ1GL+CPG/5u9t2Fnw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JnTyWDD3kNHEMWtbilVBMLIVc01OSgOF/i6pubmDiBmvxUQZQ0IL1O1f6Vn7IDZqg
-	 jXoUKJxyTuliQU8ZPQnDg7v5zAwn/7t4CnUm6vIQQF28dLtCR40gmkKQzEFOs5RTLv
-	 qHHdla3+p2+z7MX/Tl7GccPaHie3zXEBJggUtUeUmYqtSQ9OdxQP+ngKJZukfrPYAR
-	 /JPakAugRrIsZkWjmsoeJ7oMm69aCSFZR5r5bfutiMo8WS2NccIoVg6F1ijk0H9kUj
-	 nvkoPg/hlrmYa0vKxXEp0H8X4DQSB56A6NFF/bCLE7uLToqzAXhtp5nicdJ7fP3Zw1
-	 DxXH3D+btMeTw==
-Message-ID: <b9ecdb2e-f62c-4661-a786-496804e09606@alu.unizg.hr>
-Date: Thu, 18 Jan 2024 22:44:27 +0100
+	s=arc-20240116; t=1705749944; c=relaxed/simple;
+	bh=AY0FI0AJyUQnSQk8vNEkT6dsRCLqZvg9Tx/l4TqFhTI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZBrMBA4RGh5pqhJheEfYN1l0ByeAOaU+2iI83MFwR3XLxaqhlsx4yGKW5CgIhHhgXTF/mGBZ364R1wzgIevHE/htNM7S7kCGNMJcOvky+7atrMuE/DYCW9rwLdazSiGtC5jNve15ZHWyFgdBqmDPTQdLGLmS3PD8HFqg4nEP70U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DhecMsjC; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6d9b37f4804so1708531b3a.1;
+        Sat, 20 Jan 2024 03:25:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705749942; x=1706354742; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KgsgmfAUCsUK7bv60DL+YeJq8JarB9xRbUnaqW3K3n4=;
+        b=DhecMsjCOvDeQmTiLjnKztBI8KGwq9BrWvcAz8cSMO0wijiSWy25Mc4NUvbF1oCwP9
+         XRD6TG5aXsCT25LJFcKSOTfUv7GqkPZ4gZD5eeofjIalO8rjiO5b5ZPkQs+ddl2PxLNs
+         qhjUJOuODGYWBkH/FR7j5cvX3ByOLC+39h66Wd8DcxsyiJgOe+ivMBB/ZR1NmVSWMVtI
+         MMtbDR9DQChVGRtNaniXSsMIRw9bjHhnmEo9xvxmA1Udu1r0IKk9mS5c6v0VbYyqL+0g
+         fabv4r2MynDJE58VcSp7veldmcXqpN5ung7/r7cHJVij8ikBz0mWWjcQ6yiuIhNLuCQV
+         4svw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705749942; x=1706354742;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KgsgmfAUCsUK7bv60DL+YeJq8JarB9xRbUnaqW3K3n4=;
+        b=MiFCS3k/8pic7G+CYbFdc/rxwjOSNjAqes+v/gwTFbrUX4YN0aMMTetoinSjpz5jlc
+         WXpT+YNl2cLYmWVz0pYkJOCLYJahQalxeMrPq1oQxGXbgR2FQ7Gl/9q/CE+RkyCmjZpH
+         Ge0KysTKExmWc+B761d/sAm4Eettvgh0jOj1OU0O8vVhu5+OgNWg2SRh3IItLb+eJwdA
+         uQOK6FM80TC0zmdJ3/MUrOg4GJhDdbPWNq07WbBAAYUNDrKQsdwdAahT+ZQMXoGqQL1B
+         mLjzQBnV936/wv+ZuH8PLV9grwfTlcloU2Xt8exX5UmV6hgog9gl3fnk/afLLL2D1RLG
+         5J+w==
+X-Gm-Message-State: AOJu0Yy+viNqIcv3Ajuq96H6Mdc/ymYzcQzDtC+X9lZ5SS/b4xrgjTAE
+	pJw2l1P6OVTyUTKTaaLwifHOOfVxCKne8tVoHJZIOLrkNdQBT7JV
+X-Google-Smtp-Source: AGHT+IGczytrLQQdYDK7kvLhiVSmKYX9mhpfTIBfzwvIUl99cMSETuw33MUFEt9naz8OE72mObfRxQ==
+X-Received: by 2002:a05:6a21:32a8:b0:199:fe49:6bb3 with SMTP id yt40-20020a056a2132a800b00199fe496bb3mr1684368pzb.5.1705749941592;
+        Sat, 20 Jan 2024 03:25:41 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id kr8-20020a056a004b4800b006da73b90fe4sm6790103pfb.14.2024.01.20.03.25.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Jan 2024 03:25:40 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 121831846DB12; Sat, 20 Jan 2024 18:25:36 +0700 (WIB)
+Date: Sat, 20 Jan 2024 18:25:36 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Sui Jingfeng <suijingfeng@loongson.cn>, linux-parisc@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Prathu Baronia <prathubaronia2011@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sam Ravnborg <sam@ravnborg.org>, Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [BUG][BISECTED] Freeze at loading init ramdisk
+Message-ID: <ZautsJ6a7_YjW5aQ@archie.me>
+References: <8a6aa228-f2da-4dcd-93c1-e34614cd6471@alu.unizg.hr>
+ <cc813525-5484-443e-a40a-cb98f2ed4e1f@alu.unizg.hr>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG][BISECTED] Freeze at loading init ramdisk
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Helge Deller <deller@gmx.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Hans de Goede <hdegoede@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
- Javier Martinez Canillas <javierm@redhat.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Prathu Baronia <prathubaronia2011@gmail.com>, Sam Ravnborg
- <sam@ravnborg.org>, Sui Jingfeng <suijingfeng@loongson.cn>,
- Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org,
- linux-fbdev@vger.kernel.org, linux-parisc@vger.kernel.org
-References: <8a6aa228-f2da-4dcd-93c1-e34614cd6471@alu.unizg.hr>
- <cc813525-5484-443e-a40a-cb98f2ed4e1f@alu.unizg.hr>
- <gevqxytidg5efylozindaqntkbl4yeoyzqnh5m3ylitmipgum3@sgmv7qieo7rs>
- <1fe9b78c-7fb5-4d7b-a754-afd563950829@alu.unizg.hr>
- <esh5npfi6ahrlralvmcrnqtrfkarlhsqahbtmfnw5pclr2pf2u@xzitdq6wi7of>
-Content-Language: en-US
-From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-In-Reply-To: <esh5npfi6ahrlralvmcrnqtrfkarlhsqahbtmfnw5pclr2pf2u@xzitdq6wi7of>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Vv+fIX42qDF80RtH"
+Content-Disposition: inline
+In-Reply-To: <cc813525-5484-443e-a40a-cb98f2ed4e1f@alu.unizg.hr>
 
 
+--Vv+fIX42qDF80RtH
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 1/18/24 22:14, Uwe Kleine-König wrote:
-> On Thu, Jan 18, 2024 at 09:04:05PM +0100, Mirsad Todorovac wrote:
->>
->>
->> On 1/18/24 08:45, Uwe Kleine-König wrote:
->>> Hello Mirsad,
->>>
->>> On Wed, Jan 17, 2024 at 07:47:49PM +0100, Mirsad Todorovac wrote:
->>>> On 1/16/24 01:32, Mirsad Todorovac wrote:
->>>>> On the Ubuntu 22.04 LTS Jammy platform, on a mainline vanilla torvalds tree kernel, the boot
->>>>> freezes upon first two lines and before any systemd messages.
->>>>>
->>>>> (Please find the config attached.)
->>>>>
->>>>> Bisecting the bug led to this result:
->>>>>
->>>>> marvin@defiant:~/linux/kernel/linux_torvalds$ git bisect good
->>>>> d97a78423c33f68ca6543de510a409167baed6f5 is the first bad commit
->>>>> commit d97a78423c33f68ca6543de510a409167baed6f5
->>>>> Merge: 61da593f4458 689237ab37c5
->>>>> Author: Linus Torvalds <torvalds@linux-foundation.org>
->>>>> Date:   Fri Jan 12 14:38:08 2024 -0800
->>>>>
->>>>> [...]
->>>>>
->>>>> Hope this helps.
->>>>
->>>> P.S.
->>>>
->>>> As I see that this is a larger merge commit, with 5K+ lines changed, I don't think I can
->>>> bisect further to determine the culprit.
->>>
->>> Actually it's not that hard. If a merge commit is the first bad commit
->>> for a bisection, either the merge wasn't done correctly (less likely,
->>> looking at d97a78423c33f68ca6543de510a409167baed6f5 I'd bet this isn't
->>> the problem); or changes on different sides conflict or you did
->>> something wrong during bisection.
->>>
->>> To rule out the third option, you can just retest d97a78423c33,
->>> 61da593f4458 and 689237ab37c5. If d97a78423c33 is the only bad one, you
->>> did it right.
->>
->> This was confirmed.
->>
->>> Then to further debug the second option you can find out the offending
->>> commit on each side with a bisection as follows, here for the RHS (i.e.
->>> 689237ab37c5):
->>>
->>> 	git bisect start 689237ab37c5 $(git merge-base 61da593f4458 689237ab37c5)
->>>
->>> and then in each bisection step do:
->>>
->>> 	git merge --no-commit 61da593f4458
->>> 	test if the problem is present
->>> 	git reset --hard
->>> 	git bisect good/bad
->>>
->>> In this case you get merge conflicts in drivers/video/fbdev/amba-clcd.c
->>> and drivers/video/fbdev/vermilion/vermilion.c. In the assumption that
->>> you don't have these enabled in your .config, you can just ignore these.
->>>
->>> Side note: A problem during bisection can be that the .config changes
->>> along the process. You should put your config into (say)
->>> arch/x86/configs/lala_defconfig and do
->>>
->>> 	make lala_defconfig
->>>
->>> before building each step to prevent this.
->>
->> I must have done something wrong:
->>
->> marvin@defiant:~/linux/kernel/linux_torvalds$ git bisect log
->> # bad: [689237ab37c59b9909bc9371d7fece3081683fba] fbdev/intelfb: Remove driver
->> # good: [de927f6c0b07d9e698416c5b287c521b07694cac] Merge tag 's390-6.8-1' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux
->> git bisect start '689237ab37c5' 'de927f6c0b07d9e698416c5b287c521b07694cac'
->> # good: [d9f25b59ed85ae45801cf45fe17eb269b0ef3038] fbdev: Remove support for Carillo Ranch driver
->> git bisect good d9f25b59ed85ae45801cf45fe17eb269b0ef3038
->> # good: [e2e0b838a1849f92612a8305c09aaf31bf824350] video/sticore: Remove info field from STI struct
->> git bisect good e2e0b838a1849f92612a8305c09aaf31bf824350
->> # good: [778e73d2411abc8f3a2d60dbf038acaec218792e] drm/hyperv: Remove firmware framebuffers with aperture helper
->> git bisect good 778e73d2411abc8f3a2d60dbf038acaec218792e
->> # good: [df67699c9cb0ceb70f6cc60630ca938c06773eda] firmware/sysfb: Clear screen_info state after consuming it
->> git bisect good df67699c9cb0ceb70f6cc60630ca938c06773eda
->> marvin@defiant:~/linux/kernel/linux_torvalds$
->>
->> with the error:
->>
->> marvin@defiant:~/linux/kernel/linux_torvalds$ git bisect good
->> Bisecting: 0 revisions left to test after this (roughly 0 steps)
->> drivers/video/fbdev/amba-clcd.c: needs merge
->> drivers/video/fbdev/vermilion/vermilion.c: needs merge
->> error: you need to resolve your current index first
-> 
-> It seems you forgot the "git reset --hard" step.  Doing it in this state
-> should still be possible.
+On Wed, Jan 17, 2024 at 07:47:49PM +0100, Mirsad Todorovac wrote:
+> On 1/16/24 01:32, Mirsad Todorovac wrote:
+> > Hi,
+> >=20
+> > On the Ubuntu 22.04 LTS Jammy platform, on a mainline vanilla torvalds =
+tree kernel, the boot
+> > freezes upon first two lines and before any systemd messages.
+> >=20
+> > (Please find the config attached.)
+> >=20
+> > Bisecting the bug led to this result:
+> >=20
+> > marvin@defiant:~/linux/kernel/linux_torvalds$ git bisect good
+> > d97a78423c33f68ca6543de510a409167baed6f5 is the first bad commit
+> > commit d97a78423c33f68ca6543de510a409167baed6f5
+> > Merge: 61da593f4458 689237ab37c5
+> > Author: Linus Torvalds <torvalds@linux-foundation.org>
+> > Date:=C2=A0=C2=A0 Fri Jan 12 14:38:08 2024 -0800
+> >=20
+> >  =C2=A0=C2=A0=C2=A0 Merge tag 'fbdev-for-6.8-rc1' of git://git.kernel.o=
+rg/pub/scm/linux/kernel/git/deller/linux-fbdev
+> >  =C2=A0=C2=A0=C2=A0 Pull fbdev updates from Helge Deller:
+> >  =C2=A0=C2=A0=C2=A0=C2=A0 "Three fbdev drivers (~8500 lines of code) re=
+moved. The Carillo Ranch
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev driver is for an Intel product wh=
+ich was never shipped, and for
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 the intelfb and the amba-clcd drivers t=
+he drm drivers can be used
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 instead.
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 The other code changes are minor: some =
+fb_deferred_io flushing fixes,
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 imxfb margin fixes and stifb cleanups.
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Summary:
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - Remove intelfb fbdev driver (Th=
+omas Zimmermann)
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - Remove amba-clcd fbdev driver (=
+Linus Walleij)
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - Remove vmlfb Carillo Ranch fbde=
+v driver (Matthew Wilcox)
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - fb_deferred_io flushing fixes (=
+Nam Cao)
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - imxfb code fixes and cleanups (=
+Dario Binacchi)
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - stifb primary screen detection =
+cleanups (Thomas Zimmermann)"
+> >  =C2=A0=C2=A0=C2=A0 * tag 'fbdev-for-6.8-rc1' of git://git.kernel.org/p=
+ub/scm/linux/kernel/git/deller/linux-fbdev: (28 commits)
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev/intelfb: Remove driver
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev/hyperv_fb: Do not clear global sc=
+reen_info
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 firmware/sysfb: Clear screen_info state=
+ after consuming it
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev/hyperv_fb: Remove firmware frameb=
+uffers with aperture helpers
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 drm/hyperv: Remove firmware framebuffer=
+s with aperture helper
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev/sis: Remove dependency on screen_=
+info
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 video/logo: use %u format specifier for=
+ unsigned int values
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 video/sticore: Remove info field from S=
+TI struct
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 arch/parisc: Detect primary video devic=
+e from device instance
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev/stifb: Allocate fb_info instance =
+with framebuffer_alloc()
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 video/sticore: Store ROM device in STI =
+struct
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev: flush deferred IO before closing
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev: flush deferred work in fb_deferr=
+ed_io_fsync()
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev: amba-clcd: Delete the old CLCD d=
+river
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev: Remove support for Carillo Ranch=
+ driver
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev: hgafb: fix kernel-doc comments
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev: mmp: Fix typo and wording in cod=
+e comment
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev: fsl-diu-fb: Fix sparse warning d=
+ue to virt_to_phys() prototype change
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev: imxfb: add '*/' on a separate li=
+ne in block comment
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 fbdev: imxfb: use __func__ for function=
+ name
+> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ...
+> >=20
+> >  =C2=A0Documentation/fb/index.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 1 -
+> >  =C2=A0Documentation/fb/intelfb.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 155 --
+> >  =C2=A0Documentation/userspace-api/ioctl/ioctl-number.rst |=C2=A0=C2=A0=
+=C2=A0 1 -
+> >  =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 12 -
+> >  =C2=A0arch/parisc/video/fbdev.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 2 +-
+> >  =C2=A0drivers/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0=C2=A0=C2=A0 3 +-
+> >  =C2=A0drivers/firmware/sysfb.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 14 +-
+> >  =C2=A0drivers/gpu/drm/hyperv/hyperv_drm_drv.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 8 +-
+> >  =C2=A0drivers/video/backlight/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0=C2=A0=C2=A0 7 -
+> >  =C2=A0drivers/video/backlight/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0=C2=A0=C2=A0 1 -
+> >  =C2=A0drivers/video/backlight/cr_bllcd.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 =
+264 ---
+> >  =C2=A0drivers/video/fbdev/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 72 -
+> >  =C2=A0drivers/video/fbdev/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 2 -
+> >  =C2=A0drivers/video/fbdev/amba-clcd.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 986 ---------
+> >  =C2=A0drivers/video/fbdev/core/fb_defio.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
+=A0=C2=A0 8 +-
+> >  =C2=A0drivers/video/fbdev/fsl-diu-fb.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0=C2=A0=C2=A0 2 +-
+> >  =C2=A0drivers/video/fbdev/hgafb.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 13 +-
+> >  =C2=A0drivers/video/fbdev/hyperv_fb.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0=C2=A0 20 +-
+> >  =C2=A0drivers/video/fbdev/imxfb.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 179 +-
+> >  =C2=A0drivers/video/fbdev/intelfb/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=
+=A0 8 -
+> >  =C2=A0drivers/video/fbdev/intelfb/intelfb.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 382 ----
+> >  =C2=A0drivers/video/fbdev/intelfb/intelfb_i2c.c=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 209 --
+> >  =C2=A0drivers/video/fbdev/intelfb/intelfbdrv.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1680 ----------------
+> >  =C2=A0drivers/video/fbdev/intelfb/intelfbhw.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2115 --------------------
+> >  =C2=A0drivers/video/fbdev/intelfb/intelfbhw.h=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 609 ------
+> >  =C2=A0drivers/video/fbdev/mmp/hw/mmp_spi.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=
+=A0 2 +-
+> >  =C2=A0drivers/video/fbdev/sis/sis_main.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=
+=C2=A0 37 -
+> >  =C2=A0drivers/video/fbdev/stifb.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 109 +-
+> >  =C2=A0drivers/video/fbdev/vermilion/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 6 -
+> >  =C2=A0drivers/video/fbdev/vermilion/cr_pll.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 195 --
+> >  =C2=A0drivers/video/fbdev/vermilion/vermilion.c=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1175 -----------
+> >  =C2=A0drivers/video/fbdev/vermilion/vermilion.h=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 245 ---
+> >  =C2=A0drivers/video/logo/pnmtologo.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 6 +-
+> >  =C2=A0drivers/video/sticore.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 5 +
+> >  =C2=A0include/linux/amba/clcd-regs.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 |=C2=A0=C2=A0 87 -
+> >  =C2=A0include/linux/amba/clcd.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 290 ---
+> >  =C2=A0include/video/sticore.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 6 +-
+> >  =C2=A037 files changed, 208 insertions(+), 8708 deletions(-)
+> >  =C2=A0delete mode 100644 Documentation/fb/intelfb.rst
+> >  =C2=A0delete mode 100644 drivers/video/backlight/cr_bllcd.c
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/amba-clcd.c
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/intelfb/Makefile
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/intelfb/intelfb.h
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/intelfb/intelfb_i2c.c
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/intelfb/intelfbdrv.c
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/intelfb/intelfbhw.c
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/intelfb/intelfbhw.h
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/vermilion/Makefile
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/vermilion/cr_pll.c
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/vermilion/vermilion.c
+> >  =C2=A0delete mode 100644 drivers/video/fbdev/vermilion/vermilion.h
+> >  =C2=A0delete mode 100644 include/linux/amba/clcd-regs.h
+> >  =C2=A0delete mode 100644 include/linux/amba/clcd.h
+> > marvin@defiant:~/linux/kernel/linux_torvalds$
+> >=20
+> > Hope this helps.
+>=20
+> P.S.
+>=20
+> As I see that this is a larger merge commit, with 5K+ lines changed, I do=
+n't think I can
+> bisect further to determine the culprit.
+>=20
+> But I thought later that it would be interesting to see why my hardware t=
+riggered the freeze
+> and probably others did not, or someone would complain already.
+>=20
+> Both of the boxes were AMD Ryzen: Ryzen 7 5700G and Ryzen 9 7950X.
+>=20
+> FWIW, I am attaching both hardware listings and the config used, so anyon=
+e knowledgeable with
+> fbdev could possibly narrow down the search.
+>=20
 
-Well, it was possible, but I obviously got the wrong result:
+Hi Mirsad,
 
-marvin@defiant:~/linux/kernel/linux_torvalds$ git bisect log
-# bad: [689237ab37c59b9909bc9371d7fece3081683fba] fbdev/intelfb: Remove driver
-# good: [de927f6c0b07d9e698416c5b287c521b07694cac] Merge tag 's390-6.8-1' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux
-git bisect start '689237ab37c5' 'de927f6c0b07d9e698416c5b287c521b07694cac'
-# good: [d9f25b59ed85ae45801cf45fe17eb269b0ef3038] fbdev: Remove support for Carillo Ranch driver
-git bisect good d9f25b59ed85ae45801cf45fe17eb269b0ef3038
-# good: [e2e0b838a1849f92612a8305c09aaf31bf824350] video/sticore: Remove info field from STI struct
-git bisect good e2e0b838a1849f92612a8305c09aaf31bf824350
-# good: [778e73d2411abc8f3a2d60dbf038acaec218792e] drm/hyperv: Remove firmware framebuffers with aperture helper
-git bisect good 778e73d2411abc8f3a2d60dbf038acaec218792e
-# good: [df67699c9cb0ceb70f6cc60630ca938c06773eda] firmware/sysfb: Clear screen_info state after consuming it
-git bisect good df67699c9cb0ceb70f6cc60630ca938c06773eda
-# good: [df67699c9cb0ceb70f6cc60630ca938c06773eda] firmware/sysfb: Clear screen_info state after consuming it
-git bisect good df67699c9cb0ceb70f6cc60630ca938c06773eda
-# good: [c25a19afb81cfd73dab494ba64f9a434cf1a4499] fbdev/hyperv_fb: Do not clear global screen_info
-git bisect good c25a19afb81cfd73dab494ba64f9a434cf1a4499
-# first bad commit: [689237ab37c59b9909bc9371d7fece3081683fba] fbdev/intelfb: Remove driver
-marvin@defiant:~/linux/kernel/linux_torvalds$ uname -rms
-Linux 6.7.0-initrd-retest-02751-g689237ab37c5 x86_64
-marvin@defiant:~/linux/kernel/linux_torvalds$
+There is another report from Jens with similar symptom [1]. Can you check if
+reverting df67699c9cb0ce ("firmware/sysfb: Clear screen_info state after
+consuming it") fixes your regression?
 
-... meaning, I get the 689237ab37c5 as "first bad commit" but it boots.
+Thanks.
 
-If you see an obvious error, it would be helpful, otherwise I might retry the bisect, but later.
+[1]: https://lore.kernel.org/regressions/93ffd2ee-fa83-4469-96fb-fb263c26bb=
+3c@kernel.dk/T/#t
 
-I am puzzled, but bisecting a merge commit is my first attempt at this.
 
-Best regards,
-Mirsad
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--Vv+fIX42qDF80RtH
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZautrAAKCRD2uYlJVVFO
+o29YAP4qDU6M19ID/p65u1gtfVijgmVI7LdZfaouoZtKiSp6qQD+PnHhjXp+whKs
+mfJNPqyLT46rJgrGbCanMlqNG7BeuAA=
+=iFmQ
+-----END PGP SIGNATURE-----
+
+--Vv+fIX42qDF80RtH--
 
