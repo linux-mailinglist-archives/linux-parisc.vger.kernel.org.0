@@ -1,204 +1,172 @@
-Return-Path: <linux-parisc+bounces-381-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-382-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9673835F67
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jan 2024 11:21:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7147836054
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jan 2024 12:04:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 237411F25DC8
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jan 2024 10:21:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D70C1C269AA
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jan 2024 11:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C893A1AA;
-	Mon, 22 Jan 2024 10:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3C73A297;
+	Mon, 22 Jan 2024 11:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WuV6cvDj"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7D83A1C0
-	for <linux-parisc@vger.kernel.org>; Mon, 22 Jan 2024 10:21:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A653A8C0;
+	Mon, 22 Jan 2024 11:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705918887; cv=none; b=LSPHJA4n5ogVimYOup9gSRTTR1K5cWE7dapSFNwC8EPtSTwfVavd2hL7b62xyOEhydoHeI+445imKh3AT2uGdoLBY6Nz6UJeF1wlyL9WFPuJ/smtLVXgmNfIiQ90c2MVdHN5G4hzo0P55geJRAxOuOOKmjukQbm4yh76+Zvy8sg=
+	t=1705921448; cv=none; b=m1HWafvl2kke2E1HImwzgQvB08zkf7ep46yz5EgkR33b4PgO4rpk2mIBPPVEuAji1VlA++gjhiQHxptMY6v8lo6cscURE++keKWfnbH8G0+YGGR98l/KpDZ3gTEX3i2CLySIxNAzKrkdl9Lj6GIZyzqlLDrGw5b9n9TFYtYZgzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705918887; c=relaxed/simple;
-	bh=z5/qqF7CrLgPHHHN1stH49GDrMHD9J/2vZYYyNgNNYk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p0TaotXy8/oGNkJVu86m8eO4yxKrj1W6ECua6GC+X3Ip2CGlWkUvBtSMN4FVKssPSD7NjiPFXvUEio7pCPSb+x6vPOydCvIrCkJBKmSiDb6ShutUVFwptKkuJ5BPnbzXOr2Hx8kzMH6D0mc/E6qhy1Bwxu1M3hwxoze6Qo+dFV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rRrQC-0007gd-F7; Mon, 22 Jan 2024 11:20:52 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rRrQA-001ZRC-9s; Mon, 22 Jan 2024 11:20:50 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rRrQA-005FLD-0d;
-	Mon, 22 Jan 2024 11:20:50 +0100
-Date: Mon, 22 Jan 2024 11:20:50 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Helge Deller <deller@gmx.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Hans de Goede <hdegoede@redhat.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, Javier Martinez Canillas <javierm@redhat.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Prathu Baronia <prathubaronia2011@gmail.com>, 
-	Sam Ravnborg <sam@ravnborg.org>, Sui Jingfeng <suijingfeng@loongson.cn>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
-	linux-parisc@vger.kernel.org
-Subject: Re: [BUG][BISECTED] Freeze at loading init ramdisk
-Message-ID: <2q2t7mgnpuk2t7wq2tmymxv72oki4uetojkz72xofn7wh45l64@smk3wi6zw54g>
-References: <8a6aa228-f2da-4dcd-93c1-e34614cd6471@alu.unizg.hr>
- <cc813525-5484-443e-a40a-cb98f2ed4e1f@alu.unizg.hr>
- <gevqxytidg5efylozindaqntkbl4yeoyzqnh5m3ylitmipgum3@sgmv7qieo7rs>
- <1fe9b78c-7fb5-4d7b-a754-afd563950829@alu.unizg.hr>
+	s=arc-20240116; t=1705921448; c=relaxed/simple;
+	bh=6WGGhf/BTgLnnKlxdbNPCXyuwYCekxPpegnJq4vX000=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jkGE9vmFaBeFO9sQxtrB7c8K2JxA3AJIGpnc3HfSjbmA7KF6ih3ZNmFQT6NTjZ94ExnQtSexu6s1GzMJuKiPVu9sKF9mkkm/8exDPVYlF281KD06eSrdXXcNh/JCJaI66UT0EOYN3j2ETaNE0XAQyoFoX+VbqPcEeVxMnPoF5SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WuV6cvDj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC00C433F1;
+	Mon, 22 Jan 2024 11:04:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705921447;
+	bh=6WGGhf/BTgLnnKlxdbNPCXyuwYCekxPpegnJq4vX000=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WuV6cvDj37O15oSjTHGuaol6bCLP78ejj/Qqj1SW7SBKckvvka5v+47PF1FXP7ypE
+	 z8bPKsEWzCACA0JC2QjeWs5bx4hHkyPxxpf2/rOeSXpfpDwA4EToI+diq8ckf2NpRQ
+	 gT3IDlQYVaCkI8ue4DJEhWrjdt4UClq0ZCqZv34eAaDCNgBrnhDszRFT/ajus6C8Pq
+	 IXAl0s6zN0bR928g3H2mCH46U7WbujMk9bSlgl97yrRcnon3yzPubDbl8y8xv7/78B
+	 DzHXQS7rE/VOJKvdmiuPb+5XWlbzGPmKIB/MRaftvwXs3cqCHcSMTXn4tikwKLJlvP
+	 LUNtsz4+7e+QA==
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	Martin Hostettler <textshell@uchuujin.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 00/47] tty: vt: cleanup and documentation
+Date: Mon, 22 Jan 2024 12:03:14 +0100
+Message-ID: <20240122110401.7289-1-jirislaby@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ysfre7wk3l4bhl2f"
-Content-Disposition: inline
-In-Reply-To: <1fe9b78c-7fb5-4d7b-a754-afd563950829@alu.unizg.hr>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-parisc@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
+Push the console code (vt.c, vt.h, console.h, ...) into a bit more
+maintainable state. Especially all around consw structure and document
+it.
 
---ysfre7wk3l4bhl2f
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+CSI parser is also a bit cleaned up. More to follow some time in the
+next round.
 
-On Thu, Jan 18, 2024 at 09:04:05PM +0100, Mirsad Todorovac wrote:
->=20
->=20
-> On 1/18/24 08:45, Uwe Kleine-K=F6nig wrote:
-> > Hello Mirsad,
-> >=20
-> > On Wed, Jan 17, 2024 at 07:47:49PM +0100, Mirsad Todorovac wrote:
-> > > On 1/16/24 01:32, Mirsad Todorovac wrote:
-> > > > On the Ubuntu 22.04 LTS Jammy platform, on a mainline vanilla torva=
-lds tree kernel, the boot
-> > > > freezes upon first two lines and before any systemd messages.
-> > > >=20
-> > > > (Please find the config attached.)
-> > > >=20
-> > > > Bisecting the bug led to this result:
-> > > >=20
-> > > > marvin@defiant:~/linux/kernel/linux_torvalds$ git bisect good
-> > > > d97a78423c33f68ca6543de510a409167baed6f5 is the first bad commit
-> > > > commit d97a78423c33f68ca6543de510a409167baed6f5
-> > > > Merge: 61da593f4458 689237ab37c5
-> > > > Author: Linus Torvalds <torvalds@linux-foundation.org>
-> > > > Date:=A0=A0 Fri Jan 12 14:38:08 2024 -0800
-> > > >=20
-> > > > [...]
-> > > >=20
-> > > > Hope this helps.
-> > >=20
-> > > P.S.
-> > >=20
-> > > As I see that this is a larger merge commit, with 5K+ lines changed, =
-I don't think I can
-> > > bisect further to determine the culprit.
-> >=20
-> > Actually it's not that hard. If a merge commit is the first bad commit
-> > for a bisection, either the merge wasn't done correctly (less likely,
-> > looking at d97a78423c33f68ca6543de510a409167baed6f5 I'd bet this isn't
-> > the problem); or changes on different sides conflict or you did
-> > something wrong during bisection.
-> >=20
-> > To rule out the third option, you can just retest d97a78423c33,
-> > 61da593f4458 and 689237ab37c5. If d97a78423c33 is the only bad one, you
-> > did it right.
->=20
-> This was confirmed.
->=20
-> > Then to further debug the second option you can find out the offending
-> > commit on each side with a bisection as follows, here for the RHS (i.e.
-> > 689237ab37c5):
-> >=20
-> > 	git bisect start 689237ab37c5 $(git merge-base 61da593f4458 689237ab37=
-c5)
-> >=20
-> > and then in each bisection step do:
-> >=20
-> > 	git merge --no-commit 61da593f4458
-> > 	test if the problem is present
-> > 	git reset --hard
-> > 	git bisect good/bad
-> >=20
-> > In this case you get merge conflicts in drivers/video/fbdev/amba-clcd.c
-> > and drivers/video/fbdev/vermilion/vermilion.c. In the assumption that
-> > you don't have these enabled in your .config, you can just ignore these.
-> >=20
-> > Side note: A problem during bisection can be that the .config changes
-> > along the process. You should put your config into (say)
-> > arch/x86/configs/lala_defconfig and do
-> >=20
-> > 	make lala_defconfig
-> >=20
-> > before building each step to prevent this.
->=20
-> I must have done something wrong:
->=20
-> marvin@defiant:~/linux/kernel/linux_torvalds$ git bisect log
-> # bad: [689237ab37c59b9909bc9371d7fece3081683fba] fbdev/intelfb: Remove d=
-river
-> # good: [de927f6c0b07d9e698416c5b287c521b07694cac] Merge tag 's390-6.8-1'=
- of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux
-> git bisect start '689237ab37c5' 'de927f6c0b07d9e698416c5b287c521b07694cac'
-> # good: [d9f25b59ed85ae45801cf45fe17eb269b0ef3038] fbdev: Remove support =
-for Carillo Ranch driver
-> git bisect good d9f25b59ed85ae45801cf45fe17eb269b0ef3038
-> # good: [e2e0b838a1849f92612a8305c09aaf31bf824350] video/sticore: Remove =
-info field from STI struct
-> git bisect good e2e0b838a1849f92612a8305c09aaf31bf824350
-> # good: [778e73d2411abc8f3a2d60dbf038acaec218792e] drm/hyperv: Remove fir=
-mware framebuffers with aperture helper
-> git bisect good 778e73d2411abc8f3a2d60dbf038acaec218792e
-> # good: [df67699c9cb0ceb70f6cc60630ca938c06773eda] firmware/sysfb: Clear =
-screen_info state after consuming it
-> git bisect good df67699c9cb0ceb70f6cc60630ca938c06773eda
+[v2] See respective patches for changes. The major changes:
+ * vesa.h introduced
+ * parameters of csi*() simplified
 
-FTR: Now that you identified df67699c9cb0ce as the culprit, calling
-git bisect good on it was wrong, so something was fishy in your testing
-and it's no surprise the bisection found a wrong result.
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: Helge Deller <deller@gmx.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: Martin Hostettler <textshell@uchuujin.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
 
-Best regards
-Uwe
+Jiri Slaby (SUSE) (47):
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+  vgacon: inline vc_scrolldelta_helper() into vgacon_scrolldelta()
+  fbcon: make display_desc a static array in fbcon_startup()
+  tty: vt: fix 20 vs 0x20 typo in EScsiignore
+  tty: vt: expect valid vc when in tty ops
+  tty: vt: pass proper pointers from tioclinux()
+  tty: vt: push console lock from tioclinux() down to 2 functions
+  tty: vt: pass vc_resize_user as a parameter
+  tty: vt: make vc_is_sel()'s vc const
+  tty: vt: define an enum for CSI+m codes
+  tty: vt: use case ranges for CSI+m fg/bg colors
+  tty: vt: define an enum for CSI+J codes
+  tty: vt: reflow csi_J()
+  use clamp() for counts in csi_?() handlers
+  don't pass vc->vc_par[0] to csi_?() handlers
+  tty: vt: define an enum for CSI+K codes
+  tty: vt: reflow csi_K()
+  tty: vt: define an enum for ascii characters
+  tty: vt: remove extern from functions in selection.h
+  tty: vt: make consw::con_debug_*() return void
+  tty: vt: make init parameter of consw::con_init() a bool
+  tty: vt: sanitize arguments of consw::con_clear()
+  tty: vt: remove checks for count in consw::con_clear() implementations
+  tty: vt: add con_putc() helper
+  tty: vt: eliminate unneeded consw::con_putc() implementations
+  tty: vt: sanitize consw::con_putc() parameters
+  tty: vt: sanitize consw::con_putcs() parameters
+  consoles: use if instead of switch-case in consw::con_cursor()
+  fbdev/core: simplify cursor_state setting in fbcon_ops::cursor()
+  tty: vt: remove CM_* constants
+  tty: vt: make consw::con_switch() return a bool
+  tty: vt: stop using -1 for blank mode in consw::con_blank()
+  tty: vt: define a common enum for VESA blanking constants
+  tty: vt: use VESA blanking constants
+  tty: vt: use enum constants for VESA blanking modes
+  tty: vt: make types around consw::con_blank() bool
+  tty: vt: make font of consw::con_font_set() const
+  tty: vt: make consw::con_font_default()'s name const
+  tty: vt: change consw::con_set_origin() return type
+  fbcon: remove consw::con_screen_pos()
+  tty: vt: remove consw::con_screen_pos()
+  tty: vt: make types of screenpos() more consistent
+  fbcon: remove fbcon_getxy()
+  tty: vt: remove consw::con_getxy()
+  tty: vt: remove unused consw::con_flush_scrollback()
+  tty: vt: document the rest of struct consw
+  tty: vt: fix up kernel-doc
+  Documentation: add console.rst
 
---ysfre7wk3l4bhl2f
-Content-Type: application/pgp-signature; name="signature.asc"
+ Documentation/driver-api/tty/console.rst |  45 ++
+ Documentation/driver-api/tty/index.rst   |   1 +
+ drivers/tty/vt/selection.c               |  43 +-
+ drivers/tty/vt/vt.c                      | 645 +++++++++++------------
+ drivers/tty/vt/vt_ioctl.c                |   6 +-
+ drivers/video/console/dummycon.c         |  38 +-
+ drivers/video/console/mdacon.c           |  43 +-
+ drivers/video/console/newport_con.c      |  69 +--
+ drivers/video/console/sticon.c           |  79 ++-
+ drivers/video/console/vgacon.c           | 152 +++---
+ drivers/video/fbdev/core/bitblit.c       |  13 +-
+ drivers/video/fbdev/core/fbcon.c         | 123 ++---
+ drivers/video/fbdev/core/fbcon.h         |   4 +-
+ drivers/video/fbdev/core/fbcon_ccw.c     |  13 +-
+ drivers/video/fbdev/core/fbcon_cw.c      |  13 +-
+ drivers/video/fbdev/core/fbcon_ud.c      |  13 +-
+ drivers/video/fbdev/core/tileblit.c      |   4 +-
+ include/linux/console.h                  | 124 +++--
+ include/linux/console_struct.h           |   1 -
+ include/linux/selection.h                |  56 +-
+ include/linux/vt_kern.h                  |  12 +-
+ include/uapi/linux/fb.h                  |   8 +-
+ include/uapi/linux/vesa.h                |  18 +
+ 23 files changed, 755 insertions(+), 768 deletions(-)
+ create mode 100644 Documentation/driver-api/tty/console.rst
+ create mode 100644 include/uapi/linux/vesa.h
 
------BEGIN PGP SIGNATURE-----
+-- 
+2.43.0
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmWuQXwACgkQj4D7WH0S
-/k7BUwf/c+o/iSAwOCv43dqEm/CcfvKOaq7nnRskQii51OdMDOpIVHur9IOFEGX9
-lEng0n7/jCsjTmNbYFaiWvyEBMI0hJgsjEseA+nt3mPkcmhREWN5RJ/KIh/53rxN
-0scUgXo1PBWQCm8cUWQLsQu1hvT7jLUbwkQifp9pEeoNVLToAaBii1jYl3epShIE
-WhGSfwc3rgdd2OXqtx25vuN0Sf/qkC9JHNW1TjQkkGuquh1mNbSjMr6CznfjwnZ4
-bHskT+3UyO9OcpGG/6hDhUO6aiObcoLxnulX7y3YH5UtsIxVyWl4ya7KPfvjz/Bc
-7lXF2uvftGaPoEttybS9sjjtA25pCA==
-=hK1d
------END PGP SIGNATURE-----
-
---ysfre7wk3l4bhl2f--
 
