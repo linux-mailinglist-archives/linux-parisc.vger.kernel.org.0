@@ -1,139 +1,248 @@
-Return-Path: <linux-parisc+bounces-400-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-401-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F173D837139
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jan 2024 19:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 144A5837364
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jan 2024 21:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB8A5B2E8D6
-	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jan 2024 18:31:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96B7BB2122A
+	for <lists+linux-parisc@lfdr.de>; Mon, 22 Jan 2024 20:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FE65578E;
-	Mon, 22 Jan 2024 18:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BBC405C6;
+	Mon, 22 Jan 2024 20:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="Roldsi+e"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8163155769;
-	Mon, 22 Jan 2024 18:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF523B790;
+	Mon, 22 Jan 2024 20:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946633; cv=none; b=m0KmqlLQghRNEXDewsogkOIUMCFgHCBnXSM6ia7mJDb6mtcaxnjSdqym3OU+oBoFT7P/0g8oB4zN5nlwevKMuTOD6oU6JRWEuEu8E8I40x3deC59gCIWuaE7mPS/CJBOU20bHkEgXNCtfDKNWXFqbta092g6hXjYqRySriResLE=
+	t=1705953692; cv=none; b=LDGEjxQVCAE0UBlE2WUsGaKQoQcafU7mrOboVbfE9Ds0E5Pu6h2MeQy6TN82KZ/l/1UEWg13cjNi5T2OjF4mZCBOMKqeCi3Qtpq/EXgueWdekhh7vPgfdbDyrDTy0wFW4biOCKCo8PjCsnwYT0/2kUO+51OBnRgpMQuZuh/y96o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705946633; c=relaxed/simple;
-	bh=Fh6Mfh+ZfjN747uqw1yJY2/Biltz7BVQb6iuhi4PHr8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rtYADGuDh0NnJf/KSD0EaVAZwzDP+83qmyrNq3aJbF6eaaL4zEHzuUOBidWZEHKK/FuussvfY1sMjZQQKETkS0R1RqfmQcrhQuE5xbQOiXUxVnM7a2pwlIxiP6UVOI/rPJbviGnkIq1v5O8BuInAHhnRzcnulglq3Jv0xPHmU1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-68197b99138so219246d6.1;
-        Mon, 22 Jan 2024 10:03:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705946631; x=1706551431;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s26G0NnkppbXguh7peNPWPJ5jelauHZoMn0Xk4NSQUw=;
-        b=f9sj8dapz8X8s4X3rV7CprJ4yVeGEoaicBNlidoCaSjayweKFDw/PcvRUBrg/YCxmi
-         a+rpuUJYG3ww7Tx71XUdvnDc+IHZ1UIltCJM38MJzu6ACo1VbbFBz3hQUPvoXJgRVtdm
-         +Duv+eDNfM9T1ILJmxw3/p/26plcEi8Ums4q43FDoD/YPhnW1+La3M2la2iSAHWfUres
-         BGz/iiWlr4lGOQwwjbBwLrLIsvNyr5Ysj+qQYg86jmvBmIxsBOp0clHXDDB3mH1iaWDz
-         SmcR4vaTtgHc/S8updpLDKvE0HmyemNypUaJewLmInX+1YNwdh8irNp9j0fQHwUn0hVw
-         hizw==
-X-Gm-Message-State: AOJu0YzpKSZgMLO8owwP/NzVyChGP+JCTvPwJk7rJh7QVSnjZaC68sV5
-	Ofp8gX/ZrAQWnZ27ua6C5rk3IOTIQfe9P70ZQsBG8GnWKFwqkZezKhpIcwIiF8bqUoCYGSSdJ+y
-	F/qM9B7On8XvDtCou/+FbN1VApeiPS5Zjyos=
-X-Google-Smtp-Source: AGHT+IHydxkoIcTGgPnithAm3ZZ3Lbs6GLo4uCDeUNHWYMYJDcQ7kkQEBWJsEM9NkDfdwTNwYrCyeGF8yf+5uFu9gbc=
-X-Received: by 2002:a4a:cb87:0:b0:599:9e03:68da with SMTP id
- y7-20020a4acb87000000b005999e0368damr789760ooq.0.1705946610762; Mon, 22 Jan
- 2024 10:03:30 -0800 (PST)
+	s=arc-20240116; t=1705953692; c=relaxed/simple;
+	bh=dNelk4kBrgBCghijjRjoFYY9rvEodTp1XYkmBPmw944=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nsNTXAKf6XRnp7FP6czi+rGNmyzSRUOw8ZCLinUYEVsbXTL5x8hV4BsZvkx8NLy5HzGlodpPFmlOMFFP75g+IWfX4MF2XRZ5wOEKTyRlicQ54s5TmM/nBDzjEabLg+68SEuecQvjKMjFatXwu5QYY0znQI9P2pU1HhRsjpKfSeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=Roldsi+e; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1705953660; x=1706558460; i=deller@gmx.de;
+	bh=dNelk4kBrgBCghijjRjoFYY9rvEodTp1XYkmBPmw944=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=Roldsi+e/ixsw0Rufo0TEKAUHwJ964vRlLwtamHVpZ1xrEG7UaEczqqFz4sDeIRS
+	 ic0L8UckEsHeeywccp9evzE4PnUSo4EnXD1rhJETkLPpdbOxdNHOEpJP6Kmv1faQW
+	 MYb0m35MDfLSjtlbbPukc6mmMnB0hOSjkyVTIqClVl/MhfbxNABvktXjaiMw1T9Zh
+	 +C9wUuoa0ePtyS052o7yTMwRKZIBcHdyQq35dINaac6bPPQVtPxZ/QAMVMRWfedFy
+	 YVJ73IupSgKAjZOSd8JYcUP8z1/bUsSVkAouGd8xAd2h1x+W0vDKY+EYNlLj4wkzK
+	 Sm4PA/vmBmYnGU9Mng==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.156.47]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MuDc7-1r7Ahd0JdF-00uZaX; Mon, 22
+ Jan 2024 21:01:00 +0100
+Message-ID: <00232392-dc40-4790-9278-91df30e50a04@gmx.de>
+Date: Mon, 22 Jan 2024 21:00:58 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk> <E1rDOg7-00Dvjq-VZ@rmk-PC.armlinux.org.uk>
- <CAJZ5v0je=-oVnSumZs=dzcyVuVUeVeTgO7yOnjGg1igyrS7EHQ@mail.gmail.com> <20240122174449.00002f78@Huawei.com>
-In-Reply-To: <20240122174449.00002f78@Huawei.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 22 Jan 2024 19:03:19 +0100
-Message-ID: <CAJZ5v0gePAsbRecOXDZ+q-Ds+nsoSBq6VU89ikuQoxds7TeQ3g@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 04/21] ACPI: processor: Register all CPUs from acpi_processor_get_info()
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Russell King <rmk+kernel@armlinux.org.uk>, 
-	linux-pm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, 
-	acpica-devel@lists.linuxfoundation.org, linux-csky@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com, justin.he@arm.com, 
-	James Morse <james.morse@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/47] tty: vt: cleanup and documentation
+Content-Language: en-US
+To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, gregkh@linuxfoundation.org
+Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Daniel Vetter <daniel@ffwll.ch>, dri-devel@lists.freedesktop.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, linux-parisc@vger.kernel.org,
+ Martin Hostettler <textshell@uchuujin.de>,
+ Thomas Zimmermann <tzimmermann@suse.de>
+References: <20240122110401.7289-1-jirislaby@kernel.org>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20240122110401.7289-1-jirislaby@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:+gm3ywaYDIj1z5b8uKNnsDEONVgpeLMuXadHkrhEOpzr6RnNRc7
+ MKGXdTFk8i7+n/hahB3Z1Qd8HY06s3puVkp07+cNPf46oh5IMvd3h1bWGRq80KU0k0bugu9
+ YObXAsna5CKxrH/v31pd/DN7EvKZxpRVxMGu7Rdl0bJ4eQ/OqbHLZeQ2hFs9tdPdBMSD0qR
+ aJAfV/luWPLKrCuWbAFLQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:5N8g+roOATs=;p5v/fSt9MlMDLMws6IHxxqdF0j/
+ 9qrDa48mvx+g132niFtZYy4NuzSIoKKuc4JHILs9PXpMu7h3gdSmcDlbkO1H3qTlKIF+FBZBh
+ AFG5SD5BhbkjSCLY3hsw/v8IKys0SySa8kiNOGGVZAQoPEhd6OASbF8fgw7hNfDN2okRrZsp0
+ eNk38aYHyot3S/jaa6eQYzVuzm/alVU4Vy88eWqnv5fTppyB4NKOaXs9EdaUil7KaH5tlW7dq
+ wtYiWTpdOmY9V21fnDsnCuHUyIJm12VVibs+c4BwD3b3nwrru93Q57BpY1RC6dyMtwgXJQKSb
+ /vkRuVPj8K0pQae3n+p9i4l5alAZkqkjEbv6Nq3KdgiPTu2Rs9hoceBHQhebrFt8EuR+2x0EK
+ HjAM+WDMvo+JrgU6a+3BmoqBcX/gVdaRBOA1sdI5TFjBTn8QMVyGa+/gsiEmYATe/p6zRva+H
+ W5TzpfZYuuKOCH2S71kRL0xbL8DewQ9j0J02f4FC2Cw0V3B+z7C5rX4PQtwI5MQoc4vI8TH9/
+ cc2iFQRmPYXx/28uwAUKo7K4zZN/0tMhG0rbfTuKC0AOfokwwM7JSaVV0wXVigbNf+O9s0bNc
+ 60KVPXtnVwsk+VywgROWfrpPyIuaVTDjiQULY9cNF4RtMTncR1nkDqLY9rlTidwMNHbSUxN2b
+ mqz7QbZmPTQWoxWhGERqPJbA1HG8dqPXVq1yDuHa2BtBM175z61NSo2/eWltWau0Elh9EYLo0
+ Tn2VF7lX8DIm8fQNGS35Sdiyto/XVfh6OC2In7nex24Wf+qJMc92WRnFp5WgPUffwVlTQQxld
+ 5TF1+oRDWqkJWbNoywlACASXzSPMAvAAMGqVGCvtIbo1DZ1UUmhKPLnDLU5XYnZ+ksJ3gUFvB
+ LNS64cTPvYnLF0Ydp7l2Y4hdKsCUBTtYg56Vus4plpOwR0zYQPV+I+WHi12KyNMPHp96XBeFJ
+ QbQOzA==
 
-On Mon, Jan 22, 2024 at 6:44=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
+On 1/22/24 12:03, Jiri Slaby (SUSE) wrote:
+> Push the console code (vt.c, vt.h, console.h, ...) into a bit more
+> maintainable state. Especially all around consw structure and document
+> it.
 >
-> On Mon, 18 Dec 2023 21:30:50 +0100
-> "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+> CSI parser is also a bit cleaned up. More to follow some time in the
+> next round.
+
+I've not yet looked through all of those patches, but I
+tried to boot up a machine with the STI console driver
+and I've not seen any issues yet.
+So far:
+
+Tested-by: Helge Deller <deller@gmx.de> # parisc STI console
+
+Helge
+
+> [v2] See respective patches for changes. The major changes:
+>   * vesa.h introduced
+>   * parameters of csi*() simplified
 >
-> > On Wed, Dec 13, 2023 at 1:49=E2=80=AFPM Russell King <rmk+kernel@armlin=
-ux.org.uk> wrote:
-> > >
-> > > From: James Morse <james.morse@arm.com>
-> > >
-> > > To allow ACPI to skip the call to arch_register_cpu() when the _STA
-> > > value indicates the CPU can't be brought online right now, move the
-> > > arch_register_cpu() call into acpi_processor_get_info().
-> >
-> > This kind of looks backwards to me and has a potential to become
-> > super-confusing.
-> >
-> > I would instead add a way for the generic code to ask the platform
-> > firmware whether or not the given CPU is enabled and so it can be
-> > registered.
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: Martin Hostettler <textshell@uchuujin.de>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
 >
-> Hi Rafael,
+> Jiri Slaby (SUSE) (47):
 >
-> The ACPI interpreter isn't up at this stage so we'd need to pull that
-> forwards. I'm not sure if we can pull the interpreter init early enough.
+>    vgacon: inline vc_scrolldelta_helper() into vgacon_scrolldelta()
+>    fbcon: make display_desc a static array in fbcon_startup()
+>    tty: vt: fix 20 vs 0x20 typo in EScsiignore
+>    tty: vt: expect valid vc when in tty ops
+>    tty: vt: pass proper pointers from tioclinux()
+>    tty: vt: push console lock from tioclinux() down to 2 functions
+>    tty: vt: pass vc_resize_user as a parameter
+>    tty: vt: make vc_is_sel()'s vc const
+>    tty: vt: define an enum for CSI+m codes
+>    tty: vt: use case ranges for CSI+m fg/bg colors
+>    tty: vt: define an enum for CSI+J codes
+>    tty: vt: reflow csi_J()
+>    use clamp() for counts in csi_?() handlers
+>    don't pass vc->vc_par[0] to csi_?() handlers
+>    tty: vt: define an enum for CSI+K codes
+>    tty: vt: reflow csi_K()
+>    tty: vt: define an enum for ascii characters
+>    tty: vt: remove extern from functions in selection.h
+>    tty: vt: make consw::con_debug_*() return void
+>    tty: vt: make init parameter of consw::con_init() a bool
+>    tty: vt: sanitize arguments of consw::con_clear()
+>    tty: vt: remove checks for count in consw::con_clear() implementation=
+s
+>    tty: vt: add con_putc() helper
+>    tty: vt: eliminate unneeded consw::con_putc() implementations
+>    tty: vt: sanitize consw::con_putc() parameters
+>    tty: vt: sanitize consw::con_putcs() parameters
+>    consoles: use if instead of switch-case in consw::con_cursor()
+>    fbdev/core: simplify cursor_state setting in fbcon_ops::cursor()
+>    tty: vt: remove CM_* constants
+>    tty: vt: make consw::con_switch() return a bool
+>    tty: vt: stop using -1 for blank mode in consw::con_blank()
+>    tty: vt: define a common enum for VESA blanking constants
+>    tty: vt: use VESA blanking constants
+>    tty: vt: use enum constants for VESA blanking modes
+>    tty: vt: make types around consw::con_blank() bool
+>    tty: vt: make font of consw::con_font_set() const
+>    tty: vt: make consw::con_font_default()'s name const
+>    tty: vt: change consw::con_set_origin() return type
+>    fbcon: remove consw::con_screen_pos()
+>    tty: vt: remove consw::con_screen_pos()
+>    tty: vt: make types of screenpos() more consistent
+>    fbcon: remove fbcon_getxy()
+>    tty: vt: remove consw::con_getxy()
+>    tty: vt: remove unused consw::con_flush_scrollback()
+>    tty: vt: document the rest of struct consw
+>    tty: vt: fix up kernel-doc
+>    Documentation: add console.rst
+>
+>   Documentation/driver-api/tty/console.rst |  45 ++
+>   Documentation/driver-api/tty/index.rst   |   1 +
+>   drivers/tty/vt/selection.c               |  43 +-
+>   drivers/tty/vt/vt.c                      | 645 +++++++++++------------
+>   drivers/tty/vt/vt_ioctl.c                |   6 +-
+>   drivers/video/console/dummycon.c         |  38 +-
+>   drivers/video/console/mdacon.c           |  43 +-
+>   drivers/video/console/newport_con.c      |  69 +--
+>   drivers/video/console/sticon.c           |  79 ++-
+>   drivers/video/console/vgacon.c           | 152 +++---
+>   drivers/video/fbdev/core/bitblit.c       |  13 +-
+>   drivers/video/fbdev/core/fbcon.c         | 123 ++---
+>   drivers/video/fbdev/core/fbcon.h         |   4 +-
+>   drivers/video/fbdev/core/fbcon_ccw.c     |  13 +-
+>   drivers/video/fbdev/core/fbcon_cw.c      |  13 +-
+>   drivers/video/fbdev/core/fbcon_ud.c      |  13 +-
+>   drivers/video/fbdev/core/tileblit.c      |   4 +-
+>   include/linux/console.h                  | 124 +++--
+>   include/linux/console_struct.h           |   1 -
+>   include/linux/selection.h                |  56 +-
+>   include/linux/vt_kern.h                  |  12 +-
+>   include/uapi/linux/fb.h                  |   8 +-
+>   include/uapi/linux/vesa.h                |  18 +
+>   23 files changed, 755 insertions(+), 768 deletions(-)
+>   create mode 100644 Documentation/driver-api/tty/console.rst
+>   create mode 100644 include/uapi/linux/vesa.h
+>
 
-Well, this patch effectively defers the AP registration to the time
-when acpi_processor_get_info() runs and the interpreter is up and
-running then.
-
-For consistency, it would be better to defer the AP registration in
-general to that point.
-
-> Perhaps pushing the registration back in all cases is the way to go?
-> Given the acpi interpretter is initialized via subsys_initcall() it would
-> need to be after that - I tried pushing cpu_dev_register_generic()
-> immediately after acpi_bus_init() and that seems fine.
-
-Sounds promising.
-
-> We can't leave the rest of cpu_dev_init() that late because a bunch
-> of other stuff relies on it (CPU freq blows up first as a core_init()
-> on my setup).
-
-I see.
-
-> So to make this work we need it to always move the registration later
-> than the necessary infrastructure, perhaps to subsys_initcall_sync()
-> as is done for missing CPUs (we'd need to combine the two given that
-> needs to run after this, or potentially just stop checking for acpi_disab=
-led
-> and don't taint the kernel!).  I think this is probably the most consiste=
-nt
-> option on basis it at least moves the registration to the same point
-> whatever is going on and can easily use the arch callback you suggest
-> to hide away the logic on deciding if a CPU is there or not.
-
-I agree.
 
