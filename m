@@ -1,51 +1,51 @@
-Return-Path: <linux-parisc+bounces-417-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-418-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B635839400
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jan 2024 16:59:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DEE839401
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jan 2024 16:59:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD9E11C2386F
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jan 2024 15:59:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3182D28C137
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jan 2024 15:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820B561679;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5E461681;
 	Tue, 23 Jan 2024 15:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1LE7tl+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJ4htCgi"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0C36167C
-	for <linux-parisc@vger.kernel.org>; Tue, 23 Jan 2024 15:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883D761680
+	for <linux-parisc@vger.kernel.org>; Tue, 23 Jan 2024 15:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706025565; cv=none; b=cThuPuguZr5BabgPXKbJ297uNEavjjYJ2SsVsnsdStVzeCLJNN/C6cN+Qko8nXqJjPvJZfaLEaDJQeS+iyjHoV2Vj8ePRmgadujCQQue2z0/urHplsey4LM0EONrkPLY+U8b7Ftkn3yhroiKjF8H79fcc4ej3CBd1OvYm8EHnHI=
+	t=1706025565; cv=none; b=H7tl4Y8mGCZlhAagniRGTdEKqvSYuDIR2G+pg5N+zUaNpLfHEarKoj4+8/Vxv6teHTo7s1XPfxkn0syHCptQujnimHm9Sfkji7yj/mTwwrBCjhEhie1SEJzjuNdNYv8Tnh3P13E04xPQIeLBmavCsudUghkDe9i99Cr5RH3cdT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1706025565; c=relaxed/simple;
-	bh=73qFuYasz0mQEmxPeu3hv+8nCU445gydjCiGlQEFpsQ=;
+	bh=E7rIaCLeep4xX+XPrhYVzcgsOlMCyKhWPwyTCqB8bGo=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYTCGDlRTWTNnHwQcMDoAQnMKtZiNGBy5pYFRk922Q+tRGIZRuc6HF3tSINUPK8VANBDZiAMHo/OCDqVDrXRMnR5Y/f0IeUXGNkQHiw1F6B7lLprUFTF1UDlLD6ya/XJ4Tj/q8gSlV11XteU/2q8KjiZDoXpe9xB4sutIAFXSCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1LE7tl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611EEC43390
-	for <linux-parisc@vger.kernel.org>; Tue, 23 Jan 2024 15:59:23 +0000 (UTC)
+	 MIME-Version; b=m+GyBnSq4rsTohQ7nxzhWfwDtx8Bdstg9wsvJYmh+8cfzitClJKVu8gtVaDpgCeO4K1fv1sv6hSLQVziPu89j2CKQtdOBcz31jF0d28W6UNzbI5A2zLKM1nq28WgPHNV3+eRxU/8LhYyoCibwQDr7KKTqQT7PGF4aTU69jZkcdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJ4htCgi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D107C43394
+	for <linux-parisc@vger.kernel.org>; Tue, 23 Jan 2024 15:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706025564;
-	bh=73qFuYasz0mQEmxPeu3hv+8nCU445gydjCiGlQEFpsQ=;
+	s=k20201202; t=1706025565;
+	bh=E7rIaCLeep4xX+XPrhYVzcgsOlMCyKhWPwyTCqB8bGo=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=O1LE7tl+tJ0g8uqvI7Rw2axfwyWjVevOVpqr5MK7anJY41QeEWliUyPa52Hw8hBC8
-	 c0D5yq1VGrSuAuHIkvilVDLmSjk35RSo0RGgE3XDWZdWIyg6bXY5Whxh6AwS5nW/sP
-	 p62eXkHW7KO0+NRAXylnfZrLDEiD30+8DWnAnBgfm6lqLp9kqRTIIM/RR8CzlMrdCx
-	 Cw0gA+hPGn0F2FAX8bUuGjTNXhNoiDHdaMP4XXFkmZzWJCVxyuaOZ4BTy138Ry+zYr
-	 fZTGmfU8HEl0yV7X+aWZoNnTSTyQa8X/kYj4L2yZ0u8fcWJ7O5X0xN+UjoLtvlUM2N
-	 W3b0BxMGcLfXQ==
+	b=RJ4htCgiIPED7/pLpw+cDFpCjNX0FGS0VsQorf07L3GJ8D12Yv9Yzi0JbP3CQ3A9G
+	 vBfTzyTTCU6AUjX5QvEJBzXVX4WP6LZ3s2pXxSEuf2cxHBxKx5uGjgk5TlV6qbUesB
+	 EHRUNwzhCI9D2di/XJZJrWvEYHA/qRtNyAZfLhJleh+LgTHaGgOI4fs9At1Ess0Ov9
+	 gz+0H0UM6M8O0iB6R38QuZcddRZaAxeXK4fLC+rZrLLWsFPSIo1cDc3jYzl4pyFk3q
+	 71bXjB9WfbqrNY9udcDYDzqGmUyUQb29i5O6BcgtP/4p1YLuGaoGjweJmpIl88Spz3
+	 bdNcWXXdy09qg==
 From: deller@kernel.org
 To: linux-parisc@vger.kernel.org
-Subject: [PATCH 4/7] parisc: Prevent hung tasks when printing inventory on serial console
-Date: Tue, 23 Jan 2024 16:59:01 +0100
-Message-ID: <20240123155904.6220-4-deller@kernel.org>
+Subject: [PATCH 5/7] parisc: Drop unneeded semicolon in parse_tree_node()
+Date: Tue, 23 Jan 2024 16:59:02 +0100
+Message-ID: <20240123155904.6220-5-deller@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240123155904.6220-1-deller@kernel.org>
 References: <20240123155904.6220-1-deller@kernel.org>
@@ -59,30 +59,26 @@ Content-Transfer-Encoding: 8bit
 
 From: Helge Deller <deller@gmx.de>
 
-Printing the inventory on a serial console can be quite slow and thus may
-trigger the hung task detector (CONFIG_DETECT_HUNG_TASK=y) and possibly
-reboot the machine. Adding a cond_resched() prevents this.
-
+Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.0+
+Closes: https://lore.kernel.org/oe-kbuild-all/202401222059.Wli6OGT0-lkp@intel.com/
 ---
- arch/parisc/kernel/drivers.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/parisc/kernel/drivers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/parisc/kernel/drivers.c b/arch/parisc/kernel/drivers.c
-index 25f9b9e9d6df..404ea37705ce 100644
+index 404ea37705ce..c7ff339732ba 100644
 --- a/arch/parisc/kernel/drivers.c
 +++ b/arch/parisc/kernel/drivers.c
-@@ -1004,6 +1004,9 @@ static __init int qemu_print_iodc_data(struct device *lin_dev, void *data)
+@@ -742,7 +742,7 @@ parse_tree_node(struct device *parent, int index, struct hardware_path *modpath)
+ 	};
  
- 	pr_info("\n");
+ 	if (device_for_each_child(parent, &recurse_data, descend_children))
+-		{ /* nothing */ };
++		{ /* nothing */ }
  
-+	/* Prevent hung task messages when printing on serial console */
-+	cond_resched();
-+
- 	pr_info("#define HPA_%08lx_DESCRIPTION \"%s\"\n",
- 		hpa, parisc_hardware_description(&dev->id));
- 
+ 	return d.dev;
+ }
 -- 
 2.43.0
 
