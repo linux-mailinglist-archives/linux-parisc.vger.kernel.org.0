@@ -1,90 +1,170 @@
-Return-Path: <linux-parisc+bounces-420-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-421-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19228839402
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jan 2024 16:59:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E18E839478
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jan 2024 17:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5C6F28C0B5
-	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jan 2024 15:59:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAB82B26F32
+	for <lists+linux-parisc@lfdr.de>; Tue, 23 Jan 2024 16:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AA261686;
-	Tue, 23 Jan 2024 15:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dk5AOyso"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008F664A95;
+	Tue, 23 Jan 2024 16:16:09 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4A561685
-	for <linux-parisc@vger.kernel.org>; Tue, 23 Jan 2024 15:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC0761674;
+	Tue, 23 Jan 2024 16:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706025567; cv=none; b=f4NOCSjXjnOTaonC0m/G5HriF9+5gsMDE0aYjvb6JMqABYF2fhJjJRLiBH1gN0eZnHdmXN85Es90nZ2uT+lv99LGORyp0CiY5HlVKsC+KztEjcvECAx1izrkRkdQ+QIFr44ODA+jykI9S+fa9DUu6TIUAKfiNW2L3MHFBYQKx18=
+	t=1706026568; cv=none; b=ediqZnRvtNZJjelby/Sn+YZPJjLQ8IfWJxnJJ4GXmFPIM427X/4iF81Mv+GUT/Yi5pDHmlglyTroq3QdzSZxaf6of6tv5UDzmVFvf1Ysg1iqv2jJxAloq2BEO3uCb0nSJma1cAL1nRJ3ZZGWcrsiWbMJj+xk60VFIRlM1qGMU6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706025567; c=relaxed/simple;
-	bh=WcpaIEMpSjU3C3PqiJDZ9DOWvjHubsEjtMySkQqBnYo=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHkNY3NGdESdgVvnXsieJcSDtDwGuqYf4KLucYfRKes/+glRlf3v/WyuUQT+HstWCTiCKwMtYiWFEng/+3OWnw4R/Fh+QXxYP25Y0ZopG+g1ZwPLwNeGWuz7EJOsVUFnLKIt7acMvcntpaZpi/3XR3CWgs9+72msmegWWDtcUhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dk5AOyso; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D82C433F1
-	for <linux-parisc@vger.kernel.org>; Tue, 23 Jan 2024 15:59:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706025567;
-	bh=WcpaIEMpSjU3C3PqiJDZ9DOWvjHubsEjtMySkQqBnYo=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=dk5AOysoD++pR3XRp5n6dhsbyYqq6DI/Qw5Vk7UKl3Mh4osRFE84+CSnPxcnNszt9
-	 QOc+rIkfUGjne0H8uEoQWzfpnEg2sxf1aAb62ryD8EWKiVvhMgP7zeIX1NMMIqCUyK
-	 DUgfJmVAsVppF05SFIuaLCXEH2vVtD9ND/ObkbAZTOcFvsWgc+/4cOdkvDtqD/irOm
-	 CYO5uxvEtOkUG5PAgkAmBE+GhD6kwKy960GYUUBb4wGuktcz3AxXl3Np7xX4Ki6skf
-	 PBLB0EB7A2VFKFpX0EXxWilepbqMEgQLRTvd0oer7sAzfrW6/qr8F1bGxAl+aIiN+N
-	 CzJh1gl3zZx5g==
-From: deller@kernel.org
-To: linux-parisc@vger.kernel.org
-Subject: [PATCH 7/7] parisc: Show kernel unaligned memory accesses
-Date: Tue, 23 Jan 2024 16:59:04 +0100
-Message-ID: <20240123155904.6220-7-deller@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240123155904.6220-1-deller@kernel.org>
-References: <20240123155904.6220-1-deller@kernel.org>
+	s=arc-20240116; t=1706026568; c=relaxed/simple;
+	bh=w3+AYXUdBPT1k1chiYw1nvRpK0AKwcZFytOy9qQHdiM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mydW34joNzZQ5GFphB968f7z/i8uG6eSLhdpisEoXarGxkEU8WYE4Kxg4hULDt4J63aaZYN3H2oba/Xg+jdHAulZOvjIsnTV/q07niJtR21ybOw02Y22WIr7UFkBEV3EeKB90f4PvE0UukkT31K4M6wT1GdoSSjWNBY8v79PxPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-6dbc2bf4e8dso902859a34.1;
+        Tue, 23 Jan 2024 08:16:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706026566; x=1706631366;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yJEIU7VR+3J2Yia1miwsBzYF1liLE8jqQNwwQ3tqywA=;
+        b=BVXybsR8i8+Q94fqKbNu65fNCDxERYr1EwBDYE4uDfZomW0ecJcrNZUQNDVSlz7rSY
+         +VZ/kbFwCoT/ym3lc10W3xpU7w8RDBwFwAgLoCXcUexLvPc+NYOiI1PDSLkjv0498BX4
+         aAzrJqrFX0sg47eW125TFLs3at+5DG7NdPIWox89IHARfsqeY7TT+2+OjclrVUOJcCsw
+         K12grXX5NzyM8EDNp8F1dlqcb4wqyam58e6/N+9GFYImyNkcpEl7E1N0VESfzJcM27AH
+         hOQLp8QG0S3x2WdtBIroeIRYW/Yn2r/830tXCuQLLw42rvRCxtP+Nh9qj0C2GilaShBM
+         QUjA==
+X-Gm-Message-State: AOJu0Yz2XrrpP23i7jIWUWw7f0zjQyZhlm0juwYCJfO9ydnEJeuzVLgx
+	MQPQO/EnWqHBBTuWeMAu0/L1OhggYLJEKn2Ih5WUKrrYHxfiG602PbFE1TcVrN8jCnaId7oe5DR
+	phZM9E0cBPoU39C21btV0odXVg8cfRJXA
+X-Google-Smtp-Source: AGHT+IHQzsBW5twpX6SIjbULqATUBQ0vqIkaZWwGQH4D7Ygegig4qDUNFIf/V4v9BHOfqKgEoP5iIqbc4ar0eQw6LMM=
+X-Received: by 2002:a05:6808:f10:b0:3bd:c5eb:451c with SMTP id
+ m16-20020a0568080f1000b003bdc5eb451cmr2255072oiw.1.1706026566440; Tue, 23 Jan
+ 2024 08:16:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk> <E1rDOgD-00Dvk2-3h@rmk-PC.armlinux.org.uk>
+ <CAJZ5v0g9nfLrEf9u4Ksw6BOWJQ9iv8Z-O8RsLU6jR5zk0ahxRw@mail.gmail.com>
+ <20240122180013.000016d5@Huawei.com> <Za++/11n5KA1VS3p@shell.armlinux.org.uk>
+In-Reply-To: <Za++/11n5KA1VS3p@shell.armlinux.org.uk>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 23 Jan 2024 17:15:54 +0100
+Message-ID: <CAJZ5v0h7wsLt8d3ZoLXsK1=crAx66T42WDKNoHcg8CiHpAjS8g@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 05/21] ACPI: Rename ACPI_HOTPLUG_CPU to include 'present'
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	linux-pm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, 
+	acpica-devel@lists.linuxfoundation.org, linux-csky@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com, justin.he@arm.com, 
+	James Morse <james.morse@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Helge Deller <deller@gmx.de>
+On Tue, Jan 23, 2024 at 2:28=E2=80=AFPM Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
+>
+> On Mon, Jan 22, 2024 at 06:00:13PM +0000, Jonathan Cameron wrote:
+> > On Mon, 18 Dec 2023 21:35:16 +0100
+> > "Rafael J. Wysocki" <rafael@kernel.org> wrote:
+> >
+> > > On Wed, Dec 13, 2023 at 1:49=E2=80=AFPM Russell King <rmk+kernel@arml=
+inux.org.uk> wrote:
+> > > >
+> > > > From: James Morse <james.morse@arm.com>
+> > > >
+> > > > The code behind ACPI_HOTPLUG_CPU allows a not-present CPU to become
+> > > > present.
+> > >
+> > > Right.
+> > >
+> > > > This isn't the only use of HOTPLUG_CPU. On arm64 and riscv
+> > > > CPUs can be taken offline as a power saving measure.
+> > >
+> > > But still there is the case in which a non-present CPU can become
+> > > present, isn't it there?
+> >
+> > Not yet defined by the architectures (and I'm assuming it probably neve=
+r will be).
+> >
+> > The original proposal we took to ARM was to do exactly that - they push=
+ed
+> > back hard on the basis there was no architecturally safe way to impleme=
+nt it.
+> > Too much of the ARM arch has to exist from the start of time.
+> >
+> > https://lore.kernel.org/linux-arm-kernel/cbaa6d68-6143-e010-5f3c-ec62f8=
+79ad95@arm.com/
+> > is one of the relevant threads of the kernel side of that discussion.
+> >
+> > Not to put specific words into the ARM architects mouths, but the
+> > short description is that there is currently no demand for working
+> > out how to make physical CPU hotplug possible, as such they will not
+> > provide an architecturally compliant way to do it for virtual CPU hotpl=
+ug and
+> > another means is needed (which is why this series doesn't use the prese=
+nt bit
+> > for that purpose and we have the Online capable bit in MADT/GICC)
+> >
+> > It was a 'fun' dance of several years to get to that clarification.
+> > As another fun fact, the same is defined for x86, but I don't think
+> > anyone has used it yet (GICC for ARM has an online capable bit in the f=
+lags to
+> > enable this, which was remarkably similar to the online capable bit in =
+the
+> > flags of the Local APIC entries as added fairly recently).
+> >
+> > >
+> > > > On arm64 an offline CPU may be disabled by firmware, preventing it =
+from
+> > > > being brought back online, but it remains present throughout.
+> > > >
+> > > > Adding code to prevent user-space trying to online these disabled C=
+PUs
+> > > > needs some additional terminology.
+> > > >
+> > > > Rename the Kconfig symbol CONFIG_ACPI_HOTPLUG_PRESENT_CPU to reflec=
+t
+> > > > that it makes possible CPUs present.
+> > >
+> > > Honestly, I don't think that this change is necessary or even useful.
+> >
+> > Whilst it's an attempt to avoid future confusion, the rename is
+> > not something I really care about so my advice to Russell is drop
+> > it unless you are attached to it!
+>
+> While I agree that it isn't a necessity, I don't fully agree that it
+> isn't useful.
+>
+> One of the issues will be that while Arm64 will support hotplug vCPU,
+> it won't be setting ACPI_HOTPLUG_CPU because it doesn't support
+> the present bit changing. So I can see why James decided to rename
+> it - because with Arm64's hotplug vCPU, the idea that ACPI_HOTPLUG_CPU
+> somehow enables hotplug CPU support is now no longer true.
+>
+> Keeping it as ACPI_HOTPLUG_CPU makes the code less obvious, because it
+> leads one to assume that it ought to be enabled for Arm64's
+> implementatinon, and that could well cause issues in the future if
+> people make the assumption that "ACPI_HOTPLUG_CPU" means hotplug CPU
+> is supported in ACPI. It doesn't anymore.
 
-Warn if some kernel function triggers unaligned memory accesses.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
----
- arch/parisc/kernel/unaligned.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
-index c520e551a165..95a2741f26f3 100644
---- a/arch/parisc/kernel/unaligned.c
-+++ b/arch/parisc/kernel/unaligned.c
-@@ -399,6 +399,13 @@ void handle_unaligned(struct pt_regs *regs)
- 
- 		if (!unaligned_enabled)
- 			goto force_sigbus;
-+	} else {
-+		static DEFINE_RATELIMIT_STATE(kernel_ratelimit, 5 * HZ, 5);
-+		if (!(current->thread.flags & PARISC_UAC_NOPRINT) &&
-+			__ratelimit(&kernel_ratelimit))
-+			pr_warn("Kernel: unaligned access to " RFMT " in %pS "
-+					"(iir " RFMT ")\n",
-+				regs->ior, (void *)regs->iaoq[0], regs->iir);
- 	}
- 
- 	/* handle modification - OK, it's ugly, see the instruction manual */
--- 
-2.43.0
-
+On x86 there is no confusion AFAICS.  It's always meant "as long as
+the platform supports it".
 
