@@ -1,243 +1,128 @@
-Return-Path: <linux-parisc+bounces-436-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-437-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8031883C507
-	for <lists+linux-parisc@lfdr.de>; Thu, 25 Jan 2024 15:42:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACA683D5DF
+	for <lists+linux-parisc@lfdr.de>; Fri, 26 Jan 2024 10:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11B5F1F26445
-	for <lists+linux-parisc@lfdr.de>; Thu, 25 Jan 2024 14:42:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0561F281AF
+	for <lists+linux-parisc@lfdr.de>; Fri, 26 Jan 2024 09:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA27F6E2DE;
-	Thu, 25 Jan 2024 14:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0695177F33;
+	Fri, 26 Jan 2024 08:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ClG0zG9k"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F606E2BE;
-	Thu, 25 Jan 2024 14:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD4D1CFAE;
+	Fri, 26 Jan 2024 08:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706193768; cv=none; b=j3r3DXqrfz30ufF3kd/DxqHHFm9HaviolvCyVunL78NRb0FpDDG4fAwOr4y7ggEtcVBrB5P3WDik8qyNDjaxa4lEdF0p/PNpE+OtWBp//gJJMYcPIqTMnOBBqT6U0lr3hz6S3QFoJmwm4L8UxOpnNUifvr4bYrW06gtbE16S45Y=
+	t=1706257945; cv=none; b=shghj+TrjiJmFq15ruMASMJw+j9VgDj5rwH1Kc4JzCzI/N/DUFEFwkb3Gew96lWfGarPgczr8nmVLUlexqlZl6pW8TaQ2hBCG/8hY6XE5LavT23QKsznVEoWn944BBwmbJ0QEl/9ylTejmEz9LgbVkHkHolWAnkxYaDcIw7sICo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706193768; c=relaxed/simple;
-	bh=JaK07Zkj3cT2yhn6Ow34x5ujcw/CKNJtlZf/Ls0PoA8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pbZslrDJaKPlwZU1G/h2QbxCOX5IXjCYd0FuK7kpCBywYl9zdvdP2GwZmHkKlMDyVqxi2o6lB2TQL2FBbE9LtLoQ2orphGEFRwLn6bk8N4E1S9QAwaLQxLKzh3SkZIbo0RJon7wKVk4STGvKxys8SEIL5WLxkMudBbWKZj+XoF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3bc21303a35so1267870b6e.0;
-        Thu, 25 Jan 2024 06:42:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706193766; x=1706798566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WansAIK1kV2qngBkKGzUZEv8a9oLEEFRWHM6D4Yzd+M=;
-        b=IoiMUcqNl7waglleg4DMIDbjGLYPOtueAM47JFRrHhPGkxwxuLLsVS9de59v5QoP9B
-         5Uc5KkUmSuyqw8j1K7AmEDhnU4r287eMQqUbdfVvONklySaCn3eqHmds9fCpNOZUIMEf
-         bMWfE0WQmvEOQ3JtfjtspI4FU9p6H8lllR+/9DfJwge3Lzkzs+mFM8/pl2eUbyx4nZ1o
-         t9m1BHY3hwL4HBI5nMdY2oj8YImSrEwLyosoO/DZ9MB0WhNop5w6Hf2/0nEg1sTiG0gC
-         s7em5sXAcOw5RfiDD//kODRQEDIXIvo7iPyUinOQTFFpFJVzB1j5GDcAFqurlHi4S/er
-         RgTA==
-X-Gm-Message-State: AOJu0YyFgNwgV1M4/ZtQ2OUQEOPW6B+T/bT7jf4AzXMzJusQqhM/5GsG
-	yedihfax1gzKbOeQSJpvXrPLZ+dbTEZWcrOSLDNkyylxlcX9nlcIPwPkztqeyFH7K8ejlVNKHyv
-	uT616HujBtSTzsDE/UQwXwV2W3eg=
-X-Google-Smtp-Source: AGHT+IHrMMS6irD8BFopNOqV65JYF32HklaFUv2M5fjsXBTp38AaiSFl3qoFRWI4K+lpO8xVl3bxSYdmwfq7Su82484=
-X-Received: by 2002:a05:6870:618a:b0:214:dbdd:a173 with SMTP id
- a10-20020a056870618a00b00214dbdda173mr987239oah.3.1706193766071; Thu, 25 Jan
- 2024 06:42:46 -0800 (PST)
+	s=arc-20240116; t=1706257945; c=relaxed/simple;
+	bh=wstLSSz3qMGDQxUYzW+IHsUCg9UT58andHSX7WC1dOA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ISCCXF60ksxA7reHb2yalTH89RJ25gzCBObO0UJUbg0D9ioMvvWM26/PldkL0uknvQDqx5nQtn5eBAbPBjBog9mhYr368vRLBOI4AUCKrnfSgm+EXSIOZ7BsaW18Dd9XcpHxAZ1+tNVC59ptt2LNhGLEL2imiESkVJKUrZuLeq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ClG0zG9k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC2BC433F1;
+	Fri, 26 Jan 2024 08:32:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706257945;
+	bh=wstLSSz3qMGDQxUYzW+IHsUCg9UT58andHSX7WC1dOA=;
+	h=Date:From:To:Cc:Subject:From;
+	b=ClG0zG9k5IMq0O5zUgX7DQVolc1NIz4ZcQ4BZwOfNsuOjQ0TRHPthT4u5pvvVM/LL
+	 35kt2P0Zwt/YyQT8ILDOA3jHWeL2/oenVPShooFxHoOG5XP0OESHRGRnQgoWS/VEyh
+	 YsBTnamXcWdV53UvCANE0ryGhcj+2lI1wWLgKTxn5JHby7pudKrN4c+l1evWyVjaSL
+	 2QTDpzVmdFORUulHfrTCWwYLQ5ovXxqfskd8BXf/ORMi6j049L0+uCewvKH33oxYHB
+	 jyUfTxDhEbBz/tBXhKCgm4Uduuxl/VhoIgWITu6ZfR8KsWsJW+C6TN4sKRGDCzBPcF
+	 JmOmUr2w+UPrQ==
+Date: Fri, 26 Jan 2024 09:32:20 +0100
+From: Helge Deller <deller@kernel.org>
+To: "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: [PATCH v2] [net] ipv6: Ensure natural alignment of const ipv6
+ loopback and router addresses
+Message-ID: <ZbNuFM1bFqoH-UoY@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk> <E1rDOg2-00Dvjk-RI@rmk-PC.armlinux.org.uk>
- <CAJZ5v0ju1JHgpjuFLHZVs4NZiARG6iBZN_wza6c2e0kDhZjK0w@mail.gmail.com>
- <ZaURtUvWQyjYfiiO@shell.armlinux.org.uk> <20240122160227.00002d83@Huawei.com>
- <CAJZ5v0hamuXJ_w-TSmVb=5jGide=Lb7sCjbzzNb_rFuPrvkgxQ@mail.gmail.com>
- <Za6mHRJVjb6M1mun@shell.armlinux.org.uk> <20240123092725.00004382@Huawei.com> <3A26D95F-7366-4354-A010-318A98660076@oracle.com>
-In-Reply-To: <3A26D95F-7366-4354-A010-318A98660076@oracle.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 25 Jan 2024 15:42:34 +0100
-Message-ID: <CAJZ5v0h1na9BQiT6a4dK==8anmt15S4sArktzuLiSyScvw=bqg@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 03/21] ACPI: processor: Register CPUs that are
- online, but not described in the DSDT
-To: Miguel Luis <miguel.luis@oracle.com>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	"Russell King (Oracle)" <linux@armlinux.org.uk>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>, 
-	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	"linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, 
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "x86@kernel.org" <x86@kernel.org>, 
-	"acpica-devel@lists.linuxfoundation.org" <acpica-devel@lists.linuxfoundation.org>, 
-	"linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, 
-	"linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, "jianyong.wu@arm.com" <jianyong.wu@arm.com>, 
-	"justin.he@arm.com" <justin.he@arm.com>, James Morse <james.morse@arm.com>, 
-	"vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi,
+On a parisc64 kernel I sometimes notice this kernel warning:
+Kernel unaligned access to 0x40ff8814 at ndisc_send_skb+0xc0/0x4d8
 
-On Thu, Jan 25, 2024 at 2:56=E2=80=AFPM Miguel Luis <miguel.luis@oracle.com=
-> wrote:
->
-> Hi
->
-> > On 23 Jan 2024, at 08:27, Jonathan Cameron <jonathan.cameron@huawei.com=
-> wrote:
-> >
-> > On Mon, 22 Jan 2024 17:30:05 +0000
-> > "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
-> >
-> >> On Mon, Jan 22, 2024 at 05:22:46PM +0100, Rafael J. Wysocki wrote:
-> >>> On Mon, Jan 22, 2024 at 5:02=E2=80=AFPM Jonathan Cameron
-> >>> <Jonathan.Cameron@huawei.com> wrote:
-> >>>>
-> >>>> On Mon, 15 Jan 2024 11:06:29 +0000
-> >>>> "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
-> >>>>
-> >>>>> On Mon, Dec 18, 2023 at 09:22:03PM +0100, Rafael J. Wysocki wrote:
-> >>>>>> On Wed, Dec 13, 2023 at 1:49=E2=80=AFPM Russell King <rmk+kernel@a=
-rmlinux.org.uk> wrote:
-> >>>>>>>
-> >>>>>>> From: James Morse <james.morse@arm.com>
-> >>>>>>>
-> >>>>>>> ACPI has two descriptions of CPUs, one in the MADT/APIC table, th=
-e other
-> >>>>>>> in the DSDT. Both are required. (ACPI 6.5's 8.4 "Declaring Proces=
-sors"
-> >>>>>>> says "Each processor in the system must be declared in the ACPI
-> >>>>>>> namespace"). Having two descriptions allows firmware authors to g=
-et
-> >>>>>>> this wrong.
-> >>>>>>>
-> >>>>>>> If CPUs are described in the MADT/APIC, they will be brought onli=
-ne
-> >>>>>>> early during boot. Once the register_cpu() calls are moved to ACP=
-I,
-> >>>>>>> they will be based on the DSDT description of the CPUs. When CPUs=
- are
-> >>>>>>> missing from the DSDT description, they will end up online, but n=
-ot
-> >>>>>>> registered.
-> >>>>>>>
-> >>>>>>> Add a helper that runs after acpi_init() has completed to registe=
-r
-> >>>>>>> CPUs that are online, but weren't found in the DSDT. Any CPU that
-> >>>>>>> is registered by this code triggers a firmware-bug warning and ke=
-rnel
-> >>>>>>> taint.
-> >>>>>>>
-> >>>>>>> Qemu TCG only describes the first CPU in the DSDT, unless cpu-hot=
-plug
-> >>>>>>> is configured.
-> >>>>>>
-> >>>>>> So why is this a kernel problem?
-> >>>>>
-> >>>>> So what are you proposing should be the behaviour here? What this
-> >>>>> statement seems to be saying is that QEMU as it exists today only
-> >>>>> describes the first CPU in DSDT.
-> >>>>
-> >>>> This confuses me somewhat, because I'm far from sure which machines =
-this
-> >>>> is true for in QEMU.  I'm guessing it's a legacy thing with
-> >>>> some old distro version of QEMU - so we'll have to paper over it any=
-way
-> >>>> but for current QEMU I'm not sure it's true.
-> >>>>
-> >>>> Helpfully there are a bunch of ACPI table tests so I've been checkin=
-g
-> >>>> through all the multi CPU cases.
-> >>>>
-> >>>> CPU hotplug not enabled.
-> >>>> pc/DSDT.dimmpxm  - 4x Processor entries.  -smp 4
-> >>>> pc/DSDT.acpihmat - 2x Processor entries.  -smp 2
-> >>>> q35/DSDT.acpihmat - 2x Processor entries. -smp 2
-> >>>> virt/DSDT.acpihmatvirt - 4x ACPI0007 entries -smp 4
-> >>>> q35/DSDT.acpihmat-noinitiator - 4 x Processor () entries -smp 4
-> >>>> virt/DSDT.topology - 8x ACPI0007 entries
-> >>>>
-> >>>> I've also looked at the code and we have various types of
-> >>>> CPU hotplug on x86 but they all build appropriate numbers of
-> >>>> Processor() entries in DSDT.
-> >>>> Arm likewise seems to build the right number of ACPI0007 entries
-> >>>> (and doesn't yet have CPU HP support).
-> >>>>
-> >>>> If anyone can add a reference on why this is needed that would be ve=
-ry
-> >>>> helpful.
-> >>>
-> >>> Yes, it would.
-> >>>
-> >>> Personally, I would prefer to assume that it is not necessary until i=
-t
-> >>> turns out that (1) there is firmware with this issue actually in use
-> >>> and (2) updating the firmware in question to follow the specification
-> >>> is not practical.
-> >>>
-> >>> Otherwise, we'd make it easier to ship non-compliant firmware for no
-> >>> good reason.
-> >>
-> >> If Salil can't come up with a reason, then I'm in favour of dropping
-> >> the patch like already done for patch 2. If the code change serves no
-> >> useful purpose, there's no point in making the change.
-> >>
-> >
-> > Salil's out today, but I've messaged him to follow up later in the week=
-.
-> >
-> > It 'might' be the odd cold plug path where QEMU half comes up, then ext=
-ra
-> > CPUs are added, then it boots. (used by some orchestration frameworks)
-> > I don't have a set up for that and I won't get to creating one today an=
-yway
-> > (we all love start of the year planning workshops!)
-> >
-> > I've +CC'd a few people have run tests on the various iterations of thi=
-s
-> > work in the past.  Maybe one of them can shed some light on this?
-> >
->
-> IIUC, this patch covers a scenario for non compliant firmware and in whic=
-h my
-> tests for AArch64 using RFC v2 have been unable to trigger its error mess=
-age so
-> far. This does not mean, however, this patch should not be taken forward =
-though.
->
-> It seems benevolent enough detecting non compliant firmware and still pro=
-ceed
-> while having whoever uses that firmware to get to know that.
+The address 0x40ff8814 points to the in6addr_linklocal_allrouters
+variable and the warning simply means that some ipv6 function tries to
+read a 64-bit word directly from the not-64-bit aligned
+in6addr_linklocal_allrouters variable.
 
-There is one issue with this approach, though.
+Unaligned accesses are non-critical as the architecture or exception
+handlers usually will fix it up at runtime. Nevertheless it may trigger
+a performance penality for some architectures. For details read the
+"unaligned-memory-access" kernel documentation.
 
-If this is done by Linux and Linux is used as a main testing vehicle
-for whoever produced that firmware, it may pass the tests and be
-shipped causing a problem for the rest of the industry (because other
-operating systems will not support that firmware and now they will be
-put in an awkward position).
+The patch below ensures that the ipv6 loopback and router addresses will
+always be naturally aligned. This prevents the unaligned accesses for
+all architectures.
 
-I've seen enough breakage resulting from a similar policy in some
-other OS and with Linux on the receiving end that I'd rather avoid
-doing this to someone else.
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 034dfc5df99eb ("ipv6: export in6addr_loopback to modules")
+Acked-by: Paolo Abeni <pabeni@redhat.com>
 
-So if the firmware is not compliant, the best way to go is to ask
-whoever ships it to please fix their stuff, or if other OSes already
-work around the non-compliance, it's time to update the spec to
-reflect the reality (aka "industry practice").
+--
+v2:
+- Added A-b from Paolo
+- Rephrased parts of commit message
+- resent with [net] tag
 
-Thanks!
+---
+diff --git a/net/ipv6/addrconf_core.c b/net/ipv6/addrconf_core.c
+index 507a8353a6bd..813e009b4d0e 100644
+--- a/net/ipv6/addrconf_core.c
++++ b/net/ipv6/addrconf_core.c
+@@ -220,19 +220,26 @@ const struct ipv6_stub *ipv6_stub __read_mostly = &(struct ipv6_stub) {
+ EXPORT_SYMBOL_GPL(ipv6_stub);
+ 
+ /* IPv6 Wildcard Address and Loopback Address defined by RFC2553 */
+-const struct in6_addr in6addr_loopback = IN6ADDR_LOOPBACK_INIT;
++const struct in6_addr in6addr_loopback __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_LOOPBACK_INIT;
+ EXPORT_SYMBOL(in6addr_loopback);
+-const struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
++const struct in6_addr in6addr_any __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_ANY_INIT;
+ EXPORT_SYMBOL(in6addr_any);
+-const struct in6_addr in6addr_linklocal_allnodes = IN6ADDR_LINKLOCAL_ALLNODES_INIT;
++const struct in6_addr in6addr_linklocal_allnodes __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_LINKLOCAL_ALLNODES_INIT;
+ EXPORT_SYMBOL(in6addr_linklocal_allnodes);
+-const struct in6_addr in6addr_linklocal_allrouters = IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
++const struct in6_addr in6addr_linklocal_allrouters __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
+ EXPORT_SYMBOL(in6addr_linklocal_allrouters);
+-const struct in6_addr in6addr_interfacelocal_allnodes = IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
++const struct in6_addr in6addr_interfacelocal_allnodes __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
+ EXPORT_SYMBOL(in6addr_interfacelocal_allnodes);
+-const struct in6_addr in6addr_interfacelocal_allrouters = IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
++const struct in6_addr in6addr_interfacelocal_allrouters __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
+ EXPORT_SYMBOL(in6addr_interfacelocal_allrouters);
+-const struct in6_addr in6addr_sitelocal_allrouters = IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
++const struct in6_addr in6addr_sitelocal_allrouters __aligned(BITS_PER_LONG/8)
++	= IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
+ EXPORT_SYMBOL(in6addr_sitelocal_allrouters);
+ 
+ static void snmp6_free_dev(struct inet6_dev *idev)
+
 
