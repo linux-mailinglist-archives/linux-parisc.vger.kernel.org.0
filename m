@@ -1,54 +1,53 @@
-Return-Path: <linux-parisc+bounces-437-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-438-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACA683D5DF
-	for <lists+linux-parisc@lfdr.de>; Fri, 26 Jan 2024 10:17:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 269BD83F4AB
+	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jan 2024 09:54:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0561F281AF
-	for <lists+linux-parisc@lfdr.de>; Fri, 26 Jan 2024 09:17:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB0CF1F221FA
+	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jan 2024 08:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0695177F33;
-	Fri, 26 Jan 2024 08:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F8EDDD1;
+	Sun, 28 Jan 2024 08:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ClG0zG9k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G9OkGm2k"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD4D1CFAE;
-	Fri, 26 Jan 2024 08:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA07DDC4;
+	Sun, 28 Jan 2024 08:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706257945; cv=none; b=shghj+TrjiJmFq15ruMASMJw+j9VgDj5rwH1Kc4JzCzI/N/DUFEFwkb3Gew96lWfGarPgczr8nmVLUlexqlZl6pW8TaQ2hBCG/8hY6XE5LavT23QKsznVEoWn944BBwmbJ0QEl/9ylTejmEz9LgbVkHkHolWAnkxYaDcIw7sICo=
+	t=1706432040; cv=none; b=TmJF0vq3roFlv1K99RyB5wIsALo6vaBGLROA21VQT0tLrKM2XpMmCw7YwY7AJjFP4/r/5dCPCVsNXhNCu4greTXiyPfDUGF4odAdxMbbHNMS/Vz0FonKqWiZJlb8qnuyiSfvPJy3A2XLOhaL9s06k9PChW98iCPLOVO6pYvkGjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706257945; c=relaxed/simple;
-	bh=wstLSSz3qMGDQxUYzW+IHsUCg9UT58andHSX7WC1dOA=;
+	s=arc-20240116; t=1706432040; c=relaxed/simple;
+	bh=qCDdwLKf3bT6cGGaU4frMAHoDwbySJE5/GyHOk7wHgg=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ISCCXF60ksxA7reHb2yalTH89RJ25gzCBObO0UJUbg0D9ioMvvWM26/PldkL0uknvQDqx5nQtn5eBAbPBjBog9mhYr368vRLBOI4AUCKrnfSgm+EXSIOZ7BsaW18Dd9XcpHxAZ1+tNVC59ptt2LNhGLEL2imiESkVJKUrZuLeq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ClG0zG9k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC2BC433F1;
-	Fri, 26 Jan 2024 08:32:23 +0000 (UTC)
+	 Content-Disposition; b=CeX4DdbKGMDVvV1HZ/Q9dpkBpj6TmMx9FDZ/iob6z75+CzHlBzy8BbcrGFMS5EuvvmYWOFXTTN7ckcQz+R30XeQDyi47zmKtTwfvxKykRajzyqpyQNUkZJeXmFa0UAf/TEsVHxD5N1PFvCy1tCM1gcdf0pF9rrJcmEOOJ9hyA8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9OkGm2k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67774C433F1;
+	Sun, 28 Jan 2024 08:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706257945;
-	bh=wstLSSz3qMGDQxUYzW+IHsUCg9UT58andHSX7WC1dOA=;
+	s=k20201202; t=1706432039;
+	bh=qCDdwLKf3bT6cGGaU4frMAHoDwbySJE5/GyHOk7wHgg=;
 	h=Date:From:To:Cc:Subject:From;
-	b=ClG0zG9k5IMq0O5zUgX7DQVolc1NIz4ZcQ4BZwOfNsuOjQ0TRHPthT4u5pvvVM/LL
-	 35kt2P0Zwt/YyQT8ILDOA3jHWeL2/oenVPShooFxHoOG5XP0OESHRGRnQgoWS/VEyh
-	 YsBTnamXcWdV53UvCANE0ryGhcj+2lI1wWLgKTxn5JHby7pudKrN4c+l1evWyVjaSL
-	 2QTDpzVmdFORUulHfrTCWwYLQ5ovXxqfskd8BXf/ORMi6j049L0+uCewvKH33oxYHB
-	 jyUfTxDhEbBz/tBXhKCgm4Uduuxl/VhoIgWITu6ZfR8KsWsJW+C6TN4sKRGDCzBPcF
-	 JmOmUr2w+UPrQ==
-Date: Fri, 26 Jan 2024 09:32:20 +0100
+	b=G9OkGm2kEYH4gtzh31ggEe5BqfS6B6LMQy+ElheFFabiGciApVqloUDURStdBSnW3
+	 uNO+cEx1HKbpoWvh4eqyuAPAIeug+LIN44/jPyOhBEXupka+3uz/j6S9bxhD+eoB5I
+	 chR7MnQpwf0EQTRXcocVMpH2EzPmgncyohuGAWlyC50GAhmlDya6TmXxXIVEvD28gU
+	 GHosdvIEkpa2e6P//D6gAF9zlyCjWh7Pl/Gwg7FC7ysTLL8GghiAO+bBCedE/8eBL+
+	 O8XHg7E+q0x84A8VuZLxs62SCUhIggTsBya7pvK0ypqut7L09SXHaAvSyCH4bz1BH6
+	 np+mscw0MUuFA==
+Date: Sun, 28 Jan 2024 09:53:55 +0100
 From: Helge Deller <deller@kernel.org>
-To: "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
+To: Kent Overstreet <kent.overstreet@linux.dev>,
+	linux-bcachefs@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: [PATCH v2] [net] ipv6: Ensure natural alignment of const ipv6
- loopback and router addresses
-Message-ID: <ZbNuFM1bFqoH-UoY@p100>
+Subject: [PATCH] bcachefs: Fix build on parisc by avoiding __multi3()
+Message-ID: <ZbYWI_s05yxbvubr@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,71 +57,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On a parisc64 kernel I sometimes notice this kernel warning:
-Kernel unaligned access to 0x40ff8814 at ndisc_send_skb+0xc0/0x4d8
+The gcc compiler on paric does support the __int128 type, although the
+architecture does not have native 128-bit support.
 
-The address 0x40ff8814 points to the in6addr_linklocal_allrouters
-variable and the warning simply means that some ipv6 function tries to
-read a 64-bit word directly from the not-64-bit aligned
-in6addr_linklocal_allrouters variable.
+The effect is, that the bcachefs u128_square() function will pull in the
+libgcc __multi3() helper, which breaks the kernel build when bcachefs is
+built as module since this function isn't currently exported in
+arch/parisc/kernel/parisc_ksyms.c.
+The build failure can be seen in the latest debian kernel build at:
+https://buildd.debian.org/status/fetch.php?pkg=linux&arch=hppa&ver=6.7.1-1%7Eexp1&stamp=1706132569&raw=0
 
-Unaligned accesses are non-critical as the architecture or exception
-handlers usually will fix it up at runtime. Nevertheless it may trigger
-a performance penality for some architectures. For details read the
-"unaligned-memory-access" kernel documentation.
-
-The patch below ensures that the ipv6 loopback and router addresses will
-always be naturally aligned. This prevents the unaligned accesses for
-all architectures.
+We prefer to not export that symbol, so fall back to the optional 64-bit
+implementation provided by bcachefs and thus avoid usage of __multi3().
 
 Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 034dfc5df99eb ("ipv6: export in6addr_loopback to modules")
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
 
---
-v2:
-- Added A-b from Paolo
-- Rephrased parts of commit message
-- resent with [net] tag
-
----
-diff --git a/net/ipv6/addrconf_core.c b/net/ipv6/addrconf_core.c
-index 507a8353a6bd..813e009b4d0e 100644
---- a/net/ipv6/addrconf_core.c
-+++ b/net/ipv6/addrconf_core.c
-@@ -220,19 +220,26 @@ const struct ipv6_stub *ipv6_stub __read_mostly = &(struct ipv6_stub) {
- EXPORT_SYMBOL_GPL(ipv6_stub);
+diff --git a/fs/bcachefs/mean_and_variance.h b/fs/bcachefs/mean_and_variance.h
+index b2be565bb8f2..64df11ab422b 100644
+--- a/fs/bcachefs/mean_and_variance.h
++++ b/fs/bcachefs/mean_and_variance.h
+@@ -17,7 +17,7 @@
+  * Rust and rustc has issues with u128.
+  */
  
- /* IPv6 Wildcard Address and Loopback Address defined by RFC2553 */
--const struct in6_addr in6addr_loopback = IN6ADDR_LOOPBACK_INIT;
-+const struct in6_addr in6addr_loopback __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LOOPBACK_INIT;
- EXPORT_SYMBOL(in6addr_loopback);
--const struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
-+const struct in6_addr in6addr_any __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_ANY_INIT;
- EXPORT_SYMBOL(in6addr_any);
--const struct in6_addr in6addr_linklocal_allnodes = IN6ADDR_LINKLOCAL_ALLNODES_INIT;
-+const struct in6_addr in6addr_linklocal_allnodes __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LINKLOCAL_ALLNODES_INIT;
- EXPORT_SYMBOL(in6addr_linklocal_allnodes);
--const struct in6_addr in6addr_linklocal_allrouters = IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_linklocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_linklocal_allrouters);
--const struct in6_addr in6addr_interfacelocal_allnodes = IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
-+const struct in6_addr in6addr_interfacelocal_allnodes __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
- EXPORT_SYMBOL(in6addr_interfacelocal_allnodes);
--const struct in6_addr in6addr_interfacelocal_allrouters = IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_interfacelocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_interfacelocal_allrouters);
--const struct in6_addr in6addr_sitelocal_allrouters = IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_sitelocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_sitelocal_allrouters);
+-#if defined(__SIZEOF_INT128__) && defined(__KERNEL__)
++#if defined(__SIZEOF_INT128__) && defined(__KERNEL__) && !defined(CONFIG_PARISC)
  
- static void snmp6_free_dev(struct inet6_dev *idev)
-
+ typedef struct {
+ 	unsigned __int128 v;
 
