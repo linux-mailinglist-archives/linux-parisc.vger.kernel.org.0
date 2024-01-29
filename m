@@ -1,89 +1,127 @@
-Return-Path: <linux-parisc+bounces-438-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-439-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269BD83F4AB
-	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jan 2024 09:54:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50570840377
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jan 2024 12:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB0CF1F221FA
-	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jan 2024 08:54:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E08111F2265E
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jan 2024 11:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F8EDDD1;
-	Sun, 28 Jan 2024 08:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G9OkGm2k"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453A85A799;
+	Mon, 29 Jan 2024 11:06:41 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [195.130.137.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA07DDC4;
-	Sun, 28 Jan 2024 08:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBA1E5B5D8
+	for <linux-parisc@vger.kernel.org>; Mon, 29 Jan 2024 11:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706432040; cv=none; b=TmJF0vq3roFlv1K99RyB5wIsALo6vaBGLROA21VQT0tLrKM2XpMmCw7YwY7AJjFP4/r/5dCPCVsNXhNCu4greTXiyPfDUGF4odAdxMbbHNMS/Vz0FonKqWiZJlb8qnuyiSfvPJy3A2XLOhaL9s06k9PChW98iCPLOVO6pYvkGjQ=
+	t=1706526401; cv=none; b=ILkHfneUoAqw6rSoNItDLsBHwl8qaTMFaVAi6V7J4uLR5TwbMbbVbZjDdRlNu+7TNjKgafzWfdeWU0S9aBp0wXPDe83TMJUOeMikVhY8UMBFxKV9qL5dOtcrN3d61S7Bcyxepzujy81UsOerAyBkSPOy9H91BO5dJ8EJpGZoOSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706432040; c=relaxed/simple;
-	bh=qCDdwLKf3bT6cGGaU4frMAHoDwbySJE5/GyHOk7wHgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=CeX4DdbKGMDVvV1HZ/Q9dpkBpj6TmMx9FDZ/iob6z75+CzHlBzy8BbcrGFMS5EuvvmYWOFXTTN7ckcQz+R30XeQDyi47zmKtTwfvxKykRajzyqpyQNUkZJeXmFa0UAf/TEsVHxD5N1PFvCy1tCM1gcdf0pF9rrJcmEOOJ9hyA8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9OkGm2k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67774C433F1;
-	Sun, 28 Jan 2024 08:53:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706432039;
-	bh=qCDdwLKf3bT6cGGaU4frMAHoDwbySJE5/GyHOk7wHgg=;
-	h=Date:From:To:Cc:Subject:From;
-	b=G9OkGm2kEYH4gtzh31ggEe5BqfS6B6LMQy+ElheFFabiGciApVqloUDURStdBSnW3
-	 uNO+cEx1HKbpoWvh4eqyuAPAIeug+LIN44/jPyOhBEXupka+3uz/j6S9bxhD+eoB5I
-	 chR7MnQpwf0EQTRXcocVMpH2EzPmgncyohuGAWlyC50GAhmlDya6TmXxXIVEvD28gU
-	 GHosdvIEkpa2e6P//D6gAF9zlyCjWh7Pl/Gwg7FC7ysTLL8GghiAO+bBCedE/8eBL+
-	 O8XHg7E+q0x84A8VuZLxs62SCUhIggTsBya7pvK0ypqut7L09SXHaAvSyCH4bz1BH6
-	 np+mscw0MUuFA==
-Date: Sun, 28 Jan 2024 09:53:55 +0100
-From: Helge Deller <deller@kernel.org>
-To: Kent Overstreet <kent.overstreet@linux.dev>,
-	linux-bcachefs@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: [PATCH] bcachefs: Fix build on parisc by avoiding __multi3()
-Message-ID: <ZbYWI_s05yxbvubr@p100>
+	s=arc-20240116; t=1706526401; c=relaxed/simple;
+	bh=bN8edVEibQUi4cNIoeXwKAWhUhuvpW1rx432LV6Rp34=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=TidUNRCYrll1QfEGHtW3QJg9PUlh4qrcfFYUAVlGiu0PFwbKy5mapQIF1sg7qiJE7k+WjbQJxYfrLJxn2YID7PSwVZC5RKjd+pL3BOIi83AGs/mQ3t+z34EyiZY5kOS1Teqez1IM4KQzpp8l3qtYHQvWPVD0CalrjKDsaWjFpAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:3b5f:c6ad:b5fc:a0f3])
+	by laurent.telenet-ops.be with bizsmtp
+	id gb6X2B0022ZPkuY01b6XDK; Mon, 29 Jan 2024 12:06:31 +0100
+Received: from geert (helo=localhost)
+	by ramsan.of.borg with local-esmtp (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1rUPTC-00GgzQ-W5;
+	Mon, 29 Jan 2024 12:06:31 +0100
+Date: Mon, 29 Jan 2024 12:06:30 +0100 (CET)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: linux-kernel@vger.kernel.org
+cc: sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org, 
+    linux-hwmon@vger.kernel.org, intel-xe@lists.freedesktop.org
+Subject: Re: Build regressions/improvements in v6.8-rc2
+In-Reply-To: <20240129104954.1778339-1-geert@linux-m68k.org>
+Message-ID: <8ea40b3-adde-acb5-5e46-fe1fd395daf@linux-m68k.org>
+References: <CAHk-=wgxzm+Oc1ywuNGxb1R1=ZEC85LJi776R2QEpk6=_2Qfdw@mail.gmail.com> <20240129104954.1778339-1-geert@linux-m68k.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 
-The gcc compiler on paric does support the __int128 type, although the
-architecture does not have native 128-bit support.
+On Mon, 29 Jan 2024, Geert Uytterhoeven wrote:
+> JFYI, when comparing v6.8-rc2[1] to v6.8-rc1[3], the summaries are:
+>  - build errors: +26/-14
 
-The effect is, that the bcachefs u128_square() function will pull in the
-libgcc __multi3() helper, which breaks the kernel build when bcachefs is
-built as module since this function isn't currently exported in
-arch/parisc/kernel/parisc_ksyms.c.
-The build failure can be seen in the latest debian kernel build at:
-https://buildd.debian.org/status/fetch.php?pkg=linux&arch=hppa&ver=6.7.1-1%7Eexp1&stamp=1706132569&raw=0
 
-We prefer to not export that symbol, so fall back to the optional 64-bit
-implementation provided by bcachefs and thus avoid usage of __multi3().
+   + /kisskb/src/arch/sparc/kernel/setup_64.c: error: no previous prototype for 'alloc_irqstack_bootmem' [-Werror=missing-prototypes]:  => 602:13
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
+sparc64-gcc{5,1[123]}/sparc64-{allno,def}config
 
-diff --git a/fs/bcachefs/mean_and_variance.h b/fs/bcachefs/mean_and_variance.h
-index b2be565bb8f2..64df11ab422b 100644
---- a/fs/bcachefs/mean_and_variance.h
-+++ b/fs/bcachefs/mean_and_variance.h
-@@ -17,7 +17,7 @@
-  * Rust and rustc has issues with u128.
-  */
- 
--#if defined(__SIZEOF_INT128__) && defined(__KERNEL__)
-+#if defined(__SIZEOF_INT128__) && defined(__KERNEL__) && !defined(CONFIG_PARISC)
- 
- typedef struct {
- 	unsigned __int128 v;
+   + /kisskb/src/drivers/gpu/drm/nouveau/nvif/object.c: error: 'memcpy' specified bound between 4294967240 and 4294967263 exceeds maximum object size 2147483647 [-Werror=stringop-overflow=]:  => 298:17
+   + /kisskb/src/drivers/gpu/drm/nouveau/nvif/object.c: error: 'memcpy' specified bound between 4294967264 and 4294967287 exceeds maximum object size 2147483647 [-Werror=stringop-overflow=]:  => 161:9
+
+parisc-gcc1[23]/generic-32bit_defconfig
+parisc-gcc1[23]/parisc-{allmod,def}config
+
+   + /kisskb/src/drivers/hwmon/pc87360.c: error: writing 1 byte into a region of size 0 [-Werror=stringop-overflow=]:  => 383:51
+
+arm64-gcc12/arm64-allmodconfig
+parisc-gcc12/parisc-allmodconfig
+
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1045' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1065' declared with attribute error: FIELD_PREP: mask is not constant:  => 435:38
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1084' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1095' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1137' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1139' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1148' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_1150' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_924' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
+   + /kisskb/src/include/linux/compiler_types.h: error: call to '__compiletime_assert_935' declared with attribute error: FIELD_GET: mask is not constant:  => 435:38
+
+in drivers/gpu/drm/xe/xe_guc_ct.c:526
+arm64-gcc5/arm64-allmodconfig
+powerpc-gcc5/powerpc-all{mod,yes}config
+powerpc-gcc5/ppc{32,64le,64_book3e}_allmodconfig
+(seen before in v6.8-rc1, with different assertion numbers)
+
+   + /kisskb/src/include/linux/fortify-string.h: error: writing 16 bytes into a region of size 0 [-Werror=stringop-overflow=]:  => 57:33
+
+in drivers/gpu/drm/xe/xe_gt_pagefault.c:340
+arm64-gcc13/arm64-allmodconfig
+s390x-gcc13/s390-all{mod,yes}config
+
+   + {standard input}: Error: displacement to undefined symbol .L101 overflows 8-bit field :  => 593
+   + {standard input}: Error: displacement to undefined symbol .L104 overflows 8-bit field :  => 588
+   + {standard input}: Error: displacement to undefined symbol .L139 overflows 8-bit field :  => 606
+   + {standard input}: Error: displacement to undefined symbol .L73 overflows 12-bit field:  => 594
+   + {standard input}: Error: displacement to undefined symbol .L74 overflows 8-bit field :  => 585
+   + {standard input}: Error: displacement to undefined symbol .L75 overflows 12-bit field: 606, 586 => 589, 606, 586
+   + {standard input}: Error: displacement to undefined symbol .L76 overflows 8-bit field : 577 => 580, 577
+   + {standard input}: Error: displacement to undefined symbol .L80 overflows 8-bit field : 601 => 601, 607
+   + {standard input}: Error: displacement to undefined symbol .L81 overflows 8-bit field : 606, 604 => 604, 610, 606
+   + {standard input}: Error: displacement to undefined symbol .L96 overflows 12-bit field:  => 602
+   + {standard input}: Error: displacement to undefined symbol .L99 overflows 12-bit field:  => 607
+
+The usual SH ICE crickets.
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/41bccc98fb7931d63d03f326a746ac4d429c1dd3/ (all 239 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/6613476e225e090cc9aad49be7fa504e290dd33d/ (all 239 configs)
+
+Gr{oetje,eeting}s,
+
+ 						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
 
