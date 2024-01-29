@@ -1,158 +1,163 @@
-Return-Path: <linux-parisc+bounces-442-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-443-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0483840929
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jan 2024 15:59:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9794384094D
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jan 2024 16:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35A791F2797C
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jan 2024 14:59:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2809CB256BD
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jan 2024 15:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB0A153BDC;
-	Mon, 29 Jan 2024 14:58:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IQ5xOWn2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E8415350B;
+	Mon, 29 Jan 2024 15:05:56 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9CB6153BDA;
-	Mon, 29 Jan 2024 14:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C461534FA;
+	Mon, 29 Jan 2024 15:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706540334; cv=none; b=M9BI0naEJiEnHDI/XL0aveHmwlDy70Ul6dNGgrdIn+l5GWBnNwoQe4ifG3f8yQqAkQptdDJx/ape5m7qAAiupNWRuS93Jp3wbpS9tv+qVB0ypptxx+7ddNimpmKs/3DQ8AStx7594KYgU0YFq5eMx2iDx4AOFeFC/zMhFsKNQAo=
+	t=1706540756; cv=none; b=BlTqYCNVkxatawn0jsvXkH0NOKXRJVJQUru+vHACrFOYlw3VKycmxn41v8TLVyZy80nK27VMYGCrK35PxToAgSd0dsVsWKPE6YgsLvuHNdPsiKS7fEsDggGbCcRr+5FVPsB/T0xXKynTOBk8J6nhUthTwOXYHYsIveqlOCmtmBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706540334; c=relaxed/simple;
-	bh=F2XvVF79CIk/fFDgfUblrZ0PFGbRunpoAHtSE3FY8uQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZvkPSCfA2VOhOZbxnn4lCk18nw9sNg/CP8fRI+AKyq1jHFHRWHMrD2pTKuGz6PnW//1dsePEtntOoUvP2dw4hM41GTacJhfKA5/JntNN2wqyNtupjAyergrdpz1McD+OL20TT/4znaXaB+0tLUNPAjFqzeVJjUMmQpTsFUZcIt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IQ5xOWn2; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1706540756; c=relaxed/simple;
+	bh=q6I0vmpSP+EMAN7W7TMgr8TqOcKWKp2AWgbxZCoyOoc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jshDNDuXyMa6IjBPRyZsbT5mW1WKGMJa5plJtQW1BQf4/9dSsAbrxH1ciqcJzZwl1+Kom0Kqor3+7S3V+yNJkugESGDile7P/tqhHaZed/qyp2bK1JqHM/GPxE0hNHZPgUJFhvTQsviiatpFtx+yDia5dywNbrieETJvoWx42qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-5d3912c9a83so1226885a12.3;
-        Mon, 29 Jan 2024 06:58:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706540332; x=1707145132; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y0hRRwRFhXV6/VNPZAde2iU0U1V9zjF583dIfMFDSvw=;
-        b=IQ5xOWn2InHpy8Spqx8AH9hRO4zhfTzH+c13lWqHpFgW2hiaZ2XaXNvVxeGIpKPJO1
-         UHb7DlfvhdIqgY5shuETPNWWdF+r1NLzPxj8b/texLtYzHJQCGyG2Qo1fR9cQPryEUJT
-         okKVCQeGypRI/40g/+TqBdAkgiBQH1d5FvrZf/owXFFBFxYdDAzfyAP0jxsRlvrHZ31U
-         RC1MXrYPAZKoNeGDIIyaS2+yQCo3SLE2mNM3AEjVt4qKbh8UBfz0StllMH4kC6irE8jN
-         yGG29sjCSx4+tYJyoXUDHrlH/1VgVZKW8b4N7Af9Md115e28SAL4l1M/faUhefTZ+h1V
-         bLlQ==
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5958d3f2d8aso366388eaf.1;
+        Mon, 29 Jan 2024 07:05:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706540332; x=1707145132;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y0hRRwRFhXV6/VNPZAde2iU0U1V9zjF583dIfMFDSvw=;
-        b=Xs77d9PfcHnfvaIUiC7UAznbxcdAtr3RHAIvOjc3GI+lb6R5SqF2hSN9kt9igtc7wQ
-         WIef7SH/BqUjFtFNSZThQoFD/+4XI00/O1vlHBkW3rbqtsiH0gSXf/51vgQ+vIDZ48D/
-         NLXyLJ3EBQy6XAsNBGX70RTlIh7yP5M4OUZpNhC/IXqF4+jzf1+KJpV8oJCStAVJ4rFJ
-         wNjyZmVVITKufS8LLyYYFPBiDU5upw7AAG81BmkILV2VXT7TQANInDOpEf0QQYmI59Bg
-         qMN9+DaMnJsaikuM6IsS3MDKmXwde4oNz6HpvglX3FyClIk8IngLW+yYhUcC5VSPzNUi
-         n99g==
-X-Gm-Message-State: AOJu0YxWrbbjVlHHYP307c12+0+PaHeos3vNtf7lmjLD+KZR38p+s3k9
-	RHYM4ouxM4uaJJwia3fIztVOOrRUG5WgacQcxJhQEjrML+AlbIxUSw2grySz
-X-Google-Smtp-Source: AGHT+IGWTBTOBZpp3W8KM2O3fsluhdahaENHmGqHcHIJbQPi7fW49a+nVBXNJltbYmygXoooNmvLuA==
-X-Received: by 2002:a05:6a20:8b9c:b0:19c:a2bc:d1d9 with SMTP id m28-20020a056a208b9c00b0019ca2bcd1d9mr1506784pzh.55.1706540332115;
-        Mon, 29 Jan 2024 06:58:52 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id h4-20020a170902f54400b001d8fb137a57sm447760plf.12.2024.01.29.06.58.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jan 2024 06:58:51 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <56b9c222-4e97-4eda-89af-3e0d0c39acb2@roeck-us.net>
-Date: Mon, 29 Jan 2024 06:58:49 -0800
+        d=1e100.net; s=20230601; t=1706540754; x=1707145554;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EkpAjVvacpcOYBIZJzTULHFzBo21BcPnaUhokGVxGPM=;
+        b=PMHpL80aiNTB4ZvOmet2EYAuO6Flfy9141JhM5N3Ummz/dDXwURf4bASPc1qeR2yJE
+         a4NhOIuROgiJ4gA6IA8RrynZYdKxL8LCvvFTQbliG3aXiI+uyJYBc1Cyq33+pAQ/z9Bj
+         dpBwiLH8fQZLe35za1edbynpQ+Qhv4524XM8S1w3AgKLEubxIbLakMZPw6vT/ydt+DK8
+         QtSkS77Td4qdfKCcuEfxz3hS02YbmpvGPizkAQwfegs4GtDgPdg1m0MYesRfvA3A/QCC
+         JiBmHSLFIi1GdjN7ABmy5tAdNxkftNge1xmGSUfzSE0rNNcMAq39rdQDnSStA7K6+kW8
+         DXLQ==
+X-Gm-Message-State: AOJu0Yxuk9ZpxzMuQXKzTXox41y8h4cz6jObDkWB14/QcJnxSKpEw4VZ
+	yYjUCv1YlapoMsaRph1JlGyJPMAX5WRRe7HxrJtry2iiAVpegOdDaLcsb0NGuPpzUG91n/ZpKKP
+	Njqg03uSDVtJz5BtSwE29ksegdlE=
+X-Google-Smtp-Source: AGHT+IEoV4wd4p7kTQOJWXxXpqTUH+qihI2/dlN0Po7tPQqbaCmtMIoU00Uv7+V2Gh58aCyndi1c4Fekk9NhHFrJKEg=
+X-Received: by 2002:a4a:c48a:0:b0:599:fbcc:1c75 with SMTP id
+ f10-20020a4ac48a000000b00599fbcc1c75mr6541388ooq.0.1706540754026; Mon, 29 Jan
+ 2024 07:05:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Build regressions/improvements in v6.8-rc2
-Content-Language: en-US
-To: Geert Uytterhoeven <geert@linux-m68k.org>, linux-kernel@vger.kernel.org
-Cc: sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-hwmon@vger.kernel.org, intel-xe@lists.freedesktop.org
-References: <CAHk-=wgxzm+Oc1ywuNGxb1R1=ZEC85LJi776R2QEpk6=_2Qfdw@mail.gmail.com>
- <20240129104954.1778339-1-geert@linux-m68k.org>
- <8ea40b3-adde-acb5-5e46-fe1fd395daf@linux-m68k.org>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <8ea40b3-adde-acb5-5e46-fe1fd395daf@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <ZXmn46ptis59F0CO@shell.armlinux.org.uk> <ZXxxa+XZjPZtNfJ+@shell.armlinux.org.uk>
+ <20231215161539.00000940@Huawei.com> <5760569.DvuYhMxLoT@kreacher>
+ <20240102143925.00004361@Huawei.com> <20240111101949.000075dc@Huawei.com>
+ <ZZ/CR/6Voec066DR@shell.armlinux.org.uk> <20240112115205.000043b0@Huawei.com> <Zbe8WQRASx6D6RaG@shell.armlinux.org.uk>
+In-Reply-To: <Zbe8WQRASx6D6RaG@shell.armlinux.org.uk>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 29 Jan 2024 16:05:42 +0100
+Message-ID: <CAJZ5v0iba93EhQB2k3LMdb2YczndbRmF5WGRYHhnqCHq6TQJ0A@mail.gmail.com>
+Subject: Re: [PATCH RFC v3 01/21] ACPI: Only enumerate enabled (or functional) devices
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev, x86@kernel.org, 
+	acpica-devel@lists.linuxfoundation.org, linux-csky@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, Salil Mehta <salil.mehta@huawei.com>, 
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, jianyong.wu@arm.com, justin.he@arm.com, 
+	James Morse <james.morse@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/29/24 03:06, Geert Uytterhoeven wrote:
-[ ... ]
-> parisc-gcc1[23]/parisc-{allmod,def}config
-> 
->    + /kisskb/src/drivers/hwmon/pc87360.c: error: writing 1 byte into a region of size 0 [-Werror=stringop-overflow=]:  => 383:51
-> 
+On Mon, Jan 29, 2024 at 3:55=E2=80=AFPM Russell King (Oracle)
+<linux@armlinux.org.uk> wrote:
+>
+> Hi Jonathan,
+>
+> On Fri, Jan 12, 2024 at 11:52:05AM +0000, Jonathan Cameron wrote:
+> > On Thu, 11 Jan 2024 10:26:15 +0000
+> > "Russell King (Oracle)" <linux@armlinux.org.uk> wrote:
+> > > @@ -2381,16 +2388,38 @@ EXPORT_SYMBOL_GPL(acpi_dev_clear_dependencies=
+);
+> > >   * acpi_dev_ready_for_enumeration - Check if the ACPI device is read=
+y for enumeration
+> > >   * @device: Pointer to the &struct acpi_device to check
+> > >   *
+> > > - * Check if the device is present and has no unmet dependencies.
+> > > + * Check if the device is functional or enabled and has no unmet dep=
+endencies.
+> > >   *
+> > > - * Return true if the device is ready for enumeratino. Otherwise, re=
+turn false.
+> > > + * Return true if the device is ready for enumeration. Otherwise, re=
+turn false.
+> > >   */
+> > >  bool acpi_dev_ready_for_enumeration(const struct acpi_device *device=
+)
+> > >  {
+> > >     if (device->flags.honor_deps && device->dep_unmet)
+> > >             return false;
+> > >
+> > > -   return acpi_device_is_present(device);
+> > > +   /*
+> > > +    * ACPI 6.5's 6.3.7 "_STA (Device Status)" allows firmware to ret=
+urn
+> > > +    * (!present && functional) for certain types of devices that sho=
+uld be
+> > > +    * enumerated. Note that the enabled bit should not be set unless=
+ the
+> > > +    * present bit is set.
+> > > +    *
+> > > +    * However, limit this only to processor devices to reduce possib=
+le
+> > > +    * regressions with firmware.
+> > > +    */
+> > > +   if (device->status.functional)
+> > > +           return true;
+>
+> I have a report from within Oracle that this causes testing failures
+> with QEMU using -smp cpus=3D2,maxcpus=3D4. I think it needs to be:
+>
+>         if (!device->status.present)
+>                 return device->status.functional;
+>
+>         if (device->status.enabled)
+>                 return true;
+>
+>         return !acpi_device_is_processor(device);
 
-The "fix" for this problem would be similar to commit 4265eb062a73 ("hwmon: (pc87360)
-Bounds check data->innr usage"). The change would be something like
+The above is fine by me.
 
--               for (i = 0; i < data->tempnr; i++) {
-+               for (i = 0; i < min(data->tempnr, ARRAY_SIZE(data->temp_max)); i++) {
+> So we can better understand the history here, let's list it as a
+> truth table. P=3Dpresent, F=3Dfunctional, E=3Denabled, Orig=3Dhow the cod=
+e
+> is in mainline, James=3DJames' original proposal, Rafael=3Dthe proposed
+> replacement but seems to be buggy, Rmk=3Dthe fixed version that passes
+> tests:
+>
+> P F E   Orig    James   Rafael          Rmk
+> 0 0 0   0       0       0               0
+> 0 0 1   0       0       0               0
+> 0 1 0   1       1       1               1
+> 0 1 1   1       0       1               1
+> 1 0 0   1       0       !processor      !processor
+> 1 0 1   1       1       1               1
+> 1 1 0   1       0       1               !processor
+> 1 1 1   1       1       1               1
+>
+> Any objections to this?
 
-but that would be purely random because the loop accesses several arrays
-indexed with i, and tempnr is never >= ARRAY_SIZE(data->temp_max).
-I kind of resist making such changes to the code just because the compiler
-is clueless.
-
-Are we sprinkling the kernel code with code like this to make the compiler happy ?
-
-Guenter
-
+So AFAIAC it can return false if not enabled, but present and
+functional.  [Side note: I'm wondering what "functional" means then,
+but whatever.]
 
