@@ -1,111 +1,93 @@
-Return-Path: <linux-parisc+bounces-450-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-451-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82974841D2D
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jan 2024 09:05:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C23284241A
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jan 2024 12:50:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79798B231B5
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jan 2024 08:05:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B27FB2B087
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jan 2024 11:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B7154675;
-	Tue, 30 Jan 2024 08:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C2C679E4;
+	Tue, 30 Jan 2024 11:50:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pej0mRpq"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACEE54FA9;
-	Tue, 30 Jan 2024 08:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F3C6773C;
+	Tue, 30 Jan 2024 11:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706601921; cv=none; b=LcVieBIa43nY2YRHtDlv5sMbEefFwiZi0QpEBInE4+yTjs+ewvuCcIuorOb5UoU/oS8Fikot8/0HTNrC01JyV6vD/Pq0F8JZmTrwFxaqkjHYzgFnBGdiFPhWIrvLvO9cuLjONDbgOw2YXkqO/cH3GuZ87Kew0bj2YpFvBltP65U=
+	t=1706615426; cv=none; b=MoVpRRrSTPSrz2v3FM/aw9AxOr8dAm7gikp/s5M0plpDPhJ1eCrpoLgLoTesEpFBMhya2b23q7zad35xf0konN7zMcBxe4ZQG6jlEC+6TfLSO9bSvJiMZ9AAhGgdoQhndJF1BiGoFhqsjG6mgsbWP2PROaT7Rsisb61wAhF5C14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706601921; c=relaxed/simple;
-	bh=v35Nb17IxnLBqjE0Q360VOmx1We6fXnnoq/2yVY6DXs=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=HG9QMXYe9tYHwT01LfOvg2UuBXZWM11rusL4HOjeDqjI8clb/cx5Rzbwx3QIgUwMNmEsSRrzAA/jdYwiAZ6dGbW2j+aOXjQyc77eJ8OOgLOVglWd33UwfGK2VTwLLq2zU1zGO2CY6kTkYKtOi7Ilw+aNXg4FVGxeHyXGbrUK9kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
-References: <CAHk-=wgxzm+Oc1ywuNGxb1R1=ZEC85LJi776R2QEpk6=_2Qfdw@mail.gmail.com>
- <20240129104954.1778339-1-geert@linux-m68k.org>
- <8ea40b3-adde-acb5-5e46-fe1fd395daf@linux-m68k.org>
- <56b9c222-4e97-4eda-89af-3e0d0c39acb2@roeck-us.net>
- <90cd0f1a-29c0-4c6f-9efd-92b69da194c0@gmx.de>
-User-agent: mu4e 1.10.8; emacs 30.0.50
-From: Sam James <sam@gentoo.org>
-To: Helge Deller <deller@gmx.de>
-Cc: Guenter Roeck <linux@roeck-us.net>, Geert Uytterhoeven
- <geert@linux-m68k.org>, linux-kernel@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-hwmon@vger.kernel.org, intel-xe@lists.freedesktop.org,
- "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
-Subject: Re: Build regressions/improvements in v6.8-rc2
-Date: Tue, 30 Jan 2024 08:02:45 +0000
-Organization: Gentoo
-In-reply-to: <90cd0f1a-29c0-4c6f-9efd-92b69da194c0@gmx.de>
-Message-ID: <87plxj8cwb.fsf@gentoo.org>
+	s=arc-20240116; t=1706615426; c=relaxed/simple;
+	bh=hAbt0R3JyB9b9U8JpgKDOo3g3rIPK/9wxkAqo2FRgdI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=VgNIcAQflU+OPSjUMm10KVO2j9+xvBg0Rj2WZI5aVKEu7jT+m5D+EpSKvzADyJienmChU++QG6rXTHHq+x6zzKYZhrE02/nNz0I5CMMHj6LIbLkKS8bx+cBBXIHfxUdkKjUNZBDyEVDROxhEECdso5A5hbDq14nFahjOy6qZ6oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pej0mRpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 84247C43390;
+	Tue, 30 Jan 2024 11:50:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706615425;
+	bh=hAbt0R3JyB9b9U8JpgKDOo3g3rIPK/9wxkAqo2FRgdI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=pej0mRpqiv4KgOQo96p1Y0Zv/DQhrgZAkZPGSGFZd/XlKJQm6JL40kcvWpcaZNcVi
+	 XlToj8+xOwgUtHBTVGfv/o12KznjPqcmvr5acDkVIYsQnIBz4J9pvpcI8PTcCO3c1O
+	 qs7fC/9/MC9IG3MbfsmvQwiaA1eRcT3RQeH9piY6tsOtPtQdv1VFWaS1lbi/EvMlVj
+	 VuN3nfWfbjDA6T7CbuGWVu4WqMZpC4N1cjzG/Y4DDioeaRMpr+glr5egLJfjI1BSMi
+	 jSrxii6jE4WKm2HWAXNLr3PAQDffAE9oDOuWMojka9CsPRJMQvRkl1aR/RlBzCKXzr
+	 3NOP5dps7gh7A==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 68976C395F3;
+	Tue, 30 Jan 2024 11:50:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] [net] ipv6: Ensure natural alignment of const ipv6
+ loopback and router addresses
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <170661542542.16715.3965983655239127583.git-patchwork-notify@kernel.org>
+Date: Tue, 30 Jan 2024 11:50:25 +0000
+References: <ZbNuFM1bFqoH-UoY@p100>
+In-Reply-To: <ZbNuFM1bFqoH-UoY@p100>
+To: Helge Deller <deller@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri, 26 Jan 2024 09:32:20 +0100 you wrote:
+> On a parisc64 kernel I sometimes notice this kernel warning:
+> Kernel unaligned access to 0x40ff8814 at ndisc_send_skb+0xc0/0x4d8
+> 
+> The address 0x40ff8814 points to the in6addr_linklocal_allrouters
+> variable and the warning simply means that some ipv6 function tries to
+> read a 64-bit word directly from the not-64-bit aligned
+> in6addr_linklocal_allrouters variable.
+> 
+> [...]
+
+Here is the summary with links:
+  - [v2,net] ipv6: Ensure natural alignment of const ipv6 loopback and router addresses
+    https://git.kernel.org/netdev/net/c/60365049ccba
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Helge Deller <deller@gmx.de> writes:
-
-> On 1/29/24 15:58, Guenter Roeck wrote:
->> On 1/29/24 03:06, Geert Uytterhoeven wrote:
->> [ ... ]
->>> parisc-gcc1[23]/parisc-{allmod,def}config
->>>
->>> =C2=A0=C2=A0 + /kisskb/src/drivers/hwmon/pc87360.c: error: writing 1 by=
-te into a region of size 0 [-Werror=3Dstringop-overflow=3D]:=C2=A0 =3D> 383=
-:51
->>>
->>
->> The "fix" for this problem would be similar to commit 4265eb062a73 ("hwm=
-on: (pc87360)
->> Bounds check data->innr usage"). The change would be something like
->>
->> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 for (i =3D 0; i < data->tempnr; i++) {
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 for (i =3D 0; i < min(data->tempnr, ARRAY_SIZE(data->temp_m=
-ax)); i++) {
->>
->> but that would be purely random because the loop accesses several arrays
->> indexed with i, and tempnr is never >=3D ARRAY_SIZE(data->temp_max).
->> I kind of resist making such changes to the code just because the compil=
-er
->> is clueless.
->
-> I agree with your analysis.
-> But I'm wondering why this warning just seem to appear on parisc.
-> I would expect gcc on other platforms to complain as well ?!?
-
--Wstringop-overflow and -Wstringop-truncation are known noisy warnings
-because they're implemented in GCC's "middle-end". Whether or not they
-fire depends on other optimisations.
-
-See also https://lore.kernel.org/linux-hardening/CAHk-=3DwjG4jdE19-vWWhAX3B=
-yfbNr4DJS-pwiN9oY38WkhMZ57g@mail.gmail.com/.
-
->
-> Helge
->
->> Are we sprinkling the kernel code with code like this to make the compil=
-er happy ?
->>
->> Guenter
->>
->>
-
-thanks,
-sam
 
