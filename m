@@ -1,53 +1,53 @@
-Return-Path: <linux-parisc+bounces-448-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-449-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F68F841C4A
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jan 2024 08:03:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48894841CF2
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jan 2024 08:50:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 611FD1C24C81
-	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jan 2024 07:03:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B21481F22865
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jan 2024 07:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03EA524CC;
-	Tue, 30 Jan 2024 07:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4655380F;
+	Tue, 30 Jan 2024 07:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="d33cUqbk"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="WHgJuTwu"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2583E524A2;
-	Tue, 30 Jan 2024 07:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AD255E51;
+	Tue, 30 Jan 2024 07:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706598201; cv=none; b=arZol4P6i2p2zviypZobaA966wJdYxrzR0c9TobYuOvAOREW25cZvBAaJFAb8obxq7ptM2KhfIosZsdDLtOB+JDQp1ePRvXk7QvzxCQnYa0eZM/ZJfsR96T6G+q/3RXb9rGzE60AS2AIsXd2FttOXmcFrXFAl4Fe4sry7HS3fYw=
+	t=1706601003; cv=none; b=n7y8MlNyFIJFjgFBNcf+bB6m8WcFr+l4VRDAie3q4BZlvYR15r4Dsgxspb3RFNaB8t5oRKVCfTIIiZ15GjYvisnxjY3wTclr6XfGziAw0f4oYsZUY1IwrUWc9bjjbAxBqg7Mnze9eF/Jlx8H/BdZc4/lq/RYrLc6//taxpP54NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706598201; c=relaxed/simple;
-	bh=+Go9x0USMVLJitv1KFTh9iA97peCWyRbi4bj2KxBThM=;
+	s=arc-20240116; t=1706601003; c=relaxed/simple;
+	bh=Vd4mg1lN4RdayhNVRP4yTRZdkhZMqCIs82EhJIUiRCs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o+BXyyVu4IzvNkIsSpUNkmRDp6wIHJngUWpU4W1wHBRkm/+uGzdAlgHWIzMulg1Q8DpsPDTXGdWu3VyrOSoEgydnn3y2TptEw7CySL8TUMQmH9W2RQZ7QPWUmIKHigtdRsuWIBJF4yE2oPwHMev2b3X4K+BS264HFKSOK7JxxSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=d33cUqbk; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=aONl5JHtmlUKTlOZozgEGwHrm9hzgIIv0UzBr0dORpnQzIMLXnhSc2Jh0r9LPHNmDDKgE7Vu7GsEB3ZKiRTCiJ6iAFkhqdZm3GUHzU7MoOFTcyII38oYxIDP37yYy5b2b9SI4LCl4Uwn+0X6JViBAjyJ5pzkeExwTWVdByMpJA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=WHgJuTwu; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1706598189; x=1707202989; i=deller@gmx.de;
-	bh=+Go9x0USMVLJitv1KFTh9iA97peCWyRbi4bj2KxBThM=;
+	t=1706600974; x=1707205774; i=deller@gmx.de;
+	bh=Vd4mg1lN4RdayhNVRP4yTRZdkhZMqCIs82EhJIUiRCs=;
 	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
 	 In-Reply-To;
-	b=d33cUqbkrGGS/vziIiyVcyn+UQazUr2lnJ+ZbT6S9MCAXWuDrD455bbeqL7DZPK2
-	 dZ/II31r+rwwR6Lu5aaQCaLrO0CJLfS1iwKPyKL1hkJ9LIl68geJPTXErS5IAqiaz
-	 cSncVJIOWYoycFtcv2Hio2h0zMSfOvvOG3bnvggy1HyP7X25vZ3hyIjRMq/lqKMpK
-	 8uNlks8vOvS1ygCxv0l199Dlx8Bna8lC6O8hNBs1oLPAABFL2Cj8i8OK4EbD2rgCB
-	 kJ30O5vS6BRHz4WBf5Yoa+2108APm2F+/QyZ7Gb5RMvYOuGdjFnm08SlXw+mTht4W
-	 w1ntZMHUgkAJ/H7fng==
+	b=WHgJuTwuMe0lcAnaaUKXKkTUADxwNouk5/+zO5KRsXYrZaSdaxWllh5jbcNtxJD6
+	 ZgqvwCxNtL1q1bY+T6FemBuLt/LJBv8gJDODjrjDyeqBkagPqFifb5Vg6dNTnOVDO
+	 vRZmBd6tqU+3dTXEGztccCL5cgZ9mIzGogsru9MxHA3N+p3J4wDS81gvn+l1rt76K
+	 hVrAjUWxQvfRHuyoU0amjaTOK7C2UCxj4tAwgL7XJAg/wYbSJuAzgLhXoOcSH91nZ
+	 SFYszQVe7W9fc7rP3vt+MwxOzlXKEsPCY89JmwkBXH18Vqfvq/gL+1f/fAKxJJaY0
+	 5UuxaCB9/PwLycp3Zg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([94.134.154.236]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MEFvp-1rNJcG2w9V-00ABWS; Tue, 30
- Jan 2024 08:03:09 +0100
-Message-ID: <214411d1-f9e2-4611-93fe-223a020072da@gmx.de>
-Date: Tue, 30 Jan 2024 08:03:08 +0100
+Received: from [192.168.20.55] ([94.134.154.236]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQvD5-1rjw6r00QB-00NzUF; Tue, 30
+ Jan 2024 08:49:34 +0100
+Message-ID: <90cd0f1a-29c0-4c6f-9efd-92b69da194c0@gmx.de>
+Date: Tue, 30 Jan 2024 08:49:32 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -55,14 +55,16 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: linux-next: duplicate patch in the bcachefs tree
+Subject: Re: Build regressions/improvements in v6.8-rc2
 Content-Language: en-US
-To: Stephen Rothwell <sfr@canb.auug.org.au>,
- Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Parisc List <linux-parisc@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <20240130100723.323c19fc@canb.auug.org.au>
+To: Guenter Roeck <linux@roeck-us.net>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-kernel@vger.kernel.org
+Cc: sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, intel-xe@lists.freedesktop.org
+References: <CAHk-=wgxzm+Oc1ywuNGxb1R1=ZEC85LJi776R2QEpk6=_2Qfdw@mail.gmail.com>
+ <20240129104954.1778339-1-geert@linux-m68k.org>
+ <8ea40b3-adde-acb5-5e46-fe1fd395daf@linux-m68k.org>
+ <56b9c222-4e97-4eda-89af-3e0d0c39acb2@roeck-us.net>
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -107,44 +109,67 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20240130100723.323c19fc@canb.auug.org.au>
+In-Reply-To: <56b9c222-4e97-4eda-89af-3e0d0c39acb2@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:iahIQ3TqTYI7rn2lpCs6b/R1U8fAKHrE5OND99A4uYuOvhawp5t
- 2jCtQVow8rXiKy5+/uCPKn27sBOhMKFXLDXsCnXtttEz1fqlcOQKwB6oyhjpO3+jK0kSVE1
- Rgc801DlIoREGZ8vhprX7jplAFXBnwRdfVTDsqHZtu9xP+Y15qzVf1HaHnfsoatePAQJ2vg
- 2eXRfcRinPwkYTD0Bh8og==
+X-Provags-ID: V03:K1:AqA82jXkHCsmc5MtDkJ1eTjYy5SiywwJBhM+J9cbQ44sBANzi6O
+ ZTYDbosnCyJv9w/UFn+xQLdFDC8txwihAHo1KVQHw/KlMCJpxb9LAJE9aDGqiMX6+9T9kzR
+ /Vav7f2CaDCIHq9ygHNjk8JvObh+sZu11YLbTmdfv1m35WtgZwiVHQ07cXPHxapZpOvUuOV
+ LCJoMKoT/DTSkbYrZanOw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:MrPvVR5fEno=;kNxzHeerQyMUo5XfiRNu/adQFZX
- 8s9A+EELI4Fq8wBtlZ8kEZQag9w3ah6U/lBm6cAzXlM2/7cuh7f53hQGPmFu2I8ywfOZ1JGdz
- EE/ZKIGdnxKKkOGnS3875uNpf1F0+1ZWC4PatYD05aFe6qfo09tOP9Xvyhp/kuxmNgY8Vq/OR
- eyT3czomOwgYoSOpZdhIQRLAwzUNnSYWQeQFd+rabXLxhAuAQ1D8jDwSmItDd+9vKi33oBHzX
- aXbvrgHrMKbjoCvlTezMpcW/uH7rd7F6p4+QX00xSU/RKoc1Cz/9UZRYBp/ea2daUx1vG46HP
- lKlpZbYU8jx9zm2IoZLr9mQlFC1WB/FziSfqYHiAm418W4JpT47zrGFtJnHGROjeDp0FxnT0x
- Gki9zxnVBNoRvT1lhkOvWabbatQEqoLx8NL1g7yUgo0b+WbZFsUVJ1nFnuhegv+SWxctnL6cb
- Adl433/0BfSyvcUxBxhZoojddkS4BUjlMiw9tWzX/7/21lBYWOILgRIXNwfKQ/wtVi1/AmbEa
- yOVMteAg27N+3yze0LcZ0rW0s6tIeSOltHD1MZo4LTyAAA7qDWFRh7naWjjhonY/MHS3Fo3dC
- 0QzrWHY6cy8qROBhN0r8dg3OtqCJjaHAzGjxMcmGPk3yEzwSdoH68fTu+dhpaQZxcj3pLaA/U
- JBh97dPv1miuuJUuM+4ZR9cipZvvZ3dKKGBRUML13EPOC1aE+z0XKplDoEnWB+Ff+qDcVHVcf
- 7KGlHv+E2sKKNjuwiib72K1c9OSlfwaKZoilFuQScnvTlkGW6rtsL5ihSL+dYWKN3taBch/rf
- N+v5hgwP4FMOoIeiIm/detzErqM2PpANYY5gnbPKHtG+2a7DleTuN/E0EPwtrArYiRjBKbYRU
- EzXQ9hf6gOvWlf3iAuJiTP0eRKWzEzZ5FFxaE1ovfPdJRLyL0ghR6YUogxOdzGScJM5CDDGTa
- lpvIZ5bXa6AyQPe0sIpxBEcJotI=
+UI-OutboundReport: notjunk:1;M01:P0:u8DYBQ3KSfM=;uc3ACzysU1ccETxkeaT7X8nb/Va
+ AEzYMHjEDZeE9wXhTKevnHjWpG51cK0RJWVE28VCFUZ6CJYi93jZXu5fjRJWRRFkqGjAAt1b6
+ PDrp1mScZjcEHhw2jucor2JwcyqvdZOfMxyQPoWHZwpzGZ1Zv7Y4YN3tXpEsNb2AqXesoGDU7
+ mwjWkvb8H0AuDSeCLSrZt/EW+Y7OtShaDjPCYUSZps+1LlwjuOKZFdJ/dNVU3RAZdouGkIJsS
+ gv9QRLx8DvIqEHTMKhRQvS1cqZobMnGZuLMn++rwK3A8w77TGYKq2hPS+qVdC6zEWgRpFAZJD
+ j45ORhbM90aiIPk4DDCLJk7JEP/t248lmdhaC1XXueEAIG/vxI2OnoNMovBY3X/BSn63gOsUP
+ g5F9HcLfKhYdIxFVGIXLazcyp6M4OOuUpIiwL4Gx7eTaWmLjF8i+dbi0QTeFjww5xhAtqU5+V
+ 3XvUnV2uuwjtn001WUMFU2XNS5vEVwcc1xOxQ6j0hYoMusOrbeSa0o1Fe3O0I+0WbL6nd1Dcq
+ h5L0GbyLDFUtbwViqpeqWQe24mfm5U5ITUxQT7m2MNbFD4YL1JhPc3OVvEk/UzkJVqRvPEVM8
+ 6/Wsg8CpSlN6bjDQw+Q+NTXIDCGvXSPdPR3oi+PT7V9Vk6n8yb57xqyxMe+M4me79qOEG+CLk
+ AMNEQI75p1CymJ0ASZZhbA+IMDFm4LSC+F6W/CCu05uukJzTGzsBTo4iyv7FUAzvQ8TzKklll
+ Xzh+q2b9dFc/s77sgjRgr4agG1oTuaBBmwrUblL/7O1JNopJ1jXzQKMMahOreXmNuqfspZ9va
+ 7Xfm18hR8Ry1wfw1llAkJIBqPaYcSRv8obSTjb28+0SE2jNvjAusvWe+vocwkqILy7XQT43EE
+ 9G6MYqiVymwXAaDw/Sq76iUB0fvoSw76bHLEvIJQrPYtKrZbWr2qJIRGC+JM7uLB/NhlM4iQp
+ oZdqxA==
 
-On 1/30/24 00:07, Stephen Rothwell wrote:
-> The following commit is also in the parisc-hd tree as a different commit
-> (but the same patch):
+On 1/29/24 15:58, Guenter Roeck wrote:
+> On 1/29/24 03:06, Geert Uytterhoeven wrote:
+> [ ... ]
+>> parisc-gcc1[23]/parisc-{allmod,def}config
+>>
+>> =C2=A0=C2=A0 + /kisskb/src/drivers/hwmon/pc87360.c: error: writing 1 by=
+te into a region of size 0 [-Werror=3Dstringop-overflow=3D]:=C2=A0 =3D> 38=
+3:51
+>>
 >
->    eba38cc7578b ("bcachefs: Fix build on parisc by avoiding __multi3()")
+> The "fix" for this problem would be similar to commit 4265eb062a73 ("hwm=
+on: (pc87360)
+> Bounds check data->innr usage"). The change would be something like
 >
-> This is commit
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 for (i =3D 0; i < data->tempnr; i++) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 for (i =3D 0; i < min(data->tempnr, ARRAY_SIZE(data->temp_=
+max)); i++) {
 >
->    94a54e4eb439 ("bcachefs: Fix build for parisc by avoiding __multi3()"=
-)
->
-> in the parisc-hd tree.
+> but that would be purely random because the loop accesses several arrays
+> indexed with i, and tempnr is never >=3D ARRAY_SIZE(data->temp_max).
+> I kind of resist making such changes to the code just because the compil=
+er
+> is clueless.
 
-Kent, I've dropped the patch from the parisc git tree.
-Thanks for applying it to your tree!
+I agree with your analysis.
+But I'm wondering why this warning just seem to appear on parisc.
+I would expect gcc on other platforms to complain as well ?!?
+
 Helge
+
+> Are we sprinkling the kernel code with code like this to make the compil=
+er happy ?
+>
+> Guenter
+>
+>
+
 
