@@ -1,126 +1,209 @@
-Return-Path: <linux-parisc+bounces-473-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-474-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72618845C78
-	for <lists+linux-parisc@lfdr.de>; Thu,  1 Feb 2024 17:07:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB25845D7B
+	for <lists+linux-parisc@lfdr.de>; Thu,  1 Feb 2024 17:41:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CD121C2ADA7
-	for <lists+linux-parisc@lfdr.de>; Thu,  1 Feb 2024 16:07:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A8801F2760A
+	for <lists+linux-parisc@lfdr.de>; Thu,  1 Feb 2024 16:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A802626B1;
-	Thu,  1 Feb 2024 16:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21783468C;
+	Thu,  1 Feb 2024 16:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lgUDac1H"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="SAl3WAKb"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C6262174;
-	Thu,  1 Feb 2024 16:07:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40F94A2A;
+	Thu,  1 Feb 2024 16:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706803666; cv=none; b=n60zGgLrGPpQ0ayhfgo0GqD6aJbBzc47qkF16e7mQZIvg4wmOO7exPCyJrALtpIGDlwCQcVAZE7n+lUDDyRYu2PxM8/IrnGOAxokfQoG4IDoeScDFptnlRm7FyAwDgNG2/YsipjO2j+xme5YlDppB29RKy4fyGgGV8pROZ1yD4s=
+	t=1706805681; cv=none; b=buXzPv/VOGzflfizBRd/5WuDmuPZsvPfurwRq7vPRDJYblol1dY3cp8OefZYwjW82dulpvq7cBGPtTWIF7UXVZ+XwYTZlnc3L/DJHLeLBWmCPAmLE8DA6eF+JoQnMJ/YJQEZVdgzvCPzWOAOp7tUO0ucqbMXlEw9By0kLePqdqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706803666; c=relaxed/simple;
-	bh=r1jaUwoxglsNWHO60/roArWTIt/rqzl1LuZUFI7RDn8=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=RGMzWyk8KZoS2J5NM/Pm6TQ5HxjfGkP7sYbN8eGhclsDwZOi74F2VNfKWIjZuo8/R0c2P69ywui8Yhm/sMbHnOituc6WSLQthoc+/6/5yyowLwfLxcgo5RU9G5ZqVyKTyX01ZCuhLyLoy/br+mfH4ohfQcxhfdSzoso2OEqQ0BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lgUDac1H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D4CC433C7;
-	Thu,  1 Feb 2024 16:07:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706803665;
-	bh=r1jaUwoxglsNWHO60/roArWTIt/rqzl1LuZUFI7RDn8=;
-	h=Date:From:To:Subject:From;
-	b=lgUDac1HbGZn4Hy7F5lK+7fOirRp07h3tY7J9GX0gUjg8IxoPrbH4n7QTJ1dnS8Sx
-	 SHq1lgiOoyBLz1b1kOLE8iObWPcBNs0MeaXFYJB8S5qiQia52nkJ2hpjBoOvy5SY4s
-	 hNTbMc/Up8hR3I8lxL7TJxUK5e7vUZ0M8kFnAucC3dzNXioqe/JKvNIythlekAnSCT
-	 30qYrYguBwsW5mAXNxBbjpS/kkzVZIVcvE98AiO6zz2CqDVdb3d6Y5EY2P7fh0e9p3
-	 UtlaDimoKposF0iCxuYwso2b7SVUKK8BJREoS062GTMfzh+EU2Av48uP83xYtxZV2+
-	 0WSxF8Cze3HTA==
-Date: Thu, 1 Feb 2024 17:07:41 +0100
-From: Helge Deller <deller@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture fixes for v6.8-rc3
-Message-ID: <ZbvBzWJ5k5TnpRSW@p100>
+	s=arc-20240116; t=1706805681; c=relaxed/simple;
+	bh=8jHu6yHt8uCA3Dy1yFe+TlZEoJuvBfuOFfiYAURRHCs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pYX/rRVPCye3zkRCmC6o7RumioViTjEe3+skk7frHn2YtxNCn9nSEY+D7oJttt7HBpWkrxvVvXqRxZgkRK3DpHtW4ydO9TWFdToYbbUYprCMgmEiF0fqup4GTNklm1mu4awRwrJhowmRSqZSlnM7Z1XGOy0vfa5Y0IdlBkEw9D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=SAl3WAKb; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1706805671; x=1707410471; i=deller@gmx.de;
+	bh=8jHu6yHt8uCA3Dy1yFe+TlZEoJuvBfuOFfiYAURRHCs=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=SAl3WAKbdxre9ty8GQzr5DFP6GnJxkvhM1Y02PyPuM1JKXNoFrgKxhkcvJG5mz+I
+	 SSzogr/NtTUOkoEMkcKHcxQDY+1n9HmH0jPFwwI7j3bcO+tiVuCgWZaTOAsgW/+qA
+	 +3RTsGyv783p7DmJ6eINYIVOvPL7IBWHPf68ZJvtMYYOfAAUsPXUOLeXTI49fvmXo
+	 ZRxDR1qR7bsGHXlGB+tIIK8cS4x6kE6Fsoc66SvaIBoXc+DFpblz9ehhJ8Dxx0L72
+	 nESEx12jWq+p91kk/NuHtrMgUti373sUdv803MGiL3WxJpA5O2nkG2hV7NK/9OTsH
+	 UjEyyWFSebPVBznyPA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.8.0.6] ([78.94.87.245]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MrQEn-1qjNWy2XHb-00oUnh; Thu, 01
+ Feb 2024 17:41:11 +0100
+Message-ID: <8a266076-b3dc-4a39-aac4-089e2ef77da3@gmx.de>
+Date: Thu, 1 Feb 2024 17:41:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][RFC] workqueue: Fix kernel panic on CPU hot-unplug
+Content-Language: en-US
+To: Tejun Heo <tj@kernel.org>, Helge Deller <deller@kernel.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-parisc@vger.kernel.org
+References: <ZbqfMR_mVLaSCj4Q@carbonx1> <ZbrJq3X63hIMkbl2@slm.duckdns.org>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <ZbrJq3X63hIMkbl2@slm.duckdns.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:w57UWtdmFRiBnq3mv+oAtnI+elf1uGycDr/a5vvBaJMTS5EJxWv
+ VFTxYtvVmZSEuMR14iL3OhDbozIc6twHyRc4V75fbfSmvf7WptcmHexISs0t4Y0ooW9Uxcc
+ XhdcNRsaF+EfJDfRS/qzsAl1sKEmVqyYj4wFXLOVuitYh1KdpG50VGc3dvpb6S7VLkvY553
+ kbHU3UdfajzWlNP70sXyg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Yrl6l4XB8O8=;OrePRDiSVj9iLyFebIj8eIkuU7o
+ 5BMDumthG0S+bLzwzwC6Kh3YSAN2cssz8UR1tfrMJoW/yelx+/MldarMr9ZW8YBixsYKjzU1k
+ 6mb1li51AdjC+w1ZA5bi8NvbYvyJ7+76UduOSt5ZgdTH5x9AgqCJFtfTqzWII3joLxTzQhKgq
+ ugzTf0u97mG4+MDhauGEJuZSNaDfPcdscPcAATHn58QMUnxOOEB9HiZMVPMLufri/xNhqb6hK
+ uvqCrGJNORzrgJyOjd/JSsU92335z3q6uaaA5GeFu6C6ww/LGRRWP/QnJNXpEswdVha+yzB6J
+ +AJF+EYK5ExLu0K4/cby/9g7yBug7vlZwVGjDySVYSAEQdpV1ja9YqtWAujihCLBYO1UK+pHO
+ KIxBCyomD/1P1lprP76o6Bi96LtSTC8PgAlagDwR/ItMhgvV+CRtOTR7fKk0rdt14Xjyrr/S9
+ DcVkosdUwh7MlM6Wu8VBY7nJGDeGVrxirwgapdnPxM7BioReVtwLdKMM7qz70FW4u8IIIULv8
+ Sd30UIH5f7CxBrHqyBJFvPYzy1H3f0/e0O7dMatD2GxCWYeSa1bPHFus/flVzzNmwS4Fg3Vfm
+ XSYD2k+kl3R6uvzjeMVzmywysL2FP8SJEW27qfY0Uo/VUg0TPG0AoIFQh/8T/0dF+k/+ki7NS
+ l53P1DZSYPU5q8V+CVG3G82oOLBkP8VPLxYlm0BwC8TOdmH8BU9rlSUSVeyugByLi0abcrT60
+ OBNf3B2pd5LUNY8HIn49BOH7zTkBSOZ2z75E5DJUs45xY3TccWLrqjlOd0kpxFpV7N6IAMswe
+ VEH5NbJc14kIVvgjszGgySmEPzSXOiH2OXsck2MfqnhxQ=
 
-Hi Linus,
+On 1/31/24 23:28, Tejun Heo wrote:
+> On Wed, Jan 31, 2024 at 08:27:45PM +0100, Helge Deller wrote:
+>> When hot-unplugging a 32-bit CPU on the parisc platform with
+>> "chcpu -d 1", I get the following kernel panic. Adding a check
+>> for !pwq prevents the panic.
+>>
+>>   Kernel Fault: Code=3D26 (Data memory access rights trap) at addr 0000=
+0000
+>>   CPU: 1 PID: 21 Comm: cpuhp/1 Not tainted 6.8.0-rc1-32bit+ #1291
+>>   Hardware name: 9000/778/B160L
+>>
+>>   IASQ: 00000000 00000000 IAOQ: 10446db4 10446db8
+>>    IIR: 0f80109c    ISR: 00000000  IOR: 00000000
+>>    CPU:        1   CR30: 11dd1710 CR31: 00000000
+>>    IAOQ[0]: wq_update_pod+0x98/0x14c
+>>    IAOQ[1]: wq_update_pod+0x9c/0x14c
+>>    RP(r2): wq_update_pod+0x80/0x14c
+>>   Backtrace:
+>>    [<10448744>] workqueue_offline_cpu+0x1d4/0x1dc
+>>    [<10429db4>] cpuhp_invoke_callback+0xf8/0x200
+>>    [<1042a1d0>] cpuhp_thread_fun+0xb8/0x164
+>>    [<10452970>] smpboot_thread_fn+0x284/0x288
+>>    [<1044d8f4>] kthread+0x12c/0x13c
+>>    [<1040201c>] ret_from_kernel_thread+0x1c/0x24
+>>   Kernel panic - not syncing: Kernel Fault
+>>
+>> Signed-off-by: Helge Deller <deller@gmx.de>
+>>
+>> ---
+>>
+>> diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+>> index 76e60faed892..dfeee7b7322c 100644
+>> --- a/kernel/workqueue.c
+>> +++ b/kernel/workqueue.c
+>> @@ -4521,6 +4521,8 @@ static void wq_update_pod(struct workqueue_struct=
+ *wq, int cpu,
+>>   	wq_calc_pod_cpumask(target_attrs, cpu, off_cpu);
+>>   	pwq =3D rcu_dereference_protected(*per_cpu_ptr(wq->cpu_pwq, cpu),
+>>   					lockdep_is_held(&wq_pool_mutex));
+>> +	if (!pwq)
+>> +		return;
+>
+> Hmm... I have a hard time imagining a scenario where some CPUs don't hav=
+e
+> pwq installed on wq->cpu_pwq. Can you please run `drgn
+> tools/workqueue/wq_dump.py` before triggering the hotplug event and past=
+e
+> the output along with full dmesg?
 
-Please pull a few important fixes for the parisc architecture for 6.8-rc3:
+I'm not sure if parisc is already fully supported with that tool, or
+if I'm doing something wrong:
 
-The current exception handler, which helps on kernel accesses to userspace,
-may exhibit data corruption. The problem is that it is not guaranteed that the
-compiler will use the processor register we specified in the source code, but
-may choose another register which then will lead to silent register- and data
-corruption.  To fix this issue we now use another strategy to help the
-exception handler to always find and set the error code into the correct CPU
-register.
+root@debian:~# uname -a
+Linux debian 6.8.0-rc1-32bit+ #1292 SMP PREEMPT Thu Feb  1 11:31:38 CET 20=
+24 parisc GNU/Linux
 
-The other fixes are small: fixing CPU hotplug bringup, fix the page alignment
-of the RO_DATA section, added a check for the calculated cache stride and fix
-possible hangups when printing longer output at bootup when running on serial
-console.
+root@debian:~# drgn --main-symbols -s ./vmlinux ./wq_dump.py
+Traceback (most recent call last):
+   File "/usr/bin/drgn", line 33, in <module>
+     sys.exit(load_entry_point('drgn=3D=3D0.0.25', 'console_scripts', 'drg=
+n')())
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^
+   File "/usr/lib/python3/dist-packages/drgn/cli.py", line 301, in _main
+     runpy.run_path(script, init_globals=3D{"prog": prog}, run_name=3D"__m=
+ain__")
+   File "<frozen runpy>", line 291, in run_path
+   File "<frozen runpy>", line 98, in _run_module_code
+   File "<frozen runpy>", line 88, in _run_code
+   File "./wq_dump.py", line 78, in <module>
+     worker_pool_idr         =3D prog['worker_pool_idr']
+                               ~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: 'worker_pool_idr'
 
-Most of the patches are tagged for stable series.
+Maybe you have an idea? I'll check further, but otherwise it's probably
+easier for me to add some printk() to the kernel function wq_update_pod()
+and send that info?
 
-Thanks!
 Helge
-
-----------------------------------------------------------------
-The following changes since commit 8a696a29c6905594e4abf78eaafcb62165ac61f1:
-
-  Merge tag 'platform-drivers-x86-v6.8-2' of git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86 (2024-01-27 09:48:55 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.8-rc3
-
-for you to fetch changes up to 913b9d443a0180cf0de3548f1ab3149378998486:
-
-  parisc: BTLB: Fix crash when setting up BTLB at CPU bringup (2024-01-31 13:51:26 +0100)
-
-----------------------------------------------------------------
-parisc architecture fixes for kernel v6.8-rc3:
-
-- Fix random data corruption triggered by exception handler
-- Fix crash when setting up BTLB at CPU bringup
-- Prevent hung tasks when printing inventory on serial console
-- Make RO_DATA page aligned in vmlinux.lds.S
-- Add check for valid cache stride size
-
-----------------------------------------------------------------
-Helge Deller (6):
-      parisc: Make RO_DATA page aligned in vmlinux.lds.S
-      parisc: Check for valid stride size for cache flushes
-      parisc: Prevent hung tasks when printing inventory on serial console
-      parisc: Drop unneeded semicolon in parse_tree_node()
-      parisc: Fix random data corruption from exception handler
-      parisc: BTLB: Fix crash when setting up BTLB at CPU bringup
-
- arch/parisc/Kconfig                     |  1 -
- arch/parisc/include/asm/assembly.h      |  1 +
- arch/parisc/include/asm/extable.h       | 64 +++++++++++++++++++++++++++++++++
- arch/parisc/include/asm/special_insns.h |  6 ++--
- arch/parisc/include/asm/uaccess.h       | 48 ++++---------------------
- arch/parisc/kernel/cache.c              | 10 ++++--
- arch/parisc/kernel/drivers.c            |  5 ++-
- arch/parisc/kernel/unaligned.c          | 44 +++++++++++------------
- arch/parisc/kernel/vmlinux.lds.S        |  2 +-
- arch/parisc/mm/fault.c                  | 11 ++++--
- 10 files changed, 118 insertions(+), 74 deletions(-)
- create mode 100644 arch/parisc/include/asm/extable.h
 
