@@ -1,80 +1,54 @@
-Return-Path: <linux-parisc+bounces-472-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-473-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C9E844B0F
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jan 2024 23:29:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72618845C78
+	for <lists+linux-parisc@lfdr.de>; Thu,  1 Feb 2024 17:07:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0E81295176
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jan 2024 22:29:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CD121C2ADA7
+	for <lists+linux-parisc@lfdr.de>; Thu,  1 Feb 2024 16:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D148739AFB;
-	Wed, 31 Jan 2024 22:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A802626B1;
+	Thu,  1 Feb 2024 16:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AgyHmitG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lgUDac1H"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5185438FA4;
-	Wed, 31 Jan 2024 22:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C6262174;
+	Thu,  1 Feb 2024 16:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706740142; cv=none; b=tQ7ScVbfcSk5/lbiidVZuj+ubAdvclJHpfOGI9bKdfUKZq9nNdFdjvawRS03h7evzxe0BFZWw0nUoKPp6Km/X+cbqToMhqKzvIWWNHrYoSxjJr+lJ9NHv32Ku03PHdLhYUCPZF3wkQlwoKhIQTxTCzhSEfYo/uOdytPNmCfdGD8=
+	t=1706803666; cv=none; b=n60zGgLrGPpQ0ayhfgo0GqD6aJbBzc47qkF16e7mQZIvg4wmOO7exPCyJrALtpIGDlwCQcVAZE7n+lUDDyRYu2PxM8/IrnGOAxokfQoG4IDoeScDFptnlRm7FyAwDgNG2/YsipjO2j+xme5YlDppB29RKy4fyGgGV8pROZ1yD4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706740142; c=relaxed/simple;
-	bh=o8QhU6PXRn0FWV9WeF8MomXhKC9ONFhUtRlfDlW3ndw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oXY6V8BZIqAgiO1iJZ0VzGPbhW+pX+NPNWoFnR8STHUfmceonRcL1lLfJqgGf8GibPV65JM0IvKrVr3sa5FlgqAagHOYpYrq2/sf2lshagbAPARjbq0bXva9XSdG8b15EQYNwTn+6f23t56QaM4qE6TvpY8+XZrNgbIgq5qJT7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AgyHmitG; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1d51ba18e1bso2841775ad.0;
-        Wed, 31 Jan 2024 14:29:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706740140; x=1707344940; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Jmur6T5mZGQKYVYzLYzXWlcErNmYge/Ids/pkRMTDgA=;
-        b=AgyHmitGoHIWYeSu3Wtz5t2asudi97ikAffXb1nYQkGHB5yMEs2GofC/Ufjy4d+3zC
-         w0TxdcUb/Y1wMZf8cz+ZBKQHNx28uxIBSgaoLGjQxzZVLS6nTcT1y679QfwAEWo+CX8x
-         CqGviYR0vqtafCjt32Zmbx82jmmGTCWzpg7KUJR7iQuPVo3Hvrp2LI6C+gD0x0elPO5K
-         8JcCHnDbIsr+ZN9+SvpzMZGHNURves69VnY+cjPDRRHSdU7OcWEpZiM45ThtvCDzY83K
-         Kl8b8cS2i5W7d4UPielMfi+shUwzqDhkvAvKhScmDQ8sjiclJpFEi6NrVDn4qfjFphls
-         SQRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706740140; x=1707344940;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Jmur6T5mZGQKYVYzLYzXWlcErNmYge/Ids/pkRMTDgA=;
-        b=q8xmFW5rfwmiN/8I4OcCH5q7c0SFPNM/WkjoU1AlIR7ywTXoA24cue1yxXZ628g2i7
-         9jfwVXoEdWbbYbLqHK8mfDWHvXlHc8lTqWl4rWomRpinq6UQQsnocryybWWJH1doj1ED
-         I6aE5Sz6b4su19P0PcAeQ1Vhlv4jjRT2IRDoO3gB6EsemPgykLsAz1D8XOtcJwLKVys2
-         1JtNThvQK4sH/dAD8aKaYgc0WBUzW+Oo0GGqXpRGmMBia90uXRghc5iNwl2OIsnqZdLj
-         72vlxtMnnv/6f9gy1/KlQatqiGoQRay3Kmh0YrjDisH4gU0EkmxBaQxBEunZz15Ab1gK
-         Dpcw==
-X-Gm-Message-State: AOJu0Yw1f/klc8Jng6s309pnqCrCZJrGlE+/lWhYo+1g4DQjwxrIHv9/
-	Fs/kzeOZSWojXkMXCds3fh48ouD5TozA8cKTSwEY5UMHoJcO9Ugvc3VASHynXA0=
-X-Google-Smtp-Source: AGHT+IGRg3QCi53M1+UV+9txsOxdw45LyisS9f36UwLm82dt7LgNfF3wdDc7nd4RGzmS1Omucc+aWg==
-X-Received: by 2002:a17:903:41c4:b0:1d9:3b54:d857 with SMTP id u4-20020a17090341c400b001d93b54d857mr2671478ple.23.1706740140432;
-        Wed, 31 Jan 2024 14:29:00 -0800 (PST)
-Received: from localhost (dhcp-141-239-144-21.hawaiiantel.net. [141.239.144.21])
-        by smtp.gmail.com with ESMTPSA id kt14-20020a170903088e00b001d90306bdcfsm4020079plb.65.2024.01.31.14.28.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jan 2024 14:29:00 -0800 (PST)
-Sender: Tejun Heo <htejun@gmail.com>
-Date: Wed, 31 Jan 2024 12:28:59 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Helge Deller <deller@kernel.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-parisc@vger.kernel.org
-Subject: Re: [PATCH][RFC] workqueue: Fix kernel panic on CPU hot-unplug
-Message-ID: <ZbrJq3X63hIMkbl2@slm.duckdns.org>
-References: <ZbqfMR_mVLaSCj4Q@carbonx1>
+	s=arc-20240116; t=1706803666; c=relaxed/simple;
+	bh=r1jaUwoxglsNWHO60/roArWTIt/rqzl1LuZUFI7RDn8=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=RGMzWyk8KZoS2J5NM/Pm6TQ5HxjfGkP7sYbN8eGhclsDwZOi74F2VNfKWIjZuo8/R0c2P69ywui8Yhm/sMbHnOituc6WSLQthoc+/6/5yyowLwfLxcgo5RU9G5ZqVyKTyX01ZCuhLyLoy/br+mfH4ohfQcxhfdSzoso2OEqQ0BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lgUDac1H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D4CC433C7;
+	Thu,  1 Feb 2024 16:07:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706803665;
+	bh=r1jaUwoxglsNWHO60/roArWTIt/rqzl1LuZUFI7RDn8=;
+	h=Date:From:To:Subject:From;
+	b=lgUDac1HbGZn4Hy7F5lK+7fOirRp07h3tY7J9GX0gUjg8IxoPrbH4n7QTJ1dnS8Sx
+	 SHq1lgiOoyBLz1b1kOLE8iObWPcBNs0MeaXFYJB8S5qiQia52nkJ2hpjBoOvy5SY4s
+	 hNTbMc/Up8hR3I8lxL7TJxUK5e7vUZ0M8kFnAucC3dzNXioqe/JKvNIythlekAnSCT
+	 30qYrYguBwsW5mAXNxBbjpS/kkzVZIVcvE98AiO6zz2CqDVdb3d6Y5EY2P7fh0e9p3
+	 UtlaDimoKposF0iCxuYwso2b7SVUKK8BJREoS062GTMfzh+EU2Av48uP83xYtxZV2+
+	 0WSxF8Cze3HTA==
+Date: Thu, 1 Feb 2024 17:07:41 +0100
+From: Helge Deller <deller@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture fixes for v6.8-rc3
+Message-ID: <ZbvBzWJ5k5TnpRSW@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -83,56 +57,70 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZbqfMR_mVLaSCj4Q@carbonx1>
 
-Hello,
+Hi Linus,
 
-On Wed, Jan 31, 2024 at 08:27:45PM +0100, Helge Deller wrote:
-> When hot-unplugging a 32-bit CPU on the parisc platform with
-> "chcpu -d 1", I get the following kernel panic. Adding a check
-> for !pwq prevents the panic.
-> 
->  Kernel Fault: Code=26 (Data memory access rights trap) at addr 00000000
->  CPU: 1 PID: 21 Comm: cpuhp/1 Not tainted 6.8.0-rc1-32bit+ #1291
->  Hardware name: 9000/778/B160L
->  
->  IASQ: 00000000 00000000 IAOQ: 10446db4 10446db8
->   IIR: 0f80109c    ISR: 00000000  IOR: 00000000
->   CPU:        1   CR30: 11dd1710 CR31: 00000000
->   IAOQ[0]: wq_update_pod+0x98/0x14c
->   IAOQ[1]: wq_update_pod+0x9c/0x14c
->   RP(r2): wq_update_pod+0x80/0x14c
->  Backtrace:
->   [<10448744>] workqueue_offline_cpu+0x1d4/0x1dc
->   [<10429db4>] cpuhp_invoke_callback+0xf8/0x200
->   [<1042a1d0>] cpuhp_thread_fun+0xb8/0x164
->   [<10452970>] smpboot_thread_fn+0x284/0x288
->   [<1044d8f4>] kthread+0x12c/0x13c
->   [<1040201c>] ret_from_kernel_thread+0x1c/0x24
->  Kernel panic - not syncing: Kernel Fault
-> 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> 
-> ---
-> 
-> diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-> index 76e60faed892..dfeee7b7322c 100644
-> --- a/kernel/workqueue.c
-> +++ b/kernel/workqueue.c
-> @@ -4521,6 +4521,8 @@ static void wq_update_pod(struct workqueue_struct *wq, int cpu,
->  	wq_calc_pod_cpumask(target_attrs, cpu, off_cpu);
->  	pwq = rcu_dereference_protected(*per_cpu_ptr(wq->cpu_pwq, cpu),
->  					lockdep_is_held(&wq_pool_mutex));
-> +	if (!pwq)
-> +		return;
+Please pull a few important fixes for the parisc architecture for 6.8-rc3:
 
-Hmm... I have a hard time imagining a scenario where some CPUs don't have
-pwq installed on wq->cpu_pwq. Can you please run `drgn
-tools/workqueue/wq_dump.py` before triggering the hotplug event and paste
-the output along with full dmesg?
+The current exception handler, which helps on kernel accesses to userspace,
+may exhibit data corruption. The problem is that it is not guaranteed that the
+compiler will use the processor register we specified in the source code, but
+may choose another register which then will lead to silent register- and data
+corruption.  To fix this issue we now use another strategy to help the
+exception handler to always find and set the error code into the correct CPU
+register.
 
-Thanks.
+The other fixes are small: fixing CPU hotplug bringup, fix the page alignment
+of the RO_DATA section, added a check for the calculated cache stride and fix
+possible hangups when printing longer output at bootup when running on serial
+console.
 
--- 
-tejun
+Most of the patches are tagged for stable series.
+
+Thanks!
+Helge
+
+----------------------------------------------------------------
+The following changes since commit 8a696a29c6905594e4abf78eaafcb62165ac61f1:
+
+  Merge tag 'platform-drivers-x86-v6.8-2' of git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86 (2024-01-27 09:48:55 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.8-rc3
+
+for you to fetch changes up to 913b9d443a0180cf0de3548f1ab3149378998486:
+
+  parisc: BTLB: Fix crash when setting up BTLB at CPU bringup (2024-01-31 13:51:26 +0100)
+
+----------------------------------------------------------------
+parisc architecture fixes for kernel v6.8-rc3:
+
+- Fix random data corruption triggered by exception handler
+- Fix crash when setting up BTLB at CPU bringup
+- Prevent hung tasks when printing inventory on serial console
+- Make RO_DATA page aligned in vmlinux.lds.S
+- Add check for valid cache stride size
+
+----------------------------------------------------------------
+Helge Deller (6):
+      parisc: Make RO_DATA page aligned in vmlinux.lds.S
+      parisc: Check for valid stride size for cache flushes
+      parisc: Prevent hung tasks when printing inventory on serial console
+      parisc: Drop unneeded semicolon in parse_tree_node()
+      parisc: Fix random data corruption from exception handler
+      parisc: BTLB: Fix crash when setting up BTLB at CPU bringup
+
+ arch/parisc/Kconfig                     |  1 -
+ arch/parisc/include/asm/assembly.h      |  1 +
+ arch/parisc/include/asm/extable.h       | 64 +++++++++++++++++++++++++++++++++
+ arch/parisc/include/asm/special_insns.h |  6 ++--
+ arch/parisc/include/asm/uaccess.h       | 48 ++++---------------------
+ arch/parisc/kernel/cache.c              | 10 ++++--
+ arch/parisc/kernel/drivers.c            |  5 ++-
+ arch/parisc/kernel/unaligned.c          | 44 +++++++++++------------
+ arch/parisc/kernel/vmlinux.lds.S        |  2 +-
+ arch/parisc/mm/fault.c                  | 11 ++++--
+ 10 files changed, 118 insertions(+), 74 deletions(-)
+ create mode 100644 arch/parisc/include/asm/extable.h
 
