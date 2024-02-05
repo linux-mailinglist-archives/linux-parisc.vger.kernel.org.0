@@ -1,53 +1,53 @@
-Return-Path: <linux-parisc+bounces-486-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-487-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567E5849676
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 10:29:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A89A84971F
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 10:58:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F0D1281B67
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 09:28:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0C431F21282
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 09:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1565512B84;
-	Mon,  5 Feb 2024 09:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F4612E67;
+	Mon,  5 Feb 2024 09:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="L/NzhZ1y"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="V3ZWxHbj"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9BD12B71;
-	Mon,  5 Feb 2024 09:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B2912E63;
+	Mon,  5 Feb 2024 09:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707125336; cv=none; b=X/xTfD57Mxy3Ov04ttxE53/s4b8rjoFAJNfRh2rkJjQK1z197m2LLnXwzvrrcvJ08KOGyVid+gUXWthq1VBNAvWrXhRk73WwHMvFqvBGolSivkq2yJxau83+NbcbbkiqokhUrAVx/5+fTFHvR8ADrQQTcf8t0AxOSKeD/Nl7l1o=
+	t=1707127116; cv=none; b=SDgKUB/kqes0ZS77mU27yozx349OEhdaPRvlZEu4wjWJpvbxhcETJ6+xz+nIu6ipkPqg5mFxxZ4y2osCoIRnhAUsgtaAgv/paHpRkyc02DTM3lCtHdW8XOWFHC12syA0prG8ODLTizOH+CAenxLpdbqhLESTVhY9/TyLN2Zz4mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707125336; c=relaxed/simple;
-	bh=g9H0mf+7TI03/TpL+Efn6cRRTCfqLHMm2aPY9t9yYj0=;
+	s=arc-20240116; t=1707127116; c=relaxed/simple;
+	bh=q/8FmVDMmKInvK9MPO1XkvumiAG5Zx2X+HgxZuCqccE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uf2GbgbNQn7FV06m7YcVkHFzxCXpOmGj6whxpquBhcAkRY42WTPk24y70OWbyWiOx4Y7aplZxPUNRDkMDLe0PWC1Wm+ndmHpdKCW63OkYNzab/Z/Fjix7hJ8T10Z5gj4C4bD1p87OvpCtRGsZzCY68kM0QAGOWc4rihgUS5LfyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=L/NzhZ1y; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=S7mhHnxrAg7DVDtFn23X4r8UEB8+knbBLFQnB6EYptM3QBGE5D2ztzdiCPlJB6/G2L37k+EPX0tJF8iHwwhhwceX6x49inHb6ZRoi7RWK5DVxgvoHpZoz0/IhWgGHmtg+85sVrcufXHCibmnNbg+9ynZQ2799W2RdfmxvA0eiWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=V3ZWxHbj; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1707125309; x=1707730109; i=deller@gmx.de;
-	bh=g9H0mf+7TI03/TpL+Efn6cRRTCfqLHMm2aPY9t9yYj0=;
+	t=1707127107; x=1707731907; i=deller@gmx.de;
+	bh=q/8FmVDMmKInvK9MPO1XkvumiAG5Zx2X+HgxZuCqccE=;
 	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
 	 In-Reply-To;
-	b=L/NzhZ1yJY2gCugREzTjdYqWW2YHSKra6gwIj/qEfmkx9KnGG42L6SMBinBH5y4y
-	 2glUiMwJgTuzS8tAeyvWrDXuET3CT/Rb5Tiokm+uoR4f7UbYxe7fQJLdb16PqMLnX
-	 bv71YZ+sL1MgYKAWutWXMXAUNGIxIEkpA0/ZRR9Wa7e8IWr4FPnkJGdNs1F9Z51Kk
-	 Uil0w9BTKF3HyEQHb3LJoHK9n23r6qluduOItDkil3w+SYUIaWTCzAsHGta8GR4zD
-	 cJwny177Qtg/Q4z+m8LpbE0diz1sMzH/hbMvqyadNRBJoQvyYwnVvO3BIhij2lcFH
-	 J4z9g7JCwaczPzCEjw==
+	b=V3ZWxHbjBwlNKn5Wp51yeiz6501QxPbcYpFxk+BLOBDqpsc9mQmOOzpupMPuC3km
+	 KqqHhsI7QIf9ASM0dVtyjkPfPyWUMiuH4+OsXRlXGM46FU9+EfH0N3zu9I5VTrILf
+	 ywptAtwbUpvJ7kZGeXnnuc1BN5R8aPPZ05BNgsc+6L1HnhV1/QFZsZvdLb/58acpe
+	 Ri45I65sWQI9Fcv3UZknR8Wi6BNcNzYVwo6L++36jG6cRj2NLghzpjmFdhPxfFPRz
+	 GIs3PQBQU7sjnxoDE38V/nf+aK5hyclpDUH/hdQvURq27qJbm98vqyCwWY4oRiUf/
+	 052myrohz3lUQKSG4g==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([94.134.145.139]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MN5if-1rGm081kN3-00J0kv; Mon, 05
- Feb 2024 10:28:29 +0100
-Message-ID: <929506cf-a1a7-436e-938d-4e5eff0181e4@gmx.de>
-Date: Mon, 5 Feb 2024 10:28:27 +0100
+Received: from [192.168.20.55] ([94.134.145.139]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MMXQF-1rHKXF3cJj-00Jdil; Mon, 05
+ Feb 2024 10:58:26 +0100
+Message-ID: <12d876ba-a325-4442-9526-3ea9e2117c0b@gmx.de>
+Date: Mon, 5 Feb 2024 10:58:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -55,13 +55,19 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Kunit test failures with cpumask tests on parisc
+Subject: Re: [PATCH][RFC] workqueue: Fix kernel panic on CPU hot-unplug
 Content-Language: en-US
-To: Guenter Roeck <linux@roeck-us.net>, Yury Norov <yury.norov@gmail.com>
-Cc: James.Bottomley@hansenpartnership.com, linux-parisc@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org
-References: <e6f0ab85-5bbe-41c1-8976-5ba00044998c@roeck-us.net>
+To: Tejun Heo <tj@kernel.org>
+Cc: Helge Deller <deller@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+References: <ZbqfMR_mVLaSCj4Q@carbonx1> <ZbrJq3X63hIMkbl2@slm.duckdns.org>
+ <8a266076-b3dc-4a39-aac4-089e2ef77da3@gmx.de>
+ <ZbvM1V8CYNeds14r@slm.duckdns.org>
+ <e6916a78-7872-442d-922d-31ea3920da4f@gmx.de>
+ <ZbxHuS6vOc0MB7-R@slm.duckdns.org>
+ <983189ec-e8fc-41ef-bad7-cfebad20ac83@gmx.de>
+ <f75e7606-0904-4e97-b337-e8f74843e87d@gmx.de>
+ <Zb0mbHlIud_bqftx@slm.duckdns.org>
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -106,94 +112,73 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <e6f0ab85-5bbe-41c1-8976-5ba00044998c@roeck-us.net>
+In-Reply-To: <Zb0mbHlIud_bqftx@slm.duckdns.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:JymWDCErreo80xVCyd8jlE2xAcHkgqBcL5N5nOlm5og7wHnxL7i
- 4hcGdOB3iYQdSh4NF3Aa1OiMb6paswhX7vxPswVABh6ynP9LrqGiq4rNgJHGGa5I+Wac4hm
- QWInyf+RCKiIbrrn4rZEdq8sROeXLxS7PKz5BSn1X1svL2xVDoL/wpZlS4wFgA+7TltytSW
- fayf+Y8QlC7dINRfbVSYg==
+X-Provags-ID: V03:K1:T5G9Y9gcIjgfbaasqDlD6pvRcKdohdF+0yy2341XNkk6OU6+rVs
+ fpYustZNbg+cRePD6FTEklCWG7JICihUjxMLprCuj/n1vu3gYfUieMlsJ+WYTNe9YNRUkUU
+ h+MINnAC4d2624zgZPHwrVDZZUgw1zkESvztkBOTeHIRwL0xYhuN7DvHykApFAq06OWvwz8
+ 27hPK0scgQutOZXvFfMwQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:jSmwCNqrguw=;n4OxuDS09MLbyxqOiWCyy+nDdGK
- aPUU43ZXyjOgLHJUIzfAPgpOZusXNYEcos836sd/UNOwFrfFnvdjiNsiRULxXfKE0CsOxio+s
- EHzgZ0mN2dLYdZ9uJXY2pxgaXUypG3WqlGT7Umuu3ioe1iEbPInABUjiEq4lBB9Rj3Ro8kWlB
- 8tavS7RhMulOQoHOBJiFlM8X4+Vyw4lJUjSpgK2fRTdp9UeaxcPymfUxwfDfZjeXaTDYQKT/M
- axAi0gI66v9hT5j2v9lfrR8OWU+Pxy6XaRG1H0gLDDF9YFOtHFk+h1pgnUogsymhPAwoiBPkl
- deRrogeQziDarIdO++LNAw2feWx6hE8AnGeEhV7ryV2Ut/v+tiSI4355NjViLBwoiUVW8XDkt
- tPkqdFMHyrZ0MmjO3DVUiWfjm/bF/onhhb8lypLcFsDkZpAQQCUk91DNE+g7m7KfIZ8IqWMeq
- ULNMIg0gJJVAE8UqEMZUk/ck3U07SKehiyFMYgI05mjINLjqOyUUwgRdthJ5kxZJL8EHTowBS
- 6IOl9bQww4QULUoskvbngtFQNfbwRU3GBmbwOEBKNoSqnqkvtR+fACUneMG9D5ug05CtYUh8T
- ggUIIm+eMc65ybYkP4OXc/yshO5Wx+ovu2oMO5NzG4lXE4TxuQ2o6U1wnWrd2JGQUSTtOwDtV
- aarsbhPyA9UPYgxeSCSznkRyztOipak8FTxZGb7ZzXegbsLIy7e4JeGJQC80Gn+CUkH+5L1Wq
- krpK3YVa2jkc6nbJbdZV5TPfn0GC7hbWchKE1IUTvmpVr2Dr67MZoIEEWz5oNfWV3SXcjLzsM
- GtGZAO3CACowN1uwQyVmHxiugdko9Cp8dGRwBohCWXumbP2/++O5cfF1TKRALkDAcI/XsYbL4
- CCZfvSR8ltSuFbg==
+UI-OutboundReport: notjunk:1;M01:P0:QaquBmfnSVU=;5IkA2BQ5QlLHlzkOmdTJ9pA0E8m
+ IVySZ2OL9npn/Z7mLRPCTD/P214bIgd8J/2qjSMxe3EetTUp2X0TPbPxwGi9OkvkJr4odWC7z
+ P0ie6dEu5Yhso6adfEzzf7f4erreut6HkXJlWsgI5+cjT+9y9/4lUCHajCoDnliniK2LYCxTT
+ mkdUZEiVQl8WTC7a48UqepS4lpnlDepfxagKXlPcu5c+zfZQwzv0VunOLfI04uWGXBGlF0s13
+ ZVIluRaQImL7fGYDhuspv4nVloFYGW+sr/uZ83wVdA0FjkBGid6+f5mTyMt3Y4jw86zcPqhzC
+ u0xLLduZst2SO+4V+eFULEXalLPpB7Lq4ux8OOdb5g8Tf28stqy7YLpsJbFMuuAhjyUmOwTJG
+ zmeyLMWnMAgjX9gKNBtrQaAtuyMvKaZ74ayRKLY0yja+64niJX7fnXJZsI5smuV0jBiEGYNyE
+ um0Xw/BlVWLNuMWDhVX54KHeK2zv0CZ05v6DH1a7bKQUUpORJaHmuSZ3gQ+HZc+ZmyVPMIbV8
+ 522HRgJGr4fMA7LP6zNIxmG0q0KCiT6++ZQY/zorYm82UHWswKxoYOOkOD91Ci0ggV8lMBD1Q
+ lB5+unewcHrMwWa9QiPys2u/h88SJLDwrAajG0Mt8s61OQgVh3BIgUBRFomR5BgSpArchmvKO
+ YRUshaNvNdtNbDCi8FrbYnRgcecuiU1flFuQFBoGIRXP8wlWrZ1e9QggYLKq//GTZvRK/LdWf
+ kOh8KOlg6TGHHB+ahMpjDOtKV1aGHV81LYulL3aGpuzRUA+PPFE/nsIido+6/iYprR3QgE5hf
+ qizlzt5O5hBlPqKu90PDTosLkFnC6JsKNNtOUuVQbhOiE=
 
-On 2/5/24 07:53, Guenter Roeck wrote:
-> when running cpumask Kunit tests on parisc/parisc64 in qemu,
-> I get the following errors.
+Hi Tejun,
+
+On 2/2/24 18:29, Tejun Heo wrote:
+> Hello, Helge.
 >
->        KTAP version 1
->        # Subtest: cpumask
->        # module: cpumask_kunit
->        1..6
->        # test_cpumask_weight: EXPECTATION FAILED at lib/cpumask_kunit.c:=
-68
->        Expected nr_cpu_ids =3D=3D cpumask_weight(((const struct cpumask =
-*)&__cpu_possible_mask)), but
->            nr_cpu_ids =3D=3D 16 (0x10)
->            cpumask_weight(((const struct cpumask *)&__cpu_possible_mask)=
-) =3D=3D 1 (0x1)
->    cpu_possible_mask contains CPUs 0
->        not ok 1 test_cpumask_weight
->        # test_cpumask_first: EXPECTATION FAILED at lib/cpumask_kunit.c:7=
-9
->        Expected nr_cpu_ids <=3D cpumask_first_zero(((const struct cpumas=
-k *)&__cpu_possible_mask)), but
->            nr_cpu_ids =3D=3D 16 (0x10)
->            cpumask_first_zero(((const struct cpumask *)&__cpu_possible_m=
-ask)) =3D=3D 1 (0x1)
->    cpu_possible_mask contains CPUs 0
->        not ok 2 test_cpumask_first
->        # test_cpumask_last: EXPECTATION FAILED at lib/cpumask_kunit.c:87
->        Expected nr_cpu_ids - 1 =3D=3D cpumask_last(((const struct cpumas=
-k *)&__cpu_possible_mask)), but
->            nr_cpu_ids - 1 =3D=3D 15 (0xf)
->            cpumask_last(((const struct cpumask *)&__cpu_possible_mask)) =
-=3D=3D 0 (0x0)
->    cpu_possible_mask contains CPUs 0
->        not ok 3 test_cpumask_last
->        # test_cpumask_next: EXPECTATION FAILED at lib/cpumask_kunit.c:94
->        Expected nr_cpu_ids <=3D cpumask_next_zero(-1, ((const struct cpu=
-mask *)&__cpu_possible_mask)), but
->            nr_cpu_ids =3D=3D 16 (0x10)
->            cpumask_next_zero(-1, ((const struct cpumask *)&__cpu_possibl=
-e_mask)) =3D=3D 1 (0x1)
->    cpu_possible_mask contains CPUs 0
->        not ok 4 test_cpumask_next
->        ok 5 test_cpumask_iterators
->        ok 6 test_cpumask_iterators_builtin
->    # cpumask: pass:2 fail:4 skip:0 total:6
->    # Totals: pass:2 fail:4 skip:0 total:6
->    not ok 5 cpumask
+> On Fri, Feb 02, 2024 at 09:41:38AM +0100, Helge Deller wrote:
+>> In a second step I extended your patch to print the present
+>> and online CPUs too. Below is the relevant dmesg part.
+>>
+>> Note, that on parisc the second CPU will be activated later in the
+>> boot process, after the kernel has the inventory.
+>> This I think differs vs x86, where all CPUs are available earlier
+>> in the boot process.
+>> ...
+>> [    0.000000] XXX workqueue_init_early: possible_cpus=3Dffff  present=
+=3D0001  online=3D0001
+> ...
+>> [    0.228080] XXX workqueue_init: possible_cpus=3Dffff  present=3D0001=
+  online=3D0001
+> ...
+>> [    0.263466] XXX workqueue_init_topology: possible_cpus=3Dffff  prese=
+nt=3D0001  online=3D0001
 >
-> It appears that parisc sets __cpu_possible_mask to the number of online =
-CPUs,
-> which is limited in qemu and doesn't match CONFIG_NR_CPUS. Is this a pro=
-blem
-> with the unit test or with the parisc architecture, or does the unit tes=
+> So, what's bothersome is that when the wq_dump.py script printing each c=
+pu's
+> pwq, it's only printing for CPU 0 and 1. The for_each_possible_cpu() drg=
+n
+> helper reads cpu_possible_mask from the kernel and iterates that, so tha=
 t
-> simply not apply for parisc ?
+> most likely indicates at some point the cpu_possible_mask becomes 0x3
+> instead of the one used during boot - 0xffff, which is problematic.
+>
+> Can you please sprinkle more printks to find out whether and when the
+> cpu_possible_mask changes during boot?
 
-Thank you for finding and reporting this!
-It's a bug (or a misunderstanding) in the parisc kernel.
-Reverting commit 0921244f6f4f ("parisc: Only list existing CPUs in cpu_pos=
-sible_mask")
-fixes the KUnit test.
+It seems the commit 0921244f6f4f ("parisc: Only list existing CPUs in cpu_=
+possible_mask")
+is the culprit. Reverting that patch makes cpu hot-unplug work again.
+Furthermore this commit breaks the cpumask Kunit test as reported by Guent=
+er:
+https://lkml.org/lkml/2024/2/4/146
 
-Furthermore the revert fixes the issue that CPU hot-unplugging doesn't
-work and which I just was starting to debug:
-https://lore.kernel.org/lkml/Zb0mbHlIud_bqftx@slm.duckdns.org/t/
+So, I've added the revert to the parisc git tree and if my further tests
+go well I'll push it upstream.
 
+Thanks for your help!!
 Helge
 
