@@ -1,53 +1,76 @@
-Return-Path: <linux-parisc+bounces-487-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-488-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A89A84971F
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 10:58:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AA7849F41
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 17:06:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0C431F21282
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 09:58:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777A12869A1
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 16:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F4612E67;
-	Mon,  5 Feb 2024 09:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AC93589C;
+	Mon,  5 Feb 2024 16:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="V3ZWxHbj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1iHZOeh"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B2912E63;
-	Mon,  5 Feb 2024 09:58:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5345E33CDA;
+	Mon,  5 Feb 2024 16:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707127116; cv=none; b=SDgKUB/kqes0ZS77mU27yozx349OEhdaPRvlZEu4wjWJpvbxhcETJ6+xz+nIu6ipkPqg5mFxxZ4y2osCoIRnhAUsgtaAgv/paHpRkyc02DTM3lCtHdW8XOWFHC12syA0prG8ODLTizOH+CAenxLpdbqhLESTVhY9/TyLN2Zz4mw=
+	t=1707149168; cv=none; b=L/RxKitu8gIu7M/ZbI1aolK2M2TSV9X19WN82nTdMSmeC1wC4Wqzngp93LIaAT7JkN7cSe88KVpaKu6WXiOwu1GfI5W80G0q/+rYZNS8aC5Kk+92dIkxUx/swqHAsH+VdhT7JfFWsvUaJwup36N6qm7m68GSeyPLf8/bKBPkg0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707127116; c=relaxed/simple;
-	bh=q/8FmVDMmKInvK9MPO1XkvumiAG5Zx2X+HgxZuCqccE=;
+	s=arc-20240116; t=1707149168; c=relaxed/simple;
+	bh=F5TdBqpfmRqtEIvYYBWWHquyP7yxsMy/qm/7PwSOixw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S7mhHnxrAg7DVDtFn23X4r8UEB8+knbBLFQnB6EYptM3QBGE5D2ztzdiCPlJB6/G2L37k+EPX0tJF8iHwwhhwceX6x49inHb6ZRoi7RWK5DVxgvoHpZoz0/IhWgGHmtg+85sVrcufXHCibmnNbg+9ynZQ2799W2RdfmxvA0eiWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=V3ZWxHbj; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1707127107; x=1707731907; i=deller@gmx.de;
-	bh=q/8FmVDMmKInvK9MPO1XkvumiAG5Zx2X+HgxZuCqccE=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=V3ZWxHbjBwlNKn5Wp51yeiz6501QxPbcYpFxk+BLOBDqpsc9mQmOOzpupMPuC3km
-	 KqqHhsI7QIf9ASM0dVtyjkPfPyWUMiuH4+OsXRlXGM46FU9+EfH0N3zu9I5VTrILf
-	 ywptAtwbUpvJ7kZGeXnnuc1BN5R8aPPZ05BNgsc+6L1HnhV1/QFZsZvdLb/58acpe
-	 Ri45I65sWQI9Fcv3UZknR8Wi6BNcNzYVwo6L++36jG6cRj2NLghzpjmFdhPxfFPRz
-	 GIs3PQBQU7sjnxoDE38V/nf+aK5hyclpDUH/hdQvURq27qJbm98vqyCwWY4oRiUf/
-	 052myrohz3lUQKSG4g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([94.134.145.139]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MMXQF-1rHKXF3cJj-00Jdil; Mon, 05
- Feb 2024 10:58:26 +0100
-Message-ID: <12d876ba-a325-4442-9526-3ea9e2117c0b@gmx.de>
-Date: Mon, 5 Feb 2024 10:58:26 +0100
+	 In-Reply-To:Content-Type; b=pHbnfBo8JFK/pwbuJQkEPgcyXVuSxEsjfw7eSrDoWLem1ReBvr+pzczc+dp8UAS21dzDsiL1kuDiQ1xnl1LLBzJBeBho7auOBAY2cNsEowkbXp6Q9J4a5DKiw/f7KN2fXQh/lXP7sMcjjSY43hRm2gWCP6wQn5nX+kAVy56GID4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1iHZOeh; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d9b2400910so6714415ad.0;
+        Mon, 05 Feb 2024 08:06:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707149165; x=1707753965; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=+EeZAfwEPyGr3bPcxLVrnaOfNElu/B3c1f9i79s2kVI=;
+        b=i1iHZOehLMz/h5kJppv3HX/ulZHbvJns8HJH+Ra9d3LXbhF4beLH2Dwc6xwZEM3DU/
+         cj0UN6Fe4V6h5Ex63gxbQTmBJEwgEQD3i+Z5x1pNrgYHnfkGlPR0TedBUmMvG3G41yrw
+         11xpqYEXavz5tGkpsSHl1Ukd7NO9LjPLQCbQ9Tx/TjU7m1Q5IyYkWZKAbYFWM6/36w9J
+         j7/SiYDmYYYD8CldaBGwZ2zONJfDIz1VPEbBGR3hqK3UTysyggYcQazKxgESUpJNPWPB
+         WREYe75wfRKQnFuqjun0VSXhOIQivuB2s3o3Ywpsy0J9piIaBWODIq/cUmUjXauBglhg
+         Kf5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707149165; x=1707753965;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+EeZAfwEPyGr3bPcxLVrnaOfNElu/B3c1f9i79s2kVI=;
+        b=wYDuGjA7CmWHA/akCOggx7jK/UdO3apbhpQAxan83vm5o/8WFU0K4ajian6lfLVwgh
+         CnWEn/2UGzPMkcUNRfQbo9oYAE4pe6XrCSN0u6qd1rOrBmcvElQ2Jj5/Z5K+t43XVUAb
+         aWmmAoHLff0SGggLdtU6aU2/slxiEyW0tHHJDkb3HWmwpKZKMLY75JkPyqx4X1kWOB38
+         4bdXZShh30bbxChQ7M7O5Lfd1Qxxa9pXc0kKXyL6XbAtRoVG2G99mdpbhlCLXO12wJ53
+         eN1mbowSgKlLZk9kaxeX5NL/EOvrYCgfZYcEiqMKHx3QnkDMHHvxt4J/y6XuNdJnBcgs
+         t2hA==
+X-Gm-Message-State: AOJu0Yw/Hkxk2ZAF1MdHRbqLfOSLE7cY20ftAHTrCVlY8e9Q36yWFyHz
+	ZyrboRmT3JaBxboIhpfAyyJldAFaAGEg7cvw9MDZ77ksvgQPqfqEeHPqJTDj
+X-Google-Smtp-Source: AGHT+IETXLcDJRAUe2shZb8ZtYFJuD3Oq0aklzw4ozcLCR+0pAh4CFB1L8vPhXEG0nYHAiIiKFKBZw==
+X-Received: by 2002:a17:902:d902:b0:1d9:803a:8b0b with SMTP id c2-20020a170902d90200b001d9803a8b0bmr98496plz.33.1707149165428;
+        Mon, 05 Feb 2024 08:06:05 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCXSRz2GVa/571uh5IbM9khs7E3R9b0KYqyBoUMTCLuXJL0kQnioQZvm9oHiViJM7xVy6pdAdyOIRn1bvfKk/7ttyoaueKJUllGa9Jz29CR/E4H8jOS+AOYm158UdYaVLpdM22RFyQQh7bLafw/Vmjsyr6TiKnRnPT/i3KtwuKfOkJ6px7kfjFQcWQRQYGt9cw8sTsC9YN4VfLk6zuTQ9YsjwA304823Pkk9DcD30YsjM0tOBbC7aVHzDmmEN10=
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id ki6-20020a170903068600b001d916995423sm39851plb.99.2024.02.05.08.06.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Feb 2024 08:06:05 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <c1d89da0-f9ef-44d8-8731-5a34240eba95@roeck-us.net>
+Date: Mon, 5 Feb 2024 08:06:03 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -55,130 +78,118 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][RFC] workqueue: Fix kernel panic on CPU hot-unplug
+Subject: Re: Kunit test failures with cpumask tests on parisc
 Content-Language: en-US
-To: Tejun Heo <tj@kernel.org>
-Cc: Helge Deller <deller@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
- linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-References: <ZbqfMR_mVLaSCj4Q@carbonx1> <ZbrJq3X63hIMkbl2@slm.duckdns.org>
- <8a266076-b3dc-4a39-aac4-089e2ef77da3@gmx.de>
- <ZbvM1V8CYNeds14r@slm.duckdns.org>
- <e6916a78-7872-442d-922d-31ea3920da4f@gmx.de>
- <ZbxHuS6vOc0MB7-R@slm.duckdns.org>
- <983189ec-e8fc-41ef-bad7-cfebad20ac83@gmx.de>
- <f75e7606-0904-4e97-b337-e8f74843e87d@gmx.de>
- <Zb0mbHlIud_bqftx@slm.duckdns.org>
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <Zb0mbHlIud_bqftx@slm.duckdns.org>
+To: Helge Deller <deller@gmx.de>, Yury Norov <yury.norov@gmail.com>
+Cc: James.Bottomley@hansenpartnership.com, linux-parisc@vger.kernel.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org
+References: <e6f0ab85-5bbe-41c1-8976-5ba00044998c@roeck-us.net>
+ <929506cf-a1a7-436e-938d-4e5eff0181e4@gmx.de>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <929506cf-a1a7-436e-938d-4e5eff0181e4@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:T5G9Y9gcIjgfbaasqDlD6pvRcKdohdF+0yy2341XNkk6OU6+rVs
- fpYustZNbg+cRePD6FTEklCWG7JICihUjxMLprCuj/n1vu3gYfUieMlsJ+WYTNe9YNRUkUU
- h+MINnAC4d2624zgZPHwrVDZZUgw1zkESvztkBOTeHIRwL0xYhuN7DvHykApFAq06OWvwz8
- 27hPK0scgQutOZXvFfMwQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:QaquBmfnSVU=;5IkA2BQ5QlLHlzkOmdTJ9pA0E8m
- IVySZ2OL9npn/Z7mLRPCTD/P214bIgd8J/2qjSMxe3EetTUp2X0TPbPxwGi9OkvkJr4odWC7z
- P0ie6dEu5Yhso6adfEzzf7f4erreut6HkXJlWsgI5+cjT+9y9/4lUCHajCoDnliniK2LYCxTT
- mkdUZEiVQl8WTC7a48UqepS4lpnlDepfxagKXlPcu5c+zfZQwzv0VunOLfI04uWGXBGlF0s13
- ZVIluRaQImL7fGYDhuspv4nVloFYGW+sr/uZ83wVdA0FjkBGid6+f5mTyMt3Y4jw86zcPqhzC
- u0xLLduZst2SO+4V+eFULEXalLPpB7Lq4ux8OOdb5g8Tf28stqy7YLpsJbFMuuAhjyUmOwTJG
- zmeyLMWnMAgjX9gKNBtrQaAtuyMvKaZ74ayRKLY0yja+64niJX7fnXJZsI5smuV0jBiEGYNyE
- um0Xw/BlVWLNuMWDhVX54KHeK2zv0CZ05v6DH1a7bKQUUpORJaHmuSZ3gQ+HZc+ZmyVPMIbV8
- 522HRgJGr4fMA7LP6zNIxmG0q0KCiT6++ZQY/zorYm82UHWswKxoYOOkOD91Ci0ggV8lMBD1Q
- lB5+unewcHrMwWa9QiPys2u/h88SJLDwrAajG0Mt8s61OQgVh3BIgUBRFomR5BgSpArchmvKO
- YRUshaNvNdtNbDCi8FrbYnRgcecuiU1flFuQFBoGIRXP8wlWrZ1e9QggYLKq//GTZvRK/LdWf
- kOh8KOlg6TGHHB+ahMpjDOtKV1aGHV81LYulL3aGpuzRUA+PPFE/nsIido+6/iYprR3QgE5hf
- qizlzt5O5hBlPqKu90PDTosLkFnC6JsKNNtOUuVQbhOiE=
+Content-Transfer-Encoding: 8bit
 
-Hi Tejun,
-
-On 2/2/24 18:29, Tejun Heo wrote:
-> Hello, Helge.
->
-> On Fri, Feb 02, 2024 at 09:41:38AM +0100, Helge Deller wrote:
->> In a second step I extended your patch to print the present
->> and online CPUs too. Below is the relevant dmesg part.
+On 2/5/24 01:28, Helge Deller wrote:
+> On 2/5/24 07:53, Guenter Roeck wrote:
+>> when running cpumask Kunit tests on parisc/parisc64 in qemu,
+>> I get the following errors.
 >>
->> Note, that on parisc the second CPU will be activated later in the
->> boot process, after the kernel has the inventory.
->> This I think differs vs x86, where all CPUs are available earlier
->> in the boot process.
->> ...
->> [    0.000000] XXX workqueue_init_early: possible_cpus=3Dffff  present=
-=3D0001  online=3D0001
-> ...
->> [    0.228080] XXX workqueue_init: possible_cpus=3Dffff  present=3D0001=
-  online=3D0001
-> ...
->> [    0.263466] XXX workqueue_init_topology: possible_cpus=3Dffff  prese=
-nt=3D0001  online=3D0001
->
-> So, what's bothersome is that when the wq_dump.py script printing each c=
-pu's
-> pwq, it's only printing for CPU 0 and 1. The for_each_possible_cpu() drg=
-n
-> helper reads cpu_possible_mask from the kernel and iterates that, so tha=
-t
-> most likely indicates at some point the cpu_possible_mask becomes 0x3
-> instead of the one used during boot - 0xffff, which is problematic.
->
-> Can you please sprinkle more printks to find out whether and when the
-> cpu_possible_mask changes during boot?
+>>        KTAP version 1
+>>        # Subtest: cpumask
+>>        # module: cpumask_kunit
+>>        1..6
+>>        # test_cpumask_weight: EXPECTATION FAILED at lib/cpumask_kunit.c:68
+>>        Expected nr_cpu_ids == cpumask_weight(((const struct cpumask *)&__cpu_possible_mask)), but
+>>            nr_cpu_ids == 16 (0x10)
+>>            cpumask_weight(((const struct cpumask *)&__cpu_possible_mask)) == 1 (0x1)
+>>    cpu_possible_mask contains CPUs 0
+>>        not ok 1 test_cpumask_weight
+>>        # test_cpumask_first: EXPECTATION FAILED at lib/cpumask_kunit.c:79
+>>        Expected nr_cpu_ids <= cpumask_first_zero(((const struct cpumask *)&__cpu_possible_mask)), but
+>>            nr_cpu_ids == 16 (0x10)
+>>            cpumask_first_zero(((const struct cpumask *)&__cpu_possible_mask)) == 1 (0x1)
+>>    cpu_possible_mask contains CPUs 0
+>>        not ok 2 test_cpumask_first
+>>        # test_cpumask_last: EXPECTATION FAILED at lib/cpumask_kunit.c:87
+>>        Expected nr_cpu_ids - 1 == cpumask_last(((const struct cpumask *)&__cpu_possible_mask)), but
+>>            nr_cpu_ids - 1 == 15 (0xf)
+>>            cpumask_last(((const struct cpumask *)&__cpu_possible_mask)) == 0 (0x0)
+>>    cpu_possible_mask contains CPUs 0
+>>        not ok 3 test_cpumask_last
+>>        # test_cpumask_next: EXPECTATION FAILED at lib/cpumask_kunit.c:94
+>>        Expected nr_cpu_ids <= cpumask_next_zero(-1, ((const struct cpumask *)&__cpu_possible_mask)), but
+>>            nr_cpu_ids == 16 (0x10)
+>>            cpumask_next_zero(-1, ((const struct cpumask *)&__cpu_possible_mask)) == 1 (0x1)
+>>    cpu_possible_mask contains CPUs 0
+>>        not ok 4 test_cpumask_next
+>>        ok 5 test_cpumask_iterators
+>>        ok 6 test_cpumask_iterators_builtin
+>>    # cpumask: pass:2 fail:4 skip:0 total:6
+>>    # Totals: pass:2 fail:4 skip:0 total:6
+>>    not ok 5 cpumask
+>>
+>> It appears that parisc sets __cpu_possible_mask to the number of online CPUs,
+>> which is limited in qemu and doesn't match CONFIG_NR_CPUS. Is this a problem
+>> with the unit test or with the parisc architecture, or does the unit test
+>> simply not apply for parisc ?
+> 
+> Thank you for finding and reporting this!
+> It's a bug (or a misunderstanding) in the parisc kernel.
+> Reverting commit 0921244f6f4f ("parisc: Only list existing CPUs in cpu_possible_mask")
+> fixes the KUnit test.
+> 
+> Furthermore the revert fixes the issue that CPU hot-unplugging doesn't
+> work and which I just was starting to debug:
+> https://lore.kernel.org/lkml/Zb0mbHlIud_bqftx@slm.duckdns.org/t/
+> 
 
-It seems the commit 0921244f6f4f ("parisc: Only list existing CPUs in cpu_=
-possible_mask")
-is the culprit. Reverting that patch makes cpu hot-unplug work again.
-Furthermore this commit breaks the cpumask Kunit test as reported by Guent=
-er:
-https://lkml.org/lkml/2024/2/4/146
+Glad to help, and thanks for the update.
 
-So, I've added the revert to the parisc git tree and if my further tests
-go well I'll push it upstream.
+Guenter
 
-Thanks for your help!!
-Helge
 
