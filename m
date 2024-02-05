@@ -1,195 +1,118 @@
-Return-Path: <linux-parisc+bounces-488-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-489-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AA7849F41
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 17:06:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D2384A12B
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 18:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777A12869A1
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 16:06:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78A991C226A7
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 17:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AC93589C;
-	Mon,  5 Feb 2024 16:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6350845947;
+	Mon,  5 Feb 2024 17:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1iHZOeh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JnP/l/04"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5345E33CDA;
-	Mon,  5 Feb 2024 16:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C0645949;
+	Mon,  5 Feb 2024 17:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707149168; cv=none; b=L/RxKitu8gIu7M/ZbI1aolK2M2TSV9X19WN82nTdMSmeC1wC4Wqzngp93LIaAT7JkN7cSe88KVpaKu6WXiOwu1GfI5W80G0q/+rYZNS8aC5Kk+92dIkxUx/swqHAsH+VdhT7JfFWsvUaJwup36N6qm7m68GSeyPLf8/bKBPkg0A=
+	t=1707155104; cv=none; b=QlGuth+VTofqhVALzZgHRt5uhv54Zbl7MwDuct3PAV678HspkhYPDDwmRWCDVGg/vRS/PUyawlH1ME6tMsEWkwn6zjpPlIrgkfkK2cglvfmo3Evlsow+Uzbeao9bA2KHgPDls1SJZFQJJiJpaMcQ/+451RWhTM3e/TIEVWy2ypk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707149168; c=relaxed/simple;
-	bh=F5TdBqpfmRqtEIvYYBWWHquyP7yxsMy/qm/7PwSOixw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pHbnfBo8JFK/pwbuJQkEPgcyXVuSxEsjfw7eSrDoWLem1ReBvr+pzczc+dp8UAS21dzDsiL1kuDiQ1xnl1LLBzJBeBho7auOBAY2cNsEowkbXp6Q9J4a5DKiw/f7KN2fXQh/lXP7sMcjjSY43hRm2gWCP6wQn5nX+kAVy56GID4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1iHZOeh; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1707155104; c=relaxed/simple;
+	bh=aqqnMA5SoWfZA9DBTv6yHfAy2o+WRNv2ptmq6E3Xqy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F+ME7VZi+BxlRNb9I0hr7FogTqcccIilG7iAOLlsJIC7wApOzSjTeivpd6ZqRehv/kVoPF0qnnCDWcMyduFoWMKLURFzEFa2kwaaJtfuRvHhbngnyNjRj3XcfHmPf+c9c9MQKvQA73kgcI2Cpm8j0JC4QoIR7zd5XOQQtm1/RJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JnP/l/04; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d9b2400910so6714415ad.0;
-        Mon, 05 Feb 2024 08:06:06 -0800 (PST)
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-59a94c0fb55so2473637eaf.0;
+        Mon, 05 Feb 2024 09:45:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707149165; x=1707753965; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=+EeZAfwEPyGr3bPcxLVrnaOfNElu/B3c1f9i79s2kVI=;
-        b=i1iHZOehLMz/h5kJppv3HX/ulZHbvJns8HJH+Ra9d3LXbhF4beLH2Dwc6xwZEM3DU/
-         cj0UN6Fe4V6h5Ex63gxbQTmBJEwgEQD3i+Z5x1pNrgYHnfkGlPR0TedBUmMvG3G41yrw
-         11xpqYEXavz5tGkpsSHl1Ukd7NO9LjPLQCbQ9Tx/TjU7m1Q5IyYkWZKAbYFWM6/36w9J
-         j7/SiYDmYYYD8CldaBGwZ2zONJfDIz1VPEbBGR3hqK3UTysyggYcQazKxgESUpJNPWPB
-         WREYe75wfRKQnFuqjun0VSXhOIQivuB2s3o3Ywpsy0J9piIaBWODIq/cUmUjXauBglhg
-         Kf5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707149165; x=1707753965;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1707155102; x=1707759902; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+EeZAfwEPyGr3bPcxLVrnaOfNElu/B3c1f9i79s2kVI=;
-        b=wYDuGjA7CmWHA/akCOggx7jK/UdO3apbhpQAxan83vm5o/8WFU0K4ajian6lfLVwgh
-         CnWEn/2UGzPMkcUNRfQbo9oYAE4pe6XrCSN0u6qd1rOrBmcvElQ2Jj5/Z5K+t43XVUAb
-         aWmmAoHLff0SGggLdtU6aU2/slxiEyW0tHHJDkb3HWmwpKZKMLY75JkPyqx4X1kWOB38
-         4bdXZShh30bbxChQ7M7O5Lfd1Qxxa9pXc0kKXyL6XbAtRoVG2G99mdpbhlCLXO12wJ53
-         eN1mbowSgKlLZk9kaxeX5NL/EOvrYCgfZYcEiqMKHx3QnkDMHHvxt4J/y6XuNdJnBcgs
-         t2hA==
-X-Gm-Message-State: AOJu0Yw/Hkxk2ZAF1MdHRbqLfOSLE7cY20ftAHTrCVlY8e9Q36yWFyHz
-	ZyrboRmT3JaBxboIhpfAyyJldAFaAGEg7cvw9MDZ77ksvgQPqfqEeHPqJTDj
-X-Google-Smtp-Source: AGHT+IETXLcDJRAUe2shZb8ZtYFJuD3Oq0aklzw4ozcLCR+0pAh4CFB1L8vPhXEG0nYHAiIiKFKBZw==
-X-Received: by 2002:a17:902:d902:b0:1d9:803a:8b0b with SMTP id c2-20020a170902d90200b001d9803a8b0bmr98496plz.33.1707149165428;
-        Mon, 05 Feb 2024 08:06:05 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCXSRz2GVa/571uh5IbM9khs7E3R9b0KYqyBoUMTCLuXJL0kQnioQZvm9oHiViJM7xVy6pdAdyOIRn1bvfKk/7ttyoaueKJUllGa9Jz29CR/E4H8jOS+AOYm158UdYaVLpdM22RFyQQh7bLafw/Vmjsyr6TiKnRnPT/i3KtwuKfOkJ6px7kfjFQcWQRQYGt9cw8sTsC9YN4VfLk6zuTQ9YsjwA304823Pkk9DcD30YsjM0tOBbC7aVHzDmmEN10=
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id ki6-20020a170903068600b001d916995423sm39851plb.99.2024.02.05.08.06.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Feb 2024 08:06:05 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <c1d89da0-f9ef-44d8-8731-5a34240eba95@roeck-us.net>
-Date: Mon, 5 Feb 2024 08:06:03 -0800
+        bh=edMJymLmLx9Tj55QtDpqgq3g4mXEx+8yl/I8rdy5fuw=;
+        b=JnP/l/04su+4TxkREzaW1WeRv9iyaye3IHzjf3GhNhYGCBKeNKWSH7Ffmv7tAouHzF
+         eb3AAhQrd+0Qa/XBf26tNEwdVXzi0k1o2XvxdB+c+ZD9c7r5eBVyah8VxrqG77AOb3SX
+         WScc1WMcntfnuZFnZTOl9FCJJzOKRGSm/EkiM8hRsfhUymF4Ll0xnar/uPULnM4+DOco
+         kBD+yLnpfbeAcEyln8O1c8eCQ9lbGkA3VO1CCO+mWIZHZbAar9HFbNcJAvn05wb0Bgd1
+         3Leh1pRyqr1iHRkL7rraRr53J/v8RB4v+plggZ6+m/lpAD9DgzC859YOLJiLLv/Hodsc
+         cjuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707155102; x=1707759902;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=edMJymLmLx9Tj55QtDpqgq3g4mXEx+8yl/I8rdy5fuw=;
+        b=wvFpOFPnzUjvQhNt1Z472Toofo/jjmNyFFbzHcHfu5/0d4sRO8M+Qn92mqsGH4aE64
+         U1MQtRejUIoMGOZ2PsIDM0KU1CfJgUVZXxDamY6xXbmBiQHVkMc1U4162KZi+dPJGxAz
+         0idVqAMiXS7RxTJ67yU5CnTYleYho6yp11gsk014VX/R76/fDxOo5paFIIrASNxzvfkV
+         49+53IM8Jv+VmY0iZTIcjAtRG/vQzDsrOz1RYSrkpSVslnahkfiq3SSZuA+PkBmq9dQt
+         xfo7eYe/VWpWQ+Ykw7miaNDCjlEalp7wtMzA6CILbq/u5y/D5mzdt5NC0fJWVr6N7CAn
+         SXVw==
+X-Gm-Message-State: AOJu0Yw3hmiWsbmNVSiDV8rmlw/3VjaxZd64JcC5np/99VWpd4Pj+3WD
+	zGU5p6BKbZc5VHFSgW4RCj6QEvzAqJpx5P64fJPUfk7TJyOHtUNn
+X-Google-Smtp-Source: AGHT+IEh3POXVY/xKsQmrIWHNU+A4f6jZdt6zXynNcy1ZXmgXh7bbqM/EN+vjanSEamY9hhKj/PIUw==
+X-Received: by 2002:a05:6358:291f:b0:178:c7b6:b563 with SMTP id y31-20020a056358291f00b00178c7b6b563mr587283rwb.15.1707155101792;
+        Mon, 05 Feb 2024 09:45:01 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCXOwm3S9V14t1CnUivoW4lq78qsUIW1WMA29ELL2H14gd31E88qH58AjZUyRtwNsu0oTT3Zi7IQGFUFDV9OEGNZ7XmWAjwhFdidO4t6Rm8v5eLULf41LDeS1pC+9Ap20CR0ayml+hlmAbyZzOw+wzxcJaNf+K98dVqbxReGJRyIJdikx8Ou9ijUbn0NQLuSej5ZY7Ki
+Received: from localhost (dhcp-141-239-144-21.hawaiiantel.net. [141.239.144.21])
+        by smtp.gmail.com with ESMTPSA id e12-20020a63f54c000000b005c2420fb198sm270434pgk.37.2024.02.05.09.45.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Feb 2024 09:45:01 -0800 (PST)
+Sender: Tejun Heo <htejun@gmail.com>
+Date: Mon, 5 Feb 2024 07:45:00 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Helge Deller <deller@gmx.de>
+Cc: Helge Deller <deller@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: Re: [PATCH][RFC] workqueue: Fix kernel panic on CPU hot-unplug
+Message-ID: <ZcEenNqfJo2lSuNK@slm.duckdns.org>
+References: <ZbqfMR_mVLaSCj4Q@carbonx1>
+ <ZbrJq3X63hIMkbl2@slm.duckdns.org>
+ <8a266076-b3dc-4a39-aac4-089e2ef77da3@gmx.de>
+ <ZbvM1V8CYNeds14r@slm.duckdns.org>
+ <e6916a78-7872-442d-922d-31ea3920da4f@gmx.de>
+ <ZbxHuS6vOc0MB7-R@slm.duckdns.org>
+ <983189ec-e8fc-41ef-bad7-cfebad20ac83@gmx.de>
+ <f75e7606-0904-4e97-b337-e8f74843e87d@gmx.de>
+ <Zb0mbHlIud_bqftx@slm.duckdns.org>
+ <12d876ba-a325-4442-9526-3ea9e2117c0b@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Kunit test failures with cpumask tests on parisc
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>, Yury Norov <yury.norov@gmail.com>
-Cc: James.Bottomley@hansenpartnership.com, linux-parisc@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-kernel@vger.kernel.org
-References: <e6f0ab85-5bbe-41c1-8976-5ba00044998c@roeck-us.net>
- <929506cf-a1a7-436e-938d-4e5eff0181e4@gmx.de>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <929506cf-a1a7-436e-938d-4e5eff0181e4@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <12d876ba-a325-4442-9526-3ea9e2117c0b@gmx.de>
 
-On 2/5/24 01:28, Helge Deller wrote:
-> On 2/5/24 07:53, Guenter Roeck wrote:
->> when running cpumask Kunit tests on parisc/parisc64 in qemu,
->> I get the following errors.
->>
->>        KTAP version 1
->>        # Subtest: cpumask
->>        # module: cpumask_kunit
->>        1..6
->>        # test_cpumask_weight: EXPECTATION FAILED at lib/cpumask_kunit.c:68
->>        Expected nr_cpu_ids == cpumask_weight(((const struct cpumask *)&__cpu_possible_mask)), but
->>            nr_cpu_ids == 16 (0x10)
->>            cpumask_weight(((const struct cpumask *)&__cpu_possible_mask)) == 1 (0x1)
->>    cpu_possible_mask contains CPUs 0
->>        not ok 1 test_cpumask_weight
->>        # test_cpumask_first: EXPECTATION FAILED at lib/cpumask_kunit.c:79
->>        Expected nr_cpu_ids <= cpumask_first_zero(((const struct cpumask *)&__cpu_possible_mask)), but
->>            nr_cpu_ids == 16 (0x10)
->>            cpumask_first_zero(((const struct cpumask *)&__cpu_possible_mask)) == 1 (0x1)
->>    cpu_possible_mask contains CPUs 0
->>        not ok 2 test_cpumask_first
->>        # test_cpumask_last: EXPECTATION FAILED at lib/cpumask_kunit.c:87
->>        Expected nr_cpu_ids - 1 == cpumask_last(((const struct cpumask *)&__cpu_possible_mask)), but
->>            nr_cpu_ids - 1 == 15 (0xf)
->>            cpumask_last(((const struct cpumask *)&__cpu_possible_mask)) == 0 (0x0)
->>    cpu_possible_mask contains CPUs 0
->>        not ok 3 test_cpumask_last
->>        # test_cpumask_next: EXPECTATION FAILED at lib/cpumask_kunit.c:94
->>        Expected nr_cpu_ids <= cpumask_next_zero(-1, ((const struct cpumask *)&__cpu_possible_mask)), but
->>            nr_cpu_ids == 16 (0x10)
->>            cpumask_next_zero(-1, ((const struct cpumask *)&__cpu_possible_mask)) == 1 (0x1)
->>    cpu_possible_mask contains CPUs 0
->>        not ok 4 test_cpumask_next
->>        ok 5 test_cpumask_iterators
->>        ok 6 test_cpumask_iterators_builtin
->>    # cpumask: pass:2 fail:4 skip:0 total:6
->>    # Totals: pass:2 fail:4 skip:0 total:6
->>    not ok 5 cpumask
->>
->> It appears that parisc sets __cpu_possible_mask to the number of online CPUs,
->> which is limited in qemu and doesn't match CONFIG_NR_CPUS. Is this a problem
->> with the unit test or with the parisc architecture, or does the unit test
->> simply not apply for parisc ?
+Hello,
+
+On Mon, Feb 05, 2024 at 10:58:26AM +0100, Helge Deller wrote:
+> It seems the commit 0921244f6f4f ("parisc: Only list existing CPUs in cpu_possible_mask")
+> is the culprit. Reverting that patch makes cpu hot-unplug work again.
+> Furthermore this commit breaks the cpumask Kunit test as reported by Guenter:
+> https://lkml.org/lkml/2024/2/4/146
 > 
-> Thank you for finding and reporting this!
-> It's a bug (or a misunderstanding) in the parisc kernel.
-> Reverting commit 0921244f6f4f ("parisc: Only list existing CPUs in cpu_possible_mask")
-> fixes the KUnit test.
-> 
-> Furthermore the revert fixes the issue that CPU hot-unplugging doesn't
-> work and which I just was starting to debug:
-> https://lore.kernel.org/lkml/Zb0mbHlIud_bqftx@slm.duckdns.org/t/
-> 
+> So, I've added the revert to the parisc git tree and if my further tests
+> go well I'll push it upstream.
 
-Glad to help, and thanks for the update.
+Yeah, it probably just needs to happen way earlier so that the
+cpu_possible_mask doesn't change while the kernel is already half
+initialized.
 
-Guenter
+Thanks.
 
+-- 
+tejun
 
