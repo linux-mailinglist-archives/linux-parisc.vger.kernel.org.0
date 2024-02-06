@@ -1,118 +1,161 @@
-Return-Path: <linux-parisc+bounces-489-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-490-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D2384A12B
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 18:45:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C23E84B343
+	for <lists+linux-parisc@lfdr.de>; Tue,  6 Feb 2024 12:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78A991C226A7
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Feb 2024 17:45:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C85251F2410E
+	for <lists+linux-parisc@lfdr.de>; Tue,  6 Feb 2024 11:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6350845947;
-	Mon,  5 Feb 2024 17:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E31812D152;
+	Tue,  6 Feb 2024 11:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JnP/l/04"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HLmAMrmJ"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C0645949;
-	Mon,  5 Feb 2024 17:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE0558131
+	for <linux-parisc@vger.kernel.org>; Tue,  6 Feb 2024 11:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707155104; cv=none; b=QlGuth+VTofqhVALzZgHRt5uhv54Zbl7MwDuct3PAV678HspkhYPDDwmRWCDVGg/vRS/PUyawlH1ME6tMsEWkwn6zjpPlIrgkfkK2cglvfmo3Evlsow+Uzbeao9bA2KHgPDls1SJZFQJJiJpaMcQ/+451RWhTM3e/TIEVWy2ypk=
+	t=1707218064; cv=none; b=PUFIeYWvu9d5oIeFnwm3VPFcEb+bDy+yHfHc1/N4B5248S7nYHp6yAZkVHZsh/NPkT+69CNUh+qF93RcstgC5c8Pi+yqoG2yr2lYaJJxLYGt9QDEwNXNmkPffXF7Kbt0X37wd/nnDS3UJZPQSHK8jFA5zE4Tot+2xvIXCM+DNJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707155104; c=relaxed/simple;
-	bh=aqqnMA5SoWfZA9DBTv6yHfAy2o+WRNv2ptmq6E3Xqy0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F+ME7VZi+BxlRNb9I0hr7FogTqcccIilG7iAOLlsJIC7wApOzSjTeivpd6ZqRehv/kVoPF0qnnCDWcMyduFoWMKLURFzEFa2kwaaJtfuRvHhbngnyNjRj3XcfHmPf+c9c9MQKvQA73kgcI2Cpm8j0JC4QoIR7zd5XOQQtm1/RJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JnP/l/04; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-59a94c0fb55so2473637eaf.0;
-        Mon, 05 Feb 2024 09:45:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707155102; x=1707759902; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=edMJymLmLx9Tj55QtDpqgq3g4mXEx+8yl/I8rdy5fuw=;
-        b=JnP/l/04su+4TxkREzaW1WeRv9iyaye3IHzjf3GhNhYGCBKeNKWSH7Ffmv7tAouHzF
-         eb3AAhQrd+0Qa/XBf26tNEwdVXzi0k1o2XvxdB+c+ZD9c7r5eBVyah8VxrqG77AOb3SX
-         WScc1WMcntfnuZFnZTOl9FCJJzOKRGSm/EkiM8hRsfhUymF4Ll0xnar/uPULnM4+DOco
-         kBD+yLnpfbeAcEyln8O1c8eCQ9lbGkA3VO1CCO+mWIZHZbAar9HFbNcJAvn05wb0Bgd1
-         3Leh1pRyqr1iHRkL7rraRr53J/v8RB4v+plggZ6+m/lpAD9DgzC859YOLJiLLv/Hodsc
-         cjuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707155102; x=1707759902;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=edMJymLmLx9Tj55QtDpqgq3g4mXEx+8yl/I8rdy5fuw=;
-        b=wvFpOFPnzUjvQhNt1Z472Toofo/jjmNyFFbzHcHfu5/0d4sRO8M+Qn92mqsGH4aE64
-         U1MQtRejUIoMGOZ2PsIDM0KU1CfJgUVZXxDamY6xXbmBiQHVkMc1U4162KZi+dPJGxAz
-         0idVqAMiXS7RxTJ67yU5CnTYleYho6yp11gsk014VX/R76/fDxOo5paFIIrASNxzvfkV
-         49+53IM8Jv+VmY0iZTIcjAtRG/vQzDsrOz1RYSrkpSVslnahkfiq3SSZuA+PkBmq9dQt
-         xfo7eYe/VWpWQ+Ykw7miaNDCjlEalp7wtMzA6CILbq/u5y/D5mzdt5NC0fJWVr6N7CAn
-         SXVw==
-X-Gm-Message-State: AOJu0Yw3hmiWsbmNVSiDV8rmlw/3VjaxZd64JcC5np/99VWpd4Pj+3WD
-	zGU5p6BKbZc5VHFSgW4RCj6QEvzAqJpx5P64fJPUfk7TJyOHtUNn
-X-Google-Smtp-Source: AGHT+IEh3POXVY/xKsQmrIWHNU+A4f6jZdt6zXynNcy1ZXmgXh7bbqM/EN+vjanSEamY9hhKj/PIUw==
-X-Received: by 2002:a05:6358:291f:b0:178:c7b6:b563 with SMTP id y31-20020a056358291f00b00178c7b6b563mr587283rwb.15.1707155101792;
-        Mon, 05 Feb 2024 09:45:01 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCXOwm3S9V14t1CnUivoW4lq78qsUIW1WMA29ELL2H14gd31E88qH58AjZUyRtwNsu0oTT3Zi7IQGFUFDV9OEGNZ7XmWAjwhFdidO4t6Rm8v5eLULf41LDeS1pC+9Ap20CR0ayml+hlmAbyZzOw+wzxcJaNf+K98dVqbxReGJRyIJdikx8Ou9ijUbn0NQLuSej5ZY7Ki
-Received: from localhost (dhcp-141-239-144-21.hawaiiantel.net. [141.239.144.21])
-        by smtp.gmail.com with ESMTPSA id e12-20020a63f54c000000b005c2420fb198sm270434pgk.37.2024.02.05.09.45.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Feb 2024 09:45:01 -0800 (PST)
-Sender: Tejun Heo <htejun@gmail.com>
-Date: Mon, 5 Feb 2024 07:45:00 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Helge Deller <deller@gmx.de>
-Cc: Helge Deller <deller@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH][RFC] workqueue: Fix kernel panic on CPU hot-unplug
-Message-ID: <ZcEenNqfJo2lSuNK@slm.duckdns.org>
-References: <ZbqfMR_mVLaSCj4Q@carbonx1>
- <ZbrJq3X63hIMkbl2@slm.duckdns.org>
- <8a266076-b3dc-4a39-aac4-089e2ef77da3@gmx.de>
- <ZbvM1V8CYNeds14r@slm.duckdns.org>
- <e6916a78-7872-442d-922d-31ea3920da4f@gmx.de>
- <ZbxHuS6vOc0MB7-R@slm.duckdns.org>
- <983189ec-e8fc-41ef-bad7-cfebad20ac83@gmx.de>
- <f75e7606-0904-4e97-b337-e8f74843e87d@gmx.de>
- <Zb0mbHlIud_bqftx@slm.duckdns.org>
- <12d876ba-a325-4442-9526-3ea9e2117c0b@gmx.de>
+	s=arc-20240116; t=1707218064; c=relaxed/simple;
+	bh=y6F0YZtvx+4ZqKYpfCHwiZ4vBkwy8kELU1jZ2jjQgvU=;
+	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=DSFvwvX3vKlSUGy+4h973+2MNZj57pBZ+75TTF0iv9Ch9VL54zAAVl7m/27tGevVlMZSDnu3pLHzHB8nbcnGVA2aBITDzvp1Z03YAMgDXZXqcOAtipJaevdW8DNuJyepAuc6Z7pTU9cNTdpyoUJaCiC8QBy7rMeWxY44dzTBdvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HLmAMrmJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707218061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=/ntzNpz+6Sgq7AVWsy2aHZ0gba7Y0+eYt9MHdhSDVMs=;
+	b=HLmAMrmJ6Zykb2R8x2RvJLN9VagCr87sdJEJUA8XGGACxn4UdsKFVHIdoKKbmvTO7Lji0k
+	qDlwyMyurcYIIgJtvzMp/kmaBG4s9ywmov5qWWC8o9rXNgdywTeHDIMN/UaaZmpn2I+BpF
+	r/3k34UBAydoywuDx0k28Fh8uztiz84=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-nT3IX-KJNZ-FglI_WAgiAw-1; Tue,
+ 06 Feb 2024 06:14:16 -0500
+X-MC-Unique: nT3IX-KJNZ-FglI_WAgiAw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3CEFA1C068D6;
+	Tue,  6 Feb 2024 11:14:15 +0000 (UTC)
+Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id B5B94AC18;
+	Tue,  6 Feb 2024 11:14:14 +0000 (UTC)
+Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
+	id 9437530C1B8F; Tue,  6 Feb 2024 11:14:14 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 901703FB4E;
+	Tue,  6 Feb 2024 12:14:14 +0100 (CET)
+Date: Tue, 6 Feb 2024 12:14:14 +0100 (CET)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Jens Axboe <axboe@kernel.dk>, Ming Lei <ming.lei@redhat.com>, 
+    Christoph Hellwig <hch@lst.de>
+cc: Sagi Grimberg <sagi@grimberg.me>, Hannes Reinecke <hare@suse.de>, 
+    Mark Wunderlich <mark.wunderlich@intel.com>, 
+    "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+    Helge Deller <deller@gmx.de>, John David Anglin <dave.anglin@bell.net>, 
+    linux-block@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: [PATCH] block: use the __packed attribute only on architectures
+ where it is efficient
+Message-ID: <78172b8-74bc-1177-6ac7-7a7e7a44d18@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <12d876ba-a325-4442-9526-3ea9e2117c0b@gmx.de>
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
-Hello,
+The __packed macro (expanding to __attribute__((__packed__))) specifies
+that the structure has an alignment of 1. Therefore, it may be arbitrarily
+misaligned. On architectures that don't have hardware support for
+unaligned accesses, gcc generates very inefficient code that accesses the
+structure fields byte-by-byte and assembles the result using shifts and
+ors.
 
-On Mon, Feb 05, 2024 at 10:58:26AM +0100, Helge Deller wrote:
-> It seems the commit 0921244f6f4f ("parisc: Only list existing CPUs in cpu_possible_mask")
-> is the culprit. Reverting that patch makes cpu hot-unplug work again.
-> Furthermore this commit breaks the cpumask Kunit test as reported by Guenter:
-> https://lkml.org/lkml/2024/2/4/146
-> 
-> So, I've added the revert to the parisc git tree and if my further tests
-> go well I'll push it upstream.
+For example, on PA-RISC, this function is compiled to 23 instructions with
+the __packed attribute and only 2 instructions without the __packed
+attribute.
 
-Yeah, it probably just needs to happen way earlier so that the
-cpu_possible_mask doesn't change while the kernel is already half
-initialized.
+This commit changes the definition of 'struct bvec_iter', so that it only
+uses the __packed attribute on architectures where unaligned access is
+efficient.
 
-Thanks.
+sector_t get_sector(struct bvec_iter *iter)
+{
+        return iter->bi_sector;
+}
 
--- 
-tejun
+with __packed:
+
+0000000000000000 <get_sector>:
+   0:   0f 40 10 1f     ldb 0(r26),r31
+   4:   0f 42 10 1c     ldb 1(r26),ret0
+   8:   f3 ff 0b 18     depd,z,* r31,7,8,r31
+   c:   f3 9c 0a 10     depd,z,* ret0,15,16,ret0
+  10:   0b fc 02 5c     or ret0,r31,ret0
+  14:   0f 44 10 15     ldb 2(r26),r21
+  18:   0f 46 10 14     ldb 3(r26),r20
+  1c:   f2 b5 09 08     depd,z,* r21,23,24,r21
+  20:   0f 48 10 13     ldb 4(r26),r19
+  24:   0b 95 02 55     or r21,ret0,r21
+  28:   0f 4a 10 1f     ldb 5(r26),r31
+  2c:   f2 94 08 00     depd,z,* r20,31,32,r20
+  30:   0f 4c 10 1c     ldb 6(r26),ret0
+  34:   0f 4e 10 16     ldb 7(r26),r22
+  38:   0a b4 02 54     or r20,r21,r20
+  3c:   f2 73 13 18     depd,z,* r19,39,40,r19
+  40:   f3 ff 12 10     depd,z,* r31,47,48,r31
+  44:   0a 93 02 53     or r19,r20,r19
+  48:   f3 9c 11 08     depd,z,* ret0,55,56,ret0
+  4c:   0a 7f 02 5f     or r31,r19,r31
+  50:   0b fc 02 5c     or ret0,r31,ret0
+  54:   e8 40 d0 00     bve (rp)
+  58:   0b 96 02 5c     or r22,ret0,ret0
+  5c:   00 00 00 00     break 0,0
+
+without __packed:
+
+0000000000000000 <get_sector>:
+   0:   e8 40 d0 00     bve (rp)
+   4:   0f 40 10 dc     ldd 0(r26),ret0
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 19416123ab3e ("block: define 'struct bvec_iter' as packed")
+Cc: stable@vger.kernel.org	# v5.16+
+
+---
+ include/linux/bvec.h |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+Index: linux-2.6/include/linux/bvec.h
+===================================================================
+--- linux-2.6.orig/include/linux/bvec.h	2023-09-05 14:46:02.000000000 +0200
++++ linux-2.6/include/linux/bvec.h	2024-02-06 11:49:56.000000000 +0100
+@@ -83,7 +83,11 @@ struct bvec_iter {
+ 
+ 	unsigned int            bi_bvec_done;	/* number of bytes completed in
+ 						   current bvec */
+-} __packed;
++}
++#ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
++__packed
++#endif
++;
+ 
+ struct bvec_iter_all {
+ 	struct bio_vec	bv;
+
 
