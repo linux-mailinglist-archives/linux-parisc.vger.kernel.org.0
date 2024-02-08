@@ -1,134 +1,134 @@
-Return-Path: <linux-parisc+bounces-493-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-495-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C23C884C299
-	for <lists+linux-parisc@lfdr.de>; Wed,  7 Feb 2024 03:44:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5BA84D789
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Feb 2024 02:27:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F4A52833DE
-	for <lists+linux-parisc@lfdr.de>; Wed,  7 Feb 2024 02:44:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6911C22344
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Feb 2024 01:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2898C1401C;
-	Wed,  7 Feb 2024 02:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFAF14F61;
+	Thu,  8 Feb 2024 01:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W40yGT0U"
+	dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b="irSxI+Fu"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [71.19.156.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F0D134A5
-	for <linux-parisc@vger.kernel.org>; Wed,  7 Feb 2024 02:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982541D6AA;
+	Thu,  8 Feb 2024 01:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.19.156.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707273835; cv=none; b=jCQkVu+UIPimylNJnlvJFzRjTckV3r+KKk4ncOUWiuyEvzDRJwgpLbfp3wOdH/PFMDI6gysI6ywXmqEeuYL+YBa0W8xKyjCV1VMws0onAu/+A73td4Ogbaoz4fbws6m6D9qrrpvcwINRwBR8DadoyxMppjbw6ZuGiXZrrjpE2/M=
+	t=1707355598; cv=none; b=dF3x15Z4GqfnUzdnEchVMEfvveN4lF1OcVNpOnrWuyjO2j2c2RCOJdeyq+bHF7IFQq5SKVjR7qrliD63y6OMgLj1ekdHa0abLAVpNqXg1OA2tUmIhb2UxLtwd9FkNJlkVZhz1HcAzuDkMo6gAzMDSRpBX6t2Gd3VMbeyLztAHoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707273835; c=relaxed/simple;
-	bh=4B82qo8Sra5FqC3ZdeZ48eBeifUhmce8Y0r5LXEDVqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R5rbZTm14nB0RjFNtYwcCoaljJHdXOMkvBDTeBpfypBvRCF+bol3P6S4n7r3GwGX6qZscNPew6Wevrs8HIeVHwffH1cUZn3d8GLsN+fXbQcsF1YqzHKEDBgcSQtyp5+3Vy3jdcSAy8R+ofo3BFk7L70UHK6MbBgScI/AhukpN9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W40yGT0U; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707273832;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q9uy8JfuiX9GAB1I6VKmhXzbFtCYc2bS0xm9r9QbDYg=;
-	b=W40yGT0UxnN97bcDFHDd5jKXgDrpeDl3VSU+CtSRZyfiHGzHFcRHS7zORDcckdu581OUPZ
-	RSFU0gcSxrXo9Os+VqIERXL4igaBoC402+IrPq/S/0+rj0ZI50A390JvCFn0p7ESVSfBPk
-	2mLsBiLbvtbrnQ7333DDxToIpzrcUP4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-648-RleiTtKfM-K1OkCe_p_gRw-1; Tue, 06 Feb 2024 21:43:47 -0500
-X-MC-Unique: RleiTtKfM-K1OkCe_p_gRw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	s=arc-20240116; t=1707355598; c=relaxed/simple;
+	bh=j6d/T+9LmwknQyPw9UW66o8FfW4OYtd1tl4c1Kp289Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q8qDgyLVtcgomhI25XuNEoSQbnU0soaYie/qCsx0TA6haSXdrLukY3mJ7AcBr13cvV+xnnd7boMywTYrNepwj8KG6AwWW7ABeVPB8kJ+3sty1Xsrrvh9mlxiXD5NR1zNoOOYGi79wMTfIejfpwnwA1nJilS2NqDUAc4mAtSDU0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net; spf=pass smtp.mailfrom=bewilderbeest.net; dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b=irSxI+Fu; arc=none smtp.client-ip=71.19.156.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bewilderbeest.net
+Received: from hatter.bewilderbeest.net (unknown [IPv6:2602:61:712b:6300::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8362F83B86C;
-	Wed,  7 Feb 2024 02:43:46 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.6])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 44A062026D06;
-	Wed,  7 Feb 2024 02:43:40 +0000 (UTC)
-Date: Wed, 7 Feb 2024 10:43:37 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Mikulas Patocka <mpatocka@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>, Hannes Reinecke <hare@suse.de>,
-	Mark Wunderlich <mark.wunderlich@intel.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	(Authenticated sender: zev)
+	by thorn.bewilderbeest.net (Postfix) with ESMTPSA id 44659C9;
+	Wed,  7 Feb 2024 17:26:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
+	s=thorn; t=1707355588;
+	bh=6ONNLssa/JJa3YO5Up1AtekZAzMtVDM0uR/O3aO7Adc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=irSxI+FuU1hFzLtneHeVJ0eyyzW/aD27p1URn43PrNZ3mCJTaF8gG/XgUnNZoO+A/
+	 oZkd4fPJQiT+LDTivSrrTc7wgokOgZn9Kdqxjenj0Yik29OMCIppa5NAZ2AV3SPt0B
+	 ma0+vsxmXVNd0y/4K0ylCCx3i+O8juWJez93rPa4=
+From: Zev Weiss <zev@bewilderbeest.net>
+To: linux-parisc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	Helge Deller <deller@gmx.de>,
-	John David Anglin <dave.anglin@bell.net>,
-	linux-block@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH] block: use the __packed attribute only on architectures
- where it is efficient
-Message-ID: <ZcLuWUNRZadJr0tQ@fedora>
-References: <78172b8-74bc-1177-6ac7-7a7e7a44d18@redhat.com>
- <ZcI/o7Ky7dzSLK25@fedora>
- <9651b7f-2dc5-efd7-77ca-455b4925f17b@redhat.com>
+	Florent Revest <revest@chromium.org>
+Cc: Zev Weiss <zev@bewilderbeest.net>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Stefan Roesch <shr@devkernel.io>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	openbmc@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Russell King <linux@armlinux.org.uk>,
+	Sam James <sam@gentoo.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 0/2] ARM: prctl: Reject PR_SET_MDWE where not supported
+Date: Wed,  7 Feb 2024 17:26:18 -0800
+Message-ID: <20240208012620.32604-4-zev@bewilderbeest.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9651b7f-2dc5-efd7-77ca-455b4925f17b@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 06, 2024 at 07:31:26PM +0100, Mikulas Patocka wrote:
-> 
-> 
-> On Tue, 6 Feb 2024, Ming Lei wrote:
-> 
-> > On Tue, Feb 06, 2024 at 12:14:14PM +0100, Mikulas Patocka wrote:
-> > > The __packed macro (expanding to __attribute__((__packed__))) specifies
-> > > that the structure has an alignment of 1. Therefore, it may be arbitrarily
-> > > misaligned. On architectures that don't have hardware support for
-> > > unaligned accesses, gcc generates very inefficient code that accesses the
-> > > structure fields byte-by-byte and assembles the result using shifts and
-> > > ors.
-> > > 
-> > > For example, on PA-RISC, this function is compiled to 23 instructions with
-> > > the __packed attribute and only 2 instructions without the __packed
-> > > attribute.
-> > 
-> > Can you share user visible effects in this way? such as IOPS or CPU
-> > utilization effect when running typical workload on null_blk or NVMe.
-> 
-> The patch reduces total kernel size by 4096 bytes. The parisc machine 
-> doesn't have PCIe, so I can't test it with NVMe :)
+Hello,
 
-You can run test over null-blk, which is enough to cover this report or change,
-given this patch is marked as "Fixes: ", we need to understand what it fixes.
+I noticed after a recent kernel update that my ARM926 system started
+segfaulting on any execve() after calling prctl(PR_SET_MDWE).  After
+some investigation it appears that ARMv5 is incapable of providing the
+appropriate protections for MDWE, since any readable memory is also
+implicitly executable.
 
-> 
-> > CPU is supposed to be super fast if the data is in single L1 cacheline,
-> > but removing '__packed' may introduce one extra L1 cacheline load for
-> > bio.
-> 
-> Saving the intruction cache is also important. Removing the __packed 
-> keyword increases the bio structure size by 8 bytes - that is, L1 data 
-> cache consumption will be increased with the probability 8/64. And it 
-> reduces L1 instruction cache consumption by 84 bytes - that is one or two 
-> cachelines.
+(Note that I'm not an expert in either ARM arch details or the mm
+subsystem, so please bear with me if I've botched something in the
+above analysis.)
 
-Yes.
+The prctl_set_mdwe() function already had some special-case logic
+added disabling it on PARISC (commit 793838138c15, "prctl: Disable
+prctl(PR_SET_MDWE) on parisc"); this patch series (1) generalizes that
+check to use an arch_*() function, and (2) adds a corresponding
+override for ARM to disable MDWE on pre-ARMv6 CPUs.
 
-But the two kinds of caches have different properties, such as:
+With the series applied, prctl(PR_SET_MDWE) is rejected on ARMv5 and
+subsequent execve() calls (as well as mmap(PROT_READ|PROT_WRITE)) can
+succeed instead of unconditionally failing; on ARMv6 the prctl works
+as it did previously.
 
-- instruction cache has lower miss rate
-- instruction cache is read only
-
-so I'd suggest to provide null-blk test result at least.
+Since this was effectively a userspace-breaking change in v6.3 (with
+newer MDWE-aware userspace on older pre-MDWE kernels the prctl would
+simply fail safely) I've CCed -stable for v6.3+, though since the
+patches depend on the PARISC one above it will only apply cleanly on
+the linux-6.6.y and linux-6.7.y branches, since at least at time of
+writing the 6.3 through 6.5 branches don't have that patch backported
+(due to further missing dependencies [0]).
 
 
 Thanks,
-Ming
+Zev
+
+[0] https://lore.kernel.org/all/2023112456-linked-nape-bf19@gregkh/
+
+Zev Weiss (2):
+  prctl: Generalize PR_SET_MDWE support check to be per-arch
+  ARM: prctl: Reject PR_SET_MDWE on pre-ARMv6
+
+ arch/arm/include/asm/mman.h    | 14 ++++++++++++++
+ arch/parisc/include/asm/mman.h | 14 ++++++++++++++
+ include/linux/mman.h           |  8 ++++++++
+ kernel/sys.c                   |  7 +++++--
+ 4 files changed, 41 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/include/asm/mman.h
+ create mode 100644 arch/parisc/include/asm/mman.h
+
+-- 
+2.43.0
 
 
