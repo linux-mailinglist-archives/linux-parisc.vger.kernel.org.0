@@ -1,135 +1,150 @@
-Return-Path: <linux-parisc+bounces-504-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-505-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB928503F3
-	for <lists+linux-parisc@lfdr.de>; Sat, 10 Feb 2024 11:34:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D50D8505CC
+	for <lists+linux-parisc@lfdr.de>; Sat, 10 Feb 2024 18:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 747F31C20DD0
-	for <lists+linux-parisc@lfdr.de>; Sat, 10 Feb 2024 10:34:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB7311C21330
+	for <lists+linux-parisc@lfdr.de>; Sat, 10 Feb 2024 17:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A2B2134A;
-	Sat, 10 Feb 2024 10:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093385CDF1;
+	Sat, 10 Feb 2024 17:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=envs.net header.i=@envs.net header.b="Q6KVukH2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAIQiMT/"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail.envs.net (mail.envs.net [5.199.136.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6D12E3FE;
-	Sat, 10 Feb 2024 10:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.199.136.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E19D29CEF;
+	Sat, 10 Feb 2024 17:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707561262; cv=none; b=f0le+39CQapKINAhp1StyQRrbHPpcEhZpdvLGK4tE8jgzYUQQUmo7XHUwNxHHJL5wNKi8n7uTJO2EX2rjU4wHMYJ44WU++deYXa3zkQDL3TGxXTyu8B8hzUFGexa2I4dZS+knS63pqzguk8KK/PAbCeegrZ+TA4Hmkmym6D3PD8=
+	t=1707587731; cv=none; b=SdqCpwEBLHGlBPiFzPjl7YkRgU+5vquVYOLn/YDQKrDx7bW1GrXJ9xIkhOTaSn119rkmpJtlwKs2FNFLZN+LiWQocQe4iyVXKgfvPlWq1cFn22bkWGbUhSIulYNxGVjMegttd/wChLfsBNudYywVoKRhE+SZWY+FcFW1waUkG5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707561262; c=relaxed/simple;
-	bh=AsuSDfnSnrEsA8nNMuWFNnT28IB3MGY8F39wtmkbqgw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=itpB1RGsE098W8aXaxFGh83Rb3l+aOmYCAtxWY0Axp7SF6AT4xmh600zO51h4q4Xl0NmRqvIS4SWvjITaOMhtNxZK0XPmKvcSo2RhgyvTj6D+C010bI4pMt4jAsGLGWxLTXTZCND6WXnOuTNd7S0ucsK2vBB3eTVMgYhuVeLkKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=envs.net; spf=pass smtp.mailfrom=envs.net; dkim=pass (4096-bit key) header.d=envs.net header.i=@envs.net header.b=Q6KVukH2; arc=none smtp.client-ip=5.199.136.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=envs.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=envs.net
-Received: from localhost (mail.envs.net [127.0.0.1])
-	by mail.envs.net (Postfix) with ESMTP id 680A738A0669;
-	Sat, 10 Feb 2024 10:34:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=envs.net; s=modoboa;
-	t=1707561258; bh=5a4661pQcO2UmB9YG8h4KMvOlZHo5f/ZdvFHx3vRpxM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6KVukH29RtPYwyml17BXgB1SmxkBYEw4zRKRdKhpkPRa67se3EdVj24xz81Ui0wV
-	 bBNmdiX5dFJ/Xp/zyB26rb9gY+UsBhPlTzHR0/YSXlz0jXt7TQHToVwVdQ0m6D9VMa
-	 vNmRfdEn5LTArmMr2SIjvZMADyomU00AaofZpWTreGX1i0gAO4bXRV+RE88WDG3Yb+
-	 3kznEc0XPTY7aoYT1FMzoz8fmwpTlX6A52K2JY85jYorttEXIMeU9kV5yut/B+iGjv
-	 JJDyZO87vAiyGH2IBxG1sPRLEIGjHz8ez6XEerXvaRVtRjAaM4QagCuKSpRExeFzYP
-	 QWY4e7gG4PVlyVXAhnmaRRHCmLovC3fuoZCGm2lD0leXsnwnsZ7k2OVV9Zf3rYdEpx
-	 /Uw5xIjxS5AAh33rNa7LVNAHvNU1hzgGBP06bFerJ9AAf8vZx63wEeS4681LKJA4Bq
-	 1l68Gh2zHrzCxnj4kay9zKRabS4r95sXzhEeLLP6gVYWWKBuhrD8bFsA0JdWc53J6T
-	 FGqpvGOMqiE8WlDTiWAI2lXoaCMeI1fDKKyf7P6rtFB+LzpPRZLquhDLkUmF97Tmog
-	 +xitv9uyVWBsUPLRSOifICJt7QN451b4+c3v9BChHq9OmqaRl2JUMQP4TX3HTQhXpu
-	 1H/k22hJKWvTVPg81yHEaMpo=
-X-Virus-Scanned: Debian amavisd-new at mail.envs.net
-Received: from mail.envs.net ([127.0.0.1])
-	by localhost (mail.envs.net [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id BTTrmuQrF_Ze; Sat, 10 Feb 2024 10:33:36 +0000 (UTC)
-Received: from xtex.localnet (unknown [103.84.217.246])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.envs.net (Postfix) with ESMTPSA;
-	Sat, 10 Feb 2024 10:33:36 +0000 (UTC)
-From: xtex <xtex@envs.net>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Dinh Nguyen <dinguyen@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Masahiro Yamada <masahiroy@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
- x86@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Subject: Re: [PATCH 1/2] kbuild: Abort make on install failures
-Date: Sat, 10 Feb 2024 18:33:31 +0800
-Message-ID: <4681093.vXUDI8C0e8@xtex>
-In-Reply-To: <ZcdP7CC+OMbp5ZMi@shell.armlinux.org.uk>
-References:
- <20240210074601.5363-1-xtex@envs.net> <20240210074601.5363-2-xtex@envs.net>
- <ZcdP7CC+OMbp5ZMi@shell.armlinux.org.uk>
+	s=arc-20240116; t=1707587731; c=relaxed/simple;
+	bh=Bdz5cBVJUC+BoiWAi2wyV+PheJklqxfClV/aLVhKcIU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TjpqJUnUcw0QAxLkfabfi/NFNYj5P9wCDL9ZpF37/P4PBCmlVvEadd2CJe6zgQyQ4iZWHBoDW8X6bXGPtM5xjn+paWVJZf5s29mSvKR5WKZKWxoBiUhMOD4zSFoqRayrZW1/jdy4nxEjAIRWXtgBV8UtCbNyuV4OSEvulqwPr8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAIQiMT/; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5d8ddbac4fbso1773364a12.0;
+        Sat, 10 Feb 2024 09:55:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707587729; x=1708192529; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=svbCPZo7tOHG4+PT9kYnFXadgA834LlYEiJR96UmKIA=;
+        b=FAIQiMT/OSo1V8mRy5ENruRwTRgx2tY130zDrYyZwy0rKiTDoiQWmxpEzJLm0fUmyV
+         pz6Nqf21vIOzr2bYenvgBvxKv0bBKzdsFKE8E240QPNMfmvFHHg0kBCVvjEDsj84FPSL
+         vS9Rgt76fakTgEl8i1pQILSwuMuhn9zf+HDNygmX397SGgG69eDjw7KB0ApF4kBXIvxw
+         U9wb+dtw47xZUu93bGZsUnaSqrkXSDtkw0ENd3TnmUHYzzKi6P+XCDSOACpZF5SPRC1e
+         AQMpUVeijiu5Y3Mb019LBLcZDAobWKr4vKNySj7yFFlKjavRLAhzCd73EuSm+kcWWl3M
+         T7cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707587729; x=1708192529;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=svbCPZo7tOHG4+PT9kYnFXadgA834LlYEiJR96UmKIA=;
+        b=MtBn7jnX8hp8sc+EEwa8s+0bs13pujlvnjJSNGFZkkGYk5jTAwvcpPoRkmGeqs6y0z
+         JzRhB/uBpOmnqGbAybh/xVVEIqjNOQi5cQemGy+Dsyi15scXDM4YSy6/ENzvcccyndaJ
+         3QWqrou+aImpedfXFJj06MfscE4twbSdwBXkhQhp1PhDZt9AjLCV9IpRjoBPoQABWOyg
+         ALZ6SSZL7lFEBZO+WgrvQ1Bl4K1XMFWqXkkNlDwzE6wnAaDIFyaj0IJoBmGoj9yfS5rB
+         4HrhxEWojMKtSngVzDhtMriWj/gzYgMgHp1h+IUaGDpRS1mXyetyen083Twzv6TIWSez
+         Txpg==
+X-Gm-Message-State: AOJu0Yw1yGYHxDcVYQ6BxQDpZ0nxKwsXUuugbaO2yL+kBS9wTtfpCpTS
+	schn0w4//TbTTL4TBZ7JBN3GqfSU1CHmZfoogWlrvvVYV3IWupAU
+X-Google-Smtp-Source: AGHT+IGOgKogGS+72H/tO4L0bUKEGeSdeZ8x5ZX/vqW88S6JcGL8VoxCmbh5kzI9d+eRZHQt2vKosA==
+X-Received: by 2002:a17:902:ea08:b0:1da:192f:3ecc with SMTP id s8-20020a170902ea0800b001da192f3eccmr3936618plg.53.1707587729287;
+        Sat, 10 Feb 2024 09:55:29 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUplzNKbOA5YE/tibcz+NMRb/+pffFJWjBYivN/jMuYDtRtkrtOoRJQwzZ46xNC7EcC7A1Jpx5wGoiXk6w60Tc7U2/9P7XHvXNk1dcJLffN2cQTvTxwBWqGkbnxl2oF3JGCdto7M+H2H+YZXRyXz8OEsJBg5F6mVQ3MYPX9QMCcaQXpSAVYX6Dfn0nWe9pocFFslRMf2FhaJplLJp4mJ+VexSOPLaZ26uVw
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id c5-20020a170902c1c500b001d964f86846sm1888044plc.161.2024.02.10.09.55.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Feb 2024 09:55:28 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+To: Helge Deller <deller@gmx.de>
+Cc: "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+	linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Guenter Roeck <linux@roeck-us.net>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH] parisc: Fix ip_fast_csum
+Date: Sat, 10 Feb 2024 09:55:26 -0800
+Message-Id: <20240210175526.3710522-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2124038.9o76ZdvQCi";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
 
---nextPart2124038.9o76ZdvQCi
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: xtex <xtex@envs.net>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Subject: Re: [PATCH 1/2] kbuild: Abort make on install failures
-Date: Sat, 10 Feb 2024 18:33:31 +0800
-Message-ID: <4681093.vXUDI8C0e8@xtex>
-In-Reply-To: <ZcdP7CC+OMbp5ZMi@shell.armlinux.org.uk>
-MIME-Version: 1.0
+IP checksum unit tests report the following error when run on hppa/hppa64.
 
-On Saturday, February 10, 2024 6:29:00 PM CST Russell King (Oracle) wrote:
-> What about #!/bin/sh -e on the first line, which is the more normal way
-> to do this for an entire script?
+    # test_ip_fast_csum: ASSERTION FAILED at lib/checksum_kunit.c:463
+    Expected ( u64)csum_result == ( u64)expected, but
+        ( u64)csum_result == 33754 (0x83da)
+        ( u64)expected == 10946 (0x2ac2)
+    not ok 4 test_ip_fast_csum
 
-Will do this in V2.
+0x83da is the expected result if the IP header length is 20 bytes. 0x2ac2
+is the expected result if the IP header length is 24 bytes. The test fails
+with an IP header length of 24 bytes. It appears that ip_fast_csum()
+always returns the checksum for a 20-byte header, no matter how long
+the header actually is.
 
+Code analysis shows a suspicious assembler sequence in ip_fast_csum().
+
+ "      addc            %0, %3, %0\n"
+ "1:    ldws,ma         4(%1), %3\n"
+ "      addib,<         0, %2, 1b\n"	<---
+
+While my understanding of HPPA assembler is limited, it does not seem
+to make much sense to subtract 0 from a register and to expect the result
+to ever be negative. Subtracting 1 from the length parameter makes more
+sense. On top of that, the operation should be repeated if and only if
+the result is still > 0, so change the suspicious instruction to
+ "      addib,>         -1, %2, 1b\n"
+
+The IP checksum unit test passes after this change.
+
+Cc: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+Prerequisite for this patch is
+https://lore.kernel.org/lkml/20240207-fix_sparse_errors_checksum_tests-v6-0-4caa9629705b@rivosinc.com/
+
+No idea how that was not detected before. Maybe I am missing something.
+
+Note that test_csum_ipv6_magic still fails on 32-bit parisc systems
+after this patch has been applied. That is a different problem.
+
+ arch/parisc/include/asm/checksum.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index 3c43baca7b39..f705e5dd1074 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -40,7 +40,7 @@ static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
+ "	addc		%0, %5, %0\n"
+ "	addc		%0, %3, %0\n"
+ "1:	ldws,ma		4(%1), %3\n"
+-"	addib,<		0, %2, 1b\n"
++"	addib,>		-1, %2, 1b\n"
+ "	addc		%0, %3, %0\n"
+ "\n"
+ "	extru		%0, 31, 16, %4\n"
 -- 
-xtex @ Sat Feb 10 10:32:32 AM UTC 2024
-
---nextPart2124038.9o76ZdvQCi
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRyMYBLBSxnDxWmdx25GAhu2ARbkQUCZcdQ+wAKCRC5GAhu2ARb
-kfdKAPoCZsP7u1iukZo1ZGlB4JJK7jPZWKy/eD8aN/lnP9KNjgD/Ve0PtHuJoCdb
-qNDGRUIqnxjTCIqNFhKrA1/d7wWfEQA=
-=uBWc
------END PGP SIGNATURE-----
-
---nextPart2124038.9o76ZdvQCi--
-
-
+2.39.2
 
 
