@@ -1,170 +1,151 @@
-Return-Path: <linux-parisc+bounces-499-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-500-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4DD284DDF0
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Feb 2024 11:17:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323CA850359
+	for <lists+linux-parisc@lfdr.de>; Sat, 10 Feb 2024 08:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA1C91C23395
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Feb 2024 10:17:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC0741F225E8
+	for <lists+linux-parisc@lfdr.de>; Sat, 10 Feb 2024 07:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154276D1AD;
-	Thu,  8 Feb 2024 10:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2987288DB;
+	Sat, 10 Feb 2024 07:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b="bIF6OqoW"
+	dkim=pass (4096-bit key) header.d=envs.net header.i=@envs.net header.b="BHyKVslw"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [71.19.156.171])
+Received: from mail.envs.net (mail.envs.net [5.199.136.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533636BFC2;
-	Thu,  8 Feb 2024 10:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.19.156.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C9E288B0;
+	Sat, 10 Feb 2024 07:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.199.136.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707387452; cv=none; b=DP792yGVH3xOTKf4PuDZYxT1nFZ42z9MxAcuutPyREovg6TXHYBF0F8nSpNhX4iHeBf9P7bv3NUkHalU5vGMWyIG03W8YlqEABrqlAFv75uc25kK3dqlIZOfjCrvy5ssRvd6TGeunxsPPhCYlqb2Y7qi0XFtBBcmJhtlydPVSzI=
+	t=1707551231; cv=none; b=tzZ1TPoajkAhw3sewlQuWPe7FFpgA/SSTK7kSgw8ESP5LfASNRnAPdUvagxFQLfTmKwHo2c+UlK8XmEKOyC3ecPoxt6xjQaglTN98hnQmLqlFNMmJfegHTONgHX9JEfFAwRykaqNnzul4zq3/9HWtZyS8CVsljf4hf+WZyiHhRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707387452; c=relaxed/simple;
-	bh=Mx97f1IIrXA5jx8KWxAtL2kPGmFBm5rDhdqH8r3HIHE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E+Jfzys9MXcajh2rn5SRi24AcYfsJ6YiilqDv718IFyOwNc9KvdhVtzoTuSFxgcFyHJMRbx9Oy9yenvIbRaCPX3oz2JpeQIrRG3L0OgqF8Mn0HjCfVVVuak6t4Nvm6m2gPRmpgeK5s0hYqO5RS1p6ZSFfZwuzfFYOGxuIyBKPao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net; spf=pass smtp.mailfrom=bewilderbeest.net; dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b=bIF6OqoW; arc=none smtp.client-ip=71.19.156.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bewilderbeest.net
-Received: from hatter.bewilderbeest.net (unknown [IPv6:2602:61:712b:6300::2])
+	s=arc-20240116; t=1707551231; c=relaxed/simple;
+	bh=JON8F2LhEpKeCfNUzxa5Cw3iz9OiKleIBXDTxpGM5Ds=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D4AGlXHYX4uXuXDhxVlxtrAntn7oRmie1totdIR7AQK+oVdncRNBKpRSLfVP9OSGfNhrCUxXD8JZFg/gy6N1igj2U3JcnjtmyHeKeh3qbgR4w6nAolwX8TVzVHo6hKYCMpuU496BrrES41EVHfD/2CMSC12Lhrg4z/a3c1MkS98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=envs.net; spf=pass smtp.mailfrom=envs.net; dkim=pass (4096-bit key) header.d=envs.net header.i=@envs.net header.b=BHyKVslw; arc=none smtp.client-ip=5.199.136.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=envs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=envs.net
+Received: from localhost (mail.envs.net [127.0.0.1])
+	by mail.envs.net (Postfix) with ESMTP id EC9A538A0669;
+	Sat, 10 Feb 2024 07:46:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=envs.net; s=modoboa;
+	t=1707551218; bh=B10Vnlot+2ilvHh7OCvlmhyXD6mosKAEgX9C4cq3ecg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BHyKVslwdL2RbJki6trr7V1cE+cbklBCioJup0TiYv412ptDhgE2fjt9lYE/d/fFA
+	 Cz1w+6hkQ8cXPkGa1zFHBj5Weha9RyeoQClD5I+GyKxk4wlSFDcW+myI/UlJVWNIG9
+	 hmKB2RkGQRDC4zEGXZENTHKaAQiISqv7dY7Ua+QI3j+OLEUs50+gi4SYvb+FLTicGh
+	 rrnQvy+DDOQX66lzlVh7+KRjVTyhgRUnadkv0y0oty+cgAr9g7iMjE+gKqMpDt7kPp
+	 ZoS6KtJdtrkI2e6ECI5s6CWMJ+fSz/DtZwJgDcF80COmLVvRuOYJ6ROnUFo083lh4B
+	 QfjTvAn9Ejs74dyGDoe6zJ91YPkgNi0aGGAZny98tNCoQEdQfXdYB4h0+l2MUbWIDr
+	 iueWpVRix1LCQXJ57a1Nsm16givXVaSyhXkeUWtJj9dBgaBSDPzxn2k7DUZsJBeC6s
+	 MCgwofjJSxeC0ZHRmhqoc0erGdJlmGI54cFaNOKgQ49n6yY2YOq6LBFhKgfPZCiGCs
+	 ONXpAgkORRJQzNqipwuYpdNzhEYr8NJ64k7v40/66WQZwi7KWrrtdHFcr5PnVgOEZW
+	 NChobvVcTbpIyWw2B0RCN4q5bm9KJa5fbZyrcyzCda7DEWj0hraUQ+I6558RXGLEYS
+	 I4Cq2Emxz6uouFP7bmdIqLPU=
+X-Virus-Scanned: Debian amavisd-new at mail.envs.net
+Received: from mail.envs.net ([127.0.0.1])
+	by localhost (mail.envs.net [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 7q0JDr8gKqlZ; Sat, 10 Feb 2024 07:46:47 +0000 (UTC)
+Received: from xtexx.eu.org (unknown [223.73.102.109])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: zev)
-	by thorn.bewilderbeest.net (Postfix) with ESMTPSA id E90BC55F;
-	Thu,  8 Feb 2024 02:17:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
-	s=thorn; t=1707387449;
-	bh=z5fQJ45PdxccK1L56OVjul93Ta54zY+xbJ8VnsBJoxY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bIF6OqoW6AfsT35L0rMEayR+qDlGF+ec6WL21Y4yhwHGkxdCzxvZG+fEhr5dTj3pg
-	 1pvLBexs36v9IPcDFVPiMPXUI2EGynxqw/J3nDIksQcBAHJf4GNNy6QRb/jfEGCrNa
-	 60NIPtjNH6JFTBkkJfjQPGABrHnGg7Ntjgp1J30k=
-Date: Thu, 8 Feb 2024 02:17:27 -0800
-From: Zev Weiss <zev@bewilderbeest.net>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: linux-parisc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Helge Deller <deller@gmx.de>, Florent Revest <revest@chromium.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Stefan Roesch <shr@devkernel.io>, Oleg Nesterov <oleg@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>, openbmc@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, Sam James <sam@gentoo.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 0/2] ARM: prctl: Reject PR_SET_MDWE where not supported
-Message-ID: <3c8dd43f-9ab0-4b98-bad2-71c5f3da0348@hatter.bewilderbeest.net>
-References: <20240208012620.32604-4-zev@bewilderbeest.net>
- <ZcSc+ftxHY8RyinQ@shell.armlinux.org.uk>
+	by mail.envs.net (Postfix) with ESMTPSA;
+	Sat, 10 Feb 2024 07:46:47 +0000 (UTC)
+From: Zhang Bingwu <xtex@envs.net>
+To: Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Zhang Bingwu <xtexchooser@duck.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>
+Cc: x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org
+Subject: [PATCH 0/2] kbuild: Fix install errors when INSTALL_PATH does not exist
+Date: Sat, 10 Feb 2024 15:45:59 +0800
+Message-ID: <20240210074601.5363-1-xtex@envs.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <ZcSc+ftxHY8RyinQ@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 08, 2024 at 01:20:57AM PST, Russell King (Oracle) wrote:
->Hi,
->
->Where is patch 1 of this series? It doesn't seem to have been Cc'd to
->linux-arm-kernel. Therefore, this can't be reviewed.
->
+From: Zhang Bingwu <xtexchooser@duck.com>
 
-It went to (among others) the linux-parisc list, but not 
-linux-arm-kernel as scripts/get_maintainers.pl didn't list it for that 
-patch:
-https://lore.kernel.org/lkml/20240208012620.32604-5-zev@bewilderbeest.net/
+When running 'make zinstall INSTALL_PATH=somepath'
+ where 'somepath' does not exist, the install
+ scripts (install.sh) print error messages
+ but also return a success status code.
+This will make 'make' regard 'install' (and 'zinstall', etc)
+ succeeded.
+When there are also other targets at the same time,
+ for example, 'make zinstall dtbs_install modules_install',
+ make will keep going on and other outputs will fill stdout,
+ and make the error message hard to find.
 
-I think I've gotten differing opinions from different subsystem 
-maintainers on this, but FWIW my usual default approach is to use 
-scripts/get_maintainer.pl on each patch and then add the set-union of 
-them all to the cover letter for context; I'll try to remember the 
-preference for linux-arm-kernel though.
+dtbs_install and modules_install creates the target directory
+ if it does not exist. install, zinstall and others should
+ have the same behaviour.
 
-Is the link above sufficient for now, or shall I resend the series?
+If INSTALL_PATH is not a valid directory, we should create it.
+If the installation process still fails with errors, for example,
+ insufficient space on disk or permission denied, make should regard
+ the install target failed, stop as soon as possible,
+ and exit with error.
+
+Zhang Bingwu (2):
+  kbuild: Abort make on install failures
+  kbuild: Create INSTALL_PATH directory if it does not exist
+
+ arch/arm/boot/install.sh   | 2 ++
+ arch/arm64/boot/install.sh | 2 ++
+ arch/m68k/install.sh       | 2 ++
+ arch/nios2/boot/install.sh | 2 ++
+ arch/parisc/install.sh     | 2 ++
+ arch/riscv/boot/install.sh | 2 ++
+ arch/s390/boot/install.sh  | 2 ++
+ arch/sparc/boot/install.sh | 2 ++
+ arch/x86/boot/install.sh   | 2 ++
+ scripts/install.sh         | 4 ++++
+ 10 files changed, 22 insertions(+)
 
 
-Thanks,
-Zev
+base-commit: d0f86d080e3d7d5e1e75a56d88daf8e5f56a4146
+-- 
+2.43.0
 
-
->Thanks.
->
->On Wed, Feb 07, 2024 at 05:26:18PM -0800, Zev Weiss wrote:
->> Hello,
->>
->> I noticed after a recent kernel update that my ARM926 system started
->> segfaulting on any execve() after calling prctl(PR_SET_MDWE).  After
->> some investigation it appears that ARMv5 is incapable of providing the
->> appropriate protections for MDWE, since any readable memory is also
->> implicitly executable.
->>
->> (Note that I'm not an expert in either ARM arch details or the mm
->> subsystem, so please bear with me if I've botched something in the
->> above analysis.)
->>
->> The prctl_set_mdwe() function already had some special-case logic
->> added disabling it on PARISC (commit 793838138c15, "prctl: Disable
->> prctl(PR_SET_MDWE) on parisc"); this patch series (1) generalizes that
->> check to use an arch_*() function, and (2) adds a corresponding
->> override for ARM to disable MDWE on pre-ARMv6 CPUs.
->>
->> With the series applied, prctl(PR_SET_MDWE) is rejected on ARMv5 and
->> subsequent execve() calls (as well as mmap(PROT_READ|PROT_WRITE)) can
->> succeed instead of unconditionally failing; on ARMv6 the prctl works
->> as it did previously.
->>
->> Since this was effectively a userspace-breaking change in v6.3 (with
->> newer MDWE-aware userspace on older pre-MDWE kernels the prctl would
->> simply fail safely) I've CCed -stable for v6.3+, though since the
->> patches depend on the PARISC one above it will only apply cleanly on
->> the linux-6.6.y and linux-6.7.y branches, since at least at time of
->> writing the 6.3 through 6.5 branches don't have that patch backported
->> (due to further missing dependencies [0]).
->>
->>
->> Thanks,
->> Zev
->>
->> [0] https://lore.kernel.org/all/2023112456-linked-nape-bf19@gregkh/
->>
->> Zev Weiss (2):
->>   prctl: Generalize PR_SET_MDWE support check to be per-arch
->>   ARM: prctl: Reject PR_SET_MDWE on pre-ARMv6
->>
->>  arch/arm/include/asm/mman.h    | 14 ++++++++++++++
->>  arch/parisc/include/asm/mman.h | 14 ++++++++++++++
->>  include/linux/mman.h           |  8 ++++++++
->>  kernel/sys.c                   |  7 +++++--
->>  4 files changed, 41 insertions(+), 2 deletions(-)
->>  create mode 100644 arch/arm/include/asm/mman.h
->>  create mode 100644 arch/parisc/include/asm/mman.h
->>
->> --
->> 2.43.0
->>
->>
->> _______________________________________________
->> linux-arm-kernel mailing list
->> linux-arm-kernel@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
->>
->
->-- 
->RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
->FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
