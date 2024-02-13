@@ -1,195 +1,159 @@
-Return-Path: <linux-parisc+bounces-522-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-523-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2242853BCC
-	for <lists+linux-parisc@lfdr.de>; Tue, 13 Feb 2024 21:02:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B248853CAA
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 Feb 2024 22:07:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 792522871C4
-	for <lists+linux-parisc@lfdr.de>; Tue, 13 Feb 2024 20:02:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F5FD1C231F3
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 Feb 2024 21:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9752D60BB4;
-	Tue, 13 Feb 2024 20:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DD561678;
+	Tue, 13 Feb 2024 21:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WPBQthgA"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="JMB6NJ4T"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C63560B80
-	for <linux-parisc@vger.kernel.org>; Tue, 13 Feb 2024 20:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F3864A8E
+	for <linux-parisc@vger.kernel.org>; Tue, 13 Feb 2024 21:04:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707854518; cv=none; b=IFdD4i7ezdl9BKsbhle+3ODVWhSRTmUfKxsWzuXtMbKqI2ojYkWvlK9j8jabM4ssMxrB8FYK+ZGu6WR7ZFSLYVY2blIyqdDkoAZG9ih5O9TBv7BIJthwnChZM+m2Xam8gsaCgPKCtgDohw3nDjc1xZnLG9LDqcNM0KNUyTzDFds=
+	t=1707858266; cv=none; b=hr3lFioG5qjUtAVHnXeKpaLC61nzceeAnvzcLon8TpjlunVoRBfE8o2YZDFf72bHioDy7oynuXPoNi6UsG5y39OxuC5DFP3Wx4ZjFP/+eOIpGsotbZznR43sW/XeyO8G33BguL3ypp92dncFymv42RbywoLNXYQuzm/ToVLQgos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707854518; c=relaxed/simple;
-	bh=V8RWr3buxdjWtLSDsasgQvCqzQOEr/31YvPitYMfD9M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=to7wprA9YW31vshgDN6JGVcFnVECrTXIdTx6GhyKBU8GdH7EBMt3lY4AJIHJo6hyk/la2F40UUIKl5CwqaLm55o4QCMRQmZJtHLf369eX+0EZZrJd5ljXCaqHfKju8Vor86+VwqfieyHKCHj4kLImFvznPQljD1UxCMUl7wlFbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WPBQthgA; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-562117d3dbfso152138a12.1
-        for <linux-parisc@vger.kernel.org>; Tue, 13 Feb 2024 12:01:55 -0800 (PST)
+	s=arc-20240116; t=1707858266; c=relaxed/simple;
+	bh=unxZOrs9XDbzoXsCj96S95ndlfevfpGn8crX2VsMceo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FjkZBMtNJ0Hog81uljKGTAhSoaomMt62lQieuGbv0cFDwjF9w83OLZRVw/g/8IdNHSWN35wLwYMJle4LMDHIbTTIr2aBPWdHk0cCDt+kLPd95h0itKZlIcSzFG+SNbKL4CYvv8DYMg/YKnUgYGAe0biL2Eijnr8tpriSjbgpxSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=JMB6NJ4T; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6078f656914so8629607b3.3
+        for <linux-parisc@vger.kernel.org>; Tue, 13 Feb 2024 13:04:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707854514; x=1708459314; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aeZw1WsdK0ILhztiGUDCvc9s83gleGWTx/2AVhzfBto=;
-        b=WPBQthgAOycku3bjtIr8wr5K9WkkXBqS3RMi2CMmfA/JK/iM2xslGlJ4FgFCrPGknW
-         s27Am8uuZudDluiIg6pUGym9f6z+KCTCa90ZgJqusRWjdacMKwKCCDriV5/Fr/Gfa/RR
-         p9Fsloiz3r2Zw4HDKdd29w4gxRuQk7zF+e710D4u+llV4yzIH4yZGpbzEOtJWpfpPBea
-         DsbZ6TVLmfih1YwjJK3K4v6b25pYn4z/2V5kJy1aaVF7eS2oJ4r37KDW1qIFGZylZbnI
-         A5HuiMxjEE/K39JjADBKHxu4AjRzKlKvGyKprrOtNYpyQxazACYo/Z3aSBckFB02Muna
-         K24w==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1707858264; x=1708463064; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6WpcrNvlFPgLJQNuLJ6h+eMksOi6n36MRReQFJjkwlI=;
+        b=JMB6NJ4TwDe4C2jjPbeLOlRDA8BUi20jfZw72JnfXG1tGxGSw+Mpv6VYsqejKzy8c1
+         cFTvAE4INDnReg68hGisEKVkURPi5SjvuJM4B40D3W2PXVjmWhR8tsRiP1JmMNxllYOI
+         zF5xmBY9l6W3a4HZU9VE2xvhHm40qB3HHv5IHSgRi+/0wCPDxa66hRaXVLT1SJQ1gqir
+         mwg5SzvGOjGDd6qNoO64EqO7JAhMI+yQxLsVsOuLcG57WXoOn3YQZxCxSfnM7nrP7urv
+         mexT+gZut7zNLt3Ji9NK1e1y4X2Z54Cij2U8XkdxE22KYUKXIvA0GbQQ0MgZSFoPS5Dj
+         /TVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707854514; x=1708459314;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aeZw1WsdK0ILhztiGUDCvc9s83gleGWTx/2AVhzfBto=;
-        b=CuqlfWgpD+Tdb6PilgOgo9dyJriAQDdYAwWaoFhydBnoTNX12CmcGgZE6Gqjf/6NpY
-         VteV0Ttpym1ob+Ffwr0rnSxQYe0gfF5SSDvKDwIRNHAhdcRRbU9eSxPTC26yAoCLoYy4
-         LVIARlbv27XVojZwMazlt5vEFE8SF8dZzKrKqyOFhRhcjqNk5k1E8qzTfaVEFsrguFGe
-         RtFS5RwPPuoxL13/5RxUwW2NRZOeEep9O3c0O39yIfxvDjBn3rfn2M+ukO+LllGE97iM
-         TfURHrY3gU3DAADefNYI1GQdShhqv22LVxeTBGld/0tP0zDQSewopgE211GwNpZO4Uyc
-         z7vw==
-X-Forwarded-Encrypted: i=1; AJvYcCVWqKGukCMgiSiqEfZbSZgtIEYbOQJzjfu65uaioM9J0vYnrOLxt6sATPoTcpCT8ZNxC+q2uAgM7kZtiooyyoKUcfmJ0IHKvxlKIQCV
-X-Gm-Message-State: AOJu0YzG7eVx54xk3qwjl03AMOihDp0393p6pchUrZ4p2x2sAfQJpzD7
-	aYLps8Jr1esyqQYtTIjqDxbgT3180PDAM0PygzTUVgpSDgLXKeAYMT610xBxu95Swy3dmxtxRda
-	X6jgPUu9Z3VCTpkwSjR/hgK/jZz9BayIPfZDz
-X-Google-Smtp-Source: AGHT+IEoAl64de8zNKAQZ6ETW1N1MxR2kab9dSI7Hv2FnuBLL+jAe6glKg5e1u5UvR1ALTVOEk3lvhQA2UzDwTmO1zE=
-X-Received: by 2002:a17:906:6555:b0:a3c:e99f:be1d with SMTP id
- u21-20020a170906655500b00a3ce99fbe1dmr3141450ejn.18.1707854513537; Tue, 13
- Feb 2024 12:01:53 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707858264; x=1708463064;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6WpcrNvlFPgLJQNuLJ6h+eMksOi6n36MRReQFJjkwlI=;
+        b=P0peUdA+4acf4OA7Y4WQKz72pRQ6YA6feykLM64mMj0Pjdxy6fJu/8U8DEsg3B2u/G
+         kAvevzMf2+C4X9mmI/dpmC/Hb5XaXqJlxgDdcNCsXFwqH4IHQR7dQIT23ZlU8nOPSOtL
+         3wdMyWd1AyZVNSAbTMnRdPVhczSuEhypjy6IfYbPT++zOkhITTdpRn2+4bUh/vqqb9Mp
+         KBaUk4KKVMgEjBnxlxamY9aUyUWQ0U/8NxWx2wj1d12A55gotGlVe+CYsLSqnExLZQXa
+         WavCCMaj3Y0u5dBc1h+Htygs3pthe161juBKfROTeWhMK9uyxmaQYGzIC0JxwXbJvkqI
+         ofhw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJNKMtlTzvl5M7Vh/wPVjv/E6scIiJisoofIrZ/dcbHoPFy63yMbgUWqA0DZmB5CXjcVqR6cgONgA7g04SSLmHJA9VkO3jaN6NV5ub
+X-Gm-Message-State: AOJu0YwxIvJAtAi4m/KAEF41pmfamda+Mzjgb1pn/OWQMrrnd4KgtrGU
+	W6B7RrQ7BdWP9odFKWyDHFCd6euhvW2bReAmI5gel/TtxGM/Iy+JG7vqe+CAOwi3fqaQwhUu1WO
+	c
+X-Google-Smtp-Source: AGHT+IGuhB7i7Can7GRRRP7ZoLvLMIK+FNyBhgPsmOzQYSQiDEPs9JYTpO+KUBpE+u8T7iLWINCm6Q==
+X-Received: by 2002:a81:838b:0:b0:604:69ee:5b4c with SMTP id t133-20020a81838b000000b0060469ee5b4cmr674166ywf.18.1707858262387;
+        Tue, 13 Feb 2024 13:04:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXmvajECjHBVC7eK1T3+mN2RBiopPph9GnxGfJw2yyyl11dZUu5JKrWODyKI0eKUdKqynzV/pJZKL83VThrGokefoaqgeZs8bYX4XDEBme3v8GaoFszV2jwuwn0P3ithjtKKsP6uLb1YIAR3UalNS6rO4TUwNIlKFxbIRGlzvBqetmEgFq2ZoONoGI6woxU/UKbWo3pU7c6Wk87alI/E60DJpVAHHh7
+Received: from ghost ([50.146.0.2])
+        by smtp.gmail.com with ESMTPSA id v137-20020a81488f000000b0060792690431sm299939ywa.105.2024.02.13.13.04.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Feb 2024 13:04:21 -0800 (PST)
+Date: Tue, 13 Feb 2024 16:04:20 -0500
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Helge Deller <deller@gmx.de>,
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+	linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: Re: [PATCH] parisc: Fix ip_fast_csum
+Message-ID: <ZcvZVGCNd0qMkMbY@ghost>
+References: <20240210175526.3710522-1-linux@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231218024024.3516870-1-almasrymina@google.com>
- <20231218024024.3516870-6-almasrymina@google.com> <94ff0733-5987-4bf5-a53c-011e03aa6323@gmail.com>
-In-Reply-To: <94ff0733-5987-4bf5-a53c-011e03aa6323@gmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 13 Feb 2024 12:01:38 -0800
-Message-ID: <CAHS8izOJMEtC1a26yJGMzV9jsX9TtE2xWXzWQ6qSi4ynXnr2Wg@mail.gmail.com>
-Subject: Re: [RFC PATCH net-next v5 05/14] netdev: netdevice devmem allocator
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
-	John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
-	Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, 
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, David Ahern <dsahern@kernel.org>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan <shuah@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, Yunsheng Lin <linyunsheng@huawei.com>, 
-	Shailend Chand <shailend@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Shakeel Butt <shakeelb@google.com>, Jeroen de Borst <jeroendb@google.com>, 
-	Praveen Kaligineedi <pkaligineedi@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240210175526.3710522-1-linux@roeck-us.net>
 
-On Tue, Feb 13, 2024 at 5:24=E2=80=AFAM Pavel Begunkov <asml.silence@gmail.=
-com> wrote:
->
-> On 12/18/23 02:40, Mina Almasry wrote:
-> > Implement netdev devmem allocator. The allocator takes a given struct
-> > netdev_dmabuf_binding as input and allocates net_iov from that
-> > binding.
-> >
-> > The allocation simply delegates to the binding's genpool for the
-> > allocation logic and wraps the returned memory region in a net_iov
-> > struct.
-> >
-> > Signed-off-by: Willem de Bruijn <willemb@google.com>
-> > Signed-off-by: Kaiyuan Zhang <kaiyuanz@google.com>
-> > Signed-off-by: Mina Almasry <almasrymina@google.com>
-> >
-> > ---
-> >
-> > v1:
-> > - Rename devmem -> dmabuf (David).
-> >
-> > ---
-> >   include/net/devmem.h | 12 ++++++++++++
-> >   include/net/netmem.h | 26 ++++++++++++++++++++++++++
-> >   net/core/dev.c       | 38 ++++++++++++++++++++++++++++++++++++++
-> >   3 files changed, 76 insertions(+)
-> >
-> ...
-> > diff --git a/include/net/netmem.h b/include/net/netmem.h
-> > index 45eb42d9990b..7fce2efc8707 100644
-> > --- a/include/net/netmem.h
-> > +++ b/include/net/netmem.h
-> > @@ -14,8 +14,34 @@
-> >
-> >   struct net_iov {
-> >       struct dmabuf_genpool_chunk_owner *owner;
-> > +     unsigned long dma_addr;
-> >   };
-> >
-> > +static inline struct dmabuf_genpool_chunk_owner *
-> > +net_iov_owner(const struct net_iov *niov)
-> > +{
-> > +     return niov->owner;
-> > +}
-> > +
-> > +static inline unsigned int net_iov_idx(const struct net_iov *niov)
-> > +{
-> > +     return niov - net_iov_owner(niov)->niovs;
-> > +}
-> > +
-> > +static inline dma_addr_t net_iov_dma_addr(const struct net_iov *niov)
-> > +{
-> > +     struct dmabuf_genpool_chunk_owner *owner =3D net_iov_owner(niov);
-> > +
-> > +     return owner->base_dma_addr +
-> > +            ((dma_addr_t)net_iov_idx(niov) << PAGE_SHIFT);
->
-> Looks like it should have been niov->dma_addr
->
+On Sat, Feb 10, 2024 at 09:55:26AM -0800, Guenter Roeck wrote:
+> IP checksum unit tests report the following error when run on hppa/hppa64.
+> 
+>     # test_ip_fast_csum: ASSERTION FAILED at lib/checksum_kunit.c:463
+>     Expected ( u64)csum_result == ( u64)expected, but
+>         ( u64)csum_result == 33754 (0x83da)
+>         ( u64)expected == 10946 (0x2ac2)
+>     not ok 4 test_ip_fast_csum
+> 
+> 0x83da is the expected result if the IP header length is 20 bytes. 0x2ac2
+> is the expected result if the IP header length is 24 bytes. The test fails
+> with an IP header length of 24 bytes. It appears that ip_fast_csum()
+> always returns the checksum for a 20-byte header, no matter how long
+> the header actually is.
+> 
+> Code analysis shows a suspicious assembler sequence in ip_fast_csum().
+> 
+>  "      addc            %0, %3, %0\n"
+>  "1:    ldws,ma         4(%1), %3\n"
+>  "      addib,<         0, %2, 1b\n"	<---
+> 
+> While my understanding of HPPA assembler is limited, it does not seem
+> to make much sense to subtract 0 from a register and to expect the result
+> to ever be negative. Subtracting 1 from the length parameter makes more
+> sense. On top of that, the operation should be repeated if and only if
+> the result is still > 0, so change the suspicious instruction to
+>  "      addib,>         -1, %2, 1b\n"
+> 
+> The IP checksum unit test passes after this change.
+> 
+> Cc: Charlie Jenkins <charlie@rivosinc.com>
+> Cc: Palmer Dabbelt <palmer@rivosinc.com>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+> Prerequisite for this patch is
+> https://lore.kernel.org/lkml/20240207-fix_sparse_errors_checksum_tests-v6-0-4caa9629705b@rivosinc.com/
+> 
+> No idea how that was not detected before. Maybe I am missing something.
+> 
+> Note that test_csum_ipv6_magic still fails on 32-bit parisc systems
+> after this patch has been applied. That is a different problem.
+> 
+>  arch/parisc/include/asm/checksum.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+> index 3c43baca7b39..f705e5dd1074 100644
+> --- a/arch/parisc/include/asm/checksum.h
+> +++ b/arch/parisc/include/asm/checksum.h
+> @@ -40,7 +40,7 @@ static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
+>  "	addc		%0, %5, %0\n"
+>  "	addc		%0, %3, %0\n"
+>  "1:	ldws,ma		4(%1), %3\n"
+> -"	addib,<		0, %2, 1b\n"
+> +"	addib,>		-1, %2, 1b\n"
+>  "	addc		%0, %3, %0\n"
+>  "\n"
+>  "	extru		%0, 31, 16, %4\n"
+> -- 
+> 2.39.2
+> 
 
-Yes, indeed. Thanks for catching.
+I got my parisc setup working and this does indeed fix the issue.
 
-> > +}
-> > +
-> > +static inline struct netdev_dmabuf_binding *
-> > +net_iov_binding(const struct net_iov *niov)
-> > +{
-> > +     return net_iov_owner(niov)->binding;
-> > +}
-> > +
-> >   /* netmem */
-> >
-> >   struct netmem {
-> ...
->
-> --
-> Pavel Begunkov
+Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
 
-
-
---=20
-Thanks,
-Mina
 
