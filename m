@@ -1,177 +1,157 @@
-Return-Path: <linux-parisc+bounces-519-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-520-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6FEE8531EB
-	for <lists+linux-parisc@lfdr.de>; Tue, 13 Feb 2024 14:29:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6981685334E
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 Feb 2024 15:38:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FD232825C7
-	for <lists+linux-parisc@lfdr.de>; Tue, 13 Feb 2024 13:29:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E9A31C22A33
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 Feb 2024 14:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44CF55E6C;
-	Tue, 13 Feb 2024 13:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B63F58123;
+	Tue, 13 Feb 2024 14:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipLzlSDG"
+	dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b="KBftyMgU"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E355577C;
-	Tue, 13 Feb 2024 13:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EAA57875;
+	Tue, 13 Feb 2024 14:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707830968; cv=none; b=SnjbfHahzFzMvu8/Llxp678Rtk7+tLPOmpXRQL6s6Yms/HFaEwh5byHneUPJPdFzGvFlLkNHuUD+npXQdd/H/LGYjNJSWYfRWOXVyPXNdWATOKd3vcEc5M4zqTM/RRHs+CQUUbgIEksbrVNNnfbuanyc5crWbA0Cj2x7gvPY77k=
+	t=1707835046; cv=none; b=tsgoS2LxbjlQhwWsnkhLUYF1nVWeex9vcQND0EWL/5GzJGS31mMgrUyosG/hikmluonjsO/iFNK4p+RlD7of0K4OsG7upW2Ku+mZ+nzdVCnn95XGhl9RZFyFNfaDeThZZf9EYaV13wHgTM5VYq885yWtblJQlHcFm+1IEEvPenM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707830968; c=relaxed/simple;
-	bh=S2uYMqOrZ63NG8/je4DIvWdofi03vpAm3WmCTXF4nDs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fV8FeXq9YtgQm+5+WOppo0kc7Y7vEycIZRV/N8//vIJLOhEAxxMT4xDUNeyptIGKNwKj8KCHghvudQ65VhBLkVJqapXd/hJH7Ltcyju1zUkQpymMXs/qu0alD6tHzezp1fFKEZJKqqtsXBeq95AS/o3v6WcPa9CidUOoC0Dnss0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipLzlSDG; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1707835046; c=relaxed/simple;
+	bh=b+eID30zZZ8FDfe97vo0F3zfOPTLqWXPCwkzir9cgYQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KymNK5y5DmrnXgNQn1RYmswsJSwoTL6hGGaUWys65bDoMfwvYVGiAXOyfpbcebD6V3abv9NNnqBR/YikKcXwLUm7qiSyVXVmvOxiLe6nf0dYVi/n4tmN/v4BkESCiWfYOMSRSRqydEocKxHX6ktcCuNaa0Q/8H9SwJIxDGehvmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=marliere.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b=KBftyMgU; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=marliere.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-562117d3dbfso195302a12.1;
-        Tue, 13 Feb 2024 05:29:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707830965; x=1708435765; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zFkfsfcQj3EYz0HghFi199sukal5EHX9cCiPBab+av8=;
-        b=ipLzlSDGzoX8Vz4cX5XnWHuff2FUxd5SOx+KD6+NH9mUOdjtAUGC6zP/R5Uu5Kj+E3
-         yWiRMuq2iesqpMj0QkOa3TLiiWUFvAcOEl1ePBnCuAmyK1HejNxS3I4gPKCHbJiMvHNl
-         r+K9ciFtxh023dq4lGX1BSBWkHxMPbGQ3TDCYWTV6r57Zs42KZPPclPmf6P7PCeTUw9x
-         IAl3Xdea0JO1ejGzjjXTURz7cnEAjASPnjuSxLgcTSBqwoug7ghomN9hIF3QvPQ18bw3
-         jNQ69RFAHOQXFhN60pFT/LUGBDBNvSdyo0X7D9PpWhFloy5eFHhD3CP9ZS2bRxiAR9e0
-         MjTg==
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6e0507eb60cso2838276b3a.3;
+        Tue, 13 Feb 2024 06:37:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707830965; x=1708435765;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zFkfsfcQj3EYz0HghFi199sukal5EHX9cCiPBab+av8=;
-        b=cOSQNTx119krJSUpU5d+p+mlu2ywS34J6c5qHRRrVsuf4jL9MAguZjFcWPyTPd656D
-         8AQT2E1XjS4Q5+tcWfTPduXdxL3H/GsMOt3eRdt3EMiwIveqzn3lqSni025oDhHP3BUt
-         wq8xXUslzpzhOhORT5qzh4E9HAfILa0Xy2473shE2IwwTwoFJMife0Y3owPyFQY6pbyv
-         nJiJiMqmUvcSgcD3qtaEk76PN85E2tnytcU6h9KN7ULUcEYNffvMo0d38XH5kP5olAam
-         8jfW74zEl5oUZ/vGGWKOMSfAs20uatb2hIyEGLsNJh9zGPrimQWqUCIhyiXrhKmF+CXn
-         hf3g==
-X-Forwarded-Encrypted: i=1; AJvYcCWrKQnCUssqu3rwXPzrd1qkV8och7wpPTJqA7fZ/DQoJMao5/ujmeZZj6LH93YU7ZblqYJ5WMHB8zPrPBbZpuVrE+3EqX3inR+NFOpoJay7dB92BuphOYoJgQRa+YmnR3xV5TaJ81zJj4VwBwbdpak8I7lLyEYvhsenErFp056HCwtaTyf/CbIfEBQGQN3RVDY32ZN1NIaa5EfRQYUKLgn/DHlBvNEEwiAz4b/tuLxBL7M6NuYf3Z8bflw4uhhplBq5OXkLXH6QDnL5KTJlUrjafqQn26eRF+Ofws1W/4wjI0J4S4SJBmcPAF/wqU4yC170N5Z3ktYqUwbcaEPScZYcx8dNqtEChlX8UjGeQcblAwLP5ux1kc2Py/11XZd8AHbzNeWeitxoKCOsc0AEWRkC4iBoXscjW4EIsl/d+r0zCZB6nwuBNSSTYuXEJB7goal48MoEJz2Db21OPF3x37B0AdoONEU/igT5bmfbiQ2IFoTZuPf7+rKMkI72/ht/pF1ptajLww==
-X-Gm-Message-State: AOJu0YzpFLhHUEWn6Dq0By+sdHcAR5+4e6vZspZxP+XBg0hIBPtVZvZJ
-	Mdg+3Bg92Lu4T+yRjC4Z9jE0/9xvd8kmOXqni9tADxnke59+mcSY
-X-Google-Smtp-Source: AGHT+IGAaHK3Sc+4l2nceOylDioj03KTZYisiZzBNDf0QqrfnPjsS5gVAqMxT1CZy/sHMpkrQYQHTA==
-X-Received: by 2002:a17:907:9608:b0:a3c:d535:39b4 with SMTP id gb8-20020a170907960800b00a3cd53539b4mr2812254ejc.9.1707830964861;
-        Tue, 13 Feb 2024 05:29:24 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUAx0oFGv8fB8fAq7b4SaoJ1hkmfp3uRl+/+fWTscotDvrWHCHXLoRxfjmKebhxzaOp3oxyPgCcBy0wUW20nGfcHDfKvRtEVCBS5GMpx8HXIHoIIZMS6tP/VX099E08YFCUDuCULizMEnqQPd1i3pKNIDm55WsBNPz+QhIoaSX7ZFh72jKyCoa/amNFGhou++pfV+8YwZ2G+iSP9cnlYVHdylj+4X4J8yWRtWXX86jElRP8t/wE8pBpbYSrQOXQkKZC054KciMa6FURknOG0VlXdC0zp6ZuNvVs9CBiiFkRg+DpmEMQXqYWkhkv4yajMT0pumZHd9eBNJSCmXW+vX7/5Y7C+7qkpJXiJKz8j16QLsdpngzR8AXEYmkEC9mrljQ2qx2Uhf41HTaD45Ry/g8pZuMKJrnmXQ9XLrlDUHGHpVa5vMb/VpXYM0MX3wyEKSkBPn9WaxUHLCzuGEpSs4WQ18r7An+vsFd+e8kSbUhrIET4qj5kolbXe6g24ua4jN6md+Aek5+o8ZKZbFFueWGHcDlwIGrMxBopiiwcsibAijsP5b6ASTAPNQJbwSkKDd7Iv3h3GQ8E11aFoWyv5GC4lOpTFJVkrmvqK+P6SQqmsZhYG3SaaqodTQu0imQwcfkfN7B+ACpJ9uAKlKD3Dw0RgwAksL4zO+wWutuLiqMU4JAtWP153NOjVWQzg1bwYvvy52JSOLKxmdbbth1bOJOxn6FlT5/nbQVz51EHzTC6lw4ox1I2zht1n4/pXvC4xJMyQm5LTy5aX4s9LmAqDUthV9ozliVnKX1wcX2x81SYpQRV+q41d4NethsIuQTU2Ruz5p7bLd0LUUCo1w5qiRkNvVsYH13WxW6rA4YDENQs8F446oIN/ku79kaRptVl0Lva5vqnk3MUnZLnpMV70VqOX4zcmX35IyvdxW67Yf8MDXj8F/OCINzsJpFdiTmZlqjivJ
- m8Z42xDWPt1Ba9H9tb9tPjRDLBd4st4Hcyg2svskzdCdAkPcAa+7wE97qvwfc2NlGS594TjKcJNHcP8uWQHqRcG9MKdFvKUQi5K4Yx7/O+Z84C8r4t2DD596gEUR83otfc9AIEDhgTigpPbmG50ZfjCdk3F8yw6j8etrDcjqrYh4vc5ekJWbAZSIopGyRzXI4aAmCqPWw4sUmqZgbLlSSYbjpe9a32jEJQUWsYgoAPXKb9gebtHfRlySE/0SsQNhCBfZebL28mKl6U/8HhaTcio+qP0Qpf6LeAccr+QpnbqnPAc3XcEaGO0CXVFbb/7fUR/b9AUkPijwDgjwlScg+IVVymbuFOyTfBYxART1X01/ib6XlltUbAskeZwd1nCBIZlS8S3h+4EPpKwdC873ok2ZFaYD9UX9T2pxClQTPGV1cJOKWFYAp8VTG4gM0OMgK3l4ZxjvbO0GtCoZs4FytGj6Efn1+Vi+vml6fpoWKPbu3VcW78o+R8TwxB9cYuHOMWskd+chMBSWkNAEpn6dhBxYV88HAs3p+7Mv1ftWzYOmwrDOzTPf6msY+M+SJNyrsdRC4aujSEetlZVrwLxEq4aFRcEnCQMs5Oh0ocQ1HMGCXwsBeFb8mo/MLE+mDYnVmG1vI6VS58tk5B8xg/IfMMml78r0vQiu751j5ao+tWo75K1Ma4CXeIJy9XDr9mStFHCYpZ8Xk66GhkBASkiUu31WX3xD/AGf4EuM4NM6LTuj6OqdwTUuN2hpbg2hfsdEZeB5cchVr2/dNvrvI/ZWsi77TMoyxmlpZuBW+T4Hu9Yi3c+8dT
-Received: from ?IPV6:2620:10d:c096:310::23d8? ([2620:10d:c092:600::1:a107])
-        by smtp.gmail.com with ESMTPSA id ss3-20020a170907c00300b00a3d1c0a3d5dsm221682ejc.63.2024.02.13.05.29.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Feb 2024 05:29:24 -0800 (PST)
-Message-ID: <dd4a6633-36d0-4654-a5e1-2824de29c130@gmail.com>
-Date: Tue, 13 Feb 2024 13:19:43 +0000
+        d=1e100.net; s=20230601; t=1707835044; x=1708439844;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:dkim-signature:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=glipsrPj8RSTDLD1+6P5i/aNX8jAK2VQKFjNxY0ilJU=;
+        b=VnKtwPQ76jS+FqIz7S+w08UjCfZF3iPIkIiNojMsJgqo5OqdhHnz9fWmed0ZCVdmRp
+         GeAP1E0WskeWRpc0JXiiP5fP75Nhl5PqLJ3I1orLflNlGnzGGVicTzOorPMlgYJt0o64
+         uk96xbiKI/r+cx31Woyomk5tGX3wAvbosJLST0aQN0g9ZVDay/OVOV/uK4EBDh/Qqo0A
+         CKihI19ExiFTLszhCMJy6QxpRCLQ7r5oHGwKNg37aaDuNXkedOZY3P6CIup4u2CNH//a
+         Np32CY7Zc1XDgrK4W4y0QfWTgvTk7+AN+neiySGIrQesIBJfSIYiuMGnpuXkXdH6nmaS
+         ftXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVFrzGkPeIrdTObKgrJkyqk8Vp+tsOhJs1A4mYo1bpXL25aIEsnXWSRxBIqn6rq1a54Vj2qbhjVTV3a5GRBuzWv5tlAnXTLfOvn5oZs
+X-Gm-Message-State: AOJu0YxioRYuhiiObTthQEau6Ej3zIODpl6k2kGEZBFhV4cc7M/VmiU/
+	FKfv4evuI4sw6uoxqp3qIZJjedybytXPri1tOmseM4gWcAEUFEla
+X-Google-Smtp-Source: AGHT+IHm9RT1yXwrGMD9UGY71C0KKxv9EMVof6Blc6M5Y1wEY027KViE29pdE9ZMRg7phJUaBmgwgw==
+X-Received: by 2002:a05:6a00:10c8:b0:6e0:f7a3:7201 with SMTP id d8-20020a056a0010c800b006e0f7a37201mr2531631pfu.25.1707835044049;
+        Tue, 13 Feb 2024 06:37:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU2FSkn/S33iNK3cekS+a2pQinDjD/AOq8fP3xd8PMhu/wp2fI/vXCPEDhRHS3E55arfcynzrC3F/FsCN3A+L1+mngPNiYt6alre6OS5FSvft5+aorU6W95BHnmLBU5ORkiAFB0C14Sho0KqQhWz1wzRbNHdXRMKw==
+Received: from mail.marliere.net ([24.199.118.162])
+        by smtp.gmail.com with ESMTPSA id gu15-20020a056a004e4f00b006d6b91c6eb6sm7730082pfb.13.2024.02.13.06.37.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Feb 2024 06:37:23 -0800 (PST)
+From: "Ricardo B. Marliere" <ricardo@marliere.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
+	s=2024; t=1707835042;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=glipsrPj8RSTDLD1+6P5i/aNX8jAK2VQKFjNxY0ilJU=;
+	b=KBftyMgUUz9xYE1XI8lwCA8LRkGVgiIBpANcOH5xOOwNYoS2288DNKfd10ROd25jnllKTp
+	mvHVf0nWYeG2OsA19o1hErHmfhgLUti5dRMKmVAIZ4wNICUpPZ6/gXbSK3sJUrtIxh4tk4
+	ZYeVBmJ84wLqFFywMr8QWhv997IfM2+dKRe8Pu+YG9a7to2C7G/71k9QV4Ypwosif4uIGS
+	WhzkCWSj/49LIL2SlZA2CUmRltbX3FYk+2H3zwcDnkC6Q3KH/sv9G+exRAqMdzkBurAIII
+	cXTa8ZU+q8wdUYwfDWnUSIdQJkS4soxWIuTmh/qx9kIKONcLX1YDDIW7U4lQ2Q==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
+Date: Tue, 13 Feb 2024 11:38:02 -0300
+Subject: [PATCH] parisc: make parisc_bus_type const
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH net-next v5 08/14] memory-provider: dmabuf devmem
- memory provider
-Content-Language: en-US
-To: Mina Almasry <almasrymina@google.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
- <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, David Ahern <dsahern@kernel.org>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Shuah Khan <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>,
- Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Shakeel Butt <shakeelb@google.com>, Jeroen de Borst <jeroendb@google.com>,
- Praveen Kaligineedi <pkaligineedi@google.com>,
- Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
-References: <20231218024024.3516870-1-almasrymina@google.com>
- <20231218024024.3516870-9-almasrymina@google.com>
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20231218024024.3516870-9-almasrymina@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240213-bus_cleanup-parisc-v1-1-2e61c77e66c6@marliere.net>
+X-B4-Tracking: v=1; b=H4sIAMl+y2UC/x3MQQqAIBBA0avIrBNMC7KrRITaVANh4lAE0d2Tl
+ m/x/wOMmZChFw9kvIjpiAV1JSBsLq4oaS4GrXSjdG2kP3kKO7p4JplcJg7SGmU701oXPEIJU8a
+ F7n86jO/7AeKjTitkAAAA
+To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Ricardo B. Marliere" <ricardo@marliere.net>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1760; i=ricardo@marliere.net;
+ h=from:subject:message-id; bh=b+eID30zZZ8FDfe97vo0F3zfOPTLqWXPCwkzir9cgYQ=;
+ b=owEBbQKS/ZANAwAKAckLinxjhlimAcsmYgBly37JxbSK6Bq8pOyqJLvTLZdBxxdVCc45nPDtb
+ Gvc3rCBCfKJAjMEAAEKAB0WIQQDCo6eQk7jwGVXh+HJC4p8Y4ZYpgUCZct+yQAKCRDJC4p8Y4ZY
+ pidOD/0UCza1levJlpC1gxTIoxpv1AFDIqk7JSHD61wHmz+S8dyfel2AF/Wp+y5E/wxnjtxsk8y
+ GE9VMLSDSDj4QKmPzrtPTM/EyhYwTx3kViVJ5ZwlRj8GgFzn1ZeB5qX+7mdMvoUkt7Y8KFz+nSZ
+ 4rD85I/GU2NSLl0sKLufn3a5q5x94Qai/pJerw1kmKQr9bB40vsEN/FK50go4EVHiffLF11bAWE
+ SFFTnuZ5SKrhu5lE5Gam4Ms2mWo08h3SCxLBA/bBVnSv/dyRi8zyeTsnAsSP79GrmvG6sBi8Fab
+ rD8W2N282BTLl3SxSbnLm7K0sDhWCWw4vO2PPtolWPt4yxNybo2hOXYYPOnr4nrTcpXP19kbb2h
+ SyM2b87Gv1p5+Zd/iFaFDM4CJ/PsC5Hf5QAeY8Qh/WkSte8MfAQBtsQZ/rwjS3/62kpA8iimteH
+ hgEXudINW0DxBFBRnQUzQWOLhPj6UEBUohIdxaBiummZcH1U1NI4oGff91tSlJKa/OsfKUtOLNv
+ quSCVmjkrM3JEzBfPvhzmzj1c+4dodBZ5a5DboOxI/Yoca1PDZYslejQ8yAJOXpSQprg2sXoqFa
+ qqQET8fuiCei62k1RkYAfoID1DgVBxMeRRFGoeLAbrF49AF2srNozQJv7hQpbJMamCUFXl746UB
+ yHetN9AWqq086Eg==
+X-Developer-Key: i=ricardo@marliere.net; a=openpgp;
+ fpr=030A8E9E424EE3C0655787E1C90B8A7C638658A6
 
-On 12/18/23 02:40, Mina Almasry wrote:
-> Implement a memory provider that allocates dmabuf devmem in the form of
-> net_iov.
-> 
-> The provider receives a reference to the struct netdev_dmabuf_binding
-> via the pool->mp_priv pointer. The driver needs to set this pointer for
-> the provider in the net_iov.
-> 
-> The provider obtains a reference on the netdev_dmabuf_binding which
-> guarantees the binding and the underlying mapping remains alive until
-> the provider is destroyed.
-> 
-> Usage of PP_FLAG_DMA_MAP is required for this memory provide such that
-> the page_pool can provide the driver with the dma-addrs of the devmem.
-> 
-> Support for PP_FLAG_DMA_SYNC_DEV is omitted for simplicity & p.order !=
-> 0.
-> 
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
-> Signed-off-by: Kaiyuan Zhang <kaiyuanz@google.com>
-> Signed-off-by: Mina Almasry <almasrymina@google.com>
-> 
-> ---
-...
-> +
-> +static bool mp_dmabuf_devmem_release_page(struct page_pool *pool,
-> +					  struct netmem *netmem)
-> +{
-> +	WARN_ON_ONCE(!netmem_is_net_iov(netmem));
-> +
-> +	page_pool_clear_pp_info(netmem);
-> +
-> +	netdev_free_dmabuf(netmem_to_net_iov(netmem));
-> +
-> +	/* We don't want the page pool put_page()ing our net_iovs. */
-> +	return false;
-> +}
-> +
-> +const struct memory_provider_ops dmabuf_devmem_ops = {
-> +	.init			= mp_dmabuf_devmem_init,
-> +	.destroy		= mp_dmabuf_devmem_destroy,
-> +	.alloc_pages		= mp_dmabuf_devmem_alloc_pages,
-> +	.release_page		= mp_dmabuf_devmem_release_page,
-> +};
-> +EXPORT_SYMBOL(dmabuf_devmem_ops);
+Since commit d492cc2573a0 ("driver core: device.h: make struct
+bus_type a const *"), the driver core can properly handle constant
+struct bus_type, move the parisc_bus_type variable to be a constant
+structure as well, placing it into read-only memory which can not be
+modified at runtime.
 
-It might make sense to move all these functions together with
-new code from core/dev.c into a new file
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+---
+ arch/parisc/include/asm/parisc-device.h | 2 +-
+ arch/parisc/kernel/drivers.c            | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/arch/parisc/include/asm/parisc-device.h b/arch/parisc/include/asm/parisc-device.h
+index 4de3b391d812..7ddd7f433367 100644
+--- a/arch/parisc/include/asm/parisc-device.h
++++ b/arch/parisc/include/asm/parisc-device.h
+@@ -61,7 +61,7 @@ parisc_get_drvdata(struct parisc_device *d)
+ 	return dev_get_drvdata(&d->dev);
+ }
+ 
+-extern struct bus_type parisc_bus_type;
++extern const struct bus_type parisc_bus_type;
+ 
+ int iosapic_serial_irq(struct parisc_device *dev);
+ 
+diff --git a/arch/parisc/kernel/drivers.c b/arch/parisc/kernel/drivers.c
+index c7ff339732ba..ac19d685e4a5 100644
+--- a/arch/parisc/kernel/drivers.c
++++ b/arch/parisc/kernel/drivers.c
+@@ -618,7 +618,7 @@ static struct attribute *parisc_device_attrs[] = {
+ };
+ ATTRIBUTE_GROUPS(parisc_device);
+ 
+-struct bus_type parisc_bus_type = {
++const struct bus_type parisc_bus_type = {
+ 	.name = "parisc",
+ 	.match = parisc_generic_match,
+ 	.uevent = parisc_uevent,
+
+---
+base-commit: 82b143aeb169b8b55798d7d2063032e1a6ceeeb0
+change-id: 20240213-bus_cleanup-parisc-93098359acbe
+
+Best regards,
 -- 
-Pavel Begunkov
+Ricardo B. Marliere <ricardo@marliere.net>
+
 
