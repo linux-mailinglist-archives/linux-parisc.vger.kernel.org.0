@@ -1,53 +1,53 @@
-Return-Path: <linux-parisc+bounces-548-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-549-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 489BF856AAF
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 18:14:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7E5856AE9
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 18:25:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D98B1C20FC8
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 17:14:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17027288B3C
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 17:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DA8136672;
-	Thu, 15 Feb 2024 17:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA95B136988;
+	Thu, 15 Feb 2024 17:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="ax+RyCnx"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="1VDP+dix"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from cmx-torrgo001.bell.net (mta-tor-005.bell.net [209.71.212.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20095136663;
-	Thu, 15 Feb 2024 17:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BDC13698B;
+	Thu, 15 Feb 2024 17:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708017245; cv=none; b=Iwq8pRm1yV5tHB9dhB//S2Kw4fzNdeiFZiW8P7aZT6TBThmXFCLb1Rsls6Hlsd/BEqW4nRRLByZx01EaI6AqYwdbAqEIr10cFyEw6SJ9dOcyMSvJMli0ap0saw4zq8+6wYJcgec6K0w9PgFtgqxBuEU+iEUsuiJnJ35Dv5W+oeg=
+	t=1708017927; cv=none; b=ACPPePT6WejiKzsUb+nf49jabthcYULm/f+zHJNdGekW/TlUuL4RtZdBSE+Ot19NaQKQRveLuNER8C05QLzGqXqn+81OLxt9V/7k6oVhQ407LV7V2GqSrq+k9kIW+etiilSc+Jcx8RjAdD7uSCAYUTiyl2pXnGqCCbJoeQJ1xA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708017245; c=relaxed/simple;
-	bh=wMQZAjVaywaNaVIoUDPK4cu/c4mz5snPDQld1MSr6hU=;
+	s=arc-20240116; t=1708017927; c=relaxed/simple;
+	bh=YGF+xg9Zw2HpAEfB/LLNS8J3xoEcd0UnFW42VadKhTk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mZtJvty7MuZzzYgscHOx3JpJ5+HDzB8+yr2vWmN/bNjC4fBhMfRYjeWixWtVeIlqnOEMAu8dg4A0gQgL7JIDrA8CwxASLvKCK34aZpuTxdmSuZjOo15jz2IwsByp67i72Jh7JCZ+mGfA/eP0nvJc4SKJgywO+WlrU0w4sbTUg5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=ax+RyCnx; arc=none smtp.client-ip=209.71.212.37
+	 In-Reply-To:Content-Type; b=L8z8VSzpyFvjV2E2E6y6eym/y3JoMgSlfVg6kq3LVXG0X6/dXKNoar8vkFzo5+ujZ+QDo8QJ39dBnqiT9pN/WgvB0hXjUWwppKwnDecdwXX4JennF/fkvgt2lTdwzbgKWpCdA+5MRDZBSfWwZZzK2vh7bAcKj8apR7kjiL3DC6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=1VDP+dix; arc=none smtp.client-ip=209.71.212.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bell.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1708017243; 
-        bh=iqJuGfFuA5gl5PeHMO0DsPwaamL0d2WArzsU05LdegI=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1708017925; 
+        bh=zaQaPX04GVXGx4EuNSfjTExmNxEJBUFZt8AtN9ccB6o=;
         h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=ax+RyCnxTJG+jloMAeHNf8E02fuyDq5LinzDY6vhDyHMsgyUueMfN6k5sgL2eSibjfrZgZhGLjN0G5egWaScQmYvomyk4pQipN2877aJzyBHnKiO1UNYCg2/btjAQuJBW7tnxiVQfkX87YDvAxlHBKlbUDq6lecbvzBaeL3qdvfZU1z6BddOBYq+jk7P/siJDaGRkBfCXsGW2t64bGjQPDjfsn1ydPBp9Ms5AuBnXsDZwObrbMssZDETlM6icA56DHJ4UdWChx96FkgghZCvs68C9TKXe/VULj1KsuW7lI6f6V+94F/zcDAVGPWyBbtT9JdycyX5o3lEmmVTx0/FTQ==
+        b=1VDP+dixUeia2IAQ9nB44o3THF6eg+UXEi6JjWzO2edlDbvoFxxbfOfXiW+tuVLSlmuHGtKqFQQ6yB3dNyPaMioiNOIjtt7blMrsiGUQ09MJPr7aptIdokZF5oNi6X82QbGL8g9HBPvjEl/eMTnRUq3t/DnEI9RYALb74/LPr7+mjj1hTuKaFgUKOOOJ32I1rG3qhXlFLvk4nqVDd24X/JwcQt1paJvGjeN4ao6gDfFJ1sP7/FRUb7kCJALj+9StLtChltJaHUE5TKgiWy9G9AjFYUbwMCpA0TrzxygBA8fRqEM/P3+JPD0Ss4hINOW7pfeBMb+ILdPMrVBKBZgjqA==
 X-RG-SOPHOS: Clean
 X-RG-VADE-SC: 0
 X-RG-VADE: Clean
 X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 65CD68AA000F769D
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvledrvddtgdelkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeekudelfeehieduueejvdekleefffehudefgfejgeekieduleeftdejhffghfeuvdenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppedugedvrdduvdeirdduuddvrddvfeefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepudegvddruddviedrudduvddrvdeffedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepuddupdhrtghpthhtohepffgrvhhiugdrnfgrihhghhhtsegrtghulhgrsgdrtghomhdprhgtphhtthhopeflrghmvghsrdeuohhtthhomhhlvgihsehhrghnshgvnhhprghrthhnvghrshhhihhprdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegthhgrrhhlihgvsehrihhvohhsihhntgdrtghomhdprhgt
-	phhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrhesghhmgidruggv
+X-RG-Rigid: 65CD68AA000FB6F2
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvledrvddtgddutddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuuefgnffnpdfqfgfvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomheplfhohhhnucffrghvihguucetnhhglhhinhcuoegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvtheqnecuggftrfgrthhtvghrnhepjeelffffjeehgffgueehleegfeegueeigedtkeffgeduueetffegffejudekgfeunecukfhppedugedvrdduvdeirdduuddvrddvfeefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepudegvddruddviedrudduvddrvdeffedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepuddupdhrtghpthhtohepffgrvhhiugdrnfgrihhghhhtseetvegfnfetuedrvefqofdprhgtphhtthhopeflrghmvghsrdeuohhtthhomhhlvgihsehhrghnshgvnhhprghrthhnvghrshhhihhprdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegthhgrrhhlihgvsehrihhvohhsihhntgdrtghomhdprhgtphhtthhopegurghvvgdrrghnghhlihhnsegs
+	vghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrhesghhmgidruggv
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
 Received: from [192.168.2.49] (142.126.112.233) by cmx-torrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
-        id 65CD68AA000F769D; Thu, 15 Feb 2024 12:13:42 -0500
-Message-ID: <378dba2c-ebc2-404d-a0e8-f507a24ef6d2@bell.net>
-Date: Thu, 15 Feb 2024 12:13:43 -0500
+        id 65CD68AA000FB6F2; Thu, 15 Feb 2024 12:25:03 -0500
+Message-ID: <e73bdc36-5fb1-4ea8-9f96-608eb1a9b6af@bell.net>
+Date: Thu, 15 Feb 2024 12:25:03 -0500
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,20 +58,20 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v8 2/2] lib: checksum: Use aligned accesses for
  ip_fast_csum and csum_ipv6_magic tests
 Content-Language: en-US
-To: Charlie Jenkins <charlie@rivosinc.com>, Guenter Roeck <linux@roeck-us.net>
-Cc: David Laight <David.Laight@aculab.com>,
+To: Guenter Roeck <linux@roeck-us.net>, David Laight
+ <David.Laight@ACULAB.COM>, Charlie Jenkins <charlie@rivosinc.com>,
  Palmer Dabbelt <palmer@dabbelt.com>,
  Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>,
  "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Parisc List <linux-parisc@vger.kernel.org>, Al Viro
- <viro@zeniv.linux.org.uk>, linux-kernel@vger.kernel.org
+ Parisc List <linux-parisc@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 References: <20240214-fix_sparse_errors_checksum_tests-v8-0-36b60e673593@rivosinc.com>
  <20240214-fix_sparse_errors_checksum_tests-v8-2-36b60e673593@rivosinc.com>
- <2ec91b11-23c7-4beb-8cef-c68367c8f029@roeck-us.net> <Zc1pSi59aDOnqz++@ghost>
- <cb4e358b-3fd0-4ca4-bf53-9cc379087304@roeck-us.net>
- <1d5e059e-5b31-415d-ae41-593415812e94@bell.net> <Zc2GfgiCpevtKTtS@ghost>
- <11fff7fe-ec4c-4340-a67f-d1d54d0712d8@roeck-us.net> <Zc4veRSmxHHqu/bB@ghost>
- <0fa4d53a-6ce7-4f44-81b2-86282f0b9451@roeck-us.net> <Zc5A+c0gmxtygNIa@ghost>
+ <2ec91b11-23c7-4beb-8cef-c68367c8f029@roeck-us.net>
+ <a7e9691432374000b9566a0201d004e6@AcuMS.aculab.com>
+ <c22f28a2-b042-4abe-b9e4-a925b97073bb@roeck-us.net>
+ <4723822c-2acf-4c41-899c-1e3d5659d1d8@bell.net>
+ <1e302d8f-4e94-4278-b556-b8fc54956efb@roeck-us.net>
 From: John David Anglin <dave.anglin@bell.net>
 Autocrypt: addr=dave.anglin@bell.net; keydata=
  xsFNBFJfN1MBEACxBrfJ+5RdCO+UQOUARQLSsnVewkvmNlJRgykqJkkI5BjO2hhScE+MHoTK
@@ -116,88 +116,63 @@ Autocrypt: addr=dave.anglin@bell.net; keydata=
  XV2KRzaE359RgbM3pNEViXp3NclPYmeu+XI8Ls/y6tSq5e/o/egktdyJj+xvAj9ZS18b10Jp
  e67qK8wZC/+N7LGON05VcLrdZ+FXuEEojJWbabF6rJGN5X/UlH5OowVFEMhD9s31tciAvBwy
  T70V9SSrl2hiw38vRzsl
-In-Reply-To: <Zc5A+c0gmxtygNIa@ghost>
+In-Reply-To: <1e302d8f-4e94-4278-b556-b8fc54956efb@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2024-02-15 11:51 a.m., Charlie Jenkins wrote:
-> On Thu, Feb 15, 2024 at 08:30:22AM -0800, Guenter Roeck wrote:
->> On 2/15/24 07:36, Charlie Jenkins wrote:
->>> On Thu, Feb 15, 2024 at 12:56:13AM -0800, Guenter Roeck wrote:
->>>> On 2/14/24 19:35, Charlie Jenkins wrote:
->>>>> On Wed, Feb 14, 2024 at 10:00:37PM -0500, John David Anglin wrote:
->>>>>> On 2024-02-14 8:58 p.m., Guenter Roeck wrote:
->>>>>>> Specifically: Yes, the carry/borrow bits should be restored. Question is
->>>>>>> if the Linux kernel's interrupt handler doesn't restore the carry bits
->>>>>>> or if the problem is on the qemu side.
->>>>>> The carry/borrow bits in the PSW should be saved and restored by the save_specials
->>>>>> and rest_specials macros.  They are defined in arch/parisc/include/asm/assembly.h.
->>>>> Why would they be needed to be restored in linux? The manual says "The
->>>>> PSW is set to the contents of the IPSW by the RETURN FROM INTERRUPTION
->>>>> instruction". This means that the PSW must be restored by the hardware.
->>>>>
->>>>> We can see the QEMU implementation in:
->>>>>
->>>>> rfi:
->>>>> https://github.com/qemu/qemu/blob/v8.2.1/target/hppa/sys_helper.c#L93
->>>>>
->>>>> handling interrupt:
->>>>> https://github.com/qemu/qemu/blob/v8.2.1/target/hppa/int_helper.c#L109
->>>>>
->>>>> However the implementation appears to be faulty. During an RFI, the PSW
->>>>> is always set to 0x804000e (regardless of what the PSW was before the
->>>>> interrupt).
->>>>>
->>>> Not sure if I agree. The interrupt handler in Linux is the one which needs to set
->>>> IPSW. Looking into the code, I agree with Dave that the tophys macro seems to
->>>> clobber the carry bits before psw is saved, so they can not really be restored.
->>>> The only issue with that idea is that I can only reproduce the problem with
->>>> an interrupted ldd instruction but not, for example, with ldw. This is why it
->>>> would be really important to have someone with real hardware test this.
+On 2024-02-15 12:06 p.m., Guenter Roeck wrote:
+> On 2/15/24 08:51, John David Anglin wrote:
+>> On 2024-02-15 10:44 a.m., Guenter Roeck wrote:
+>>> On 2/15/24 02:27, David Laight wrote:
+>>>> ...
+>>>>> It would be worthwhile tracking this down since there are
+>>>>> lots of unaligned data accesses (8-byte accesses on 4-byte aligned addresses)
+>>>>> when running the kernel in 64-bit mode.
 >>>>
->>>> Thanks,
->>>> Guenter
->>> Yes, we definitely feedback from somebody with access to hardware, but I
->>> do not understand how "The PSW is set to the contents of the IPSW by the
->>> RETURN FROM INTERRUPTION" could be interpreted as anything except that
->>> the hardware is expected to over-write the contents of the PSW during
->>> the rfi.
+>>>> Hmmm....
+>>>> For performance reasons you really don't want any of them.
+>>>> The misaligned 64bit fields need an __attribute((aligned(4)) marker.
+>>>>
+>>>> If the checksum code can do them it really needs to detect
+>>>> and handle the misalignment.
+>>>>
+>>>> The misaligned trap handler probably ought to contain a
+>>>> warn_on_once() to dump stack on the first such error.
+>>>> They can then be fixed one at a time.
+>>>>
 >>>
->> Sure, I absolutely agree. But that assumes that IPSW is set correctly
->> in the Linux interrupt handler. We do know that something odd happens
-> The manual defines the saving of PSW as the responsibility of the
-> hardware as well: "When an interruption occurs, the current value of the
-> PSW is saved in the Interruption Processor Status Word (IPSW)". I don't
-> think this should be interpreted to mean that a software interrupt
-> handler is required to save the IPSW.
-The IPSW (cr22) is saved by save_specials to regs->gr[0].  It is modified in various
-places when an interruption is handled.  In the case of emulate_ldd, we have
+>>> Unaligned LDD at unwind_once+0x4a8/0x5e0
+>>>
+>>> Decoded:
+>>>
+>>> Unaligned LDD at unwind_once (arch/parisc/kernel/unwind.c:212 arch/parisc/kernel/unwind.c:243 arch/parisc/kernel/unwind.c:371 
+>>> arch/parisc/kernel/unwind.c:445)
+>>>
+>>> Source:
+>>>
+>>> static bool pc_is_kernel_fn(unsigned long pc, void *fn)
+>>> {
+>>>         return (unsigned long)dereference_kernel_function_descriptor(fn) == pc;
+>> This looks wrong to me.  Function descriptors should always be 8-byte aligned.  I think this
+>> routine should return false if fn isn't 8-byte aligned.
+>
+> Below you state "Code entry points only need 4-byte alignment."
+>
+> I think that contradicts each other. Also, the calling code is,
+> for example,
+>     pc_is_kernel_fn(pc, syscall_exit)
+>
+> I fail to see how this can be consolidated if it is ok
+> that syscall_exit is 4-byte aligned but, at the same time,
+> must be 8-byte aligned to be considered to be a kernel function.
+In the above call, syscall_exit is treated as a function pointer. It points to an 8-byte aligned
+function descriptor.  The descriptor holds the actual address of the function.  It only needs
+4-byte alignment.
 
-         /* else we handled it, let life go on. */
-         regs->gr[0]|=PSW_N;
-
-This is supposed to nullify the faulting ldd.  I've yet to find where the carry bit is getting
-set in the PSW.
-
-There is a gap between where the hardware sets IPSW and where it is saved to the stack
-in save_specials.  tophys might clobber the IPSW is there is a double fault.  But it seems
-more likely that regs->gr[0] is getting clobbered somehow.
+Descriptors need 8-byte alignment for efficiency on 64-bit parisc. The pc and gp are accessed
+using ldd instructions.
 
 Dave
->
-> - Charlie
->
->> when an unaligned ldd is encountered. At least for my part I don't know
->> if the problem is in emulate_ldd() in the Linux kernel or in the ldd
->> implementation and trap handling in qemu. I do know (from my logs)
->> that qemu does see the correct PSW/IPSW values, because they do
->> show up correctly in the Linux kernel when running the qemu emulation.
->> Only it somehow gets lost when the Linux interrupt handler returns.
->>
->> Thanks.
->> Guenter
->>
-
 
 -- 
 John David Anglin  dave.anglin@bell.net
