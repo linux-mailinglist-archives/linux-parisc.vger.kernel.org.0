@@ -1,76 +1,76 @@
-Return-Path: <linux-parisc+bounces-551-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-552-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E3E856C4B
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 19:17:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 488AE856CF3
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 19:42:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E240287EAF
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 18:17:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DAE41C21EF6
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 18:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40ECA135A6B;
-	Thu, 15 Feb 2024 18:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA918137C57;
+	Thu, 15 Feb 2024 18:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QZjFrhjO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aoWo3Q9L"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A771513173F;
-	Thu, 15 Feb 2024 18:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEAD31A60;
+	Thu, 15 Feb 2024 18:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708021034; cv=none; b=OQKv3VYqWHQQlrJ6qGf/I8C0hiJqL/QwCanPDxps/iwOn+CBW10okdWUpPL9bUENjROu0hrZRTmJy+i3PlpgHEh9z0P1pV9ukGDCYV45eLIF37bCEAY7Lxp02jkOlE7L7B70Z4fmVx+mnp7ivvLzevrg6RjM4gqHS0OA4LxGSHw=
+	t=1708022554; cv=none; b=CH1UkxEWw55BVJceBEL7NgOY/M7nzmrm4Cl73pb/QfUx0A18mPgB78Io/4HzjTPUwBFE2fK+SfvNoFj+upgsxiEyoZQL7IXLZZYziKaF+cdtHUS2lSV/E9MpRv7s4hWskyiPffuyon9OmCZStzrsSQO9bTVprKDYunG+6Tw0sBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708021034; c=relaxed/simple;
-	bh=xGhiyaV9i6rlKLrExFnE/CpescGwgSNkb44LB7gAni8=;
+	s=arc-20240116; t=1708022554; c=relaxed/simple;
+	bh=/ruk8jX9/WGq73QOc11X011S2e3YQNYcOULuqZ/S4Xw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pmIIaEyrTDf1eFnu4mZI7kyPoY5kOEfx9sapwP2kMZn4DQtFLfjjeUKvdm1YWpK5C6GTmbfjQIdlNMb0ToIcLfC9DPE2yLK1sOl13sfUcKs1jfqWED+cTbLjM+utdIyHAEUZC5aq5yJEL2TU485efezAzMdtvteH5VfbjIezLJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QZjFrhjO; arc=none smtp.client-ip=209.85.214.182
+	 In-Reply-To:Content-Type; b=Sp+vPPaHeUVsRHksT2yu5GhIGGkofYDBufjnB0l4RKxxXlFvW6hLUiRGUK7Xuoj5wcxSGJmE89Us1/DFGKxXqv13CSG5mKygTvix1ymqvXmjekTg/Tc9r4oe/HdchYU3wqjoqU3Zvwn/zXHR4blp0FVuy7mJ8DlO72Yij/XyBBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aoWo3Q9L; arc=none smtp.client-ip=209.85.210.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1d944e8f367so11153485ad.0;
-        Thu, 15 Feb 2024 10:17:12 -0800 (PST)
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6e2e6bcc115so563444a34.3;
+        Thu, 15 Feb 2024 10:42:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708021032; x=1708625832; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708022552; x=1708627352; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=5PQMJU8VBCATAr8+bfgPz9ZOvObk7WnHIMIqwe0D4ho=;
-        b=QZjFrhjOhmuQJckQlzIBVM/ZNVzSJV8/BQSyiywPorDtDBqjXKwEXgQMTvGbPfVDq5
-         sQqcYqgTWQGUh/72GFwEeb5TPC7xCtyTDlgXd/rakQPzfuWsYuw+H11L/xgjeUrcAFqP
-         tCCKCHC80UN7Z7h8okv3poNKjHDJrHIT3ZuSw/QEFKp/Qm0/wqQy2zgBZ7i2gzuD3zb/
-         QkS85+PjAO9I+wOg9l/5tCLGc/KsTdVXftWYN09sv71WP0gyoWh1U6IGnoJ+pZdC64km
-         WAtmi5ZYRoXqhZMv1yVs6gpTaEbRUi2bDwbhh7ybYNNH6ti0qiZoc5hDpxagVtQTXX4S
-         85zg==
+        bh=+o70wlUduz1li0fSfRZ7G8yjDLISCYX73d3koZT25b4=;
+        b=aoWo3Q9LUYOJxPvN2bAzD0XwCreuy8Y/Vx48WS0uDn0JHkWYBhN/27gCyOS+1uWY04
+         fFmkx2TtjpLal6QvOfb6D+UQeE+Si4ie+HYy8lFno/NooAhmefKluGep5gQ8MZ0+65YW
+         T6MBdzB2woaBFmX5mAzUuQPvWNyuI4gGPMU5rIUIFbFhqofDteVxFvFF23M78xBwR6HX
+         p25vZYpX7BBxFpkGNJxovSgHEC0YaRzMn0KiLwIPU621ezEACWPw37Y44xWkAk9Vl//M
+         Tjmb+U2WAZlAKORxGZaAioR6KM1V4D828QewopYYn2bRwaItITry0mR2XkVpgBgYJ4e4
+         ejYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708021032; x=1708625832;
+        d=1e100.net; s=20230601; t=1708022552; x=1708627352;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5PQMJU8VBCATAr8+bfgPz9ZOvObk7WnHIMIqwe0D4ho=;
-        b=HiLpMzr6/yktB592ONxS6ZEVmVNre/REyeKCkVMl3HaR+qL+isG4M1gcYez1l8VG3l
-         rlfxA8H+SINxCRNFXxXiq5C5hcmbXsHMfFSRAdvImMijUbrTcB5kZOJD8geX6YR/S4Tt
-         3h3Gbk3G9Da10bB2JW/+8DktQJ1mKuT5TAK2bJhCQvGojMGQpwICLmTkQcdf1b8zOYJE
-         U+NxrBk66kPFNHvRuw8hBjSqbxUN4Lu1LZPki+0L0gKhSj+8qusTZR8LGsuFo2OjiU4Y
-         Is2VYvJwhV6W+JGVrkb/tNm8PwuaMgiYYjGzIOnjKzNyqFpa+vGAetXvCLoXbAP3NUnm
-         RsZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUgYpFD/bKNY9tL1I3OvmkXVny+ZsaXxT6YQDWpWG4j1gVldUuDHHNU+Ho0XsudYAHjMcYX7PHSKO4LSi7X4oZDYKOicECBy4gMo+oZ
-X-Gm-Message-State: AOJu0YzMWLFaqRT9cD2S9jJQlFo7LqzpYb0AuDyxoIlj7WJGm4vfeRTK
-	nyS1zgvqq8h/FO8rjXif6wIteOvgfa0v8Abfi8yWhue42cCLnJ4Fwyl64q8J
-X-Google-Smtp-Source: AGHT+IE729Qc4xPcsGFIwNXVOyui6G9LgBR5VUshZxIgDwbmV5JWVEeR78P4A0CHDrcpS01TP7YPXQ==
-X-Received: by 2002:a17:902:d548:b0:1db:4419:e933 with SMTP id z8-20020a170902d54800b001db4419e933mr2915151plf.17.1708021031935;
-        Thu, 15 Feb 2024 10:17:11 -0800 (PST)
+        bh=+o70wlUduz1li0fSfRZ7G8yjDLISCYX73d3koZT25b4=;
+        b=mpXYLsuzk8DNf6q7W10sJ/pRvLS9STORGPFslcPg30ftBVxYMBc+M+ecsMNY/pSg9V
+         gs21L6BBmH1lgmhhcxrxzsdeQEAdxhYo4UiDJo8EVSjLFpLJnBvpVrNFkalHlQN61yCj
+         QzMuszudW4rfjqtuXJX1s15Lvb/T4NV2u0lr26w9uk24SOpEs+F1azHBQRrikz0r4u4M
+         NX1QEM2dsMCMM+LSwn6H3KC5Bs8qL1SrStO4b0sY2Y0I6B+1bUAJiB0VNkDbkpE2052u
+         nZ09ouGC4vK8R2cj+yoJrB9mPBbIAhuQxrWGcEqu0FTsMSLsIpT6LGs4n7vTwGLwlvPD
+         ZtyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXzoctTZK8SWzzPRQqWjbYSYAT1uWh9a0revqt3nU5QY8POMctvdXcZIQVA1da0vcc9t3W8DimH83vp4Tii5mv23Qy7wkIlLBKGl5nL
+X-Gm-Message-State: AOJu0YxD3wy8Rjk07VpE32D/+qj2Y91LYvVNgjhqtP8+sRy/mkMoitmO
+	fEKoCI93BRonNmcTZ1T2o7YVwWq1orI0QuPWHzCCkBs7os493OeQ
+X-Google-Smtp-Source: AGHT+IGTAkWah9VSrIviYpJQRJHPHcA+YvTkdJfpHxjC5vJIab9tzg7UJTIEtzAW0OvvmVkrnWkZ1g==
+X-Received: by 2002:a05:6358:5928:b0:176:5a5e:4b7c with SMTP id g40-20020a056358592800b001765a5e4b7cmr3062920rwf.6.1708022551830;
+        Thu, 15 Feb 2024 10:42:31 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id kj4-20020a17090306c400b001d9ed80607esm1556484plb.126.2024.02.15.10.17.10
+        by smtp.gmail.com with ESMTPSA id p23-20020a637417000000b005dcbb855530sm1055015pgc.76.2024.02.15.10.42.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Feb 2024 10:17:11 -0800 (PST)
+        Thu, 15 Feb 2024 10:42:30 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <34c8d6f6-3449-4a5f-b8c8-50faf1621714@roeck-us.net>
-Date: Thu, 15 Feb 2024 10:17:09 -0800
+Message-ID: <a7b70196-2387-4532-94ac-81220fd07088@roeck-us.net>
+Date: Thu, 15 Feb 2024 10:42:29 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -145,7 +145,33 @@ Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 On 2/15/24 09:25, John David Anglin wrote:
-[ ... ]
+> On 2024-02-15 12:06 p.m., Guenter Roeck wrote:
+>> On 2/15/24 08:51, John David Anglin wrote:
+>>> On 2024-02-15 10:44 a.m., Guenter Roeck wrote:
+>>>> On 2/15/24 02:27, David Laight wrote:
+>>>>> ...
+>>>>>> It would be worthwhile tracking this down since there are
+>>>>>> lots of unaligned data accesses (8-byte accesses on 4-byte aligned addresses)
+>>>>>> when running the kernel in 64-bit mode.
+>>>>>
+>>>>> Hmmm....
+>>>>> For performance reasons you really don't want any of them.
+>>>>> The misaligned 64bit fields need an __attribute((aligned(4)) marker.
+>>>>>
+>>>>> If the checksum code can do them it really needs to detect
+>>>>> and handle the misalignment.
+>>>>>
+>>>>> The misaligned trap handler probably ought to contain a
+>>>>> warn_on_once() to dump stack on the first such error.
+>>>>> They can then be fixed one at a time.
+>>>>>
+>>>>
+>>>> Unaligned LDD at unwind_once+0x4a8/0x5e0
+>>>>
+>>>> Decoded:
+>>>>
+>>>> Unaligned LDD at unwind_once (arch/parisc/kernel/unwind.c:212 arch/parisc/kernel/unwind.c:243 arch/parisc/kernel/unwind.c:371 arch/parisc/kernel/unwind.c:445)
+>>>>
 >>>> Source:
 >>>>
 >>>> static bool pc_is_kernel_fn(unsigned long pc, void *fn)
@@ -171,28 +197,45 @@ On 2/15/24 09:25, John David Anglin wrote:
 > using ldd instructions.
 > 
 
-Maybe code such as
-	pc_is_kernel_fn(pc, syscall_exit)
-is wrong because syscall_exit doesn't point to a function descriptor
-but to the actual address. The code and comments in arch/parisc/kernel/unwind.c
-is for sure confusing because it talks about not using
-dereference_kernel_function_descriptor() to keep things simple but then calls
-dereference_kernel_function_descriptor() anyway. Maybe it should just be
-	if (pc == syscall_exit)
-instead.
+How about the patch below ?
 
-The entire code is really odd anyway.
-
-         ptr = dereference_kernel_function_descriptor(&handle_interruption);
-         if (pc_is_kernel_fn(pc, ptr)) {
-
-and then pc_is_kernel_fn() dereferences it again. Weird.
-
-It looks like commit 8e0ba125c2bf ("parisc/unwind: fix unwinder when
-CONFIG_64BIT is enabled") might have messed this up. No idea how to fix
-it properly, though.
-
-Thanks,
 Guenter
+
+---
+diff --git a/arch/parisc/kernel/unwind.c b/arch/parisc/kernel/unwind.c
+index 27ae40a443b8..c2b9e23cbc0a 100644
+--- a/arch/parisc/kernel/unwind.c
++++ b/arch/parisc/kernel/unwind.c
+@@ -214,24 +214,14 @@ static bool pc_is_kernel_fn(unsigned long pc, void *fn)
+
+  static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int frame_size)
+  {
+-       /*
+-        * We have to use void * instead of a function pointer, because
+-        * function pointers aren't a pointer to the function on 64-bit.
+-        * Make them const so the compiler knows they live in .text
+-        * Note: We could use dereference_kernel_function_descriptor()
+-        * instead but we want to keep it simple here.
+-        */
+-       extern void * const ret_from_kernel_thread;
+-       extern void * const syscall_exit;
+-       extern void * const intr_return;
+-       extern void * const _switch_to_ret;
++       void (*ret_from_kernel_thread)(void);
++       void (*syscall_exit)(void);
++       void (*intr_return)(void);
++       void (*_switch_to_ret)(void);
+  #ifdef CONFIG_IRQSTACKS
+-       extern void * const _call_on_stack;
++       void (*_call_on_stack)(void);
+  #endif /* CONFIG_IRQSTACKS */
+-       void *ptr;
+-
+-       ptr = dereference_kernel_function_descriptor(&handle_interruption);
+-       if (pc_is_kernel_fn(pc, ptr)) {
++       if (pc_is_kernel_fn(pc, handle_interruption)) {
+                 struct pt_regs *regs = (struct pt_regs *)(info->sp - frame_size - PT_SZ_ALGN);
+                 dbg("Unwinding through handle_interruption()\n");
+                 info->prev_sp = regs->gr[30];
 
 
