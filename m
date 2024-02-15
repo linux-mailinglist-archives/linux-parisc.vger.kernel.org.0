@@ -1,172 +1,200 @@
-Return-Path: <linux-parisc+bounces-545-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-546-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE14F8569FB
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 17:51:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2E5856A75
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 18:04:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3117DB2296D
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 16:51:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 550D21C23E26
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 17:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BFC136663;
-	Thu, 15 Feb 2024 16:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF051136667;
+	Thu, 15 Feb 2024 17:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="JUdfLTuP"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="FS9z68lJ"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cmx-torrgo002.bell.net (mta-tor-005.bell.net [209.71.212.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233D9135A52
-	for <linux-parisc@vger.kernel.org>; Thu, 15 Feb 2024 16:51:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204E413698F;
+	Thu, 15 Feb 2024 17:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708015870; cv=none; b=oFuUPNCTEoidZ7RBn3HU1g6DdBvawGvoN5x3QDQ42z2vWsdAXPBBj1LML2T7CWXaNxhO3jjNyw4yrnRqpOIDZQwva3rifVVAUVywiYhJUa849FQxRyLMEJrtstwTfDzmTcJ12XdymHwvOxsPz+CqhrdGAsTmLNyGPeD67FVQOcA=
+	t=1708016639; cv=none; b=Pfp7LZn+CDykFKPMFMh9dc6nyph6yvSjxEA6IltAVuZzzqDLW5GGbq12DFTxH+FQzmQcPO66XkvuQQrXwIYjEUYSm1LVgMy5ivhGxlZ778Pusiee1/t+OcgbmoNAyqzqJ2zJpacoAF5YUGoj9qzbxzTrb7Z02Yg/RUL6aTIZk64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708015870; c=relaxed/simple;
-	bh=k3IunI3QdP19FssKwKtKX8zK06UfvUUr1e9oMDmTQ/U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sQlGxO1CUUfkIpSQuAsBcTfFkLe7PwBYQmKm6s3B9b8PLJCvPeKRzBx5JcXlN8FYU9e427SrJjVUf8qVfzkxE+qLus1zsi1VutZWoxxKsQITjBn/cZW/MhwfzUPnyZo6BnwCxuoFOaa/w2lg63hzyqDIi8YNm+g0B5WnvnBpJEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=JUdfLTuP; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-607e37cd180so4687337b3.0
-        for <linux-parisc@vger.kernel.org>; Thu, 15 Feb 2024 08:51:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1708015867; x=1708620667; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=GafFwUWQ5RT68PQ7+bJq6hZ/YFA02lSq/4McrUwaS1o=;
-        b=JUdfLTuP8+wKvcbkqYW5ywl1XyX1AQ/YZNBrOuz8+zmbhGLnoQ5OnFWH8CKjcaW9rk
-         annKq3a343usEHNGXwjGdJ1hCxjzq+cR9Y4R7Xsy8VrmZlz1uGlx6KmPXC+5YORBfNs6
-         EA3UD7nvWJbM1Wz5+XV4K9ZvjX+eN1VaiPmxBRZwrBiAU2o3jKBPgME9r37+n1YVLcEQ
-         JpxeFwP93cjlnWKogm83q9Xl19A2qfQPofU6Vyg5c17kanpPD0BDCuBI2qsgxTBb6qVY
-         JesXOj+NALU5woIS9w37XJ/lRvKKC5iiIXv/+d3mHfgSP3TQcqgIz3xi0O2mRp7N6cKF
-         P8dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708015867; x=1708620667;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GafFwUWQ5RT68PQ7+bJq6hZ/YFA02lSq/4McrUwaS1o=;
-        b=CiZ7g46Xa4L3XxDHGgT11vbyjvnuhNNKxPsy6+GIoUw4nWJCREFqibus5E8i9SpNpp
-         XA/JF9ZyExbDt37jzGMl8iYO5jjC5E/jHrpOTNptw7R4aBLrocMjBId3ioPNU0QBn1nx
-         0n8s+GItlSj9O5aosJGRI0GrTwcfIyIS0S2sKYURJZqpolfWl2YV99C+A6xXgVTpD7KY
-         +XKsl8eq6ov9ruO5jPBaq4UrhXffHL1kxW0Mn1LJz2JPR1Vy5giYQyDl8w0HbxVFlwbz
-         lLXHjw1GtcN2hrBCmzbG0m5cxCnBvCmElZZMHNmPoyiTMweTnV8hV1WhXT8RZMkhsByv
-         lloQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUK0OuKUclB1tsV/k+MUvB2xy/BhYn8BQH6UulmBpiry3IGrowmGpROqFy5tUV2q+D1jLifmWLL/MxGP9oYI31SuBxvPmApJ9Dhit6o
-X-Gm-Message-State: AOJu0Yw3ME9sQ8SlqD/xOvSVMboVfF3lPwGTKAjTBo/BPMHWFL9T8+Q1
-	uLumCM1IdRZPnnrMwRnFTYpdydhJnxprAENXWQk1HYjkqZ4+MR8APIGa0o4YbhY=
-X-Google-Smtp-Source: AGHT+IHHVJKgZe6odd52Cm+vTQZ9r5ZcabHDlvdTYbz6VhdI+bE3ZFo6ASgaSOOQW+Vp+Uty9H4lrQ==
-X-Received: by 2002:a81:ac43:0:b0:607:8efe:979c with SMTP id z3-20020a81ac43000000b006078efe979cmr2086167ywj.41.1708015866852;
-        Thu, 15 Feb 2024 08:51:06 -0800 (PST)
-Received: from ghost ([50.146.0.2])
-        by smtp.gmail.com with ESMTPSA id a189-20020a0dd8c6000000b006078ad0243csm315629ywe.59.2024.02.15.08.51.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Feb 2024 08:51:06 -0800 (PST)
-Date: Thu, 15 Feb 2024 11:51:05 -0500
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: John David Anglin <dave.anglin@bell.net>,
-	David Laight <David.Laight@aculab.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Helge Deller <deller@gmx.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Parisc List <linux-parisc@vger.kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 2/2] lib: checksum: Use aligned accesses for
- ip_fast_csum and csum_ipv6_magic tests
-Message-ID: <Zc5A+c0gmxtygNIa@ghost>
-References: <20240214-fix_sparse_errors_checksum_tests-v8-0-36b60e673593@rivosinc.com>
- <20240214-fix_sparse_errors_checksum_tests-v8-2-36b60e673593@rivosinc.com>
- <2ec91b11-23c7-4beb-8cef-c68367c8f029@roeck-us.net>
- <Zc1pSi59aDOnqz++@ghost>
- <cb4e358b-3fd0-4ca4-bf53-9cc379087304@roeck-us.net>
- <1d5e059e-5b31-415d-ae41-593415812e94@bell.net>
- <Zc2GfgiCpevtKTtS@ghost>
- <11fff7fe-ec4c-4340-a67f-d1d54d0712d8@roeck-us.net>
- <Zc4veRSmxHHqu/bB@ghost>
- <0fa4d53a-6ce7-4f44-81b2-86282f0b9451@roeck-us.net>
+	s=arc-20240116; t=1708016639; c=relaxed/simple;
+	bh=JxaHZLwKPKtb9xWMBkfltHXf2WY7/2Se4NIKHvyS9II=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tv8rUrW6LEe6ox3j4BPHyoN+JGDPMJJR8GsO/wVpKrBQlQH9CID6OrO1quzr73oKm2fX+yGTaFIbtOHFMIC65bBMZTTZ1EFY6yU13JD32A1N8qwhsoQ1FEcFrYqj7hL7Hnq0sDwZ4JdSS6pnwR7Udy32mFSkmn5DN8bZNY9F1KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=FS9z68lJ; arc=none smtp.client-ip=209.71.212.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bell.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1708016637; 
+        bh=KKvgz6hFPrq3Yt2GwJdIIlDAGA+dk5HzFk1bja/wdOY=;
+        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
+        b=FS9z68lJTq8UQ0DDce4ffUKoYT4LurrwPeg+ZXEKmMonbIZ15Jxd432xCIDzNAxhBUE1DKsPLwnkRIm1Ri4CzBwWNZQXg9tIFrdxoBmDrCD708hRlwKU4O4gVYnjRlLjJbasEylkVdQzFQLwB47M5iNTFCep7ZXQwNl6TwEKwPrPazbSzJk4+qQymmD15H8VMI3cKV5bLhEAkrhOFEiwH2eT6TlQuyHYUo6duVeUDvPLchKhEHvag/tkKmZKj8buriapUnzY9XANDpbJKlU656VdYx2cf9LRj/663qHd543Sce8A9kBc+SEF/o5OBToVo0Roi3RB4f0K3YIgReTnUA==
+X-RG-SOPHOS: Clean
+X-RG-VADE-SC: 0
+X-RG-VADE: Clean
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 65CD7507000E1CEE
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvledrvddtgdelgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeelhfevheeftefhtdevteegheejtdeifeejffduuedugeffleevheegteeugfeugeenucffohhmrghinhepvghnthhrhidrshgsnecukfhppedugedvrdduvdeirdduuddvrddvfeefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepudegvddruddviedrudduvddrvdeffedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepuddupdhrtghpthhtohepffgrvhhiugdrnfgrihhghhhtseetvegfnfetuedrvefqofdprhgtphhtthhopeflrghmvghsrdeuohhtthhomhhlvgihsehhrghnshgvnhhprghrthhnvghrshhhihhprdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegthhgrrhhlihgvsehrihhvohhsihhntgdrtghomhdprhgtphht
+	thhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrhesghhmgidruggv
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from [192.168.2.49] (142.126.112.233) by cmx-torrgo002.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 65CD7507000E1CEE; Thu, 15 Feb 2024 11:51:38 -0500
+Message-ID: <4723822c-2acf-4c41-899c-1e3d5659d1d8@bell.net>
+Date: Thu, 15 Feb 2024 11:51:39 -0500
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/2] lib: checksum: Use aligned accesses for
+ ip_fast_csum and csum_ipv6_magic tests
+Content-Language: en-US
+To: Guenter Roeck <linux@roeck-us.net>, David Laight
+ <David.Laight@ACULAB.COM>, Charlie Jenkins <charlie@rivosinc.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20240214-fix_sparse_errors_checksum_tests-v8-0-36b60e673593@rivosinc.com>
+ <20240214-fix_sparse_errors_checksum_tests-v8-2-36b60e673593@rivosinc.com>
+ <2ec91b11-23c7-4beb-8cef-c68367c8f029@roeck-us.net>
+ <a7e9691432374000b9566a0201d004e6@AcuMS.aculab.com>
+ <c22f28a2-b042-4abe-b9e4-a925b97073bb@roeck-us.net>
+From: John David Anglin <dave.anglin@bell.net>
+Autocrypt: addr=dave.anglin@bell.net; keydata=
+ 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
+ T70V9SSrl2hiw38vRzsl
+In-Reply-To: <c22f28a2-b042-4abe-b9e4-a925b97073bb@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0fa4d53a-6ce7-4f44-81b2-86282f0b9451@roeck-us.net>
 
-On Thu, Feb 15, 2024 at 08:30:22AM -0800, Guenter Roeck wrote:
-> On 2/15/24 07:36, Charlie Jenkins wrote:
-> > On Thu, Feb 15, 2024 at 12:56:13AM -0800, Guenter Roeck wrote:
-> > > On 2/14/24 19:35, Charlie Jenkins wrote:
-> > > > On Wed, Feb 14, 2024 at 10:00:37PM -0500, John David Anglin wrote:
-> > > > > On 2024-02-14 8:58 p.m., Guenter Roeck wrote:
-> > > > > > Specifically:�Yes,�the�carry/borrow�bits�should�be�restored.�Question�is
-> > > > > > if�the�Linux�kernel's�interrupt�handler�doesn't�restore�the�carry�bits
-> > > > > > or�if�the�problem�is�on�the�qemu�side.
-> > > > > The carry/borrow bits in the PSW should be saved and restored by the save_specials
-> > > > > and rest_specials macros.� They are defined in arch/parisc/include/asm/assembly.h.
-> > > > 
-> > > > Why would they be needed to be restored in linux? The manual says "The
-> > > > PSW is set to the contents of the IPSW by the RETURN FROM INTERRUPTION
-> > > > instruction". This means that the PSW must be restored by the hardware.
-> > > > 
-> > > > We can see the QEMU implementation in:
-> > > > 
-> > > > rfi:
-> > > > https://github.com/qemu/qemu/blob/v8.2.1/target/hppa/sys_helper.c#L93
-> > > > 
-> > > > handling interrupt:
-> > > > https://github.com/qemu/qemu/blob/v8.2.1/target/hppa/int_helper.c#L109
-> > > > 
-> > > > However the implementation appears to be faulty. During an RFI, the PSW
-> > > > is always set to 0x804000e (regardless of what the PSW was before the
-> > > > interrupt).
-> > > > 
-> > > 
-> > > Not sure if I agree. The interrupt handler in Linux is the one which needs to set
-> > > IPSW. Looking into the code, I agree with Dave that the tophys macro seems to
-> > > clobber the carry bits before psw is saved, so they can not really be restored.
-> > > The only issue with that idea is that I can only reproduce the problem with
-> > > an interrupted ldd instruction but not, for example, with ldw. This is why it
-> > > would be really important to have someone with real hardware test this.
-> > > 
-> > > Thanks,
-> > > Guenter
-> > 
-> > Yes, we definitely feedback from somebody with access to hardware, but I
-> > do not understand how "The PSW is set to the contents of the IPSW by the
-> > RETURN FROM INTERRUPTION" could be interpreted as anything except that
-> > the hardware is expected to over-write the contents of the PSW during
-> > the rfi.
-> > 
-> 
-> Sure, I absolutely agree. But that assumes that IPSW is set correctly
-> in the Linux interrupt handler. We do know that something odd happens
-
-The manual defines the saving of PSW as the responsibility of the
-hardware as well: "When an interruption occurs, the current value of the
-PSW is saved in the Interruption Processor Status Word (IPSW)". I don't
-think this should be interpreted to mean that a software interrupt
-handler is required to save the IPSW.
-
-- Charlie
-
-> when an unaligned ldd is encountered. At least for my part I don't know
-> if the problem is in emulate_ldd() in the Linux kernel or in the ldd
-> implementation and trap handling in qemu. I do know (from my logs)
-> that qemu does see the correct PSW/IPSW values, because they do
-> show up correctly in the Linux kernel when running the qemu emulation.
-> Only it somehow gets lost when the Linux interrupt handler returns.
-> 
-> Thanks.
+On 2024-02-15 10:44 a.m., Guenter Roeck wrote:
+> On 2/15/24 02:27, David Laight wrote:
+>> ...
+>>> It would be worthwhile tracking this down since there are
+>>> lots of unaligned data accesses (8-byte accesses on 4-byte aligned addresses)
+>>> when running the kernel in 64-bit mode.
+>>
+>> Hmmm....
+>> For performance reasons you really don't want any of them.
+>> The misaligned 64bit fields need an __attribute((aligned(4)) marker.
+>>
+>> If the checksum code can do them it really needs to detect
+>> and handle the misalignment.
+>>
+>> The misaligned trap handler probably ought to contain a
+>> warn_on_once() to dump stack on the first such error.
+>> They can then be fixed one at a time.
+>>
+>
+> Unaligned LDD at unwind_once+0x4a8/0x5e0
+>
+> Decoded:
+>
+> Unaligned LDD at unwind_once (arch/parisc/kernel/unwind.c:212 arch/parisc/kernel/unwind.c:243 arch/parisc/kernel/unwind.c:371 
+> arch/parisc/kernel/unwind.c:445)
+>
+> Source:
+>
+> static bool pc_is_kernel_fn(unsigned long pc, void *fn)
+> {
+>         return (unsigned long)dereference_kernel_function_descriptor(fn) == pc;
+This looks wrong to me.  Function descriptors should always be 8-byte aligned.  I think this
+routine should return false if fn isn't 8-byte aligned.
+> }
+>
+> Disassembled:
+>
+>  c38:   50 3c 00 00     ldd 0(r1),ret0
+>  c3c:   08 1b 02 44     copy dp,r4
+>  c40:   0f 80 10 da     ldd 0(ret0),r26    <--
+>  c44:   37 dd 3f a1     ldo -30(sp),ret1
+>  c48:   51 02 00 20     ldd 10(r8),rp
+>  c4c:   e8 40 f0 00     bve,l (rp),rp
+>  c50:   51 1b 00 30     ldd 18(r8),dp
+>
+> Hmm, interesting. See below for a possible fix. Should I submit a patch ?
+>
+> Thanks,
 > Guenter
-> 
+>
+> ---
+> diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+> index ab23e61a6f01..1d2aab619466 100644
+> --- a/arch/parisc/kernel/entry.S
+> +++ b/arch/parisc/kernel/entry.S
+> @@ -772,6 +772,7 @@ ENTRY_CFI(_switch_to)
+>         bv      %r0(%r2)
+>         mtctl   %r25,%cr30
+>
+> +       .align  8
+Code entry points only need 4-byte alignment.
+>  ENTRY(_switch_to_ret)
+>         mtctl   %r0, %cr0               /* Needed for single stepping */
+>         callee_rest
+> @@ -1702,6 +1703,7 @@ ENTRY_CFI(sys_rt_sigreturn_wrapper)
+>         LDREG   PT_GR28(%r1),%r28  /* reload original r28 for syscall_exit */
+>  ENDPROC_CFI(sys_rt_sigreturn_wrapper)
+>
+> +       .align 8
+Ditto.
+>  ENTRY(syscall_exit)
+>         /* NOTE: Not all syscalls exit this way.  rt_sigreturn will exit
+>          * via syscall_exit_rfi if the signal was received while the process
+
+Dave
+
+-- 
+John David Anglin  dave.anglin@bell.net
+
 
