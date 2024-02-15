@@ -1,76 +1,53 @@
-Return-Path: <linux-parisc+bounces-535-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-536-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014CA8558DC
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 02:58:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC02D855976
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 04:20:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F96EB26637
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 01:58:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66E6B284499
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 03:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192471866;
-	Thu, 15 Feb 2024 01:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925F84C85;
+	Thu, 15 Feb 2024 03:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y5WoLlHd"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="5DI3mSQV"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-003.bell.net [209.71.208.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B26D184E;
-	Thu, 15 Feb 2024 01:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D7528E6;
+	Thu, 15 Feb 2024 03:20:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707962294; cv=none; b=mzoVLNBUJUMtImrnyeF2GUFXbzR9duNjTjWrO/RXXjBmryNT4uZgwCWzGP6duJBp9NB4ZZMR6vopx52q9+6iCf3d9uOnMY9xSf327S2B7uGqCnw6TeVgSoivxgOc+rnTWYoTNYharygYJF5/x7msyOf5snxBCyfZfapi074IW2g=
+	t=1707967212; cv=none; b=G98hnGN/TTafGdo1DxLq18asulzvCwXX3aimHFNt/qpypW/+KdCinWqUHO4DTCMd8icQ84Md5kTXrx5wwRn0SApWzd7/tsNfm8y4ec7/Po1eVIPILalEqcJI2ZHe1sTBdPA1EbCoSTDu8oHP/zU3jRccN3IbPKfL56toyngUxf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707962294; c=relaxed/simple;
-	bh=dyYKjfJrvnkHCRfDScJsdh2BCcE8PsyhqJ4uBpiLcQA=;
+	s=arc-20240116; t=1707967212; c=relaxed/simple;
+	bh=IrqKlg0QgVjfakroNteNZ/rwHZR2Ky1rH9zrdcNLZp4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mmm8sbETePUtcJC8TZyC1jSlHYpozwJfKV9mzHaKDPuItxONjJXd1Xsf9qV7kL6YYN4LH3etiAbemf7eeosET51uKXzR764/WY9LuEqez1DY7D39re2biRspu11Tn/vJulmzAGu0QgpMVjc+3UtUdbnFO2O3XbFR2J0B+QLn2BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y5WoLlHd; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-5dbf7b74402so345084a12.0;
-        Wed, 14 Feb 2024 17:58:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707962291; x=1708567091; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=htGW/e8GI+F2UFASV1GomX9AsIMgFedKg9ypjTyRfqk=;
-        b=Y5WoLlHdxLNB+YmSyCzT9XQ+7ui5YD5RxUc41pyGgDAmkRjcxfTfsXmukcanLM1tjk
-         TmdFUYraYKMSD9s1iKmSJpo0OH20HM/YBZW/s7nmyakI/Z9/CXqzTNoGVCa7qMK+JTuN
-         udB7MhnYBgM4T11hp7yoa9eK0Wi+b8iw/aHFuMy/FvMEpWfiZ04NnUP9pqOKwNTnfp4C
-         Qj1rMO/4g31vA1r+RQ3G5top4I1hrveaysMt/EoQtiEfYYMuN/VBqzcBJLiTQAx0eqSP
-         b1CLhKrMGN1/PoDgpC0av/SQWQ2dMM3kGq5MRF+xkQRxZjR5P/V+N0jTdKPHvnnzFk24
-         Yreg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707962291; x=1708567091;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=htGW/e8GI+F2UFASV1GomX9AsIMgFedKg9ypjTyRfqk=;
-        b=MTzK3O3uOqLJBtry644QYEBu8+OKySByUA388bKTVcgNLhyXslCIp73lmKomWhSh3J
-         TWArQ9FH+A6amgp9v4BfHgpbeUdXWzGIkM5WNi9FkacL/SJ162fq3T1O2XRqSBezbv94
-         kbyblHZD0hQuog0c0bpuq6CxvxStg+FAPvG7xynIVlrmhHUeEEKsLtGca4DK8oJ/lp8f
-         H7kXWynS6XPanZ82ani5DCuWPeNyZltVRY++45i0Nmij7dd23U5hyn1GhX2kA4WLqo7D
-         +1DDQ1kjNX5W5nQ9PjwRy/rQUGFmxSsBgp5szp8VpRN8NOrj+QG46yKF7AjJ96XZkX6I
-         va+w==
-X-Forwarded-Encrypted: i=1; AJvYcCViQ+UGP7CENfRp86OMYo7/hSf3LiVuFjVGFOzO6dzMG5fHOeo5YV1ZC+Q/N85mQB62oZ3kzYwnIHrb3vdMpEpS4EZGeog3TjJTNPVASwp0wRnyTVgeVDY6R+SZVUqvzpdaAluH10CWQca7
-X-Gm-Message-State: AOJu0YwmIlEN55Ma3TUSnbbTVbnINJgCAoo65/evaYVZDe7g+WOomSjP
-	ny2H8YtMVaq0ULRJGe5CXcFEGNo+R0qks7++X5k8+0MLKbKuRUBhSnHr8OGt
-X-Google-Smtp-Source: AGHT+IEizk+6xlAROeTrgkBev5o0tVhsDH3KFE4TJjnGEzH7VB+7oN00ZHxg3vRyhNI1zT2yQBs2pg==
-X-Received: by 2002:a05:6a20:e605:b0:1a0:686b:afec with SMTP id my5-20020a056a20e60500b001a0686bafecmr605289pzb.10.1707962291398;
-        Wed, 14 Feb 2024 17:58:11 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id x41-20020a056a0018a900b006e02f4bb4e4sm127106pfh.18.2024.02.14.17.58.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Feb 2024 17:58:10 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <cb4e358b-3fd0-4ca4-bf53-9cc379087304@roeck-us.net>
-Date: Wed, 14 Feb 2024 17:58:09 -0800
+	 In-Reply-To:Content-Type; b=BOHP1zEJUL6dYYLAYH0/6nTmNq1e3uBUa78ZsHum49lB+P2++uCVh6FrzUTB7/pRAWN2+FsFU2wYt3CovcbzTnknloX3+IdR8oY/qRVHnfovVIBjr3HsPKRTElPua/akf8mfSfxYlMMsHhAZfZUh3WS4OIKWXJYgBLhiab63fqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=5DI3mSQV; arc=none smtp.client-ip=209.71.208.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bell.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1707967210; 
+        bh=j7ny1h4tTwMoY9otL2Ft1oAXAdRzqVgab/AOorB5XCo=;
+        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
+        b=5DI3mSQVacpPI+YClncPFgwNuxcpcxdoNz6pVna2tZBv4OYmG+sGKmU8UQ8LsvDC1CoHqnQ7a1BcFroNNnVg/bxaOwaUuFFoUpD/cL7zHHOpeDl8pyMSfDSpc0hDyQxJVXs/tYMAfKv7orzSnKnZFip7k3LZ9jJWOCkfYzwBII755/6835dJmg7k4/dod9XHMxPIe+hrcNlqkAIV43vyvH/iGndnetEt0NbOZ7Jcmtj9NaaeP/Ql0P1cFWfa1uRHimwhtcFDRz9uc8oBJhvZ1il+aIA3lCtEtjIHv745AVEmx+8R9UjrPetYe4DFSZbqPZg/5ITHR7t+NhJaDTgU+Q==
+X-RG-SOPHOS: Clean
+X-RG-VADE-SC: 0
+X-RG-VADE: Clean
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 65CD749C0000A605
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvledrudekgdehvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejleffffejhefggfeuheelgeefgeeuieegtdekffegudeuteffgeffjedukefgueenucfkphepudegvddruddviedrudduvddrvdeffeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedugedvrdduvdeirdduuddvrddvfeefpdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeduuddprhgtphhtthhopeffrghvihgurdfnrghighhhthesrggtuhhlrggsrdgtohhmpdhrtghpthhtoheplfgrmhgvshdruehothhtohhmlhgvhieshhgrnhhsvghnphgrrhhtnhgvrhhshhhiphdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheptghhrghrlhhivgesrhhivhhoshhinhgtrdgtohhmpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggv
+	lhhlrdhnvghtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvg
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from [192.168.2.49] (142.126.112.233) by cmx-mtlrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 65CD749C0000A605; Wed, 14 Feb 2024 22:00:37 -0500
+Message-ID: <1d5e059e-5b31-415d-ae41-593415812e94@bell.net>
+Date: Wed, 14 Feb 2024 22:00:37 -0500
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -81,7 +58,7 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v8 2/2] lib: checksum: Use aligned accesses for
  ip_fast_csum and csum_ipv6_magic tests
 Content-Language: en-US
-To: Charlie Jenkins <charlie@rivosinc.com>
+To: Guenter Roeck <linux@roeck-us.net>, Charlie Jenkins <charlie@rivosinc.com>
 Cc: David Laight <David.Laight@aculab.com>,
  Palmer Dabbelt <palmer@dabbelt.com>,
  Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>,
@@ -91,141 +68,68 @@ Cc: David Laight <David.Laight@aculab.com>,
 References: <20240214-fix_sparse_errors_checksum_tests-v8-0-36b60e673593@rivosinc.com>
  <20240214-fix_sparse_errors_checksum_tests-v8-2-36b60e673593@rivosinc.com>
  <2ec91b11-23c7-4beb-8cef-c68367c8f029@roeck-us.net> <Zc1pSi59aDOnqz++@ghost>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <Zc1pSi59aDOnqz++@ghost>
+ <cb4e358b-3fd0-4ca4-bf53-9cc379087304@roeck-us.net>
+From: John David Anglin <dave.anglin@bell.net>
+Autocrypt: addr=dave.anglin@bell.net; keydata=
+ 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
+ T70V9SSrl2hiw38vRzsl
+In-Reply-To: <cb4e358b-3fd0-4ca4-bf53-9cc379087304@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Charlie,
+On 2024-02-14 8:58 p.m., Guenter Roeck wrote:
+> Specifically: Yes, the carry/borrow bits should be restored. Question is
+> if the Linux kernel's interrupt handler doesn't restore the carry bits
+> or if the problem is on the qemu side.
+The carry/borrow bits in the PSW should be saved and restored by the save_specials
+and rest_specials macros.  They are defined in arch/parisc/include/asm/assembly.h.
 
-On 2/14/24 17:30, Charlie Jenkins wrote:
-> On Wed, Feb 14, 2024 at 03:03:07PM -0800, Guenter Roeck wrote:
->> On 2/14/24 13:41, Charlie Jenkins wrote:
->>> The test cases for ip_fast_csum and csum_ipv6_magic were failing on a
->>> variety of architectures that are big endian or do not support
->>> misalgined accesses. Both of these test cases are changed to support big
->>> and little endian architectures.
->>>
->>> The test for ip_fast_csum is changed to align the data along (14 +
->>> NET_IP_ALIGN) bytes which is the alignment of an IP header. The test for
->>> csum_ipv6_magic aligns the data using a struct. An extra padding field
->>> is added to the struct to ensure that the size of the struct is the same
->>> on all architectures (44 bytes).
->>>
->>> The test for csum_ipv6_magic somewhat arbitrarily aligned saddr and
->>> daddr. This would fail on parisc64 due to the following code snippet in
->>> arch/parisc/include/asm/checksum.h:
->>>
->>> add		%4, %0, %0\n"
->>> ldd,ma		8(%1), %6\n"
->>> ldd,ma		8(%2), %7\n"
->>> add,dc		%5, %0, %0\n"
->>>
->>> The second add is expecting carry flags from the first add. Normally,
->>> a double word load (ldd) does not modify the carry flags. However,
->>> because saddr and daddr may be misaligned, ldd triggers a misalignment
->>> trap that gets handled in arch/parisc/kernel/unaligned.c. This causes
->>> many additional instructions to be executed between the two adds. This
->>> can be easily solved by adding the carry into %0 before executing the
->>> ldd.
->>>
->>
->> I really think this is a bug either in the trap handler or in the hppa64
->> qemu emulation. Only unaligned ldd instructions affect (actually,
->> unconditionally set) the carry flag. That doesn't happen with unaligned
->> ldw instructions. It would be worthwhile tracking this down since there are
->> lots of unaligned data accesses (8-byte accesses on 4-byte aligned addresses)
->> when running the kernel in 64-bit mode. On the other side, I guess this
->> is a different problem. Not sure though if that should even be mentioned
->> here since that makes it sound as if it would be expected that such
->> accesses impact the carry flag.
-> 
-> I wasn't confident it was a bug somewhere so that's why I sent this patch.
-> 
-> However, I have just found the section of the processor manual [1] I was
-> looking for (Section Privileged Software-Accessible Registers subsection
-> Processor Status Word (PSW)):
-> 
-> "Processor state is encoded in a 64-bit register called the Processor
-> Status Word (PSW). When an interruption occurs, the current value of the
-> PSW is saved in the Interruption Processor Status Word (IPSW) and
-> usually all defined PSW bits are set to 0.
-> 
-> "The PSW is set to the contents of the IPSW by the RETURN FROM
-> INTERRUPTION instruction. The interruption handler may restore the
-> original PSW, modify selected bits, or may change the PSW to an entirely
-> new value."
-> 
-> Stored in the PSW register are the "Carry/borrow bits". This confirms
-> that the carry/borrow bits should be restored. The save is supposed to
-> automatically happen upon an interrupt and restored by the RETURN FROM
-> INTERRUPTION, thus this is a QEMU bug and not a Linux bug (please
-> correct me if I am wrong).
-> 
+However, it appears the tophys macro might clobber the carry bits before they
+are saved in intr_save.
 
-I know that much (I looked into the manual as well), I just really don't
-know if this is a Linux bug or a QEMU bug, and I have not been able to
-nail it down. I think someone with access to hardware will need to confirm.
+Dave
 
-Specifically: Yes, the carry/borrow bits should be restored. Question is
-if the Linux kernel's interrupt handler doesn't restore the carry bits
-or if the problem is on the qemu side.
-
-> This v8 was not needed after-all it seems. It would be best to stick
-> with the v7.
-> 
-I tend to agree; after all, v7 exposes the problem, making it easier to
-determine if the problem can be reproduced on real hardware.
-
-FWIW,I wrote some test code which exposes the problem. It is quite
-easy to show that carry is always set after executing ldd on an unaligned
-address. That is also why I know for sure that the problem is not
-seen with ldw on unaligned addresses.
-
-Thanks,
-Guenter
+-- 
+John David Anglin  dave.anglin@bell.net
 
 
