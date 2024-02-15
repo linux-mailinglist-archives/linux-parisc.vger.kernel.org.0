@@ -1,77 +1,76 @@
-Return-Path: <linux-parisc+bounces-532-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-533-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E7EB8556D5
-	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 00:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C588558C1
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 02:24:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9447F1C20E06
-	for <lists+linux-parisc@lfdr.de>; Wed, 14 Feb 2024 23:03:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95F431C221BC
+	for <lists+linux-parisc@lfdr.de>; Thu, 15 Feb 2024 01:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FAF565191;
-	Wed, 14 Feb 2024 23:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED6615A4;
+	Thu, 15 Feb 2024 01:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gHvL7Eje"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BsJ4FpBR"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B09B128388;
-	Wed, 14 Feb 2024 23:03:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3546D10F2;
+	Thu, 15 Feb 2024 01:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707951792; cv=none; b=lG/edtT2Y+8QmeypVZBZ7SJvqN4fUcvmT+cqpNq1w2r1xju/DVVIPpKAtkhjDrB6VJKjMdj1HpQ3Ctt6r+kxG6mhrQkyKjFgC8UjdWeY0N452Xrs+pm8ufn2zrbyDQMAv5ufaXOz5Uq+oEKOpjCasN+gf/XnFaD6N28Kq6EK+/w=
+	t=1707960256; cv=none; b=XmJBWS7pdyhsB+1zViuXYeoYF0Zlv857PeLSQXu4snMLBE1Pu/Il73OPFlT7dkMQ7ePPCwssOGwZGqPaLoRGcBBgH2r1r1BV3cOKXEOsiB1OrRrGobI/Kjv0vcyiRHW7XeKAVRz9ZkH6RtzuV0DnYRihZ8LCggtHNqwIVg250vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707951792; c=relaxed/simple;
-	bh=ykirw4cmA2+9ydHbNedf3+zryWiqyI2UNN0bE/4GBw0=;
+	s=arc-20240116; t=1707960256; c=relaxed/simple;
+	bh=PgXSHMP1jNw+Xh52N9SCK2KPIf7b2fiKcPI3A90/8aY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ihr/24bsmw19gxnpm570nDMbBLntSqW0Q4/L8UF8XHpQ0mce4o7ijZeREJjzln/uQZLkTShRNyku3zFu6GLllU92fS3fd2oVJ2lh+SvaVLwQnRL5KnOgm4JKnGKuktSMtpduJrjL4mu9dI7FjzdlHe7M1toF4uTtYIGhtVsthzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gHvL7Eje; arc=none smtp.client-ip=209.85.215.172
+	 In-Reply-To:Content-Type; b=lb+BrvEsnqrzUXvd6PGwRKOZOEc9QwOqgqMdewxaOSmRNY4SOT/SIo8IQgps3FKDEjn2IF3VHYyJAtY8Ml6/RfZqPw9BjxfY58P+D270Li1muX9nj8V1ToMFRKrbdH3W6u2V4FFnkbCwXQUm1htswSrrY3dy6OQXrTMIXKeihSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BsJ4FpBR; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-5d8b70b39efso267059a12.0;
-        Wed, 14 Feb 2024 15:03:10 -0800 (PST)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6e104196e6eso456452b3a.0;
+        Wed, 14 Feb 2024 17:24:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707951790; x=1708556590; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1707960254; x=1708565054; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=IULViN1YE3jnUbW2nwCagZ5usHptjYJ+ObRYjMrSkZQ=;
-        b=gHvL7EjeOt+ADDdTMRlLJg8PDKz9ygoScwZtAyB3PtAX/HVDOTmFTDv6jKit3cVgcR
-         VIZmOgkd0UrBRom6mPdT0tBVMgrNQYqaeUlYhqCe8kwkOXs5Dki/if4yodMUyZAsJfMQ
-         9kBo+TNK9ilKuS/PX39cUueaQtKUBTLqQHRJ7DkfKiE8asgSB4ANCDK7BmM0PwImcQ70
-         KyFXqDq2yQXyg+eHbIPdwNO/2UUkCaXqM/QOATjE61VexNC0u3KKVvszbMq6xs5GeXuN
-         estpOy4nI6fNcqj/8Q5pNpD51KKKl/fN+9UpJe/k44+BxM7X8cIrwYz1ADdDUU7qK46p
-         xOkw==
+        bh=gedE0L9Ouy/oIx8vXboFUteCNYZmLOHoNTlwQC5vaB4=;
+        b=BsJ4FpBRvJovcYn2/RQnfntX0k8oSjHz8uUdvG6qvO0XQATqNcG0nlH5UuY0E9b1Lg
+         V5/GjAfJlrj6tPanKUMrsXXfcJEg9GZVaz7RwuvTIWwxzwdukJ8eRbM29AluR/YF2GHo
+         4IknZUkcy7nkfq90KVCp7TcG6RqqPCBaq/El2R/lcQeq86ltSNfVMQTt+yft1KyDUd2J
+         CmiL6iTR5rJFVGTp6jz0YEWoNtaBUc4Cho1KMOFI12NMbBx3EpbWV1hhvP6y4Lm5XIIv
+         ioDUa0hGPPQpzLedO1pVY+VT/nEWk5UjJbqS0r9m55CysX5hEp0SE27ORnFx9yorMI4p
+         jGxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707951790; x=1708556590;
+        d=1e100.net; s=20230601; t=1707960254; x=1708565054;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IULViN1YE3jnUbW2nwCagZ5usHptjYJ+ObRYjMrSkZQ=;
-        b=rw22FGa7VenTVvdcXArifCfvm08TjK+dxOC1j6IVvXzedVCzkgMNZQb2V8EqKfPCYI
-         H+tErTEkkgiQdp40BB9V+0xkHsEZwYKNLpNVBwhhBfgdJ7oH3IfnhzfEWB9LIFiYoRUP
-         LYW+h8pXRWq9f7kR6jsSzETrAsCOI1Fd9z+dil7QZ4Ft6YY3b+3AyVrtMkJke96ItpcO
-         99+SfRutzFnYRiungZOYGhrFT85C7/XLbG95AHROli+nGkaNH7PJX8m/pkfrBRPs9xJF
-         SpaCSAeACiyCcwMV+YlOMu2SCYOk1YjErLzDS96YLXg9FToX6YhUCaEqLcYzwDaxv/2V
-         e/Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCVreuo1CZqrPJi7JaF9i+2dKCUR5IXFVw9QrZ+SQM5k1OnEjDhl6iQkOFfAQzGQbDe+X39FdIRhTBsLvR/Z0DxxT4IO24M/60P3JLhf
-X-Gm-Message-State: AOJu0YykbjJGjS1RbE1em5G3gOeEoqH/C6QnY68A5QzDlB5B6ojIyhvN
-	Une/Q0C/mQegMkx94BbLT0xSuFMgimZiCzhSdRup5KkF/81RxUsf
-X-Google-Smtp-Source: AGHT+IF7nzEB/BdTWQHw2nfTZqmx63PWm2Z6al/3WdycoTCSjl2mX04/TarUQVCor2lhd5FyW+4VRw==
-X-Received: by 2002:a05:6a20:d38f:b0:1a0:6856:d1a9 with SMTP id iq15-20020a056a20d38f00b001a06856d1a9mr369641pzb.10.1707951789540;
-        Wed, 14 Feb 2024 15:03:09 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUtFgpjvamH4s9HGKND8D1df2bUnh8D3uLtTDbl4NTB2QmoGQDv4jXjFAKFDUGI86nFBstfodeOVZsMO5ssIsnXDy1TRBUxGfXYNlL0a52DMYF45x0J701+nBtT5EvjCOILDfGLaqEz9zmYS2DgzY/9PCkb7BFPHAQB+iG7Yjq86oFIStFSziFLF9YfzQb/z6wAkgo71Q9SLzdWRkzzgtlgXitgvv2RACgIL7zRgKVXbysJLfQZ6VEvegu4KzrFdgFYyru3Tjxh1lH56sNKX3M2xE9Xk3/cwCMSheYI3q3vMdoVpw==
+        bh=gedE0L9Ouy/oIx8vXboFUteCNYZmLOHoNTlwQC5vaB4=;
+        b=CypMZli75dC4HWBOkhsraoUAcjv4p+VfcpYQKF3I2PES92kSQc/eXJklSshCJIq81/
+         MIPLzhxR0PviH5WPwbwRQpvunMoGVFbkqBtrVm57gF6w1FXDqfZ0uVXlq/TeO0ggilcP
+         UdX4gjGwgf/casbOeWXqEl7u05VN4zKKzh8YaQM7KpVrAcyyAjJLVuwbiOQnpPDFSgJU
+         Dumy2Z2gky5rdigyVFCkIbE/uz8gzURRzD2SwHavETMwmPk99NoLTYQCuzO0JOO8YImC
+         Dsho00Yn6L9PnkhyWEEvYxZe/7/ubUur0MAMecKgYl0kSzhfp0RsgsoVGhadkdpNjZEW
+         krvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXdqdP0FD/TL+Lk4iZxJz/oBOY895cjY+InmRfbaLHoIn9bUzwxf1DsKNs2e1MoJMo1pJD4VNfqCai8SfWIkrIN8LfH6kNEwc4oJ615
+X-Gm-Message-State: AOJu0Yz1ZS77mvNF3l0mjBykQUpvGMJErkMiDSDmIRdFjUBu66BQyjfH
+	VytTOiO2sLsfr14OpIGuCF9jlWf3bg0BdD8hjjeDPTdieE3LPd/9
+X-Google-Smtp-Source: AGHT+IEn49lwYt768Aluu90Nocb2R1YsoTNL8qRJtToIE2r9kTeYeZAHhmtz6zkH3MqGi0YPR3IDtg==
+X-Received: by 2002:a05:6a00:1995:b0:6e0:e618:7eb0 with SMTP id d21-20020a056a00199500b006e0e6187eb0mr651601pfl.8.1707960254432;
+        Wed, 14 Feb 2024 17:24:14 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id fd23-20020a056a002e9700b006e03cce3f4asm9914588pfb.25.2024.02.14.15.03.08
+        by smtp.gmail.com with ESMTPSA id o16-20020a056a00215000b006e0938f7c57sm86145pfk.121.2024.02.14.17.24.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Feb 2024 15:03:09 -0800 (PST)
+        Wed, 14 Feb 2024 17:24:13 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <2ec91b11-23c7-4beb-8cef-c68367c8f029@roeck-us.net>
-Date: Wed, 14 Feb 2024 15:03:07 -0800
+Message-ID: <285cd809-d5e0-4688-ace1-630aa8c30aae@roeck-us.net>
+Date: Wed, 14 Feb 2024 17:24:13 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -167,17 +166,6 @@ On 2/14/24 13:41, Charlie Jenkins wrote:
 > can be easily solved by adding the carry into %0 before executing the
 > ldd.
 > 
-
-I really think this is a bug either in the trap handler or in the hppa64
-qemu emulation. Only unaligned ldd instructions affect (actually,
-unconditionally set) the carry flag. That doesn't happen with unaligned
-ldw instructions. It would be worthwhile tracking this down since there are
-lots of unaligned data accesses (8-byte accesses on 4-byte aligned addresses)
-when running the kernel in 64-bit mode. On the other side, I guess this
-is a different problem. Not sure though if that should even be mentioned
-here since that makes it sound as if it would be expected that such
-accesses impact the carry flag.
-
 > However, that is not necessary since ipv6 headers should always be
 > aligned on a 16-byte boundary on parisc since NET_IP_ALIGN is set to 2
 > and the ethernet header size is 14.
@@ -188,10 +176,9 @@ accesses impact the carry flag.
 > Fixes: 6f4c45cbcb00 ("kunit: Add tests for csum_ipv6_magic and ip_fast_csum")
 > Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
 
-I'll run this through my test system and let you know how it goes.
-It should be done in a couple of hours.
+Reviewed-and-Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-Thanks,
 Guenter
+
 
 
