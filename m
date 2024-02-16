@@ -1,53 +1,53 @@
-Return-Path: <linux-parisc+bounces-573-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-574-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECEFA857DC4
-	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 14:34:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A09857DE0
+	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 14:42:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB46DB21455
-	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 13:34:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 203E0B254A8
+	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 13:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00F9129A89;
-	Fri, 16 Feb 2024 13:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A37A12B153;
+	Fri, 16 Feb 2024 13:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="bhik6z12"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="BR8c2RwO"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AF159B5F;
-	Fri, 16 Feb 2024 13:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41E712AAFC;
+	Fri, 16 Feb 2024 13:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708090482; cv=none; b=D4rhVYsK9qVKty2e352AJZBruf15keVpUgr6tx2iLMXa7/VPmv6xDt1KU6FRv08JTB1inbjbU2LCfmJh7QwW3hnMw2PcX9evlYC2CcAspffgxOVmqUuoxcTef4LHkad1Iy+lioYV9YXzdWLc+otjkC5SodcdxM1KoaxnzNIDZpg=
+	t=1708090933; cv=none; b=Q364CgiFBUDsxKv23tppkHv0UIdxrTDeHzCWxsss5Rx5203Tb8qBPJroVXtPYRUCmnwrwF7FsBcytQgzxnp+HBrryWTEBuABqHl9QQetKk5/HYdl3ZwODyqM3eAaYf45iVdpXBMoDYiEu1RJewH7PG8O7EwqpnesStyj8ZpfqdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708090482; c=relaxed/simple;
-	bh=S6GH26MOvmbaGoEuB+DlOWQVrSfvfmK+ZAJKIJVu1tc=;
+	s=arc-20240116; t=1708090933; c=relaxed/simple;
+	bh=tD1zYe1+sODPTBKxIfW5qY04ux5Tzf4QlUkpNnSpXug=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bxn68tmJHjVYR8PzOWze4AH8t1bF/u26r3ViJlPcWFellHE0Ll8Hmv/iZYVwF6lefB3Dc5lUXCCjismhR5T+cm+MHOzf837Zg2yCf0OTJTYVP1z2qcfapuOvft96E2a48gpgQDMjRl4+/LILpfRYaT26hTzC921Y+43qx1zOOqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=bhik6z12; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=dCeNs/VShDRZ5Td7gDImMnYeNHFrDBSXO8b1yi4UYaalz83BD+Fqekv/Fn8KFldaQzbvMP6v+4U+w3UnHpnfYDMAEAteZ+XohHflAsU4UStyIuEoq9HHVK7BVx9Hsk5yuKA9LFMMsUI7B3RthGPsETDA9nNEBK1UnwfYqpEb3ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=BR8c2RwO; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1708090402; x=1708695202; i=deller@gmx.de;
-	bh=S6GH26MOvmbaGoEuB+DlOWQVrSfvfmK+ZAJKIJVu1tc=;
+	t=1708090913; x=1708695713; i=deller@gmx.de;
+	bh=tD1zYe1+sODPTBKxIfW5qY04ux5Tzf4QlUkpNnSpXug=;
 	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
 	 In-Reply-To;
-	b=bhik6z12dhMQh+ymMFYThdU/H5OON3gs4pbF/rk5WIpDBAw8hP6VMvOw3lLRVWfQ
-	 B5sUJR8/osD7lgL7hfe1Iqsb6l1KzJ/wV/5FlHrkZP0h0kah2NBxl1PLcfs5EIgYk
-	 SbNJTPOBxIllw9fjkD3GU1jA1q1vEsi62jAFw1ZEv6BdIFIuKmydX24BbRDLoMLw/
-	 1pG2BkThewn9nIvk+KKXClvUPUsOffR5O/UzBqckIQkUrTfRX2jeXWPVnH/M3fqHQ
-	 IkIvONMhW06korD6AvDC+HIfu7rA7c4ILSOczcDX7c27NaAv1ipRHWHIwl7GPvAFz
-	 rCtPU6lVFY0afI7iTA==
+	b=BR8c2RwOHSkUEuFILrqzjUcnajARTCnZxwRmrnlMDnTX9LsR84UxYSjlV7Qnfn+I
+	 hX1s977DjWLD/2Vb9x4NmEqkRTBO6Oj/n8pkFR3lIhAe0ggX4tQ7y/+HtBgTDxqB8
+	 gehkLIKle5/3jpMNavWd47BWXvVNc8cs60sJdhXX6+2AakVbUIKtPDSffPEAG0WW+
+	 IapLTGHEeFai5pCa7l0lT2uWSCDpmtp7Dymn1YdRbyQX4ne13z1ydArgRhJ6lthZr
+	 CN/p1Dg5RYMGR0tfNa3IrjQLajzt3TAT8CEMtKx1hgZPCQBxca8FF7ALozjj7wXdi
+	 yRSHV0WFFL5WJ65UDA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([94.134.148.214]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MmlXK-1r91dc2nf4-00jrDx; Fri, 16
- Feb 2024 14:33:22 +0100
-Message-ID: <1e889ddc-e5ea-41c8-a316-61bae12dfa9c@gmx.de>
-Date: Fri, 16 Feb 2024 14:48:04 +0100
+Received: from [192.168.20.55] ([94.134.148.214]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MNKhm-1rKyrb2GLK-00Ol5r; Fri, 16
+ Feb 2024 14:41:53 +0100
+Message-ID: <0031c257-f2d7-414e-aeda-0680f9a3ba24@gmx.de>
+Date: Fri, 16 Feb 2024 14:55:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -55,12 +55,13 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc/unaligned: Rewrite 64-bit inline assembly of
- emulate_ldd()
+Subject: Re: [PATCH] parisc: avoid c23 'nullptr' idenitifier
 Content-Language: en-US
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240216073315.3801833-1-linux@roeck-us.net>
+To: Arnd Bergmann <arnd@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240212112129.1076631-1-arnd@kernel.org>
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -105,135 +106,523 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20240216073315.3801833-1-linux@roeck-us.net>
+In-Reply-To: <20240212112129.1076631-1-arnd@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mtogNv3jHbkEpeD6Y3ODqTtw7RlDpefnjzIS5HdIZYXNtECJfO+
- +3zrdf/ms5ZHl8BWKGOmVdvIFtThgbOjjRQ+4CDIwCHmyHzdpy2PKapdaMJwMR/xMtRoQ7W
- y5cPUnwBnAMtrOCRJEjcrIQ+pjPgTwTbbIJLC/KNPKJzh6cYg0hbmG1ExI6VqpTWJDWg7ez
- BW5jYJO3Lqs2ly6H0DJtA==
+X-Provags-ID: V03:K1:TOdxK94KnGnL2z/ms509e9QXBO+WqpFzLqk/NP8b3jV9TrZx8Iw
+ SDb6w7T5owi8oaD/HDBcc/vgqG0MDLe3zFH9oncOC+w+yDyO1EtIfSwBafmRNZVOoyko0DD
+ 1xUhwlqanss3E4n7dSVzl2SsFiwaHDmq9R+kEzNMJZxUz+9KAsM40Xm5uxrFN9L5nv7/jOM
+ GUPYcPk/7H6CemaKrafAg==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:QDJGDsXe/mI=;hn24JNmWWYk+OZ58glZ5NduYEZV
- 435BlSb4VLP8SJeVX+smWnNWbuwVsJudf1XF1YC3w3trbF+xjdOSRIy0j/igDXFW498tVLr84
- DHvnuhGJIeklObFeBSugEC3JOGhnK030XOnXnmaplWOpGY80tZunUFWe14tCasag97NNKPMxr
- /dmTOpLVt+McIMaL8aa0GXxeAofi9NfOfhf4jEkoBmfQ233pWX+xEfmSFtIVeAAVmNqSbRSQS
- 9u9vMvLxgYsfot99DjpChzFk/lUtw+GvnoSQH9MSVgs6isgeNZrEGlhGO2rWZ2SvzJ4hBzWJK
- zpBzYEVitKGg/KTyHPp7g0iIJ16r9xycYe/3FZjWOLE6Tf1XcFpvpekMWOm11tKSPTbeDxOMS
- wL/Gv1DlD2JFaPJON2C0/1ZF+kPGMdVJubrQ9bhancQTmHI1PYkJCM610Qg8NuUnAEq926Wfp
- +7VHBIUqfAzgJ36MD/EaenD46VFn9peou3sy3frd2E7j9rdjZi+Mr5n9BqboED0TRLcPmrzlX
- 0FfiTbJb2XOjV73wR7y1BRr6FNh9b7fDXX3weryTYXJ0bzWQfUGwkX+W0tacr1FuE33/6V/nK
- AmSWly4/TyeARpGJQkg63jij/prLftz+eeSwOh7Uhe6Q1OQJGAIFcuAKYcFjPAXDvwKIrOoQJ
- S21mulwz4UfaE/hUdOr9nMR2A63yyDkFiKdDdCjnc6CIiAjfoOC8hZFT+h7FxWUcWcx8jtFzA
- aTJgBGJyCXTYqhdsOtglNFJskYjG6SOGhG0gfeSt6HCnGcFL2kwIIzb7/n7IjdlhFFMm80TJY
- 2nRtHzGTcyuZsd2iQ/dbQ2+7zTXg+Xsi1C9euQhLNSDpc=
+UI-OutboundReport: notjunk:1;M01:P0:0HVKXjsJnJQ=;0DsnHmg3Q5EjtETXlXu1MOAe1Qu
+ hXu6+yWhA1P3kEQT5Cu0XNIaZSlfsFOKCoNRjRbeKw6P5rPOe7zBCmrlbcwfc6SlahHhk+I8h
+ uiSmU8eTXpd4S878VttxO1552jyxksV10bU0uFUHZqaSuq+Pk6JYkEA1G100VG2En52G+s9HO
+ T+RPX9KfPNtKPhpSA/2ykWB+qzDlSNmUQuW1hmFcLqC+4NUTlEHAJNqQcmKzO8b4jFQ0sz/ix
+ WYDgXS/zd9w97X6Uhr8wSzRoNdOxm7ZXsFqbsQYVwurGWq6WIpNF+ZwyiSHs7+AWjyRq6hi6b
+ 129r4EOkEAa1TdpQj40/jydcZaZl5Vg4S5T+heCLJdeGEuq3jFWbNbBF9gApB9uiHd6KnCE4h
+ Tbjanu/ElGGIFlWdRDdUROCp629TTguXH/T0rEmxTgHZznmW24VtnNnd9m8Ubxu00Pjd2kzZ1
+ 9m7Vf2hjq5u6BPMZXhofaQWPeNoGvBQkl/0kvoZYRDIpXMW59QcE3cAhV7IfCl0WWGLkpMOSG
+ ojFgSNxiLRuyOdG9Q3+sq5b770kejzS+D3fdmBNn0/TJtUE5xMBm94kkyEIky2U4djWQH7mWO
+ y6e45uakUUZDC5AFSJ8ma+qeLtQ7S/zluU/KKsaGAAIC7hcNs7K92LdEzkia20bBphebq0KQp
+ CXIB7L03aUxioMMll/1lYPC5yAUhTzkPI9LI7IXAt+eVcMpkRoE267MXFYCaBP0YXjco0y328
+ rsbPO+Zu1BMzi+YSa/771Awzb0jo5HyFhzlZ0G7rPdhlUvb5En/g5DrT29qVPZ5NOC6z4b+yy
+ jrxnB1xEJgtS/KrBGw+LzBFovNIbCVzuY2V+E9cd324yg=
 
-On 2/16/24 08:33, Guenter Roeck wrote:
-> Convert to use real temp variables instead of clobbering processor
-> registers.
-
-Thanks for doing this.
-It was on my todo list since quite some time :-)
-
-> This aligns the 64-bit inline assembly code with the 32-bit
-> assembly code which was rewritten with commit 427c1073a2a1
-> ("parisc/unaligned: Rewrite 32-bit inline assembly of emulate_ldd()").
+On 2/12/24 12:20, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 >
-> While at it, fix comment in 32-bit rewrite code. Temporary variables are
-> now used for both 32-bit and 64-bit code, so move their declarations
-> to the function header.
+> Starting in c23, this is a reserved keyword, so in the future, using it
+> will start causing build failures:
 >
-> No functional change intended.
+> arch/parisc/math-emu/frnd.c:36:23: error: expected ';', ',' or ')' befor=
+e 'nullptr'
 >
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> Since I can't think of a good replacement name, add a leading underscore
+> to the function argument to avoid this namespace conflict. Apparently
+> all of these arguments are unused.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 > ---
-> Implemented while analyzing a bug. I am not really sure of it is worth
-> the effort, but I figured that I might as well submit it.
->
->   arch/parisc/kernel/unaligned.c | 29 +++++++++++++----------------
->   1 file changed, 13 insertions(+), 16 deletions(-)
->
-> diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unalign=
-ed.c
-> index c520e551a165..622c7b549fb8 100644
-> --- a/arch/parisc/kernel/unaligned.c
-> +++ b/arch/parisc/kernel/unaligned.c
-> @@ -169,7 +169,8 @@ static int emulate_ldw(struct pt_regs *regs, int tor=
-eg, int flop)
->   static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
->   {
->   	unsigned long saddr =3D regs->ior;
-> -	__u64 val =3D 0;
-> +	unsigned long shift;
-> +	__u64 val =3D 0, temp1;
+> Feel free to come up with a better name here and apply a different
+> patch, treating this as a bug report.
 
-temp1 is ok to be "long".
-
->   	ASM_EXCEPTIONTABLE_VAR(ret);
->
->   	DPRINTF("load " RFMT ":" RFMT " to r%d for 8 bytes\n",
-> @@ -180,25 +181,22 @@ static int emulate_ldd(struct pt_regs *regs, int t=
-oreg, int flop)
->
->   #ifdef CONFIG_64BIT
->   	__asm__ __volatile__  (
-> -"	depd,z	%3,60,3,%%r19\n"		/* r19=3D(ofs&7)*8 */
-> -"	mtsp	%4, %%sr1\n"
-> -"	depd	%%r0,63,3,%3\n"
-> -"1:	ldd	0(%%sr1,%3),%0\n"
-> -"2:	ldd	8(%%sr1,%3),%%r20\n"
-> -"	subi	64,%%r19,%%r19\n"
-> -"	mtsar	%%r19\n"
-> -"	shrpd	%0,%%r20,%%sar,%0\n"
-> +"	depd,z	%4,60,3,%2\n"		/* shift=3D(ofs&7)*8 */
-> +"	mtsp	%5, %%sr1\n"
-> +"	depd	%%r0,63,3,%4\n"
-> +"1:	ldd	0(%%sr1,%4),%0\n"
-> +"2:	ldd	8(%%sr1,%4),%3\n"
-> +"	subi	64,%2,%2\n"
-> +"	mtsar	%2\n"
-> +"	shrpd	%0,%3,%%sar,%0\n"
->   "3:	\n"
->   	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
->   	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
-> -	: "=3Dr" (val), "+r" (ret)
-> -	: "0" (val), "r" (saddr), "r" (regs->isr)
-> -	: "r19", "r20" );
-> +	: "+r" (val), "+r" (ret), "=3D&r" (shift), "=3D&r" (temp1)
-> +	: "r" (saddr), "r" (regs->isr) );
-
-addr is actually being modified.
-That's why I moved it into the output registers and
-shuffled shift and temp1 one backwards, so that the registers
-are now in the same ordering as on the 32-bit path.
-
-I've pushed the modified patch here:
-https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/co=
-mmit/?h=3Dfor-next&id=3Da6ea53ce77e9dd6e388d673bdd4d80741f97b914
-
-Please double-check!
+Thanks for the patch!
+I actually don't have a better idea for the name either, so I applied
+the patch as-is to the parisc tree :-)
 
 Thanks!
 Helge
 
 
->   #else
-> -    {
-> -	unsigned long shift, temp1;
->   	__asm__ __volatile__  (
-> -"	zdep	%2,29,2,%3\n"		/* r19=3D(ofs&3)*8 */
-> +"	zdep	%2,29,2,%3\n"		/* shift=3D(ofs&3)*8 */
->   "	mtsp	%5, %%sr1\n"
->   "	dep	%%r0,31,2,%2\n"
->   "1:	ldw	0(%%sr1,%2),%0\n"
-> @@ -214,7 +212,6 @@ static int emulate_ldd(struct pt_regs *regs, int tor=
-eg, int flop)
->   	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 4b, "%1")
->   	: "+r" (val), "+r" (ret), "+r" (saddr), "=3D&r" (shift), "=3D&r" (tem=
-p1)
->   	: "r" (regs->isr) );
-> -    }
->   #endif
+> ---
+>   arch/parisc/math-emu/dfsqrt.c  |  4 ++--
+>   arch/parisc/math-emu/fcnvff.c  |  8 ++++----
+>   arch/parisc/math-emu/fcnvfu.c  | 16 ++++++++--------
+>   arch/parisc/math-emu/fcnvfut.c | 16 ++++++++--------
+>   arch/parisc/math-emu/fcnvfx.c  | 16 ++++++++--------
+>   arch/parisc/math-emu/fcnvfxt.c | 16 ++++++++--------
+>   arch/parisc/math-emu/fcnvuf.c  | 16 ++++++++--------
+>   arch/parisc/math-emu/fcnvxf.c  | 16 ++++++++--------
+>   arch/parisc/math-emu/frnd.c    |  8 ++++----
+>   arch/parisc/math-emu/sfsqrt.c  |  4 ++--
+>   10 files changed, 60 insertions(+), 60 deletions(-)
 >
->   	DPRINTF("val =3D 0x%llx\n", val);
+> diff --git a/arch/parisc/math-emu/dfsqrt.c b/arch/parisc/math-emu/dfsqrt=
+.c
+> index 63d339c81c14..e3a3a19b966b 100644
+> --- a/arch/parisc/math-emu/dfsqrt.c
+> +++ b/arch/parisc/math-emu/dfsqrt.c
+> @@ -15,7 +15,7 @@
+>    *	Double Floating-point Square Root
+>    *
+>    *  External Interfaces:
+> - *	dbl_fsqrt(srcptr,nullptr,dstptr,status)
+> + *	dbl_fsqrt(srcptr,_nullptr,dstptr,status)
+>    *
+>    *  Internal Interfaces:
+>    *
+> @@ -37,7 +37,7 @@
+>   unsigned int
+>   dbl_fsqrt(
+>   	    dbl_floating_point *srcptr,
+> -	    unsigned int *nullptr,
+> +	    unsigned int *_nullptr,
+>   	    dbl_floating_point *dstptr,
+>   	    unsigned int *status)
+>   {
+> diff --git a/arch/parisc/math-emu/fcnvff.c b/arch/parisc/math-emu/fcnvff=
+.c
+> index 0530e6127797..61e489704c86 100644
+> --- a/arch/parisc/math-emu/fcnvff.c
+> +++ b/arch/parisc/math-emu/fcnvff.c
+> @@ -16,8 +16,8 @@
+>    *	Double Floating-point to Single Floating-point
+>    *
+>    *  External Interfaces:
+> - *	dbl_to_sgl_fcnvff(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_dbl_fcnvff(srcptr,nullptr,dstptr,status)
+> + *	dbl_to_sgl_fcnvff(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_dbl_fcnvff(srcptr,_nullptr,dstptr,status)
+>    *
+>    *  Internal Interfaces:
+>    *
+> @@ -40,7 +40,7 @@
+>   int
+>   sgl_to_dbl_fcnvff(
+>   	    sgl_floating_point *srcptr,
+> -	    unsigned int *nullptr,
+> +	    unsigned int *_nullptr,
+>   	    dbl_floating_point *dstptr,
+>   	    unsigned int *status)
+>   {
+> @@ -127,7 +127,7 @@ sgl_to_dbl_fcnvff(
+>   int
+>   dbl_to_sgl_fcnvff(
+>   		    dbl_floating_point *srcptr,
+> -		    unsigned int *nullptr,
+> +		    unsigned int *_nullptr,
+>   		    sgl_floating_point *dstptr,
+>   		    unsigned int *status)
+>   {
+> diff --git a/arch/parisc/math-emu/fcnvfu.c b/arch/parisc/math-emu/fcnvfu=
+.c
+> index c971618a6f3c..c31790ceecca 100644
+> --- a/arch/parisc/math-emu/fcnvfu.c
+> +++ b/arch/parisc/math-emu/fcnvfu.c
+> @@ -15,10 +15,10 @@
+>    *	Floating-point to Unsigned Fixed-point Converts
+>    *
+>    *  External Interfaces:
+> - *	dbl_to_dbl_fcnvfu(srcptr,nullptr,dstptr,status)
+> - *	dbl_to_sgl_fcnvfu(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_dbl_fcnvfu(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_sgl_fcnvfu(srcptr,nullptr,dstptr,status)
+> + *	dbl_to_dbl_fcnvfu(srcptr,_nullptr,dstptr,status)
+> + *	dbl_to_sgl_fcnvfu(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_dbl_fcnvfu(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_sgl_fcnvfu(srcptr,_nullptr,dstptr,status)
+>    *
+>    *  Internal Interfaces:
+>    *
+> @@ -45,7 +45,7 @@
+>   int
+>   sgl_to_sgl_fcnvfu(
+>   			sgl_floating_point *srcptr,
+> -			unsigned int *nullptr,
+> +			unsigned int *_nullptr,
+>   			unsigned int *dstptr,
+>   			unsigned int *status)
+>   {
+> @@ -166,7 +166,7 @@ sgl_to_sgl_fcnvfu(
+>   int
+>   sgl_to_dbl_fcnvfu(
+>   		    sgl_floating_point *srcptr,
+> -		    unsigned int *nullptr,
+> +		    unsigned int *_nullptr,
+>   		    dbl_unsigned *dstptr,
+>   		    unsigned int *status)
+>   {
+> @@ -285,7 +285,7 @@ sgl_to_dbl_fcnvfu(
+>    */
+>   /*ARGSUSED*/
+>   int
+> -dbl_to_sgl_fcnvfu (dbl_floating_point * srcptr, unsigned int *nullptr,
+> +dbl_to_sgl_fcnvfu (dbl_floating_point * srcptr, unsigned int *_nullptr,
+>   		   unsigned int *dstptr, unsigned int *status)
+>   {
+>   	register unsigned int srcp1, srcp2, result;
+> @@ -408,7 +408,7 @@ dbl_to_sgl_fcnvfu (dbl_floating_point * srcptr, unsi=
+gned int *nullptr,
+>    */
+>   /*ARGSUSED*/
+>   int
+> -dbl_to_dbl_fcnvfu (dbl_floating_point * srcptr, unsigned int *nullptr,
+> +dbl_to_dbl_fcnvfu (dbl_floating_point * srcptr, unsigned int *_nullptr,
+>   		   dbl_unsigned * dstptr, unsigned int *status)
+>   {
+>   	register int src_exponent;
+> diff --git a/arch/parisc/math-emu/fcnvfut.c b/arch/parisc/math-emu/fcnvf=
+ut.c
+> index 5b657f852578..2cf1daf3b7ad 100644
+> --- a/arch/parisc/math-emu/fcnvfut.c
+> +++ b/arch/parisc/math-emu/fcnvfut.c
+> @@ -15,10 +15,10 @@
+>    *	Floating-point to Unsigned Fixed-point Converts with Truncation
+>    *
+>    *  External Interfaces:
+> - *	dbl_to_dbl_fcnvfut(srcptr,nullptr,dstptr,status)
+> - *	dbl_to_sgl_fcnvfut(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_dbl_fcnvfut(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_sgl_fcnvfut(srcptr,nullptr,dstptr,status)
+> + *	dbl_to_dbl_fcnvfut(srcptr,_nullptr,dstptr,status)
+> + *	dbl_to_sgl_fcnvfut(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_dbl_fcnvfut(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_sgl_fcnvfut(srcptr,_nullptr,dstptr,status)
+>    *
+>    *  Internal Interfaces:
+>    *
+> @@ -44,7 +44,7 @@
+>    */
+>   /*ARGSUSED*/
+>   int
+> -sgl_to_sgl_fcnvfut (sgl_floating_point * srcptr, unsigned int *nullptr,
+> +sgl_to_sgl_fcnvfut (sgl_floating_point * srcptr, unsigned int *_nullptr=
+,
+>   		    unsigned int *dstptr, unsigned int *status)
+>   {
+>   	register unsigned int src, result;
+> @@ -113,7 +113,7 @@ sgl_to_sgl_fcnvfut (sgl_floating_point * srcptr, uns=
+igned int *nullptr,
+>    */
+>   /*ARGSUSED*/
+>   int
+> -sgl_to_dbl_fcnvfut (sgl_floating_point * srcptr, unsigned int *nullptr,
+> +sgl_to_dbl_fcnvfut (sgl_floating_point * srcptr, unsigned int *_nullptr=
+,
+>   		    dbl_unsigned * dstptr, unsigned int *status)
+>   {
+>   	register int src_exponent;
+> @@ -183,7 +183,7 @@ sgl_to_dbl_fcnvfut (sgl_floating_point * srcptr, uns=
+igned int *nullptr,
+>    */
+>   /*ARGSUSED*/
+>   int
+> -dbl_to_sgl_fcnvfut (dbl_floating_point * srcptr, unsigned int *nullptr,
+> +dbl_to_sgl_fcnvfut (dbl_floating_point * srcptr, unsigned int *_nullptr=
+,
+>   		    unsigned int *dstptr, unsigned int *status)
+>   {
+>   	register unsigned int srcp1, srcp2, result;
+> @@ -252,7 +252,7 @@ dbl_to_sgl_fcnvfut (dbl_floating_point * srcptr, uns=
+igned int *nullptr,
+>    */
+>   /*ARGSUSED*/
+>   int
+> -dbl_to_dbl_fcnvfut (dbl_floating_point * srcptr, unsigned int *nullptr,
+> +dbl_to_dbl_fcnvfut (dbl_floating_point * srcptr, unsigned int *_nullptr=
+,
+>   		    dbl_unsigned * dstptr, unsigned int *status)
+>   {
+>   	register int src_exponent;
+> diff --git a/arch/parisc/math-emu/fcnvfx.c b/arch/parisc/math-emu/fcnvfx=
+.c
+> index 5e153078d803..99bd61479452 100644
+> --- a/arch/parisc/math-emu/fcnvfx.c
+> +++ b/arch/parisc/math-emu/fcnvfx.c
+> @@ -18,10 +18,10 @@
+>    *	Double Floating-point to Double Fixed-point
+>    *
+>    *  External Interfaces:
+> - *	dbl_to_dbl_fcnvfx(srcptr,nullptr,dstptr,status)
+> - *	dbl_to_sgl_fcnvfx(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_dbl_fcnvfx(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_sgl_fcnvfx(srcptr,nullptr,dstptr,status)
+> + *	dbl_to_dbl_fcnvfx(srcptr,_nullptr,dstptr,status)
+> + *	dbl_to_sgl_fcnvfx(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_dbl_fcnvfx(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_sgl_fcnvfx(srcptr,_nullptr,dstptr,status)
+>    *
+>    *  Internal Interfaces:
+>    *
+> @@ -44,7 +44,7 @@
+>   int
+>   sgl_to_sgl_fcnvfx(
+>   		    sgl_floating_point *srcptr,
+> -		    sgl_floating_point *nullptr,
+> +		    sgl_floating_point *_nullptr,
+>   		    int *dstptr,
+>   		    sgl_floating_point *status)
+>   {
+> @@ -141,7 +141,7 @@ sgl_to_sgl_fcnvfx(
+>   int
+>   sgl_to_dbl_fcnvfx(
+>   		sgl_floating_point *srcptr,
+> -		unsigned int *nullptr,
+> +		unsigned int *_nullptr,
+>   		dbl_integer *dstptr,
+>   		unsigned int *status)
+>   {
+> @@ -262,7 +262,7 @@ sgl_to_dbl_fcnvfx(
+>   int
+>   dbl_to_sgl_fcnvfx(
+>   		    dbl_floating_point *srcptr,
+> -		    unsigned int *nullptr,
+> +		    unsigned int *_nullptr,
+>   		    int *dstptr,
+>   		    unsigned int *status)
+>   {
+> @@ -373,7 +373,7 @@ dbl_to_sgl_fcnvfx(
+>   int
+>   dbl_to_dbl_fcnvfx(
+>   		    dbl_floating_point *srcptr,
+> -		    unsigned int *nullptr,
+> +		    unsigned int *_nullptr,
+>   		    dbl_integer *dstptr,
+>   		    unsigned int *status)
+>   {
+> diff --git a/arch/parisc/math-emu/fcnvfxt.c b/arch/parisc/math-emu/fcnvf=
+xt.c
+> index ebec31e40d01..3b7cc62257d0 100644
+> --- a/arch/parisc/math-emu/fcnvfxt.c
+> +++ b/arch/parisc/math-emu/fcnvfxt.c
+> @@ -18,10 +18,10 @@
+>    *	Double Floating-point to Double Fixed-point /w truncated result
+>    *
+>    *  External Interfaces:
+> - *	dbl_to_dbl_fcnvfxt(srcptr,nullptr,dstptr,status)
+> - *	dbl_to_sgl_fcnvfxt(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_dbl_fcnvfxt(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_sgl_fcnvfxt(srcptr,nullptr,dstptr,status)
+> + *	dbl_to_dbl_fcnvfxt(srcptr,_nullptr,dstptr,status)
+> + *	dbl_to_sgl_fcnvfxt(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_dbl_fcnvfxt(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_sgl_fcnvfxt(srcptr,_nullptr,dstptr,status)
+>    *
+>    *  Internal Interfaces:
+>    *
+> @@ -45,7 +45,7 @@
+>   int
+>   sgl_to_sgl_fcnvfxt(
+>   		    sgl_floating_point *srcptr,
+> -		    unsigned int *nullptr,
+> +		    unsigned int *_nullptr,
+>   		    int *dstptr,
+>   		    unsigned int *status)
+>   {
+> @@ -109,7 +109,7 @@ sgl_to_sgl_fcnvfxt(
+>   int
+>   sgl_to_dbl_fcnvfxt(
+>   		    sgl_floating_point *srcptr,
+> -		    unsigned int *nullptr,
+> +		    unsigned int *_nullptr,
+>   		    dbl_integer *dstptr,
+>   		    unsigned int *status)
+>   {
+> @@ -183,7 +183,7 @@ sgl_to_dbl_fcnvfxt(
+>   int
+>   dbl_to_sgl_fcnvfxt(
+>   			dbl_floating_point *srcptr,
+> -			unsigned int *nullptr,
+> +			unsigned int *_nullptr,
+>   			int *dstptr,
+>   			unsigned int *status)
+>   {
+> @@ -248,7 +248,7 @@ dbl_to_sgl_fcnvfxt(
+>   int
+>   dbl_to_dbl_fcnvfxt(
+>   			dbl_floating_point *srcptr,
+> -			unsigned int *nullptr,
+> +			unsigned int *_nullptr,
+>   			dbl_integer *dstptr,
+>   			unsigned int *status)
+>   {
+> diff --git a/arch/parisc/math-emu/fcnvuf.c b/arch/parisc/math-emu/fcnvuf=
+.c
+> index c54978a0ace1..c166feb57045 100644
+> --- a/arch/parisc/math-emu/fcnvuf.c
+> +++ b/arch/parisc/math-emu/fcnvuf.c
+> @@ -15,10 +15,10 @@
+>    *	Fixed point to Floating-point Converts
+>    *
+>    *  External Interfaces:
+> - *	dbl_to_dbl_fcnvuf(srcptr,nullptr,dstptr,status)
+> - *	dbl_to_sgl_fcnvuf(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_dbl_fcnvuf(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_sgl_fcnvuf(srcptr,nullptr,dstptr,status)
+> + *	dbl_to_dbl_fcnvuf(srcptr,_nullptr,dstptr,status)
+> + *	dbl_to_sgl_fcnvuf(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_dbl_fcnvuf(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_sgl_fcnvuf(srcptr,_nullptr,dstptr,status)
+>    *
+>    *  Internal Interfaces:
+>    *
+> @@ -45,7 +45,7 @@
+>   int
+>   sgl_to_sgl_fcnvuf(
+>   			unsigned int *srcptr,
+> -			unsigned int *nullptr,
+> +			unsigned int *_nullptr,
+>   			sgl_floating_point *dstptr,
+>   			unsigned int *status)
+>   {
+> @@ -104,7 +104,7 @@ sgl_to_sgl_fcnvuf(
+>   int
+>   sgl_to_dbl_fcnvuf(
+>   			unsigned int *srcptr,
+> -			unsigned int *nullptr,
+> +			unsigned int *_nullptr,
+>   			dbl_floating_point *dstptr,
+>   			unsigned int *status)
+>   {
+> @@ -145,7 +145,7 @@ sgl_to_dbl_fcnvuf(
+>   int
+>   dbl_to_sgl_fcnvuf(
+>   			dbl_unsigned *srcptr,
+> -			unsigned int *nullptr,
+> +			unsigned int *_nullptr,
+>   			sgl_floating_point *dstptr,
+>   			unsigned int *status)
+>   {
+> @@ -227,7 +227,7 @@ dbl_to_sgl_fcnvuf(
+>   int
+>   dbl_to_dbl_fcnvuf(
+>   		    dbl_unsigned *srcptr,
+> -		    unsigned int *nullptr,
+> +		    unsigned int *_nullptr,
+>   		    dbl_floating_point *dstptr,
+>   		    unsigned int *status)
+>   {
+> diff --git a/arch/parisc/math-emu/fcnvxf.c b/arch/parisc/math-emu/fcnvxf=
+.c
+> index 69401797146b..11bc1e8a13aa 100644
+> --- a/arch/parisc/math-emu/fcnvxf.c
+> +++ b/arch/parisc/math-emu/fcnvxf.c
+> @@ -18,10 +18,10 @@
+>    *	Double Fixed-point to Double Floating-point
+>    *
+>    *  External Interfaces:
+> - *	dbl_to_dbl_fcnvxf(srcptr,nullptr,dstptr,status)
+> - *	dbl_to_sgl_fcnvxf(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_dbl_fcnvxf(srcptr,nullptr,dstptr,status)
+> - *	sgl_to_sgl_fcnvxf(srcptr,nullptr,dstptr,status)
+> + *	dbl_to_dbl_fcnvxf(srcptr,_nullptr,dstptr,status)
+> + *	dbl_to_sgl_fcnvxf(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_dbl_fcnvxf(srcptr,_nullptr,dstptr,status)
+> + *	sgl_to_sgl_fcnvxf(srcptr,_nullptr,dstptr,status)
+>    *
+>    *  Internal Interfaces:
+>    *
+> @@ -44,7 +44,7 @@
+>   int
+>   sgl_to_sgl_fcnvxf(
+>   		    int *srcptr,
+> -		    unsigned int *nullptr,
+> +		    unsigned int *_nullptr,
+>   		    sgl_floating_point *dstptr,
+>   		    unsigned int *status)
+>   {
+> @@ -115,7 +115,7 @@ sgl_to_sgl_fcnvxf(
+>   int
+>   sgl_to_dbl_fcnvxf(
+>   		    int *srcptr,
+> -		    unsigned int *nullptr,
+> +		    unsigned int *_nullptr,
+>   		    dbl_floating_point *dstptr,
+>   		    unsigned int *status)
+>   {
+> @@ -166,7 +166,7 @@ sgl_to_dbl_fcnvxf(
+>   int
+>   dbl_to_sgl_fcnvxf(
+>   			dbl_integer *srcptr,
+> -			unsigned int *nullptr,
+> +			unsigned int *_nullptr,
+>   			sgl_floating_point *dstptr,
+>   			unsigned int *status)
+>   {
+> @@ -271,7 +271,7 @@ dbl_to_sgl_fcnvxf(
+>   int
+>   dbl_to_dbl_fcnvxf(
+>   		    dbl_integer *srcptr,
+> -		    unsigned int *nullptr,
+> +		    unsigned int *_nullptr,
+>   		    dbl_floating_point *dstptr,
+>   		    unsigned int *status)
+>   {
+> diff --git a/arch/parisc/math-emu/frnd.c b/arch/parisc/math-emu/frnd.c
+> index 0b0e8493e08a..825d89650c2d 100644
+> --- a/arch/parisc/math-emu/frnd.c
+> +++ b/arch/parisc/math-emu/frnd.c
+> @@ -14,8 +14,8 @@
+>    *	Quad Floating-point Round to Integer (returns unimplemented)
+>    *
+>    *  External Interfaces:
+> - *	dbl_frnd(srcptr,nullptr,dstptr,status)
+> - *	sgl_frnd(srcptr,nullptr,dstptr,status)
+> + *	dbl_frnd(srcptr,_nullptr,dstptr,status)
+> + *	sgl_frnd(srcptr,_nullptr,dstptr,status)
+>    *
+>    * END_DESC
+>   */
+> @@ -33,7 +33,7 @@
+>   /*ARGSUSED*/
+>   int
+>   sgl_frnd(sgl_floating_point *srcptr,
+> -	unsigned int *nullptr,
+> +	unsigned int *_nullptr,
+>   	sgl_floating_point *dstptr,
+>   	unsigned int *status)
+>   {
+> @@ -138,7 +138,7 @@ sgl_frnd(sgl_floating_point *srcptr,
+>   int
+>   dbl_frnd(
+>   	dbl_floating_point *srcptr,
+> -	unsigned int *nullptr,
+> +	unsigned int *_nullptr,
+>   	dbl_floating_point *dstptr,
+>   	unsigned int *status)
+>   {
+> diff --git a/arch/parisc/math-emu/sfsqrt.c b/arch/parisc/math-emu/sfsqrt=
+.c
+> index bd6a84f468d8..8e9e023e7b2e 100644
+> --- a/arch/parisc/math-emu/sfsqrt.c
+> +++ b/arch/parisc/math-emu/sfsqrt.c
+> @@ -15,7 +15,7 @@
+>    *	Single Floating-point Square Root
+>    *
+>    *  External Interfaces:
+> - *	sgl_fsqrt(srcptr,nullptr,dstptr,status)
+> + *	sgl_fsqrt(srcptr,_nullptr,dstptr,status)
+>    *
+>    *  Internal Interfaces:
+>    *
+> @@ -37,7 +37,7 @@
+>   unsigned int
+>   sgl_fsqrt(
+>       sgl_floating_point *srcptr,
+> -    unsigned int *nullptr,
+> +    unsigned int *_nullptr,
+>       sgl_floating_point *dstptr,
+>       unsigned int *status)
+>   {
 
 
