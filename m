@@ -1,76 +1,76 @@
-Return-Path: <linux-parisc+bounces-576-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-577-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C4B85806A
-	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 16:15:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34223858162
+	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 16:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48F061C210EA
-	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 15:15:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1FA91F21046
+	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 15:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8312F12BEB0;
-	Fri, 16 Feb 2024 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E3612F5A9;
+	Fri, 16 Feb 2024 15:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lN/gFtiX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lncGKNKy"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A30768F2;
-	Fri, 16 Feb 2024 15:15:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2812412FF9D;
+	Fri, 16 Feb 2024 15:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708096553; cv=none; b=WuAyRAMwx71i7zHYPK4pFBiNomkfcUOqdooE+5zB7D2SdJ3hvTmz8vOMw4WQHYNGIqhS6CRAJXW7j8nev6hmq1R4enpYbVTABFDiOysk0SyqO7SAv7+AX/NAfQheOBECj0g5WDomLtQbAQR0NB8aCeQg2jd8FKEng7uflmu2H/Q=
+	t=1708097481; cv=none; b=fZAxdLbvlWCTYXdUl5qbn9KUabpTZziZJ1ry/9WYpMQPEPyPMHRVKFrUuehsSOBiNeMQeWtxVJE55B0Dz7bzv810itmKd1wq+K5Ycj8wRIrj1EdXEe0b6KrZDozbiJGgWoUCuCo2SBDO2EHPuBlbCDk5EO3jAJ6S/QSLdv12FxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708096553; c=relaxed/simple;
-	bh=lQHgNf4lZFaXKyQkFvpZd1nX0tMYYIakTZ3wulKXKFg=;
+	s=arc-20240116; t=1708097481; c=relaxed/simple;
+	bh=mif72V8l/dSsiv6I0YfNK2dgtGn+e1Zy7iPOPLaS4YY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SmycuzPYPkwSpJaffE1i7T0yEewtSRTn2KKdaeOJz5UztTmDsUzg/0q3qiDxLgOKsHh7rwHktcPTQGVbrxpvO6P2h7t0mBlUm264omTtISZY7CoDt0ZmpZfiyp0CWZJiwexwOEc135yYNkoLA3osVztpZPhApTLCq2r85ICPbDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lN/gFtiX; arc=none smtp.client-ip=209.85.210.182
+	 In-Reply-To:Content-Type; b=gxV6mHalXBmH+9ODB2NIV4LSyePbRV0rFa6lfOsR1xG7lhy0r3km7O9Hqna3p9PVxs7jhO6Lc+L/64zYz9+RcQhJjhFbw98XW/LEdUoxmLCOhsatrJRqOLB7wGxiFS2AcxyBJgvqidf0NwpiUGzonj1SH4unyDWesZr2GkXqYho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lncGKNKy; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6e09493eb8eso2566513b3a.1;
-        Fri, 16 Feb 2024 07:15:51 -0800 (PST)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1d94b222a3aso21128915ad.2;
+        Fri, 16 Feb 2024 07:31:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708096551; x=1708701351; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708097479; x=1708702279; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=1fBU0BnRrjjNunok1eRCJ3FzNq+wuPw/Wc45OrLINiQ=;
-        b=lN/gFtiXY9BEMJFkzfBIPVjWI6sCBBu12MQIRt7aF9N2Rd1VRCSxgDDWppqwrFofLn
-         KyCd+2dT7uEIRZfM466A0rPhWbSrVyWKzvzinQM9MTTL26gI+Mtya8oGSwqzgg4rvjMx
-         m06WqxYVhnJyh+Jz+sYLjHpSlj/gJ1bMmZE/FwYg27HrWT+krjFOblT91MR28lb26AS5
-         OTXXyB9sAU4lNCULdGYnc29G44jqh3qsN4e8yxvSgG71Akf6pNdv/cuUqZM46u4kBdHk
-         M9sGOvAK7fMfk8sUhn7/+xcVTdOvdSSatL7MZ3hQmkJ7kMK8tObYDdXGxQ1hvyHmVZQ6
-         cgCQ==
+        bh=NRwKtIc0y4D6uspDgYCDd40JBvF9+g5Ek0KwR8dpm74=;
+        b=lncGKNKy2e7HA8pJFZB0Nmw3ZYmf8EXhCuOSShMEw1ArIAifFghK7eydMCZaBlNJXn
+         1FSgh3W62+o04Mz23pYXWg8gR4jumX40YsC6vbOY+Ywpzw+NQ7/59WZp8QWMxZ2O0znS
+         svvLSjspoRIX7COTD0XF51+L9zp3yeiDZs+QdNrYmwv+RJBXnIdTuwCMy7UiWs2Wjx3s
+         Pzb67rZJimjpwvDMBiERdE3Zim+GIzGU1cv4L/IOEBiTeia7FDFigUcm1Z1Of+uyAYwz
+         78V4RNwondQiv1gVqvb4kf3H7b3b1IduVIr68tP+NsxUMKQjPewci65ur6f031+0Q6p4
+         CHow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708096551; x=1708701351;
+        d=1e100.net; s=20230601; t=1708097479; x=1708702279;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1fBU0BnRrjjNunok1eRCJ3FzNq+wuPw/Wc45OrLINiQ=;
-        b=UY2T3oW/d3YhKOASgbk/YUkaBuqPmQnX6WImUcckU7t+JvYd7Z2FSAq+5QRJnlmRqd
-         756a8DDkD+z+fBfBPkqoWGgsa1FMmmDJ2tNOyvLTFGyVKs1mnCzn6hqaV1X/OkZJnpcG
-         sa4rZ6Livmr9JxtuQVig4T15U/uTPpksaR4rGY6l/I/Y5BiU3Z38yQ5JHYdn2Jnc4qlA
-         X+DJkQDn/dSeAiVU+M1nMysM+yODTbbK/3u1GoSZYedVFiPeCkB20vP3/sgf39rLX9mq
-         +cbK7lm6jQFu9Hd7pR++dEhdbDCjqNEY+dPjvm2X2UJjjpqL/Fn8XjnEWg6X68sVWQYk
-         AW3A==
-X-Forwarded-Encrypted: i=1; AJvYcCWeovT/SpoaH96zSQGYVVwuZKHReitOEpDl8ouSlzT8l4yC7Dod/s2lPq3PjeAbxphORsV7aN3hRNhXEW3iGGJojhdSYJ4BP+nVjhT8
-X-Gm-Message-State: AOJu0Ywp3PCxjwUp0RGTp3frAEZp7RWcslGZQn9Shad/+o2OngEP76Yr
-	lGo+aQfF6DQJi4/dZh05R9x5Hz9gF0rhCAHc+fLtX4t33bJuQElvPHb0WWoL
-X-Google-Smtp-Source: AGHT+IHSOKwPfjsHo155LHe/Nwr9Aw+9Sgs2fzFG+iK7odLLBBFofGw/97uFyN2fYy+tOygfIjWmow==
-X-Received: by 2002:a05:6a21:150a:b0:19e:b477:33a4 with SMTP id nq10-20020a056a21150a00b0019eb47733a4mr7410349pzb.27.1708096550723;
-        Fri, 16 Feb 2024 07:15:50 -0800 (PST)
+        bh=NRwKtIc0y4D6uspDgYCDd40JBvF9+g5Ek0KwR8dpm74=;
+        b=pnJCi7wjS+yl/HKDvRXq2kHaB6yDoV8JlUZ053gw23IGJ1CP2Uh2ZtAHrK+VZjvELd
+         OHJZzuLg8GDEk+r5zWIy86tulNriYF/AugO34RHsFSK9Iabmsr5W+fm5XO1/ldfz7GFg
+         yG6nUXtiNwc2dxyjfwjw4U/0vKVMC8EEgjfbEhzzNiMG54L0rruZShTgj2WtM1TnvtCO
+         I70cdPs3pRkShvQdHOBzaA60Lt039dlG6bGolZp7qHzEYlPC85igNZ3bqD1JSgk2gxxK
+         N5OA0kRjs646LuoBwj/sUysy1IiVzbIIo63ZMsAm5sLQib2Aj0uSAS/JH0uYOABEByDb
+         Kcxg==
+X-Forwarded-Encrypted: i=1; AJvYcCWnAeo7CsvksPMn+DLMItFSYtr/KbgzXsSSxD1gyHVB7Mwaoo5LH0LLoJocDLfIDd4H9tpnDr8Ph0E8owHRCAHzRBJuxw0zRn3X0tmy16qFIM44Fi1XKvh1VRr796dxC0CiQ7K7GQAHgHZT
+X-Gm-Message-State: AOJu0YzRkdQ1/kLgVounlstw77ZdusJ8J4SLVqaO57gQg/bVQiBms7O+
+	CrQfJsmluF5Ln7TDdl5Y7U1qsnGm6uvS9VkXUEtszmX0ta22ShAFx2jSg7OF
+X-Google-Smtp-Source: AGHT+IG/pksW0COuE0jcrM9Af/K2y47/KhMU43KJXItaKlsLkRic5Ua4GBXvlZZfY3z79j5bN4forg==
+X-Received: by 2002:a17:902:da92:b0:1db:80d3:1af8 with SMTP id j18-20020a170902da9200b001db80d31af8mr7320104plx.19.1708097479228;
+        Fri, 16 Feb 2024 07:31:19 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id i123-20020a62c181000000b006e0e4b9b7e6sm49131pfg.212.2024.02.16.07.15.49
+        by smtp.gmail.com with ESMTPSA id u6-20020a170902b28600b001d88f8f574esm4373plr.303.2024.02.16.07.31.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Feb 2024 07:15:50 -0800 (PST)
+        Fri, 16 Feb 2024 07:31:18 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <06b53f95-2910-46d5-b968-14718d7e0ac6@roeck-us.net>
-Date: Fri, 16 Feb 2024 07:15:49 -0800
+Message-ID: <2b09c136-20d8-4fef-bad3-6dbc88362318@roeck-us.net>
+Date: Fri, 16 Feb 2024 07:31:17 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -78,13 +78,15 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc/unaligned: Rewrite 64-bit inline assembly of
- emulate_ldd()
+Subject: Re: [PATCH] parisc: Fix csum_ipv6_magic on 64-bit systems
 Content-Language: en-US
-To: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240216073315.3801833-1-linux@roeck-us.net>
- <1e889ddc-e5ea-41c8-a316-61bae12dfa9c@gmx.de>
+To: Helge Deller <deller@kernel.org>
+Cc: Helge Deller <deller@gmx.de>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Charlie Jenkins <charlie@rivosinc.com>, Palmer Dabbelt <palmer@rivosinc.com>
+References: <20240213234631.940055-1-linux@roeck-us.net>
+ <Zc9XW-TxQKp84vMt@p100>
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
@@ -129,118 +131,74 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <1e889ddc-e5ea-41c8-a316-61bae12dfa9c@gmx.de>
+In-Reply-To: <Zc9XW-TxQKp84vMt@p100>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 2/16/24 05:48, Helge Deller wrote:
-> On 2/16/24 08:33, Guenter Roeck wrote:
->> Convert to use real temp variables instead of clobbering processor
->> registers.
-> 
-> Thanks for doing this.
-> It was on my todo list since quite some time :-)
-> 
->> This aligns the 64-bit inline assembly code with the 32-bit
->> assembly code which was rewritten with commit 427c1073a2a1
->> ("parisc/unaligned: Rewrite 32-bit inline assembly of emulate_ldd()").
+Hi Helge,
+
+On 2/16/24 04:38, Helge Deller wrote:
+> * Guenter Roeck <linux@roeck-us.net>:
+>> hppa 64-bit systems calculates the IPv6 checksum using 64-bit add
+>> operations. The last add folds protocol and length fields into the 64-bit
+>> result. While unlikely, this operation can overflow. The overflow can be
+>> triggered with a code sequence such as the following.
 >>
->> While at it, fix comment in 32-bit rewrite code. Temporary variables are
->> now used for both 32-bit and 64-bit code, so move their declarations
->> to the function header.
+>> 	/* try to trigger massive overflows */
+>> 	memset(tmp_buf, 0xff, sizeof(struct in6_addr));
+>> 	csum_result = csum_ipv6_magic((struct in6_addr *)tmp_buf,
+>> 				      (struct in6_addr *)tmp_buf,
+>> 				      0xffff, 0xff, 0xffffffff);
 >>
->> No functional change intended.
->>
->> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
->> ---
->> Implemented while analyzing a bug. I am not really sure of it is worth
->> the effort, but I figured that I might as well submit it.
->>
->>   arch/parisc/kernel/unaligned.c | 29 +++++++++++++----------------
->>   1 file changed, 13 insertions(+), 16 deletions(-)
->>
->> diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unaligned.c
->> index c520e551a165..622c7b549fb8 100644
->> --- a/arch/parisc/kernel/unaligned.c
->> +++ b/arch/parisc/kernel/unaligned.c
->> @@ -169,7 +169,8 @@ static int emulate_ldw(struct pt_regs *regs, int toreg, int flop)
->>   static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
->>   {
->>       unsigned long saddr = regs->ior;
->> -    __u64 val = 0;
->> +    unsigned long shift;
->> +    __u64 val = 0, temp1;
+>> Fix the problem by adding any overflows from the final add operation into
+>> the calculated checksum. Fortunately, we can do this without additional
+>> cost by replacing the add operation used to fold the checksum into 32 bit
+>> with "add,dc" to add in the missing carry.
 > 
-> temp1 is ok to be "long".
 > 
->>       ASM_EXCEPTIONTABLE_VAR(ret);
->>
->>       DPRINTF("load " RFMT ":" RFMT " to r%d for 8 bytes\n",
->> @@ -180,25 +181,22 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
->>
->>   #ifdef CONFIG_64BIT
->>       __asm__ __volatile__  (
->> -"    depd,z    %3,60,3,%%r19\n"        /* r19=(ofs&7)*8 */
->> -"    mtsp    %4, %%sr1\n"
->> -"    depd    %%r0,63,3,%3\n"
->> -"1:    ldd    0(%%sr1,%3),%0\n"
->> -"2:    ldd    8(%%sr1,%3),%%r20\n"
->> -"    subi    64,%%r19,%%r19\n"
->> -"    mtsar    %%r19\n"
->> -"    shrpd    %0,%%r20,%%sar,%0\n"
->> +"    depd,z    %4,60,3,%2\n"        /* shift=(ofs&7)*8 */
->> +"    mtsp    %5, %%sr1\n"
->> +"    depd    %%r0,63,3,%4\n"
->> +"1:    ldd    0(%%sr1,%4),%0\n"
->> +"2:    ldd    8(%%sr1,%4),%3\n"
->> +"    subi    64,%2,%2\n"
->> +"    mtsar    %2\n"
->> +"    shrpd    %0,%3,%%sar,%0\n"
->>   "3:    \n"
->>       ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
->>       ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
->> -    : "=r" (val), "+r" (ret)
->> -    : "0" (val), "r" (saddr), "r" (regs->isr)
->> -    : "r19", "r20" );
->> +    : "+r" (val), "+r" (ret), "=&r" (shift), "=&r" (temp1)
->> +    : "r" (saddr), "r" (regs->isr) );
+> Gunter,
 > 
-> addr is actually being modified.
-> That's why I moved it into the output registers and
-> shuffled shift and temp1 one backwards, so that the registers
-> are now in the same ordering as on the 32-bit path.
+> Thanks for your patch for 32- and 64-bit systems.
+> But I think it's time to sunset the parisc inline assembly for ipv4/ipv6
+> checksumming.
+> The patch below converts the code to use standard C-coding (taken from the
+> s390 header file) and it survives the v8 lib/checksum patch.
 > 
-> I've pushed the modified patch here:
-> https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/commit/?h=for-next&id=a6ea53ce77e9dd6e388d673bdd4d80741f97b914
+> Opinions?
 > 
-> Please double-check!
+
+Works for me.
+
+> Helge
 > 
-Confirmed working.
+> Subject: [PATCH] parisc: Fix csum_ipv6_magic on 32- and 64-bit machines
+> 
+> Guenter noticed that the 32- and 64-bit checksum functions may calculate
+> wrong values under certain circumstances. He fixed it by usining
+
+using
+
+> corrected carry-flags added, but overall I think it's better to convert
+> away from inline assembly to generic C-coding.  That way the code is
+> much cleaner and the compiler can do much better optimizations based on
+> the target architecture (32- vs. 64-bit). Furthermore, the compiler
+> generates nowadays much better code, so inline assembly usually won't
+> give any benefit any longer.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Noticed-by: Guenter Roeck <linux@roeck-us.net>
+
+That would be a new tag. Maybe use "Reported-by:", or just drop it.
+
+Maybe also consider adding
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+
+Other than that,
+
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
 Thanks,
 Guenter
-
-> Thanks!
-> Helge
-> 
-> 
->>   #else
->> -    {
->> -    unsigned long shift, temp1;
->>       __asm__ __volatile__  (
->> -"    zdep    %2,29,2,%3\n"        /* r19=(ofs&3)*8 */
->> +"    zdep    %2,29,2,%3\n"        /* shift=(ofs&3)*8 */
->>   "    mtsp    %5, %%sr1\n"
->>   "    dep    %%r0,31,2,%2\n"
->>   "1:    ldw    0(%%sr1,%2),%0\n"
->> @@ -214,7 +212,6 @@ static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
->>       ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 4b, "%1")
->>       : "+r" (val), "+r" (ret), "+r" (saddr), "=&r" (shift), "=&r" (temp1)
->>       : "r" (regs->isr) );
->> -    }
->>   #endif
->>
->>       DPRINTF("val = 0x%llx\n", val);
-> 
 
 
