@@ -1,336 +1,181 @@
-Return-Path: <linux-parisc+bounces-570-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-571-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F576857CC8
-	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 13:39:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1534F857D66
+	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 14:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4051A1C209EE
-	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 12:39:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FD1E288718
+	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 13:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C22C126F2E;
-	Fri, 16 Feb 2024 12:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157B4129A69;
+	Fri, 16 Feb 2024 13:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PErlJbbc"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="G82As20d"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4318B7867E;
-	Fri, 16 Feb 2024 12:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAD91292D6;
+	Fri, 16 Feb 2024 13:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708087137; cv=none; b=WrGN239/Crv5SdedEZPc4wsXy/S2StG5xUkOD9NssawEqOUZlKN2fbB9QocQ113X7VnzZD04FBfqlaB04vHFKotfuZzun23uzlfjNPSs84v161h2EeQBqhlfB6O3ZWZ6+CHbQ6//N7qURW69k8To3qSg/BEEXZAC5XQQODBZP0U=
+	t=1708089212; cv=none; b=LpkBacXCcODohmJ6/uqxuUixnjqR3pMROqzX2TerQjcBJenjyPAodwTlnVZcbI8wJe5Xltb35xmhx2w307sclN639OIJXSTl9lsrE8rEfCTlnayjtwVJ0+Rmr/bHu47z3ueFKrmEqV/AxyUgchyQrMLiyx51pa+0Q2Zrs9UgehY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708087137; c=relaxed/simple;
-	bh=57FD/1eODFZ9dbfGNXBX0p70pg6RhSWmzxSwztEUgUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iuINq3JgJM329JwxPGWcz5e8Z9UiFU2PZLB+GpbqVTngCDGNUAhW3r9pJlqgztRru8WqFWQjxISo4SiYvBhW6Lv1kbIamZlDY4qetfx6JLbqef8zaFoVTqf7j8YaQ5SHubXrOS5kqDa/NNnf+MNXw4SCQHKX7d2rW+pHdAAO4gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PErlJbbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA8DC43390;
-	Fri, 16 Feb 2024 12:38:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708087136;
-	bh=57FD/1eODFZ9dbfGNXBX0p70pg6RhSWmzxSwztEUgUs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PErlJbbcE8GQ0AKDggMEs6PDd/jWQfLwzqEuyJsZl78d9jpJKodjsmLwcEkTs4zVx
-	 49gk4PMHisgz0/TZ+XC9Z09Fe94NmECBV+IcMwajLGm9LcnOZYcc85gQhHSPwCq2Wc
-	 N6Y4yb4cNSDqj7i6xEOnMjHCUwWeGhnfw6YEWXIi/CzPWPjkF5UgnOPFHOCRvQiS6B
-	 b3fqgkjY468zMkUvgku2YXXdnlw3ZFcniPN22PXi1XLoqrrB5gcm1Ak3f+QhncTIpx
-	 w79W3+q7DzxzgrDYMhSb3qYUTdYE1jLT7QkSQWRUBXpIU+FgoacZu9oH/lleUC2T4z
-	 LKnmbSS7ZZttQ==
-Date: Fri, 16 Feb 2024 13:38:51 +0100
-From: Helge Deller <deller@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Helge Deller <deller@gmx.de>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: Re: [PATCH] parisc: Fix csum_ipv6_magic on 64-bit systems
-Message-ID: <Zc9XW-TxQKp84vMt@p100>
-References: <20240213234631.940055-1-linux@roeck-us.net>
+	s=arc-20240116; t=1708089212; c=relaxed/simple;
+	bh=RfrwlrMiLdeDpDWa6yYuEsg2k4+fP3eIrFX3FgB6HzI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ZwmjAMF2oux4sqnD1FaRJcIDJ6+m3rEHZM+wws69+MvPW9PqcE+A1ZdaDKF2G8qxmhviYg2bWbxOc9shy8hDFgFSuRteMh8IIxfDRtLne3oxXzWS/F85dI3BNg7zs6wjmSevme3ukhMo7s4xNSCNpWdV21bhKXdNP2W8LPPjb1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=G82As20d; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1708089191; x=1708693991; i=deller@gmx.de;
+	bh=RfrwlrMiLdeDpDWa6yYuEsg2k4+fP3eIrFX3FgB6HzI=;
+	h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+	b=G82As20dOtzFpVH19131yEHZLVek2C77KIHuQ7gBYIy8b9Kk8PjDX5ZKY0KlAP4u
+	 DVkgdAnOk1UDx6FPOQkRUvaz8Je/JEQ+vnd5aScKaFo9YzXlnYQYlZHapEHsiSo6g
+	 C7HJeBYz+FPKSXMKT6IZxWg6qQs8qtckn4IsihKE3isjC54tcIMIf7hkWbd0Et/1L
+	 81EXEDUJ2Ozfm1a6itNjjw6IlO+faEKREBHdWfDm21hgg3BofW/8PCq+GvUBQnqDn
+	 E766sA4SSriniq8I2kWK87Q/SXF3gAGfuWX5hR5Pob/AcG5JR7MlO2C7Tsu77fmud
+	 E9qH44HYl6XjFhffPA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([94.134.148.214]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQMuX-1rNPDq0fB3-00MKR0; Fri, 16
+ Feb 2024 14:13:11 +0100
+Message-ID: <3a0a120e-ac4d-4c1a-a22f-1b0800ecb973@gmx.de>
+Date: Fri, 16 Feb 2024 14:29:33 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240213234631.940055-1-linux@roeck-us.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] parisc/kprobes: always include asm-generic/kprobes.h
+Content-Language: en-US
+To: Max Kellermann <max.kellermann@ionos.com>, svens@stackframe.org,
+ James.Bottomley@HansenPartnership.com, mcgrof@kernel.org,
+ linux-parisc@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240211230945.297104-1-max.kellermann@ionos.com>
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20240211230945.297104-1-max.kellermann@ionos.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ckrHekCxADyq41bO85BcniguE/Xexk5wIcXWinJ3cCW0B/QSja8
+ oioxcl8bUDzMKt+ZE2Cg5WwPNg6lx+baiOibFNMuMEgk+JnQIvZoLNY6N0qRuGZPHeyzVnf
+ LuhppQ8hicZGgzabySSNxLy3wr1Yzyi0P5qquPbj592ggWAC+6CWAA9ivRcfgq5AkQy6+4U
+ Wn3ig2uNFsxQcBi76vsNw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:DFSVkUWosFM=;scRSUk8NUIPNlb5vY6DC8GUCPwN
+ jrj4imVmEZfstZkZ/HXBOaCPutKLLdnJxKlHjJVh7HxIDl2anRKY9aULfhyd7SZUTDQO+B7DS
+ kp9+fVDUFvAdIo6kZZMr4fEb7LKdpugUjT6SgmOPDmLb6/FpxYPXglX1Xnb3CuaOg6UjbH02u
+ N5txv71OhFRWa6QVU4cew/W4AHPq43NHGRSvWNy51t1izTglVHkDS1BNFGvyKW2dqvB95EV0m
+ ONbuZpHoIy11DbqE6aCwOcX4GuJjv+xNFpIX+OxFISs4k3ufEyOfkoBx35+9vlbam2qWdYjs/
+ NkTHozA5XnOOAjCh/n4A9na8JDPGjATBlm5zf9/n16cg8iKINNAQtx23d64o9lf5b3QabFfKW
+ pededWvaqGl5mc3m8d7IDOXl4Poj8dWyeYH7eq6Akn3peJhN7qnUBCfgeXE0f3gBrHlAcXM/g
+ y5k46XdYlyVx9MVpgPjdkUIRMDMxdxJkp1TlTJKv9OcObI+bO3aPlQBbM5xJlwfCU6X+xKTsk
+ BW8+BbJ7HQoeOdT/vvdMmqtP2Ug5SnOVl2o4YpSWa8OGcS7Q4SiOq0Wj6O3mu4nOvdUifV4GJ
+ umq7bzvJDKRvuqGhmtVwBPHRMITiKnLQ+hj3hb7J7gOF/jnvMWAFhfJPcHScCDHFXmWLLxZlB
+ 3ESxRzZ9iwiEE1iJdwmIHGk0YWl5SxLJ53A2+EMQh6TbRQaAVeRkr0sVs1E+uS+VDbDatf77u
+ Tt7mKWbXyGWWtsm8z+cfS13Ixpjx7XdEP0HhkaPHHm0LN0/e1wDJ47EBz8GQUDaG4Nc3DQEKO
+ c2bnHqBB0seR5y8hbCUZqs2hti+0yQiPqJ+6TyVQNfMPA=
 
-* Guenter Roeck <linux@roeck-us.net>:
-> hppa 64-bit systems calculates the IPv6 checksum using 64-bit add
-> operations. The last add folds protocol and length fields into the 64-bit
-> result. While unlikely, this operation can overflow. The overflow can be
-> triggered with a code sequence such as the following.
-> 
-> 	/* try to trigger massive overflows */
-> 	memset(tmp_buf, 0xff, sizeof(struct in6_addr));
-> 	csum_result = csum_ipv6_magic((struct in6_addr *)tmp_buf,
-> 				      (struct in6_addr *)tmp_buf,
-> 				      0xffff, 0xff, 0xffffffff);
-> 
-> Fix the problem by adding any overflows from the final add operation into
-> the calculated checksum. Fortunately, we can do this without additional
-> cost by replacing the add operation used to fold the checksum into 32 bit
-> with "add,dc" to add in the missing carry.
+On 2/12/24 00:09, Max Kellermann wrote:
+> The NOKPROBE_SYMBOL macro (and others) were moved to
+> asm-generic/kprobes.h in 2017 by commit 7d134b2ce639 ("kprobes: move
+> kprobe declarations to asm-generic/kprobes.h"), and this new header
+> was included by asm/kprobes.h unconditionally on all architectures.
+>
+> When kprobe support was added to parisc in 2017 by commit
+> 8858ac8e9e9b1 ("parisc: Implement kprobes"), that header was only
+> included when CONFIG_KPROBES was enabled.
+>
+> This can lead to build failures when NOKPROBE_SYMBOL is used, but
+> CONFIG_KPROBES is disabled.  This mistake however was never actually
+> noticed because linux/kprobes.h also includes asm-generic/kprobes.h
+> (though I do not understand why that is, because it also includes
+> asm/kprobes.h).
+>
+> To prevent eventual build failures, I suggest to always include
+> asm-generic/kprobes.h on parisc, just like all the other architectures
+> do.  This way, including asm/kprobes.h suffices, and nobody (outside
+> of arch/) ever needs to explicitly include asm-generic/kprobes.h.
+>
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 
+applied to parisc git tree.
 
-Gunter,
-
-Thanks for your patch for 32- and 64-bit systems.
-But I think it's time to sunset the parisc inline assembly for ipv4/ipv6
-checksumming.
-The patch below converts the code to use standard C-coding (taken from the
-s390 header file) and it survives the v8 lib/checksum patch.
-
-Opinions?
-
+Thanks!
 Helge
 
-Subject: [PATCH] parisc: Fix csum_ipv6_magic on 32- and 64-bit machines
 
-Guenter noticed that the 32- and 64-bit checksum functions may calculate
-wrong values under certain circumstances. He fixed it by usining
-corrected carry-flags added, but overall I think it's better to convert
-away from inline assembly to generic C-coding.  That way the code is
-much cleaner and the compiler can do much better optimizations based on
-the target architecture (32- vs. 64-bit). Furthermore, the compiler
-generates nowadays much better code, so inline assembly usually won't
-give any benefit any longer.
+> ---
+>   arch/parisc/include/asm/kprobes.h | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/parisc/include/asm/kprobes.h b/arch/parisc/include/asm=
+/kprobes.h
+> index 0a175ac87698..0f42f5c8e3b6 100644
+> --- a/arch/parisc/include/asm/kprobes.h
+> +++ b/arch/parisc/include/asm/kprobes.h
+> @@ -10,9 +10,10 @@
+>   #ifndef _PARISC_KPROBES_H
+>   #define _PARISC_KPROBES_H
+>
+> +#include <asm-generic/kprobes.h>
+> +
+>   #ifdef CONFIG_KPROBES
+>
+> -#include <asm-generic/kprobes.h>
+>   #include <linux/types.h>
+>   #include <linux/ptrace.h>
+>   #include <linux/notifier.h>
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Noticed-by: Guenter Roeck <linux@roeck-us.net>
-
-diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
-index 3c43baca7b39..c72f14536353 100644
---- a/arch/parisc/include/asm/checksum.h
-+++ b/arch/parisc/include/asm/checksum.h
-@@ -18,160 +18,93 @@
-  */
- extern __wsum csum_partial(const void *, int, __wsum);
- 
-+
- /*
-- *	Optimized for IP headers, which always checksum on 4 octet boundaries.
-- *
-- *	Written by Randolph Chung <tausq@debian.org>, and then mucked with by
-- *	LaMont Jones <lamont@debian.org>
-+ * Fold a partial checksum without adding pseudo headers.
-  */
--static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
-+static inline __sum16 csum_fold(__wsum sum)
- {
--	unsigned int sum;
--	unsigned long t0, t1, t2;
-+	u32 csum = (__force u32) sum;
- 
--	__asm__ __volatile__ (
--"	ldws,ma		4(%1), %0\n"
--"	addib,<=	-4, %2, 2f\n"
--"\n"
--"	ldws		4(%1), %4\n"
--"	ldws		8(%1), %5\n"
--"	add		%0, %4, %0\n"
--"	ldws,ma		12(%1), %3\n"
--"	addc		%0, %5, %0\n"
--"	addc		%0, %3, %0\n"
--"1:	ldws,ma		4(%1), %3\n"
--"	addib,<		0, %2, 1b\n"
--"	addc		%0, %3, %0\n"
--"\n"
--"	extru		%0, 31, 16, %4\n"
--"	extru		%0, 15, 16, %5\n"
--"	addc		%4, %5, %0\n"
--"	extru		%0, 15, 16, %5\n"
--"	add		%0, %5, %0\n"
--"	subi		-1, %0, %0\n"
--"2:\n"
--	: "=r" (sum), "=r" (iph), "=r" (ihl), "=r" (t0), "=r" (t1), "=r" (t2)
--	: "1" (iph), "2" (ihl)
--	: "memory");
--
--	return (__force __sum16)sum;
-+	csum += (csum >> 16) | (csum << 16);
-+	csum >>= 16;
-+	return (__force __sum16) ~csum;
- }
- 
- /*
-- *	Fold a partial checksum
-+ * This is a version of ip_compute_csum() optimized for IP headers,
-+ * which always checksums on 4 octet boundaries.
-  */
--static inline __sum16 csum_fold(__wsum csum)
-+static inline __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
- {
--	u32 sum = (__force u32)csum;
--	/* add the swapped two 16-bit halves of sum,
--	   a possible carry from adding the two 16-bit halves,
--	   will carry from the lower half into the upper half,
--	   giving us the correct sum in the upper half. */
--	sum += (sum << 16) + (sum >> 16);
--	return (__force __sum16)(~sum >> 16);
-+	__u64 csum = 0;
-+	__u32 *ptr = (u32 *)iph;
-+
-+	csum += *ptr++;
-+	csum += *ptr++;
-+	csum += *ptr++;
-+	csum += *ptr++;
-+	ihl -= 4;
-+	while (ihl--)
-+		csum += *ptr++;
-+	csum += (csum >> 32) | (csum << 32);
-+	return csum_fold((__force __wsum)(csum >> 32));
- }
-- 
--static inline __wsum csum_tcpudp_nofold(__be32 saddr, __be32 daddr,
--					__u32 len, __u8 proto,
--					__wsum sum)
-+
-+/*
-+ * Computes the checksum of the TCP/UDP pseudo-header.
-+ * Returns a 32-bit checksum.
-+ */
-+static inline __wsum csum_tcpudp_nofold(__be32 saddr, __be32 daddr, __u32 len,
-+					__u8 proto, __wsum sum)
- {
--	__asm__(
--	"	add  %1, %0, %0\n"
--	"	addc %2, %0, %0\n"
--	"	addc %3, %0, %0\n"
--	"	addc %%r0, %0, %0\n"
--		: "=r" (sum)
--		: "r" (daddr), "r"(saddr), "r"(proto+len), "0"(sum));
--	return sum;
-+	__u64 csum = (__force __u64)sum;
-+
-+	csum += (__force __u32)saddr;
-+	csum += (__force __u32)daddr;
-+	csum += len;
-+	csum += proto;
-+	csum += (csum >> 32) | (csum << 32);
-+	return (__force __wsum)(csum >> 32);
- }
- 
- /*
-- * computes the checksum of the TCP/UDP pseudo-header
-- * returns a 16-bit checksum, already complemented
-+ * Computes the checksum of the TCP/UDP pseudo-header.
-+ * Returns a 16-bit checksum, already complemented.
-  */
--static inline __sum16 csum_tcpudp_magic(__be32 saddr, __be32 daddr,
--					__u32 len, __u8 proto,
--					__wsum sum)
-+static inline __sum16 csum_tcpudp_magic(__be32 saddr, __be32 daddr, __u32 len,
-+					__u8 proto, __wsum sum)
- {
--	return csum_fold(csum_tcpudp_nofold(saddr,daddr,len,proto,sum));
-+	return csum_fold(csum_tcpudp_nofold(saddr, daddr, len, proto, sum));
- }
- 
- /*
-- * this routine is used for miscellaneous IP-like checksums, mainly
-- * in icmp.c
-+ * Used for miscellaneous IP-like checksums, mainly icmp.
-  */
--static inline __sum16 ip_compute_csum(const void *buf, int len)
-+static inline __sum16 ip_compute_csum(const void *buff, int len)
- {
--	 return csum_fold (csum_partial(buf, len, 0));
-+	return csum_fold(csum_partial(buff, len, 0));
- }
- 
--
- #define _HAVE_ARCH_IPV6_CSUM
--static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
--					  const struct in6_addr *daddr,
--					  __u32 len, __u8 proto,
--					  __wsum sum)
-+static inline __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
-+				      const struct in6_addr *daddr,
-+				      __u32 len, __u8 proto, __wsum csum)
- {
--	unsigned long t0, t1, t2, t3;
--
--	len += proto;	/* add 16-bit proto + len */
--
--	__asm__ __volatile__ (
--
--#if BITS_PER_LONG > 32
--
--	/*
--	** We can execute two loads and two adds per cycle on PA 8000.
--	** But add insn's get serialized waiting for the carry bit.
--	** Try to keep 4 registers with "live" values ahead of the ALU.
--	*/
--
--"	ldd,ma		8(%1), %4\n"	/* get 1st saddr word */
--"	ldd,ma		8(%2), %5\n"	/* get 1st daddr word */
--"	add		%4, %0, %0\n"
--"	ldd,ma		8(%1), %6\n"	/* 2nd saddr */
--"	ldd,ma		8(%2), %7\n"	/* 2nd daddr */
--"	add,dc		%5, %0, %0\n"
--"	add,dc		%6, %0, %0\n"
--"	add,dc		%7, %0, %0\n"
--"	add,dc		%3, %0, %0\n"  /* fold in proto+len | carry bit */
--"	extrd,u		%0, 31, 32, %4\n"/* copy upper half down */
--"	depdi		0, 31, 32, %0\n"/* clear upper half */
--"	add		%4, %0, %0\n"	/* fold into 32-bits */
--"	addc		0, %0, %0\n"	/* add carry */
--
--#else
--
--	/*
--	** For PA 1.x, the insn order doesn't matter as much.
--	** Insn stream is serialized on the carry bit here too.
--	** result from the previous operation (eg r0 + x)
--	*/
--"	ldw,ma		4(%1), %4\n"	/* get 1st saddr word */
--"	ldw,ma		4(%2), %5\n"	/* get 1st daddr word */
--"	add		%4, %0, %0\n"
--"	ldw,ma		4(%1), %6\n"	/* 2nd saddr */
--"	addc		%5, %0, %0\n"
--"	ldw,ma		4(%2), %7\n"	/* 2nd daddr */
--"	addc		%6, %0, %0\n"
--"	ldw,ma		4(%1), %4\n"	/* 3rd saddr */
--"	addc		%7, %0, %0\n"
--"	ldw,ma		4(%2), %5\n"	/* 3rd daddr */
--"	addc		%4, %0, %0\n"
--"	ldw,ma		4(%1), %6\n"	/* 4th saddr */
--"	addc		%5, %0, %0\n"
--"	ldw,ma		4(%2), %7\n"	/* 4th daddr */
--"	addc		%6, %0, %0\n"
--"	addc		%7, %0, %0\n"
--"	addc		%3, %0, %0\n"	/* fold in proto+len, catch carry */
--
--#endif
--	: "=r" (sum), "=r" (saddr), "=r" (daddr), "=r" (len),
--	  "=r" (t0), "=r" (t1), "=r" (t2), "=r" (t3)
--	: "0" (sum), "1" (saddr), "2" (daddr), "3" (len)
--	: "memory");
--	return csum_fold(sum);
-+	__u64 sum = (__force __u64)csum;
-+
-+	sum += (__force __u32)saddr->s6_addr32[0];
-+	sum += (__force __u32)saddr->s6_addr32[1];
-+	sum += (__force __u32)saddr->s6_addr32[2];
-+	sum += (__force __u32)saddr->s6_addr32[3];
-+	sum += (__force __u32)daddr->s6_addr32[0];
-+	sum += (__force __u32)daddr->s6_addr32[1];
-+	sum += (__force __u32)daddr->s6_addr32[2];
-+	sum += (__force __u32)daddr->s6_addr32[3];
-+	sum += len;
-+	sum += proto;
-+	sum += (sum >> 32) | (sum << 32);
-+	return csum_fold((__force __wsum)(sum >> 32));
- }
- 
- #endif
--
 
