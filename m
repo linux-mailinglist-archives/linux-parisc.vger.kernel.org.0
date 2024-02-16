@@ -1,52 +1,53 @@
-Return-Path: <linux-parisc+bounces-572-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-573-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48075857D6C
-	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 14:14:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECEFA857DC4
+	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 14:34:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD3E7288742
-	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 13:14:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB46DB21455
+	for <lists+linux-parisc@lfdr.de>; Fri, 16 Feb 2024 13:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CE7129A61;
-	Fri, 16 Feb 2024 13:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00F9129A89;
+	Fri, 16 Feb 2024 13:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="V4kKaAhP"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="bhik6z12"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C606878695;
-	Fri, 16 Feb 2024 13:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AF159B5F;
+	Fri, 16 Feb 2024 13:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708089260; cv=none; b=DgRoUUjlEIYggB14RTeHQD0NFOLGotN3BKMO69U3MDuBwj7V0qFnBHS44ji48DR1GwOZH8bMe3LNd2vVieSyt47Ip8CFW4POmOxHhpNpjD51/hbuVvAjYwTuhK/nUUdwQyLgsx5hMphvzX/ZGK2cRIpsMUGJzgvRI3xCuL6lZds=
+	t=1708090482; cv=none; b=D4rhVYsK9qVKty2e352AJZBruf15keVpUgr6tx2iLMXa7/VPmv6xDt1KU6FRv08JTB1inbjbU2LCfmJh7QwW3hnMw2PcX9evlYC2CcAspffgxOVmqUuoxcTef4LHkad1Iy+lioYV9YXzdWLc+otjkC5SodcdxM1KoaxnzNIDZpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708089260; c=relaxed/simple;
-	bh=f0LUsS9SDzP69bj7Fmp7ctSUX2hl6rFEkJO/i6dzlZc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=FOjdtX3cFRIK5osdgx3+pM0mGEsfjv1xFRhVMld1y1Ktg2gvZqFoannx7pgaailOWDjvcLLYfEhdAzClGOCjCavH9HZ+dh0J6qGx1n2lBNMfsOYBQyPXSWEzbj3zf8S5j9fJjJzXGE6D0TUsVnOuKFnQBfn7qvJLs1J4B8aaoEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=V4kKaAhP; arc=none smtp.client-ip=212.227.17.20
+	s=arc-20240116; t=1708090482; c=relaxed/simple;
+	bh=S6GH26MOvmbaGoEuB+DlOWQVrSfvfmK+ZAJKIJVu1tc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bxn68tmJHjVYR8PzOWze4AH8t1bF/u26r3ViJlPcWFellHE0Ll8Hmv/iZYVwF6lefB3Dc5lUXCCjismhR5T+cm+MHOzf837Zg2yCf0OTJTYVP1z2qcfapuOvft96E2a48gpgQDMjRl4+/LILpfRYaT26hTzC921Y+43qx1zOOqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=bhik6z12; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1708089236; x=1708694036; i=deller@gmx.de;
-	bh=f0LUsS9SDzP69bj7Fmp7ctSUX2hl6rFEkJO/i6dzlZc=;
-	h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
-	b=V4kKaAhPbVZ5jB0TiDaes3SlMfjWRvJ4pZ25o6HFjeXnfmKKpqFJIwkSdrB1Ogke
-	 bWRWvZzR9EBWnbf/oHHYaUVywBrf4g3Ze5+ZGTDrf8Spyp9a4zQkdJLVTrzgiRZBh
-	 OmKf+dHPiPiHhmqhU8jXDJ/2FNF4p8WRutFIJj3BMTCW3PRGlqT0WJzC0QEVLglGo
-	 pGLK4vvzYp6U7IH3T1ziofzhXsBMAwiMOP8fWhqi2Eh93HabA0mO9oulRTTi1Dd63
-	 OPKvCcJzCZPTABn0qLUSlm8egbwH+NuihLPWYwWCkyYmNsAV0kEP2U1nzJgug5Qfp
-	 DDUmJFSOYpgJiXoq5A==
+	t=1708090402; x=1708695202; i=deller@gmx.de;
+	bh=S6GH26MOvmbaGoEuB+DlOWQVrSfvfmK+ZAJKIJVu1tc=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=bhik6z12dhMQh+ymMFYThdU/H5OON3gs4pbF/rk5WIpDBAw8hP6VMvOw3lLRVWfQ
+	 B5sUJR8/osD7lgL7hfe1Iqsb6l1KzJ/wV/5FlHrkZP0h0kah2NBxl1PLcfs5EIgYk
+	 SbNJTPOBxIllw9fjkD3GU1jA1q1vEsi62jAFw1ZEv6BdIFIuKmydX24BbRDLoMLw/
+	 1pG2BkThewn9nIvk+KKXClvUPUsOffR5O/UzBqckIQkUrTfRX2jeXWPVnH/M3fqHQ
+	 IkIvONMhW06korD6AvDC+HIfu7rA7c4ILSOczcDX7c27NaAv1ipRHWHIwl7GPvAFz
+	 rCtPU6lVFY0afI7iTA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.55] ([94.134.148.214]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N95eJ-1qvWVA3Z27-0164q4; Fri, 16
- Feb 2024 14:13:55 +0100
-Message-ID: <2eac5921-1bf4-4013-8002-f62a96d71829@gmx.de>
-Date: Fri, 16 Feb 2024 14:30:14 +0100
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MmlXK-1r91dc2nf4-00jrDx; Fri, 16
+ Feb 2024 14:33:22 +0100
+Message-ID: <1e889ddc-e5ea-41c8-a316-61bae12dfa9c@gmx.de>
+Date: Fri, 16 Feb 2024 14:48:04 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -54,13 +55,12 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc/ftrace: add missing CONFIG_DYNAMIC_FTRACE check
+Subject: Re: [PATCH] parisc/unaligned: Rewrite 64-bit inline assembly of
+ emulate_ldd()
 Content-Language: en-US
-To: Max Kellermann <max.kellermann@ionos.com>, rostedt@goodmis.org,
- mhiramat@kernel.org, mark.rutland@arm.com,
- James.Bottomley@HansenPartnership.com, linux-trace-kernel@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240211224314.169314-1-max.kellermann@ionos.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240216073315.3801833-1-linux@roeck-us.net>
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -105,68 +105,135 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20240211224314.169314-1-max.kellermann@ionos.com>
+In-Reply-To: <20240216073315.3801833-1-linux@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:lp3J+gk+fOmyD1YDJc2WUVnFI0sDL9yYEI89g3O1Z/HwLiqp5D6
- niRcNqXUi9ZDjEag6L1hF0qBAGHsW/6dD0pCSV2ZwOpa9kMbYiHAc371hE3usDlBPlq1E0U
- TItUW741aD9oe7w+O3okXpz6DW0ZlFHXO8OlMYCel7qejjQst3NUPS46NG4PPlStxnCt+A+
- 77ifW3Kor/IXyfauP/h+g==
+X-Provags-ID: V03:K1:mtogNv3jHbkEpeD6Y3ODqTtw7RlDpefnjzIS5HdIZYXNtECJfO+
+ +3zrdf/ms5ZHl8BWKGOmVdvIFtThgbOjjRQ+4CDIwCHmyHzdpy2PKapdaMJwMR/xMtRoQ7W
+ y5cPUnwBnAMtrOCRJEjcrIQ+pjPgTwTbbIJLC/KNPKJzh6cYg0hbmG1ExI6VqpTWJDWg7ez
+ BW5jYJO3Lqs2ly6H0DJtA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:whPwJXuJBm4=;4ST2qXZ2d/a/PxkhogzX1I3vrw2
- m27z4gJeBYQF/1tXxcUKSuZSx0nRsHI6sfa18ZZQ95X46RgzkygFBl6D2S+Q2w8jJDzENV6P3
- PxcirTUAmHXlKj0Q8H8eu4BLALD0bOfVjaHNPXbH7NHzkUT8CLAWEZWtdg2V6pGarweaEIwpY
- aJFimgaQ6FqxwDrR5SJrkyC3yjpkz5p8RFsUIiZqRwJWOkyyQe8bEuZtXU/N3b3kQnWRZxNsZ
- F0uosfueK6yFKMaRUoHIYaplw4SznCMWg89YKLWgchtUuE6iignm5NS1fRsvil2HgB9foHiGm
- 6LH9MEDYprVpPVS1UV1u3iqiWIpS+318eE8fyVAQI5jrJiSC8+eyTEj8K0sz25v768s4eWnLM
- OV5N5w0v8d0TFqjt879x+uSE/HsN3TIEHwHuIo/IcnseWEnlwCeeY3fsVc/IY7hvDIAXZPj+8
- 5kzfy0G2KYZ6WYXl842/1Pnzc95sgzOTpsZbFy1QudhPXXAWkTSw4hLy1GoR5ixABNPWaXghv
- VK+1YtG1b1QZhrSDIWta9T3gbZCvSJZZx6bbL7CUzrUulP8a8J4ApPPKJGTn1feWTl7bJRW15
- qQ6d0F+IezU2LouzluLfRzMxTqNAUt30y6vDvi4dH/eOAps9BgxvuyyuGhmNV/0VNVKeZxZke
- tvzLEUUAxss9VAzTD64JifYf+1l95HpVlFdY4dRsjorosle9yKeWAc/5BPkIf2JUsGLJ/ZIWM
- xSiy3ibXo8jmaUvVppSjbI1H68j4DPfcVrsKwFPXLKlHXrYStviKCqSTiFAqFlhqtU9SiHwEb
- OaIoizpmkBT03C/DoduCWFYUrPE8umGTI2KQew7fd4CUE=
+UI-OutboundReport: notjunk:1;M01:P0:QDJGDsXe/mI=;hn24JNmWWYk+OZ58glZ5NduYEZV
+ 435BlSb4VLP8SJeVX+smWnNWbuwVsJudf1XF1YC3w3trbF+xjdOSRIy0j/igDXFW498tVLr84
+ DHvnuhGJIeklObFeBSugEC3JOGhnK030XOnXnmaplWOpGY80tZunUFWe14tCasag97NNKPMxr
+ /dmTOpLVt+McIMaL8aa0GXxeAofi9NfOfhf4jEkoBmfQ233pWX+xEfmSFtIVeAAVmNqSbRSQS
+ 9u9vMvLxgYsfot99DjpChzFk/lUtw+GvnoSQH9MSVgs6isgeNZrEGlhGO2rWZ2SvzJ4hBzWJK
+ zpBzYEVitKGg/KTyHPp7g0iIJ16r9xycYe/3FZjWOLE6Tf1XcFpvpekMWOm11tKSPTbeDxOMS
+ wL/Gv1DlD2JFaPJON2C0/1ZF+kPGMdVJubrQ9bhancQTmHI1PYkJCM610Qg8NuUnAEq926Wfp
+ +7VHBIUqfAzgJ36MD/EaenD46VFn9peou3sy3frd2E7j9rdjZi+Mr5n9BqboED0TRLcPmrzlX
+ 0FfiTbJb2XOjV73wR7y1BRr6FNh9b7fDXX3weryTYXJ0bzWQfUGwkX+W0tacr1FuE33/6V/nK
+ AmSWly4/TyeARpGJQkg63jij/prLftz+eeSwOh7Uhe6Q1OQJGAIFcuAKYcFjPAXDvwKIrOoQJ
+ S21mulwz4UfaE/hUdOr9nMR2A63yyDkFiKdDdCjnc6CIiAjfoOC8hZFT+h7FxWUcWcx8jtFzA
+ aTJgBGJyCXTYqhdsOtglNFJskYjG6SOGhG0gfeSt6HCnGcFL2kwIIzb7/n7IjdlhFFMm80TJY
+ 2nRtHzGTcyuZsd2iQ/dbQ2+7zTXg+Xsi1C9euQhLNSDpc=
 
-On 2/11/24 23:43, Max Kellermann wrote:
-> Fixes a bug revealed by -Wmissing-prototypes when
-> CONFIG_FUNCTION_GRAPH_TRACER is enabled but not CONFIG_DYNAMIC_FTRACE:
+On 2/16/24 08:33, Guenter Roeck wrote:
+> Convert to use real temp variables instead of clobbering processor
+> registers.
+
+Thanks for doing this.
+It was on my todo list since quite some time :-)
+
+> This aligns the 64-bit inline assembly code with the 32-bit
+> assembly code which was rewritten with commit 427c1073a2a1
+> ("parisc/unaligned: Rewrite 32-bit inline assembly of emulate_ldd()").
 >
->   arch/parisc/kernel/ftrace.c:82:5: error: no previous prototype for 'ft=
-race_enable_ftrace_graph_caller' [-Werror=3Dmissing-prototypes]
->      82 | int ftrace_enable_ftrace_graph_caller(void)
->         |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->   arch/parisc/kernel/ftrace.c:88:5: error: no previous prototype for 'ft=
-race_disable_ftrace_graph_caller' [-Werror=3Dmissing-prototypes]
->      88 | int ftrace_disable_ftrace_graph_caller(void)
->         |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> While at it, fix comment in 32-bit rewrite code. Temporary variables are
+> now used for both 32-bit and 64-bit code, so move their declarations
+> to the function header.
 >
-> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> No functional change intended.
+>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+> Implemented while analyzing a bug. I am not really sure of it is worth
+> the effort, but I figured that I might as well submit it.
+>
+>   arch/parisc/kernel/unaligned.c | 29 +++++++++++++----------------
+>   1 file changed, 13 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/parisc/kernel/unaligned.c b/arch/parisc/kernel/unalign=
+ed.c
+> index c520e551a165..622c7b549fb8 100644
+> --- a/arch/parisc/kernel/unaligned.c
+> +++ b/arch/parisc/kernel/unaligned.c
+> @@ -169,7 +169,8 @@ static int emulate_ldw(struct pt_regs *regs, int tor=
+eg, int flop)
+>   static int emulate_ldd(struct pt_regs *regs, int toreg, int flop)
+>   {
+>   	unsigned long saddr =3D regs->ior;
+> -	__u64 val =3D 0;
+> +	unsigned long shift;
+> +	__u64 val =3D 0, temp1;
 
+temp1 is ok to be "long".
 
-applied to parisc git tree.
+>   	ASM_EXCEPTIONTABLE_VAR(ret);
+>
+>   	DPRINTF("load " RFMT ":" RFMT " to r%d for 8 bytes\n",
+> @@ -180,25 +181,22 @@ static int emulate_ldd(struct pt_regs *regs, int t=
+oreg, int flop)
+>
+>   #ifdef CONFIG_64BIT
+>   	__asm__ __volatile__  (
+> -"	depd,z	%3,60,3,%%r19\n"		/* r19=3D(ofs&7)*8 */
+> -"	mtsp	%4, %%sr1\n"
+> -"	depd	%%r0,63,3,%3\n"
+> -"1:	ldd	0(%%sr1,%3),%0\n"
+> -"2:	ldd	8(%%sr1,%3),%%r20\n"
+> -"	subi	64,%%r19,%%r19\n"
+> -"	mtsar	%%r19\n"
+> -"	shrpd	%0,%%r20,%%sar,%0\n"
+> +"	depd,z	%4,60,3,%2\n"		/* shift=3D(ofs&7)*8 */
+> +"	mtsp	%5, %%sr1\n"
+> +"	depd	%%r0,63,3,%4\n"
+> +"1:	ldd	0(%%sr1,%4),%0\n"
+> +"2:	ldd	8(%%sr1,%4),%3\n"
+> +"	subi	64,%2,%2\n"
+> +"	mtsar	%2\n"
+> +"	shrpd	%0,%3,%%sar,%0\n"
+>   "3:	\n"
+>   	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 3b, "%1")
+>   	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(2b, 3b, "%1")
+> -	: "=3Dr" (val), "+r" (ret)
+> -	: "0" (val), "r" (saddr), "r" (regs->isr)
+> -	: "r19", "r20" );
+> +	: "+r" (val), "+r" (ret), "=3D&r" (shift), "=3D&r" (temp1)
+> +	: "r" (saddr), "r" (regs->isr) );
+
+addr is actually being modified.
+That's why I moved it into the output registers and
+shuffled shift and temp1 one backwards, so that the registers
+are now in the same ordering as on the 32-bit path.
+
+I've pushed the modified patch here:
+https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/co=
+mmit/?h=3Dfor-next&id=3Da6ea53ce77e9dd6e388d673bdd4d80741f97b914
+
+Please double-check!
 
 Thanks!
 Helge
 
 
-> ---
->   arch/parisc/kernel/ftrace.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
-> index d1defb9ede70..621a4b386ae4 100644
-> --- a/arch/parisc/kernel/ftrace.c
-> +++ b/arch/parisc/kernel/ftrace.c
-> @@ -78,7 +78,7 @@ asmlinkage void notrace __hot ftrace_function_trampoli=
-ne(unsigned long parent,
+>   #else
+> -    {
+> -	unsigned long shift, temp1;
+>   	__asm__ __volatile__  (
+> -"	zdep	%2,29,2,%3\n"		/* r19=3D(ofs&3)*8 */
+> +"	zdep	%2,29,2,%3\n"		/* shift=3D(ofs&3)*8 */
+>   "	mtsp	%5, %%sr1\n"
+>   "	dep	%%r0,31,2,%2\n"
+>   "1:	ldw	0(%%sr1,%2),%0\n"
+> @@ -214,7 +212,6 @@ static int emulate_ldd(struct pt_regs *regs, int tor=
+eg, int flop)
+>   	ASM_EXCEPTIONTABLE_ENTRY_EFAULT(3b, 4b, "%1")
+>   	: "+r" (val), "+r" (ret), "+r" (saddr), "=3D&r" (shift), "=3D&r" (tem=
+p1)
+>   	: "r" (regs->isr) );
+> -    }
 >   #endif
->   }
 >
-> -#ifdef CONFIG_FUNCTION_GRAPH_TRACER
-> +#if defined(CONFIG_DYNAMIC_FTRACE) && defined(CONFIG_FUNCTION_GRAPH_TRA=
-CER)
->   int ftrace_enable_ftrace_graph_caller(void)
->   {
->   	static_key_enable(&ftrace_graph_enable.key);
+>   	DPRINTF("val =3D 0x%llx\n", val);
 
 
