@@ -1,193 +1,179 @@
-Return-Path: <linux-parisc+bounces-585-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-586-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22EA85A777
-	for <lists+linux-parisc@lfdr.de>; Mon, 19 Feb 2024 16:35:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 072BA85A8A3
+	for <lists+linux-parisc@lfdr.de>; Mon, 19 Feb 2024 17:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8770B208F3
-	for <lists+linux-parisc@lfdr.de>; Mon, 19 Feb 2024 15:35:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A4E51C22CC5
+	for <lists+linux-parisc@lfdr.de>; Mon, 19 Feb 2024 16:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D606838F96;
-	Mon, 19 Feb 2024 15:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACB83BB3B;
+	Mon, 19 Feb 2024 16:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="OWVBcK7j"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="X5+G85Ql"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E321383A6;
-	Mon, 19 Feb 2024 15:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F263B79D;
+	Mon, 19 Feb 2024 16:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708356903; cv=none; b=bPaqxiJFt80oRb1zKOxz/+7xqzWun5x6Do+NOhxUk35NB35brqMXdt8A1sAWs/MqAnVwfMgCeusUBDAr7fSqCBfWEpw5LDPxUxmxasepX3EzgIJ+nJhG3Vnlnh1eiiwYmCR4RFz/wKJtxljVOaxGOQza4LT0R4e/WPfW2ZndoGk=
+	t=1708359573; cv=none; b=YqUQdQdr4chRfT+C2giqPLtOB0zftutD249LJeQWiaHpdIOqfpasU4hChgYve9HjoMHTjiq4B5Kr0fuWR58R+BKnnr2TZCoXpqGb96KXnNFvnJQrdiO4bQmAFrA3Nqu19neJ7hPngSi7BcUNg67YooV6rIxSjrvd6I+UUDDDf3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708356903; c=relaxed/simple;
-	bh=wx8UZpkWB55VrmVZn+PIeRREueg/WVQO+NB1kQsXNLg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qznhUnVMIQIzD6dNxp+aPLxdB9YnUdrid9x7ebGNaNUwlMI4DpX33wO8XvOyxarqKdhPSpvCzU6PzLmNLeqk0/v+DBn19OmDmVOp+cf/sk85IJibIz3q7nEk3IvPTOaJORn1o2HEVAGEVuzdTNodXmv++y4//wnGEFwDN+Km94Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=OWVBcK7j; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41JFKlbC006461;
-	Mon, 19 Feb 2024 15:33:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=T0e8ZFc3HV5eBAy00h0ivxaRla4eT9eTAKF3wMIZvmY=;
- b=OWVBcK7j66OefOnldfIzP7QCMhMkvfXX49U1qwWLHciyoAtt5yG3w15/ro32CjhNzuv/
- 561kb8L6+7SvjndVy3Zik1AfLwnLeK435nzfAU8pLAYOuxF43kkaXdzv6fhb7ZCcKO+p
- nG+qYTQ7fJKL/vcBNDFEevXTP/7lyRp71FcnBD8Sy2F0UDN5WZz+J/ocf7QYcfud6UFv
- ah5LG7QyuhDw9/52rtceHNlCyZBrsSQusd21pzOEVjA5B7RCSGUJexCj2m+ikRd0+U2E
- kJmLaQRWUywfuCw3ucDmtcyeIV2BP6wVIwJWuKyzatYNNuefQfe+B8x9tCy9LOi8qr4L Hg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wbdgwnbjd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Feb 2024 15:33:49 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41JFLb8F008437;
-	Mon, 19 Feb 2024 15:33:47 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wbdgwnb6e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Feb 2024 15:33:47 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41JEjmF0017278;
-	Mon, 19 Feb 2024 15:33:40 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wb8mm1vb0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Feb 2024 15:33:40 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41JFXYuB11534896
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Feb 2024 15:33:36 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 929232004B;
-	Mon, 19 Feb 2024 15:33:34 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E93220049;
-	Mon, 19 Feb 2024 15:33:33 +0000 (GMT)
-Received: from [9.155.200.166] (unknown [9.155.200.166])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 19 Feb 2024 15:33:33 +0000 (GMT)
-Message-ID: <ddd5157cc9e61c218edff5cae572119d67b2717d.camel@linux.ibm.com>
-Subject: Re: [PATCH bpf-next 2/2] bpf: Take return from set_memory_rox()
- into account with bpf_jit_binary_lock_ro()
-From: Ilya Leoshkevich <iii@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Alexei Starovoitov
- <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko
- <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Eduard
- Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-        Yonghong Song
- <yonghong.song@linux.dev>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP
- Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>,
-        Hao Luo
- <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Russell King
- <linux@armlinux.org.uk>,
-        Puranjay Mohan <puranjay12@gmail.com>,
-        Zi Shen Lim
- <zlim.lnx@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will
- Deacon <will@kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>,
-        Hengqi Chen
- <hengqi.chen@gmail.com>,
-        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
- <kernel@xen0n.name>,
-        Johan Almbladh <johan.almbladh@anyfinetworks.com>,
-        Paul Burton <paulburton@kernel.org>,
-        Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger
- <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "David
- S. Miller" <davem@davemloft.net>,
-        Andreas Larsson <andreas@gaisler.com>,
-        Wang YanQing <udknight@gmail.com>, David Ahern <dsahern@kernel.org>,
-        Thomas
- Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav
- Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>
-Cc: bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        netdev@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        "linux-hardening @ vger . kernel . org" <linux-hardening@vger.kernel.org>
-Date: Mon, 19 Feb 2024 16:33:33 +0100
-In-Reply-To: <ec35e06dbe8672a36415ebe2b9273277c2921977.1708253445.git.christophe.leroy@csgroup.eu>
-References: 
-	<135feeafe6fe8d412e90865622e9601403c42be5.1708253445.git.christophe.leroy@csgroup.eu>
-	 <ec35e06dbe8672a36415ebe2b9273277c2921977.1708253445.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1708359573; c=relaxed/simple;
+	bh=Jy9k09PAlwl2enFfxaMgkzK9iRBdmSRKjEAtKTGbCKo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=l9GqlARBHA9E7KyRd74v0NyPeFTOcNXDEl6wumHnB+gRv48yIf5xvkQPDbmJVn+3rZIUQauTkK7zEw3hhXmSUQ/2QWgHhSoA0PlsfKgfJBQFCLlVFToZCtnqnjeig3ZVUQRPgSLZZq3BiIEEqplrBydJyTxhhUa/9mYiAIdOSpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=X5+G85Ql; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1708359567; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+	bh=5PwNPGoMJ7CW08mOs+1ZY9zWs2CVp91wKkFaBXXx+ns=;
+	b=X5+G85QlodZlQ5xES/KTNP2T4PVsHYvqYAKrp5RD1GsM/e3XOwe7zKxh6/huZ32VRxnC6obQYirzB5FnCfXzOV7ICl7kF7dDA/FFGqrAvmBsyBxuRk33fH7zdojIhID2OrK/gzS7dq4SLFuml/WC/dUR6INwZ82LguLwobmXDRM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W0tz6l._1708359563;
+Received: from localhost.localdomain(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W0tz6l._1708359563)
+          by smtp.aliyun-inc.com;
+          Tue, 20 Feb 2024 00:19:25 +0800
+From: Bitao Hu <yaoma@linux.alibaba.com>
+To: tglx@linutronix.de,
+	dianders@chromium.org,
+	pmladek@suse.com,
+	akpm@linux-foundation.org,
+	kernelfans@gmail.com,
+	liusong@linux.alibaba.com,
+	deller@gmx.de,
+	npiggin@gmail.com,
+	jan.kiszka@siemens.com,
+	kbingham@kernel.org
+Cc: linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	Bitao Hu <yaoma@linux.alibaba.com>
+Subject: [PATCHv8 0/2] *** Detect interrupt storm in softlockup ***
+Date: Tue, 20 Feb 2024 00:19:18 +0800
+Message-Id: <20240219161920.15752-1-yaoma@linux.alibaba.com>
+X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: oAChKg23BdNBTZrcSP06tgBD6BxLsz0g
-X-Proofpoint-ORIG-GUID: pcDzFPwvseJ0VbrYr5hrpvU0P_mie-dV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-19_11,2024-02-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- mlxlogscore=767 lowpriorityscore=0 adultscore=0 priorityscore=1501
- mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402190116
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, 2024-02-18 at 11:55 +0100, Christophe Leroy wrote:
-> set_memory_rox() can fail, leaving memory unprotected.
->=20
-> Check return and bail out when bpf_jit_binary_lock_ro() returns
-> and error.
->=20
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
-> Previous patch introduces a dependency on this patch because it
-> modifies bpf_prog_lock_ro(), but they are independant.
-> It is possible to apply this patch as standalone by handling trivial
-> conflict with unmodified bpf_prog_lock_ro().
-> ---
-> =C2=A0arch/arm/net/bpf_jit_32.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- | 25 ++++++++++++-------------
-> =C2=A0arch/arm64/net/bpf_jit_comp.c=C2=A0=C2=A0=C2=A0 | 21 ++++++++++++++=
-+------
-> =C2=A0arch/loongarch/net/bpf_jit.c=C2=A0=C2=A0=C2=A0=C2=A0 | 21 +++++++++=
-++++++------
-> =C2=A0arch/mips/net/bpf_jit_comp.c=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 ++-
-> =C2=A0arch/parisc/net/bpf_jit_core.c=C2=A0=C2=A0 |=C2=A0 8 +++++++-
-> =C2=A0arch/s390/net/bpf_jit_comp.c=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 6 ++++=
-+-
-> =C2=A0arch/sparc/net/bpf_jit_comp_64.c |=C2=A0 6 +++++-
-> =C2=A0arch/x86/net/bpf_jit_comp32.c=C2=A0=C2=A0=C2=A0 |=C2=A0 3 +--
-> =C2=A0include/linux/filter.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 4 ++--
-> =C2=A09 files changed, 64 insertions(+), 33 deletions(-)
+Hi, guys.
+I have implemented a low-overhead method for detecting interrupt
+storm in softlockup. Please review it, all comments are welcome.
 
-Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>  # s390x
+Changes from v7 to v8:
+
+- From Thomas Gleixner, implement statistics within the interrupt
+core code and provide sensible interfaces for the watchdog code. 
+
+- Patch #1 remains unchanged. Patch #2 has significant changes
+based on Thomas's suggestions, which is why I have removed
+Liu Song and Douglas's Reviewed-by from patch #2. Please review
+it again, and all comments are welcome.
+
+Changes from v6 to v7:
+
+- Remove "READ_ONCE" in "start_counting_irqs"
+
+- Replace the hard-coded 5 with "NUM_SAMPLE_PERIODS" macro in
+"set_sample_period".
+
+- Add empty lines to help with reading the code.
+
+- Remove the branch that processes IRQs where "counts_diff = 0".
+
+- Add the Reviewed-by of Liu Song and Douglas.
+
+Changes from v5 to v6:
+
+- Use "./scripts/checkpatch.pl --strict" to get a few extra
+style nits and fix them.
+
+- Squash patch #3 into patch #1, and wrapp the help text to
+80 columns.
+
+- Sort existing headers alphabetically in watchdog.c
+
+- Drop "softlockup_hardirq_cpus", just read "hardirq_counts"
+and see if it's non-NULL.
+
+- Store "nr_irqs" in a local variable.
+
+- Simplify the calculation of "cpu_diff".
+
+Changes from v4 to v5:
+
+- Rearranging variable placement to make code look neater.
+
+Changes from v3 to v4:
+
+- Renaming some variable and function names to make the code logic
+more readable.
+
+- Change the code location to avoid predeclaring.
+
+- Just swap rather than a double loop in tabulate_irq_count.
+
+- Since nr_irqs has the potential to grow at runtime, bounds-check
+logic has been implemented.
+
+- Add SOFTLOCKUP_DETECTOR_INTR_STORM Kconfig knob.
+
+Changes from v2 to v3:
+
+- From Liu Song, using enum instead of macro for cpu_stats, shortening
+the name 'idx_to_stat' to 'stats', adding 'get_16bit_precesion' instead
+of using right shift operations, and using 'struct irq_counts'.
+
+- From kernel robot test, using '__this_cpu_read' and '__this_cpu_write'
+instead of accessing to an per-cpu array directly, in order to avoid
+this warning.
+'sparse: incorrect type in initializer (different modifiers)'
+
+Changes from v1 to v2:
+
+- From Douglas, optimize the memory of cpustats. With the maximum number
+of CPUs, that's now this.
+2 * 8192 * 4 + 1 * 8192 * 5 * 4 + 1 * 8192 = 237,568 bytes.
+
+- From Liu Song, refactor the code format and add necessary comments.
+
+- From Douglas, use interrupt counts instead of interrupt time to
+determine the cause of softlockup.
+
+- Remove the cmdline parameter added in PATCHv1.
+
+
+Bitao Hu (2):
+  watchdog/softlockup: low-overhead detection of interrupt
+  watchdog/softlockup: report the most frequent interrupts
+
+ arch/mips/dec/setup.c                |   2 +-
+ arch/parisc/kernel/smp.c             |   2 +-
+ arch/powerpc/kvm/book3s_hv_rm_xics.c |   2 +-
+ include/linux/irqdesc.h              |   9 +-
+ include/linux/kernel_stat.h          |   4 +
+ kernel/irq/internals.h               |   2 +-
+ kernel/irq/irqdesc.c                 |  34 ++++-
+ kernel/irq/proc.c                    |   9 +-
+ kernel/watchdog.c                    | 213 ++++++++++++++++++++++++++-
+ lib/Kconfig.debug                    |  13 ++
+ scripts/gdb/linux/interrupts.py      |   6 +-
+ 11 files changed, 269 insertions(+), 27 deletions(-)
+
+-- 
+2.37.1 (Apple Git-137.1)
+
 
