@@ -1,86 +1,169 @@
-Return-Path: <linux-parisc+bounces-593-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-594-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F78E85B82D
-	for <lists+linux-parisc@lfdr.de>; Tue, 20 Feb 2024 10:51:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F96685BA8F
+	for <lists+linux-parisc@lfdr.de>; Tue, 20 Feb 2024 12:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BD2728215E
-	for <lists+linux-parisc@lfdr.de>; Tue, 20 Feb 2024 09:51:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8801F21C3D
+	for <lists+linux-parisc@lfdr.de>; Tue, 20 Feb 2024 11:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA8C63509;
-	Tue, 20 Feb 2024 09:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B44A664B9;
+	Tue, 20 Feb 2024 11:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Ejkd3q1q"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="O6lRSVZh"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436B9634E3;
-	Tue, 20 Feb 2024 09:49:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90153664CF;
+	Tue, 20 Feb 2024 11:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708422565; cv=none; b=DSb7J9AT7+IIp8yWgkh5c/4cIqYx752JCCjMacdBZrNIWBYzSBS9BDXoo6gLvsx6L57S7Swb3n+Ptf+jyCBOycjykWD03cnYihgEd5p37Kfndrd/2qcP17U0ncruK/X4XiBS7zF3K5KFpdKbsiMhuTcuaOklG5BcSh0k0eYwy7o=
+	t=1708428451; cv=none; b=uDN8xS+cXldVwbYhT3DuKFoepLTkqYQroXkXTxCp7x2SaeC5E2NYA/tZuDRvmlcSN3rmvZ2iP9mO2Zb5hQIff/a6VkahLwNs3SthDGHxTPFnihEt/eiQJOZV3tEZybpF9JCAbpBGGuRWR50c/NGJx1lbh69wVx/dTeN/9deTymI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708422565; c=relaxed/simple;
-	bh=sNUETDST/v8hQGqSf1wePFn/eaKqyg242+p8bl9EfMU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sZBmu6v9jPq6+upu5HZ/3LYIC93ymSqdsuFg5S/O3oey38abM3VMPNqcnNxhNTLgo0gsyOr6W8lUjjLXeOXPmipqKLpl08I/vVXxhLgLXnRxM3CF6w55TLfEEtvUBfqqm8K20iROXFexuO0GyBeMiu/6rnKh14vqaKvE9DSFkF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Ejkd3q1q; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1708422560; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=KVGuMbs0Ek78rNZXhgXCoIlF0qOOV7+uQghBDmhesIA=;
-	b=Ejkd3q1qWMLFUU+gv9DjfIC2T7WYX3bdfUroJmraAP7rQ1ykqAcaeb55KrtpAzkw3BEojgV7gJGArOCi46RwSqq+GZTJQWiFStKbFYHWOAdvl/QZsLApvci+u1n10wPONJlimOzyTOevtp2cpws4eJk0F6QmgqGAuE1OMYWtNzc=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R561e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0W0wRtoq_1708422556;
-Received: from 30.178.67.228(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W0wRtoq_1708422556)
-          by smtp.aliyun-inc.com;
-          Tue, 20 Feb 2024 17:49:18 +0800
-Message-ID: <335d1e82-8e70-475d-a4d5-12dbbd7ca660@linux.alibaba.com>
-Date: Tue, 20 Feb 2024 17:49:16 +0800
+	s=arc-20240116; t=1708428451; c=relaxed/simple;
+	bh=Mipp2WNrLFK4BBvNJ8I27aEf24TMVYEu5ip2QcqVhxI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CGZ7SB5qw73LHRYGc2CIWp+FIP7azwMEBOy0EETU6BfQ8G1U7iObrE88/+c3vEvB8ZQc+36NwqJpEdzNaOrx9qGYE1CXDhLYXV2vw88DqYpShbCgckPGcm/aVzctpYlA1Evn5Tt0dimcQoEoHzgcyCW3YZogWTLhz5whKEvOV+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=O6lRSVZh; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=YAbiUOeHNTOOtMQq3T2dYQUt8NBgKEvDfS/NrGbV6TI=; b=O6lRSVZhxbh5i6u+BH25w3f3Cm
+	1Vw7wxiDSgvtyuvUnEQCtl4LHsD0HzY1J+QnwBBfWvzYrZnw4ZdEKbmD4OvhU0znyUN2QW3v3TQK6
+	acFANS/gPds8L+eRUinfOfYI/5P5/HHW8+MaTKOwBEFBIXcdD2h/rAjy4+NEGoLQ4VhzrvLbGSILa
+	e4bVQ4JEXiZ5ggyFjiYKM2SMFHyueGtUiByprCY7LB4A0i9T5NoqAM9yDfSyA8mANNn7sjoowzKXf
+	gZg39Bgc4AYxKTEmwc/LOvXE0VrkkOYgYtUo08k1FAqXJPZDFh0Fdt9VSeb+Bh6zHM/C3MKPJvsVF
+	UW/+AtXw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54660)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rcOHQ-0002Id-2W;
+	Tue, 20 Feb 2024 11:27:20 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rcOHM-0000pR-05; Tue, 20 Feb 2024 11:27:16 +0000
+Date: Tue, 20 Feb 2024 11:27:15 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, kvmarm@lists.linux.dev,
+	x86@kernel.org, acpica-devel@lists.linuxfoundation.org,
+	linux-csky@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	jianyong.wu@arm.com, justin.he@arm.com,
+	James Morse <james.morse@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH RFC v4 02/15] ACPI: processor: Register all CPUs from
+ acpi_processor_get_info()
+Message-ID: <ZdSMk93c1I6x973h@shell.armlinux.org.uk>
+References: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
+ <E1rVDmU-0027YP-Jz@rmk-PC.armlinux.org.uk>
+ <CAJZ5v0iiJpUWq5GMSnKFWQTzn_bdwoQz9m=hDaXNg4Lj_ePF4g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv8 2/2] watchdog/softlockup: report the most frequent
- interrupts
-Content-Language: en-US
-To: Thomas Gleixner <tglx@linutronix.de>, dianders@chromium.org,
- pmladek@suse.com, akpm@linux-foundation.org, kernelfans@gmail.com,
- liusong@linux.alibaba.com, deller@gmx.de, npiggin@gmail.com,
- jan.kiszka@siemens.com, kbingham@kernel.org
-Cc: linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org
-References: <20240219161920.15752-1-yaoma@linux.alibaba.com>
- <20240219161920.15752-3-yaoma@linux.alibaba.com> <87le7fiiku.ffs@tglx>
-From: Bitao Hu <yaoma@linux.alibaba.com>
-In-Reply-To: <87le7fiiku.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0iiJpUWq5GMSnKFWQTzn_bdwoQz9m=hDaXNg4Lj_ePF4g@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi,
+On Thu, Feb 15, 2024 at 08:22:29PM +0100, Rafael J. Wysocki wrote:
+> On Wed, Jan 31, 2024 at 5:50 PM Russell King <rmk+kernel@armlinux.org.uk> wrote:
+> > diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+> > index cf7c1cca69dd..a68c475cdea5 100644
+> > --- a/drivers/acpi/acpi_processor.c
+> > +++ b/drivers/acpi/acpi_processor.c
+> > @@ -314,6 +314,18 @@ static int acpi_processor_get_info(struct acpi_device *device)
+> >                         cpufreq_add_device("acpi-cpufreq");
+> >         }
+> >
+> > +       /*
+> > +        * Register CPUs that are present. get_cpu_device() is used to skip
+> > +        * duplicate CPU descriptions from firmware.
+> > +        */
+> > +       if (!invalid_logical_cpuid(pr->id) && cpu_present(pr->id) &&
+> > +           !get_cpu_device(pr->id)) {
+> > +               int ret = arch_register_cpu(pr->id);
+> > +
+> > +               if (ret)
+> > +                       return ret;
+> > +       }
+> > +
+> >         /*
+> >          *  Extra Processor objects may be enumerated on MP systems with
+> >          *  less than the max # of CPUs. They should be ignored _iff
+> 
+> This is interesting, because right below there is the following code:
+> 
+>     if (invalid_logical_cpuid(pr->id) || !cpu_present(pr->id)) {
+>         int ret = acpi_processor_hotadd_init(pr);
+> 
+>         if (ret)
+>             return ret;
+>     }
+> 
+> and acpi_processor_hotadd_init() essentially calls arch_register_cpu()
+> with some extra things around it (more about that below).
+> 
+> I do realize that acpi_processor_hotadd_init() is defined under
+> CONFIG_ACPI_HOTPLUG_CPU, so for the sake of the argument let's
+> consider an architecture where CONFIG_ACPI_HOTPLUG_CPU is set.
+> 
+> So why are the two conditionals that almost contradict each other both
+> needed?  It looks like the new code could be combined with
+> acpi_processor_hotadd_init() to do the right thing in all cases.
+> 
+> Now, acpi_processor_hotadd_init() does some extra things that look
+> like they should be done by the new code too.
+> 
+> 1. It checks invalid_phys_cpuid() which appears to be a good idea to me.
+> 
+> 2. It uses locking around arch_register_cpu() which doesn't seem
+> unreasonable either.
+> 
+> 3. It calls acpi_map_cpu() and I'm not sure why this is not done by
+> the new code.
+> 
+> The only thing that can be dropped from it is the _STA check AFAICS,
+> because acpi_processor_add() won't even be called if the CPU is not
+> present (and not enabled after the first patch).
+> 
+> So why does the code not do 1 - 3 above?
 
-On 2024/2/20 17:35, Thomas Gleixner wrote:
-> On Tue, Feb 20 2024 at 00:19, Bitao Hu wrote:
->>   arch/mips/dec/setup.c                |   2 +-
->>   arch/parisc/kernel/smp.c             |   2 +-
->>   arch/powerpc/kvm/book3s_hv_rm_xics.c |   2 +-
->>   include/linux/irqdesc.h              |   9 ++-
->>   include/linux/kernel_stat.h          |   4 +
->>   kernel/irq/internals.h               |   2 +-
->>   kernel/irq/irqdesc.c                 |  34 ++++++--
->>   kernel/irq/proc.c                    |   9 +--
-> 
-> This really wants to be split into two patches. Interrupt infrastructure
-> first and then the actual usage site in the watchdog code.
-> 
-Okay, I will split it into two patches.
+Honestly, I'm out of my depth with this and can't answer your
+questions - and I really don't want to try fiddling with this code
+because it's just too icky (even in its current form in mainline)
+to be understandable to anyone who hasn't gained a detailed knowledge
+of this code.
+
+It's going to require a lot of analysis - how acpi_map_cpuid() behaves
+in all circumstances, what this means for invalid_logical_cpuid() and
+invalid_phys_cpuid(), what paths will be taken in each case. This code
+is already just too hairy for someone who isn't an experienced ACPI
+hacker to be able to follow and I don't see an obvious way to make it
+more readable.
+
+James' additions make it even more complex and less readable.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
