@@ -1,192 +1,197 @@
-Return-Path: <linux-parisc+bounces-589-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-590-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB7885AD91
-	for <lists+linux-parisc@lfdr.de>; Mon, 19 Feb 2024 22:12:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A7D85B07F
+	for <lists+linux-parisc@lfdr.de>; Tue, 20 Feb 2024 02:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC497B23E62
-	for <lists+linux-parisc@lfdr.de>; Mon, 19 Feb 2024 21:12:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB2CEB22C2D
+	for <lists+linux-parisc@lfdr.de>; Tue, 20 Feb 2024 01:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3374C53E03;
-	Mon, 19 Feb 2024 21:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="c7WVwgx6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCFF17547;
+	Tue, 20 Feb 2024 01:23:00 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30432E40C;
-	Mon, 19 Feb 2024 21:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A441D2375D;
+	Tue, 20 Feb 2024 01:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708377143; cv=none; b=TEgtCLmSWuV5TlCI57DOchP4AGGKSegzaZtN/WkCSlQdbq5g+cKWdx20Uf5FCklHPI0SogWBQ+WcXQL20+8lYK1XaxWkktKu1XG0TbRa2ZFUJo6v1RPQlbI7WDHb+a8vw3Tzc5N0kARl1PqDeKqetgBY87ChYoX+kWEacI/Ame4=
+	t=1708392180; cv=none; b=ScUhEOOIVbLTHiQ7en+6yVs16th82aArtSuQPUJaIK/Sdku5yDTTqR6qDqXhdhKmLjqx3JJRqpGao8dUwyY0aG1wIyb/ziilLQZq2XV+csZWt8zuVHMI4vfIU6nFWU4lno/UeCpIXgFVvY9JOcSbxQVlqUYjizl4zH/xomYbztk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708377143; c=relaxed/simple;
-	bh=0dZt+PoXfdZjATe9Hle1yjYnVPuWZbSyuYqI8JtPTyI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VkB8eLp9UeX7CeK9UQfPX2fghLPDfi53v9TJvFkdXd0wF7+BfbKsh+h9eggpq/eSXfTfx5hbHsaWZ5CF4HuWWrKskQYjMZAf/ghfGGm34A/RC7qIqhPhabwvbJOk9zfHF8FtWLfuz27y9Yxh90Hafg+JnhY4auUQMhvanKzvqvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=c7WVwgx6; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1708377116; x=1708981916; i=deller@gmx.de;
-	bh=0dZt+PoXfdZjATe9Hle1yjYnVPuWZbSyuYqI8JtPTyI=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=c7WVwgx63vW+1+V/3MLGwGLn2Qtulsk+acm5XXbJBG/uZ395dd//8DMzunFxm2ZN
-	 E77Rul+fNDWwLXi4IRCgMXS7DnKapGVH9SdugUYc52Gk77XRsGtVPfhh109uChFga
-	 /K6YoNPHGP3EpvDNsOYj3fmdsYlwCEz2Dj+tJLjBquBYaQdsvQSLgazZ5ODDOAa1K
-	 14UA98ixhFr4AB4K6bypqvWbbijI8/6uFOaqTwBPVgZ9w8FVhB10Ou8qkGVBz1xh2
-	 M26QQr9cyA+4lTlAqaqUl0et3ukdvTtVeWD/BtZtWXPO7aLn+7Sh7njcKgm+QA/N6
-	 kUIWS01GWsxdypbXjA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([94.134.155.130]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MrQEn-1r7Z8u48Nb-00oU3p; Mon, 19
- Feb 2024 22:11:56 +0100
-Message-ID: <f49c1752-3925-47f6-b489-ffa453f15260@gmx.de>
-Date: Mon, 19 Feb 2024 22:11:54 +0100
+	s=arc-20240116; t=1708392180; c=relaxed/simple;
+	bh=99PSqupxaWhciKD6PS2xAzi9+SnpFL6NS1UK09usFKg=;
+	h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=upDUv4b5RtFZL6jPGzTAxNbKnuktsHDvNvJVgjkWY0Gjdo3hWfOENamIlPTwLAxXzhmUuUXouFMm39jNVzpYOy8xek/bM7WPZFadRl52sLjDb6g4A/JQnjfZAIvpdUDulolfVx7susHChJgLvOamSrdQ7vexJiHVDVYN0vLoONE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [113.200.148.30])
+	by gateway (Coremail) with SMTP id _____8Ax++ju_tNlFNMOAA--.19552S3;
+	Tue, 20 Feb 2024 09:22:54 +0800 (CST)
+Received: from [10.130.0.149] (unknown [113.200.148.30])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8AxX8_l_tNlG2M8AA--.23719S3;
+	Tue, 20 Feb 2024 09:22:46 +0800 (CST)
+Subject: Re: [PATCH bpf-next 2/2] bpf: Take return from set_memory_rox() into
+ account with bpf_jit_binary_lock_ro()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Puranjay Mohan <puranjay12@gmail.com>, Zi Shen Lim <zlim.lnx@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Hengqi Chen <hengqi.chen@gmail.com>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Johan Almbladh <johan.almbladh@anyfinetworks.com>,
+ Paul Burton <paulburton@kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, "David S. Miller"
+ <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>,
+ Wang YanQing <udknight@gmail.com>, David Ahern <dsahern@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+References: <135feeafe6fe8d412e90865622e9601403c42be5.1708253445.git.christophe.leroy@csgroup.eu>
+ <ec35e06dbe8672a36415ebe2b9273277c2921977.1708253445.git.christophe.leroy@csgroup.eu>
+Cc: bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ netdev@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+ "linux-hardening @ vger . kernel . org" <linux-hardening@vger.kernel.org>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Message-ID: <326d7b90-614f-ec2d-e224-5d325c06a349@loongson.cn>
+Date: Tue, 20 Feb 2024 09:22:45 +0800
+User-Agent: Mozilla/5.0 (X11; Linux mips64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: Fix csum_ipv6_magic on 64-bit systems
-Content-Language: en-US
-To: Charlie Jenkins <charlie@rivosinc.com>, Helge Deller <deller@kernel.org>,
- Guenter Roeck <linux@roeck-us.net>
-Cc: "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@rivosinc.com>
-References: <20240213234631.940055-1-linux@roeck-us.net>
- <Zc9XW-TxQKp84vMt@p100> <ZdAhQHFXUF7wEWea@ghost>
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <ZdAhQHFXUF7wEWea@ghost>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:pn7BuT8QnGgJrmUlidl4hqDNTJzUmHdoIWuZZCrKCcMbxez94wL
- 8MUeuvnqPESfBm7fscuOLzg2kzSvlzE/jeU7ZWu4SpZvTKr5genWqjhIlt7jiupkHfnXrnw
- 0oBnVKlpPcigtCBfFS/yXPcNydgo4jEpCBtSIZfjhfqIfgMU4AgQjBiIx9aSGgVpfOIl7m+
- A/nqeYhIvukciFGullm8g==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Q7Q0tzYfQ+M=;lRDRA532PjXeWWWLG1jFHwul3th
- oEGKD0gSV7no/i7InUgvbWuysvU9zFfPChXc+FI/PxYQJYYmb13htbntI7IJIP2MR3d5oH2oY
- P7RiXGkjfGoQK7QcC7xAeJkNxBcPOoBbf51zNiC0B15kPiWwwwrP6hu4ziW/HEia+7RG5VdA6
- SMS1ZXwJs0Bv4Te/iG4lZW7DY3fQF3tuSQ8xlihVJm2LhJAYS2yWaxBU1u8wQaZustm9f9POS
- y0jUXCjKOgOsFHgd6UbWWIrT2qYdwsl2h/4U13tcUwExGRZBbBGnvDPKNkNvpwWc4hLPDO2Hs
- 6flvq82Be9ULWAZQ5u1D1foaUO7/JbwVTSUu/pOYnYPetmMP6sDyg/mwuzRWIKMVrHAbQnyow
- uCImILBZE2L1XTlyqzMwOCyvuqpKD6usQEXzystfUY7xgYg7AdQqyVLNvMJ/Ufh5hLtqfu506
- HhWAZoYp4czqmhQiRmj+LHf/7BP1/qmujbRAzs/eEf418Di+Hwt3+ns1Lazb5BSLnzLPgl483
- ykWoAGZkVvqawG4q9SxIw2PdBq9hKSYIm1/7StQ0cU47N0b65bvtofoFDrSUCp6ZNAlvF2/HF
- eV9X6JsZuf4qYigrT36e0+2NyoMduHFDLt406byBpzVB7xVcbu3mDmz7nfOuDzq9zPmFNNiRS
- 6CucUpJ9ClAyHovLtU7SuHjyYod3HzJy/rBTxPc5VaBunMUv3fK/EHRbYzk5DHzWAfPEoitzK
- UI1m0MgBQf+UurI5FeEzJMNEduuqLVzkDgvEMLJNG+8lkNEhTAL3Fpra7cdgIEESIs/bGLrOx
- Yo8QH/bXItPHEjbiqcwUShxFbgf4+B1CHi2kDwQu7JFj4=
+In-Reply-To: <ec35e06dbe8672a36415ebe2b9273277c2921977.1708253445.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:AQAAf8AxX8_l_tNlG2M8AA--.23719S3
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWrW8GFy7ur13Jr17JrWxZrc_yoW5Aw17pF
+	9rZwnrCr4vgr4UWFsFk3WUXFZ3Z397Ka47urya9ryjg3Z0qF1kuayfKw1SgFW3ArWUXa18
+	Xa1vgryUuaykA3gCm3ZEXasCq-sJn29KB7ZKAUJUUUjx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4j6r4UJwAaw2AFwI0_GFv_Wryle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
+	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_
+	WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
+	CYjI0SjxkI62AI1cAE67vIY487MxkF7I0En4kS14v26rWY6Fy7MxAIw28IcxkI7VAKI48J
+	MxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r4a6rW5MI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8Jr1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW5JVW7JwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07b8YL9UUU
+	UU=
 
-On 2/17/24 04:00, Charlie Jenkins wrote:
-> On Fri, Feb 16, 2024 at 01:38:51PM +0100, Helge Deller wrote:
->> * Guenter Roeck <linux@roeck-us.net>:
->>> hppa 64-bit systems calculates the IPv6 checksum using 64-bit add
->>> operations. The last add folds protocol and length fields into the 64-=
-bit
->>> result. While unlikely, this operation can overflow. The overflow can =
-be
->>> triggered with a code sequence such as the following.
->>>
->>> 	/* try to trigger massive overflows */
->>> 	memset(tmp_buf, 0xff, sizeof(struct in6_addr));
->>> 	csum_result =3D csum_ipv6_magic((struct in6_addr *)tmp_buf,
->>> 				      (struct in6_addr *)tmp_buf,
->>> 				      0xffff, 0xff, 0xffffffff);
->>>
->>> Fix the problem by adding any overflows from the final add operation i=
-nto
->>> the calculated checksum. Fortunately, we can do this without additiona=
-l
->>> cost by replacing the add operation used to fold the checksum into 32 =
-bit
->>> with "add,dc" to add in the missing carry.
->>
->>
->> Gunter,
->>
->> Thanks for your patch for 32- and 64-bit systems.
->> But I think it's time to sunset the parisc inline assembly for ipv4/ipv=
-6
->> checksumming.
->> The patch below converts the code to use standard C-coding (taken from =
-the
->> s390 header file) and it survives the v8 lib/checksum patch.
->>
->> Opinions?
->> [...]
-
-> We can do better than this! By inspection this looks like a performance
-> regression.
-> [...]
-> Similar story again here where the add with carry is not well translated
-> into C, resulting in significantly worse assembly. Using __u64 seems to
-> be a big contributing factor for why the 32-bit assembly is worse.
+On 02/18/2024 06:55 PM, Christophe Leroy wrote:
+> set_memory_rox() can fail, leaving memory unprotected.
 >
-> I am not sure the best way to represent this in a clean way in C.
+> Check return and bail out when bpf_jit_binary_lock_ro() returns
+> and error.
 >
-> add with carry is not well understood by GCC 12.3 it seems. These
-> functions are generally heavily optimized on every architecture, so I
-> think it is worth it to default to assembly if you aren't able to
-> achieve comparable performance in C.
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
 
-Thanks a lot for your analysis!!!
-I've now reverted my change to switch to generic code and applied
-the 3 suggested patches from Guenter which fix the hppa assembly.
-Let's see how they behave in the for-next git tree during the next few day=
-s.
+...
 
-Helge
+> diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+> index e73323d759d0..aafc5037fd2b 100644
+> --- a/arch/loongarch/net/bpf_jit.c
+> +++ b/arch/loongarch/net/bpf_jit.c
+> @@ -1294,16 +1294,18 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+>  	flush_icache_range((unsigned long)header, (unsigned long)(ctx.image + ctx.idx));
+>
+>  	if (!prog->is_func || extra_pass) {
+> +		int err;
+> +
+>  		if (extra_pass && ctx.idx != jit_data->ctx.idx) {
+>  			pr_err_once("multi-func JIT bug %d != %d\n",
+>  				    ctx.idx, jit_data->ctx.idx);
+> -			bpf_jit_binary_free(header);
+> -			prog->bpf_func = NULL;
+> -			prog->jited = 0;
+> -			prog->jited_len = 0;
+> -			goto out_offset;
+> +			goto out_free;
+> +		}
+> +		err = bpf_jit_binary_lock_ro(header);
+> +		if (err) {
+> +			pr_err_once("bpf_jit_binary_lock_ro() returned %d\n", err);
+> +			goto out_free;
+>  		}
+> -		bpf_jit_binary_lock_ro(header);
+>  	} else {
+>  		jit_data->ctx = ctx;
+>  		jit_data->image = image_ptr;
+> @@ -1334,6 +1336,13 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
+>  	out_offset = -1;
+>
+>  	return prog;
+> +
+> +out_free:
+> +	bpf_jit_binary_free(header);
+> +	prog->bpf_func = NULL;
+> +	prog->jited = 0;
+> +	prog->jited_len = 0;
+> +	goto out_offset;
+>  }
+>
+>  /* Indicate the JIT backend supports mixing bpf2bpf and tailcalls. */
+
+...
+
+> diff --git a/include/linux/filter.h b/include/linux/filter.h
+> index fc0994dc5c72..314414fa6d70 100644
+> --- a/include/linux/filter.h
+> +++ b/include/linux/filter.h
+> @@ -892,10 +892,10 @@ static inline int __must_check bpf_prog_lock_ro(struct bpf_prog *fp)
+>  	return 0;
+>  }
+>
+> -static inline void bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
+> +static inline int __must_check bpf_jit_binary_lock_ro(struct bpf_binary_header *hdr)
+>  {
+>  	set_vm_flush_reset_perms(hdr);
+> -	set_memory_rox((unsigned long)hdr, hdr->size >> PAGE_SHIFT);
+> +	return set_memory_rox((unsigned long)hdr, hdr->size >> PAGE_SHIFT);
+>  }
+>
+>  int sk_filter_trim_cap(struct sock *sk, struct sk_buff *skb, unsigned int cap);
+
+LoongArch does not select CONFIG_ARCH_HAS_SET_MEMORY, set_memory_ro()
+and set_memory_x() always return 0, then set_memory_rox() also returns
+0, that is to say, bpf_jit_binary_lock_ro() will return 0, it seems
+that there is no obvious effect for LoongArch with this patch.
+
+But once CONFIG_ARCH_HAS_SET_MEMORY is selected and the arch-specified
+set_memory_*() functions are implemented in the future, it is necessary
+to handle the error cases. At least, in order to keep consistent with
+the other archs, the code itself looks good to me.
+
+Acked-by: Tiezhu Yang <yangtiezhu@loongson.cn>  # LoongArch
+
+Thanks,
+Tiezhu
+
 
