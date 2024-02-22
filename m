@@ -1,274 +1,146 @@
-Return-Path: <linux-parisc+bounces-623-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-624-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79A885F489
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Feb 2024 10:36:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3783D85F99C
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Feb 2024 14:24:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DE59B23373
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Feb 2024 09:36:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB807287EAB
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Feb 2024 13:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395EF38DF7;
-	Thu, 22 Feb 2024 09:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A701350EB;
+	Thu, 22 Feb 2024 13:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="AyJOdF7V"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xJ/aRi9G";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vZiRjwR+"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C98A3F9C1;
-	Thu, 22 Feb 2024 09:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF9712FF74;
+	Thu, 22 Feb 2024 13:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708594490; cv=none; b=KYxE6Sb/ZyXnI1lEF5vJQSMJ4MB1MchqeOex15ICmzj2on6YHvTwPHVQsDEu1wDA/Lk3mnJXgludwyo0dgGVQxFgjhYFSlOOaIF8d0a14ek46DECHBMBETJrr63a+eXrXZYT+xVQrH4S7IYW3jHW+fPK+2nQ9aavjrcSmSK2hHo=
+	t=1708608183; cv=none; b=Nwl1Ejh1B5ZivsPScwLCuf7xxAlVAQcA+s42OcB3N2AZR/1QJMy1ddi6sQsKQ1SHVWrv0wfLM18bVK5mORtUtZrvxiLBtanMSLTKkfShBL6CbDvFMFfgocRQenXDPNmtD7rGWS0kbXu3W+6PPYKnQ2xYYtKFFovsj7p7Dpc1NEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708594490; c=relaxed/simple;
-	bh=s3jX/7PDZ7vfVkkUOAkH51SWsGL9X5ZUmkXTV+oBWd4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q3TS4NDJQICSIVXOyfX4tQCofrKqHdPBmcZev1e57NhmOELyQDkrdV6WjTXyyErbmLIW73GSKhqReJFqCtt0y/9BaKPyMiiutwvQDEkJPMt8napJzmltPmDWufTIOfXxoWtXtJq7DjOrZw7Vl57DTvIVUrcNwwEQqfHfggPZXBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=AyJOdF7V; arc=none smtp.client-ip=115.124.30.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1708594478; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=7JJ0QXPMFthAl0e6+d34WFhqp+ptYVo8gdYR9MmdKvI=;
-	b=AyJOdF7Vdzj4PBjZgjh5orfYjkxfEZ2IO1z0W/sN9SCiyjDyE4HGNy4zaXrDicCGqct27cmfWaO/bTs28Ey0zhAnj/TfxR6dIrFSiEe57WXl17N/16fyrXd2jIDSfYmPZB6k5fywA18Efl3yjD7QzXEwzo8tK7KAJG9KhSmvPvM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R831e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W10inzx_1708594474;
-Received: from localhost.localdomain(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W10inzx_1708594474)
-          by smtp.aliyun-inc.com;
-          Thu, 22 Feb 2024 17:34:36 +0800
-From: Bitao Hu <yaoma@linux.alibaba.com>
-To: dianders@chromium.org,
-	akpm@linux-foundation.org,
-	liusong@linux.alibaba.com,
-	tglx@linutronix.de,
-	pmladek@suse.com,
-	kernelfans@gmail.com,
-	deller@gmx.de,
-	npiggin@gmail.com,
-	tsbogend@alpha.franken.de,
-	James.Bottomley@HansenPartnership.com,
-	jan.kiszka@siemens.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	yaoma@linux.alibaba.com
-Subject: [PATCHv9 3/3] watchdog/softlockup: report the most frequent interrupts
-Date: Thu, 22 Feb 2024 17:34:20 +0800
-Message-Id: <20240222093420.13956-4-yaoma@linux.alibaba.com>
-X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
-In-Reply-To: <20240222093420.13956-1-yaoma@linux.alibaba.com>
+	s=arc-20240116; t=1708608183; c=relaxed/simple;
+	bh=QwJXV1RkcSLVuEf5+mwh8xc/Wk/KLMXNQAhGRjILcLE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=iphpEmq0ggzkCB6dz0OvjCsoL5Hjdx/3lz5R0zUK8G94ViLlkeyTMws990bXpbXGFO6k1/CwtDwrI2DNd9FreMAJAQisMXCvZAUfnmHcofMN2RYRp2WXvrhQy2n5mqk3IdcLDdQtzMceupziH1F3L/Xuc/eyNq0/eYtVWiYMHyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xJ/aRi9G; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vZiRjwR+; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708608179;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vf5dvD6c9m5aF5XZpNNQqDW+xIF8f6dZ9wpf3QuuKjg=;
+	b=xJ/aRi9Gob5dP6fvvpiv3zn7PZE9HFQr94NPdSMrY4AzE6pDg8n0L+2vR0M28Mo6inozlm
+	XtuNX5M3axqYfryju9DgSEnvEXVE8HbWSCW/X4tdKvRzb6QEYoP8uqntJOm2OYc4HfJHtu
+	xjt+aZhGw9XUSr9MHEphDXnvi+KLMBg7e+0iJUrQYVR2aOcGTuzr2WEcsU/7L8er0u1dzu
+	/sHlTd81mVhPurNKGTm+yhiGi9F6qwX0XoJWzrrIsFRuAMb9Ij67/wYRJFJn10aOGH+kNc
+	bybA7AJsephj7eHNyHWkHzGKRePVN8g7nRDE99IYCUJACRsns9er6rQ62nK7Bg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708608179;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vf5dvD6c9m5aF5XZpNNQqDW+xIF8f6dZ9wpf3QuuKjg=;
+	b=vZiRjwR+O+KEUdSoAq9a5bC4DugVLuX4J9+mRlpoGBM0/Mb5+vfuYr4/7HNl5mbun2GsY7
+	N0SXEJdk6CjzaIDw==
+To: Bitao Hu <yaoma@linux.alibaba.com>, dianders@chromium.org,
+ akpm@linux-foundation.org, liusong@linux.alibaba.com, pmladek@suse.com,
+ kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
+ tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+ jan.kiszka@siemens.com
+Cc: linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ yaoma@linux.alibaba.com
+Subject: Re: [PATCHv9 2/3] irq: use a struct for the kstat_irqs in the
+ interrupt descriptor
+In-Reply-To: <20240222093420.13956-3-yaoma@linux.alibaba.com>
 References: <20240222093420.13956-1-yaoma@linux.alibaba.com>
+ <20240222093420.13956-3-yaoma@linux.alibaba.com>
+Date: Thu, 22 Feb 2024 14:22:59 +0100
+Message-ID: <87jzmwfxak.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-When the watchdog determines that the current soft lockup is due
-to an interrupt storm based on CPU utilization, reporting the
-most frequent interrupts could be good enough for further
-troubleshooting.
+On Thu, Feb 22 2024 at 17:34, Bitao Hu wrote:
 
-Below is an example of interrupt storm. The call tree does not
-provide useful information, but we can analyze which interrupt
-caused the soft lockup by comparing the counts of interrupts.
+First of all the subsystem prefix is 'genirq:'. 'git log kernel/irq/'
+gives you a pretty good hint. It's documented....
 
-[  638.870231] watchdog: BUG: soft lockup - CPU#9 stuck for 26s! [swapper/9:0]
-[  638.870825] CPU#9 Utilization every 4s during lockup:
-[  638.871194]  #1:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.871652]  #2:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.872107]  #3:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.872563]  #4:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.873018]  #5:   0% system,          0% softirq,   100% hardirq,     0% idle
-[  638.873494] CPU#9 Detect HardIRQ Time exceeds 50%. Most frequent HardIRQs:
-[  638.873994]  #1: 330945      irq#7
-[  638.874236]  #2: 31          irq#82
-[  638.874493]  #3: 10          irq#10
-[  638.874744]  #4: 2           irq#89
-[  638.874992]  #5: 1           irq#102
-...
-[  638.875313] Call trace:
-[  638.875315]  __do_softirq+0xa8/0x364
+Secondly the subject line does not match what this patch is about. It's
+not about using a struct, it's about providing a snapshot mechanism, no?
 
-Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
----
- kernel/watchdog.c | 115 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 111 insertions(+), 4 deletions(-)
+> The current implementation uses an int for the kstat_irqs in the
+> interrupt descriptor.
+>
+> However, we need to know the number of interrupts which happened
+> since softlockup detection took a snapshot in order to analyze
+> the problem caused by an interrupt storm.
+>
+> Replacing an int with a struct and providing sensible interfaces
+> for the watchdog code can keep it self contained to the interrupt
+> core code.
 
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 69e72d7e461d..c9d49ae8d045 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -12,22 +12,25 @@
- 
- #define pr_fmt(fmt) "watchdog: " fmt
- 
--#include <linux/mm.h>
- #include <linux/cpu.h>
--#include <linux/nmi.h>
- #include <linux/init.h>
-+#include <linux/irq.h>
-+#include <linux/irqdesc.h>
- #include <linux/kernel_stat.h>
-+#include <linux/kvm_para.h>
- #include <linux/math64.h>
-+#include <linux/mm.h>
- #include <linux/module.h>
-+#include <linux/nmi.h>
-+#include <linux/stop_machine.h>
- #include <linux/sysctl.h>
- #include <linux/tick.h>
-+
- #include <linux/sched/clock.h>
- #include <linux/sched/debug.h>
- #include <linux/sched/isolation.h>
--#include <linux/stop_machine.h>
- 
- #include <asm/irq_regs.h>
--#include <linux/kvm_para.h>
- 
- static DEFINE_MUTEX(watchdog_mutex);
- 
-@@ -417,13 +420,104 @@ static void print_cpustat(void)
- 	}
- }
- 
-+#define HARDIRQ_PERCENT_THRESH          50
-+#define NUM_HARDIRQ_REPORT              5
-+struct irq_counts {
-+	int irq;
-+	u32 counts;
-+};
-+
-+static DEFINE_PER_CPU(bool, snapshot_taken);
-+
-+/* Tabulate the most frequent interrupts. */
-+static void tabulate_irq_count(struct irq_counts *irq_counts, int irq, u32 counts, int rank)
-+{
-+	int i;
-+	struct irq_counts new_count = {irq, counts};
-+
-+	for (i = 0; i < rank; i++) {
-+		if (counts > irq_counts[i].counts)
-+			swap(new_count, irq_counts[i]);
-+	}
-+}
-+
-+/*
-+ * If the hardirq time exceeds HARDIRQ_PERCENT_THRESH% of the sample_period,
-+ * then the cause of softlockup might be interrupt storm. In this case, it
-+ * would be useful to start interrupt counting.
-+ */
-+static bool need_counting_irqs(void)
-+{
-+	u8 util;
-+	int tail = __this_cpu_read(cpustat_tail);
-+
-+	tail = (tail + NUM_HARDIRQ_REPORT - 1) % NUM_HARDIRQ_REPORT;
-+	util = __this_cpu_read(cpustat_util[tail][STATS_HARDIRQ]);
-+	return util > HARDIRQ_PERCENT_THRESH;
-+}
-+
-+static void start_counting_irqs(void)
-+{
-+	if (!__this_cpu_read(snapshot_taken)) {
-+		kstat_snapshot_irqs();
-+		__this_cpu_write(snapshot_taken, true);
-+	}
-+}
-+
-+static void stop_counting_irqs(void)
-+{
-+	__this_cpu_write(snapshot_taken, false);
-+}
-+
-+static void print_irq_counts(void)
-+{
-+	unsigned int i, count;
-+	struct irq_counts irq_counts_sorted[NUM_HARDIRQ_REPORT] = {
-+		{-1, 0}, {-1, 0}, {-1, 0}, {-1, 0}, {-1, 0}
-+	};
-+
-+	if (__this_cpu_read(snapshot_taken)) {
-+		for_each_active_irq(i) {
-+			count = kstat_get_irq_since_snapshot(i);
-+			tabulate_irq_count(irq_counts_sorted, i, count, NUM_HARDIRQ_REPORT);
-+		}
-+
-+		/*
-+		 * We do not want the "watchdog: " prefix on every line,
-+		 * hence we use "printk" instead of "pr_crit".
-+		 */
-+		printk(KERN_CRIT "CPU#%d Detect HardIRQ Time exceeds %d%%. Most frequent HardIRQs:\n",
-+		       smp_processor_id(), HARDIRQ_PERCENT_THRESH);
-+
-+		for (i = 0; i < NUM_HARDIRQ_REPORT; i++) {
-+			if (irq_counts_sorted[i].irq == -1)
-+				break;
-+
-+			printk(KERN_CRIT "\t#%u: %-10u\tirq#%d\n",
-+			       i + 1, irq_counts_sorted[i].counts,
-+			       irq_counts_sorted[i].irq);
-+		}
-+
-+		/*
-+		 * If the hardirq time is less than HARDIRQ_PERCENT_THRESH% in the last
-+		 * sample_period, then we suspect the interrupt storm might be subsiding.
-+		 */
-+		if (!need_counting_irqs())
-+			stop_counting_irqs();
-+	}
-+}
-+
- static void report_cpu_status(void)
- {
- 	print_cpustat();
-+	print_irq_counts();
- }
- #else
- static inline void update_cpustat(void) { }
- static inline void report_cpu_status(void) { }
-+static inline bool need_counting_irqs(void) { return false; }
-+static inline void start_counting_irqs(void) { }
-+static inline void stop_counting_irqs(void) { }
- #endif
- 
- /*
-@@ -527,6 +621,18 @@ static int is_softlockup(unsigned long touch_ts,
- 			 unsigned long now)
- {
- 	if ((watchdog_enabled & WATCHDOG_SOFTOCKUP_ENABLED) && watchdog_thresh) {
-+		/*
-+		 * If period_ts has not been updated during a sample_period, then
-+		 * in the subsequent few sample_periods, period_ts might also not
-+		 * be updated, which could indicate a potential softlockup. In
-+		 * this case, if we suspect the cause of the potential softlockup
-+		 * might be interrupt storm, then we need to count the interrupts
-+		 * to find which interrupt is storming.
-+		 */
-+		if (time_after_eq(now, period_ts + get_softlockup_thresh() / NUM_SAMPLE_PERIODS) &&
-+		    need_counting_irqs())
-+			start_counting_irqs();
-+
- 		/* Warn about unreasonable delays. */
- 		if (time_after(now, period_ts + get_softlockup_thresh()))
- 			return now - touch_ts;
-@@ -549,6 +655,7 @@ static DEFINE_PER_CPU(struct cpu_stop_work, softlockup_stop_work);
- static int softlockup_fn(void *data)
- {
- 	update_touch_ts();
-+	stop_counting_irqs();
- 	complete(this_cpu_ptr(&softlockup_completion));
- 
- 	return 0;
--- 
-2.37.1 (Apple Git-137.1)
+So something like this makes a useful change log for this:
 
+ Subject: genirq: Provide a snapshot mechanism for interrupt statistics
+
+ The soft lockup detector lacks a mechanism to identify interrupt storms
+ as root cause of a lockup. To enable this the detector needs a
+ mechanism to snapshot the interrupt count statistics on a CPU when the
+ detector observes a potential lockup scenario and compare that against
+ the interrupt count when it warns about the lockup later on. The number
+ of interrupts in that period give a hint whether the lockup might be
+ caused by an interrupt storm.
+
+ Instead of having extra storage in the lockup detector and accessing
+ the internals of the interrupt descriptor directly, convert the per CPU
+ irq_desc::kstat_irq member to a data structure which contains the
+ counter plus a snapshot member and provide interfaces to take a
+ snapshot of all interrupts on the current CPU and to retrieve the delta
+ of a specific interrupt later on.
+
+Hmm?
+
+> Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
+
+Interesting. You fully authored the patch?
+
+That's not how it works. You cannot take work from others and claim that
+it is yours. The minimal courtesy is to add a 'Originally-by:' tag.
+
+> diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
+> index 623b8136e9af..3ad40cf30c66 100644
+> --- a/kernel/irq/proc.c
+> +++ b/kernel/irq/proc.c
+> @@ -488,18 +488,15 @@ int show_interrupts(struct seq_file *p, void *v)
+>  	if (!desc || irq_settings_is_hidden(desc))
+>  		goto outsparse;
+>  
+> -	if (desc->kstat_irqs) {
+> -		for_each_online_cpu(j)
+> -			any_count |= data_race(*per_cpu_ptr(desc->kstat_irqs, j));
+> -	}
+> +	if (desc->kstat_irqs)
+> +		any_count = data_race(desc->tot_count);
+
+This is an unrelated change and needs to be split out into a separate
+patch with a proper changelog which explains why this is equivalent.
+  
+Thanks,
+
+        tglx
 
