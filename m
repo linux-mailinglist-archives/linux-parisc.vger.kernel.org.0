@@ -1,146 +1,149 @@
-Return-Path: <linux-parisc+bounces-624-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-625-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3783D85F99C
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Feb 2024 14:24:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0745E85FD84
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Feb 2024 17:04:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB807287EAB
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 Feb 2024 13:24:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79609B21DE3
+	for <lists+linux-parisc@lfdr.de>; Thu, 22 Feb 2024 16:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A701350EB;
-	Thu, 22 Feb 2024 13:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7A014E2F5;
+	Thu, 22 Feb 2024 16:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xJ/aRi9G";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vZiRjwR+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QYhswNZw"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF9712FF74;
-	Thu, 22 Feb 2024 13:23:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1EF14E2C9;
+	Thu, 22 Feb 2024 16:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708608183; cv=none; b=Nwl1Ejh1B5ZivsPScwLCuf7xxAlVAQcA+s42OcB3N2AZR/1QJMy1ddi6sQsKQ1SHVWrv0wfLM18bVK5mORtUtZrvxiLBtanMSLTKkfShBL6CbDvFMFfgocRQenXDPNmtD7rGWS0kbXu3W+6PPYKnQ2xYYtKFFovsj7p7Dpc1NEc=
+	t=1708617862; cv=none; b=VImALA2JUEjpyPwap+OsXOJJh/Quly2Cr74y2UAvcb9hhuwsF1DIeZGFYLiOZsNxAq3w4dj3x1aDyxblCYhtpse7WF4wE0zU9ZgB/c+vECBhvO8SA6hR8AbxA2rCfAkmCP2YfDSSPyG2DrVUozAcovuxUnmO/4Al7ykSZtfoYuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708608183; c=relaxed/simple;
-	bh=QwJXV1RkcSLVuEf5+mwh8xc/Wk/KLMXNQAhGRjILcLE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iphpEmq0ggzkCB6dz0OvjCsoL5Hjdx/3lz5R0zUK8G94ViLlkeyTMws990bXpbXGFO6k1/CwtDwrI2DNd9FreMAJAQisMXCvZAUfnmHcofMN2RYRp2WXvrhQy2n5mqk3IdcLDdQtzMceupziH1F3L/Xuc/eyNq0/eYtVWiYMHyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xJ/aRi9G; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vZiRjwR+; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708608179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vf5dvD6c9m5aF5XZpNNQqDW+xIF8f6dZ9wpf3QuuKjg=;
-	b=xJ/aRi9Gob5dP6fvvpiv3zn7PZE9HFQr94NPdSMrY4AzE6pDg8n0L+2vR0M28Mo6inozlm
-	XtuNX5M3axqYfryju9DgSEnvEXVE8HbWSCW/X4tdKvRzb6QEYoP8uqntJOm2OYc4HfJHtu
-	xjt+aZhGw9XUSr9MHEphDXnvi+KLMBg7e+0iJUrQYVR2aOcGTuzr2WEcsU/7L8er0u1dzu
-	/sHlTd81mVhPurNKGTm+yhiGi9F6qwX0XoJWzrrIsFRuAMb9Ij67/wYRJFJn10aOGH+kNc
-	bybA7AJsephj7eHNyHWkHzGKRePVN8g7nRDE99IYCUJACRsns9er6rQ62nK7Bg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708608179;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vf5dvD6c9m5aF5XZpNNQqDW+xIF8f6dZ9wpf3QuuKjg=;
-	b=vZiRjwR+O+KEUdSoAq9a5bC4DugVLuX4J9+mRlpoGBM0/Mb5+vfuYr4/7HNl5mbun2GsY7
-	N0SXEJdk6CjzaIDw==
-To: Bitao Hu <yaoma@linux.alibaba.com>, dianders@chromium.org,
- akpm@linux-foundation.org, liusong@linux.alibaba.com, pmladek@suse.com,
- kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
- tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
- jan.kiszka@siemens.com
-Cc: linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- yaoma@linux.alibaba.com
-Subject: Re: [PATCHv9 2/3] irq: use a struct for the kstat_irqs in the
- interrupt descriptor
-In-Reply-To: <20240222093420.13956-3-yaoma@linux.alibaba.com>
-References: <20240222093420.13956-1-yaoma@linux.alibaba.com>
- <20240222093420.13956-3-yaoma@linux.alibaba.com>
-Date: Thu, 22 Feb 2024 14:22:59 +0100
-Message-ID: <87jzmwfxak.ffs@tglx>
+	s=arc-20240116; t=1708617862; c=relaxed/simple;
+	bh=tx5AnOPaHZjR9nwJDGCDrP/Ld3W/I7cUJf4jLuRUobg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WE5liI++z2F2JpgjrHPZIb5Jle97X2dXyH01q3VHAwuveYBj3vsrqx2pGHfWK/GlR5tLbPav1JGI8cu8Bw6UWZheknUv43CauACvlfaIa6U2qDr1X58iqaiLXVER9m3ggZgVYsRghwysucQvsqgKbmAQArAF9QnfIJ/n2dmspNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QYhswNZw; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1d7232dcb3eso49545775ad.2;
+        Thu, 22 Feb 2024 08:04:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708617860; x=1709222660; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iCcVLelkerZ/rfS+OB1Df5D3kOgx+DV+QELs8JDtIG4=;
+        b=QYhswNZwv/rCkF9W5/YjxHyJ+VRuxoVSYmxCCLQuqLxuV/eixtzD5SzFINbjEjmr60
+         6dGd7KUOUlRVTyOYO8Ke8H9h/1z+P3YCCKZebRg5Olnj1gwDUpzOk8YPF20cJZ79v8ba
+         YpQ3knP7tYMuTFpx6WC4OATmPsFlxFXJ2aVNvmyi7WrvLRaAtR2cqg46y3RO/favvmoP
+         DtHMpdyd4ecvyxDVt5YpXxX3uo5gHaII9Z8YuZuBIwoxacfHE9XiJpLZPM8gQHMlOXMa
+         QEtGo9VAJez0xdBTBmkTRv8XcIN10SCdi63WHBOJ4Ua1F7mPHF9vfrGsYwTh4PoIkmKe
+         w01g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708617860; x=1709222660;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iCcVLelkerZ/rfS+OB1Df5D3kOgx+DV+QELs8JDtIG4=;
+        b=Czi1sssMEf8/Q+vQC4iP4WEKDK3lozfV7Pl9mkw4lsuS9zXL6NTqQoWWq509MaB5C4
+         ReqapDAg0ZIgREngoQpvSGpBK7pRe+BglE1yaING8ZjsA2eBPKHnpVQ2Mufw9CfhgAz5
+         DN++fxi8rqIHV8DjQUTUAOxHRMHVa2Ql4VXOGcGKCKiP5xXLwqDcT3rPtyKssu70f80k
+         0u2ZS9thgNXKkjpVELL9hCqkU+NDrCkzYAw0kw5iyy1Q3j7st/kZNQV/UKSowkgkLK7c
+         6ekv140Z2O/JwTw7l3mv2HMWpDOW7JpbXq+FRD7myLf0Y3uV5UUCag1Pt05VwJp/+/Ee
+         ZCxg==
+X-Forwarded-Encrypted: i=1; AJvYcCXjoUFFJ+piZYQcR8xhtmgejwzeGd7YR2tcXcEkGz8TLcShVT8uxlY9lRHXiYj1QIzsdf1jbXF3UD183s4ASemFsnapDnJwT48t3olg5fKDXedFr3UaWfkwWK9Xu65HpJVrurw5PmE8+7FQdpydoFfFokwxh7OcYqrAOcdsYUYA9S2WtM0g/w==
+X-Gm-Message-State: AOJu0YwTQh6mQe9u2zqutL80065rA3m8xP81uu5IeXozo6nsQv9ZrthK
+	YGUplPnZ/1YKkm4TNfA91vHPGfWiserot0T01NNsAGZFYYXqXWm7
+X-Google-Smtp-Source: AGHT+IGJdyeUbV3A+evMrI6PMjno1ReQ6CIcLH3hdNrN5VATyN7MK04L9SBiPR5aXEGBTE725uolMA==
+X-Received: by 2002:a17:902:d489:b0:1dc:1e7c:cd3 with SMTP id c9-20020a170902d48900b001dc1e7c0cd3mr8918913plg.47.1708617858899;
+        Thu, 22 Feb 2024 08:04:18 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id b15-20020a170902d50f00b001db4b3769f6sm10025000plg.280.2024.02.22.08.04.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Feb 2024 08:04:18 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 22 Feb 2024 08:04:16 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Charlie Jenkins <charlie@rivosinc.com>
+Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org
+Subject: Re: [PATCH 1/4] asm-generic headers: Allow csum_partial arch override
+Message-ID: <212db8ca-c01c-4cb0-b794-50931338afb9@roeck-us.net>
+References: <20240221-parisc_use_generic_checksum-v1-0-ad34d895fd1b@rivosinc.com>
+ <20240221-parisc_use_generic_checksum-v1-1-ad34d895fd1b@rivosinc.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240221-parisc_use_generic_checksum-v1-1-ad34d895fd1b@rivosinc.com>
 
-On Thu, Feb 22 2024 at 17:34, Bitao Hu wrote:
+On Wed, Feb 21, 2024 at 06:37:11PM -0800, Charlie Jenkins wrote:
+> Arches can have more a efficient implementation of csum_partial.
+> 
+> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
 
-First of all the subsystem prefix is 'genirq:'. 'git log kernel/irq/'
-gives you a pretty good hint. It's documented....
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-Secondly the subject line does not match what this patch is about. It's
-not about using a struct, it's about providing a snapshot mechanism, no?
-
-> The current implementation uses an int for the kstat_irqs in the
-> interrupt descriptor.
->
-> However, we need to know the number of interrupts which happened
-> since softlockup detection took a snapshot in order to analyze
-> the problem caused by an interrupt storm.
->
-> Replacing an int with a struct and providing sensible interfaces
-> for the watchdog code can keep it self contained to the interrupt
-> core code.
-
-So something like this makes a useful change log for this:
-
- Subject: genirq: Provide a snapshot mechanism for interrupt statistics
-
- The soft lockup detector lacks a mechanism to identify interrupt storms
- as root cause of a lockup. To enable this the detector needs a
- mechanism to snapshot the interrupt count statistics on a CPU when the
- detector observes a potential lockup scenario and compare that against
- the interrupt count when it warns about the lockup later on. The number
- of interrupts in that period give a hint whether the lockup might be
- caused by an interrupt storm.
-
- Instead of having extra storage in the lockup detector and accessing
- the internals of the interrupt descriptor directly, convert the per CPU
- irq_desc::kstat_irq member to a data structure which contains the
- counter plus a snapshot member and provide interfaces to take a
- snapshot of all interrupts on the current CPU and to retrieve the delta
- of a specific interrupt later on.
-
-Hmm?
-
-> Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
-
-Interesting. You fully authored the patch?
-
-That's not how it works. You cannot take work from others and claim that
-it is yours. The minimal courtesy is to add a 'Originally-by:' tag.
-
-> diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
-> index 623b8136e9af..3ad40cf30c66 100644
-> --- a/kernel/irq/proc.c
-> +++ b/kernel/irq/proc.c
-> @@ -488,18 +488,15 @@ int show_interrupts(struct seq_file *p, void *v)
->  	if (!desc || irq_settings_is_hidden(desc))
->  		goto outsparse;
+> ---
+>  include/asm-generic/checksum.h | 2 ++
+>  lib/checksum.c                 | 2 ++
+>  2 files changed, 4 insertions(+)
+> 
+> diff --git a/include/asm-generic/checksum.h b/include/asm-generic/checksum.h
+> index ad928cce268b..3309830ba2cb 100644
+> --- a/include/asm-generic/checksum.h
+> +++ b/include/asm-generic/checksum.h
+> @@ -4,6 +4,7 @@
 >  
-> -	if (desc->kstat_irqs) {
-> -		for_each_online_cpu(j)
-> -			any_count |= data_race(*per_cpu_ptr(desc->kstat_irqs, j));
-> -	}
-> +	if (desc->kstat_irqs)
-> +		any_count = data_race(desc->tot_count);
-
-This is an unrelated change and needs to be split out into a separate
-patch with a proper changelog which explains why this is equivalent.
-  
-Thanks,
-
-        tglx
+>  #include <linux/bitops.h>
+>  
+> +#ifndef csum_partial
+>  /*
+>   * computes the checksum of a memory block at buff, length len,
+>   * and adds in "sum" (32-bit)
+> @@ -17,6 +18,7 @@
+>   * it's best to have buff aligned on a 32-bit boundary
+>   */
+>  extern __wsum csum_partial(const void *buff, int len, __wsum sum);
+> +#endif
+>  
+>  #ifndef ip_fast_csum
+>  /*
+> diff --git a/lib/checksum.c b/lib/checksum.c
+> index 6860d6b05a17..c115a9ac71d9 100644
+> --- a/lib/checksum.c
+> +++ b/lib/checksum.c
+> @@ -110,6 +110,7 @@ __sum16 ip_fast_csum(const void *iph, unsigned int ihl)
+>  EXPORT_SYMBOL(ip_fast_csum);
+>  #endif
+>  
+> +#ifndef csum_partial
+>  /*
+>   * computes the checksum of a memory block at buff, length len,
+>   * and adds in "sum" (32-bit)
+> @@ -134,6 +135,7 @@ __wsum csum_partial(const void *buff, int len, __wsum wsum)
+>  	return (__force __wsum)result;
+>  }
+>  EXPORT_SYMBOL(csum_partial);
+> +#endif
+>  
+>  /*
+>   * this routine is used for miscellaneous IP-like checksums, mainly
+> 
+> -- 
+> 2.34.1
+> 
 
