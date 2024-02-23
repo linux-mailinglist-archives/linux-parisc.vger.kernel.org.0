@@ -1,153 +1,180 @@
-Return-Path: <linux-parisc+bounces-632-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-633-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2013C860834
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Feb 2024 02:27:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D98860B3F
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Feb 2024 08:19:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51FC41C21ADE
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Feb 2024 01:27:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F1DA2865BB
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Feb 2024 07:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC49947B;
-	Fri, 23 Feb 2024 01:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC319134B7;
+	Fri, 23 Feb 2024 07:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LpdCZBp9"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="A+Pah8dO"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEF979E1;
-	Fri, 23 Feb 2024 01:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56AC12B98;
+	Fri, 23 Feb 2024 07:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708651640; cv=none; b=Mae98+TuRCFSAVnVZQMayJ97e692BcoqtxAUDtgo3alq3GkzX40uEKI9l4eRDXJSWW6C+ki45r0iMU5y+VIhHiLYNjUSnQwgBC5fUdcB63NiBgyoc3s4kQDat0qU6aOPHT8b8n5x20zLbVcRZtnbPJLW7y0eGtgm1ROhbuO+pkk=
+	t=1708672743; cv=none; b=awBkO0H+by/0vIFkMt7FOXBt3SRoE2xp+7z7hgTYvkaKqDOLl88Y8xKoeF0I7JWx6p7GuBAG44msxW+ukDRqVj8wAOlG/16EbLBNCvqtzC1ySu51sLGvj70kVyfq0jUrst8m+UdmR9/uu7A7RtUW+ac1I1C4RYEozQManEapXzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708651640; c=relaxed/simple;
-	bh=VJfzL6GLEaZMoUqazrxisfj34PLQuSNA02WLHhDPT4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a8ETOUUteJk46Cx6DI6O8scVD/qI874fqH3Rt5rDk6qyTLdJQRjUj5237VMIilZRRRym635B+1M6d7ifQz0nCJNdG3u81a/po1KiVqucQj9Ml3OlpclyG27/mauYkm1rl6zTQmR5lKYPlaXIS/UR3KI3tYRihFq4lTqb0woUU/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LpdCZBp9; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708651638; x=1740187638;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VJfzL6GLEaZMoUqazrxisfj34PLQuSNA02WLHhDPT4k=;
-  b=LpdCZBp9dhFIIgtBdS4jFXFuqQKkaB2vJ/hsogVcQYEdTIm2tKSaQ3wS
-   8G5JCIyHVhU213hGOCea465UhwZgyodbLd4M/iDu1BGwQW45RAHNxLtu6
-   XesxHPmEeXlKuLwkNgMkfcrhlo0DinziUKifjYi9w+1u/b3wgmuw0S8MD
-   QIez8EIi682kcMnGnTjFUIyBbPqgcxnS1nYy5mNobPyZIQrEZDdLBvD4G
-   MT8ZOHJp5GzvK+3mXAjUU6mP7umP1knqUmICgxfc1wGDLEBo5KcXltXMa
-   jaZWpp67OG6EqS3IgostuJF2qH8x4Shbnpg6W6k6mxoW4UjS+9DMk+DQd
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="14072581"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="14072581"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 17:27:18 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="6192032"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 22 Feb 2024 17:27:11 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rdKL6-0006vK-2c;
-	Fri, 23 Feb 2024 01:27:02 +0000
-Date: Fri, 23 Feb 2024 09:26:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>, arnd@arndb.de,
-	javierm@redhat.com, deller@gmx.de, suijingfeng@loongson.cn
-Cc: oe-kbuild-all@lists.linux.dev, linux-arch@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-sh@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
-	linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	loongarch@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH 2/3] arch: Remove struct fb_info from video helpers
-Message-ID: <202402230941.JZdvHHEX-lkp@intel.com>
-References: <20240221161431.8245-3-tzimmermann@suse.de>
+	s=arc-20240116; t=1708672743; c=relaxed/simple;
+	bh=QW2Jy1OctnU/UI4pLF3wh2qArPJD2CkQk7fnI3qttQY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wa/2j5Afz3fTp4ahOWth+WWz4OeNK+RwsIA87yj9SXIyLunyE2uwqMg+GBlmgXCiSnIzlgCfJTwEJP1b3MKXZHJ2d2r0bzkX8uIuQ1fTvwwyQsZDuroBSjFQBhpJH/ryJfmXXMFIiEsBuoQzoLrNOBigLcCSaZSHIMNIfNrkST8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=A+Pah8dO; arc=none smtp.client-ip=115.124.30.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1708672733; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=4R2wwRGv9r0ABt36T9MYvpDosxNOFhHAa6Gib5GsXfA=;
+	b=A+Pah8dOONowtv+jy55rnPZghER9WvTEo74iQ229R4YEa7EAEXZrHwZfiNPHg0dQjKJP+UBnE8tSUi11zV+rvbMk7Z8FnrtHajbYV23fU1gX89eOsVKEnPaYo7vs2lCR/lJ3T/nY83SElIll9H5my+At98WX5HeWYQ7b61e2kO8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R801e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W13KKaF_1708672729;
+Received: from 30.178.67.167(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W13KKaF_1708672729)
+          by smtp.aliyun-inc.com;
+          Fri, 23 Feb 2024 15:18:51 +0800
+Message-ID: <3f4b7dbe-93c1-4cb0-8233-18e8432409f8@linux.alibaba.com>
+Date: Fri, 23 Feb 2024 15:18:48 +0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240221161431.8245-3-tzimmermann@suse.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv9 2/3] irq: use a struct for the kstat_irqs in the
+ interrupt descriptor
+Content-Language: en-US
+To: Thomas Gleixner <tglx@linutronix.de>, dianders@chromium.org,
+ akpm@linux-foundation.org, liusong@linux.alibaba.com, pmladek@suse.com,
+ kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
+ tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+ jan.kiszka@siemens.com
+Cc: linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ yaoma@linux.alibaba.com
+References: <20240222093420.13956-1-yaoma@linux.alibaba.com>
+ <20240222093420.13956-3-yaoma@linux.alibaba.com> <87jzmwfxak.ffs@tglx>
+From: Bitao Hu <yaoma@linux.alibaba.com>
+In-Reply-To: <87jzmwfxak.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Thomas,
+Hi,
 
-kernel test robot noticed the following build errors:
+On 2024/2/22 21:22, Thomas Gleixner wrote:
+> On Thu, Feb 22 2024 at 17:34, Bitao Hu wrote:
+> 
+> First of all the subsystem prefix is 'genirq:'. 'git log kernel/irq/'
+> gives you a pretty good hint. It's documented....
+> 
+> Secondly the subject line does not match what this patch is about. It's
+> not about using a struct, it's about providing a snapshot mechanism, no?
+> 
+>> The current implementation uses an int for the kstat_irqs in the
+>> interrupt descriptor.
+>>
+>> However, we need to know the number of interrupts which happened
+>> since softlockup detection took a snapshot in order to analyze
+>> the problem caused by an interrupt storm.
+>>
+>> Replacing an int with a struct and providing sensible interfaces
+>> for the watchdog code can keep it self contained to the interrupt
+>> core code.
+> 
+> So something like this makes a useful change log for this:
+> 
+>   Subject: genirq: Provide a snapshot mechanism for interrupt statistics
+> 
+>   The soft lockup detector lacks a mechanism to identify interrupt storms
+>   as root cause of a lockup. To enable this the detector needs a
+>   mechanism to snapshot the interrupt count statistics on a CPU when the
+>   detector observes a potential lockup scenario and compare that against
+>   the interrupt count when it warns about the lockup later on. The number
+>   of interrupts in that period give a hint whether the lockup might be
+>   caused by an interrupt storm.
+> 
+>   Instead of having extra storage in the lockup detector and accessing
+>   the internals of the interrupt descriptor directly, convert the per CPU
+>   irq_desc::kstat_irq member to a data structure which contains the
+>   counter plus a snapshot member and provide interfaces to take a
+>   snapshot of all interrupts on the current CPU and to retrieve the delta
+>   of a specific interrupt later on.
+> 
+Thanks, the changelog you wrote very clearly articulates the purpose of
+this patch.
 
-[auto build test ERROR on tip/x86/core]
-[also build test ERROR on deller-parisc/for-next arnd-asm-generic/master linus/master v6.8-rc5]
-[cannot apply to next-20240222]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> Hmm?
+> 
+>> Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
+> 
+> Interesting. You fully authored the patch?
+> 
+> That's not how it works. You cannot take work from others and claim that
+> it is yours. The minimal courtesy is to add a 'Originally-by:' tag.
+> 
+I'm very sorry, the majority of this patch is your work, I will add an
+'Originally-by:' tag.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Zimmermann/arch-Select-fbdev-helpers-with-CONFIG_VIDEO/20240222-001622
-base:   tip/x86/core
-patch link:    https://lore.kernel.org/r/20240221161431.8245-3-tzimmermann%40suse.de
-patch subject: [PATCH 2/3] arch: Remove struct fb_info from video helpers
-config: x86_64-rhel-8.3 (https://download.01.org/0day-ci/archive/20240223/202402230941.JZdvHHEX-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240223/202402230941.JZdvHHEX-lkp@intel.com/reproduce)
+>> diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
+>> index 623b8136e9af..3ad40cf30c66 100644
+>> --- a/kernel/irq/proc.c
+>> +++ b/kernel/irq/proc.c
+>> @@ -488,18 +488,15 @@ int show_interrupts(struct seq_file *p, void *v)
+>>   	if (!desc || irq_settings_is_hidden(desc))
+>>   		goto outsparse;
+>>   
+>> -	if (desc->kstat_irqs) {
+>> -		for_each_online_cpu(j)
+>> -			any_count |= data_race(*per_cpu_ptr(desc->kstat_irqs, j));
+>> -	}
+>> +	if (desc->kstat_irqs)
+>> +		any_count = data_race(desc->tot_count);
+> 
+> This is an unrelated change and needs to be split out into a separate
+> patch with a proper changelog which explains why this is equivalent.
+> 
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402230941.JZdvHHEX-lkp@intel.com/
+Alright, I will remove this change witch is not related to the purpose
+of this patch.
 
-All errors (new ones prefixed by >>):
+I guess that the purpose of suggesting this change in your V1 response
+was to speedup the 'show_interrupts'. However, after reviewing the
+usage of 'desc->tot_count' in 'unsigned int kstat_irqs(unsigned int 
+irq)', I think the change might be as follows:
 
-   ld: vmlinux.o: in function `fbcon_select_primary':
->> drivers/video/fbdev/core/fbcon.c:2944: undefined reference to `video_is_primary_device'
-   ld: vmlinux.o: in function `fb_io_mmap':
-   drivers/video/fbdev/core/fb_io_fops.c:164: undefined reference to `pgprot_framebuffer'
+diff --git a/kernel/irq/proc.c b/kernel/irq/proc.c
+index 623b8136e9af..53b8d6edd7ac 100644
+--- a/kernel/irq/proc.c
++++ b/kernel/irq/proc.c
+@@ -489,8 +489,13 @@ int show_interrupts(struct seq_file *p, void *v)
+                 goto outsparse;
 
+         if (desc->kstat_irqs) {
+-               for_each_online_cpu(j)
+-                       any_count |= 
+data_race(per_cpu(desc->kstat_irqs->cnt, j));
++               if (!irq_settings_is_per_cpu_devid(desc) &&
++                   !irq_settings_is_per_cpu(desc) &&
++                   !irq_is_nmi(desc))
++                       any_count = data_race(desc->tot_count);
++               else
++                       for_each_online_cpu(j)
++                               any_count |= 
+data_race(per_cpu(desc->kstat_irqs->cnt, j));
+         }
 
-vim +2944 drivers/video/fbdev/core/fbcon.c
+         if ((!desc->action || irq_desc_is_chained(desc)) && !any_count)
 
-  2939	
-  2940	#ifdef CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY
-  2941	static void fbcon_select_primary(struct fb_info *info)
-  2942	{
-  2943		if (!map_override && primary_device == -1 &&
-> 2944		    video_is_primary_device(info->device)) {
-  2945			int i;
-  2946	
-  2947			printk(KERN_INFO "fbcon: %s (fb%i) is primary device\n",
-  2948			       info->fix.id, info->node);
-  2949			primary_device = info->node;
-  2950	
-  2951			for (i = first_fb_vc; i <= last_fb_vc; i++)
-  2952				con2fb_map_boot[i] = primary_device;
-  2953	
-  2954			if (con_is_bound(&fb_con)) {
-  2955				printk(KERN_INFO "fbcon: Remapping primary device, "
-  2956				       "fb%i, to tty %i-%i\n", info->node,
-  2957				       first_fb_vc + 1, last_fb_vc + 1);
-  2958				info_idx = primary_device;
-  2959			}
-  2960		}
-  2961	
+Is my idea correct?
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best Regards,
+	Bitao
 
