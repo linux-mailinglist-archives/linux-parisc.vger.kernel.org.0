@@ -1,52 +1,76 @@
-Return-Path: <linux-parisc+bounces-647-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-648-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B47386267C
-	for <lists+linux-parisc@lfdr.de>; Sat, 24 Feb 2024 18:51:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A3E862B5A
+	for <lists+linux-parisc@lfdr.de>; Sun, 25 Feb 2024 16:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD2181C20C6B
-	for <lists+linux-parisc@lfdr.de>; Sat, 24 Feb 2024 17:51:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D744A2813AB
+	for <lists+linux-parisc@lfdr.de>; Sun, 25 Feb 2024 15:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1928047F59;
-	Sat, 24 Feb 2024 17:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD482168DD;
+	Sun, 25 Feb 2024 15:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="gkurGxvr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kEGNttgS"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FD0481AA;
-	Sat, 24 Feb 2024 17:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0126716427;
+	Sun, 25 Feb 2024 15:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708797081; cv=none; b=hN6buPo9+ARF0z76kxMFD8uGhKKg1U3ax/rMsdTsM5U5oV+WWEwj0ccf4Cnn654RGz5k67oR/RmAm1W1n2KNzveIFdWYOzGWWKUDy//ap5LQ1d5+QEeqardIBwAyTzSbAr7m3V0WefFLieD0tYW5t5mylR+ukQ5gzQkbK1rYewc=
+	t=1708876692; cv=none; b=NpcwEXvnB+jMDiWzhQkIaPf+KLrglkQDojbA5Cmc6qxtJUsGwHynKxU39IM77Lv1v8CdIswiKl619SpSn8G9L1KpxKBLr5eneJYqQVSJqZsgyXj9Zg6JTchSKtbYBSFGOL7bhY+fGZoN7fjqs55x11JaC205C6SdP2I1x8fXC2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708797081; c=relaxed/simple;
-	bh=Gmi4gT9FcIo7etOk4hFwbEDPYNbk4flm2ABlzQlc2Qk=;
+	s=arc-20240116; t=1708876692; c=relaxed/simple;
+	bh=fxntaAlaNoORGg4Yti1Rnj8spJy2frmT6XkMpzimGD8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ondnNsH5c2lYSQ4RmYoNtf2FOam17sXg/kwV9xSP7OPBXI/jRxyVceFkGx9harwwpCQv18LfysP0VFi+b8ObI6tBrCs0xgFD4PG6SLT1fqIKS20MqggBMY0zQeh4Qzizj3zfdGJCkUJ4ulSSPzWF72LMui7vyI4jItYPYwUJqMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=gkurGxvr; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=ZlWOXGsz6mtfbYnmfMG7yZRn5419GRR7ClVn8QWIxY0=; b=gkurGxvrlIgWCdat2QGa1pkFM1
-	hahgqQ6aUjLPPL1nYRjYcQOOSJ00cArzE30vvhX4j2JigWJYZRMTIREVuAn9CvaFCQRw7pDnr7n/y
-	LBcFlnomJp5lJtUXbhAtrDM1FHfX8cClrax9FomZxAuopYRy7LpC/wVYEN5BKUAkniwyFiFhesyuA
-	IYnn27sPE4WR6lB6ktipxxSzv65Lh1wwRnZ2J3lmNDTdewKKd+3o7jJ+rm1768/W0ye2MXNHI0d9s
-	q+RReXBLg6b8BsyxKxkPe+dcaCNnhc1L2z+E0HhlpQltPhMmon3XlIAj5LO3TqAYdnYpsB1QaosYV
-	P1dUEHMQ==;
-Received: from [50.53.50.0] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rdwBB-0000000DN79-47lE;
-	Sat, 24 Feb 2024 17:51:18 +0000
-Message-ID: <c2793745-49b2-4515-b106-d3f0d39b274f@infradead.org>
-Date: Sat, 24 Feb 2024 09:51:17 -0800
+	 In-Reply-To:Content-Type; b=RLtxHBWahub+vG+F33iV2aisY0Bkr8Qr98dkX52wfBCqqZv43w1Y+SsxWVbjnAZGbYJxiEehPLQ6Dxyf6+HX09oGom3MDTeG4M8mUGPVhrd0VaulD6HF9wMTK3ZaldpWPkPHw9C6iSFWJXPUO9jCNlZgokMMaGrGSAxaO6LnLHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kEGNttgS; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5d42e7ab8a9so1442406a12.3;
+        Sun, 25 Feb 2024 07:58:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708876690; x=1709481490; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=kF6rP2xfdv/6N4QkVaNiBDdDiZRDh2pGQVheDyIMBTM=;
+        b=kEGNttgSTp/mZUm+T73GSH6KdsR/BirEVT/3ddf/RMmGDQmxD2mUkurinyOagbQAsW
+         zkx4OtlbwTMJ/DxNF1GBXKeM/iJj0MqoZ22C40cdLXQqM8gWnIC0diRjiWwmCbaoKKCE
+         oRXjZhZA6iDtRhHBzLlLritFswkCldCUfMQm0PkvQ8TfTYcGbvwh/wGNHMeOnSIEFngX
+         hPROJIq+CBjEmLgl+6NUJQvYU9E8i35yb6+gM0f42ylmbssI5n8l3DVSl8ugAatdwX6R
+         BFAHBM5qAIMannVKhWKX5zWnhOpT2ExrqMrS2xk9MdRXb7ODD9Bla6v7EY78H7+duNKV
+         yqtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708876690; x=1709481490;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kF6rP2xfdv/6N4QkVaNiBDdDiZRDh2pGQVheDyIMBTM=;
+        b=SenwULutjJ4jsrX+1iFhXIzXcTdWLkoTeMYe1oKTJoeBi/o4Oo3RtDfi5pV2GDYHMf
+         BuSk0aUcSDGeDbYyg+xFKsdF5pqbQ9Qh2rd2r2+R0YZuLeJMlSBmKhCkjDSfpKG0kX3q
+         W6gFtmrWoW326wSXcQBhMXaKry7vGyt1+vUrPjDWZvVCSkwaJ05nzOlgCT1e5nLUsPxL
+         bxsl/FirXl37K2B1/sMwl1wBPReNAahpdR5I+GBJoAT85eXYWa7NGep2UR7HU3wBWvID
+         XnR7Zi0tB8RXPkbbwIqB1sjhVVSTqhwIHpUeXa1xiBXXQ9H/DVP4iSAsnZbvzLsbj156
+         iA+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXV0Li8+TfrM46ov23k7XskZVd1W5jiffX7W9ahMKd+V9yUAyV+tA1nPet30g7xM7N2MBzjtdT3sOt+gE4LVTqzv3YguhNk8+ewZnPG
+X-Gm-Message-State: AOJu0YwZEGRSz5AEdNaNrSgCZGsFpi26W66gJBKEUFYR9Br/UwtU1dIJ
+	EPWqp/1bTE1sqEgCstwdya/er/oJgJJd/VYbGxVbj+hdzXqm5gENldMoN33i
+X-Google-Smtp-Source: AGHT+IHLyvt6vXzjVu0opxn5tBHuKnJs9NvsjCEGqYT4SAWxzhRzMpNG9AxsobFPXXwejbTpPlZdMw==
+X-Received: by 2002:a05:6a00:3d10:b0:6e4:e0d1:2c6a with SMTP id lo16-20020a056a003d1000b006e4e0d12c6amr4913248pfb.31.1708876690195;
+        Sun, 25 Feb 2024 07:58:10 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y7-20020a62ce07000000b006e45c823660sm2603089pfg.122.2024.02.25.07.58.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 Feb 2024 07:58:09 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <b6337a96-e434-4a72-a196-2d758f4d431c@roeck-us.net>
+Date: Sun, 25 Feb 2024 07:58:07 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -54,74 +78,82 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: parisc: kernel/cpu.c:3110:9: error: expected identifier or '('
- before '=' token
+Subject: Re: [PATCH v10] lib: checksum: Use aligned accesses for ip_fast_csum
+ and csum_ipv6_magic tests
 Content-Language: en-US
-To: Naresh Kamboju <naresh.kamboju@linaro.org>,
- open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org,
- linux-parisc <linux-parisc@vger.kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
- Helge Deller <deller@gmx.de>,
+To: Charlie Jenkins <charlie@rivosinc.com>,
+ David Laight <David.Laight@aculab.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>,
  "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Alexey Dobriyan <adobriyan@gmail.com>
-References: <CA+G9fYvSsq8tALGihWXOvJ-0qJ0iiDARmE4q28g0w9gOh5ZeOA@mail.gmail.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <CA+G9fYvSsq8tALGihWXOvJ-0qJ0iiDARmE4q28g0w9gOh5ZeOA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ Parisc List <linux-parisc@vger.kernel.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann <arnd@arndb.de>
+Cc: linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>
+References: <20240223-fix_sparse_errors_checksum_tests-v10-1-b6a45914b7d8@rivosinc.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240223-fix_sparse_errors_checksum_tests-v10-1-b6a45914b7d8@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-[add Alexey]
-
-
-On 2/23/24 01:18, Naresh Kamboju wrote:
-> [ Please ignore this email if it is already reported ]
+On 2/23/24 14:11, Charlie Jenkins wrote:
+> The test cases for ip_fast_csum and csum_ipv6_magic were not properly
+> aligning the IP header, which were causing failures on architectures
+> that do not support misaligned accesses like some ARM platforms. To
+> solve this, align the data along (14 + NET_IP_ALIGN) bytes which is the
+> standard alignment of an IP header and must be supported by the
+> architecture.
 > 
-> The parisc builds failed on Linux next tag next-20240220..next-20240223.
-> First build failures noticed on tag next-20240220.
+> Furthermore, all architectures except the m68k pad "struct
+> csum_ipv6_magic_data" to 44 bits. To make compatible with the m68k,
+> manually pad this structure to 44 bits.
 > 
-> parisc:
->     defconfig: gcc-11 - Failed
->     allnoconfig: gcc-11 - Failed
->     tinyconfig: gcc-11 - Failed
-> 
-> kernel/cpu.c:3110:9: error: expected identifier or '(' before '=' token
->  3110 |         = {CPU_BITS_ALL};
->       |         ^
+> Fixes: 6f4c45cbcb00 ("kunit: Add tests for csum_ipv6_magic and ip_fast_csum")
+> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
 
-commit da92df490eea
-Author: Alexey Dobriyan <adobriyan@gmail.com>
-Date:   Mon Feb 5 13:01:19 2024 +0300
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-    cpu: Mark cpu_possible_mask as __ro_after_init
-
-inserts a ';' here:
-
- #ifdef CONFIG_INIT_ALL_POSSIBLE
--struct cpumask __cpu_possible_mask __read_mostly
-+struct cpumask __cpu_possible_mask __ro_after_init;
-        = {CPU_BITS_ALL};
- #else
-
-
-> make[4]: *** [scripts/Makefile.build:244: kernel/cpu.o] Error 1
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> Steps to reproduce:
->  $ tuxmake --runtime podman --target-arch parisc --toolchain gcc-11
-> --kconfig defconfig
-> 
-> Links:
->  - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240223/testrun/22811934/suite/build/test/gcc-11-defconfig/log
->  - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240223/testrun/22811934/suite/build/test/gcc-11-defconfig/details/
->  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2cl8psPmccoERtfX4SrhL0yxD0F/
-> 
-> --
-> Linaro LKFT
-> https://lkft.linaro.org
-> 
-
--- 
-#Randy
 
