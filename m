@@ -1,308 +1,147 @@
-Return-Path: <linux-parisc+bounces-664-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-665-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D498867D77
-	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 18:07:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A98FA867F4E
+	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 18:51:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEADD1F25158
-	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 17:07:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA7711C2B510
+	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 17:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554AB12FB0B;
-	Mon, 26 Feb 2024 16:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C5B12D761;
+	Mon, 26 Feb 2024 17:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="eIpG+p8O"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="uZZb1kEo"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F6612FB03
-	for <linux-parisc@vger.kernel.org>; Mon, 26 Feb 2024 16:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8053812F378;
+	Mon, 26 Feb 2024 17:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708966520; cv=none; b=I4P2HtvhYR3/EboGE8hT4vBWy7IpO0zizWdPDUnf90qqaCjOsb7SA2vG+6Qf5LIjPjby1IGiZo5fzVyYTNcNF2Y3r/7dQ6BoQe8j8fi0czQ2gFFdxJL7y5zOKuVXpTMPO8cwK4cWxE9MBLzTsKXrRdISnr1VpxTI63Rw6rONfHw=
+	t=1708969877; cv=none; b=CHSGPIWa63nqMzxjvboor3tD9Q9CBU6f51Pz78jB1Gt+LeStsYaHyttX6DFH1v34kxyWfY2Exeu7nKpBjaP50ZsAeWGvfCxBExzRgsqTBJF/GBAw2kRyzCFz/CBv8NCXzkXhEC9s9EmvYFEDm495ilS8NRwpQgO2buxxN1/xGh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708966520; c=relaxed/simple;
-	bh=efqSYWlmPvvmoW5hTpteGQgbaViN1str2LnrNPJgrD0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nq/AE5rve4p688f7Ny8od279kqx7L/zhsvId8ZBTHzPgitOYkoC42hvgPTYiDYxUQzy6l4cNEr5Mfi6ea3736crbzkEty32MoB72Tx560B2hI4I9MPmcgEveOEKfXL98pmZIviJafVT1Hg5ZhHMgiRZvyMgL+sFtnhGRolKJ91A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=eIpG+p8O; arc=none smtp.client-ip=209.85.166.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
-Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-7c7b9b25ba6so43781639f.1
-        for <linux-parisc@vger.kernel.org>; Mon, 26 Feb 2024 08:55:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1708966516; x=1709571316; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YapG2Iuz3DeMuojGrZ4IACVCP3buEgPcxL/agJvMeoI=;
-        b=eIpG+p8Ov/rRaNeI6uaoNEoiYBVxOHKyiRlBtWJu2YvdUhbCuZtqkdDm4a56GJy2rl
-         nr1kusUTL0Wl7M9Ji9Ua9DtzmR6hHbt5OlBxcUSmFZCT03axU42bBVhU1HGSMIMyOO0f
-         sbTz+A9TH0p/ARPuqtbkKPLG5u5lynUcIdQiCImUzTN3k9DDK2aJti8Yd8R+nR5lnzZZ
-         tf9Qw7vKBeKHeeYuR5NoWOqRIeWfAXJoR5RBRkvloBlBcjIFPoqjQz0fp/ddbnmPa0Cl
-         JGvzU0+WJVMNaw5gb8FVTL4VrrmUoyB+DXEqhk669C/mUXRYlnP2dLjCxqXojz2F2tpX
-         Uitg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708966516; x=1709571316;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YapG2Iuz3DeMuojGrZ4IACVCP3buEgPcxL/agJvMeoI=;
-        b=XEE2H+RutGAxABxXwGBkTSu1eCQ81+zm+bjYriP+Xmrgf8/XQEa9U7YAYnCuNDmv/t
-         9NLD2GX10nkpv/hQiTaq7KnwkJVartBOSN0Ko4xMhd3tfF0UEiRmZ9uapS2AD3wFW5zA
-         pIzdrXJJKvYsPqiyP6I3czaDsU0BASSe5Qt3YDicStqQmiW/Jh7JguKRLp9PDSEdQcvi
-         AwuhmxZdSywVIm17kkZnuyR/YfY97+CobXroBfgVImhNu0nXN3TbBVwbFkDRqzSOTR9l
-         9x2X/vyMDd0ypeFRAhb6n1tPjaQfLlaxCoav598rB/WoxB3GUexWXwRwDcBOw/ZqOkpx
-         R6jA==
-X-Forwarded-Encrypted: i=1; AJvYcCVK3Fc8472ABwkwG2THwVjv/MLKwFlH2LtBBFjDTY+zvQiK91EVWw64GfX/Dj6guzYpAawPb5isKu06VasCvoEPXbaxAK1QFAxcHz7a
-X-Gm-Message-State: AOJu0YzXv6X1Qf4w1Lu+jmvH8QKYky6ac096lwCpoGZTu/VDTiojIjLs
-	Ik0tc71U4LoCpExdz+L3Fit1eXQu7KEZArruafGyjWGnKIgTjUQ5xoGVZNx8UC0=
-X-Google-Smtp-Source: AGHT+IHuaCs5d/f2oApxcwZJ00c0VtAfeY0TQXQD6OLSfI1tJf749yVYK76BLp2wH1JUJFxCC31KGw==
-X-Received: by 2002:a5e:c819:0:b0:7c7:247e:34c7 with SMTP id y25-20020a5ec819000000b007c7247e34c7mr9575536iol.9.1708966515786;
-        Mon, 26 Feb 2024 08:55:15 -0800 (PST)
-Received: from [100.64.0.1] ([170.85.6.200])
-        by smtp.gmail.com with ESMTPSA id f23-20020a6be817000000b007c7938867adsm1309067ioh.33.2024.02.26.08.55.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Feb 2024 08:55:15 -0800 (PST)
-Message-ID: <764fafb0-2206-4ab1-84ea-ebb7848c8ff2@sifive.com>
-Date: Mon, 26 Feb 2024 10:55:11 -0600
+	s=arc-20240116; t=1708969877; c=relaxed/simple;
+	bh=qS8OT9weX4S2COy6j3APFrkuDaTbvAGT/4iWvd39c/E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oqdhuj01A25H+7OVo8wlJ51JyXXeggCnvSgwGbemfc83XUHYjZC31xIy8i6owv7jQtPtgy9GJPUBjfuSUv/qqxuejLEQ3cRbWn/J9KEmbvEPWb17lpUopcIrALHjE0Ic7YVthnTSJTP9QJFJI1n6MBYs5qffmWQjC5YQlU8ZBA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=uZZb1kEo; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=DS/FPTlhqUV1Rbg7GjDt8wu7AR4Zgooi3ewXLgKys4c=; b=uZZb1kEoLX0PAJhCzRKUy1g8Uv
+	SM+ZTC9ce6iXI97yEZwMtIvw5Lg3sO+8TwU/Yu8qkCLF1A+/VH/fSTtULAWPKnSCb+daQeBXzIyG6
+	8W1NEzzdisP4BLY3je4cSsZZO2YCORB9qBwKvUj8nIA60Y097T6ZwzAwoAfM89DWyDCCQ7jeO4gqh
+	IXG/VZsGfdMjIN8I+ZpoYWgafqV2v0ukZQoO9cK1EOYfs4TBJDe29tRKB72oqoQIkZB+3dbtTFD8k
+	SsPnkVQtYn4MFi5EgMUUpYmochutSB8T+EjoktzLSPzeHxbhESm3tNJU6WJ1FLIv2GybwO7+aRwFa
+	2lSAHhiQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35226)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1ref81-0004XQ-0c;
+	Mon, 26 Feb 2024 17:51:01 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1ref7x-0006ci-SJ; Mon, 26 Feb 2024 17:50:57 +0000
+Date: Mon, 26 Feb 2024 17:50:57 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	David Laight <David.Laight@aculab.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Parisc List <linux-parisc@vger.kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v10] lib: checksum: Use aligned accesses for ip_fast_csum
+ and csum_ipv6_magic tests
+Message-ID: <ZdzPgSCTntY7JD5i@shell.armlinux.org.uk>
+References: <20240223-fix_sparse_errors_checksum_tests-v10-1-b6a45914b7d8@rivosinc.com>
+ <7ae930a7-3b10-4470-94ee-89cb650b3349@csgroup.eu>
+ <e11fea7a-e99e-4539-a489-0aa145ee65f0@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] arch: consolidate existing CONFIG_PAGE_SIZE_*KB
- definitions
-Content-Language: en-US
-To: Arnd Bergmann <arnd@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Kees Cook <keescook@chromium.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>
-Cc: Arnd Bergmann <arnd@arndb.de>, Matt Turner <mattst88@gmail.com>,
- Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
- Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Helge Deller
- <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Andreas Larsson <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>,
- x86@kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, Jan Kiszka <jan.kiszka@siemens.com>,
- Kieran Bingham <kbingham@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org
-References: <20240226161414.2316610-1-arnd@kernel.org>
- <20240226161414.2316610-2-arnd@kernel.org>
-From: Samuel Holland <samuel.holland@sifive.com>
-In-Reply-To: <20240226161414.2316610-2-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e11fea7a-e99e-4539-a489-0aa145ee65f0@roeck-us.net>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 2024-02-26 10:14 AM, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+On Mon, Feb 26, 2024 at 08:44:29AM -0800, Guenter Roeck wrote:
+> On 2/26/24 03:34, Christophe Leroy wrote:
+> > 
+> > 
+> > Le 23/02/2024 à 23:11, Charlie Jenkins a écrit :
+> > > The test cases for ip_fast_csum and csum_ipv6_magic were not properly
+> > > aligning the IP header, which were causing failures on architectures
+> > > that do not support misaligned accesses like some ARM platforms. To
+> > > solve this, align the data along (14 + NET_IP_ALIGN) bytes which is the
+> > > standard alignment of an IP header and must be supported by the
+> > > architecture.
+> > 
+> > I'm still wondering what we are really trying to fix here.
+> > 
+> > All other tests are explicitely testing that it works with any alignment.
+> > 
+> > Shouldn't ip_fast_csum() and csum_ipv6_magic() work for any alignment as
+> > well ? I would expect it, I see no comment in arm code which explicits
+> > that assumption around those functions.
+> > 
+> > Isn't the problem only the following line, because csum_offset is
+> > unaligned ?
+> > 
+> > csum = *(__wsum *)(random_buf + i + csum_offset);
+> > 
+> > Otherwise, if there really is an alignment issue for the IPv6 source or
+> > destination address, isn't it enough to perform a 32 bits alignment ?
+> > 
 > 
-> These four architectures define the same Kconfig symbols for configuring
-> the page size. Move the logic into a common place where it can be shared
-> with all other architectures.
+> It isn't just arm.
 > 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/Kconfig                      | 58 +++++++++++++++++++++++++++++--
->  arch/hexagon/Kconfig              | 25 +++----------
->  arch/hexagon/include/asm/page.h   |  6 +---
->  arch/loongarch/Kconfig            | 21 ++++-------
->  arch/loongarch/include/asm/page.h | 10 +-----
->  arch/mips/Kconfig                 | 58 +++----------------------------
->  arch/mips/include/asm/page.h      | 16 +--------
->  arch/sh/include/asm/page.h        | 13 +------
->  arch/sh/mm/Kconfig                | 42 +++++++---------------
->  9 files changed, 88 insertions(+), 161 deletions(-)
-> 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index a5af0edd3eb8..237cea01ed9b 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -1078,17 +1078,71 @@ config HAVE_ARCH_COMPAT_MMAP_BASES
->  	  and vice-versa 32-bit applications to call 64-bit mmap().
->  	  Required for applications doing different bitness syscalls.
->  
-> +config HAVE_PAGE_SIZE_4KB
-> +	bool
-> +
-> +config HAVE_PAGE_SIZE_8KB
-> +	bool
-> +
-> +config HAVE_PAGE_SIZE_16KB
-> +	bool
-> +
-> +config HAVE_PAGE_SIZE_32KB
-> +	bool
-> +
-> +config HAVE_PAGE_SIZE_64KB
-> +	bool
-> +
-> +config HAVE_PAGE_SIZE_256KB
-> +	bool
-> +
-> +choice
-> +	prompt "MMU page size"
+> Question should be what alignments the functions are supposed to be able
+> to handle, not what they are optimized for. If byte and/or half word alignments
+> are expected to be supported, there is still architecture code which would
+> have to be fixed. Unaligned accesses are known to fail on hppa64/parisc64
+> and on sh4, for example. If unaligned accesses are expected to be handled,
+> it would probably make sense to add a separate test case, though, to clarify
+> that the test fails due to alignment issues, not due to input parameters.
 
-Should this have some generic help text (at least a warning about compatibility)?
+It's network driver dependent. Most network drivers receive packets
+to the offset defined by NET_IP_ALIGN (which is normally 2) which
+has the effect of "mis-aligning" the ethernet header, but aligning
+the IP header.
 
-> +
-> +config PAGE_SIZE_4KB
-> +	bool "4KB pages"
-> +	depends on HAVE_PAGE_SIZE_4KB
-> +
-> +config PAGE_SIZE_8KB
-> +	bool "8KB pages"
-> +	depends on HAVE_PAGE_SIZE_8KB
-> +
-> +config PAGE_SIZE_16KB
-> +	bool "16KB pages"
-> +	depends on HAVE_PAGE_SIZE_16KB
-> +
-> +config PAGE_SIZE_32KB
-> +	bool "32KB pages"
-> +	depends on HAVE_PAGE_SIZE_32KB
-> +
-> +config PAGE_SIZE_64KB
-> +	bool "64KB pages"
-> +	depends on HAVE_PAGE_SIZE_64KB
-> +
-> +config PAGE_SIZE_256KB
-> +	bool "256KB pages"
-> +	depends on HAVE_PAGE_SIZE_256KB
-> +
-> +endchoice
-> +
->  config PAGE_SIZE_LESS_THAN_64KB
->  	def_bool y
-> -	depends on !ARM64_64K_PAGES
->  	depends on !PAGE_SIZE_64KB
-> -	depends on !PARISC_PAGE_SIZE_64KB
->  	depends on PAGE_SIZE_LESS_THAN_256KB
->  
->  config PAGE_SIZE_LESS_THAN_256KB
->  	def_bool y
->  	depends on !PAGE_SIZE_256KB
->  
-> +config PAGE_SHIFT
-> +	int
-> +	default 12 if PAGE_SIZE_4KB
-> +	default 13 if PAGE_SIZE_8KB
-> +	default 14 if PAGE_SIZE_16KB
-> +	default 15 if PAGE_SIZE_32KB
-> +	default 16 if PAGE_SIZE_64KB
-> +	default 18 if PAGE_SIZE_256KB
-> +
->  # This allows to use a set of generic functions to determine mmap base
->  # address by giving priority to top-down scheme only if the process
->  # is not in legacy mode (compat task, unlimited stack size or
-> diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
-> index a880ee067d2e..aac46ee1a000 100644
-> --- a/arch/hexagon/Kconfig
-> +++ b/arch/hexagon/Kconfig
-> @@ -8,6 +8,11 @@ config HEXAGON
->  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
->  	select ARCH_NO_PREEMPT
->  	select DMA_GLOBAL_POOL
-> +	select FRAME_POINTER
+Whether drivers do that is up to drivers (and their capabilities).
+Some network drivers can not do this kind of alignment, so there are
+cases where the received packets aren't offset by two bytes, leading
+to the IP header being aligned to an odd 16-bit word rather than an
+even 16-bit word (and thus 32-bit aligned.)
 
-Looks like a paste error.
+Then you have the possibility of other headers between the ethernet
+and IP header - not only things like VLANs, but also possibly DSA
+headers (for switches) and how big those are.
 
-> +	select HAVE_PAGE_SIZE_4KB
-> +	select HAVE_PAGE_SIZE_16KB
-> +	select HAVE_PAGE_SIZE_64KB
-> +	select HAVE_PAGE_SIZE_256KB
->  	# Other pending projects/to-do items.
->  	# select HAVE_REGS_AND_STACK_ACCESS_API
->  	# select HAVE_HW_BREAKPOINT if PERF_EVENTS
-> @@ -120,26 +125,6 @@ config NR_CPUS
->  	  This is purely to save memory - each supported CPU adds
->  	  approximately eight kilobytes to the kernel image.
->  
-> -choice
-> -	prompt "Kernel page size"
-> -	default PAGE_SIZE_4KB
-> -	help
-> -	  Changes the default page size; use with caution.
-> -
-> -config PAGE_SIZE_4KB
-> -	bool "4KB"
-> -
-> -config PAGE_SIZE_16KB
-> -	bool "16KB"
-> -
-> -config PAGE_SIZE_64KB
-> -	bool "64KB"
-> -
-> -config PAGE_SIZE_256KB
-> -	bool "256KB"
-> -
-> -endchoice
-> -
->  source "kernel/Kconfig.hz"
->  
->  endmenu
-> diff --git a/arch/hexagon/include/asm/page.h b/arch/hexagon/include/asm/page.h
-> index 10f1bc07423c..65c9bac639fa 100644
-> --- a/arch/hexagon/include/asm/page.h
-> +++ b/arch/hexagon/include/asm/page.h
-> @@ -13,27 +13,22 @@
->  /*  This is probably not the most graceful way to handle this.  */
->  
->  #ifdef CONFIG_PAGE_SIZE_4KB
-> -#define PAGE_SHIFT 12
->  #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_4KB
->  #endif
->  
->  #ifdef CONFIG_PAGE_SIZE_16KB
-> -#define PAGE_SHIFT 14
->  #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_16KB
->  #endif
->  
->  #ifdef CONFIG_PAGE_SIZE_64KB
-> -#define PAGE_SHIFT 16
->  #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_64KB
->  #endif
->  
->  #ifdef CONFIG_PAGE_SIZE_256KB
-> -#define PAGE_SHIFT 18
->  #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_256KB
->  #endif
->  
->  #ifdef CONFIG_PAGE_SIZE_1MB
-> -#define PAGE_SHIFT 20
->  #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_1MB
->  #endif
+There's a lot to be researched here!
 
-The corresponding Kconfig option does not exist (and did not exist before this
-patch).
-
->  
-> @@ -50,6 +45,7 @@
->  #define HVM_HUGEPAGE_SIZE 0x5
->  #endif
->  
-> +#define PAGE_SHIFT CONFIG_PAGE_SHIFT
->  #define PAGE_SIZE  (1UL << PAGE_SHIFT)
->  #define PAGE_MASK  (~((1 << PAGE_SHIFT) - 1))
->  
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
