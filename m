@@ -1,134 +1,221 @@
-Return-Path: <linux-parisc+bounces-657-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-658-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B46686743E
-	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 13:04:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A2BF867B58
+	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 17:14:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B352B290897
-	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 12:04:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A5EF28F8BD
+	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 16:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE0A5B661;
-	Mon, 26 Feb 2024 12:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E0112C7F4;
+	Mon, 26 Feb 2024 16:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="IojTQrZd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ouv+E5W1"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24775B663;
-	Mon, 26 Feb 2024 12:04:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEE7604A7;
+	Mon, 26 Feb 2024 16:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708949043; cv=none; b=P5i7Q2Ag95nsyEGx/3NJTfKzL2RCuaaG7nCmIgFCpbv71NahFpVwn5ZdJYHNXBN5uWPM5VZD+hUWpXoo6laS4BbpUbsB73hE7EDt3g8SVsHwKizem9kP3QzPMv+cUXLdUczYeMMVE1Brx74xhswuG7C9McK/uIMJjMvN7nuyit8=
+	t=1708964074; cv=none; b=SKNsP3AB76Z27dRKQvJMO194jmhCMGQoMoPq7tazGgSWXNLktisWG6+S5GaVJB9bNvcNdyPEJDCxWAa1c6NQAgr5e8vJCLc6Nd3XSWFLSChfSUO49QTKcJhwzhDy9poGL9fBuV/+N/B1Hrgo4c7E9gkjDokX2dD8uTN4DYw0kO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708949043; c=relaxed/simple;
-	bh=bSIYi307UAifxZYKBFL5Z4FCz6CO5J9gTDCXhlKnU+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=osguSYYaaQXDiYYuMoeqArE3LOmHG1347rAiblypQV2IT08pEMXhGJZ+oh7CD3bsm+fIaxlB7RiPsLFUBZLPRaFsDuRP5mPbIJTseNAWp5+hlmtDKdUnVWDlv9YRDUxqhCv0SAA4Dk86tQJwYKchrrDaxjUZW1x7FGAQab2B5hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=IojTQrZd; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=O7pmyULB7JZRz8A9oI6WLG3NRUVeGhF0b+0ptpd76Fs=; b=IojTQrZdEhZrWdsSrZKnx/vZRV
-	VlpJkkFC9Dhu94mGJ6dM2h3W1X6jS012IEPNx0ZyOUN+WmivBv9se9HQqxdhcmaupG+rnB0k1KUDX
-	axg2z/ZFFtH5G9HSBtQ46pW3QWVLTeFMeCph0AiGiCkuzm5QNCgcJBTLu2jXDuEUkwAfwT3pjiHPn
-	+qVDZND4xtlwfUMnhIO4vKERiyhloEAQPm9kC0o029/AP0rZMjqs3/dJV+IBDw6i9rRjSWv9WkCAe
-	ixyTdJAjXWfUPqkU5Gfu88cc0o96Lri3cC5oRu7yF2rpaZI3koypVqmS8CyMdwERP/DfOhCCk5419
-	JuUGoIRQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39758)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1reZi1-0003F6-0X;
-	Mon, 26 Feb 2024 12:03:49 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1reZhz-0006PU-MT; Mon, 26 Feb 2024 12:03:47 +0000
-Date: Mon, 26 Feb 2024 12:03:47 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Charlie Jenkins <charlie@rivosinc.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	David Laight <David.Laight@aculab.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	s=arc-20240116; t=1708964074; c=relaxed/simple;
+	bh=zxbqCp3xg1MTZv6nVkuYc0VOPy7Z/0KoLu5xdBZOcDY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y4iChQ2UuZf25lq9UumAyHHLuSd8Ri+0IcLnRkWadsISLl70JgGMzwAHsA3oqUXZFQO2pfETieol5457UVZvwy4XwdoEgoh9BIMfLdi013iX/Kfj0bHJaCZc3T66mqby6yQUBs6vdqp6eQb23gk55bUach6ffqnz8Birv+R/NBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ouv+E5W1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D63C433C7;
+	Mon, 26 Feb 2024 16:14:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708964073;
+	bh=zxbqCp3xg1MTZv6nVkuYc0VOPy7Z/0KoLu5xdBZOcDY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ouv+E5W1cQ1zHWEvJshxERHNgYSjJzR7JdvZMtKsmjTnnYsjb50xz7yQ6NNDLjL+R
+	 zIivYPxRBLqLiotGJhvVTBVfzRjkLFR+UKz+Blle7mLm83hZaxjZLxJiSIm8KsFpk8
+	 T2yQYC7g3LmUbscrU9t5jUZdMHfRtyoT7a/p66cZn/Wi8wvAOCFlueNWvORfaCli+Z
+	 S5t1BgjPEeJ3eGf1KMTEe7SIO0Rv5QLKXRaKqNQXL1yQWzRzHXLOOgf0gh7VMNEgGS
+	 /h/uyIFz30OGZTAygrSMurYRpnmZAOjoQMG9QUrFxlxLnbjp2UPK2IvIxVWUAhRAM9
+	 8PLY/d6Nx9Yzg==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Kees Cook <keescook@chromium.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Matt Turner <mattst88@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Guo Ren <guoren@kernel.org>,
+	Brian Cain <bcain@quicinc.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Michal Simek <monstr@monstr.eu>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Helge Deller <deller@gmx.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Parisc List <linux-parisc@vger.kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Linux ARM <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v10] lib: checksum: Use aligned accesses for ip_fast_csum
- and csum_ipv6_magic tests
-Message-ID: <Zdx+I3V9ka3EbaHq@shell.armlinux.org.uk>
-References: <20240223-fix_sparse_errors_checksum_tests-v10-1-b6a45914b7d8@rivosinc.com>
- <7ae930a7-3b10-4470-94ee-89cb650b3349@csgroup.eu>
- <Zdx6YMRdPmb595M2@shell.armlinux.org.uk>
- <96b3fcfd-6932-4987-9831-5abdad8d445c@csgroup.eu>
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Richard Weinberger <richard@nod.at>,
+	x86@kernel.org,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org
+Subject: [PATCH 0/4] arch: mm, vdso: consolidate PAGE_SIZE definition
+Date: Mon, 26 Feb 2024 17:14:10 +0100
+Message-Id: <20240226161414.2316610-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <96b3fcfd-6932-4987-9831-5abdad8d445c@csgroup.eu>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, Feb 26, 2024 at 11:57:24AM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 26/02/2024 à 12:47, Russell King (Oracle) a écrit :
-> > On Mon, Feb 26, 2024 at 11:34:51AM +0000, Christophe Leroy wrote:
-> >> Le 23/02/2024 à 23:11, Charlie Jenkins a écrit :
-> >>> The test cases for ip_fast_csum and csum_ipv6_magic were not properly
-> >>> aligning the IP header, which were causing failures on architectures
-> >>> that do not support misaligned accesses like some ARM platforms. To
-> >>> solve this, align the data along (14 + NET_IP_ALIGN) bytes which is the
-> >>> standard alignment of an IP header and must be supported by the
-> >>> architecture.
-> >>
-> >> I'm still wondering what we are really trying to fix here.
-> >>
-> >> All other tests are explicitely testing that it works with any alignment.
-> >>
-> >> Shouldn't ip_fast_csum() and csum_ipv6_magic() work for any alignment as
-> >> well ? I would expect it, I see no comment in arm code which explicits
-> >> that assumption around those functions.
-> > 
-> > No, these functions are explicitly *not* designed to be used with any
-> > alignment. They are for 16-bit alignment only.
-> > 
-> > I'm not sure where the idea that "any alignment" has come from, but it's
-> > never been the case AFAIK that we've supported that - or if we do now,
-> > that's something which has crept in under the radar.
-> > 
-> 
-> Ok, 16-bit is fine for me, then there is no need to require a (14 + 
-> NET_IP_ALIGN) ie a 16-bytes (128-bit) alignment as this patch is doing.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Looking again at these two functions, I'm mistaken - this was written for
-optimal use with 32-bit alignment, not 16-bit. However, the entire IP
-layer is written with the assumption that for maximum performance, the IP
-header will be 32-bit aligned.
+Naresh noticed that the newly added usage of the PAGE_SIZE macro in
+include/vdso/datapage.h introduced a build regression. I had an older
+patch that I revived to have this defined through Kconfig rather than
+through including asm/page.h, which is not allowed in vdso code.
 
-However, that may not always be the case for incoming packets, and what
-saves 32-bit Arm is the ability to do unaligned loads in later revisions
-of the architecture, or the alignment fault handler (slow) on older
-revisions.
+I rebased and tested on top of the tip/timers/core branch that
+introduced the regression. If these patches get added, the
+compat VDSOs all build again, but the changes are a bit invasive.
+
+      Arnd
+
+Link: https://lore.kernel.org/lkml/CA+G9fYtrXXm_KO9fNPz3XaRxHV7UD_yQp-TEuPQrNRHU+_0W_Q@mail.gmail.com/
+Link: https://lore.kernel.org/all/65dc6c14.170a0220.f4a3f.91dd@mx.google.com/
+
+Arnd Bergmann (4):
+  arch: consolidate existing CONFIG_PAGE_SIZE_*KB definitions
+  arch: simplify architecture specific page size configuration
+  arch: define CONFIG_PAGE_SIZE_*KB on all architectures
+  vdso: avoid including asm/page.h
+
+ arch/Kconfig                       | 58 ++++++++++++++++++++++++++++--
+ arch/alpha/Kconfig                 |  1 +
+ arch/alpha/include/asm/page.h      |  2 +-
+ arch/arc/Kconfig                   |  3 ++
+ arch/arc/include/uapi/asm/page.h   |  6 ++--
+ arch/arm/Kconfig                   |  1 +
+ arch/arm/include/asm/page.h        |  2 +-
+ arch/arm64/Kconfig                 | 29 +++++++--------
+ arch/arm64/include/asm/page-def.h  |  2 +-
+ arch/csky/Kconfig                  |  1 +
+ arch/csky/include/asm/page.h       |  2 +-
+ arch/hexagon/Kconfig               | 25 +++----------
+ arch/hexagon/include/asm/page.h    |  6 +---
+ arch/loongarch/Kconfig             | 21 ++++-------
+ arch/loongarch/include/asm/page.h  | 10 +-----
+ arch/m68k/Kconfig                  |  3 ++
+ arch/m68k/Kconfig.cpu              |  2 ++
+ arch/m68k/include/asm/page.h       |  6 +---
+ arch/microblaze/Kconfig            |  1 +
+ arch/microblaze/include/asm/page.h |  2 +-
+ arch/mips/Kconfig                  | 58 +++---------------------------
+ arch/mips/include/asm/page.h       | 16 +--------
+ arch/nios2/Kconfig                 |  1 +
+ arch/nios2/include/asm/page.h      |  2 +-
+ arch/openrisc/Kconfig              |  1 +
+ arch/openrisc/include/asm/page.h   |  2 +-
+ arch/parisc/Kconfig                |  3 ++
+ arch/parisc/include/asm/page.h     | 10 +-----
+ arch/powerpc/Kconfig               | 31 ++++------------
+ arch/powerpc/include/asm/page.h    |  2 +-
+ arch/riscv/Kconfig                 |  1 +
+ arch/riscv/include/asm/page.h      |  2 +-
+ arch/s390/Kconfig                  |  1 +
+ arch/s390/include/asm/page.h       |  2 +-
+ arch/sh/include/asm/page.h         | 13 +------
+ arch/sh/mm/Kconfig                 | 42 +++++++---------------
+ arch/sparc/Kconfig                 |  2 ++
+ arch/sparc/include/asm/page_32.h   |  2 +-
+ arch/sparc/include/asm/page_64.h   |  3 +-
+ arch/um/Kconfig                    |  1 +
+ arch/um/include/asm/page.h         |  2 +-
+ arch/x86/Kconfig                   |  1 +
+ arch/x86/include/asm/page_types.h  |  2 +-
+ arch/xtensa/Kconfig                |  1 +
+ arch/xtensa/include/asm/page.h     |  2 +-
+ include/vdso/datapage.h            |  4 +--
+ scripts/gdb/linux/constants.py.in  |  2 +-
+ scripts/gdb/linux/mm.py            |  2 +-
+ 48 files changed, 153 insertions(+), 241 deletions(-)
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.39.2
+To: Thomas Gleixner <tglx@linutronix.de>
+To: Vincenzo Frascino <vincenzo.frascino@arm.com>
+To: Kees Cook <keescook@chromium.org>
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Matt Turner <mattst88@gmail.com>
+Cc: Vineet Gupta <vgupta@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Guo Ren <guoren@kernel.org>
+Cc: Brian Cain <bcain@quicinc.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Michal Simek <monstr@monstr.eu>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: x86@kernel.org
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org
+Cc: loongarch@lists.linux.dev
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-openrisc@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-um@lists.infradead.org
 
