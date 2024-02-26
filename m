@@ -1,76 +1,74 @@
-Return-Path: <linux-parisc+bounces-663-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-664-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F84F867C4F
-	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 17:44:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D498867D77
+	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 18:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94892979FE
-	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 16:44:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEADD1F25158
+	for <lists+linux-parisc@lfdr.de>; Mon, 26 Feb 2024 17:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E4712B171;
-	Mon, 26 Feb 2024 16:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554AB12FB0B;
+	Mon, 26 Feb 2024 16:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iSoPquMV"
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="eIpG+p8O"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FF8127B4D;
-	Mon, 26 Feb 2024 16:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F6612FB03
+	for <linux-parisc@vger.kernel.org>; Mon, 26 Feb 2024 16:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708965874; cv=none; b=SDY5FZEXDwNj2VDU5Nw3wC8PG62FbCEzHyrpIlWjFL2VN3vmUBNa7IBfbNZZa8WCc5tb+gdgg6Z5XKjNJ5PYtP495KK7DrUlfZBSJ40NeAgKAart5YvfQqUhpY45d+rF2aY4Q/z3kF+V80gxhaEBkXfNoSVhaiFL/WY1dMD39dg=
+	t=1708966520; cv=none; b=I4P2HtvhYR3/EboGE8hT4vBWy7IpO0zizWdPDUnf90qqaCjOsb7SA2vG+6Qf5LIjPjby1IGiZo5fzVyYTNcNF2Y3r/7dQ6BoQe8j8fi0czQ2gFFdxJL7y5zOKuVXpTMPO8cwK4cWxE9MBLzTsKXrRdISnr1VpxTI63Rw6rONfHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708965874; c=relaxed/simple;
-	bh=aQRyn1lfQR3DVLR+bsWK4QpTHl1fxujUVKb7Wo1fA14=;
+	s=arc-20240116; t=1708966520; c=relaxed/simple;
+	bh=efqSYWlmPvvmoW5hTpteGQgbaViN1str2LnrNPJgrD0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I3WHZjd0KaMFQc+K8PKankWfL3d/8iaXdMthyiNFTd+yaup74F504MaTVJzo7VrmEQOn/MqrHhGVR/JvWfW/Q+r0RJpJbMW+M+F9kgtScFTBjsdPbyU64Tgf/prO0rYgj2K5TsZMm4/zuNra2MNMs2bqaLyQ/bGrR8H9dEUSCSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iSoPquMV; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6e478057f1aso1530713a34.3;
-        Mon, 26 Feb 2024 08:44:32 -0800 (PST)
+	 In-Reply-To:Content-Type; b=Nq/AE5rve4p688f7Ny8od279kqx7L/zhsvId8ZBTHzPgitOYkoC42hvgPTYiDYxUQzy6l4cNEr5Mfi6ea3736crbzkEty32MoB72Tx560B2hI4I9MPmcgEveOEKfXL98pmZIviJafVT1Hg5ZhHMgiRZvyMgL+sFtnhGRolKJ91A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=eIpG+p8O; arc=none smtp.client-ip=209.85.166.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-7c7b9b25ba6so43781639f.1
+        for <linux-parisc@vger.kernel.org>; Mon, 26 Feb 2024 08:55:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708965872; x=1709570672; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=zxugb9XdWaRgpdXTMD7tyXbqwf3R1DPNzl5uXjJ5AUc=;
-        b=iSoPquMV0kbUue9AH3r+Wt1WL/omy5i+oKVV9HG6otuaDCInrCDZoz994iFQwHx6k0
-         J6n4zN17mh3Eo1KuKSeOsy+laf9XY1+WDra/CEOH5gv5NUL7J/P3Wj0ffKjKADiHAygo
-         Fn5oMN3c4bzs361KygvUTDo8KL9TQxgN6/XW+0ObP/rebKrEr8cTzgY1UB8nhUMweMfI
-         7lwwCMSWAovNsFu/jPeVm4QGefNoJMNZiLjqMDpWv6xw/qpm/LO+aEX5XBbskD8+CMVs
-         G+VCdupZYYuv6SIexuy7sMrYYt5zbvwi4GjeoV6tEKb7Mac+I80yULRIpjQ8xbVMQNqY
-         rGDQ==
+        d=sifive.com; s=google; t=1708966516; x=1709571316; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YapG2Iuz3DeMuojGrZ4IACVCP3buEgPcxL/agJvMeoI=;
+        b=eIpG+p8Ov/rRaNeI6uaoNEoiYBVxOHKyiRlBtWJu2YvdUhbCuZtqkdDm4a56GJy2rl
+         nr1kusUTL0Wl7M9Ji9Ua9DtzmR6hHbt5OlBxcUSmFZCT03axU42bBVhU1HGSMIMyOO0f
+         sbTz+A9TH0p/ARPuqtbkKPLG5u5lynUcIdQiCImUzTN3k9DDK2aJti8Yd8R+nR5lnzZZ
+         tf9Qw7vKBeKHeeYuR5NoWOqRIeWfAXJoR5RBRkvloBlBcjIFPoqjQz0fp/ddbnmPa0Cl
+         JGvzU0+WJVMNaw5gb8FVTL4VrrmUoyB+DXEqhk669C/mUXRYlnP2dLjCxqXojz2F2tpX
+         Uitg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708965872; x=1709570672;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zxugb9XdWaRgpdXTMD7tyXbqwf3R1DPNzl5uXjJ5AUc=;
-        b=prvDsJHH5fHgW/gP5TfIHANj/XLKu36EaUepbsaWMXs7y04olY1/9CnMzMTKKE/RPg
-         KaJHNRGeUHpLDeG/XxFSSHZjjYtcrmdNzqPQwwHmFylcjglMdxTLVO6va1hTkfQ1aR4s
-         kQKVzyxXBJpjzZsl/NGdHpFsRBOQCftnuEWM+CQenYouQz+i68QguwdAZ/OjUycNdfN8
-         hyNSKSrgHPoks95PxPPoD02z770enQtAIql5aVZLzs+F9fbhKGr89nCgcTaE/WSQr3+p
-         Uw1CPpLECTO8MMFixRprP8nrIQ1JDq0hWgNnsDc/Q+dX5scxB7Tp5e1dv8NkOdZ9mc/k
-         X7OA==
-X-Forwarded-Encrypted: i=1; AJvYcCXmhNZYur/Ae8OpXd82K9RAVdbP7qK5LjPF5Oz8kg5tfWRPg/NTKPJFmd7BP/a+loHXeZt4ZcQPF+txQTA080Z3kKkc1cDbVEAc8UT7
-X-Gm-Message-State: AOJu0YxFqmn+lXaRUehnm/E9UVrmbG5llBmHs3K+wwBnuZw5qCtwSTyv
-	cvduex3Gs55QWQQ1tZObFQqgZ4BkmzDYe0ZBWpsPEeYY7wzRiVB/
-X-Google-Smtp-Source: AGHT+IG9x3hOE7qQugH6Z5nF3bOMJG5ivIFBA1dICvHrAcej/rtVq6js66yU3lhPGDq4nYWE5XZE7A==
-X-Received: by 2002:a05:6358:281d:b0:17b:5b6d:ffa3 with SMTP id k29-20020a056358281d00b0017b5b6dffa3mr9522055rwb.5.1708965871968;
-        Mon, 26 Feb 2024 08:44:31 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id bv193-20020a632eca000000b005dc4da2121fsm4044441pgb.6.2024.02.26.08.44.30
+        d=1e100.net; s=20230601; t=1708966516; x=1709571316;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YapG2Iuz3DeMuojGrZ4IACVCP3buEgPcxL/agJvMeoI=;
+        b=XEE2H+RutGAxABxXwGBkTSu1eCQ81+zm+bjYriP+Xmrgf8/XQEa9U7YAYnCuNDmv/t
+         9NLD2GX10nkpv/hQiTaq7KnwkJVartBOSN0Ko4xMhd3tfF0UEiRmZ9uapS2AD3wFW5zA
+         pIzdrXJJKvYsPqiyP6I3czaDsU0BASSe5Qt3YDicStqQmiW/Jh7JguKRLp9PDSEdQcvi
+         AwuhmxZdSywVIm17kkZnuyR/YfY97+CobXroBfgVImhNu0nXN3TbBVwbFkDRqzSOTR9l
+         9x2X/vyMDd0ypeFRAhb6n1tPjaQfLlaxCoav598rB/WoxB3GUexWXwRwDcBOw/ZqOkpx
+         R6jA==
+X-Forwarded-Encrypted: i=1; AJvYcCVK3Fc8472ABwkwG2THwVjv/MLKwFlH2LtBBFjDTY+zvQiK91EVWw64GfX/Dj6guzYpAawPb5isKu06VasCvoEPXbaxAK1QFAxcHz7a
+X-Gm-Message-State: AOJu0YzXv6X1Qf4w1Lu+jmvH8QKYky6ac096lwCpoGZTu/VDTiojIjLs
+	Ik0tc71U4LoCpExdz+L3Fit1eXQu7KEZArruafGyjWGnKIgTjUQ5xoGVZNx8UC0=
+X-Google-Smtp-Source: AGHT+IHuaCs5d/f2oApxcwZJ00c0VtAfeY0TQXQD6OLSfI1tJf749yVYK76BLp2wH1JUJFxCC31KGw==
+X-Received: by 2002:a5e:c819:0:b0:7c7:247e:34c7 with SMTP id y25-20020a5ec819000000b007c7247e34c7mr9575536iol.9.1708966515786;
+        Mon, 26 Feb 2024 08:55:15 -0800 (PST)
+Received: from [100.64.0.1] ([170.85.6.200])
+        by smtp.gmail.com with ESMTPSA id f23-20020a6be817000000b007c7938867adsm1309067ioh.33.2024.02.26.08.55.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Feb 2024 08:44:31 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <e11fea7a-e99e-4539-a489-0aa145ee65f0@roeck-us.net>
-Date: Mon, 26 Feb 2024 08:44:29 -0800
+        Mon, 26 Feb 2024 08:55:15 -0800 (PST)
+Message-ID: <764fafb0-2206-4ab1-84ea-ebb7848c8ff2@sifive.com>
+Date: Mon, 26 Feb 2024 10:55:11 -0600
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -78,108 +76,233 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10] lib: checksum: Use aligned accesses for ip_fast_csum
- and csum_ipv6_magic tests
+Subject: Re: [PATCH 1/4] arch: consolidate existing CONFIG_PAGE_SIZE_*KB
+ definitions
 Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Charlie Jenkins <charlie@rivosinc.com>,
- David Laight <David.Laight@aculab.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@rivosinc.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Russell King <linux@armlinux.org.uk>
-References: <20240223-fix_sparse_errors_checksum_tests-v10-1-b6a45914b7d8@rivosinc.com>
- <7ae930a7-3b10-4470-94ee-89cb650b3349@csgroup.eu>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <7ae930a7-3b10-4470-94ee-89cb650b3349@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: Arnd Bergmann <arnd@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Kees Cook <keescook@chromium.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Arnd Bergmann <arnd@arndb.de>, Matt Turner <mattst88@gmail.com>,
+ Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Guo Ren <guoren@kernel.org>,
+ Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Helge Deller
+ <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Andreas Larsson <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>,
+ x86@kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
+ Andy Lutomirski <luto@kernel.org>, Jan Kiszka <jan.kiszka@siemens.com>,
+ Kieran Bingham <kbingham@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org
+References: <20240226161414.2316610-1-arnd@kernel.org>
+ <20240226161414.2316610-2-arnd@kernel.org>
+From: Samuel Holland <samuel.holland@sifive.com>
+In-Reply-To: <20240226161414.2316610-2-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 2/26/24 03:34, Christophe Leroy wrote:
+On 2024-02-26 10:14 AM, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
+> These four architectures define the same Kconfig symbols for configuring
+> the page size. Move the logic into a common place where it can be shared
+> with all other architectures.
 > 
-> Le 23/02/2024 à 23:11, Charlie Jenkins a écrit :
->> The test cases for ip_fast_csum and csum_ipv6_magic were not properly
->> aligning the IP header, which were causing failures on architectures
->> that do not support misaligned accesses like some ARM platforms. To
->> solve this, align the data along (14 + NET_IP_ALIGN) bytes which is the
->> standard alignment of an IP header and must be supported by the
->> architecture.
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/Kconfig                      | 58 +++++++++++++++++++++++++++++--
+>  arch/hexagon/Kconfig              | 25 +++----------
+>  arch/hexagon/include/asm/page.h   |  6 +---
+>  arch/loongarch/Kconfig            | 21 ++++-------
+>  arch/loongarch/include/asm/page.h | 10 +-----
+>  arch/mips/Kconfig                 | 58 +++----------------------------
+>  arch/mips/include/asm/page.h      | 16 +--------
+>  arch/sh/include/asm/page.h        | 13 +------
+>  arch/sh/mm/Kconfig                | 42 +++++++---------------
+>  9 files changed, 88 insertions(+), 161 deletions(-)
 > 
-> I'm still wondering what we are really trying to fix here.
-> 
-> All other tests are explicitely testing that it works with any alignment.
-> 
-> Shouldn't ip_fast_csum() and csum_ipv6_magic() work for any alignment as
-> well ? I would expect it, I see no comment in arm code which explicits
-> that assumption around those functions.
-> 
-> Isn't the problem only the following line, because csum_offset is
-> unaligned ?
-> 
-> csum = *(__wsum *)(random_buf + i + csum_offset);
-> 
-> Otherwise, if there really is an alignment issue for the IPv6 source or
-> destination address, isn't it enough to perform a 32 bits alignment ?
-> 
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index a5af0edd3eb8..237cea01ed9b 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -1078,17 +1078,71 @@ config HAVE_ARCH_COMPAT_MMAP_BASES
+>  	  and vice-versa 32-bit applications to call 64-bit mmap().
+>  	  Required for applications doing different bitness syscalls.
+>  
+> +config HAVE_PAGE_SIZE_4KB
+> +	bool
+> +
+> +config HAVE_PAGE_SIZE_8KB
+> +	bool
+> +
+> +config HAVE_PAGE_SIZE_16KB
+> +	bool
+> +
+> +config HAVE_PAGE_SIZE_32KB
+> +	bool
+> +
+> +config HAVE_PAGE_SIZE_64KB
+> +	bool
+> +
+> +config HAVE_PAGE_SIZE_256KB
+> +	bool
+> +
+> +choice
+> +	prompt "MMU page size"
 
-It isn't just arm.
+Should this have some generic help text (at least a warning about compatibility)?
 
-Question should be what alignments the functions are supposed to be able
-to handle, not what they are optimized for. If byte and/or half word alignments
-are expected to be supported, there is still architecture code which would
-have to be fixed. Unaligned accesses are known to fail on hppa64/parisc64
-and on sh4, for example. If unaligned accesses are expected to be handled,
-it would probably make sense to add a separate test case, though, to clarify
-that the test fails due to alignment issues, not due to input parameters.
+> +
+> +config PAGE_SIZE_4KB
+> +	bool "4KB pages"
+> +	depends on HAVE_PAGE_SIZE_4KB
+> +
+> +config PAGE_SIZE_8KB
+> +	bool "8KB pages"
+> +	depends on HAVE_PAGE_SIZE_8KB
+> +
+> +config PAGE_SIZE_16KB
+> +	bool "16KB pages"
+> +	depends on HAVE_PAGE_SIZE_16KB
+> +
+> +config PAGE_SIZE_32KB
+> +	bool "32KB pages"
+> +	depends on HAVE_PAGE_SIZE_32KB
+> +
+> +config PAGE_SIZE_64KB
+> +	bool "64KB pages"
+> +	depends on HAVE_PAGE_SIZE_64KB
+> +
+> +config PAGE_SIZE_256KB
+> +	bool "256KB pages"
+> +	depends on HAVE_PAGE_SIZE_256KB
+> +
+> +endchoice
+> +
+>  config PAGE_SIZE_LESS_THAN_64KB
+>  	def_bool y
+> -	depends on !ARM64_64K_PAGES
+>  	depends on !PAGE_SIZE_64KB
+> -	depends on !PARISC_PAGE_SIZE_64KB
+>  	depends on PAGE_SIZE_LESS_THAN_256KB
+>  
+>  config PAGE_SIZE_LESS_THAN_256KB
+>  	def_bool y
+>  	depends on !PAGE_SIZE_256KB
+>  
+> +config PAGE_SHIFT
+> +	int
+> +	default 12 if PAGE_SIZE_4KB
+> +	default 13 if PAGE_SIZE_8KB
+> +	default 14 if PAGE_SIZE_16KB
+> +	default 15 if PAGE_SIZE_32KB
+> +	default 16 if PAGE_SIZE_64KB
+> +	default 18 if PAGE_SIZE_256KB
+> +
+>  # This allows to use a set of generic functions to determine mmap base
+>  # address by giving priority to top-down scheme only if the process
+>  # is not in legacy mode (compat task, unlimited stack size or
+> diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
+> index a880ee067d2e..aac46ee1a000 100644
+> --- a/arch/hexagon/Kconfig
+> +++ b/arch/hexagon/Kconfig
+> @@ -8,6 +8,11 @@ config HEXAGON
+>  	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+>  	select ARCH_NO_PREEMPT
+>  	select DMA_GLOBAL_POOL
+> +	select FRAME_POINTER
 
-Thanks,
-Guenter
+Looks like a paste error.
+
+> +	select HAVE_PAGE_SIZE_4KB
+> +	select HAVE_PAGE_SIZE_16KB
+> +	select HAVE_PAGE_SIZE_64KB
+> +	select HAVE_PAGE_SIZE_256KB
+>  	# Other pending projects/to-do items.
+>  	# select HAVE_REGS_AND_STACK_ACCESS_API
+>  	# select HAVE_HW_BREAKPOINT if PERF_EVENTS
+> @@ -120,26 +125,6 @@ config NR_CPUS
+>  	  This is purely to save memory - each supported CPU adds
+>  	  approximately eight kilobytes to the kernel image.
+>  
+> -choice
+> -	prompt "Kernel page size"
+> -	default PAGE_SIZE_4KB
+> -	help
+> -	  Changes the default page size; use with caution.
+> -
+> -config PAGE_SIZE_4KB
+> -	bool "4KB"
+> -
+> -config PAGE_SIZE_16KB
+> -	bool "16KB"
+> -
+> -config PAGE_SIZE_64KB
+> -	bool "64KB"
+> -
+> -config PAGE_SIZE_256KB
+> -	bool "256KB"
+> -
+> -endchoice
+> -
+>  source "kernel/Kconfig.hz"
+>  
+>  endmenu
+> diff --git a/arch/hexagon/include/asm/page.h b/arch/hexagon/include/asm/page.h
+> index 10f1bc07423c..65c9bac639fa 100644
+> --- a/arch/hexagon/include/asm/page.h
+> +++ b/arch/hexagon/include/asm/page.h
+> @@ -13,27 +13,22 @@
+>  /*  This is probably not the most graceful way to handle this.  */
+>  
+>  #ifdef CONFIG_PAGE_SIZE_4KB
+> -#define PAGE_SHIFT 12
+>  #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_4KB
+>  #endif
+>  
+>  #ifdef CONFIG_PAGE_SIZE_16KB
+> -#define PAGE_SHIFT 14
+>  #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_16KB
+>  #endif
+>  
+>  #ifdef CONFIG_PAGE_SIZE_64KB
+> -#define PAGE_SHIFT 16
+>  #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_64KB
+>  #endif
+>  
+>  #ifdef CONFIG_PAGE_SIZE_256KB
+> -#define PAGE_SHIFT 18
+>  #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_256KB
+>  #endif
+>  
+>  #ifdef CONFIG_PAGE_SIZE_1MB
+> -#define PAGE_SHIFT 20
+>  #define HEXAGON_L1_PTE_SIZE __HVM_PDE_S_1MB
+>  #endif
+
+The corresponding Kconfig option does not exist (and did not exist before this
+patch).
+
+>  
+> @@ -50,6 +45,7 @@
+>  #define HVM_HUGEPAGE_SIZE 0x5
+>  #endif
+>  
+> +#define PAGE_SHIFT CONFIG_PAGE_SHIFT
+>  #define PAGE_SIZE  (1UL << PAGE_SHIFT)
+>  #define PAGE_MASK  (~((1 << PAGE_SHIFT) - 1))
+>  
 
 
