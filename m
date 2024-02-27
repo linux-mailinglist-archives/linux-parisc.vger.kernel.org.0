@@ -1,199 +1,233 @@
-Return-Path: <linux-parisc+bounces-714-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-715-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46147869EC8
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 19:16:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A3B869EFF
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 19:22:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F179628341D
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 18:16:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE90128F9C6
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 18:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF17814831E;
-	Tue, 27 Feb 2024 18:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7726A1487D3;
+	Tue, 27 Feb 2024 18:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=csgroup.eu header.i=@csgroup.eu header.b="QwspIJHI"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="inzql21T"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on2127.outbound.protection.outlook.com [40.107.12.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E1E1448C7;
-	Tue, 27 Feb 2024 18:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.12.127
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709057800; cv=fail; b=P/3z2fuzVH2cH9t/alvW4rZlsvJ+WXGXf729a55oLo7fY4h45Br1exuHjfnLgKrKTYV/uZaolFIb7fVceWQKLtG4vXn8y5HquROC2QMkwswBH8nxCHmdQotRboh/lwSq+rWLBsbCYA5bca0WcXZYuRUYamRd9ZEYa9Pld10sDXQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709057800; c=relaxed/simple;
-	bh=HfYR2LHtgSq+3SxqBT0hyeG1hfvGmqpQHvmAf0JxdbY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=b05XPdh4l6Oq39pFXni8MeGa7cnfGV9qUPyhbaq72r1G9H5pmLRFNx0zBd7i2GjdpdSm0OHI1PHYvUShyDqocRoS9HjOG7P2h3+pB/I4uUi3U9wiaAWl/GYBdNX1sTFZv4xrd7Sr6FtunLb+JKfVSLw72co7JNkW2tKHSEnvPYY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; dkim=pass (2048-bit key) header.d=csgroup.eu header.i=@csgroup.eu header.b=QwspIJHI; arc=fail smtp.client-ip=40.107.12.127
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JtaP2E1peiog1VZWYLpE3xS5qL4plrvJbeenAvKy03foXkNeizrnMMHOp5stwCljnDXCk/9+mA06LSLaT2o2AbSPwIQUk2MSRRhiNcf2ypEV0t7ee5y7x1Ypi7yLEy4U3w4JU8DRSiX4SjDqJuH13NHqaZ34V96BHfKX3wPu/UTAGmfTegpMfYwUj3jZ3U68uMWkViFJJ//3G/nAToR/UxsU+bqNBmLHRlK8Cc+CT7g8vcJMVyxEMLihDbNMhYJtRk0Ddt9WRRGgjHkQyAVurl/tqjJwOgAZE3RC2/4XFctbgwfLnnJB4sRhzwZa861HaFnqaIZm3pSbMMc4Zj+TeQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HfYR2LHtgSq+3SxqBT0hyeG1hfvGmqpQHvmAf0JxdbY=;
- b=Z0RF2i+Yj+hKXQEidaa9ltwxYDfegyLqcmBicQyMDXQTaWTxOHrH9X+IQy5yvcOYv8YBpx0yF2LB90RmFXSc/gDXHof9jYDT7kVqwITb9EUKZzeVGaShNNINTn227R3CrrCy7XTjOIunveb5GjphMqUN6ep1tGVmmJ+YenSdVbjbvVhd86qQGL9i2Jwm/0bTUOPcm6Mi1KQ9RutQhZey3ZKGrNqjxsupL3c3qfzxRH8i0fBClh3K5nkbOeszNWgeg0+t4GhkmGRI4/xeP7YuMZnvNH6F8Q19iWfr56vxn0TgfmActKv3e/mJ0A9ZFKVFss0L3f42RDv30a410Dsutg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HfYR2LHtgSq+3SxqBT0hyeG1hfvGmqpQHvmAf0JxdbY=;
- b=QwspIJHIco++uXd5ZTtTZq7n++9csrzZMcrrHeyGPla7R44kkaI4JaYflJ0NKCUBOsj3+GjYryL/IV+3eJcheOKdDrPNbMjAQTCY9IW9MyAezHzgc015y0BUoMTvVHIaRvcZ7SgYetk1idbEodra9zLrWXa/qsKx+wytykvp8O9dB0DwLOtP4JaQ4RC3+saAYxHF+rXV5GfKfzipoRAuG3MIExo0/koAizBp8w45qHFDmHSwUchMg2F3nrHyMkTM2J6u61h1FUHW1lpN/RMQBdvsQjr6SEdMl4QTw+cNY09O29pZCvO4wf+Lf4JySY3GNItBPhKtHFnVLEAMNNTJbg==
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB3772.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:143::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.36; Tue, 27 Feb
- 2024 18:16:35 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c192:d40f:1c33:1f4e]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::c192:d40f:1c33:1f4e%6]) with mapi id 15.20.7316.035; Tue, 27 Feb 2024
- 18:16:35 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Kees Cook <keescook@chromium.org>
-CC: Rick Edgecombe <rick.p.edgecombe@intel.com>, "Liam.Howlett@oracle.com"
-	<Liam.Howlett@oracle.com>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "debug@rivosinc.com" <debug@rivosinc.com>,
-	"broonie@kernel.org" <broonie@kernel.org>, "kirill.shutemov@linux.intel.com"
-	<kirill.shutemov@linux.intel.com>, "tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
-	<x86@kernel.org>, "luto@kernel.org" <luto@kernel.org>, "peterz@infradead.org"
-	<peterz@infradead.org>, "hpa@zytor.com" <hpa@zytor.com>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-alpha@vger.kernel.org"
-	<linux-alpha@vger.kernel.org>, "linux-snps-arc@lists.infradead.org"
-	<linux-snps-arc@lists.infradead.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-csky@vger.kernel.org"
-	<linux-csky@vger.kernel.org>, "loongarch@lists.linux.dev"
-	<loongarch@lists.linux.dev>, "linux-mips@vger.kernel.org"
-	<linux-mips@vger.kernel.org>, "linux-parisc@vger.kernel.org"
-	<linux-parisc@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, "linux-s390@vger.kernel.org"
-	<linux-s390@vger.kernel.org>, "linux-sh@vger.kernel.org"
-	<linux-sh@vger.kernel.org>, "sparclinux@vger.kernel.org"
-	<sparclinux@vger.kernel.org>
-Subject: Re: [PATCH v2 5/9] mm: Initialize struct vm_unmapped_area_info
-Thread-Topic: [PATCH v2 5/9] mm: Initialize struct vm_unmapped_area_info
-Thread-Index: AQHaaOd3T09DEeJabki6TgRFYbqm47EdxC4AgAC5pgCAAAKNAA==
-Date: Tue, 27 Feb 2024 18:16:35 +0000
-Message-ID: <8265f804-4540-4858-adc3-a09c11a677eb@csgroup.eu>
-References: <20240226190951.3240433-1-rick.p.edgecombe@intel.com>
- <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
- <94a2b919-e03b-4ade-b13e-7774849dc02b@csgroup.eu>
- <202402271004.7145FDB53F@keescook>
-In-Reply-To: <202402271004.7145FDB53F@keescook>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MRZP264MB2988:EE_|PR1P264MB3772:EE_
-x-ms-office365-filtering-correlation-id: e06f12f8-e141-43c7-ddb1-08dc37c03b8f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- EC/T7eCKTwHTFTyH+z0RriHcqNXWhFZZB09dog2ZmftRnVF3PjmvDuj9rezHAnA/S63B1WXvGMZKcrUtBGZhIaX4EuNSrpJLp/WfLTTJ51cL+P7/ZzU0fzT2k2znPe9dfQsEHNY/NxcBRv6J6P3fn26ogXJ0w3LACQIJDsdDe7C8BW1AjvaumW/v+RmrH6twZPQO/fOCsE8NdPo27hdCHPgANm9JKw8aYIC1MQJ/B0aanWFNHIv+cYIOLTIaTgKXljq4JG6OH9sBX0H2SfUoJydr2MI3Z7Ng4fmWyqfxOtzRPCehqpfCd3a+dlwR2dedZdV/A4Nx1SMU8t+FywF3LsKQh5kwJTS+IsgBPEBw+wqjRFul0ysa2mUOw8eNKaTVPAgAhcjVhOoGxcZsR23CsihgLcgkKntdcxezHr7Bj/ea2ylmbgRYB0p1HO/V1YAMB1LCKlIQOM+pQSqYNbdOI7E8+2f8XfJOeMNP4r1Yj1SCfh7GADcfEptDgPp4EHRuKrUSZgcaEMloRVn+Z6EJlw4LXVWZ6z63/6u9ShQ/n4eOqAMgKWrZTw/D3g8RlaYiH1CvtV1W0hzL4kNiiI3FxXg2uqnyFh25YTBIYBfpZzF3G28Y4BtqmS36QOzmd54zts6hE2lJKs1SX0UiNA7JDg9novFE75sap6DFisoZt4RCKDhCXIjNTze8n/MU598pnXPS7SO9S6oqB/Uu3ItjEO58oJyy2aTWccLf+K448xY=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(230273577357003)(38070700009);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?NUlaNFZqd3NUT2FnazBGdGhrcUU1anFWR3c5UXJPRnBJVTRGRWEvTW1Sa2Fq?=
- =?utf-8?B?WjNSUVIxdjQ4YXV4RlRkc2xxNm9ibC9MTlF5RVV5TTFNMGNjZGRvMzYzYWxW?=
- =?utf-8?B?cU9EM1pSWTNuL0I1ZGZiYU5XRjV2Rm9NbGJ6cUJFU21Qd3N5a2NWY3pzY2lt?=
- =?utf-8?B?TjE2bFRFY0JrTGJIZXU4RzdDdjg5S0RyaUxUOEo0eUV0c29oM2V0RlhkK0Fw?=
- =?utf-8?B?WTlwNHdCTlpqaXJYSnhidTc4VnJha3A2QnY5NG8yYmJKTktLRE9pUWZheGNV?=
- =?utf-8?B?RjY5dy92ZWRrMVRBdVhHd2V5d2orSjYrckRzVUtOT3JDV3AweTloRTIzL21H?=
- =?utf-8?B?Yi9lUi80WWdseitZR3A4LzFGdUt5cXIwTmJDanYvOCt3bGxqS3FMcDZEdHc4?=
- =?utf-8?B?RlVhc29UbUJ2cFJkMlBPbFo2TnQ1Q0RoeW1obHdSR21WNlVkd1lVUE9GczVR?=
- =?utf-8?B?SE1jMjAxc1lMZzIzUjMyQ2lFRE1zMDc4bUIwWVZXZXA0VnZTNG1FWC8xY24z?=
- =?utf-8?B?ZkFPb3FmQWpKdzgzVWZaZjVEYzVqNVU0M2tJQ3h0d0RWTEN3M1duY01pSS9i?=
- =?utf-8?B?Vk5OT2ZUL01JaEVSKzRSS0dUdm1IMU9Vc3E1MEhhdjhFQlNsT1R1YkU1Zm1V?=
- =?utf-8?B?TFBrTk8ra21WcTZXTlRLZjU0ZnV1U0JOa3AwdHlGMnQxZkFTUnNUdHkvSUJB?=
- =?utf-8?B?VzZGMTF5WjZ5WGM2bHJSSjRrTnZBUTE1RVVwcXg5R3VYWVAwYVVLNnFYbmNY?=
- =?utf-8?B?NXVHZ2ptUy9VWkZhNTgwU3Z2aW1GVmp3dFhxdEx6cXVHTW0xbkZUMW1ZVEZr?=
- =?utf-8?B?Mi9OUFJ0Q1Z1NytlQTROTXdmamhhOWNrd01OK2dIdXFiZDQvYXp6YXViYzhx?=
- =?utf-8?B?Yk1SN0pMNDU5aDB1S0Z3QjkySlN4UExpelpEY3NiSDk5YmlBZUJ3dWFCNWYz?=
- =?utf-8?B?Sy8yNVpBMW41YW56aU9wdEpQS004OTl2SUFqeTVkcmladjlXd2RIUTJRbS81?=
- =?utf-8?B?VFVFMG9UVGxDSU45Y3FDN1VCY3R1aWZmS1djOUxrQWd4eEFoZmFQejVMelV4?=
- =?utf-8?B?c1VoRjFzSXFWTW1pTnNranZSbkR6RGtDSDV0MFk2cWFLK09DUllKcTdWWWpy?=
- =?utf-8?B?L29JMmpmejFqNmtyZmdBeXZNWWMzVGgrSS90bVFJbXV5T0tpS1p3Z3hPd291?=
- =?utf-8?B?MU51UUNvRTR3WUJnMzZHY1IzOVY0aFdldU1xOTZNSHZ0WWYwdkt0Ty9hUWpu?=
- =?utf-8?B?SHhFM0ZhblhMdWhHQVNwZEVLY0VxM29FZXBFSkY5RXFPK1duNnJTVlUwQVVl?=
- =?utf-8?B?UkdLeVduQVlCTnpYdWFTSVg1dUtRZFllMllxV1JiZGpoczNya2s4RnZ2K3FY?=
- =?utf-8?B?QnVNMkRtQUtsaExEbDRMQXJ4eStwTTMrcHRXRnRTS05id3J5aHNmdHpndnJE?=
- =?utf-8?B?WS9EWnlZTmRHajNKOGlvNnFtUUpvUytLc2xYWStLUVRSdGozMlNiaVlGMnV1?=
- =?utf-8?B?RW1kYnI5TGNaY3RSOW5MbHZpUHVad2hGOVRNc2dvK3daZnJaTWt4VE42NEZH?=
- =?utf-8?B?cnBpc3F0N3JkY2xIOWFDUitzWEhYK0E0MDQ3dHpDeVI3czdwdWZrUkVDWTN4?=
- =?utf-8?B?TUE0Y0V1NkdOK2c2VWNNVGJ2YWlERnBuVzZLaHlVcWFTNC9EZHo5UnRZYjlT?=
- =?utf-8?B?SHFjZE82bUNodHIyUGlEdHIvODZGUVVjMGZOdnpFTjF6dHI2amtNTCtMZG9W?=
- =?utf-8?B?QkRMQ09hcG4vQTlCM1dPL3BlMUtGTkZ3UHRvODVVeTJOVFM1cVcrNVQ1WHlG?=
- =?utf-8?B?dWl3YVpndmZWWjFoOTE1bWhiZjU0Z0tFbFBTK1I4RTR4b24yUlF2U015TDlH?=
- =?utf-8?B?SmdnL01YT3dLZTJvQzJ1VTNVNWlLbmJiWkxxK2xpbVk0K2tvalpVNEl1a3VI?=
- =?utf-8?B?TThuR3ZCMGNsQmNEbDNVSTR2TTRSMmR0cENqQnNBbkdXTktjL1BQRElJczNI?=
- =?utf-8?B?c0J5aTFpaVRKektjUFJ2L201bzdkZnI3WWxnbktxNlZqZ3R0VE51bXNYclRv?=
- =?utf-8?B?NWVKSHZPdUVMbTlJYllKZWxTYi94emQ2UVNQRDJQejlHMVc4a3JoQmw3Z21a?=
- =?utf-8?B?YUpQLytidGhFdHZKc1B1WGxLa3NwQVRJRmpvK3ZQc1ZDampkMERsRm1xRlVp?=
- =?utf-8?B?c1V5WnBZWGR0Z3JEb1NPRGpCN0RoZi9tc2hRNlFIc29rcDE0Z3ZTUTRwWHR3?=
- =?utf-8?B?ZmtnSEhRaC9GRUdjN3NIN2kvVzFBPT0=?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E287314C521C2C4685917AEFAFA502D4@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59374CB45
+	for <linux-parisc@vger.kernel.org>; Tue, 27 Feb 2024 18:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709058102; cv=none; b=ey81jrzfYmwWNZgvMtdNjbUxR6Yl6CIQKgNLhSFxt73iJ7GZI4vj43YtqShw7Jtsw/KvgP9wVJf3srLU15/OCr/7n3WFUMBkztvG2uKF7VGuwKDI2bFcZB/IZqljksPG+dzM2zPKm+x9TyKUbs/tRQIwiE+GljhwAxEQHtaYTDE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709058102; c=relaxed/simple;
+	bh=biLxMTdT9OJgOskFJf33PboO4Sbv7ilah8MrEyqbJto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m8sMEi4IpMTCIKZLlGhZxROhoKVMP8JIwiwNrxFfPKeC86iuK9PrfcVpqBOt0/oxK5bpZVJ8umX8a0wOEt42e2IjugUb0LeJ2iViUKiiM4ACqcZnPITbLBnF85W2FteaFLhYiXOMeW8E9UZ+tPrh4IZzXIqGSybon3JlCHc04jM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=inzql21T; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6e49518f375so1394299a34.1
+        for <linux-parisc@vger.kernel.org>; Tue, 27 Feb 2024 10:21:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1709058100; x=1709662900; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=g+hXgGvfIukYiuX7oT5dD0w+P1l7ILZfgg3s4jt5+V8=;
+        b=inzql21TxHDE+FCgNV3/hT+U+Bd9OZ5RHjB4p51BDRxF9PmAw2Riuf3oX81R3bcVG4
+         LJn6gr9PbfmUXyw3E4z8gT8uZXVbeWBCy8HVIX0020YKZSCuhFF2ZexxvyyQ9tMiFUOf
+         mpTeLW/JnxNn4iejZvJ8p0lSTZPI5360ElcF7S9nHhEesuG8O+KZdSg3a1rbiFcmBOHO
+         DdjDQI4J3vtsEGbxJuyudWqre1opJNZjJiy+nZNCXAoQIwBBKdkZetd4dBB1uc4v9EZ3
+         iYT+/5l2e9R4qrk0rkpro6EEpnL3FBuj9BSyGYwe2+5VR6PoXs7vADLiHC1iCBHP6r6Q
+         fegg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709058100; x=1709662900;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g+hXgGvfIukYiuX7oT5dD0w+P1l7ILZfgg3s4jt5+V8=;
+        b=LMLJ5kxMGaYlDcDNkX9Use2KcGfGxD6Zbrb3dWZPKxNkol5LCWSpG6EmiYgSbHdZ6V
+         8oehv54NRDUPxl7AbE92y5T6r7bmy6fMO/V6ipsIs8twjmT8jj7Vo+S+/VrzHGQ/G/VU
+         mXc2xAqmfmNrVzehUm3y6h6ujp6n5+5A+VIr2WH+JZWW6z6Q2GjcW6fUTser2uC7Qcu4
+         GE2Yte+ZTvRIFXvy/3/rw9iVakjoyTBPb1k+YuXSDnD8UlDgc7h1goocRRpMnxe05Wdo
+         Bv0ePHbFy2nRiOsIggKXnrYI5EAwIAFSrejPLhswrfdEIgJtgJc7nMMdhuAWNva2SQ2k
+         Ktnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPMphwMw4FgDHfF6JBUkCvzTK07d0UvmjP0hHHPtzeNC2mK4+hQDVw8aqorLmxEByAo4uSlu4jSfwnculYoxyIhZhdfgzve1ZRha3E
+X-Gm-Message-State: AOJu0Yx619mod/BEx5AomihFtY9Xii0C8fEA2zPg/wGeulUxszKWBR5I
+	L0qNkjbeEX2/N0Vpu5RCShfMD+rOqSZEdJI4YsBW5j6p1TnsIFTiFZvAfEiefCLSIdhAWN1DVWT
+	9
+X-Google-Smtp-Source: AGHT+IHy19BdiOqGtWa+05trywiGWkBCZLJJtn9eoBSJIKrRk807vnyKQQxY04Gjxamk5BorZ1zOVA==
+X-Received: by 2002:a05:6830:11c5:b0:6e4:909a:9848 with SMTP id v5-20020a05683011c500b006e4909a9848mr11283491otq.2.1709058099747;
+        Tue, 27 Feb 2024 10:21:39 -0800 (PST)
+Received: from ghost ([2600:1010:b010:c64b:16cb:453c:679d:bee6])
+        by smtp.gmail.com with ESMTPSA id i23-20020a631317000000b005ce472f2d0fsm6072238pgl.66.2024.02.27.10.21.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Feb 2024 10:21:39 -0800 (PST)
+Date: Tue, 27 Feb 2024 10:21:34 -0800
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Guenter Roeck <linux@roeck-us.net>,
+	David Laight <David.Laight@aculab.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Parisc List <linux-parisc@vger.kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v10] lib: checksum: Use aligned accesses for ip_fast_csum
+ and csum_ipv6_magic tests
+Message-ID: <Zd4oLnVFJw6Qq0FA@ghost>
+References: <ZdzZ5tk459bgUrgz@ghost>
+ <ZdzhRntTHApp0doV@shell.armlinux.org.uk>
+ <b13b8847977d4cfa99b6a0c9a0fcbbcf@AcuMS.aculab.com>
+ <Zd0b8SDT8hrG/0yW@ghost>
+ <cdd09f7a-83b2-41ba-a32c-9886dd79c43e@roeck-us.net>
+ <9b4ce664-3ddb-4789-9d5d-8824f9089c48@csgroup.eu>
+ <Zd25XWTkDPuIjpF8@shell.armlinux.org.uk>
+ <c8ddcc98-acb0-4d2d-828a-8dd12e771b5f@csgroup.eu>
+ <Zd4h6ZhvLSWfWJG/@ghost>
+ <9f756413-806c-4cd0-a6cf-8dd82af14e88@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e06f12f8-e141-43c7-ddb1-08dc37c03b8f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2024 18:16:35.1877
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pOrkhj1WZNGVDpvOSjNYB2qkeY3QO7W/H/6nyM0rjZCAPYiUPo6ysaEepqVebkPCUgVTdaLZkbrRHvMJpQtWA9gbFj5rdfVX2cOIgp0dGtI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB3772
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9f756413-806c-4cd0-a6cf-8dd82af14e88@csgroup.eu>
 
-DQoNCkxlIDI3LzAyLzIwMjQgw6AgMTk6MDcsIEtlZXMgQ29vayBhIMOpY3JpdMKgOg0KPiBPbiBU
-dWUsIEZlYiAyNywgMjAyNCBhdCAwNzowMjo1OUFNICswMDAwLCBDaHJpc3RvcGhlIExlcm95IHdy
-b3RlOg0KPj4NCj4+DQo+PiBMZSAyNi8wMi8yMDI0IMOgIDIwOjA5LCBSaWNrIEVkZ2Vjb21iZSBh
-IMOpY3JpdMKgOg0KPj4+IEZ1dHVyZSBjaGFuZ2VzIHdpbGwgbmVlZCB0byBhZGQgYSBmaWVsZCB0
-byBzdHJ1Y3Qgdm1fdW5tYXBwZWRfYXJlYV9pbmZvLg0KPj4+IFRoaXMgd291bGQgY2F1c2UgdHJv
-dWJsZSBmb3IgYW55IGFyY2hzIHRoYXQgZG9uJ3QgaW5pdGlhbGl6ZSB0aGUNCj4+PiBzdHJ1Y3Qu
-IEN1cnJlbnRseSBldmVyeSB1c2VyIHNldHMgZWFjaCBmaWVsZCwgc28gaWYgbmV3IGZpZWxkcyBh
-cmUNCj4+PiBhZGRlZCwgdGhlIGNvcmUgY29kZSBwYXJzaW5nIHRoZSBzdHJ1Y3Qgd2lsbCBzZWUg
-Z2FyYmFnZSBpbiB0aGUgbmV3DQo+Pj4gZmllbGQuDQo+Pj4NCj4+PiBJdCBjb3VsZCBiZSBwb3Nz
-aWJsZSB0byBpbml0aWFsaXplIHRoZSBuZXcgZmllbGQgZm9yIGVhY2ggYXJjaCB0byAwLCBidXQN
-Cj4+PiBpbnN0ZWFkIHNpbXBseSBpbmlhbGl6ZSB0aGUgZmllbGQgd2l0aCBhIEM5OSBzdHJ1Y3Qg
-aW5pYWxpemluZyBzeW50YXguDQo+Pg0KPj4gV2h5IGRvaW5nIGEgZnVsbCBpbml0IG9mIHRoZSBz
-dHJ1Y3Qgd2hlbiBhbGwgZmllbGRzIGFyZSByZS13cml0dGVuIGEgZmV3DQo+PiBsaW5lcyBhZnRl
-ciA/DQo+IA0KPiBJdCdzIGEgbmljZSBjaGFuZ2UgZm9yIHJvYnVzdG5lc3MgYW5kIG1ha2VzIGZ1
-dHVyZSBjaGFuZ2VzIGVhc2llci4gSXQncw0KPiBub3QgYWN0dWFsbHkgd2FzdGVmdWwgc2luY2Ug
-dGhlIGNvbXBpbGVyIHdpbGwgdGhyb3cgYXdheSBhbGwgcmVkdW5kYW50DQo+IHN0b3Jlcy4NCg0K
-V2VsbCwgSSB0ZW5kIHRvIGRpc2xpa2UgZGVmYXVsdCBpbml0IGF0IGRlY2xhcmF0aW9uIGJlY2F1
-c2UgaXQgb2Z0ZW4gDQpoaWRlcyBtaXNzZWQgcmVhbCBpbml0LiBXaGVuIGEgZmllbGQgaXMgbm90
-IGluaXRpYWxpemVkIEdDQyBzaG91bGQgZW1pdCANCmEgV2FybmluZywgYXQgbGVhc3Qgd2hlbiBi
-dWlsdCB3aXRoIFc9MiB3aGljaCBzZXRzIA0KLVdtaXNzaW5nLWZpZWxkLWluaXRpYWxpemVycyA/
-DQoNCj4gDQo+PiBJZiBJIHRha2UgdGhlIGV4ZW1wbGUgb2YgcG93ZXJwYyBmdW5jdGlvbiBzbGlj
-ZV9maW5kX2FyZWFfYm90dG9tdXAoKToNCj4+DQo+PiAJc3RydWN0IHZtX3VubWFwcGVkX2FyZWFf
-aW5mbyBpbmZvOw0KPj4NCj4+IAlpbmZvLmZsYWdzID0gMDsNCj4+IAlpbmZvLmxlbmd0aCA9IGxl
-bjsNCj4+IAlpbmZvLmFsaWduX21hc2sgPSBQQUdFX01BU0sgJiAoKDF1bCA8PCBwc2hpZnQpIC0g
-MSk7DQo+PiAJaW5mby5hbGlnbl9vZmZzZXQgPSAwOw0KPiANCj4gQnV0IG9uZSBjbGVhbnVwIHRo
-YXQgaXMgcG9zc2libGUgZnJvbSBleHBsaWNpdGx5IHplcm8taW5pdGlhbGl6aW5nIHRoZQ0KPiB3
-aG9sZSBzdHJ1Y3R1cmUgd291bGQgYmUgZHJvcHBpbmcgYWxsIHRoZSBpbmRpdmlkdWFsICI9IDAi
-IGFzc2lnbm1lbnRzLg0KPiA6KQ0KPiANCg0KU3VyZSBpZiB3ZSBkZWNpZGUgdG8gZ28gdGhhdCBk
-aXJlY3Rpb24gYWxsIHRob3NlIDAgYXNzaWdubWVudHMgdm9pZC4NCg==
+On Tue, Feb 27, 2024 at 06:11:24PM +0000, Christophe Leroy wrote:
+> 
+> 
+> Le 27/02/2024 à 18:54, Charlie Jenkins a écrit :
+> > On Tue, Feb 27, 2024 at 11:32:19AM +0000, Christophe Leroy wrote:
+> >>
+> >>
+> >> Le 27/02/2024 à 11:28, Russell King (Oracle) a écrit :
+> >>> On Tue, Feb 27, 2024 at 06:47:38AM +0000, Christophe Leroy wrote:
+> >>>>
+> >>>>
+> >>>> Le 27/02/2024 à 00:48, Guenter Roeck a écrit :
+> >>>>> On 2/26/24 15:17, Charlie Jenkins wrote:
+> >>>>>> On Mon, Feb 26, 2024 at 10:33:56PM +0000, David Laight wrote:
+> >>>>>>> ...
+> >>>>>>>> I think you misunderstand. "NET_IP_ALIGN offset is what the kernel
+> >>>>>>>> defines to be supported" is a gross misinterpretation. It is not
+> >>>>>>>> "defined to be supported" at all. It is the _preferred_ alignment
+> >>>>>>>> nothing more, nothing less.
+> >>>>>>
+> >>>>>> This distinction is arbitrary in practice, but I am open to being proven
+> >>>>>> wrong if you have data to back up this statement. If the driver chooses
+> >>>>>> to not follow this, then the driver might not work. ARM defines the
+> >>>>>> NET_IP_ALIGN to be 2 to pad out the header to be on the supported
+> >>>>>> alignment. If the driver chooses to pad with one byte instead of 2
+> >>>>>> bytes, the driver may fail to work as the CPU may stall after the
+> >>>>>> misaligned access.
+> >>>>>>
+> >>>>>>>
+> >>>>>>> I'm sure I've seen code that would realign IP headers to a 4 byte
+> >>>>>>> boundary before processing them - but that might not have been in
+> >>>>>>> Linux.
+> >>>>>>>
+> >>>>>>> I'm also sure there are cpu which will fault double length misaligned
+> >>>>>>> memory transfers - which might be used to marginally speed up code.
+> >>>>>>> Assuming more than 4 byte alignment for the IP header is likely
+> >>>>>>> 'wishful thinking'.
+> >>>>>>>
+> >>>>>>> There is plenty of ethernet hardware that can only write frames
+> >>>>>>> to even boundaries and plenty of cpu that fault misaligned accesses.
+> >>>>>>> There are even cases of both on the same silicon die.
+> >>>>>>>
+> >>>>>>> You also pretty much never want a fault handler to fixup misaligned
+> >>>>>>> ethernet frames (or really anything else for that matter).
+> >>>>>>> It is always going to be better to check in the code itself.
+> >>>>>>>
+> >>>>>>> x86 has just made people 'sloppy' :-)
+> >>>>>>>
+> >>>>>>>       David
+> >>>>>>>
+> >>>>>>> -
+> >>>>>>> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes,
+> >>>>>>> MK1 1PT, UK
+> >>>>>>> Registration No: 1397386 (Wales)
+> >>>>>>>
+> >>>>>>
+> >>>>>> If somebody has a solution they deem to be better, I am happy to change
+> >>>>>> this test case. Otherwise, I would appreciate a maintainer resolving
+> >>>>>> this discussion and apply this fix.
+> >>>>>>
+> >>>>> Agreed.
+> >>>>>
+> >>>>> I do have a couple of patches which add explicit unaligned tests as well as
+> >>>>> corner case tests (which are intended to trigger as many carry overflows
+> >>>>> as possible). Once I get those working reliably, I'll be happy to submit
+> >>>>> them as additional tests.
+> >>>>>
+> >>>>
+> >>>> The functions definitely have to work at least with and without VLAN,
+> >>>> which means the alignment cannot be greater than 4 bytes. That's also
+> >>>> the outcome of the discussion.
+> >>>
+> >>> Thanks for completely ignoring what I've said. No. The alignment ends up
+> >>> being commonly 2 bytes.
+> >>>
+> >>> As I've said several times, network drivers do _not_ have to respect
+> >>> NET_IP_ALIGN. There are 32-bit ARM drivers which have a DMA engine in
+> >>> them which can only DMA to a 32-bit aligned address. This means that
+> >>> the start of the ethernet header is placed at a 32-bit aligned address
+> >>> making the IP header misaligned to 32-bit.
+> >>>
+> >>> I don't see what is so difficult to understand about this... but it
+> >>> seems that my comments on this are being ignored time and time again,
+> >>> and I can only think that those who are ignoring my comments have
+> >>> some alterior motive here.
+> >>>
+> >>
+> >> I'm sorry for this misunderstanding. I'm not ignoring what you said at
+> >> all. I understood that ARM is able to handle unaligned accesses with
+> >> some exception handlers at worst case and that DMA constraints may lead
+> >> to the IP header beeing on a 2 bytes alignment only.
+> >>
+> >> However I also understood from others that some architectures can't
+> >> handle such a 2 bytes only alignments.
+> >>
+> >> It's been suggested during the discussion that alignment tests should be
+> >> added later in a follow-up patch. So for the time being I'm trying to
+> >> find a compromise and get the existing tests working on all platforms
+> >> but with a smaller alignment than the 16-bytes alignment brought by
+> >> Charlie's v10 patch. And a 4 bytes alignment seemed to me to be a good
+> >> compromise for this fix. The idea is also to make the fix as minimal as
+> >> possible, unlike Charlie's patch that is churning up the tests quite
+> >> heavily.
+> > 
+> > Do you have a list of platforms this is failing on? I haven't seen any
+> > reports that haven't been fixed.
+> 
+> I don't have such a list, but I guess you do ? If all platforms have 
+> already been fixed, why are you sending this patch at all ?
+
+This patch is what is doing the "fixing". Over the course of 10 versions
+I have "fixed" the test cases to work on platforms that have various
+alignment and endianness constraints. The endianness changes were picked
+off of these patches and spun out into a different patch by you. 
+
+I originally introduced these two new test cases since I wrote the riscv
+checksum function implementations and these tests were helpful for me
+and I figured they may be helpful for somebody else too.
+
+- Charlie
+
+> 
+> Christophe
 
