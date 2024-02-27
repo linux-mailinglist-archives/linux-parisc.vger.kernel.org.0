@@ -1,53 +1,53 @@
-Return-Path: <linux-parisc+bounces-720-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-721-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B167986A092
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 20:55:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE0286A0B1
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 21:14:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D574C1C23EE3
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 19:55:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07CC428ECD1
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 20:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C0C149E13;
-	Tue, 27 Feb 2024 19:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF1714A4C9;
+	Tue, 27 Feb 2024 20:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="e1E0+EV6"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="QO7oHusU"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0171524A8;
-	Tue, 27 Feb 2024 19:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3154D5A2;
+	Tue, 27 Feb 2024 20:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709063704; cv=none; b=DoqeJ/IB8px2EqJOXgwxfRUOAQsVURAEVPTQduS2ulylaX7TuQz8LlkjX+98Rk8uHyzYIGNtWU3aB6BeXvvi7E8TXM4teh2TBMSM659iSWZ2sGVZxCICbyArf6yeEI2jhkEPWXr/bXwcFQvKkP7etuEAb3dqd3s312YEz5HZuR8=
+	t=1709064888; cv=none; b=cuwBc+pfBNuycUn/dTs0MXmr0OGLL6KmyOouaXkddHbRb2NnlousR7NRrcpXc29Zrn8uAzK0/+GF7gNe+wmLOCbg5OEWJMaP1YZvTkcR+HJDDnGy6ov1f929pD0fHQho1rAnFtoDoW01wDP9BK9N//7So/aU7jtfw0VP0MLlXdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709063704; c=relaxed/simple;
-	bh=qABnCit5KPAiHr/Kp/IS0mrnJofA1cCmJBn+3gjrR+Q=;
+	s=arc-20240116; t=1709064888; c=relaxed/simple;
+	bh=kd4bIU/R8XOUWa99vIQj43v6ovZyK9dK3DLfkhNXoJw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rE84iUNn1aAoFsCYWOnUnSCdEsbm6jbbdkUblCaEq5Qcv/d0jJVStOl1vLkVNEHVqSpUiBh7c5O9fSOeat0M/6b3NijQKRJKt6y6i/e19QaMS7sdRl195XfLVlMqhDcDV5gvhOw16sfkPkYbDgjHG0CZhulRWBo2fX0z3xEy2uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=e1E0+EV6; arc=none smtp.client-ip=212.227.15.19
+	 In-Reply-To:Content-Type; b=Zituv6EQXkeXCDvXr3XYdJ3oj/PBreNHfgXGRe39Izndo/WaHJqovw5GbDUlZY5Rj0djtcxAU776EtSpZWK9iReAm96I7/DCQ+zFqSyMt5INAHyuI7SpR6TgM4ye+awEbrpU1UhntEhFJEkoBxXtZsV96u4kGjLauoT9TakkfGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=QO7oHusU; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1709063649; x=1709668449; i=deller@gmx.de;
-	bh=qABnCit5KPAiHr/Kp/IS0mrnJofA1cCmJBn+3gjrR+Q=;
+	t=1709064867; x=1709669667; i=deller@gmx.de;
+	bh=kd4bIU/R8XOUWa99vIQj43v6ovZyK9dK3DLfkhNXoJw=;
 	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
 	 In-Reply-To;
-	b=e1E0+EV6cUARqjkZLOR7vyHMPZmHfvv/v9iuGO3g7eA74YM4BAvrQoeULtIXjtol
-	 w28+cNglFaeRqU3k/Yt/12BxTTZAJx/IEjOKfpmIoU8uis3lRKzHKMUHpboXWqdPx
-	 I+KYoRuKtvaZbl7N9LS+z5CJuwK2DVqXECZpsY3/AJOD5wMr0MZKBQuFr9tjxj8R6
-	 ikQPugrrJyvVbAMgQePl4QstARrSxIOZpq3sMlMP+HLVwFDkQv1x7VxME0mmlYO9v
-	 emde3QWNDL5YviMPoq4M1XqqW9rq22W59NIfkSbeCC54IyeM5RRIT4q/jZCvhcB2K
-	 YbMBNoDMEO5YFVmiVQ==
+	b=QO7oHusUB70g1ugb29LZMtBP6Jae+PNM2TrL/rSQ+ai3N3t4FIBSlvOiLE1u+EWt
+	 Jp9qF+lnkDN0mOpo24uKictPEQ0Yp0t3UqJqTw9/w1K2BqsHIs53gljZqI4iFwJzv
+	 nYGtvgbws9tARyM1BFiMdHGERfM/39rbB+9o12iD80c3sqp0H/Wvy9ZH/pJq4PH3A
+	 6PBXFJrZeFcFpPOFSs6CJePu0owFu1t2UntlhiUmXWroVsr7C8pYEXTnIYfjJ/yok
+	 cHa6moYzdTj1E3dja4AZ7RGYcFCuzQ9AY5IdxKf66b/R3I+mlpM0W+vKvxavhspND
+	 6yodhB7i6w180ru6Zg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.55] ([94.134.157.76]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mk0Ne-1rCYGH2jSy-00kOct; Tue, 27
- Feb 2024 20:54:09 +0100
-Message-ID: <e391cad0-7b98-4efd-bea1-cf5ab9c626bf@gmx.de>
-Date: Tue, 27 Feb 2024 20:53:59 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Msq6M-1qm8qJ0OtM-00tD4l; Tue, 27
+ Feb 2024 21:14:27 +0100
+Message-ID: <d1a6fe49-19f9-433e-b275-209b59155193@gmx.de>
+Date: Tue, 27 Feb 2024 21:14:26 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -55,27 +55,13 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 1/2] prctl: Generalize PR_SET_MDWE support check to
- be per-arch
+Subject: Re: [PATCH] parisc: More csum_ipv6_magic fixes
 Content-Language: en-US
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
- Zev Weiss <zev@bewilderbeest.net>
-Cc: linux-parisc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Florent Revest <revest@chromium.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Yin Fengwei <fengwei.yin@intel.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Kees Cook
- <keescook@chromium.org>, Yang Shi <yang@os.amperecomputing.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Oleg Nesterov
- <oleg@redhat.com>, David Hildenbrand <david@redhat.com>,
- Stefan Roesch <shr@devkernel.io>, Josh Triplett <josh@joshtriplett.org>,
- Ondrej Mosnacek <omosnace@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
- linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org,
- Sam James <sam@gentoo.org>, stable@vger.kernel.org
-References: <20240227013546.15769-4-zev@bewilderbeest.net>
- <20240227013546.15769-5-zev@bewilderbeest.net>
- <Zd24aCps4xD28c74@shell.armlinux.org.uk>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Charlie Jenkins <charlie@rivosinc.com>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240227185334.2697324-1-linux@roeck-us.net>
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
  xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
@@ -120,54 +106,88 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <Zd24aCps4xD28c74@shell.armlinux.org.uk>
+In-Reply-To: <20240227185334.2697324-1-linux@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tw+ae2K+8HdN97zn0nU9mcLGLIbOqP1QiharSdPPjQBUObrxIMx
- EoAooahMNQ/jRMZvOYpqWMFZVD2Y+b0KqJO2OnK/OLp9Z3nsS3YfE4uvFb2DWZF7TkEveOx
- 6xy9KMtuxgqXp+7FWV+YOHTAcKpKiL1kx0/B7R4KOKyEI42N4ipny/nCn7m7LoMX/b9U427
- yJWqz1prVRj1xfL4N3ipQ==
+X-Provags-ID: V03:K1:PSbiFV3/SYww6osXvB3DYUhh8Gu3seUiRSHekdz2E3m7h46kfEU
+ I3Pet6xRIRdQFQH5O2Du7W5goBrP3tCr8A4gwliBeUpcUS5rUdHSDqkyWIGgiqpEHCdbY/k
+ Pwd6ThjMaem75VKXXjz/qG60+11EzG1bM2y/DrQJJO0Jxx1FwZH3wVJe0hxXQ6oTZB9Wi75
+ adZemBnMc4WnKlbor4Bgw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:agvPXLbsPcQ=;Nm4RFtKAvlwmH5rZU7YwIbOg/vD
- OUtTO7T05yGYGFjg036cUc39NdnAyE9cAdO6BBLS7ztuPGajfMBAuFcMPop+kauTeLgrCVt9I
- pVNftXBdEoqTX+9kaC2Ly+MxU1xV6rYL5a2tW5A7ZpQrkbM34Ofq+RSBxpBowf/Q9wFhMJWpl
- o8Q1olzUXJQ3W+pqj4M7iAhpZLI5uQAWAIyt5tLNaQLGLc/qUNzIkWKMLLsU3RIQjhN9c0i10
- zO37V7thHtJflRDtZ3cSWqkei1XpnIGMW4OrBzTr0TdvtxO1PzSN05+Rw5cuW5imV93srBWJj
- vAXEZjYsam6q7BR8QB3IgstOnSo9FNSB9UaELj+epg1/Eako1UzWAHFc/d2ELs3iA+djaooUX
- kFH8M4/sWJo/kiICRYVRekXGsj+vWZ1U4KyLuQz/0lEzHdCjoJFTBjRjsSwTOjF1uq5sogmSC
- xkgwGVScd6JZmy5sMPzhXYG/QaqwjpxADWhEHYS7pfqtAzxIV685unv5GYKu6jdcO3LF+VDXa
- YLEUcGIeo4MLhmDrUuRtO26krxMqtV4YpMhiTLUnzPgqJxzzA7kmxJDBbISLK6Wb3nAb5IcxH
- 7aqDlewBDqfM9tpKWHb4uz/oqmhv1hYjr9vd4w+GIOYZqp+AZ78NqUO4FgY237f3RF4LnlMdg
- KHsTVwVoc7z5uQxOFMngM8g3iG6QxsaHgjHSZsMm3OqhIQrRLy6E2Zv5L/QBfqZ8Env3b1Cl0
- NDsbyVPV2m3WNZoxFqZfr8aPJ0G/HA7ziF2f53b9RP8N4Qivtfj5mUk/CuJKG1s3qbkIN69xQ
- jTurXi/dcxVWgFweh+9fobRuumiJYzEADTtwfrf2dd4rs=
+UI-OutboundReport: notjunk:1;M01:P0:HsFkZDSaxUA=;xlgBdRntWGQI0DDwdECWGLzE3Zk
+ akuxByW5CNyD8LmSRXSaCuz0NXAwK5ubKfITznC4mDKM6AAAkwbEtZ5d4FBSyNXy8bGVWu+EI
+ tjg8cncpRO21u6JlOYx+GiKNcjeoR93yyVdmmgM70cB8LmzxEDMuwvOaW2XtbAA4KatJaH9fP
+ uIxSlRB3KuyXS5dSSN6/6fcsBYgEHRlorl/F3+jkiH8GgM2CEdi33pat6W+C4VhBDscDuZp/s
+ ayj+Mc6M1ve/KnwWCi2KEXcDgG7OMVmHK9dxRe+h6YhV6/RFOR4YW2+1kH2aC1B9noKK/ZgRg
+ lJfdRU7IwhVTNlMWXbiQYUNv1khCRCSKq1LfTMRvaIJTEi1Af9x5be1mnd6MRewoeptO4KUTI
+ hlf50DGcxyrjfJ7E6jSzTshFvCK3uz56dKrnCf2IE8V+S9G8FpmUYsKj5O4ByahLyqY7mq+gW
+ J1Vg6K52RmF+HJllmjw6/UdPPhD3ZEbJI+QgemKnx9dWKAv8IpGOhTaroIdBIGHa7mUJWhfzz
+ EXHL1HiDvUqXBGkGE2v4UzVC3JK5zlYXR3l6TB6dl4iVKZIWb9rpQEFItyCXj6l8GWeJ0IB4V
+ wQcNkZg9dc+OiC2V4cvoQLPf2/Trhp6lMK56raXDNqDBmigmoM/EOVmIbM1mjl6uU6iAtCmlo
+ 6FSD3Sv0se8UdDouL8l0/Ai7r7GZGLHb++qbkZ3pe2uPgiTbZ3FATkd1M1An52azPdp512vsw
+ BWIpYahaduURua7fJzGmujXJwsPnNLykWHatsKBK3pFdUvqXxfriC69m95mn3kbhIdv2L+0LW
+ xrt85yd/ytzMsnPtc0mNU4w7MbHYjAw+GX96/1bPg1HXw=
 
-On 2/27/24 11:24, Russell King (Oracle) wrote:
-> On Mon, Feb 26, 2024 at 05:35:41PM -0800, Zev Weiss wrote:
->> There exist systems other than PARISC where MDWE may not be feasible
->> to support; rather than cluttering up the generic code with additional
->> arch-specific logic let's add a generic function for checking MDWE
->> support and allow each arch to override it as needed.
->>
->> Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
->> Cc: <stable@vger.kernel.org> # v6.3+
+On 2/27/24 19:53, Guenter Roeck wrote:
+> IPv6 checksum tests with unaligned addresses resulted in unexpected
+> failures.
 >
-> PA-RISC folk need to ack/review-by this patch.
+> Expected expected =3D=3D csum_result, but
+>      expected =3D=3D 46591 (0xb5ff)
+>      csum_result =3D=3D 46381 (0xb52d)
+> with alignment offset 1
+>
+> Oddly enough, the problem disappeared after adding test code into
+> the beginning of csum_ipv6_magic().
+>
+> As it turns out, the 'sum' parameter of csum_ipv6_magic() is declared as
+> __wsum, which is a 32-bit variable type. However, it is treated as 64-bi=
+t
+> variable in the assembler code.
 
-I'm fine with patch 1/2:
-Acked-by: Helge Deller <deller@gmx.de> # parisc
+Nice catch!
+That kind of bugs is actually the reason why I start to prefer
+C-code over inline assembly, even if C might perform slower.
 
-> Alternatively, it needs
-> to be restructured to add the arch_memory_deny_write_exec_supported()
-> override without touching the PA-RISC code, which then makes the Arm
-> patch independent of the status of the PA-RISC patch. That will allow
-> the Arm issue to be solved even if an ack is not forthcoming for the
-> PA-RISC parts.
->> Alternatively, I wonder whether akpm would be willing to pick up this
-> patch set as-is.
+I've applied that patch to the parisc git tree, but do you think
+you can come up with a better patch title, e.g.
+"strip upper 32bits of sum in csum_ipv6_magic()" ?
 
-I have no preference, but I think both patches should be pushed
-together via arm tree or akpm.
+Other than that you may add
+Acked-by: Helge Deller <deller@gmx.de>
 
 Helge
+
+> Tests showed that the upper 32 bit of
+> the register used to pass the variable are _not_ cleared when entering
+> the function. This can result in checksum calculation errors.
+>
+> Clearing the upper 32 bit of 'sum' as first operation in the assembler
+> code fixes the problem.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
+> Maybe there is a way to do this without additional instruction, but if s=
+o
+> I have not been able to find it.
+>
+>   arch/parisc/include/asm/checksum.h | 1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/as=
+m/checksum.h
+> index c949aa20fa16..2aceebcd695c 100644
+> --- a/arch/parisc/include/asm/checksum.h
+> +++ b/arch/parisc/include/asm/checksum.h
+> @@ -126,6 +126,7 @@ static __inline__ __sum16 csum_ipv6_magic(const stru=
+ct in6_addr *saddr,
+>   	** Try to keep 4 registers with "live" values ahead of the ALU.
+>   	*/
+>
+> +"	depdi		0, 31, 32, %0\n"/* clear upper half of incoming checksum */
+>   "	ldd,ma		8(%1), %4\n"	/* get 1st saddr word */
+>   "	ldd,ma		8(%2), %5\n"	/* get 1st daddr word */
+>   "	add		%4, %0, %0\n"
+
 
