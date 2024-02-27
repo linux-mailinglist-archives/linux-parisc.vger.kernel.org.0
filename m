@@ -1,162 +1,156 @@
-Return-Path: <linux-parisc+bounces-693-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-694-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E39868E81
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 12:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE92868E98
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 12:18:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 199DF1C20E76
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 11:12:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E8DD1C212E9
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 11:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B559813956D;
-	Tue, 27 Feb 2024 11:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8E1139584;
+	Tue, 27 Feb 2024 11:18:14 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7602B2E3EB;
-	Tue, 27 Feb 2024 11:12:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA05137C38;
+	Tue, 27 Feb 2024 11:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709032364; cv=none; b=UvZ6ncQafE5X7ZxYTwbr4/qk3Szgpgk/S2afd5CUsYjM9xBZs+V2C9SH8wCdiX8zURVNBuFlu3ymVcGE0OFwjmItc859WTuBpmFEo3XwBTfTfB6pxUDVzz1v/ekiatRR7jUkYVu1LrfHlWQF9QQdsj9kJjzRqAuiw3P5+RrB/Zg=
+	t=1709032694; cv=none; b=ZOVtq+u/WGf2LkJ0EgmshExEiLVc2am4ir24uayrDdkpKWhmIbSDethQSXfpus3UYvk6FwMxx9lRwHhTqnuWTX/csVzLAW+1c0/e6a6hEI+abefl8k/mLB/Lk+vQ37HVTMHMFiW8nuxxzWkhU0s9P8JWrOfkWL0FnisSDIr8YkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709032364; c=relaxed/simple;
-	bh=O6UtDTaDn834cQ2sd7oFrdw4KjK6pBp4PggykizhEd8=;
+	s=arc-20240116; t=1709032694; c=relaxed/simple;
+	bh=G58AunBYkCt/gms7o+OJA0kSa7jWnIXDwId2W/wpJyY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dAon+2Wqgs5mgEFM6HzbArhplBYgJvSg1kXDMhDsKr7chV2IGolbe9sUyAKskLr7S1Y1wu0QghEKZPIdOAEHrzqugzaZzYMhNSKDX1nwq4Iv/Wx0uCtLz6BoJx9ipTSUXyQU37758R11TqT2pjk/I7xicwR6rSvAbD7fmQ6bVDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.177
+	 To:Cc:Content-Type; b=UXb4kYlcLK9bQ6mP8nW1J9NN1iIvZCFzAbQJVbWh+8iu6HMd2ONA3XkRfhpJWajmQFA9o3QgiOGI0J/mka772zwR5MbM756VCT0qZGnI9buGEko0RsPoPSCFxap2oTJX/DPeddBmMWoOkNsuL042jsusRN3LB3+cR70eCePDxTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc74435c428so3652655276.2;
-        Tue, 27 Feb 2024 03:12:42 -0800 (PST)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-607e60d01b2so20555167b3.1;
+        Tue, 27 Feb 2024 03:18:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709032359; x=1709637159;
+        d=1e100.net; s=20230601; t=1709032691; x=1709637491;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y4Tv6sdcFEpWvZL/hYJEF+Ju7qt4AFqMkWFUs5NrLKU=;
-        b=XlvnddtZ4johgU9/5+buUiyDpQ5Jbj8Tuf4my854g4XpXYKFN48vHp5KeekbM1ERs5
-         NiloCLwMI7JPYWGvGsb8IaHLU3zRBY6db8IfxoNCT+Zscb4TNIU8yDWOUl1Dw8+OsPEZ
-         pznXFRWYdzCYK6AaQZWcoUYoZz4gS3DGSf75WfeAdIJWbpe1ejqXRsK8YdzDQ1cvWkF6
-         VU7mZAnTFGRyRo/k6pfAVT2I6qWjx/FA6u3mz7fzMIYS86FSB0491VkpvE8tz1yvywgy
-         rqkEIQ7CDSGuMsw6ek3iMNNDE8zfAtofFt67Yj4VFxbqAzvGJt+KWWcPlNdME2x4riqT
-         89Xg==
-X-Forwarded-Encrypted: i=1; AJvYcCUj5sRr5b0C//W2SkdJfcpWnffZClWuYQ5KBjLMe4ipQVw1xqIsuwvAMuQQKUIQZsXXNSy6vu7c+e6eieTeeFPUoaZwYk90Yc4pWrut92BIbeN/whH+6piUJ2IHxSmFlZ2yYDji5WAYvdjquHTo98vhDjwHbVN+f+5eMw/XSEe+vG9QzV2cRyZJGov/2r9g8Jxb7t7ijqjab/ksNCQLilniFhJfEubRNpTN2B2sHqDADJIe4yVUpaJOBG1mMAD0wEKGkvebgzVgxlc0k/kjVS2bOnjabG22NU9pAQOxBePFA6iXft6ibNDrV9RNbvq0fSeKTea8zroiuuOMbWDVVQEWqLpgoGI+rOx0Ie2T7u/6zGxN9YnzE9D7o/E55WFUUsZ47GqTzACggzg9cNi1xLPA7zCMLStQVdfvoqLws8vp9OqcjEVibRqjPCmveVatwlY=
-X-Gm-Message-State: AOJu0Yz5jXGAXgh/loZYZu2eeJzcP6IPqUgJxp159KluuliwT1CM3WFC
-	KadHKYA3veNOfiLzzqJLK8e9a88L7/sZoOp0ZocAO3jSbb+Yll6OcZ7V+pKnvDgT4A==
-X-Google-Smtp-Source: AGHT+IETWZx9cfssblm2zEGiTblfHf+yjPph+wwZhXlTNPdioDGjYTOCezommzy9CyvZ1fs6U0ag6A==
-X-Received: by 2002:a25:bb10:0:b0:dcb:c0ea:6abc with SMTP id z16-20020a25bb10000000b00dcbc0ea6abcmr1548115ybg.64.1709032358999;
-        Tue, 27 Feb 2024 03:12:38 -0800 (PST)
-Received: from mail-yb1-f177.google.com ([209.85.219.177])
-        by smtp.gmail.com with ESMTPSA id u9-20020a250949000000b00dc2310abe8bsm1323073ybm.38.2024.02.27.03.12.37
+        bh=DjZve7pGUlAuiB1y5Evv/dfTmjlQGRjAirpVZxXZfKE=;
+        b=qTeg0+Nvl3RI2ibWi5eDrV+iiVJaB4vT6ZzWQHuSCdWdGo2C8pL7dQ6Z4I4yhJBBUR
+         +IrnNSGO5WkK/T4qDyLIPdHlGgkde4TWfzjfTYPU+v0OGFzMC0Tw5GUbT2PE+vPT1DGX
+         NNYDnfdP+qRofUx9A7WvGho6Xon9VHEYpZrTGCkm/auVOYrYdK6eH5wnoA5BVk+Nftua
+         PrjCNKRQjhk6zhWFRm+R+xcZ3N2qjXQRVaQGmOXnXJSu4oNk36cMnonYVxFaiAj9w7Ki
+         Wcwaf9kGAEEUKpqz56H0i9ktAGvqq/UYzd3zoIcn9My3zlRhlV85jcLg6QDAZJWNF83n
+         iECw==
+X-Forwarded-Encrypted: i=1; AJvYcCV17XSGGYQhkvA14SjIhIC9Ue/OTdjRXcqG5pQykoNYgecVAuK9NGQwVc7mC/pr/uQjHN12N4fo7+ptYv4Dg94VglLr2ljdSva5Do0EJgJls5XVXaqcYzARTcRqn1i2pNtfKnRZuwDJ5zA3
+X-Gm-Message-State: AOJu0YyhxC4cTrb1QuaD9ngHzqJfgmzoyKih434YWiwhlOeTm3R8B/OG
+	/7KtTvo7MdYRKZg+kKSgGrOOEWqFiGYShMahK/fgy0k7r2J0e6AUXdqevbP0S/E=
+X-Google-Smtp-Source: AGHT+IFzG+Tn29xVPiMOUoH/5hkruSItmYuA5oPtOMfe3j2K2LFWINOdZHtc2d97CcEBMje0HflCKA==
+X-Received: by 2002:a81:e40d:0:b0:608:718c:c4e7 with SMTP id r13-20020a81e40d000000b00608718cc4e7mr1629852ywl.43.1709032691326;
+        Tue, 27 Feb 2024 03:18:11 -0800 (PST)
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com. [209.85.219.172])
+        by smtp.gmail.com with ESMTPSA id u187-20020a8184c4000000b00608a212f5cesm1717182ywf.86.2024.02.27.03.18.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Feb 2024 03:12:38 -0800 (PST)
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc74435c428so3652590276.2;
-        Tue, 27 Feb 2024 03:12:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXwJ7/jVOAgdcYZyQ0Vk8kCXWfNsvprfIws3P1kaOPxSJ0zj+XIQydNNGFJGusQM6fKKXLKco21/XCmtn+bPkPZ0/z9guqENNV7tGjku2PsNOPslSYQkQsdsuQRX21S+bNcXxVGYHNdAyy5Ot5MtPoeQ9bH+9fQzW0aKy7Ffkn+oHjAbxcsR1/ltfgvAQ6+VVgO4Ssvt0NpZYNMMO/KyBID3Z3d7H+lorVXbXm8zKHmPzAA1ND04hosm4ujae0LXiyylSJcdXfRPgKkIQfT5aBy5HfVnAh05Zs1ioV4NurG3t2F6EFmMeTKPN1cjJ/EKJNmEFsOW9iNsqo1TYos27sdLBEngOxlFGXqpuzvcViDF8PzCCEndZC5PlAoWeHi2nA+JE6qZqHjwXyXEuT7uiIYzlNIq08mL/GA+N6SNzl+Ka9YwLMJo9JSB66uvK9vZSg=
-X-Received: by 2002:a5b:ecc:0:b0:dc6:c32f:6126 with SMTP id
- a12-20020a5b0ecc000000b00dc6c32f6126mr1607871ybs.22.1709032357452; Tue, 27
- Feb 2024 03:12:37 -0800 (PST)
+        Tue, 27 Feb 2024 03:18:10 -0800 (PST)
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-d9b9adaf291so3891671276.1;
+        Tue, 27 Feb 2024 03:18:10 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXI5ssxUd6I6uLR4zQ+/OyB9IOzSfPNKhR4gOhj4O8HEngwFssMq69/64iSiGhV/rDX9xU5YjV9iArkQeBi8+0LtVFKfNjRW1llzHeXTaeqBuZq3J/wqfGjNNAMU4R15mNOxyKwG2bSfNA/
+X-Received: by 2002:a5b:5d1:0:b0:dbf:487b:1fe7 with SMTP id
+ w17-20020a5b05d1000000b00dbf487b1fe7mr1859795ybp.17.1709032690695; Tue, 27
+ Feb 2024 03:18:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240226161414.2316610-1-arnd@kernel.org> <20240226161414.2316610-4-arnd@kernel.org>
- <CAMuHMdWRBQF95fJ+NkPUdvpu5VfRm2WyTnvdqB1Xe7d4vsvY2g@mail.gmail.com> <164616c2-94f6-40e8-86e0-850dc8da212e@app.fastmail.com>
-In-Reply-To: <164616c2-94f6-40e8-86e0-850dc8da212e@app.fastmail.com>
+References: <20240223-fix_sparse_errors_checksum_tests-v10-1-b6a45914b7d8@rivosinc.com>
+In-Reply-To: <20240223-fix_sparse_errors_checksum_tests-v10-1-b6a45914b7d8@rivosinc.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 27 Feb 2024 12:12:24 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXQYPtL0J4Phm81S1qWpi7no=1r4uStbLd8zbjn7fcWQw@mail.gmail.com>
-Message-ID: <CAMuHMdXQYPtL0J4Phm81S1qWpi7no=1r4uStbLd8zbjn7fcWQw@mail.gmail.com>
-Subject: Re: [PATCH 3/4] arch: define CONFIG_PAGE_SIZE_*KB on all architectures
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Arnd Bergmann <arnd@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <keescook@chromium.org>, 
-	Anna-Maria Gleixner <anna-maria@linutronix.de>, Matt Turner <mattst88@gmail.com>, 
-	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, guoren <guoren@kernel.org>, 
-	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Andreas Larsson <andreas@gaisler.com>, 
-	Richard Weinberger <richard@nod.at>, x86@kernel.org, Max Filippov <jcmvbkbc@gmail.com>, 
-	Andy Lutomirski <luto@kernel.org>, Jan Kiszka <jan.kiszka@siemens.com>, 
-	Kieran Bingham <kbingham@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	"linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, 
-	"linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, 
-	Greg Ungerer <gerg@linux-m68k.org>
+Date: Tue, 27 Feb 2024 12:17:58 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdW16fs2rtHkwyGK_+Fhgi5LOFVYb6vPN4mTw3Fhjv1sqg@mail.gmail.com>
+Message-ID: <CAMuHMdW16fs2rtHkwyGK_+Fhgi5LOFVYb6vPN4mTw3Fhjv1sqg@mail.gmail.com>
+Subject: Re: [PATCH v10] lib: checksum: Use aligned accesses for ip_fast_csum
+ and csum_ipv6_magic tests
+To: Charlie Jenkins <charlie@rivosinc.com>
+Cc: Guenter Roeck <linux@roeck-us.net>, David Laight <David.Laight@aculab.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Helge Deller <deller@gmx.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Parisc List <linux-parisc@vger.kernel.org>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Arnd Bergmann <arnd@arndb.de>, 
+	linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Arnd,
+Hi Charlie,
 
-CC Greg
+Thanks for your patch!
 
-On Tue, Feb 27, 2024 at 11:59=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrot=
-e:
-> On Tue, Feb 27, 2024, at 09:54, Geert Uytterhoeven wrote:
-> >> diff --git a/arch/m68k/Kconfig.cpu b/arch/m68k/Kconfig.cpu
-> >> index 9dcf245c9cbf..c777a129768a 100644
-> >> --- a/arch/m68k/Kconfig.cpu
-> >> +++ b/arch/m68k/Kconfig.cpu
-> >> @@ -30,6 +30,7 @@ config COLDFIRE
-> >>         select GENERIC_CSUM
-> >>         select GPIOLIB
-> >>         select HAVE_LEGACY_CLK
-> >> +       select HAVE_PAGE_SIZE_8KB if !MMU
-> >
-> > .... if you would drop the !MMU-dependency here.
-> >
-> >>
-> >>  endchoice
-> >>
-> >> @@ -45,6 +46,7 @@ config M68000
-> >>         select GENERIC_CSUM
-> >>         select CPU_NO_EFFICIENT_FFS
-> >>         select HAVE_ARCH_HASH
-> >> +       select HAVE_PAGE_SIZE_4KB
-> >
-> > Perhaps replace this by
-> >
-> >     config M68KCLASSIC
-> >             bool "Classic M68K CPU family support"
-> >             select HAVE_ARCH_PFN_VALID
-> >   +         select HAVE_PAGE_SIZE_4KB if !MMU
-> >
-> > so it covers all 680x0 CPUs without MMU?
+On Fri, Feb 23, 2024 at 11:12=E2=80=AFPM Charlie Jenkins <charlie@rivosinc.=
+com> wrote:
+> The test cases for ip_fast_csum and csum_ipv6_magic were not properly
+> aligning the IP header, which were causing failures on architectures
+> that do not support misaligned accesses like some ARM platforms. To
+> solve this, align the data along (14 + NET_IP_ALIGN) bytes which is the
+> standard alignment of an IP header and must be supported by the
+> architecture.
 >
-> I was a bit unsure about how to best do this since there
-> is not really a need for a fixed page size on nommu kernels,
-> whereas the three MMU configs clearly tie the page size to
-> the MMU rather than the platform.
+> Furthermore, all architectures except the m68k pad "struct
+> csum_ipv6_magic_data" to 44 bits. To make compatible with the m68k,
+> manually pad this structure to 44 bits.
+
+s/bits/bytes/ everywhere
+
 >
-> There should be no reason for coldfire to have a different
-> page size from dragonball if neither of them actually uses
-> hardware pages, so one of them could be changed later.
+> Fixes: 6f4c45cbcb00 ("kunit: Add tests for csum_ipv6_magic and ip_fast_cs=
+um")
+> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+> Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+> ---
+> The ip_fast_csum and csum_ipv6_magic tests did not work on all
+> architectures due to differences in misaligned access support.
+> Fix those issues by changing endianness of data and aligning the data.
+>
+> This patch relies upon a patch from Christophe:
+>
+> [PATCH net] kunit: Fix again checksum tests on big endian CPUs
+>
+> https://lore.kernel.org/lkml/73df3a9e95c2179119398ad1b4c84cdacbd8dfb6.170=
+8684443.git.christophe.leroy@csgroup.eu/t/
+> ---
+> Changes in v10:
+> - Christophe Leroy graciously decided to re-write my patch to fit his
+>   style so I have dropped my endianness+sparse changes and have based by
+>   alignment fixes on his patch. The link to his patch can be seen above.
+> - I dropped Guenter's tested-by but kept his reviewed-by since only the b=
+ase
+>   was changed.
+> - Link to v9: https://lore.kernel.org/r/20240221-fix_sparse_errors_checks=
+um_tests-v9-0-bff4d73ab9d1@rivosinc.com
 
-Indeed, in theory, PAGE_SIZE doesn't matter for nommu, but the concept
-of pages is used all over the place in Linux.
+> --- a/lib/checksum_kunit.c
+> +++ b/lib/checksum_kunit.c
 
-I'm mostly worried about some Coldfire code relying on the actual value
-of PAGE_SIZE in some other context. e.g. for configuring non-cacheable
-regions.
+> @@ -595,28 +473,31 @@ static void test_ip_fast_csum(struct kunit *test)
+>  static void test_csum_ipv6_magic(struct kunit *test)
+>  {
+>  #if defined(CONFIG_NET)
+> -       const struct in6_addr *saddr;
+> -       const struct in6_addr *daddr;
+> +       struct csum_ipv6_magic_data {
+> +               const struct in6_addr saddr;
+> +               const struct in6_addr daddr;
+> +               __le32 len;
+> +               __wsum csum;
+> +               unsigned char proto;
+> +               unsigned char pad[3];
+> +       } *data;
 
-And does this impact running nommu binaries on a system with MMU?
-I.e. if nommu binaries were built with a 4 KiB PAGE_SIZE, do they
-still run on MMU systems with an 8 KiB PAGE_SIZE (coldfire and sun3),
-or are there some subtleties to take into account?
+If having a size of 44 bytes is critical, you really want to add a
+BUILD_BUG_ON() check for that.
 
 Gr{oetje,eeting}s,
 
