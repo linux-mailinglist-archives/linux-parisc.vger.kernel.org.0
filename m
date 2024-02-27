@@ -1,112 +1,174 @@
-Return-Path: <linux-parisc+bounces-690-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-691-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF9A868D7A
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 11:25:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2C2868D94
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 11:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E71A51F22D16
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 10:25:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5416281E0D
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 10:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50740136981;
-	Tue, 27 Feb 2024 10:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A401386CF;
+	Tue, 27 Feb 2024 10:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="X3o4ZMum"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="nJOIxtZ5"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902FF137C42;
-	Tue, 27 Feb 2024 10:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9837E1386C7;
+	Tue, 27 Feb 2024 10:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709029499; cv=none; b=jNE7IP8vw6XoYG9pOJFU1YUBIo87YAp6emEiIMtzj6tydS2OVG7zjzoRPUl5tHL9w3WvFAv7NSYU+YaEMTja+8hwH1m9HXSmEeMlWaMSPhOGJ0Nm5yukiJ6JQA7K1Qu0hHUzFYhNKCdRbPTscd88Lq9E0/p5vno5aKWpdn7vRz8=
+	t=1709029743; cv=none; b=hFjLIb00hpu/FR5eVPCvhMSqSjmBALpArWttLPVhI/cosj3VpODeoBswQ5rgeo6gbP8xGcCzJIu45WTHCLwL+u/9QPTXBP295Kp9hAU6iuA/qFKcywbza030tPzmBhsTNZ86fkI+fFgpDumCd2AQm9352Wk0IMagyLe6XPHxF6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709029499; c=relaxed/simple;
-	bh=Nnpde2MjTfV728iSxOzMQcbJzt7c4u2O0FM7Rw5PJgw=;
+	s=arc-20240116; t=1709029743; c=relaxed/simple;
+	bh=2nSH7ifbYm3tqDkxI8g0ViATvBk6HRIg3r24rsscvwk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NRSWtc9PXT+GYYiEzKldkpmdDjllIzR1EvzsAZQ20HpxRQXkkT97SHCSzOrSc0kuaKBBmunUExsGT8weKVXYZfLio9r9tLsKQZNCYWgNaNrKDLUpBhc36GcKAwb0LzgwdOy3HoLHIx+jc44JKnxDrLvJgImJwNhNGLGMsRIu69M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=X3o4ZMum; arc=none smtp.client-ip=78.32.30.218
+	 Content-Type:Content-Disposition:In-Reply-To; b=fLHJjBiIYM5JCY0QxQpOhTz3dSUm30/rhSSuz0G2lizuM8sw31beIq6WCX0a4e46KSCe0uo2ZrUdUVdy1qgGSidXePOEEK/qQ5RX+MdhEP6UGdn4UCC6HqWIp1yGkcxLJWQtftc7dsmIoulY8NqfWZTEGoCca1c663pDUP9Q00k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=nJOIxtZ5; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=JCdHzu2wkDIMV3N9KhEnaZn7nt+SUq/lt3fcc9JJLCM=; b=X3o4ZMumh+WSsbya++ZFhtGQtB
-	3jMjGFRyAKDrQ6bMJQKbd5y2qsY7D3/VmDpfzHkMH6PakulAFqF4HNgsDc+owbvCfZ25CP4XYfCH8
-	UI1Bniqs7Jl4UNl7QATUXCDQ4jt5ilvkda3mO8VTmuqAWYPbOZo1ZNyepxPTNnIe0Hn8zYSQ1TKht
-	bIHEJ2YbLwz0NAk4PA2pJ8O6+fUsmTVV+IlhQK6S+xBqMUsrvHTTA032uvVTQJ9WktNmcvAj3bs18
-	X05XBlfCFGcbmJCi8KFVH92pbunbs7dz9v//Po5GYryvsw2rE6JPZ2AUOoV+6jgR8tKVzoKMDTHe2
-	k+PD2pug==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:36722)
+	bh=AaMsMZWiwvSaJp1atd6FKd0pROFWF3fPGtmIY0iqYYs=; b=nJOIxtZ52FqIAVUFl2d7cP0vTC
+	F1ANU0h5omGFVqaHz+i1HZQ/9eCovQVlWBEKYvHWcTgj/WlJK5s9ngZ2ESModv77AqFeEFgfOYNhM
+	WuunX11xsvZ1EFu00Byzj9MB2hE2+TuhPu6d9p6pJcC4XIZ7tcmnEOZdLNgYiubkOCbQxMEt1a2wR
+	l5lRgW/fVcaLTA6xaKpEElQO/kDQrISXdGzbUm3M4GGs3itlVmricP/bMq29RcArGak8WDOnK3xyi
+	7KK4fDE0xQatqYO1vGATvNtgxUAr8Wj3DEWWPkYSbrodbniRmVPfY0Kap03XGhONynL7yldslsE1S
+	lXYyXE9w==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55912)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1reudi-0007kH-1R;
-	Tue, 27 Feb 2024 10:24:46 +0000
+	id 1reuhc-0007lc-2j;
+	Tue, 27 Feb 2024 10:28:48 +0000
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1reudc-0007J2-Nc; Tue, 27 Feb 2024 10:24:40 +0000
-Date: Tue, 27 Feb 2024 10:24:40 +0000
+	id 1reuhZ-0007JB-VJ; Tue, 27 Feb 2024 10:28:46 +0000
+Date: Tue, 27 Feb 2024 10:28:45 +0000
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Zev Weiss <zev@bewilderbeest.net>
-Cc: linux-parisc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Helge Deller <deller@gmx.de>, Florent Revest <revest@chromium.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Yin Fengwei <fengwei.yin@intel.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Guenter Roeck <linux@roeck-us.net>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	David Laight <David.Laight@aculab.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Stefan Roesch <shr@devkernel.io>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org,
-	openbmc@lists.ozlabs.org, Sam James <sam@gentoo.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RESEND 1/2] prctl: Generalize PR_SET_MDWE support check
- to be per-arch
-Message-ID: <Zd24aCps4xD28c74@shell.armlinux.org.uk>
-References: <20240227013546.15769-4-zev@bewilderbeest.net>
- <20240227013546.15769-5-zev@bewilderbeest.net>
+	Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Parisc List <linux-parisc@vger.kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v10] lib: checksum: Use aligned accesses for ip_fast_csum
+ and csum_ipv6_magic tests
+Message-ID: <Zd25XWTkDPuIjpF8@shell.armlinux.org.uk>
+References: <20240223-fix_sparse_errors_checksum_tests-v10-1-b6a45914b7d8@rivosinc.com>
+ <7ae930a7-3b10-4470-94ee-89cb650b3349@csgroup.eu>
+ <e11fea7a-e99e-4539-a489-0aa145ee65f0@roeck-us.net>
+ <ZdzPgSCTntY7JD5i@shell.armlinux.org.uk>
+ <ZdzZ5tk459bgUrgz@ghost>
+ <ZdzhRntTHApp0doV@shell.armlinux.org.uk>
+ <b13b8847977d4cfa99b6a0c9a0fcbbcf@AcuMS.aculab.com>
+ <Zd0b8SDT8hrG/0yW@ghost>
+ <cdd09f7a-83b2-41ba-a32c-9886dd79c43e@roeck-us.net>
+ <9b4ce664-3ddb-4789-9d5d-8824f9089c48@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240227013546.15769-5-zev@bewilderbeest.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9b4ce664-3ddb-4789-9d5d-8824f9089c48@csgroup.eu>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, Feb 26, 2024 at 05:35:41PM -0800, Zev Weiss wrote:
-> There exist systems other than PARISC where MDWE may not be feasible
-> to support; rather than cluttering up the generic code with additional
-> arch-specific logic let's add a generic function for checking MDWE
-> support and allow each arch to override it as needed.
+On Tue, Feb 27, 2024 at 06:47:38AM +0000, Christophe Leroy wrote:
 > 
-> Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-> Cc: <stable@vger.kernel.org> # v6.3+
+> 
+> Le 27/02/2024 à 00:48, Guenter Roeck a écrit :
+> > On 2/26/24 15:17, Charlie Jenkins wrote:
+> >> On Mon, Feb 26, 2024 at 10:33:56PM +0000, David Laight wrote:
+> >>> ...
+> >>>> I think you misunderstand. "NET_IP_ALIGN offset is what the kernel
+> >>>> defines to be supported" is a gross misinterpretation. It is not
+> >>>> "defined to be supported" at all. It is the _preferred_ alignment
+> >>>> nothing more, nothing less.
+> >>
+> >> This distinction is arbitrary in practice, but I am open to being proven
+> >> wrong if you have data to back up this statement. If the driver chooses
+> >> to not follow this, then the driver might not work. ARM defines the
+> >> NET_IP_ALIGN to be 2 to pad out the header to be on the supported
+> >> alignment. If the driver chooses to pad with one byte instead of 2
+> >> bytes, the driver may fail to work as the CPU may stall after the
+> >> misaligned access.
+> >>
+> >>>
+> >>> I'm sure I've seen code that would realign IP headers to a 4 byte
+> >>> boundary before processing them - but that might not have been in
+> >>> Linux.
+> >>>
+> >>> I'm also sure there are cpu which will fault double length misaligned
+> >>> memory transfers - which might be used to marginally speed up code.
+> >>> Assuming more than 4 byte alignment for the IP header is likely
+> >>> 'wishful thinking'.
+> >>>
+> >>> There is plenty of ethernet hardware that can only write frames
+> >>> to even boundaries and plenty of cpu that fault misaligned accesses.
+> >>> There are even cases of both on the same silicon die.
+> >>>
+> >>> You also pretty much never want a fault handler to fixup misaligned
+> >>> ethernet frames (or really anything else for that matter).
+> >>> It is always going to be better to check in the code itself.
+> >>>
+> >>> x86 has just made people 'sloppy' :-)
+> >>>
+> >>>     David
+> >>>
+> >>> -
+> >>> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, 
+> >>> MK1 1PT, UK
+> >>> Registration No: 1397386 (Wales)
+> >>>
+> >>
+> >> If somebody has a solution they deem to be better, I am happy to change
+> >> this test case. Otherwise, I would appreciate a maintainer resolving
+> >> this discussion and apply this fix.
+> >>
+> > Agreed.
+> > 
+> > I do have a couple of patches which add explicit unaligned tests as well as
+> > corner case tests (which are intended to trigger as many carry overflows
+> > as possible). Once I get those working reliably, I'll be happy to submit
+> > them as additional tests.
+> > 
+> 
+> The functions definitely have to work at least with and without VLAN, 
+> which means the alignment cannot be greater than 4 bytes. That's also 
+> the outcome of the discussion.
 
-PA-RISC folk need to ack/review-by this patch. Alternatively, it needs
-to be restructured to add the arch_memory_deny_write_exec_supported()
-override without touching the PA-RISC code, which then makes the Arm
-patch independent of the status of the PA-RISC patch. That will allow
-the Arm issue to be solved even if an ack is not forthcoming for the
-PA-RISC parts.
+Thanks for completely ignoring what I've said. No. The alignment ends up
+being commonly 2 bytes.
 
-Alternatively, I wonder whether akpm would be willing to pick up this
-patch set as-is.
+As I've said several times, network drivers do _not_ have to respect
+NET_IP_ALIGN. There are 32-bit ARM drivers which have a DMA engine in
+them which can only DMA to a 32-bit aligned address. This means that
+the start of the ethernet header is placed at a 32-bit aligned address
+making the IP header misaligned to 32-bit.
+
+I don't see what is so difficult to understand about this... but it
+seems that my comments on this are being ignored time and time again,
+and I can only think that those who are ignoring my comments have
+some alterior motive here.
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
