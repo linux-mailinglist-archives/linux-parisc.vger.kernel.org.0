@@ -1,170 +1,132 @@
-Return-Path: <linux-parisc+bounces-723-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-724-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064E386A0DA
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 21:31:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A56CE86A0E6
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 21:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B9AE1C243DC
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 20:31:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2581B23163
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Feb 2024 20:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998504DA0C;
-	Tue, 27 Feb 2024 20:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED2E51C4C;
+	Tue, 27 Feb 2024 20:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GytqlouE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m1SvBTmr"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FBA134B1;
-	Tue, 27 Feb 2024 20:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2F04DA0C;
+	Tue, 27 Feb 2024 20:33:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709065902; cv=none; b=MC22VCC9TTspw4bA9VunJeusAdbfK0/ifjcOcLHLY1wc/xc1W4hggmpUiacQ0qsq54z+PwtXv+8UzBo+w4QKKZgffuGOrRPpSW4M82puX6WdhYpTrkJb2KWGNVm5sB7DJtyJeMqGsGR7ciYlXeC/pHiaz2Rsf4oUWv35hdFCzzU=
+	t=1709066038; cv=none; b=W+bUeq2C/+tjmmxpgQa60f9pjk+pymmObhEnZ0xy+SAL/6RfuB0/imjO0OHISCN6hCBIHmnH2odqr93WBMwfSDAZjzAM7zIAruT0I/NGuBOzOtg5UUd+e96XOVU1i95Lk7vydiS5FuYP4USNLBSDYqFMn4mRkUq6Sl2jk+75Ca8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709065902; c=relaxed/simple;
-	bh=G6yKE1THFhG6N9U45yHLmmavHahr/jJrUURUvgErM9E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G/VK+9Y+OBDUHrNtp0GDuFv8ezifVsEuVqC5tkMMgW6cDNCW73kAWbOAKLIEo0mavIWeS44g6ND13EHeQpDH0cFb11JpNq0DWSuQJbzSAWpAHtIjy3jLY7CHBs9BC3dd69SE+incilzKwzLysjnx7VyoCQo4Um2wdLP/tpB8JKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GytqlouE; arc=none smtp.client-ip=209.85.210.172
+	s=arc-20240116; t=1709066038; c=relaxed/simple;
+	bh=vd+TyTSWQWOfYY26tKvy0OG6e8JjBYLWstVKW/u4Ebg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BaGwKBkugnUnvCrqp9iyO4ky+CJZziZSnX+QSouos8z55hwhb2cETsO9j0zEWAkRyhWGU9wmJTW0YVZyH2OTMDsZpJmGboVYuEW+bbrSQ0YsiJzGMtOOfDBNNvTKvQRNRQLqi+As4lfcPhYrfeQfMIq0HRMMGGCvFitzdusQ9pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m1SvBTmr; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6e43ee3f6fbso4310880b3a.3;
-        Tue, 27 Feb 2024 12:31:40 -0800 (PST)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1db6e0996ceso35312495ad.2;
+        Tue, 27 Feb 2024 12:33:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709065900; x=1709670700; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=sSYRDIf7PMa1i1v/+zGirvQOYT4gXK0xwaNIYHe2l1Y=;
-        b=GytqlouEGtTbwT2E6z23MY5QWCQdyPguAv8dW4CueNq/plxCR3IrwXYscjmg3NfuXJ
-         lYwTnej2XYMbzJskTWKW64A56fMkdvATElt5JP4ewMB0bI0LSNnzIuaQ7bFtAHbakjqw
-         crF7tUxLw9rSrp2E6VZvGJ92VxldJac8ZHp1JAu7IUnBW9KPUh92jfCAjOWERM+0tfeU
-         tE01t0vD4xVivVK/2nD9tk7ZOxM5LDOus1TiCxOZuncQIjZkANuHwFuDJ5RWVBLvOoKX
-         q7/0RgXviGRNaLs2rK4w+Fp2a/HpgCYSJ6t7tn8goMbQbFYfZuWnG0BB/OHbT3M/+Ln9
-         b91g==
+        d=gmail.com; s=20230601; t=1709066036; x=1709670836; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=VmNpj3QbyAWLz70sR9q5u6BAhTl239U+KB2ZQ1R5C38=;
+        b=m1SvBTmrWjETUJdQBwe55tCx7SZEhVWLaoqq1GORDMN2zkuH8ZO+mdmzKyoq+Z/1gP
+         OAXc7DZ1XwAI8NoUzB0jSBKm2i5PZiEJUvLGUWkAYxkqu4DyWgTNqfDEP/e9rsWxYgBu
+         VIBF//wHva/LmDYPRA71/qE5lcj9PL27AeRoNPZJpmPXWa1kQLpAqVsGyUkPUbV/eXk4
+         1PjJ6WzEmXpqlj1rJqSatXVtmS0hZe0KZT8lh1FYSkX7SpQy/I1wmrpDOvRef/YSndRN
+         T3RIpDAn43cv+UmpoCGa6vAf9to1FWOQRSAiWBaejqVb77wLxfm3/Kizr7G3DdFsG2Ri
+         OVnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709065900; x=1709670700;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sSYRDIf7PMa1i1v/+zGirvQOYT4gXK0xwaNIYHe2l1Y=;
-        b=FIgy1tEAYzkTJjXxXj3qLLS/Ug7Xo/N+rx0h4X8gQFSetKgfzI6kzpzUiB2POxaEqj
-         pF4PaHzTGDg8FOrPTQB7sZsD6bHweunDSGQ5EGmEWYbHagVtk6bJiY3Q9eWW+dtj4DzH
-         vdxsMzcGIpWECp4PyxDeA5/1VpwpyXNckvqAnGQR1dvzOEJy5iUSz6MQgdiKST+w99q3
-         YyRXWUIC2hEXqQMEIpkB/nAyscsZIc8Y4SvU4xZSGqlfhEz88hVdB9S6ijr6Vcmiq56y
-         DBkY3DGKmzDgTv7qyVzLWTW2BbLpmwmeYAs9O1rJTfK4QlOdyep/x3pGj4ZqjpCfxXSH
-         RT2w==
-X-Forwarded-Encrypted: i=1; AJvYcCVhdopmgXowkyDHJCAm30Qw08ad9HlkBJCaNR54qmkQeyN3TCVeAas+2a5uy97HxmzzuoNWQLNI2A1dzAt12uf1rh7Z4QT9EEBQFiyVznVnoM1znfTLqP4J7cTC/AGU8/+ooJOQ/ZFNGR2V
-X-Gm-Message-State: AOJu0YyvXxdpFJcQXlBlX9QoLBRLUzLEYkgJGy6uaPLJWOzm72MGRYaN
-	z/dJH3vOm+7cWn1NhaS8n9Q2DGHWfyNvkEVtEStIg79dm2aOALgdEA+HTKa/
-X-Google-Smtp-Source: AGHT+IFVo5BdTY83PWZQqEM8jO+608zjzUgiArqwCj+UrJUJgZzWDN0DmgiI1GEgAAAMDRmR4GIHMA==
-X-Received: by 2002:a05:6a21:1799:b0:1a0:ef1e:a658 with SMTP id nx25-20020a056a21179900b001a0ef1ea658mr3592183pzb.11.1709065900169;
-        Tue, 27 Feb 2024 12:31:40 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id u19-20020a631413000000b005dc89957e06sm6219112pgl.71.2024.02.27.12.31.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Feb 2024 12:31:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709066036; x=1709670836;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VmNpj3QbyAWLz70sR9q5u6BAhTl239U+KB2ZQ1R5C38=;
+        b=HGXy6Vw10TfKPydiDqJ0EXPQxO13lOGBa8OcH9afZXrdc9A3WyBMoBU0tFYdD/hQjy
+         QkcoULwZhDML8vYa18BVdcY5oNBCFEk6rRSS5HQDcX7kK10m/Wvbz+XjVAI1YzHKW8Ov
+         nog4mnIyG4BwaeEm5z1nJ5LsE5EKiggu9+YgAdZvOPQOwiRJoM7mWO5dmMpvgrnrol7I
+         00K5SnKuWBW0BfkheQbuSPGb00yf0XvAeJLViJxEQVKuMmEK9s+KJ7Rs6Bt/OOSStYmO
+         qB2qxNUtMbsjQNGFBozobASeXBx1DjKQPHXKEw63JOmVQ1gSTinF6fJUjil+/LO19PIM
+         GAvg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRVOqa80taZ1bOSWZLfZXX8kMJxajaIu8ZWp8t9+AsUWN8SNYbg1ipmTiCP/UVQ9vWllFZzl2tg+5sMO5siubhtWzkGI8sW3QhGRib+SXOi/34kivjChX/OvviopotMQ9sE8h0B6S0/fgP
+X-Gm-Message-State: AOJu0Yw6Wp7r0sB/BskdR5raMjocx6+Nq7OR8o44q34wtDbZ0qTeK+/L
+	pGBIrOq0krG7GsYD5O/ECZzVVHaw/60DNT2ZZ1i7BfAy10rzPu1b
+X-Google-Smtp-Source: AGHT+IHRyQVYnAty4uYr78Sk5lXdwaAQLFd/+Pa3xQZ2mePuvue4g9fzI/EOjzMI21x9zCB4vhQCeA==
+X-Received: by 2002:a17:902:f688:b0:1dc:3d5:bdcc with SMTP id l8-20020a170902f68800b001dc03d5bdccmr13443056plg.42.1709066035823;
+        Tue, 27 Feb 2024 12:33:55 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id w23-20020a1709027b9700b001db5241804csm1941363pll.20.2024.02.27.12.33.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Feb 2024 12:33:55 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <faa17d09-15de-48e5-ad25-c43a69d0df49@roeck-us.net>
-Date: Tue, 27 Feb 2024 12:31:38 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Helge Deller <deller@gmx.de>
+Cc: "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+	linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH v2] parisc: Strip upper 32 bit of sum in csum_ipv6_magic for 64-bit builds
+Date: Tue, 27 Feb 2024 12:33:51 -0800
+Message-Id: <20240227203351.3445929-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: More csum_ipv6_magic fixes
-Content-Language: en-US
-To: Helge Deller <deller@gmx.de>
-Cc: "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- Charlie Jenkins <charlie@rivosinc.com>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240227185334.2697324-1-linux@roeck-us.net>
- <d1a6fe49-19f9-433e-b275-209b59155193@gmx.de>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <d1a6fe49-19f9-433e-b275-209b59155193@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2/27/24 12:14, Helge Deller wrote:
-> On 2/27/24 19:53, Guenter Roeck wrote:
->> IPv6 checksum tests with unaligned addresses resulted in unexpected
->> failures.
->>
->> Expected expected == csum_result, but
->>      expected == 46591 (0xb5ff)
->>      csum_result == 46381 (0xb52d)
->> with alignment offset 1
->>
->> Oddly enough, the problem disappeared after adding test code into
->> the beginning of csum_ipv6_magic().
->>
->> As it turns out, the 'sum' parameter of csum_ipv6_magic() is declared as
->> __wsum, which is a 32-bit variable type. However, it is treated as 64-bit
->> variable in the assembler code.
-> 
-> Nice catch!
-> That kind of bugs is actually the reason why I start to prefer
-> C-code over inline assembly, even if C might perform slower.
-> 
-> I've applied that patch to the parisc git tree, but do you think
-> you can come up with a better patch title, e.g.
-> "strip upper 32bits of sum in csum_ipv6_magic()" ?
-> 
+IPv6 checksum tests with unaligned addresses on 64-bit builds result
+in unexpected failures.
 
-Sure. My initial fix was way more complicated, and I didn't update
-the description after I figured out what was actually going on and
-found the simpler fix. I'll resend.
+Expected expected == csum_result, but
+    expected == 46591 (0xb5ff)
+    csum_result == 46381 (0xb52d)
+with alignment offset 1
 
-Thanks,
-Guenter
+Oddly enough, the problem disappeared after adding test code into
+the beginning of csum_ipv6_magic().
+
+As it turns out, the 'sum' parameter of csum_ipv6_magic() is declared as
+__wsum, which is a 32-bit variable. However, it is treated as 64-bit
+variable in the 64-bit assembler code. Tests showed that the upper 32 bit
+of the register used to pass the variable are _not_ cleared when entering
+the function. This can result in checksum calculation errors.
+
+Clearing the upper 32 bit of 'sum' as first operation in the assembler
+code fixes the problem.
+
+Acked-by: Helge Deller <deller@gmx.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+---
+v2: Updated subject, clarified that the problem only affects 64-bit builds,
+    added Helge's Acked-by: tag.
+
+ arch/parisc/include/asm/checksum.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/parisc/include/asm/checksum.h b/arch/parisc/include/asm/checksum.h
+index c949aa20fa16..2aceebcd695c 100644
+--- a/arch/parisc/include/asm/checksum.h
++++ b/arch/parisc/include/asm/checksum.h
+@@ -126,6 +126,7 @@ static __inline__ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ 	** Try to keep 4 registers with "live" values ahead of the ALU.
+ 	*/
+ 
++"	depdi		0, 31, 32, %0\n"/* clear upper half of incoming checksum */
+ "	ldd,ma		8(%1), %4\n"	/* get 1st saddr word */
+ "	ldd,ma		8(%2), %5\n"	/* get 1st daddr word */
+ "	add		%4, %0, %0\n"
+-- 
+2.39.2
 
 
