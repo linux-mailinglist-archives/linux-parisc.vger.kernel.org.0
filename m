@@ -1,146 +1,131 @@
-Return-Path: <linux-parisc+bounces-738-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-739-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFDCE86ABFF
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 11:15:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CFD86AE66
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 12:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AD37287DE2
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 10:15:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26D941C228F4
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 11:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825F13C062;
-	Wed, 28 Feb 2024 10:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B985145B29;
+	Wed, 28 Feb 2024 11:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RDBVhHu5"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79893AC1E;
-	Wed, 28 Feb 2024 10:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945CD145B23;
+	Wed, 28 Feb 2024 11:51:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709115348; cv=none; b=MQ4s5lHwiWBuuk5CSSqfRBcz3QK/fUHG4OUdVOMRjTLztsuDqHX3xR6Z2UFBhZYE18ry8/Q15e1cTQAI7NSqBkqsKPEpf7CtOX/3LITo0a1YTVS+thWHDDosolYdxtanQsKVO98sqBD8hB8+Gp4Bbcbi7DJ4EB6YabYyRml8+iE=
+	t=1709121113; cv=none; b=nS4j1L//Ugx+yd160Vj+lRd7yRzOSn4W8OpdN0Xq/LvXv7xtEOZdUUu30sfpgo6EIDUSbY+yu2AZTUTf4VkOhJUCqyRbdLnlW1rUMDxsvb1jgTIhQcRBTb2PG87hD0ooLuGnPlC4S8R+IEeFAVqlsv4t8ZWC62h0VN+sulJTzY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709115348; c=relaxed/simple;
-	bh=JXWi3QJrd65veDhHNrOB2GuMIcSXUkgzzrY8SPVTSXs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CsYDGpMplLpX4I4MNORyVkqu03viAtjMeRq3d84rJOeD2Hj2hKccmNt9RLIiyUGvvpLW3kun16wTafXfJ0xT+DV1P1j/pinTQPjXgn4fk2kAZr8R4Q/NTXrKt/m0+BDoXncMrAMvwve6+gujAdBN4DkBaCYEui2JcGHxcrL8aWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-608959cfcbfso56258327b3.3;
-        Wed, 28 Feb 2024 02:15:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709115345; x=1709720145;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5sisHDeqoo8my2vybw8Rh8HLkZ37ptybG5ZlPOOTIA0=;
-        b=SrOlw4kGc5GQlPwaJXDodMxm6MkdNXmmY4+N23VAT/OmMZ62qbdi7zlvhUPa75rbou
-         YUsK3jYogXC8yGW95lpl+G3U3D9Px4D2XKG90tO2tQRxBwjuILNiOK9bVkTVXL3t0yW7
-         S0G8fAamnI5iWtadD/+BqrMKbNGg1Gf5spzJwp2csdfFJ0eV/0cSFVYrYNBDLBP2Djeu
-         M/fsUrIwz7j0jwLEv41X+6ZYGELWQ67WVvro1rj2wzdB0s1rt57O/siKXIecEF8JfNbQ
-         6hcade1TKJPtTBb+13i0gP12LArGRSFP1FhT4FRfDDosXL04sAwseQUiDveXo9UwnXg0
-         Jm/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXprdae49aozTqwgdJSXNAU152dREgA45PI32+YLYX54d6BTVRBIYJUnYLxnrK0hlQEufqn6rsImtInbCaymoHFekCiE6caXZMQtY7HqY9J6NYsWPQvKx5okn5KJsRKm1IFibQ4UparT04B//xRT2Ysw+5LyQyaydHtg9Ka63pzWnxoZpDu5GAsLtEw
-X-Gm-Message-State: AOJu0YyHt014n3WDzYQNivndWnovI670lUxw8sDWrJvP2n6cltzHml+h
-	n5uwThK4k02hRGVqfesiPFRav7EFfIj0Zzrt+bNXZLEBf60yOMdv6tq1N1SUABcUzA==
-X-Google-Smtp-Source: AGHT+IFwIykTXE9M7RomK7vpBNurVSTHX9Dk/OfhtigZLyyIrG4fW7NF3RWMMFuS3syFCCed9fnY3g==
-X-Received: by 2002:a0d:e24b:0:b0:609:3a3b:1728 with SMTP id l72-20020a0de24b000000b006093a3b1728mr1718801ywe.26.1709115345512;
-        Wed, 28 Feb 2024 02:15:45 -0800 (PST)
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com. [209.85.128.171])
-        by smtp.gmail.com with ESMTPSA id be19-20020a05690c009300b00608d9a50b59sm2079531ywb.28.2024.02.28.02.15.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Feb 2024 02:15:45 -0800 (PST)
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-608959cfcbfso56258107b3.3;
-        Wed, 28 Feb 2024 02:15:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCViBXXGabQVKAhXLQSZXSGZPloGXYNDDNfKbMvpLqdxH952diQZsSlkE2cXKBosBtGgTJ1LUzkYwh3wQc7//t4JGcVVUHLKKh+UP52KomlL3FEEbMe5eNbHKlSwTtyhdMrZVPViJ7greejeIkFGfdXQPHu33JpKrfui+T5dyPvyEs9ohmhwyJAEs4sY
-X-Received: by 2002:a05:6902:1a47:b0:dcd:ad52:6927 with SMTP id
- cy7-20020a0569021a4700b00dcdad526927mr2537761ybb.11.1709115345066; Wed, 28
- Feb 2024 02:15:45 -0800 (PST)
+	s=arc-20240116; t=1709121113; c=relaxed/simple;
+	bh=UOHYABj412OrOe9R32rHntZ5qCSK4fekgltl0v2LzuA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cw0mtNxdE4/5cabJ8INPrUMwwL1oTn2AvMPmzOiZpr2bi71esQVbp0JRh2u2u3TXeA5X50JW/IV6HtKHptKGsKBxBjHqGMbTaOuYlUKbQ44inaWgPteUoRXgTgVfZeTUnbysBhdd4AHJhBmKxzgZtnrhR7ifDG2GtLFub5D+Rn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RDBVhHu5; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709121112; x=1740657112;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UOHYABj412OrOe9R32rHntZ5qCSK4fekgltl0v2LzuA=;
+  b=RDBVhHu5kI9HOB61cYAalpnZ0DtwYx+LtAapZMdpmtTti1t1X1gju8nt
+   c1z44b/MnstlsBpEtN+coKHYcUxG8szJs55fjXU147XR/FnOJV/SYvtx8
+   yStpCZHQMUL+2+mNzijJUbKbYQR4frglhlbWn6aAz0h0GnpSTay4K1KiS
+   IiGNHTgknp78ZyywcGudpjPoepr7mb7nd/n70LtFkTbbMhbgfZVWvX1UA
+   lGV2Ev2plHj8OAZ9T2oYa2HMzAJbZll6mnn+lcU7iL97KTVsl4aQE99Cl
+   dUNihqUkChd2VgIlYe1JlCnAkwnkgD2olR3z51GWrqQCwPsqgsW9sn4np
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="7337755"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="7337755"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 03:51:51 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="937034059"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="937034059"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 28 Feb 2024 03:51:44 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id B730928A; Wed, 28 Feb 2024 13:51:42 +0200 (EET)
+Date: Wed, 28 Feb 2024 13:51:42 +0200
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, debug@rivosinc.com, 
+	broonie@kernel.org, keescook@chromium.org, tglx@linutronix.de, mingo@redhat.com, 
+	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, luto@kernel.org, 
+	peterz@infradead.org, hpa@zytor.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 5/9] mm: Initialize struct vm_unmapped_area_info
+Message-ID: <j7bfvig3gew3qruouxrh7z7ehjjafrgkbcmg6tcghhfh3rhmzi@wzlcoecgy5rs>
+References: <20240226190951.3240433-1-rick.p.edgecombe@intel.com>
+ <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <7ae930a7-3b10-4470-94ee-89cb650b3349@csgroup.eu>
- <e11fea7a-e99e-4539-a489-0aa145ee65f0@roeck-us.net> <ZdzPgSCTntY7JD5i@shell.armlinux.org.uk>
- <ZdzZ5tk459bgUrgz@ghost> <ZdzhRntTHApp0doV@shell.armlinux.org.uk>
- <b13b8847977d4cfa99b6a0c9a0fcbbcf@AcuMS.aculab.com> <Zd0b8SDT8hrG/0yW@ghost>
- <cdd09f7a-83b2-41ba-a32c-9886dd79c43e@roeck-us.net> <9b4ce664-3ddb-4789-9d5d-8824f9089c48@csgroup.eu>
- <Zd25XWTkDPuIjpF8@shell.armlinux.org.uk> <Zd58jvN3PjQSe+yt@ghost>
- <c0449c0a-33bc-49c4-97e3-56a79a6ce93e@csgroup.eu> <02bb92c3-a14c-4a77-a3b0-a7c857d1d60d@roeck-us.net>
-In-Reply-To: <02bb92c3-a14c-4a77-a3b0-a7c857d1d60d@roeck-us.net>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 28 Feb 2024 11:15:33 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdW-sUYr8_y6av9Dbtz6JJAxBUsiTGZcK2QYEHo0x1z44w@mail.gmail.com>
-Message-ID: <CAMuHMdW-sUYr8_y6av9Dbtz6JJAxBUsiTGZcK2QYEHo0x1z44w@mail.gmail.com>
-Subject: Re: [PATCH v10] lib: checksum: Use aligned accesses for ip_fast_csum
- and csum_ipv6_magic tests
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, Charlie Jenkins <charlie@rivosinc.com>, 
-	"Russell King (Oracle)" <linux@armlinux.org.uk>, David Laight <David.Laight@aculab.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Helge Deller <deller@gmx.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@rivosinc.com>, 
-	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, 
-	KUnit Development <kunit-dev@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240226190951.3240433-6-rick.p.edgecombe@intel.com>
 
-CC testing
+On Mon, Feb 26, 2024 at 11:09:47AM -0800, Rick Edgecombe wrote:
+> diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
+> index 5db88b627439..dd6801bb9240 100644
+> --- a/arch/alpha/kernel/osf_sys.c
+> +++ b/arch/alpha/kernel/osf_sys.c
+> @@ -1218,7 +1218,7 @@ static unsigned long
+>  arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
+>  		         unsigned long limit)
+>  {
+> -	struct vm_unmapped_area_info info;
+> +	struct vm_unmapped_area_info info = {};
+>  
+>  	info.flags = 0;
+>  	info.length = len;
 
-On Wed, Feb 28, 2024 at 8:59=E2=80=AFAM Guenter Roeck <linux@roeck-us.net> =
-wrote:
-> On 2/27/24 23:25, Christophe Leroy wrote:
-> [ ... ]
-> >>
-> >> This test case is supposed to be as true to the "general case" as
-> >> possible, so I have aligned the data along 14 + NET_IP_ALIGN. On ARM
-> >> this will be a 16-byte boundary since NET_IP_ALIGN is 2. A driver that
-> >> does not follow this may not be appropriately tested by this test case=
-,
-> >> but anyone is welcome to submit additional test cases that address thi=
-s
-> >> additional alignment concern.
-> >
-> > But then this test case is becoming less and less true to the "general
-> > case" with this patch, whereas your initial implementation was almost
-> > perfect as it was covering most cases, a lot more than what we get with
-> > that patch applied.
-> >
-> NP with me if that is where people want to go. I'll simply disable checks=
-um
-> tests on all architectures which don't support unaligned accesses (so far
-> it looks like that is only arm with thumb instructions, and possibly nios=
-2).
-> I personally find that less desirable and would have preferred a second
-> configurable set of tests for unaligned accesses, but I have no problem
-> with it.
+Can we make a step forward and actually move initialization inside the
+initializator? Something like below.
 
-IMHO the tests should validate the expected functionality.  If a test
-fails, either functionality is missing or behaves wrong, or the test
-is wrong.
+I understand that it is substantially more work, but I think it is useful.
 
-What is the point of writing tests for a core functionality like network
-checksumming that do not match the expected functionality?
+diff --git a/arch/alpha/kernel/osf_sys.c b/arch/alpha/kernel/osf_sys.c
+index 5db88b627439..c40ddede3b13 100644
+--- a/arch/alpha/kernel/osf_sys.c
++++ b/arch/alpha/kernel/osf_sys.c
+@@ -1218,14 +1218,12 @@ static unsigned long
+ arch_get_unmapped_area_1(unsigned long addr, unsigned long len,
+ 		         unsigned long limit)
+ {
+-	struct vm_unmapped_area_info info;
++	struct vm_unmapped_area_info info = {
++		.length = len;
++		.low_limit = addr,
++		.high_limit = limit,
++	};
 
-Gr{oetje,eeting}s,
+-	info.flags = 0;
+-	info.length = len;
+-	info.low_limit = addr;
+-	info.high_limit = limit;
+-	info.align_mask = 0;
+-	info.align_offset = 0;
+ 	return vm_unmapped_area(&info);
+ }
 
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
