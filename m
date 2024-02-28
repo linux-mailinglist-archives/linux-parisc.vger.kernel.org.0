@@ -1,77 +1,76 @@
-Return-Path: <linux-parisc+bounces-727-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-728-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F1486A459
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 01:21:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9721A86A45C
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 01:24:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6D801C2231D
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 00:21:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAF711C213E5
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 00:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9D115AF;
-	Wed, 28 Feb 2024 00:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B47536B;
+	Wed, 28 Feb 2024 00:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="RidsK9Gr"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="G0olBR/7"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09E5111E
-	for <linux-parisc@vger.kernel.org>; Wed, 28 Feb 2024 00:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A9D363
+	for <linux-parisc@vger.kernel.org>; Wed, 28 Feb 2024 00:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709079699; cv=none; b=my0jLtnG4iq3Aha8xTHpkTBVwIH1fE7pCgRbnHvhtWtpFbo4AQCI+wBQbM1tYdzVKRZmdeXC2F7/h7UUt8D3UmfRoQCUNykanjWC8ARk1GRUjGA2owpq+V5+ZCp1aOswtRxUsiG7PVaxVTMtOYNZsnNt3klGrlN7+mYyK+oVhQA=
+	t=1709079850; cv=none; b=ERlyw6Anw2mo9ssKFZooMeb8wFB5VoKvODau/GjanfR0VyVgbtgGlW3qGNOLFi2ADBOGS5lD0ZS4G7Qzohs1lQgOejB/2ofVE3priVPiEvSVY6FGv4QgPD0vJsFIp7bPzHAqWDdR77M2Ne/IKslWQhUxNecmyoXYSpDWamEJB0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709079699; c=relaxed/simple;
-	bh=2tx+CAAZ+8knFbLNc9ih2ERZytV3LC46oIUWIK/tEYw=;
+	s=arc-20240116; t=1709079850; c=relaxed/simple;
+	bh=3SsDuWj0X+1CAlviyNiAM5PZ4YHxEQBBVSH2FuLqqgM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kYCjKolTrO4Z/0eLgrkc/dfyryoY5a2MRaYo4ZrN+hHeIEVpdJWv5d4yhX8kkq/o9/831ZmldY3F++q5A2RKMJWuS183+Aw6rjtTdQ1lvh7+2aiG7yGqS/1qsWQUugkH9mGK07OYBRwx/9WSYrC+GGC3k3t0Nx6v2n+o1JckzfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=RidsK9Gr; arc=none smtp.client-ip=209.85.214.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=eI0eOdObAxBwrhX6ERWTTAYmk0Opd9vvJY4ZMP3fA/67f6I0l3KdEdrERohH6yoG9w6rowXMDzI7jP7nHNDBqv9HgCB69zvkfSNfOE/ux8WKiFsxzxiNZKvMpwn9HcDojJbk5qquCm4nujepvUCQ5pHo3lrgZ3E37OkKAAvLNqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=G0olBR/7; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1dc09556599so43027855ad.1
-        for <linux-parisc@vger.kernel.org>; Tue, 27 Feb 2024 16:21:37 -0800 (PST)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1dc49b00bdbso43686585ad.3
+        for <linux-parisc@vger.kernel.org>; Tue, 27 Feb 2024 16:24:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1709079697; x=1709684497; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=PeW62lD1HbXZTDjdIl3PrIGd38WT41hWRPPZB4yHjx4=;
-        b=RidsK9GrTuaDW8feFqrc09o+Gch8LMrp4I1Wx2yjgBKVaoDzWrF4B4L/uZiGtCU1y2
-         zh5adqaJBPMAy1e1I8+MpZkvrAeywU+NfaxYUuVimPshmlRS94602PWIEPr6i8kX/Yya
-         2d3a1J+cSkG+vzSiA1ckV/Oo0libks+sMbsF+kPp61FtpH0hKLeHPmrFx8B8AJdO0VX4
-         ibnwp8vScfy8Vz9DDpItCnf9/eZjYDOJZLW65iH9dxoIVNhMGFVhJ5nqrEigXC2XpTE4
-         Uzxu80VviJbPsFTnVbnYWdvNUP7c/UMFAj1CVf+VZkG3fiejBlD3mdsD8Bszi99ZzP3k
-         6Nmw==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1709079848; x=1709684648; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=w6iv04Dkt7tZFI9zaXahrycahhIwPU4ZPmiteAipA/o=;
+        b=G0olBR/7e36rt2d8DBvM6QRXSoQaLq38eXjELJZGkd5cr0SAmBB6yQyZp3b5Dpvk2e
+         a+rmpjaEnPI6GocBmy21Dhyw2iAvQVwrr69oRHehj8ZzooPCv9PJVYMWGk9ZZRjEe57U
+         J8VqQWlwc7U0cADNm+uvsF/UaXxBk/ZB6Is0x7fOFwSc8T8vn29QcDWdjYYmV15MAOiu
+         ht22KMcc5X5Svkmy2HDDx2FFchqQitCVDu9KFjJnBoGtb4pH6p205LocyyYR7jEK5x/0
+         S7/W4oV1q920wOto+n0fNExRNP+nNV+psvyNPH5SQOnfEOD1Hra6rm6s2/OXh/3cxY9w
+         2/kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709079697; x=1709684497;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PeW62lD1HbXZTDjdIl3PrIGd38WT41hWRPPZB4yHjx4=;
-        b=oavgcPDujakB77yN7/5MtfoEFxWRf37lBD4tqP47S9kHb/DgzwXHV0sVsi6AORmLG/
-         xOjRTc0UfRXDoxsvq+o87suTYfEjm+RRbPYLUaEw3SBnda3da35mSqRuDdIjxD/0vcE7
-         WDBrkiJDBmPsk5gH/h6Zn3Lw/k6UzSuniweeh5LFBFwwbBI+SurwgjSsSzBQqvKya5ze
-         TWzPcXyy8HmtFSevcy7fuU6Aaoi9t43BdcatjDXSLVztU5ZbWXQFSdqFEkSxAdZRNA/w
-         NZaqJoBno2CjG9btB2VQ6FEJHka6Il9Idtr+cWJ9HBEHeyyNMkx/iUqLidSXmkXWCrTy
-         BU5w==
-X-Forwarded-Encrypted: i=1; AJvYcCUEHheVuRXvikJkBQh/Iigybl0ecM14Nw7/WTuJp5XoQgvNXz69r85PnOEKThP5JnSWOSNoXW13VqBShqa4UIfVoVEnV16Ng7w9UROh
-X-Gm-Message-State: AOJu0Yxe0gvMjr4xWxf+RuYdv82IsRpNZ+PDdHm4NwhEFLHwvekiOPcA
-	Rxuwk/FIo03OEZHHBtx9n0TjCUZ2lB67fvBZw+zB4eGvYR5g09RehojPSHLVxLE=
-X-Google-Smtp-Source: AGHT+IE8o9Rp+lbcfhjYaSP1dtgN80cS98Hloq7Zy1IPFODlR1CtDAZKxgLbRePODf9CvxcoTuoJbQ==
-X-Received: by 2002:a17:903:1106:b0:1db:930e:e755 with SMTP id n6-20020a170903110600b001db930ee755mr16779201plh.35.1709079697022;
-        Tue, 27 Feb 2024 16:21:37 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709079848; x=1709684648;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w6iv04Dkt7tZFI9zaXahrycahhIwPU4ZPmiteAipA/o=;
+        b=ITshBYrLV78TS6zXzQBe/YDddQQ9/8xEic9B4GfYs9VIYO6hI4JFFlYFsOSV7KXPPz
+         /nCVUQvyohzPyLHXFlrJI70iTrYy1N3v2aLcddWC1SL0m6ByZsa8OM6HKZMiVQJlw65L
+         Y6VaObe7LKw4DxuGgcP2ek5c2iI/Wjm6DrdLLoYVFOtUN5tRXmQ3te01Px+GC8itSiHh
+         FzOJ49ShA7w8PQZjRiaFRbB6lfWNsptWKUU0CF+IQ3JATZ5kJW1OjysL9SPfYngR+AAl
+         cBtMPwehdsLlVuTPGVsuPdacD4xi8esdlk2j2gaMEqfU4z/66Uw34mw0rPZdo69XyhXc
+         sPBw==
+X-Forwarded-Encrypted: i=1; AJvYcCX9KwX6vwAPlWw+9GEQdd646oGQYopkXW99WCmd81FJYBVZBshbrONOu+z7dVVTtEseNbu5Pd9BV8FrHa68QxxeM9QZOdzDBshOz+Wu
+X-Gm-Message-State: AOJu0YzIou4kgNcL+q1ThnmjBwg8vXyW3Fgd4inVZ7ePVq45rUd8ITmO
+	ef7R6G4/57uf1J3nbjiFyRkYU89vnlJdaJq/wtmULtrIliWDc3BC2L98QhPnxCQ=
+X-Google-Smtp-Source: AGHT+IGLMc9uRF3ZVwoUIS1lRxMHgDIj4ey00zVGV9uFOoNEBv0/G2IIu30jCPmEe06WY5C3nNKZ5g==
+X-Received: by 2002:a17:903:2310:b0:1dc:418f:890b with SMTP id d16-20020a170903231000b001dc418f890bmr13941783plh.40.1709079847965;
+        Tue, 27 Feb 2024 16:24:07 -0800 (PST)
 Received: from ghost ([50.213.54.97])
-        by smtp.gmail.com with ESMTPSA id mm3-20020a1709030a0300b001db8145a1a2sm2102634plb.274.2024.02.27.16.21.35
+        by smtp.gmail.com with ESMTPSA id mh13-20020a17090309cd00b001dc9893b03bsm2105835plb.272.2024.02.27.16.24.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Feb 2024 16:21:36 -0800 (PST)
-Date: Tue, 27 Feb 2024 16:21:34 -0800
+        Tue, 27 Feb 2024 16:24:07 -0800 (PST)
+Date: Tue, 27 Feb 2024 16:24:05 -0800
 From: Charlie Jenkins <charlie@rivosinc.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Guenter Roeck <linux@roeck-us.net>
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Guenter Roeck <linux@roeck-us.net>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
 	David Laight <David.Laight@aculab.com>,
 	Palmer Dabbelt <palmer@dabbelt.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -84,124 +83,83 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Linux ARM <linux-arm-kernel@lists.infradead.org>
 Subject: Re: [PATCH v10] lib: checksum: Use aligned accesses for ip_fast_csum
  and csum_ipv6_magic tests
-Message-ID: <Zd58jvN3PjQSe+yt@ghost>
-References: <7ae930a7-3b10-4470-94ee-89cb650b3349@csgroup.eu>
- <e11fea7a-e99e-4539-a489-0aa145ee65f0@roeck-us.net>
- <ZdzPgSCTntY7JD5i@shell.armlinux.org.uk>
- <ZdzZ5tk459bgUrgz@ghost>
+Message-ID: <Zd59JXTPPcqJblgD@ghost>
+References: <ZdzZ5tk459bgUrgz@ghost>
  <ZdzhRntTHApp0doV@shell.armlinux.org.uk>
  <b13b8847977d4cfa99b6a0c9a0fcbbcf@AcuMS.aculab.com>
  <Zd0b8SDT8hrG/0yW@ghost>
  <cdd09f7a-83b2-41ba-a32c-9886dd79c43e@roeck-us.net>
  <9b4ce664-3ddb-4789-9d5d-8824f9089c48@csgroup.eu>
  <Zd25XWTkDPuIjpF8@shell.armlinux.org.uk>
+ <c8ddcc98-acb0-4d2d-828a-8dd12e771b5f@csgroup.eu>
+ <Zd4h6ZhvLSWfWJG/@ghost>
+ <4d5ce145-22be-4683-b3a9-4de77da87b76@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zd25XWTkDPuIjpF8@shell.armlinux.org.uk>
+In-Reply-To: <4d5ce145-22be-4683-b3a9-4de77da87b76@roeck-us.net>
 
-On Tue, Feb 27, 2024 at 10:28:45AM +0000, Russell King (Oracle) wrote:
-> On Tue, Feb 27, 2024 at 06:47:38AM +0000, Christophe Leroy wrote:
+On Tue, Feb 27, 2024 at 11:31:01AM -0800, Guenter Roeck wrote:
+> On 2/27/24 09:54, Charlie Jenkins wrote:
+> 
+> > > It's been suggested during the discussion that alignment tests should be
+> > > added later in a follow-up patch. So for the time being I'm trying to
+> > > find a compromise and get the existing tests working on all platforms
+> > > but with a smaller alignment than the 16-bytes alignment brought by
+> > > Charlie's v10 patch. And a 4 bytes alignment seemed to me to be a good
+> > > compromise for this fix. The idea is also to make the fix as minimal as
+> > > possible, unlike Charlie's patch that is churning up the tests quite
+> > > heavily.
 > > 
+> > Do you have a list of platforms this is failing on? I haven't seen any
+> > reports that haven't been fixed.
 > > 
-> > Le 27/02/2024 à 00:48, Guenter Roeck a écrit :
-> > > On 2/26/24 15:17, Charlie Jenkins wrote:
-> > >> On Mon, Feb 26, 2024 at 10:33:56PM +0000, David Laight wrote:
-> > >>> ...
-> > >>>> I think you misunderstand. "NET_IP_ALIGN offset is what the kernel
-> > >>>> defines to be supported" is a gross misinterpretation. It is not
-> > >>>> "defined to be supported" at all. It is the _preferred_ alignment
-> > >>>> nothing more, nothing less.
-> > >>
-> > >> This distinction is arbitrary in practice, but I am open to being proven
-> > >> wrong if you have data to back up this statement. If the driver chooses
-> > >> to not follow this, then the driver might not work. ARM defines the
-> > >> NET_IP_ALIGN to be 2 to pad out the header to be on the supported
-> > >> alignment. If the driver chooses to pad with one byte instead of 2
-> > >> bytes, the driver may fail to work as the CPU may stall after the
-> > >> misaligned access.
-> > >>
-> > >>>
-> > >>> I'm sure I've seen code that would realign IP headers to a 4 byte
-> > >>> boundary before processing them - but that might not have been in
-> > >>> Linux.
-> > >>>
-> > >>> I'm also sure there are cpu which will fault double length misaligned
-> > >>> memory transfers - which might be used to marginally speed up code.
-> > >>> Assuming more than 4 byte alignment for the IP header is likely
-> > >>> 'wishful thinking'.
-> > >>>
-> > >>> There is plenty of ethernet hardware that can only write frames
-> > >>> to even boundaries and plenty of cpu that fault misaligned accesses.
-> > >>> There are even cases of both on the same silicon die.
-> > >>>
-> > >>> You also pretty much never want a fault handler to fixup misaligned
-> > >>> ethernet frames (or really anything else for that matter).
-> > >>> It is always going to be better to check in the code itself.
-> > >>>
-> > >>> x86 has just made people 'sloppy' :-)
-> > >>>
-> > >>>     David
-> > >>>
-> > >>> -
-> > >>> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, 
-> > >>> MK1 1PT, UK
-> > >>> Registration No: 1397386 (Wales)
-> > >>>
-> > >>
-> > >> If somebody has a solution they deem to be better, I am happy to change
-> > >> this test case. Otherwise, I would appreciate a maintainer resolving
-> > >> this discussion and apply this fix.
-> > >>
-> > > Agreed.
-> > > 
-> > > I do have a couple of patches which add explicit unaligned tests as well as
-> > > corner case tests (which are intended to trigger as many carry overflows
-> > > as possible). Once I get those working reliably, I'll be happy to submit
-> > > them as additional tests.
-> > > 
-> > 
-> > The functions definitely have to work at least with and without VLAN, 
-> > which means the alignment cannot be greater than 4 bytes. That's also 
-> > the outcome of the discussion.
 > 
-> Thanks for completely ignoring what I've said. No. The alignment ends up
-> being commonly 2 bytes.
+> This is what I carry locally on top of v6.8-rc6:
 > 
-> As I've said several times, network drivers do _not_ have to respect
-> NET_IP_ALIGN. There are 32-bit ARM drivers which have a DMA engine in
-> them which can only DMA to a 32-bit aligned address. This means that
-> the start of the ethernet header is placed at a 32-bit aligned address
-> making the IP header misaligned to 32-bit.
+> 097b149e4acb parisc: More csum_ipv6_magic fixes
+> 15bf67a115eb kunit: Fix again checksum tests on big endian CPUs
+> bebe776d36ea parisc: Fix csum_ipv6_magic on 64-bit systems
+> 523208f03063 parisc: Fix csum_ipv6_magic on 32-bit systems
+> a9dda1971c72 parisc: Fix ip_fast_csum
+> 2ad0a6850b64 Revert "sh: Handle calling csum_partial with misaligned data"
+> 7113cc414860 lib: checksum: Use aligned accesses for ip_fast_csum and csum_ipv6_magic tests
 > 
-> I don't see what is so difficult to understand about this... but it
-> seems that my comments on this are being ignored time and time again,
-> and I can only think that those who are ignoring my comments have
-> some alterior motive here.
+> I also have
+> 0dd01a364cb7 lib: checksum: Add some corner cases to IPv6 checksum tests
+> e767cce6598b lib: checksum: Add tests for unaligned IPv6 addresses
 > 
-> -- 
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> which I may submit or not depending on the outcome of this discussion.
+> 
+> In other words, parisc and sh4 are currently known to be broken in the
+> upstream kernel, with fixes pending. On top of that, arm:mps2-an385
+> (probably all arm:nommu systems) crashes hard if csum_ipv6_magic()
+> is called with an unaligned address.
+> 
+> This is the "known" list of failures. I don't currently run kunit tests
+> on nios2 or riscv32, for example, nor on any architectures with no qemu
+> support.
+> 
+> On a side note, most architectures don't handle "len + proto" overflows.
+> While 'len' is a 32-bit parameter, IPv6 only allows for a 16-bit length
+> field. Many implementations of csum_ipv6_magic() specifically do
+> not handle such overflows because that would be pointless and require
+> extra code for no good reason. The current test code doesn't generate
+> such overflows, but its 'len' parameter is almost always larger than
+> 16 bit and thus not realistic. Maybe it would make sense to limit
+> the range of 'len' to 16 bit when calling csum_ipv6_magic().
 
-I don't understand how the capabilities of some ARM drivers factor in
-here. It appears that a common case for calling this function is to pass
-in an IP header that is aligned along an ethernet header + NET_IP_ALIGN.
-It is perfectly acceptable that some drivers don't align along
-NET_IP_ALIGN, but that does not seem relevant here.
-
-This test case is supposed to be as true to the "general case" as
-possible, so I have aligned the data along 14 + NET_IP_ALIGN. On ARM
-this will be a 16-byte boundary since NET_IP_ALIGN is 2. A driver that
-does not follow this may not be appropriately tested by this test case,
-but anyone is welcome to submit additional test cases that address this
-additional alignment concern.
+Thank you for the suggestion, I can limit len to 16-bit.
 
 - Charlie
 
+> 
+> Thanks,
+> Guenter
+> 
 
