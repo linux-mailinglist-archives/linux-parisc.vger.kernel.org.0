@@ -1,176 +1,146 @@
-Return-Path: <linux-parisc+bounces-737-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-738-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A961E86A963
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 08:59:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFDCE86ABFF
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 11:15:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34E921F27026
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 07:59:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AD37287DE2
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Feb 2024 10:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B145A25618;
-	Wed, 28 Feb 2024 07:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EYl74bz4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825F13C062;
+	Wed, 28 Feb 2024 10:15:48 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BEC25601;
-	Wed, 28 Feb 2024 07:59:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79893AC1E;
+	Wed, 28 Feb 2024 10:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709107172; cv=none; b=n770QfDpUwQ+k9aJ0O19OsCp63IUCK8tc4DwdmiJmssrmwfKrNfqNwZ6DX2qTuGbI9LNrImbqe7rDVKuWY1JQ6laRusxlESiAB4N3cM7ogEWBT1faO+ymmJbaBPBYYgehe7Qnmf0Or4cQaFupEwr0Q60ohbLn2Jf1dEn3uoSQL0=
+	t=1709115348; cv=none; b=MQ4s5lHwiWBuuk5CSSqfRBcz3QK/fUHG4OUdVOMRjTLztsuDqHX3xR6Z2UFBhZYE18ry8/Q15e1cTQAI7NSqBkqsKPEpf7CtOX/3LITo0a1YTVS+thWHDDosolYdxtanQsKVO98sqBD8hB8+Gp4Bbcbi7DJ4EB6YabYyRml8+iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709107172; c=relaxed/simple;
-	bh=s+MTxz3XZi58tmfPU4UEzhWO91JXf7GqfJkKcYbl45g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DXczge1SEykw+e0UdIqKR/HyDA5qKYpzOZB9Q5AsLVXbQz6zC3INHblpYK6zqT/pqLlpqGpgD1VM+cJfzUXoAptExAjYRSzJEJUZcCoaeFbwPXbMYUm0/OR9jI11nkwh5qzJIbN/Xm8wwXyJHV2edqnY7A4aF5dMiA1shsmnQFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EYl74bz4; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1709115348; c=relaxed/simple;
+	bh=JXWi3QJrd65veDhHNrOB2GuMIcSXUkgzzrY8SPVTSXs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CsYDGpMplLpX4I4MNORyVkqu03viAtjMeRq3d84rJOeD2Hj2hKccmNt9RLIiyUGvvpLW3kun16wTafXfJ0xT+DV1P1j/pinTQPjXgn4fk2kAZr8R4Q/NTXrKt/m0+BDoXncMrAMvwve6+gujAdBN4DkBaCYEui2JcGHxcrL8aWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5a058b9bd2dso2461792eaf.2;
-        Tue, 27 Feb 2024 23:59:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709107170; x=1709711970; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=26+dqjvjj4vr1Nm47nzBeWoRybtvVYDtXt2JoODqBl4=;
-        b=EYl74bz485YDkncCkJErnSHIL5DNPvZ3XoLkQAW5vki9j659P7C9mcgxp/VbFY8B9n
-         UT6ChUmcisX7WZ47jGMCLAfLkrrE7pWmXk/BvRYKDeMHw5YLbPzJ2mIwVRqDfuhddnnX
-         PrYAFS+S07i85pYFf+QrMHLqd5JO00TgbyxVUP7nPbXQNg9yRKeqgb03pf008jCLiqAx
-         TBObt4SqU4K2VbISClPSAb1k2xhVUCKbUFVTehkXsIkJvMyiH3d9ePKHkAYR4WlaArQe
-         sWmIFv9TVtKsfG8KiOEnmmOJI1smMXEmAQL7ZlWz3y4RiTVsyxaUP6HjhoLgZbqPKJvq
-         fPCg==
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-608959cfcbfso56258327b3.3;
+        Wed, 28 Feb 2024 02:15:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709107170; x=1709711970;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=26+dqjvjj4vr1Nm47nzBeWoRybtvVYDtXt2JoODqBl4=;
-        b=Z5nICP+i7uSU7dijrnAXfzWQmTtGBE0sX9PeVKZHH34vBoAEq9UKU0UFamdc2OaOnK
-         hacd6Iko5+x0QXMRI1e3YkAHMBvoFvVgL7Uj4/wTYB31AjKxl92B1giO1pHpGycpqka/
-         +z78XbzP2gEFpP/Z0xxJz0bT2prLqxaRNxa54vjHzeVItnYjKz8PdXxnHzK6qprxEpKp
-         EtKid+mNelHyjlvPPwpw4pLaM857BlV7VHumMuQEOGpZiOQ25ON/ZG1l8/5F2DFG/ayf
-         L1+ZS6Ax3PL0O3LjTYpDenqNf+Vpz5Uh6S+H7Zp0QwgAHKsPdsFKTaBVtDCdIGS7i1j9
-         4kHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVvZmtVBEaaQIuCYcTpqDUk8Q/wn3Ic22ypwy7j/B25RYrwXJyYxXECjpEJI1XqKhIiB4J9J+gpj9yepsFNaYqv95cHpeLLBHl/MoKD0HBMfGPtB47ulJuPUkC1nWYkyD6LhgpI07nfKP/+
-X-Gm-Message-State: AOJu0YxJpWk/Fod4BQ9YmbbK7eAC9i+vkP1jYJSlE7+brubAzy2CYuWN
-	YkGZvnSfhOgwaEVNa/Ru2OziaJUDyo7+MLbDmA8CqLgXTQpCchRY
-X-Google-Smtp-Source: AGHT+IEx6reRBTmrhs+IVZ6DfccJmCzi8W4flQcW+LUK9CctDitl3PYulhop178jQEaokbrd0Mtj1A==
-X-Received: by 2002:a05:6358:5623:b0:17b:5dd1:a38d with SMTP id b35-20020a056358562300b0017b5dd1a38dmr15297176rwf.1.1709107169924;
-        Tue, 27 Feb 2024 23:59:29 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j23-20020a632317000000b005dc4fc80b21sm6971886pgj.70.2024.02.27.23.59.27
+        d=1e100.net; s=20230601; t=1709115345; x=1709720145;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5sisHDeqoo8my2vybw8Rh8HLkZ37ptybG5ZlPOOTIA0=;
+        b=SrOlw4kGc5GQlPwaJXDodMxm6MkdNXmmY4+N23VAT/OmMZ62qbdi7zlvhUPa75rbou
+         YUsK3jYogXC8yGW95lpl+G3U3D9Px4D2XKG90tO2tQRxBwjuILNiOK9bVkTVXL3t0yW7
+         S0G8fAamnI5iWtadD/+BqrMKbNGg1Gf5spzJwp2csdfFJ0eV/0cSFVYrYNBDLBP2Djeu
+         M/fsUrIwz7j0jwLEv41X+6ZYGELWQ67WVvro1rj2wzdB0s1rt57O/siKXIecEF8JfNbQ
+         6hcade1TKJPtTBb+13i0gP12LArGRSFP1FhT4FRfDDosXL04sAwseQUiDveXo9UwnXg0
+         Jm/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXprdae49aozTqwgdJSXNAU152dREgA45PI32+YLYX54d6BTVRBIYJUnYLxnrK0hlQEufqn6rsImtInbCaymoHFekCiE6caXZMQtY7HqY9J6NYsWPQvKx5okn5KJsRKm1IFibQ4UparT04B//xRT2Ysw+5LyQyaydHtg9Ka63pzWnxoZpDu5GAsLtEw
+X-Gm-Message-State: AOJu0YyHt014n3WDzYQNivndWnovI670lUxw8sDWrJvP2n6cltzHml+h
+	n5uwThK4k02hRGVqfesiPFRav7EFfIj0Zzrt+bNXZLEBf60yOMdv6tq1N1SUABcUzA==
+X-Google-Smtp-Source: AGHT+IFwIykTXE9M7RomK7vpBNurVSTHX9Dk/OfhtigZLyyIrG4fW7NF3RWMMFuS3syFCCed9fnY3g==
+X-Received: by 2002:a0d:e24b:0:b0:609:3a3b:1728 with SMTP id l72-20020a0de24b000000b006093a3b1728mr1718801ywe.26.1709115345512;
+        Wed, 28 Feb 2024 02:15:45 -0800 (PST)
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com. [209.85.128.171])
+        by smtp.gmail.com with ESMTPSA id be19-20020a05690c009300b00608d9a50b59sm2079531ywb.28.2024.02.28.02.15.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Feb 2024 23:59:28 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <02bb92c3-a14c-4a77-a3b0-a7c857d1d60d@roeck-us.net>
-Date: Tue, 27 Feb 2024 23:59:26 -0800
+        Wed, 28 Feb 2024 02:15:45 -0800 (PST)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-608959cfcbfso56258107b3.3;
+        Wed, 28 Feb 2024 02:15:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCViBXXGabQVKAhXLQSZXSGZPloGXYNDDNfKbMvpLqdxH952diQZsSlkE2cXKBosBtGgTJ1LUzkYwh3wQc7//t4JGcVVUHLKKh+UP52KomlL3FEEbMe5eNbHKlSwTtyhdMrZVPViJ7greejeIkFGfdXQPHu33JpKrfui+T5dyPvyEs9ohmhwyJAEs4sY
+X-Received: by 2002:a05:6902:1a47:b0:dcd:ad52:6927 with SMTP id
+ cy7-20020a0569021a4700b00dcdad526927mr2537761ybb.11.1709115345066; Wed, 28
+ Feb 2024 02:15:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <7ae930a7-3b10-4470-94ee-89cb650b3349@csgroup.eu>
+ <e11fea7a-e99e-4539-a489-0aa145ee65f0@roeck-us.net> <ZdzPgSCTntY7JD5i@shell.armlinux.org.uk>
+ <ZdzZ5tk459bgUrgz@ghost> <ZdzhRntTHApp0doV@shell.armlinux.org.uk>
+ <b13b8847977d4cfa99b6a0c9a0fcbbcf@AcuMS.aculab.com> <Zd0b8SDT8hrG/0yW@ghost>
+ <cdd09f7a-83b2-41ba-a32c-9886dd79c43e@roeck-us.net> <9b4ce664-3ddb-4789-9d5d-8824f9089c48@csgroup.eu>
+ <Zd25XWTkDPuIjpF8@shell.armlinux.org.uk> <Zd58jvN3PjQSe+yt@ghost>
+ <c0449c0a-33bc-49c4-97e3-56a79a6ce93e@csgroup.eu> <02bb92c3-a14c-4a77-a3b0-a7c857d1d60d@roeck-us.net>
+In-Reply-To: <02bb92c3-a14c-4a77-a3b0-a7c857d1d60d@roeck-us.net>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 28 Feb 2024 11:15:33 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdW-sUYr8_y6av9Dbtz6JJAxBUsiTGZcK2QYEHo0x1z44w@mail.gmail.com>
+Message-ID: <CAMuHMdW-sUYr8_y6av9Dbtz6JJAxBUsiTGZcK2QYEHo0x1z44w@mail.gmail.com>
 Subject: Re: [PATCH v10] lib: checksum: Use aligned accesses for ip_fast_csum
  and csum_ipv6_magic tests
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Charlie Jenkins <charlie@rivosinc.com>,
- "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: David Laight <David.Laight@aculab.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@rivosinc.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
-References: <7ae930a7-3b10-4470-94ee-89cb650b3349@csgroup.eu>
- <e11fea7a-e99e-4539-a489-0aa145ee65f0@roeck-us.net>
- <ZdzPgSCTntY7JD5i@shell.armlinux.org.uk> <ZdzZ5tk459bgUrgz@ghost>
- <ZdzhRntTHApp0doV@shell.armlinux.org.uk>
- <b13b8847977d4cfa99b6a0c9a0fcbbcf@AcuMS.aculab.com> <Zd0b8SDT8hrG/0yW@ghost>
- <cdd09f7a-83b2-41ba-a32c-9886dd79c43e@roeck-us.net>
- <9b4ce664-3ddb-4789-9d5d-8824f9089c48@csgroup.eu>
- <Zd25XWTkDPuIjpF8@shell.armlinux.org.uk> <Zd58jvN3PjQSe+yt@ghost>
- <c0449c0a-33bc-49c4-97e3-56a79a6ce93e@csgroup.eu>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <c0449c0a-33bc-49c4-97e3-56a79a6ce93e@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, Charlie Jenkins <charlie@rivosinc.com>, 
+	"Russell King (Oracle)" <linux@armlinux.org.uk>, David Laight <David.Laight@aculab.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Helge Deller <deller@gmx.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@rivosinc.com>, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, 
+	KUnit Development <kunit-dev@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/27/24 23:25, Christophe Leroy wrote:
-[ ... ]
->>
->> This test case is supposed to be as true to the "general case" as
->> possible, so I have aligned the data along 14 + NET_IP_ALIGN. On ARM
->> this will be a 16-byte boundary since NET_IP_ALIGN is 2. A driver that
->> does not follow this may not be appropriately tested by this test case,
->> but anyone is welcome to submit additional test cases that address this
->> additional alignment concern.
-> 
-> But then this test case is becoming less and less true to the "general
-> case" with this patch, whereas your initial implementation was almost
-> perfect as it was covering most cases, a lot more than what we get with
-> that patch applied.
-> 
-NP with me if that is where people want to go. I'll simply disable checksum
-tests on all architectures which don't support unaligned accesses (so far
-it looks like that is only arm with thumb instructions, and possibly nios2).
-I personally find that less desirable and would have preferred a second
-configurable set of tests for unaligned accesses, but I have no problem
-with it.
+CC testing
 
-Guenter
+On Wed, Feb 28, 2024 at 8:59=E2=80=AFAM Guenter Roeck <linux@roeck-us.net> =
+wrote:
+> On 2/27/24 23:25, Christophe Leroy wrote:
+> [ ... ]
+> >>
+> >> This test case is supposed to be as true to the "general case" as
+> >> possible, so I have aligned the data along 14 + NET_IP_ALIGN. On ARM
+> >> this will be a 16-byte boundary since NET_IP_ALIGN is 2. A driver that
+> >> does not follow this may not be appropriately tested by this test case=
+,
+> >> but anyone is welcome to submit additional test cases that address thi=
+s
+> >> additional alignment concern.
+> >
+> > But then this test case is becoming less and less true to the "general
+> > case" with this patch, whereas your initial implementation was almost
+> > perfect as it was covering most cases, a lot more than what we get with
+> > that patch applied.
+> >
+> NP with me if that is where people want to go. I'll simply disable checks=
+um
+> tests on all architectures which don't support unaligned accesses (so far
+> it looks like that is only arm with thumb instructions, and possibly nios=
+2).
+> I personally find that less desirable and would have preferred a second
+> configurable set of tests for unaligned accesses, but I have no problem
+> with it.
 
+IMHO the tests should validate the expected functionality.  If a test
+fails, either functionality is missing or behaves wrong, or the test
+is wrong.
+
+What is the point of writing tests for a core functionality like network
+checksumming that do not match the expected functionality?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
