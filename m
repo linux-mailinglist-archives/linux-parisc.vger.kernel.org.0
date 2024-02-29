@@ -1,46 +1,46 @@
-Return-Path: <linux-parisc+bounces-753-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-754-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9124486D4CB
-	for <lists+linux-parisc@lfdr.de>; Thu, 29 Feb 2024 21:48:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB7886D511
+	for <lists+linux-parisc@lfdr.de>; Thu, 29 Feb 2024 21:54:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A372A1C220D3
-	for <lists+linux-parisc@lfdr.de>; Thu, 29 Feb 2024 20:48:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A8B9285955
+	for <lists+linux-parisc@lfdr.de>; Thu, 29 Feb 2024 20:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514CF38DD7;
-	Thu, 29 Feb 2024 20:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706B915CAAF;
+	Thu, 29 Feb 2024 20:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UimlbWU8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZHkSyxL"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2181015D5DA;
-	Thu, 29 Feb 2024 20:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435C015CAAA;
+	Thu, 29 Feb 2024 20:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709239196; cv=none; b=sekgs7hXdFhVy7rZKqRKrNkszFraJ2MniHhgx8MOerqwf3rbAddh8fc3tYTUpmLYuTQ0GxlmJ+tUUCUqlIYdJ3aam6htD9hdMzoAfg23Ye6Op5q0n8jp7iGDJOPMLZne/tdRnKr5pEtlUbVsIhsvaa4PIdBukUv8A+i3JtzgVLw=
+	t=1709239254; cv=none; b=WqQsGWsuE/Uz+CqX7BwyklrV8b5SbHxjr9zWXQ7tKN+58ngDRY4S28jOtej61oBe91zc/IM3vVat+prLzrDOKiTeAQsdQpc2pE7n6v0oURfdZxeP6xqtYIk0cZzKPYfjLHq+HHQrfTBbsqcnex5NqgVkf/J7TEHnCTY+/xmtOR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709239196; c=relaxed/simple;
-	bh=DM56fWUpnYs8NKGcPFxbzDsx0rC5E5rIw5nd28XokT8=;
+	s=arc-20240116; t=1709239254; c=relaxed/simple;
+	bh=PbeCPPqUTj8zu2JIOMJODjSU9380VXX4VQ800iYqnmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SywK39PIsmFKnv24WkQ2I3Adey6b3Tp1tlC42cib4kmeL2P+Oe21Ie73/rQEriJaTVVfUJIIMIAzVL/0/3FK1Tzcc1DEHzOe5XWWuy5MIg+KSl/34BkiAFBFCkX0F401ozsFWptkrir+I59sxzt9B+Hz/C/Qi3MU7hWmm75zRig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UimlbWU8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD2AC43394;
-	Thu, 29 Feb 2024 20:39:54 +0000 (UTC)
+	 MIME-Version; b=tqONR4BT1bvbdNA2CgXwGw1V3Q7eai732XsFeS3dSlVuoEq0GlysRHeno6SuHqDI69PxKvK9VIr/Leu6tSJFTmBKm0kFpxTbjFcSkXo60dyo9Y46wad0lUYv3Gu/jiHkwPGs6XRnKv1eSbT/ipQREMtht88OrHx96rXnixm0vSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZHkSyxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A56C43399;
+	Thu, 29 Feb 2024 20:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709239196;
-	bh=DM56fWUpnYs8NKGcPFxbzDsx0rC5E5rIw5nd28XokT8=;
+	s=k20201202; t=1709239254;
+	bh=PbeCPPqUTj8zu2JIOMJODjSU9380VXX4VQ800iYqnmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UimlbWU8izNk868PWw++xraMBsrUpOzxSAAy4ebL/c+6p6NTtdvH++9vwf57IXV1O
-	 WY6+AfV+3WfZhKgQr2VPIyARddhGoJYWvh84QKnD/Z+oV6qn7diFIkQabC1BgG8hBE
-	 vSEQkKKMyjGaYxVuzbnG2jibuBy8IsLzZyexJkAWhy7ammdeWo94stuUX24ANptOg6
-	 +H+0d+Ye9/X9vARxRHOGmJPXk53vjPk1y/w2v02JwfmVSIAoftimo3aXUcG7B9MLvH
-	 UE4gQ7fOMdVhlRsp9+k0l9pici+XsNAUhzkN1KPIbHF7l6vddSaMsFnedvLGXrGr5M
-	 yTsVeMiqzQhvQ==
+	b=HZHkSyxL+RePfVJnOil25XyXjvPSLOC9CHHkdT9mFCMOrPPqtBo1LqAawJsDNsE57
+	 syW2SCFKJ0UHJQy8bpDPstSGdrLv2QtErF0tijYX49DBwVXQvSlALxAck9oDPjGlRp
+	 fNaL0nNypsozCGP5IUaHsA9DtUqULAfPvKQgjIAhSIF84G3M/jgOQt0huvpBbRhTQ4
+	 arbk9T0NtaIr/LH1W0bs30ba6aheboZ+ZqAxQMjwpyDJxGJnCNAhYBGikP6wFDkZXW
+	 yWksUmeHz1DdxrFWmhu38l4JJAcUPyv4gygDmzpv0s1oez+k5pOfa5snAYqtbMQzdq
+	 PlefNM+NCpH0Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,12 +52,12 @@ Cc: Max Kellermann <max.kellermann@ionos.com>,
 	James.Bottomley@HansenPartnership.com,
 	linux-trace-kernel@vger.kernel.org,
 	linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 10/22] parisc/ftrace: add missing CONFIG_DYNAMIC_FTRACE check
-Date: Thu, 29 Feb 2024 15:39:03 -0500
-Message-ID: <20240229203933.2861006-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 08/12] parisc/ftrace: add missing CONFIG_DYNAMIC_FTRACE check
+Date: Thu, 29 Feb 2024 15:40:30 -0500
+Message-ID: <20240229204039.2861519-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229203933.2861006-1-sashal@kernel.org>
-References: <20240229203933.2861006-1-sashal@kernel.org>
+In-Reply-To: <20240229204039.2861519-1-sashal@kernel.org>
+References: <20240229204039.2861519-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.18
+X-stable-base: Linux 6.1.79
 Content-Transfer-Encoding: 8bit
 
 From: Max Kellermann <max.kellermann@ionos.com>
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
-index d1defb9ede70c..621a4b386ae4f 100644
+index 4d392e4ed3584..ac7253891d5ed 100644
 --- a/arch/parisc/kernel/ftrace.c
 +++ b/arch/parisc/kernel/ftrace.c
-@@ -78,7 +78,7 @@ asmlinkage void notrace __hot ftrace_function_trampoline(unsigned long parent,
+@@ -78,7 +78,7 @@ void notrace __hot ftrace_function_trampoline(unsigned long parent,
  #endif
  }
  
