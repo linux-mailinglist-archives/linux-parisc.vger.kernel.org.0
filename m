@@ -1,178 +1,148 @@
-Return-Path: <linux-parisc+bounces-772-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-773-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF9B86E8F6
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Mar 2024 20:02:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B29E86E96B
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 Mar 2024 20:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C31D28A3A6
-	for <lists+linux-parisc@lfdr.de>; Fri,  1 Mar 2024 19:02:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FF5B1F21CD2
+	for <lists+linux-parisc@lfdr.de>; Fri,  1 Mar 2024 19:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28FA39FFE;
-	Fri,  1 Mar 2024 18:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5F124B23;
+	Fri,  1 Mar 2024 19:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="HLic5YMs"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lt5xGL4i";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GQe+ObDJ"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8745A2575F
-	for <linux-parisc@vger.kernel.org>; Fri,  1 Mar 2024 18:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0DC4411;
+	Fri,  1 Mar 2024 19:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709319498; cv=none; b=I6Gu7BKG8wOUzhPJSa7RRjPgXfOeQwDVil7WakUOTUlNMznzE3NYtUXAP3DLDzTzXI1jCbsSxrPZS/k6Sy4B8VjHJxmG8JxcXPxHRKbYi+xeifFn/jtJpWvAecnidD0aOaHNCap8kAYHjwWUJQwnBTYb/qkIr72j+y8XapN8jYQ=
+	t=1709320978; cv=none; b=TynzYToiLEs3F7gwqM+I0Wvc4vQphf7Rg+g8iV0Of1Mnv8KVD1LbRBEbXWB9WalYSyB8++kdRn6WJkCKGpsru4FFEoikzGNXKiMsv4sSKvnsQ+8nINDt8/yOTDdesttAkDMIroK7LbtOx9Dfcmbz17+8u19hgSlo+nOoEfhE8BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709319498; c=relaxed/simple;
-	bh=BETEy5GagPZPsVb9dqFAKrpg6Yiv8E4MAzfJK5IULwk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iVxYO1OZG7nOzyWIP0+q30FA/41OmIUdmIIFBVycyVhQ6lf3S8Z14zxUNWBRkEoHB2w13bo6K58UD+xLfNeRx8XvAIEMkjZXxEDhsppNgqjO/lKbScwTGgMIMzFBBiVuRzBU7UENuRqGsTB0k0k9aoa+jzcbfNd0NHQv52iMR7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=HLic5YMs; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1dbae7b8ff2so8438755ad.3
-        for <linux-parisc@vger.kernel.org>; Fri, 01 Mar 2024 10:58:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1709319495; x=1709924295; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zHGqpT+UmbapMHh/jYj1gOpOkd8pPX1SYZ2Vz/dbBPM=;
-        b=HLic5YMsBo0s0OCtEsxHN9b6eQFCqckBTp80164WvTFytcA622oGUbVXN0nN3qjRTp
-         JOqwSpwa7alrZGljT2pKgQnjYjWpOPqWCVruFPpTkHX0VJDyoNK9BeXK5eT5E91Jas29
-         rXUUQ/t4Wqd1V7yWaUhc1BRZiUUlKGE1eExLhVIcg/yT5altoFPaARnPg56oRY9UhQMK
-         P+l2BzvvCqPC9uukZ3SxtY7dDsof3zaw3v+QQh+QyETu9ECQju1yTEOAwjB2oZMLS9hd
-         B+n3gHMGUOI0Kmk4CGsgtP+5nvR3ce2YcrNKJWFicD7W21uxx98RGppOTEUFfY0gE0Pt
-         fiAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709319495; x=1709924295;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zHGqpT+UmbapMHh/jYj1gOpOkd8pPX1SYZ2Vz/dbBPM=;
-        b=gV7yhPrCKb5JKJlQTbp0BCXNarPrndtnSHLjrx961QNIjnTJTM8iwrIK6tA12RYfW6
-         LD91rgSikFXa2vw1HmEL2HlRj9bkUgNnXXkimaE6W3iOCv3JCLSJ/XIj+ZnYgltpFztB
-         ugh1hfVm+jbM34dfe/juFap5IcJL+lNDXQNT/JHP5EHCF3q8hzgPXkvbKNeV9czSz43J
-         0QaKVYhQjrhsy0ZI2GJT4aqzxJuIGgHEZOrlj9ba6PZ3VzLN4CuCcNpm/AllCyAgpnZM
-         zhHCenFxUbeCsClEWJMz95kJdVC1ET2oNm80t6pfwkIHD1WZ7nG7ab91CX063FkyZ0Mg
-         zBhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWJ5MB0qQZUXGrtHuFCdd4Vmw8ViUSRTpc6m/RRDAhOz2+BSfIzurE+f7ay09JuerhiLoLGEyPIHWWbDd+mGlVweaTdhGxnjyvGwDIf
-X-Gm-Message-State: AOJu0Yz9GA2kvGU1xR1900C5+Uc8WNH8X9OWUPfDA67OGvV3xOaOqVZw
-	1Eo4Y+prKhPOzTaSbTccgjRiAqXKU/FO7sF5LhQWJhARW4EqyHgNUkiGHzBm+XU=
-X-Google-Smtp-Source: AGHT+IFbV/5oV3dkc2lBWbTrIagdvEyGLVS+6a0H9DRDKlONbBDTZ3mV0AnXSRmhKx3IXg4A8cxk8Q==
-X-Received: by 2002:a17:902:e741:b0:1dc:c45c:5d1d with SMTP id p1-20020a170902e74100b001dcc45c5d1dmr3244947plf.24.1709319494745;
-        Fri, 01 Mar 2024 10:58:14 -0800 (PST)
-Received: from ghost ([2600:1010:b024:d166:9854:fdd2:434b:df69])
-        by smtp.gmail.com with ESMTPSA id g24-20020a170902869800b001dbae7b85b1sm3798895plo.237.2024.03.01.10.58.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Mar 2024 10:58:14 -0800 (PST)
-Date: Fri, 1 Mar 2024 10:58:11 -0800
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: David Laight <David.Laight@aculab.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Helge Deller <deller@gmx.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Parisc List <linux-parisc@vger.kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>
-Subject: Re: [PATCH v11] lib: checksum: Use aligned accesses for ip_fast_csum
- and csum_ipv6_magic tests
-Message-ID: <ZeIlQ+suWjH3f3UZ@ghost>
-References: <20240229-fix_sparse_errors_checksum_tests-v11-1-f608d9ec7574@rivosinc.com>
- <62b69aaf-7633-4bd8-aefe-5ba47147dba7@roeck-us.net>
+	s=arc-20240116; t=1709320978; c=relaxed/simple;
+	bh=RnWq3/w3b5O1R4cAPn/Hl295cghGBKImtXIoeFUspHQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=a1rmPTtm9YaPp8npyTYYmIZn1RaFMBjJtajHix1zQS5ubbEKz2qXYbc48uZeGelYzfTtG+i911uMgqNcKERyeTG8FmvLT0no0fL8nTA7h/2MJWYQhQvYvMUGSXRPCCC/brDlJxSinuYByCJaNezVrCNTyVCEkQRtZWNH5IKVBhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lt5xGL4i; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GQe+ObDJ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1709320974;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4YMpY8/JpqyvoIt2gTWiMpRfebnk0Oqv1/khPRGpbCE=;
+	b=lt5xGL4ikp2rMYJDfZ7HvTc51J0sK0wPz+5c8vFx1SuS27stYaJOWuKM8UWBr5+pgOT4Px
+	/zf1ECIiqu/o9bDNXwd0OmwFvn3wr5s6TWTh22XQgJnd6zNcYHvNw3H+EjqkCRzzHyGlCK
+	9c0McLTbOgJYwbxjj3ufVtBUaYTbp1OW9F0wWwGg67WLBjIW6BXQ6uACYMaX/U19dW7hVE
+	7YFSbHNtjH9wi+H5aXUENJ0WYyrEuLnL22HQ9pNMUw1GoSzpgNifD5GbZh1qfFM9H40tVf
+	8sahtMCI3rvRxY+czEM18S9Ga4W7B19CKnB0D8BHfOsg6bSvXKNzJzKLNOWfWA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1709320974;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4YMpY8/JpqyvoIt2gTWiMpRfebnk0Oqv1/khPRGpbCE=;
+	b=GQe+ObDJ3PZr8qn2Ba8iOXvXOcVj7SM/gbg0My85H7/CKDbtY8JoxFhCmURN3Iwmiu2nfV
+	rZD31bO4dKD6t8DQ==
+To: Doug Anderson <dianders@chromium.org>, Bitao Hu <yaoma@linux.alibaba.com>
+Cc: liusong@linux.alibaba.com, akpm@linux-foundation.org, pmladek@suse.com,
+ kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
+ tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
+ jan.kiszka@siemens.com, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCHv11 2/4] genirq: Provide a snapshot mechanism for
+ interrupt statistics
+In-Reply-To: <CAD=FV=U1b+8atmju_w4eRmVKmSqjj6WCsy5EawYqj31fQ1kvrw@mail.gmail.com>
+References: <20240228072216.95130-1-yaoma@linux.alibaba.com>
+ <20240228072216.95130-3-yaoma@linux.alibaba.com>
+ <CAD=FV=U1b+8atmju_w4eRmVKmSqjj6WCsy5EawYqj31fQ1kvrw@mail.gmail.com>
+Date: Fri, 01 Mar 2024 20:22:54 +0100
+Message-ID: <87plwdwycx.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <62b69aaf-7633-4bd8-aefe-5ba47147dba7@roeck-us.net>
+Content-Type: text/plain
 
-On Fri, Mar 01, 2024 at 10:32:36AM -0800, Guenter Roeck wrote:
-> On 2/29/24 14:46, Charlie Jenkins wrote:
-> > The test cases for ip_fast_csum and csum_ipv6_magic were not properly
-> > aligning the IP header, which were causing failures on architectures
-> > that do not support misaligned accesses like some ARM platforms. To
-> > solve this, align the data along (14 + NET_IP_ALIGN) bytes which is the
-> > standard alignment of an IP header and must be supported by the
-> > architecture.
-> > 
-> > Furthermore, all architectures except the m68k pad "struct
-> > csum_ipv6_magic_data" to 44 bytes. To make compatible with the m68k,
-> > manually pad this structure to 44 bytes.
-> > 
-> > Fixes: 6f4c45cbcb00 ("kunit: Add tests for csum_ipv6_magic and ip_fast_csum")
-> > Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-> > Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-> > Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-> > ---
-> > The ip_fast_csum and csum_ipv6_magic tests did not work on all
-> > architectures due to differences in misaligned access support.
-> > Fix those issues by changing endianness of data and aligning the data.
-> > 
-> > This patch relies upon a patch from Christophe:
-> > 
-> > [PATCH net] kunit: Fix again checksum tests on big endian CPUs
-> > 
-> 
-> Various test results:
-> 
-> On v6.8-rc6-120-g87adedeba51a (current mainline), without this patch
-> 
-> - mps2-an385:mps2_defconfig crashes in IPv6 checksum tests
-> - ipv6 checksum tests fail on parisc, parisc64, sh, and sheb.
-> 
-> The previously seen problems on big endian systems are still seen with
-> v6.8-rc6, but are gone after commit 3d6423ef8d51 ("kunit: Fix again
-> checksum tests on big endian CPUs") has been applied upstream. This includes
-> the test failures seen with m68k.
-> 
-> The parisc/parisc64 test failures are independent of this patch. Fixes are
-> available in linux-next and pending in qemu. The sh/sheb failures are due
-> to upstream commit cadc4e1a2b4 and are no longer seen after reverting that
-> patch.
-> 
-> This leaves the mps2-an385:mps2_defconfig crash, which is avoided by this patch.
-> My understanding, which may be wrong, is that arm images with thumb instructions
-> do not support unaligned accesses (maybe I should say do not support unaligned
-> accesses with the mps2-an385 qemu emulation; I did not test with real hardware,
-> after all).
-> 
-> Given all that, the continued discussion around the subject, and the lack
-> of agreement if unaligned accesses should be tested or not, I don't really
-> see a path forward for this patch. The remaining known problem is arm with
-> thumb instructions. I don't think that is going to be fixed. I suspect that
-> no one but me even tries to run that code (or any arm:nommu images, for that
-> matter). I'd suggest to drop this patch, and I'll stop testing IP checksum
-> generation for mps2-an385:mps2_defconfig.
-> 
-> Sorry for all the noise this has generated.
-> 
-> Thanks,
-> Guenter
+Doug!
 
-If that's what people want. I still don't understand why there is any
-problem with relying on NET_IP_ALIGN as that seems like that macro was
-defined to create an expected alignment.
+On Wed, Feb 28 2024 at 14:44, Doug Anderson wrote:
+> I won't insist on it, but I continue to worry about memory
+> implications with large numbers of CPUs. With a 4-byte int, 8192 max
+> CPUs, and 100 IRQs the extra "ref" value takes up over 3MB of memory
+> (8192 * 4 bytes * 100).
+>
+> Technically, you could add a new symbol like "config
+> NEED_IRQ_SNAPSHOTS". This wouldn't be a symbol selectable by the end
+> user but would automatically be selected by "config
+> SOFTLOCKUP_DETECTOR_INTR_STORM". If the config wasn't defined then the
+> struct wouldn't contain "ref" and the snapshot routines would just be
+> static inline stubs.
+>
+> Maybe Thomas has an opinion about whether this is something to worry
+> about. Worst case it wouldn't be hard to do in a follow-up patch.
 
-It would be nice to use the struct csum_ipv6_magic_data instead of doing
-manual alignment and restricting len to 16 bits. I can send a patch that
-only covers that if people are interested.
+I'd say it makes sense to give people a choice to save memory especially
+when the softlock detector code is not enabled.
 
-This was my first foray into writing generic test cases and it drew a
-significant amount of criticism. I appreciate Guenter's efforts to make
-the tests have more expected behavior across all supported platforms,
-but the community obviously doesn't agree that is a reasonable goal.
-Makes my life easier though, because then I can just not upstream test
-cases and focus on feature work...
+It's rather straight forward to do.
 
-- Charlie
+Thanks,
 
-> 
+        tglx
+---
+--- a/include/linux/irqdesc.h
++++ b/include/linux/irqdesc.h
+@@ -24,7 +24,9 @@ struct pt_regs;
+  */
+ struct irqstat {
+ 	unsigned int	cnt;
++#ifdef CONFIG_GENIRQ_STAT_SNAPSHOT
+ 	unsigned int	ref;
++#endif
+ };
+ 
+ /**
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -978,6 +978,7 @@ static unsigned int kstat_irqs(unsigned
+ 	return sum;
+ }
+ 
++#ifdef CONFIG_GENIRQ_STAT_SNAPSHOT
+ void kstat_snapshot_irqs(void)
+ {
+ 	struct irq_desc *desc;
+@@ -998,6 +999,7 @@ unsigned int kstat_get_irq_since_snapsho
+ 		return 0;
+ 	return this_cpu_read(desc->kstat_irqs->cnt) - this_cpu_read(desc->kstat_irqs->ref);
+ }
++#endif
+ 
+ /**
+  * kstat_irqs_usr - Get the statistics for an interrupt from thread context
+--- a/kernel/irq/Kconfig
++++ b/kernel/irq/Kconfig
+@@ -108,6 +108,10 @@ config GENERIC_IRQ_MATRIX_ALLOCATOR
+ config GENERIC_IRQ_RESERVATION_MODE
+ 	bool
+ 
++# Snapshot for interrupt statistics
++config GENERIC_IRQ_STAT_SNAPSHOT
++	bool
++
+ # Support forced irq threading
+ config IRQ_FORCED_THREADING
+        bool
 
