@@ -1,187 +1,219 @@
-Return-Path: <linux-parisc+bounces-782-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-783-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E588700E2
-	for <lists+linux-parisc@lfdr.de>; Mon,  4 Mar 2024 13:01:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4152F8702F8
+	for <lists+linux-parisc@lfdr.de>; Mon,  4 Mar 2024 14:41:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20F1F1F21C9D
-	for <lists+linux-parisc@lfdr.de>; Mon,  4 Mar 2024 12:01:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAB89285244
+	for <lists+linux-parisc@lfdr.de>; Mon,  4 Mar 2024 13:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A873B290;
-	Mon,  4 Mar 2024 12:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AADA3E481;
+	Mon,  4 Mar 2024 13:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="wMXYIEUi"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="R1IAOTmu";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FaZwP54C"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from fhigh7-smtp.messagingengine.com (fhigh7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB9A39AF1;
-	Mon,  4 Mar 2024 12:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15CC3E476;
+	Mon,  4 Mar 2024 13:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709553660; cv=none; b=LsCSH3rUGBgJm4Y7H6cBYY/t9DlsK62xvc4XL3WafV2f+eaS+UP1Xe3A/hFQuuPCErbLvITTF1GZhFTpiSBLe4X4ebyG4s4qFPiLWTbCj7phfg36FJUTyYi7LtzswQjqimGVOTDL5BjOnYjAiD7GSrhk5+4zD4zPHYNbRPLpeJY=
+	t=1709559624; cv=none; b=nZkYKkT08BJCo3ofgGPRXrsKUZHFePRVqYedeFo6+omleRhloDV/1DF7r5DbRCGAMLdZ/tvK5+SyGw3BHaVxw7ZfITGTLk38w2Y/wp9HsCNngWcx4fQWg17p1uNbhqnSokDvlIwwF/sAytU8iLa7AqsxCxWXukkSJp2qZiEK1N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709553660; c=relaxed/simple;
-	bh=SRlbTG/jH+XLr3HBMhDyMWI2WxBCgIajzCfFemzedW0=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=KzOd7jd/Wpanq1z3ByKpmEFzzx8nxeyRgQBsh5uYKZJBnSpiaULIf6z3AW4GUBepFRHPPvwywZbbcpFyM7o6j33+jVpUjQueAC3HGAERgEnAAWdCUu6SLkbw1lEZMHVlghIRLoY6JVaONAmEBpls6l0B1H8br8mhkfDjtN6G5uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=wMXYIEUi; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1709553647; h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type;
-	bh=rtN+/ylfbynl2rH4WVBwWc3AC3awpv+1WF5WI7ypLYI=;
-	b=wMXYIEUiwoVJH/xnD1RvI2dR+AACaMqlSOE/kB1fCanYeBJcd+yiA3TmmUiLeBlTbeJ3QMKsldMGq+xh3PcplByOaChpd3P/WTjzH4pDPi/mUpBC1csmwDWf3XI/0vN0O2SNCbbIo939zRN84aiPQMYkn9Resxb+Nh9u6Jdlk2I=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W1pZInn_1709553643;
-Received: from 30.178.88.130(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W1pZInn_1709553643)
-          by smtp.aliyun-inc.com;
-          Mon, 04 Mar 2024 20:00:45 +0800
-Message-ID: <3a89fafb-f62e-472f-b40b-8bf97954e9e3@linux.alibaba.com>
-Date: Mon, 4 Mar 2024 20:00:43 +0800
+	s=arc-20240116; t=1709559624; c=relaxed/simple;
+	bh=ZYdT3iItmnJruFC6xF2d6YKkBaBHtFkEgc66Mn+LbDA=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=GkRywtZwVk4qP7A+GgyDA8gb1YHHzoSFqBkGJzCPj2yuQqfIIrK0DrPmKgfuJTQ7h9Ct3tA0XkHICEr0sNCNJET8IpiRHdcZMXZP2tocjdOms9cvFK6CrygPLHhbqXBhjEcqBWrSLZ5973Z1IqI8s1rKLHXaOo7Oz4EUEJpRv4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=R1IAOTmu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FaZwP54C; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id A761911400DD;
+	Mon,  4 Mar 2024 08:40:20 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Mon, 04 Mar 2024 08:40:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1709559620;
+	 x=1709646020; bh=JnzQU3YalCI4TUT6McBMmglHS9rL937qY3XCJY4+tWs=; b=
+	R1IAOTmuHYh/L9nU2wUO4yjoilzH/7UeExzcIC7wN48zdUlWj5pXl/G6iLyGQsr/
+	KRUcUWKQ1+8ggMtWRexdqjQjUtrgnqCEL/I4NiXKvgIQFPjFiIpZPzvx0Iamv512
+	/JyFscks0xzqY9h9ImXlxNjk7imAnpsntRmLQruHEONvu2eGv5lYxBjgpURRRwI4
+	Le5khxEVavZn4Q/PbUlMNu0xRAvF/6ifEzDsNBBnb6b0cImRr+5KP2RIojbxCG2v
+	Tn5qwyF5vZdJMZtX5DPyexKt8UhsM1TiNDdV558CAr6z9tdU2KQ4Ei5VDOwEMgwB
+	9HH8k/cjE6iXLqVLwxhVCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1709559620; x=
+	1709646020; bh=JnzQU3YalCI4TUT6McBMmglHS9rL937qY3XCJY4+tWs=; b=F
+	aZwP54CYz0azzKBZjvVUZa4ySeDNIFp82WhOaKz2iOk9HC48IggbeBdgZNp8t4n/
+	WhnfMXoBif/O2Q+bcSXJnaHbr0HQ7bItBOLyty0X/5vv5tCxPcOUuRz/Z2nJhZGS
+	K+TLfB5maHfobLuw95teIkjeoitWFQqMMvyFYeRfQnQzijy01QNnt3WM3969xuc3
+	f5F5lTrG5jihL4XA6XqAT7KIu/+KMlFvtYh3ZL/drdO0BpSXceRmMOPSBbs8W0vE
+	+yScoOyV4S250CgIAXXswLwEVThOb7FK6f082CECW8S8c5GZku9IiBzerUTw/7n4
+	omeRU3juKFerdJyyv0QGw==
+X-ME-Sender: <xms:Q8_lZWaF3erXnPemV_ybMe2YIKHDF0Bd-SRQtWojiJKncLFwmzHolw>
+    <xme:Q8_lZZaMKbw95sy8_1sc-EafpCGAT8eb_0Bxx_JnO3De_436UGaWXGDDxztmwjiO7
+    mPptVo8sy_ueoOFGqM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheejgdehgecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepleelgfdtjeevjeehiefhueeuffdtkeduhfelueeiledthfffieejveeuteel
+    leefnecuffhomhgrihhnpegtshhumhhiphhviedrshgsnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:Q8_lZQ_4pxd2WUcbIldtNPn0qqPJj1wJTElNWz5R43TDcdTKmC1BeA>
+    <xmx:Q8_lZYqEGfCmf-IyVWi250m1sOeQykqsrtott7zIwpGFwywy6U_iRQ>
+    <xmx:Q8_lZRovbT97p-VV4TqjcDGD41cvY9fUAkZYOIVHXSJhYxud-colJQ>
+    <xmx:RM_lZS5h0Ymxx80f01HCHd7TjLf2GKci2waMNyinrlZ2XH2vpC6vqA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id C63AAB6008D; Mon,  4 Mar 2024 08:40:19 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-205-g4dbcac4545-fm-20240301.001-g4dbcac45
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Bitao Hu <yaoma@linux.alibaba.com>
-Subject: Re: [PATCHv11 2/4] genirq: Provide a snapshot mechanism for interrupt
- statistics
-To: Thomas Gleixner <tglx@linutronix.de>,
- Doug Anderson <dianders@chromium.org>
-Cc: liusong@linux.alibaba.com, akpm@linux-foundation.org, pmladek@suse.com,
- kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
- tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
- jan.kiszka@siemens.com, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, yaoma@linux.alibaba.com
-References: <20240228072216.95130-1-yaoma@linux.alibaba.com>
- <20240228072216.95130-3-yaoma@linux.alibaba.com>
- <CAD=FV=U1b+8atmju_w4eRmVKmSqjj6WCsy5EawYqj31fQ1kvrw@mail.gmail.com>
- <87plwdwycx.ffs@tglx>
-Content-Language: en-US
-In-Reply-To: <87plwdwycx.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Message-Id: <a254a52c-340d-47ba-9a69-b5144dc75e4e@app.fastmail.com>
+In-Reply-To: <4e227412-ccac-4771-8aa6-a716e7c07090@csgroup.eu>
+References: 
+ <20240229-fix_sparse_errors_checksum_tests-v11-1-f608d9ec7574@rivosinc.com>
+ <62b69aaf-7633-4bd8-aefe-5ba47147dba7@roeck-us.net>
+ <f422742a-4c86-4cb0-a4f7-a62f0310eb23@csgroup.eu>
+ <6df98c91-26b1-497a-9202-18bf86c0130d@roeck-us.net>
+ <4e227412-ccac-4771-8aa6-a716e7c07090@csgroup.eu>
+Date: Mon, 04 Mar 2024 14:39:59 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Guenter Roeck" <linux@roeck-us.net>, "Russell King" <linux@armlinux.org.uk>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>,
+ "David Laight" <David.Laight@aculab.com>,
+ "Charlie Jenkins" <charlie@rivosinc.com>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Helge Deller" <deller@gmx.de>, "Palmer Dabbelt" <palmer@rivosinc.com>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Parisc List" <linux-parisc@vger.kernel.org>,
+ "Linux ARM" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v11] lib: checksum: Use aligned accesses for ip_fast_csum and
+ csum_ipv6_magic tests
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Mon, Mar 4, 2024, at 12:39, Christophe Leroy wrote:
+> Le 03/03/2024 =C3=A0 16:26, Guenter Roeck a =C3=A9crit=C2=A0:
+>> On 3/3/24 02:20, Christophe Leroy wrote:
+>
+> I don't know much about ARM instruction set, seems like the ldr=20
+> instruction used in ip_fast_csum() doesn't mind unaligned accesses whi=
+le=20
+> ldmia instruction used in csum_ipv6_magic() minds. Or is it a wrong=20
+> behaviour of QEMU ?
 
-On 2024/3/2 03:22, Thomas Gleixner wrote:
-> Doug!
-> 
-> On Wed, Feb 28 2024 at 14:44, Doug Anderson wrote:
->> I won't insist on it, but I continue to worry about memory
->> implications with large numbers of CPUs. With a 4-byte int, 8192 max
->> CPUs, and 100 IRQs the extra "ref" value takes up over 3MB of memory
->> (8192 * 4 bytes * 100).
->>
->> Technically, you could add a new symbol like "config
->> NEED_IRQ_SNAPSHOTS". This wouldn't be a symbol selectable by the end
->> user but would automatically be selected by "config
->> SOFTLOCKUP_DETECTOR_INTR_STORM". If the config wasn't defined then the
->> struct wouldn't contain "ref" and the snapshot routines would just be
->> static inline stubs.
->>
->> Maybe Thomas has an opinion about whether this is something to worry
->> about. Worst case it wouldn't be hard to do in a follow-up patch.
-> 
-> I'd say it makes sense to give people a choice to save memory especially
-> when the softlock detector code is not enabled.
-> 
-> It's rather straight forward to do.
-> 
-> Thanks,
-> 
->          tglx
-> ---
-> --- a/include/linux/irqdesc.h
-> +++ b/include/linux/irqdesc.h
-> @@ -24,7 +24,9 @@ struct pt_regs;
->    */
->   struct irqstat {
->   	unsigned int	cnt;
-> +#ifdef CONFIG_GENIRQ_STAT_SNAPSHOT
->   	unsigned int	ref;
-> +#endif
->   };
->   
->   /**
-> --- a/kernel/irq/irqdesc.c
-> +++ b/kernel/irq/irqdesc.c
-> @@ -978,6 +978,7 @@ static unsigned int kstat_irqs(unsigned
->   	return sum;
->   }
->   
-> +#ifdef CONFIG_GENIRQ_STAT_SNAPSHOT
->   void kstat_snapshot_irqs(void)
->   {
->   	struct irq_desc *desc;
-> @@ -998,6 +999,7 @@ unsigned int kstat_get_irq_since_snapsho
->   		return 0;
->   	return this_cpu_read(desc->kstat_irqs->cnt) - this_cpu_read(desc->kstat_irqs->ref);
->   }
-> +#endif
->   
->   /**
->    * kstat_irqs_usr - Get the statistics for an interrupt from thread context
-> --- a/kernel/irq/Kconfig
-> +++ b/kernel/irq/Kconfig
-> @@ -108,6 +108,10 @@ config GENERIC_IRQ_MATRIX_ALLOCATOR
->   config GENERIC_IRQ_RESERVATION_MODE
->   	bool
->   
-> +# Snapshot for interrupt statistics
-> +config GENERIC_IRQ_STAT_SNAPSHOT
-> +	bool
-> +
->   # Support forced irq threading
->   config IRQ_FORCED_THREADING
->          bool
+Correct.
 
-I think we should follow Douglas's suggestion by making
-"config GENERIC_IRQ_STAT_SNAPSHOT" automatically selectable by
-"config SOFTLOCKUP_DETECTOR_INTR_STORM". This can prevent users
-from inadvertently disabling "config GENERIC_IRQ_STAT_SNAPSHOT"
-while enabling "config SOFTLOCKUP_DETECTOR_INTR_STORM".
+On ARMv6 and newer, accessing normal unaligned memory with ldr/str
+does not trap, and that covers most unaligned accesses.
 
-Best Regards,
-	Bitao Hu
+Some of the cases that don't allow unaligned access include:
 
-diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
-index 2531f3496ab6..9cf3b2d4c2a8 100644
---- a/kernel/irq/Kconfig
-+++ b/kernel/irq/Kconfig
-@@ -108,6 +108,15 @@ config GENERIC_IRQ_MATRIX_ALLOCATOR
-  config GENERIC_IRQ_RESERVATION_MODE
-         bool
+- ARMv4/ARMv5 cannot access unaligned memory with the same
+  instructions. Apparently the same is true for ARMv7-M.
 
-+# Snapshot for interrupt statistics
-+config GENERIC_IRQ_STAT_SNAPSHOT
-+       bool
-+       help
-+
-+         Say Y here to enable the kernel to provide a snapshot mechanism
-+         for interrupt statistics.
-+
-+
-  # Support forced irq threading
-  config IRQ_FORCED_THREADING
-         bool
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 49f652674bd8..899b69fcb598 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1032,6 +1032,7 @@ config SOFTLOCKUP_DETECTOR
-  config SOFTLOCKUP_DETECTOR_INTR_STORM
-         bool "Detect Interrupt Storm in Soft Lockups"
-         depends on SOFTLOCKUP_DETECTOR && IRQ_TIME_ACCOUNTING
-+       select GENERIC_IRQ_STAT_SNAPSHOT
-         default y if NR_CPUS <= 128
-         help
-           Say Y here to enable the kernel to detect interrupt storm
+- multi-word accesses (ldrd/strd and ldm/stm) require 32-bit
+  alignment. These are generated for most 64-bit variables
+  and some arrays
+
+- unaligned access on MMIO registers (__iomem pointers)
+  always trap
+
+- atomic access (ldrex/strex) requires aligned data
+
+- The C standard disallows casting to a type with larger
+  alignment requirements, and gcc is known to produce
+  code that doesn't work with this (and other) undefined
+  behavior.
+
+> If I change the test as follows to only use word aligned IPv6 addresse=
+s,=20
+> it works:
+>
+> diff --git a/lib/checksum_kunit.c b/lib/checksum_kunit.c
+> index 225bb7701460..4d86fc8ccd78 100644
+> --- a/lib/checksum_kunit.c
+> +++ b/lib/checksum_kunit.c
+> @@ -607,7 +607,7 @@ static void test_csum_ipv6_magic(struct kunit *tes=
+t)
+>   	const int csum_offset =3D sizeof(struct in6_addr) + sizeof(struct=20
+> in6_addr) +
+>   			    sizeof(int) + sizeof(char);
+>
+> -	for (int i =3D 0; i < NUM_IPv6_TESTS; i++) {
+> +	for (int i =3D 0; i < NUM_IPv6_TESTS; i +=3D 4) {
+>   		saddr =3D (const struct in6_addr *)(random_buf + i);
+>   		daddr =3D (const struct in6_addr *)(random_buf + i +
+>   						  daddr_offset);
+>
+>
+> If I change csum_ipv6_magic() as follows to use instruction ldr instea=
+d=20
+> of ldmia, it also works without any change to the test:
+>
+> diff --git a/arch/arm/lib/csumipv6.S b/arch/arm/lib/csumipv6.S
+> index 3559d515144c..a312d0836b95 100644
+> --- a/arch/arm/lib/csumipv6.S
+> +++ b/arch/arm/lib/csumipv6.S
+> @@ -12,12 +12,18 @@
+>   ENTRY(__csum_ipv6_magic)
+>   		str	lr, [sp, #-4]!
+>   		adds	ip, r2, r3
+> -		ldmia	r1, {r1 - r3, lr}
+> +		ldr	r2, [r1], #4
+> +		ldr	r3, [r1], #4
+> +		ldr	lr, [r1], #4
+> +		ldr	r1, [r1]
+>
+> So now we are back to the initial question, should checksumming on=20
+> unaligned addresses be supported or not ?
+>
+> Russell I understand from previous answers from you that half-word=20
+> alignment should be supported, in that case should ARM version of=20
+> csum_ipv6_magic() be modified ? In that case can you propose the most=20
+> optimised fix ?
+
+The csumipv6.S code predates ARMv6 and is indeed suboptimal on v6/v7
+processors with unaligned ipv6 headers. Your workaround looks like
+it should be much better, but it would at the same time make the
+ARMv5 case much more expensive because it traps four times instead
+of just one.
+
+> If not, then the test has to be fixed to only use word-aligned IPv6=20
+> addresses.
+
+Because of the gcc issue I mentioned, net/ipv6/ip6_checksum.c
+and anything else that accesses misaligned ipv6 headers may need
+to be changed as well. Marking in6_addr as '__packed __aligned(2)'
+should be sufficient for that. This will prevent gcc from issuing
+ldm or ldrd on ARMv6+ as well as making optimization based on
+the two lower bits of the address being zero on x86 and others.
+The downside is that it forces 16-bit loads and stores to be
+used on architectures that don't have efficient unaligned
+access (armv5, alpha, mips, sparc and xtensa among others)
+even when the IP headers are fully aligned.
+
+     Arnd
 
