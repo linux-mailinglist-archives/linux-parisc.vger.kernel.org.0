@@ -1,111 +1,139 @@
-Return-Path: <linux-parisc+bounces-806-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-807-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF5787198D
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 Mar 2024 10:27:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C1F871C8D
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 Mar 2024 12:00:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5F701F21656
-	for <lists+linux-parisc@lfdr.de>; Tue,  5 Mar 2024 09:27:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FDD71C23008
+	for <lists+linux-parisc@lfdr.de>; Tue,  5 Mar 2024 11:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A331E524C9;
-	Tue,  5 Mar 2024 09:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C995916A;
+	Tue,  5 Mar 2024 10:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="H1/qCxCj"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A0F50A72
-	for <linux-parisc@vger.kernel.org>; Tue,  5 Mar 2024 09:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1B958ABA;
+	Tue,  5 Mar 2024 10:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709630821; cv=none; b=qmBWKxf6hai4wB4rZcUtjl8mYvWmIFb9TFhf7ZESjZ1l7/mjEI5hVIQrnMUGtzpcrcxdnODwzJfdyLZIUqV8M0WXp50q03qTdQe+U3gQLDPOsGvgvr4/4+c+H8sqX5foQMzrOW3DzXFpQg3r8apXpVU4L7H14lj2HqVXMKqUqAs=
+	t=1709636263; cv=none; b=uJlrjDLEF+V7e0hPSSHpPE6713LqGF39hRJZb8zPmPX3LXHwUShd3ThOsTpsvRze5nSdTxgaCVuU8hD12WJxunrdCskUqEm51qt+MC9sYb1I6Lh+Vimrkh8pyl8pS+Zfgbw+Q21cnIHeyqGpfTQOtgH3veF7oTOtJMIhvlxWQkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709630821; c=relaxed/simple;
-	bh=LrRp2oHJmVrObhpCmaCXYk8T8eMjQU7jJNMaJrEo3c0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=SP3xKz6/tqEBjGNzK/SNbV878yp5WgXNJVkRGpH9Llvq3zVwCSOL2YdsQWjEUGt/Vgxr2v22vZPK59W8pT8agL1BIJppVHp8Q7fYRm0J9rCmigUJFmdnjoo6hCOvUsoq69SHmaSXdNC3eSi/dETtHgbsz8BEc56iu0LLA2+OKGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-312-sCqIcKGYOf6ZeDr-o4ocrw-1; Tue, 05 Mar 2024 09:26:51 +0000
-X-MC-Unique: sCqIcKGYOf6ZeDr-o4ocrw-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 5 Mar
- 2024 09:27:22 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Tue, 5 Mar 2024 09:27:22 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Arnd Bergmann' <arnd@arndb.de>, Christophe Leroy
-	<christophe.leroy@csgroup.eu>, Guenter Roeck <linux@roeck-us.net>, "Russell
- King" <linux@armlinux.org.uk>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Palmer
- Dabbelt" <palmer@dabbelt.com>, Charlie Jenkins <charlie@rivosinc.com>, "James
- E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller
-	<deller@gmx.de>, Palmer Dabbelt <palmer@rivosinc.com>, Geert Uytterhoeven
-	<geert@linux-m68k.org>, Andrew Morton <akpm@linux-foundation.org>, "Parisc
- List" <linux-parisc@vger.kernel.org>, Linux ARM
-	<linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v11] lib: checksum: Use aligned accesses for ip_fast_csum
- and csum_ipv6_magic tests
-Thread-Topic: [PATCH v11] lib: checksum: Use aligned accesses for ip_fast_csum
- and csum_ipv6_magic tests
-Thread-Index: AQHabjlz2G6zh0QEYUOonhCQoX0NCrEo3thA
-Date: Tue, 5 Mar 2024 09:27:22 +0000
-Message-ID: <55a6df07d26849e89c839f80ca5996b9@AcuMS.aculab.com>
-References: <20240229-fix_sparse_errors_checksum_tests-v11-1-f608d9ec7574@rivosinc.com>
- <62b69aaf-7633-4bd8-aefe-5ba47147dba7@roeck-us.net>
- <f422742a-4c86-4cb0-a4f7-a62f0310eb23@csgroup.eu>
- <6df98c91-26b1-497a-9202-18bf86c0130d@roeck-us.net>
- <4e227412-ccac-4771-8aa6-a716e7c07090@csgroup.eu>
- <a254a52c-340d-47ba-9a69-b5144dc75e4e@app.fastmail.com>
-In-Reply-To: <a254a52c-340d-47ba-9a69-b5144dc75e4e@app.fastmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	s=arc-20240116; t=1709636263; c=relaxed/simple;
+	bh=d6wEI8+wCMnSdkIqW6YoHtvK6Oha6qUUulRHtofV6I8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=PZ25PkYfl0ggp/hVjJIrQRrJKxYDCYjYqOYqVc30w/L3WPXbkZ794qtLOOoBFt0M8YY1nPF/hSJkCB6jmZQTVCfQ7FJLiwoQ6Vzgt74PMUkKmWSsuse5D+ZbQrzyO2xgYNTrweEyrZqyumXUc2xzRznfu2wX25+Y05mqPuNRQcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=H1/qCxCj; arc=none smtp.client-ip=115.124.30.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1709636258; h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type;
+	bh=j65dJlefD3YD0cqeyDWt8oxBp32fVKAN6EtBWBvh2Tg=;
+	b=H1/qCxCjObiT8ZRpTbxrm3JPjTc5jfZzkb9nYiues2enoNRa2LXll1Pv2rC4JxMXU19xiOGHWpmIj1UrXpWHhEyr5qFm4rH5flsBn2EzAIUd6IjVtza+Pd8v/5C3Dj7TkDPL1me+EE8fCAUztK4/44mDaqxj32RlQJa2QD6Fkhk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W1tyYEr_1709636255;
+Received: from 30.178.67.161(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W1tyYEr_1709636255)
+          by smtp.aliyun-inc.com;
+          Tue, 05 Mar 2024 18:57:37 +0800
+Message-ID: <28a24e4b-c322-4631-ad6d-7259ca3d084d@linux.alibaba.com>
+Date: Tue, 5 Mar 2024 18:57:34 +0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
+User-Agent: Mozilla Thunderbird
+From: Bitao Hu <yaoma@linux.alibaba.com>
+Subject: Re: [PATCHv11 2/4] genirq: Provide a snapshot mechanism for interrupt
+ statistics
+To: Thomas Gleixner <tglx@linutronix.de>,
+ Doug Anderson <dianders@chromium.org>
+Cc: liusong@linux.alibaba.com, akpm@linux-foundation.org, pmladek@suse.com,
+ kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
+ tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
+ jan.kiszka@siemens.com, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, yaoma@linux.alibaba.com
+References: <20240228072216.95130-1-yaoma@linux.alibaba.com>
+ <20240228072216.95130-3-yaoma@linux.alibaba.com>
+ <CAD=FV=U1b+8atmju_w4eRmVKmSqjj6WCsy5EawYqj31fQ1kvrw@mail.gmail.com>
+ <87plwdwycx.ffs@tglx>
+ <3a89fafb-f62e-472f-b40b-8bf97954e9e3@linux.alibaba.com>
+ <87wmqiulaw.ffs@tglx>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+In-Reply-To: <87wmqiulaw.ffs@tglx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-RnJvbTogQXJuZCBCZXJnbWFubg0KPiBTZW50OiAwNCBNYXJjaCAyMDI0IDEzOjQwDQouLi4NCj4g
-PiBJZiBub3QsIHRoZW4gdGhlIHRlc3QgaGFzIHRvIGJlIGZpeGVkIHRvIG9ubHkgdXNlIHdvcmQt
-YWxpZ25lZCBJUHY2DQo+ID4gYWRkcmVzc2VzLg0KPiANCj4gQmVjYXVzZSBvZiB0aGUgZ2NjIGlz
-c3VlIEkgbWVudGlvbmVkLCBuZXQvaXB2Ni9pcDZfY2hlY2tzdW0uYw0KPiBhbmQgYW55dGhpbmcg
-ZWxzZSB0aGF0IGFjY2Vzc2VzIG1pc2FsaWduZWQgaXB2NiBoZWFkZXJzIG1heSBuZWVkDQo+IHRv
-IGJlIGNoYW5nZWQgYXMgd2VsbC4gTWFya2luZyBpbjZfYWRkciBhcyAnX19wYWNrZWQgX19hbGln
-bmVkKDIpJw0KPiBzaG91bGQgYmUgc3VmZmljaWVudCBmb3IgdGhhdC4gVGhpcyB3aWxsIHByZXZl
-bnQgZ2NjIGZyb20gaXNzdWluZw0KPiBsZG0gb3IgbGRyZCBvbiBBUk12NisgYXMgd2VsbCBhcyBt
-YWtpbmcgb3B0aW1pemF0aW9uIGJhc2VkIG9uDQo+IHRoZSB0d28gbG93ZXIgYml0cyBvZiB0aGUg
-YWRkcmVzcyBiZWluZyB6ZXJvIG9uIHg4NiBhbmQgb3RoZXJzLg0KDQpFaD8geDg2IHByZXR0eSBt
-dWNoIGRvZXNuJ3QgY2FyZSB1bmxlc3MgeW91IGFyZSB1c2luZyBBVlguDQoNCj4gVGhlIGRvd25z
-aWRlIGlzIHRoYXQgaXQgZm9yY2VzIDE2LWJpdCBsb2FkcyBhbmQgc3RvcmVzIHRvIGJlDQo+IHVz
-ZWQgb24gYXJjaGl0ZWN0dXJlcyB0aGF0IGRvbid0IGhhdmUgZWZmaWNpZW50IHVuYWxpZ25lZA0K
-PiBhY2Nlc3MgKGFybXY1LCBhbHBoYSwgbWlwcywgc3BhcmMgYW5kIHh0ZW5zYSBhbW9uZyBvdGhl
-cnMpDQo+IGV2ZW4gd2hlbiB0aGUgSVAgaGVhZGVycyBhcmUgZnVsbHkgYWxpZ25lZC4NCg0KQXJl
-bid0IHRoZSBsYXRlciBhY2Nlc3NlcyB0byB0aGUgaGVhZGVyIGFsc28gZ29pbmcgdG8gZmF1bHQ/
-DQpJSVJDIHRoZXJlIGlzIGFuIHNrYl9wdWxsKCkgY2FsbCB0byBlbnN1cmUgYWxsIHRoZSBJUCBo
-ZWFkZXINCmlzIGluIHRoZSBsaW5lYXIgc2tiIGZyYWdtZW50Pw0KUGVyaGFwcyB0aGVyZSBzaG91
-bGQgYmUgYW4gc2tiX3B1bGxfYWxpZ25lZCgpIHRoYXQgd2lsbCBlbnN1cmUNCnRoZSBkYXRhIGlz
-IDMyYml0IGFsaWduZWQgb24gc3lzdGVtcyB3aGVyZSB0aGUgbWlzYWxpZ25lZCBhY2Nlc3Nlcw0K
-ZmF1bHQ/DQoNClRoZXJlIG1pZ2h0IHN0aWxsIG5lZWQgdG8gYmUgc29tZXRoaW5nIHRvIHN0b3Ag
-Z2NjIGdlbmVyYXRpbmcNCmxkbS9sZHJkIHdoaWNoIGNhbiBmYXVsdCBvbiBzeXN0ZW1zIHdoZXJl
-IGEgbm9ybWFsIHJlZ2lzdGVyDQpyZWFkIHdvdWxkbid0Lg0KDQpEbyBhbnkgcmVjZW50IGFybSBj
-cHUgaGF2ZSB0aGUgc3Ryb25nYXJtICdmZWF0dXJlJyB0aGFuIGxkbQ0KYWx3YXlzIHRvb2sgMTYg
-Y2xvY2tzPw0KDQoJRGF2aWQNCiANCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBC
-cmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdp
-c3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
+Hi,
+
+On 2024/3/4 22:24, Thomas Gleixner wrote:
+> The above is not even configurable by the user. It's only selectable by
+> some other config option.
+> 
+>> +# Snapshot for interrupt statistics
+>> +config GENERIC_IRQ_STAT_SNAPSHOT
+>> +       bool
+>> +       help
+>> +
+>> +         Say Y here to enable the kernel to provide a snapshot mechanism
+>> +         for interrupt statistics.
+> 
+> That makes is visible which is pointless because it's only relevant when
+> there is an actual user.
+I guess I may have misunderstood your intentions earlier. Initially, I
+thought you were suggesting that when "SOFTLOCKUP_DETECTOR_INTR_STORM"
+is not enabled, people should be able to choose
+"GENERIC_IRQ_STAT_SNAPSHOT" through menuconfig, so I attempted to make
+"GENERIC_IRQ_STAT_SNAPSHOT" visible to the user. However, after
+analyzing the previous emails, it seems that what you were actually
+proposing was to directly disable "GENERIC_IRQ_STAT_SNAPSHOT" when
+"SOFTLOCKUP_DETECTOR_INTR_STORM" is not enabled, as a way to save
+memory. If my current understanding is correct, then the code for that
+part would look something like the following.
+
+Does this align with your expectations?
+
+Best Regards,
+	Bitao Hu
+
+diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
+index 2531f3496ab6..a28e5ac5fc79 100644
+--- a/kernel/irq/Kconfig
++++ b/kernel/irq/Kconfig
+@@ -108,6 +108,10 @@ config GENERIC_IRQ_MATRIX_ALLOCATOR
+  config GENERIC_IRQ_RESERVATION_MODE
+         bool
+
++# Snapshot for interrupt statistics
++config GENERIC_IRQ_STAT_SNAPSHOT
++       bool
++
+  # Support forced irq threading
+  config IRQ_FORCED_THREADING
+         bool
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 49f652674bd8..899b69fcb598 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1032,6 +1032,7 @@ config SOFTLOCKUP_DETECTOR
+  config SOFTLOCKUP_DETECTOR_INTR_STORM
+         bool "Detect Interrupt Storm in Soft Lockups"
+         depends on SOFTLOCKUP_DETECTOR && IRQ_TIME_ACCOUNTING
++       select GENERIC_IRQ_STAT_SNAPSHOT
+         default y if NR_CPUS <= 128
+         help
+           Say Y here to enable the kernel to detect interrupt storm
+
+
+
+
+
 
 
