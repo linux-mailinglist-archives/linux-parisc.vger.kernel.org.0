@@ -1,69 +1,69 @@
-Return-Path: <linux-parisc+bounces-897-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-898-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BAE879E19
-	for <lists+linux-parisc@lfdr.de>; Tue, 12 Mar 2024 23:02:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED573879E21
+	for <lists+linux-parisc@lfdr.de>; Tue, 12 Mar 2024 23:03:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05E8DB23367
-	for <lists+linux-parisc@lfdr.de>; Tue, 12 Mar 2024 22:02:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A99082813CF
+	for <lists+linux-parisc@lfdr.de>; Tue, 12 Mar 2024 22:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BB4143758;
-	Tue, 12 Mar 2024 22:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76AB143C65;
+	Tue, 12 Mar 2024 22:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="UKdaCNSH"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="A/TNZHOd"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA54143C46
-	for <linux-parisc@vger.kernel.org>; Tue, 12 Mar 2024 22:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0285143C4A
+	for <linux-parisc@vger.kernel.org>; Tue, 12 Mar 2024 22:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710280969; cv=none; b=ritRJobdosuEVOBzi+UqyK6mmutyNyA5zUWQm9Sjy1ZkWvF0dMopeUI5clajxtjq+ufO6wAVvUMsAslhNZrWlcvn/weqJcxVee82SfhM3INLOhNCiPwjrvVRe77BgHSV5YTJ4ScCOq2VCCBcWWztOHINiNv0nj+eCISyYKOYKg0=
+	t=1710280989; cv=none; b=MRggOh4UdHH/pRZFx6Rg30oSH6ePH0WX8dYXzPhZ3JoGfRlh/OoNYOO5XSA3vLqnscHh4q0f4ZCbSME5p5GGGFMW+qGXhVDEb4epomZBpPhuYufdtY8xVnAAuLfH+5KVp8klz0Iv4bpW37xua0iV7n6I1YLnMp/Ja9TzqR3tvrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710280969; c=relaxed/simple;
-	bh=oexVpmdnuJzE5NnIT+grB7HUdJL7OkTLS1ozx4Z/KWY=;
+	s=arc-20240116; t=1710280989; c=relaxed/simple;
+	bh=D4lY7fxdRPJh4W1hrWZC0Kv5/fDQzdNIZGvAvIvgwj8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oc6T0+0mn+dTalVUKZL0H0AMxjpTBN5pI/g2y+fGdt97aNeJM9T5x/7go3tOC3RVGC3lZeBxxvla7ey0La0HlufpoWeST9NhAc0oN8VBTqqxE+1MtyVPDPc/dvHxXgBQLMF4i1C1nRX0/eS3w+wLHdimjvvndlHB3z8+A9qN5DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=UKdaCNSH; arc=none smtp.client-ip=209.85.210.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=qY/OfP4sfYTkJ2cHkPOXKLK/U8PHAjvq9r9sl6c/M/u+VrSRMDXL/tNjGPeagx+l2B1KqF9UAtrC7nT5fjuWJNny/F7OUFXfxDYga/CzCuPk0LFtjr/M3dBnsEKNkbtVg9oi0uS3zNNkosKptI6/GQMWispQzAeYQA5U9Mle7XE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=A/TNZHOd; arc=none smtp.client-ip=209.85.166.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6e6afb754fcso694219b3a.3
-        for <linux-parisc@vger.kernel.org>; Tue, 12 Mar 2024 15:02:47 -0700 (PDT)
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3663be565d5so1616715ab.0
+        for <linux-parisc@vger.kernel.org>; Tue, 12 Mar 2024 15:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1710280967; x=1710885767; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1710280986; x=1710885786; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1akdFCp/NrQTZkdZoE61av7sk42pTtpjjQoFP3uV05s=;
-        b=UKdaCNSHKEqp7yHzh1hBZoDxJwCzZjZRy6+JjsapHreO1jfLoFeUMD5jYHQjq/4bay
-         /zCfBcW4JCaxFORrTCqjiPUfHGTTDSjcREvxdT247oraD4oDWaOeAD9ZlOHbwjvhUpM6
-         OXbpZNcNfffCyei+nBKm03msxYqMhQxiZQgBc=
+        bh=bFZkOPzjUiG9hBeGxmULl/XMqNk9IbEaqEvdeXcgD8s=;
+        b=A/TNZHOduTDw50espaicZGUQX6jYzVKJBdIDeVnj4Ef+T1kYvYyYeHd8S7/kNrpvGD
+         3RH+VH5SOhmcdBNAHJ8Ce3Yzv+nkQ1baRzAymYdkEDF7B0Re6olgpjR2rwsAoVR/EBe7
+         bazE+AsiGg4KmyHLPgOg49cRkO+/ghkrdd1OE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710280967; x=1710885767;
+        d=1e100.net; s=20230601; t=1710280986; x=1710885786;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1akdFCp/NrQTZkdZoE61av7sk42pTtpjjQoFP3uV05s=;
-        b=CwQ4+OoOOtrHkIIlT9kTIxPZQ0u+O2o5stneseFr74xbta1K6080PlEutVcBtf9uvY
-         fJIFd82xsMTF1fnorXNv3O2rYzkB+EoSam1PX1M+KN3RyyEAhWfCLYikpbo+7Er2/j3/
-         Du4HRe9wicGf5G4JT9F4UXgit31NCB00SbdlxR28y67K3hpVmbA6a5D+wg7xRMiD/7H0
-         MBJQvpVaLN8rFUXkYQH5aQoNO2phh8dLaVhunljB+/Q7dtYS4v1rqIXjwO/LeoKlw8uE
-         0nS7kN+Am8LWWcKQ7Nl7QpILx6jmFwpg75jh67b24c2PE7wAPhLSG3vCW6K+/XNUsF97
-         Xr8A==
-X-Forwarded-Encrypted: i=1; AJvYcCX6OLFKgkpWqEkjuTd5vX7eOL8SQbZ7f147tMy4tJmOaVJjKX6nsPQoxEcldUDgMxfVQv1052mCZK9MFnFMJzKo0KIcyuJxgOPXg9tF
-X-Gm-Message-State: AOJu0YyTxkPlDAZeou4UipruSeRXX62n+PR6xfkLXAanuFHYyGS31oGC
-	2Ld2f/SkzPSVPCzEvqb+GviA1brRCgrrXxOdAyf9zQ/xW5IKhhWZTDa7rmcPNw==
-X-Google-Smtp-Source: AGHT+IFKZ+X2o3xvUM/DPjpn5dJMdSK/7jBm9riFOy6GxFDG2jNN2P7xmSx2+ecCvjPJ+atiR43WGA==
-X-Received: by 2002:a05:6a20:9382:b0:1a0:efd0:b183 with SMTP id x2-20020a056a20938200b001a0efd0b183mr14145890pzh.44.1710280967019;
-        Tue, 12 Mar 2024 15:02:47 -0700 (PDT)
+        bh=bFZkOPzjUiG9hBeGxmULl/XMqNk9IbEaqEvdeXcgD8s=;
+        b=Al1llWYeUNxM+53P6VlTYzwLN65aw0u9nBGQeVDKJRNmzZvkXAs3kxABppPBEvta26
+         pG9rPw4S9IoER+IkIi5mXt3XUqKQh7PiyUDes5d8HH6zjlytiFqPySDnKapJiqDfLKpH
+         WhVjOkgbQfjSznwtL9FMVvAzOAGxcteIyrlpQb+5Neu5xxUAUq16GlZE45RslYif5zI9
+         iJ7dRgvz348VU8aj+OAuTCyx+sUzsP6cjxNAYywuQzBgmeblkgV5wqeDW55Nw+JPC/Sp
+         Ijrx7wg+/TSVotg+A37hwP0qONGodAVdzpwsveBOZNc5qxJNTh93oUw2JWHaznDkOwZo
+         +nuA==
+X-Forwarded-Encrypted: i=1; AJvYcCWMswz0QfP77PgkXCiCAwol+JYqs6Ov76CrZ+xp/mV/zwBc+50GiQ4UmGkDHXIi2HCK7+qukedW6Rx1Xm95dcuZTL0n9ukyGuP4Jqkp
+X-Gm-Message-State: AOJu0YyYDnD1QCdCZXMkEy6q+fShVm0/76VTOXouVcXwkbws+Ygr20OK
+	fHUqy3EGkKN/921E2xPLAalMlAxnF6hu42sAnhpMvGy4qB4vErijllWJNKiqGA==
+X-Google-Smtp-Source: AGHT+IEdwN1SY2GeciEHPDmRWgTgdPa04evl6KEFQYoPJeYQSV2BmWI4216WoCmzy6l7zJDsrZVhNw==
+X-Received: by 2002:a6b:e719:0:b0:7c8:bf15:5653 with SMTP id b25-20020a6be719000000b007c8bf155653mr4918871ioh.20.1710280986087;
+        Tue, 12 Mar 2024 15:03:06 -0700 (PDT)
 Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id e11-20020a17090301cb00b001dd6c0800b4sm7193896plh.188.2024.03.12.15.02.46
+        by smtp.gmail.com with ESMTPSA id m14-20020a63ed4e000000b005dc816b2369sm6650251pgk.28.2024.03.12.15.03.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Mar 2024 15:02:46 -0700 (PDT)
-Date: Tue, 12 Mar 2024 15:02:46 -0700
+        Tue, 12 Mar 2024 15:03:05 -0700 (PDT)
+Date: Tue, 12 Mar 2024 15:03:05 -0700
 From: Kees Cook <keescook@chromium.org>
 To: Guenter Roeck <linux@roeck-us.net>
 Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
@@ -88,11 +88,11 @@ Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
 	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
 	linux-sh@vger.kernel.org, loongarch@lists.linux.dev,
 	netdev@lists.linux.dev
-Subject: Re: [PATCH 03/14] kunit: Add test cases for backtrace warning
- suppression
-Message-ID: <202403121502.95F27A01@keescook>
+Subject: Re: [PATCH 04/14] kunit: Add documentation for warning backtrace
+ suppression API
+Message-ID: <202403121503.B97DE8A60E@keescook>
 References: <20240312170309.2546362-1-linux@roeck-us.net>
- <20240312170309.2546362-4-linux@roeck-us.net>
+ <20240312170309.2546362-5-linux@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -101,14 +101,10 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240312170309.2546362-4-linux@roeck-us.net>
+In-Reply-To: <20240312170309.2546362-5-linux@roeck-us.net>
 
-On Tue, Mar 12, 2024 at 10:02:58AM -0700, Guenter Roeck wrote:
-> Add unit tests to verify that warning backtrace suppression works.
-> 
-> If backtrace suppression does _not_ work, the unit tests will likely
-> trigger unsuppressed backtraces, which should actually help to get
-> the affected architectures / platforms fixed.
+On Tue, Mar 12, 2024 at 10:02:59AM -0700, Guenter Roeck wrote:
+> Document API functions for suppressing warning backtraces.
 > 
 > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 
