@@ -1,115 +1,192 @@
-Return-Path: <linux-parisc+bounces-898-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-899-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED573879E21
-	for <lists+linux-parisc@lfdr.de>; Tue, 12 Mar 2024 23:03:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD5D879EAC
+	for <lists+linux-parisc@lfdr.de>; Tue, 12 Mar 2024 23:29:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A99082813CF
-	for <lists+linux-parisc@lfdr.de>; Tue, 12 Mar 2024 22:03:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7261B24010
+	for <lists+linux-parisc@lfdr.de>; Tue, 12 Mar 2024 22:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76AB143C65;
-	Tue, 12 Mar 2024 22:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9074C1448F2;
+	Tue, 12 Mar 2024 22:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="A/TNZHOd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q5QPyTLr"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0285143C4A
-	for <linux-parisc@vger.kernel.org>; Tue, 12 Mar 2024 22:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990D814404C;
+	Tue, 12 Mar 2024 22:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710280989; cv=none; b=MRggOh4UdHH/pRZFx6Rg30oSH6ePH0WX8dYXzPhZ3JoGfRlh/OoNYOO5XSA3vLqnscHh4q0f4ZCbSME5p5GGGFMW+qGXhVDEb4epomZBpPhuYufdtY8xVnAAuLfH+5KVp8klz0Iv4bpW37xua0iV7n6I1YLnMp/Ja9TzqR3tvrU=
+	t=1710282549; cv=none; b=VixazLgWwxrCvSXHl720LXcvpQcKYMMwpRTEjlSOvAooO1vJESeGJwpwO2WO5DlBqE23LdXWFubJm2dG6ev8eu3Vy8VUZ/Yvrp8dvDYCCtBbJdS/qU3x1CPkPm+LuvkgMYa8Qzdvd5l75dN/TVDdIAunKtQBSTMDEm6Xt7YITdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710280989; c=relaxed/simple;
-	bh=D4lY7fxdRPJh4W1hrWZC0Kv5/fDQzdNIZGvAvIvgwj8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qY/OfP4sfYTkJ2cHkPOXKLK/U8PHAjvq9r9sl6c/M/u+VrSRMDXL/tNjGPeagx+l2B1KqF9UAtrC7nT5fjuWJNny/F7OUFXfxDYga/CzCuPk0LFtjr/M3dBnsEKNkbtVg9oi0uS3zNNkosKptI6/GQMWispQzAeYQA5U9Mle7XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=A/TNZHOd; arc=none smtp.client-ip=209.85.166.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3663be565d5so1616715ab.0
-        for <linux-parisc@vger.kernel.org>; Tue, 12 Mar 2024 15:03:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1710280986; x=1710885786; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bFZkOPzjUiG9hBeGxmULl/XMqNk9IbEaqEvdeXcgD8s=;
-        b=A/TNZHOduTDw50espaicZGUQX6jYzVKJBdIDeVnj4Ef+T1kYvYyYeHd8S7/kNrpvGD
-         3RH+VH5SOhmcdBNAHJ8Ce3Yzv+nkQ1baRzAymYdkEDF7B0Re6olgpjR2rwsAoVR/EBe7
-         bazE+AsiGg4KmyHLPgOg49cRkO+/ghkrdd1OE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710280986; x=1710885786;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bFZkOPzjUiG9hBeGxmULl/XMqNk9IbEaqEvdeXcgD8s=;
-        b=Al1llWYeUNxM+53P6VlTYzwLN65aw0u9nBGQeVDKJRNmzZvkXAs3kxABppPBEvta26
-         pG9rPw4S9IoER+IkIi5mXt3XUqKQh7PiyUDes5d8HH6zjlytiFqPySDnKapJiqDfLKpH
-         WhVjOkgbQfjSznwtL9FMVvAzOAGxcteIyrlpQb+5Neu5xxUAUq16GlZE45RslYif5zI9
-         iJ7dRgvz348VU8aj+OAuTCyx+sUzsP6cjxNAYywuQzBgmeblkgV5wqeDW55Nw+JPC/Sp
-         Ijrx7wg+/TSVotg+A37hwP0qONGodAVdzpwsveBOZNc5qxJNTh93oUw2JWHaznDkOwZo
-         +nuA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMswz0QfP77PgkXCiCAwol+JYqs6Ov76CrZ+xp/mV/zwBc+50GiQ4UmGkDHXIi2HCK7+qukedW6Rx1Xm95dcuZTL0n9ukyGuP4Jqkp
-X-Gm-Message-State: AOJu0YyYDnD1QCdCZXMkEy6q+fShVm0/76VTOXouVcXwkbws+Ygr20OK
-	fHUqy3EGkKN/921E2xPLAalMlAxnF6hu42sAnhpMvGy4qB4vErijllWJNKiqGA==
-X-Google-Smtp-Source: AGHT+IEdwN1SY2GeciEHPDmRWgTgdPa04evl6KEFQYoPJeYQSV2BmWI4216WoCmzy6l7zJDsrZVhNw==
-X-Received: by 2002:a6b:e719:0:b0:7c8:bf15:5653 with SMTP id b25-20020a6be719000000b007c8bf155653mr4918871ioh.20.1710280986087;
-        Tue, 12 Mar 2024 15:03:06 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id m14-20020a63ed4e000000b005dc816b2369sm6650251pgk.28.2024.03.12.15.03.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Mar 2024 15:03:05 -0700 (PDT)
-Date: Tue, 12 Mar 2024 15:03:05 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Daniel Diaz <daniel.diaz@linaro.org>,
-	David Gow <davidgow@google.com>,
-	Arthur Grillo <arthurgrillo@riseup.net>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org, loongarch@lists.linux.dev,
-	netdev@lists.linux.dev
-Subject: Re: [PATCH 04/14] kunit: Add documentation for warning backtrace
- suppression API
-Message-ID: <202403121503.B97DE8A60E@keescook>
-References: <20240312170309.2546362-1-linux@roeck-us.net>
- <20240312170309.2546362-5-linux@roeck-us.net>
+	s=arc-20240116; t=1710282549; c=relaxed/simple;
+	bh=0AXtXC2QsVELXP+nYGygIha/dj1Cad9y2eG6v/oGLtg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=n56d4VeEFGVYkQ3N3SJCa+7ujH1B43TeJb753YhxdEt60kGw4qhWKurjgH+NGYs7AFAET5F5Twfh0LpBUkL98FBk7x//g6AbN1Q5HXCaRl6JgO5WPElJ0ceVbdh78QO6H8VNVEnu3UDcfDJhGCGlNCGvTWeSRgC36EcqB2IcaWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q5QPyTLr; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710282548; x=1741818548;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0AXtXC2QsVELXP+nYGygIha/dj1Cad9y2eG6v/oGLtg=;
+  b=Q5QPyTLrsnRpx8b/qwzY04lG0KEQUsLe9w5Pc3au8d/TEVAjVYq7Ek+W
+   Gi/IreZIGiiilVjRHKB425731sI3qTs7Y/bp5iXQxVsHDzGNN/+F1DREW
+   h0tTnwO2FjjUtT1n5AJet3mY97YvPZHRZI2GY6e9MaMkoKqm9fgnY5K6O
+   G/4DENSS7QuQ2FN/jVrU/tFGD6pHFywKpb5Yy2miFKXgQhmOQUDkKoDWj
+   siPoVobeqGB5ikLsTZig0KiknKK1okqQLyTqXfWjNXfB8w6dPkch16kmF
+   hpTW7JeIGc+ydsGu7v5c98w/KEIWBWS5ScE2fLEpPKEy0E68fFIkJZVJT
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="5191986"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="5191986"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:29:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="16356855"
+Received: from gargayus-mobl1.amr.corp.intel.com (HELO rpedgeco-desk4.intel.com) ([10.255.231.196])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:29:03 -0700
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
+To: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	bp@alien8.de,
+	broonie@kernel.org,
+	dave.hansen@linux.intel.com,
+	debug@rivosinc.com,
+	hpa@zytor.com,
+	keescook@chromium.org,
+	kirill.shutemov@linux.intel.com,
+	luto@kernel.org,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	x86@kernel.org,
+	christophe.leroy@csgroup.eu
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	rick.p.edgecombe@intel.com,
+	Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH v3 06/12] parisc: Use initializer for struct vm_unmapped_area_info
+Date: Tue, 12 Mar 2024 15:28:37 -0700
+Message-Id: <20240312222843.2505560-7-rick.p.edgecombe@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240312222843.2505560-1-rick.p.edgecombe@intel.com>
+References: <20240312222843.2505560-1-rick.p.edgecombe@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240312170309.2546362-5-linux@roeck-us.net>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 12, 2024 at 10:02:59AM -0700, Guenter Roeck wrote:
-> Document API functions for suppressing warning backtraces.
-> 
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Future changes will need to add a new member to struct
+vm_unmapped_area_info. This would cause trouble for any call site that
+doesn't initialize the struct. Currently every caller sets each member
+manually, so if new members are added they will be uninitialized and the
+core code parsing the struct will see garbage in the new member.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+It could be possible to initialize the new member manually to 0 at each
+call site. This and a couple other options were discussed, and a working
+consensus (see links) was that in general the best way to accomplish this
+would be via static initialization with designated member initiators.
+Having some struct vm_unmapped_area_info instances not zero initialized
+will put those sites at risk of feeding garbage into vm_unmapped_area() if
+the convention is to zero initialize the struct and any new member addition
+misses a call site that initializes each member manually.
 
+It could be possible to leave the code mostly untouched, and just change
+the line:
+struct vm_unmapped_area_info info
+to:
+struct vm_unmapped_area_info info = {};
+
+However, that would leave cleanup for the members that are manually set
+to zero, as it would no longer be required.
+
+So to be reduce the chance of bugs via uninitialized members, instead
+simply continue the process to initialize the struct this way tree wide.
+This will zero any unspecified members. Move the member initializers to the
+struct declaration when they are known at that time. Leave the members out
+that were manually initialized to zero, as this would be redundant for
+designated initializers.
+
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Acked-by: Helge Deller <deller@gmx.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Link: https://lore.kernel.org/lkml/202402280912.33AEE7A9CF@keescook/#t
+Link: https://lore.kernel.org/lkml/j7bfvig3gew3qruouxrh7z7ehjjafrgkbcmg6tcghhfh3rhmzi@wzlcoecgy5rs/
+---
+v3:
+ - Fixed spelling errors in log
+ - Be consistent about field vs member in log
+
+Hi,
+
+This patch was split and refactored out of a tree-wide change [0] to just
+zero-init each struct vm_unmapped_area_info. The overall goal of the
+series is to help shadow stack guard gaps. Currently, there is only one
+arch with shadow stacks, but two more are in progress. It is compile tested
+only.
+
+There was further discussion that this method of initializing the structs
+while nice in some ways has a greater risk of introducing bugs in some of
+the more complicated callers. Since this version was reviewed my arch
+maintainers already, leave it as was already acknowledged.
+
+Thanks,
+
+Rick
+
+[0] https://lore.kernel.org/lkml/20240226190951.3240433-6-rick.p.edgecombe@intel.com/
+---
+ arch/parisc/kernel/sys_parisc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
+index 98af719d5f85..f7722451276e 100644
+--- a/arch/parisc/kernel/sys_parisc.c
++++ b/arch/parisc/kernel/sys_parisc.c
+@@ -104,7 +104,9 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+ 	struct vm_area_struct *vma, *prev;
+ 	unsigned long filp_pgoff;
+ 	int do_color_align;
+-	struct vm_unmapped_area_info info;
++	struct vm_unmapped_area_info info = {
++		.length = len
++	};
+ 
+ 	if (unlikely(len > TASK_SIZE))
+ 		return -ENOMEM;
+@@ -139,7 +141,6 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+ 			return addr;
+ 	}
+ 
+-	info.length = len;
+ 	info.align_mask = do_color_align ? (PAGE_MASK & (SHM_COLOUR - 1)) : 0;
+ 	info.align_offset = shared_align_offset(filp_pgoff, pgoff);
+ 
+@@ -160,7 +161,6 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
+ 		 */
+ 	}
+ 
+-	info.flags = 0;
+ 	info.low_limit = mm->mmap_base;
+ 	info.high_limit = mmap_upper_limit(NULL);
+ 	return vm_unmapped_area(&info);
 -- 
-Kees Cook
+2.34.1
+
 
