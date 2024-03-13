@@ -1,192 +1,173 @@
-Return-Path: <linux-parisc+bounces-899-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-900-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD5D879EAC
-	for <lists+linux-parisc@lfdr.de>; Tue, 12 Mar 2024 23:29:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C18787A046
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Mar 2024 01:48:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7261B24010
-	for <lists+linux-parisc@lfdr.de>; Tue, 12 Mar 2024 22:29:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE6681C20EA7
+	for <lists+linux-parisc@lfdr.de>; Wed, 13 Mar 2024 00:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9074C1448F2;
-	Tue, 12 Mar 2024 22:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797346FCB;
+	Wed, 13 Mar 2024 00:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q5QPyTLr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PC9BYsAs"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990D814404C;
-	Tue, 12 Mar 2024 22:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5BFB663
+	for <linux-parisc@vger.kernel.org>; Wed, 13 Mar 2024 00:48:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710282549; cv=none; b=VixazLgWwxrCvSXHl720LXcvpQcKYMMwpRTEjlSOvAooO1vJESeGJwpwO2WO5DlBqE23LdXWFubJm2dG6ev8eu3Vy8VUZ/Yvrp8dvDYCCtBbJdS/qU3x1CPkPm+LuvkgMYa8Qzdvd5l75dN/TVDdIAunKtQBSTMDEm6Xt7YITdU=
+	t=1710290934; cv=none; b=R59JqXQcXJi2UXR5zfCmQdetvBjzF/D4yz9Ql72tjj5FNGz6MBK/rIxRYAzLmjc2m4fF7sUo8srwFDu8iFhnwPpbC3HSxyoLZAcvKcP2YbxtVCOSO9Sp8/PZmGmw8WCAjDexzLJVbtskr4WcXnn0gY1EIwrAY8xFOUYFTPCMjao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710282549; c=relaxed/simple;
-	bh=0AXtXC2QsVELXP+nYGygIha/dj1Cad9y2eG6v/oGLtg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=n56d4VeEFGVYkQ3N3SJCa+7ujH1B43TeJb753YhxdEt60kGw4qhWKurjgH+NGYs7AFAET5F5Twfh0LpBUkL98FBk7x//g6AbN1Q5HXCaRl6JgO5WPElJ0ceVbdh78QO6H8VNVEnu3UDcfDJhGCGlNCGvTWeSRgC36EcqB2IcaWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q5QPyTLr; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710282548; x=1741818548;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=0AXtXC2QsVELXP+nYGygIha/dj1Cad9y2eG6v/oGLtg=;
-  b=Q5QPyTLrsnRpx8b/qwzY04lG0KEQUsLe9w5Pc3au8d/TEVAjVYq7Ek+W
-   Gi/IreZIGiiilVjRHKB425731sI3qTs7Y/bp5iXQxVsHDzGNN/+F1DREW
-   h0tTnwO2FjjUtT1n5AJet3mY97YvPZHRZI2GY6e9MaMkoKqm9fgnY5K6O
-   G/4DENSS7QuQ2FN/jVrU/tFGD6pHFywKpb5Yy2miFKXgQhmOQUDkKoDWj
-   siPoVobeqGB5ikLsTZig0KiknKK1okqQLyTqXfWjNXfB8w6dPkch16kmF
-   hpTW7JeIGc+ydsGu7v5c98w/KEIWBWS5ScE2fLEpPKEy0E68fFIkJZVJT
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="5191986"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="5191986"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:29:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
-   d="scan'208";a="16356855"
-Received: from gargayus-mobl1.amr.corp.intel.com (HELO rpedgeco-desk4.intel.com) ([10.255.231.196])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Mar 2024 15:29:03 -0700
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
-To: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	bp@alien8.de,
-	broonie@kernel.org,
-	dave.hansen@linux.intel.com,
-	debug@rivosinc.com,
-	hpa@zytor.com,
-	keescook@chromium.org,
-	kirill.shutemov@linux.intel.com,
-	luto@kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	tglx@linutronix.de,
-	x86@kernel.org,
-	christophe.leroy@csgroup.eu
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	rick.p.edgecombe@intel.com,
-	Helge Deller <deller@gmx.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH v3 06/12] parisc: Use initializer for struct vm_unmapped_area_info
-Date: Tue, 12 Mar 2024 15:28:37 -0700
-Message-Id: <20240312222843.2505560-7-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240312222843.2505560-1-rick.p.edgecombe@intel.com>
-References: <20240312222843.2505560-1-rick.p.edgecombe@intel.com>
+	s=arc-20240116; t=1710290934; c=relaxed/simple;
+	bh=pucfo0bfwTccJkVOhojWyorX6XQpl7QfTU1NID00m8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k1RPvLzVMx4acBtQ2o0K7spWJRyhZUNBye9R73q2t/lopDc8LirCcqwz/P/Slalgz8DekoIQWxpzQe04wbZ8MauJhwXA0VMN64skCSSAqyqM714B0wYYxo5/NN66TC/OMaQ6FytdZK7U3uHpn5sEdAlFhFyZWtq6uJT+rSQhlX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PC9BYsAs; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1710290931;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V/I7rfb7fSwv9EVlLwLZyE6cq/I2crR3JWNIky7ODFU=;
+	b=PC9BYsAsDLiDvs1nBmqlFUuek5Fy0A7qVJJZu8I1qKIC9usQxxk2X4YUDT6fLgXXsvYH9U
+	e/rdNtC0qocAtEIFCXxde79tN+yKq61dlWbrpxUzUVS2mE4mWZS+epGuY6gHyAsEJU3CmJ
+	JfvHvMEcxsU4WzNgRO6en9CBEFi5f6Y=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-182-Tx39TiVcPDK1NGuCqWNU_g-1; Tue, 12 Mar 2024 20:48:48 -0400
+X-MC-Unique: Tx39TiVcPDK1NGuCqWNU_g-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CAF58800262;
+	Wed, 13 Mar 2024 00:48:47 +0000 (UTC)
+Received: from localhost (unknown [10.72.116.13])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 24F7510E47;
+	Wed, 13 Mar 2024 00:48:46 +0000 (UTC)
+Date: Wed, 13 Mar 2024 08:48:44 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-parisc@vger.kernel.org, akpm@linux-foundation.org,
+	joe@perches.com, nathan@kernel.org, conor@kernel.org
+Subject: Re: kexec verbose dumps with 6.8 [was: [PATCH v4 1/7] kexec_file:
+ add kexec_file flag to control debug printing]
+Message-ID: <ZfD37AlznCXJ6P54@MiWiFi-R3L-srv>
+References: <20231213055747.61826-1-bhe@redhat.com>
+ <20231213055747.61826-2-bhe@redhat.com>
+ <4c775fca-5def-4a2d-8437-7130b02722a2@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4c775fca-5def-4a2d-8437-7130b02722a2@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-Future changes will need to add a new member to struct
-vm_unmapped_area_info. This would cause trouble for any call site that
-doesn't initialize the struct. Currently every caller sets each member
-manually, so if new members are added they will be uninitialized and the
-core code parsing the struct will see garbage in the new member.
+Hi Jiri,
 
-It could be possible to initialize the new member manually to 0 at each
-call site. This and a couple other options were discussed, and a working
-consensus (see links) was that in general the best way to accomplish this
-would be via static initialization with designated member initiators.
-Having some struct vm_unmapped_area_info instances not zero initialized
-will put those sites at risk of feeding garbage into vm_unmapped_area() if
-the convention is to zero initialize the struct and any new member addition
-misses a call site that initializes each member manually.
+On 03/12/24 at 10:58am, Jiri Slaby wrote:
+> On 13. 12. 23, 6:57, Baoquan He wrote:
+ ... snip...
+> > --- a/include/linux/kexec.h
+> > +++ b/include/linux/kexec.h
+> ...
+> > @@ -500,6 +500,13 @@ static inline int crash_hotplug_memory_support(void) { return 0; }
+> >   static inline unsigned int crash_get_elfcorehdr_size(void) { return 0; }
+> >   #endif
+> > +extern bool kexec_file_dbg_print;
+> > +
+> > +#define kexec_dprintk(fmt, ...)					\
+> > +	printk("%s" fmt,					\
+> > +	       kexec_file_dbg_print ? KERN_INFO : KERN_DEBUG,	\
+> > +	       ##__VA_ARGS__)
+> 
+> This means you dump it _always_. Only with different levels.
 
-It could be possible to leave the code mostly untouched, and just change
-the line:
-struct vm_unmapped_area_info info
-to:
-struct vm_unmapped_area_info info = {};
+It dumped always too with pr_debug() before, I just add a switch to
+control it's pr_info() or pr_debug().
 
-However, that would leave cleanup for the members that are manually set
-to zero, as it would no longer be required.
+> 
+> And without any prefix whatsoever, so people see bloat like this in their
+> log now:
+> [  +0.000001] 0000000000001000-000000000009ffff (1)
+> [  +0.000002] 000000007f96d000-000000007f97efff (3)
+> [  +0.000002] 0000000000800000-0000000000807fff (4)
+> [  +0.000001] 000000000080b000-000000000080bfff (4)
+> [  +0.000002] 0000000000810000-00000000008fffff (4)
+> [  +0.000001] 000000007f97f000-000000007f9fefff (4)
+> [  +0.000001] 000000007ff00000-000000007fffffff (4)
+> [  +0.000002] 0000000000000000-0000000000000fff (2)
 
-So to be reduce the chance of bugs via uninitialized members, instead
-simply continue the process to initialize the struct this way tree wide.
-This will zero any unspecified members. Move the member initializers to the
-struct declaration when they are known at that time. Leave the members out
-that were manually initialized to zero, as this would be redundant for
-designated initializers.
+On which arch are you seeing this? There should be one line above these
+range printing to tell what they are, like:
 
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Acked-by: Helge Deller <deller@gmx.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Link: https://lore.kernel.org/lkml/202402280912.33AEE7A9CF@keescook/#t
-Link: https://lore.kernel.org/lkml/j7bfvig3gew3qruouxrh7z7ehjjafrgkbcmg6tcghhfh3rhmzi@wzlcoecgy5rs/
----
-v3:
- - Fixed spelling errors in log
- - Be consistent about field vs member in log
+E820 memmap:
+0000000000000000-000000000009a3ff (1)
+000000000009a400-000000000009ffff (2)
+00000000000e0000-00000000000fffff (2)
+0000000000100000-000000006ff83fff (1)
+000000006ff84000-000000007ac50fff (2)
 
-Hi,
+> 
+> without actually knowing what that is.
+> 
+> There should be nothing logged if that is not asked for and especially if
+> kexec load went fine, right?
 
-This patch was split and refactored out of a tree-wide change [0] to just
-zero-init each struct vm_unmapped_area_info. The overall goal of the
-series is to help shadow stack guard gaps. Currently, there is only one
-arch with shadow stacks, but two more are in progress. It is compile tested
-only.
+Right. Before this patch, those pr_debug() were already there. You need
+enable them to print out like add '#define DEBUG' in *.c file, or enable
+the dynamic debugging of the file or function. With this patch applied,
+you only need specify '-d' when you execute kexec command with
+kexec_file load interface, like:
 
-There was further discussion that this method of initializing the structs
-while nice in some ways has a greater risk of introducing bugs in some of
-the more complicated callers. Since this version was reviewed my arch
-maintainers already, leave it as was already acknowledged.
+kexec -s -l -d /boot/vmlinuz-xxxx.img --initrd xxx.img --reuse-cmdline
 
-Thanks,
+For kexec_file load, it is not logging if not specifying '-d', unless
+you take way to make pr_debug() work in that file.
 
-Rick
+> 
+> Can this be redesigned, please?
 
-[0] https://lore.kernel.org/lkml/20240226190951.3240433-6-rick.p.edgecombe@intel.com/
----
- arch/parisc/kernel/sys_parisc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Sure, after making clear what's going on with this, I will try.
 
-diff --git a/arch/parisc/kernel/sys_parisc.c b/arch/parisc/kernel/sys_parisc.c
-index 98af719d5f85..f7722451276e 100644
---- a/arch/parisc/kernel/sys_parisc.c
-+++ b/arch/parisc/kernel/sys_parisc.c
-@@ -104,7 +104,9 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
- 	struct vm_area_struct *vma, *prev;
- 	unsigned long filp_pgoff;
- 	int do_color_align;
--	struct vm_unmapped_area_info info;
-+	struct vm_unmapped_area_info info = {
-+		.length = len
-+	};
- 
- 	if (unlikely(len > TASK_SIZE))
- 		return -ENOMEM;
-@@ -139,7 +141,6 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
- 			return addr;
- 	}
- 
--	info.length = len;
- 	info.align_mask = do_color_align ? (PAGE_MASK & (SHM_COLOUR - 1)) : 0;
- 	info.align_offset = shared_align_offset(filp_pgoff, pgoff);
- 
-@@ -160,7 +161,6 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
- 		 */
- 	}
- 
--	info.flags = 0;
- 	info.low_limit = mm->mmap_base;
- 	info.high_limit = mmap_upper_limit(NULL);
- 	return vm_unmapped_area(&info);
--- 
-2.34.1
+> 
+> Actually what was wrong on the pr_debug()s? Can you simply turn them on from
+> the kernel when -d is passed to kexec instead of all this?
+
+Joe suggested this during v1 reviewing:
+https://lore.kernel.org/all/1e7863ec4e4ab10b84fd0e64f30f8464d2e484a3.camel@perches.com/T/#u
+
+> 
+> ...
+> > --- a/kernel/kexec_core.c
+> > +++ b/kernel/kexec_core.c
+> > @@ -52,6 +52,8 @@ atomic_t __kexec_lock = ATOMIC_INIT(0);
+> >   /* Flag to indicate we are going to kexec a new kernel */
+> >   bool kexec_in_progress = false;
+> > +bool kexec_file_dbg_print;
+> 
+> Ugh, and a global flag for this?
+
+Yeah, kexec_file_dbg_print records if '-d' is specified when 'kexec'
+command executed. Anything wrong with the global flag?
+
+Thanks
+Baoquan
 
 
