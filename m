@@ -1,197 +1,125 @@
-Return-Path: <linux-parisc+bounces-919-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-920-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A9F87E289
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 Mar 2024 04:25:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4F587F3F1
+	for <lists+linux-parisc@lfdr.de>; Tue, 19 Mar 2024 00:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B35A1F21633
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 Mar 2024 03:25:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B67B1C218D9
+	for <lists+linux-parisc@lfdr.de>; Mon, 18 Mar 2024 23:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48F61EB21;
-	Mon, 18 Mar 2024 03:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647085E3D8;
+	Mon, 18 Mar 2024 23:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="aZwR6Ce1"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="U6+y+pDz"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6A01E86A;
-	Mon, 18 Mar 2024 03:25:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAE45D8F7;
+	Mon, 18 Mar 2024 23:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710732311; cv=none; b=bVnLtilTpvxblq3GqKOOQCY1jMff3LNbrlXXEqytJ63xkGzDPeRFdWgQCznu1G/vDh0BVUEM2pbGeLKdOVdvLLgc1z2VnoraEwOX8XpGnkK3VoU/K9+BYbDKYf4gRhSyw3JKEStzKi9qVjMuWbVeCHqPEuEjU8qxqkVcl1/37t4=
+	t=1710804139; cv=none; b=GJ+chdCpVJXfrmun+RkGBAP1Bk0mGiV1Ld4/l/HRHM3d0nahz7CioHd9s0ZD0JMhVr8rqv5O1xSdvZnm+qyWYnlpTq+CtVSksudUIWOY0cvcPT0xC+KFk3C+VurytszSGIkLbYXMSLLgY+a6CmJWHDujWt5T4DnOx04ahZCpn3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710732311; c=relaxed/simple;
-	bh=NV+IEiKEp7lCdjzjbneFkp6G29/AFeVDyz/GqmHX3m4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qI9I8/C6jvBvgSNuCCFvnjTqzeoFisRHqtE3qI9yvJaq+bb9OBGWx/yWfy95GlIINluKUU0ORg9rRQPsS//T9CGnBX7SRqWHI+cE8l0dQBnISAYkJQmE8ckRG8rqFgRFENJzD+8w/hC7e8ec2LSh5cj7ssB8mqmDCiAbeKq/Jw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=aZwR6Ce1; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1710732306;
-	bh=NV+IEiKEp7lCdjzjbneFkp6G29/AFeVDyz/GqmHX3m4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aZwR6Ce11vNXim4mOCh1eXkx7K65RfM+cau+BhgB9SdLqlZPW+NSBiMfH6HvhOd0A
-	 Cxq4iA45zUMfJd0t0fiCZUW9oT7MdElC1lAHDwjgYhkFVet+3SexBY3VTuWZ+t2GS/
-	 R6YtLN+mqg6XUSgVsgcCPTEOKRlHDfSmPt/ef1FfXW6waLfQPAdiG7JMm/zsq5BT3k
-	 vdQUUXBAz8sJiI6L7YfwQCfB8GuYQWxC3Reysu8xNTnmju7VZ+DNwIB5BF60uJsyDk
-	 OdmHw4LQNlhzuekWxZGLa0lNLJlIa+tl6Z4Z3Fg6YFxfGk0yqItTN1sXJzV54NgtGp
-	 w8QwwUGGGIyQQ==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4TygG42yLDz4wc1;
-	Mon, 18 Mar 2024 14:25:00 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Guenter Roeck <linux@roeck-us.net>, Geert Uytterhoeven
- <geert@linux-m68k.org>
-Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>, Arnd
- Bergmann <arnd@arndb.de>, =?utf-8?Q?Ma=C3=ADra?= Canal <mcanal@igalia.com>,
- Dan Carpenter
- <dan.carpenter@linaro.org>, Kees Cook <keescook@chromium.org>, Daniel Diaz
- <daniel.diaz@linaro.org>, David Gow <davidgow@google.com>, Arthur Grillo
- <arthurgrillo@riseup.net>, Brendan Higgins <brendan.higgins@linux.dev>,
- Naresh Kamboju <naresh.kamboju@linaro.org>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Andrew Morton
- <akpm@linux-foundation.org>, Maxime Ripard <mripard@kernel.org>, Ville
- =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, Daniel Vetter
- <daniel@ffwll.ch>,
- Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org,
- kunit-dev@googlegroups.com, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- loongarch@lists.linux.dev, netdev@lists.linux.dev
-Subject: Re: [PATCH 00/14] Add support for suppressing warning backtraces
-In-Reply-To: <04f34097-7788-490d-a9c2-82b44bf6af44@roeck-us.net>
-References: <20240312170309.2546362-1-linux@roeck-us.net>
- <CAMuHMdUkvagJVEfnhq=Nx2jnmdS0Ax+zy1CvyN0k7k1EwUpu+g@mail.gmail.com>
- <6d9269c0-bd38-4965-a454-4358e0a182e3@roeck-us.net>
- <04f34097-7788-490d-a9c2-82b44bf6af44@roeck-us.net>
-Date: Mon, 18 Mar 2024 14:24:59 +1100
-Message-ID: <87ttl4z0fo.fsf@mail.lhotse>
+	s=arc-20240116; t=1710804139; c=relaxed/simple;
+	bh=OotrFEDPSRJwIaQ3u4I4spUR/2JA32XkaDt3CDv0uYI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NJL9goQph5P3RkehC1N4hNVHRhCzi+/T7bb4PCOgIXzEUjaKs6QCmz/8iEeyyRjaeD+QUVyyl8mtsdLTytQ+ki0PCbqVwMGdTenJtXDmeCliXCNf8nNmQ5ChmhqVLNVIAYO+WeUVdLBmoYux5TzUoAZ76dqWTN5xgwmr6A5fm20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=U6+y+pDz; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=uDe90oU4m7kN4U29sr7WiiZQguijp+pDgJnuhirb2IY=; b=U6+y+pDzUahdjxZCjK02oc3MY0
+	jhjQNaWdPtpOUHeAQn3kyAp1Po1UThO3kSBTS0teWqL0zaNN0wzcr72e45m1tQR/NW4bsv7t93qOT
+	GIR1OlIoM597ZA5zMZBj2SWx3tJ185eBo4+ML7+NeW/6K1AgDTfPrXGaUtrA+ZdHvzJmEb1PwQTzO
+	KULWQZwts+KWeJGFjz2q2fzDEgcxB2JtvZ0qOih3gfF3HP/3w1vzhGrKf/74FyIryuVzfnUgk7UUi
+	nQfEygnz+caLPMXacklKQz5u9pHLYoW2cHy2stoESVq/FTDny7iHJSIKT1RY9D4ew/odWIo0+n6Ce
+	6xUA3AMg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rmMJ0-0000000AWy1-0ZBd;
+	Mon, 18 Mar 2024 23:22:10 +0000
+Date: Mon, 18 Mar 2024 16:22:10 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: David Wei <dw@davidwei.uk>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Matt Turner <mattst88@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Andreas Larsson <andreas@gaisler.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
+	Shailend Chand <shailend@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>
+Subject: Re: [RFC PATCH net-next v6 02/15] net: page_pool: create hooks for
+ custom page providers
+Message-ID: <ZfjMopBl27-7asBc@infradead.org>
+References: <20240305020153.2787423-1-almasrymina@google.com>
+ <20240305020153.2787423-3-almasrymina@google.com>
+ <ZfegzB341oNc_Ocz@infradead.org>
+ <b938514c-61cc-41e6-b592-1003b8deccae@davidwei.uk>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b938514c-61cc-41e6-b592-1003b8deccae@davidwei.uk>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-Guenter Roeck <linux@roeck-us.net> writes:
-> On 3/14/24 07:37, Guenter Roeck wrote:
->> On 3/14/24 06:36, Geert Uytterhoeven wrote:
->>> Hi G=C3=BCnter,
->>>
->>> On Tue, Mar 12, 2024 at 6:03=E2=80=AFPM Guenter Roeck <linux@roeck-us.n=
-et> wrote:
->>>> Some unit tests intentionally trigger warning backtraces by passing bad
->>>> parameters to kernel API functions. Such unit tests typically check the
->>>> return value from such calls, not the existence of the warning backtra=
-ce.
->>>>
->>>> Such intentionally generated warning backtraces are neither desirable
->>>> nor useful for a number of reasons.
->>>> - They can result in overlooked real problems.
->>>> - A warning that suddenly starts to show up in unit tests needs to be
->>>> =C2=A0=C2=A0 investigated and has to be marked to be ignored, for exam=
-ple by
->>>> =C2=A0=C2=A0 adjusting filter scripts. Such filters are ad-hoc because=
- there is
->>>> =C2=A0=C2=A0 no real standard format for warnings. On top of that, suc=
-h filter
->>>> =C2=A0=C2=A0 scripts would require constant maintenance.
->>>>
->>>> One option to address problem would be to add messages such as "expect=
-ed
->>>> warning backtraces start / end here" to the kernel log.=C2=A0 However,=
- that
->>>> would again require filter scripts, it might result in missing real
->>>> problematic warning backtraces triggered while the test is running, and
->>>> the irrelevant backtrace(s) would still clog the kernel log.
->>>>
->>>> Solve the problem by providing a means to identify and suppress specif=
-ic
->>>> warning backtraces while executing test code. Support suppressing mult=
-iple
->>>> backtraces while at the same time limiting changes to generic code to =
-the
->>>> absolute minimum. Architecture specific changes are kept at minimum by
->>>> retaining function names only if both CONFIG_DEBUG_BUGVERBOSE and
->>>> CONFIG_KUNIT are enabled.
->>>>
->>>> The first patch of the series introduces the necessary infrastructure.
->>>> The second patch introduces support for counting suppressed backtraces.
->>>> This capability is used in patch three to implement unit tests.
->>>> Patch four documents the new API.
->>>> The next two patches add support for suppressing backtraces in drm_rect
->>>> and dev_addr_lists unit tests. These patches are intended to serve as
->>>> examples for the use of the functionality introduced with this series.
->>>> The remaining patches implement the necessary changes for all
->>>> architectures with GENERIC_BUG support.
->>>
->>> Thanks for your series!
->>>
->>> I gave it a try on m68k, just running backtrace-suppression-test,
->>> and that seems to work fine.
->>>
->>>> Design note:
->>>> =C2=A0=C2=A0 Function pointers are only added to the __bug_table secti=
-on if both
->>>> =C2=A0=C2=A0 CONFIG_KUNIT and CONFIG_DEBUG_BUGVERBOSE are enabled to a=
-void image
->>>> =C2=A0=C2=A0 size increases if CONFIG_KUNIT=3Dn. There would be some b=
-enefits to
->>>> =C2=A0=C2=A0 adding those pointers all the time (reduced complexity, a=
-bility to
->>>> =C2=A0=C2=A0 display function names in BUG/WARNING messages). That cha=
-nge, if
->>>> =C2=A0=C2=A0 desired, can be made later.
->>>
->>> Unfortunately this also increases kernel size in the CONFIG_KUNIT=3Dm
->>> case (ca. 80 KiB for atari_defconfig), making it less attractive to have
->>> kunit and all tests enabled as modules in my standard kernel.
->>>
->>=20
->> Good point. Indeed, it does. I wanted to avoid adding a configuration op=
-tion,
->> but maybe I should add it after all. How about something like this ?
->>=20
->> +config KUNIT_SUPPRESS_BACKTRACE
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool "KUnit - Enable backtrace sup=
-pression"
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 default y
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 help
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Enable backtrace suppr=
-ession for KUnit. If enabled, backtraces
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 generated intentionall=
-y by KUnit tests can be suppressed. Disable
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 to reduce kernel image=
- size if image size is more important than
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 suppression of backtra=
-ces generated by KUnit tests.
->
-> Any more comments / feedback on this ? Otherwise I'll introduce the
-> above configuration option in v2 of the series.
->
-> In this context, any suggestions if it should be enabled or disabled by
-> default ? I personally think it would be more important to be able to
-> suppress backtraces, but I understand that others may not be willing to
-> accept a ~1% image size increase with CONFIG_KUNIT=3Dm unless
-> KUNIT_SUPPRESS_BACKTRACE is explicitly disabled.
+On Sun, Mar 17, 2024 at 07:49:43PM -0700, David Wei wrote:
+> I'm working on a similar proposal for zero copy Rx but to host memory
+> and depend on this memory provider API.
 
-Please enable it by default.
+How do you need a different provider for that vs just udmabuf?
 
-There are multiple CI systems that will benefit from it, whereas the
-number of users enabling KUNIT in severely spaced constrainted
-environments is surely small - perhaps just Geert ;).
+> Jakub also designed this API for hugepages too IIRC. Basically there's
+> going to be at least three fancy ways of providing pages (one of which
+> isn't actually pages, hence the merged netmem_t series) to drivers.
 
-cheers
+How do hugepages different from a normal page allocation?  They should
+just a different ordered passed to the page allocator.
+
 
