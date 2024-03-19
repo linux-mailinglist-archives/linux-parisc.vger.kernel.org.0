@@ -1,125 +1,123 @@
-Return-Path: <linux-parisc+bounces-920-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-921-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4F587F3F1
-	for <lists+linux-parisc@lfdr.de>; Tue, 19 Mar 2024 00:22:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DEA3880392
+	for <lists+linux-parisc@lfdr.de>; Tue, 19 Mar 2024 18:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B67B1C218D9
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 Mar 2024 23:22:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C76981F25678
+	for <lists+linux-parisc@lfdr.de>; Tue, 19 Mar 2024 17:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647085E3D8;
-	Mon, 18 Mar 2024 23:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30ED1B812;
+	Tue, 19 Mar 2024 17:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="U6+y+pDz"
+	dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b="Yw23IB9o"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [71.19.156.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAE45D8F7;
-	Mon, 18 Mar 2024 23:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0007E19BDC;
+	Tue, 19 Mar 2024 17:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.19.156.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710804139; cv=none; b=GJ+chdCpVJXfrmun+RkGBAP1Bk0mGiV1Ld4/l/HRHM3d0nahz7CioHd9s0ZD0JMhVr8rqv5O1xSdvZnm+qyWYnlpTq+CtVSksudUIWOY0cvcPT0xC+KFk3C+VurytszSGIkLbYXMSLLgY+a6CmJWHDujWt5T4DnOx04ahZCpn3Q=
+	t=1710869871; cv=none; b=W9Lch6yuv+h2FMqrxnNAy3KywyPsaLI/ctplX0e41qdopeZ0MqjtBuhqPdWAQRy8Q5If3p1Agdv6tW1JMlLWiMHr1NnR4HdpdnWuel38tq1uJe1VSRDFXlIYRmcz8XKhV3e1MiEHveOCyKo3ab5EZYk1oQveBM/T4m5X3TUE2zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710804139; c=relaxed/simple;
-	bh=OotrFEDPSRJwIaQ3u4I4spUR/2JA32XkaDt3CDv0uYI=;
+	s=arc-20240116; t=1710869871; c=relaxed/simple;
+	bh=3SfnrzwmkkMF8R9JhbYStPD6FosPH0R9WbGo/F4C5jY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NJL9goQph5P3RkehC1N4hNVHRhCzi+/T7bb4PCOgIXzEUjaKs6QCmz/8iEeyyRjaeD+QUVyyl8mtsdLTytQ+ki0PCbqVwMGdTenJtXDmeCliXCNf8nNmQ5ChmhqVLNVIAYO+WeUVdLBmoYux5TzUoAZ76dqWTN5xgwmr6A5fm20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=U6+y+pDz; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=uDe90oU4m7kN4U29sr7WiiZQguijp+pDgJnuhirb2IY=; b=U6+y+pDzUahdjxZCjK02oc3MY0
-	jhjQNaWdPtpOUHeAQn3kyAp1Po1UThO3kSBTS0teWqL0zaNN0wzcr72e45m1tQR/NW4bsv7t93qOT
-	GIR1OlIoM597ZA5zMZBj2SWx3tJ185eBo4+ML7+NeW/6K1AgDTfPrXGaUtrA+ZdHvzJmEb1PwQTzO
-	KULWQZwts+KWeJGFjz2q2fzDEgcxB2JtvZ0qOih3gfF3HP/3w1vzhGrKf/74FyIryuVzfnUgk7UUi
-	nQfEygnz+caLPMXacklKQz5u9pHLYoW2cHy2stoESVq/FTDny7iHJSIKT1RY9D4ew/odWIo0+n6Ce
-	6xUA3AMg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmMJ0-0000000AWy1-0ZBd;
-	Mon, 18 Mar 2024 23:22:10 +0000
-Date: Mon, 18 Mar 2024 16:22:10 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: David Wei <dw@davidwei.uk>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Matt Turner <mattst88@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=ddkIOmST5czSpzQEB0AiS8c190VCqoS5aceexd9in1/rKfpW2F/PKPxdXMv2tLmIu2h8ijuRavfRSwCStchv2cBz+iNpFz+SR6hGhXj2/kl8scahIf7Eqquygw9c/EiRzEp0npqOKffhiIRu4eruYdkFdYTbFdUT8gew+8U3Vr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net; spf=pass smtp.mailfrom=bewilderbeest.net; dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b=Yw23IB9o; arc=none smtp.client-ip=71.19.156.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bewilderbeest.net
+Received: from hatter.bewilderbeest.net (unknown [IPv6:2602:61:712b:6300::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: zev)
+	by thorn.bewilderbeest.net (Postfix) with ESMTPSA id 8C49F6C5;
+	Tue, 19 Mar 2024 10:37:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
+	s=thorn; t=1710869867;
+	bh=3SfnrzwmkkMF8R9JhbYStPD6FosPH0R9WbGo/F4C5jY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Yw23IB9oMmIiDLLw4cX4HvHYB6lxgOSm1IJBbODouWBF6Tdg9DIANXgrscEsrepIn
+	 w05eEa0mr0polnd9iRwE9B69iugXx+h8TR/FTlvcRIZwBNtXDJfHVpjNVdn1GFUy9M
+	 k6xGaqa1kNQcU91A5R5+pBy5Xq8yeo6zMG2TgW/I=
+Date: Tue, 19 Mar 2024 10:37:45 -0700
+From: Zev Weiss <zev@bewilderbeest.net>
+To: Helge Deller <deller@gmx.de>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	linux-parisc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Florent Revest <revest@chromium.org>,
 	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Andreas Larsson <andreas@gaisler.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Yunsheng Lin <linyunsheng@huawei.com>,
-	Shailend Chand <shailend@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>
-Subject: Re: [RFC PATCH net-next v6 02/15] net: page_pool: create hooks for
- custom page providers
-Message-ID: <ZfjMopBl27-7asBc@infradead.org>
-References: <20240305020153.2787423-1-almasrymina@google.com>
- <20240305020153.2787423-3-almasrymina@google.com>
- <ZfegzB341oNc_Ocz@infradead.org>
- <b938514c-61cc-41e6-b592-1003b8deccae@davidwei.uk>
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Yin Fengwei <fengwei.yin@intel.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Stefan Roesch <shr@devkernel.io>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org,
+	openbmc@lists.ozlabs.org, Sam James <sam@gentoo.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RESEND 1/2] prctl: Generalize PR_SET_MDWE support check
+ to be per-arch
+Message-ID: <c7bb388b-2c4c-4102-9b84-278f6c6855ee@hatter.bewilderbeest.net>
+References: <20240227013546.15769-4-zev@bewilderbeest.net>
+ <20240227013546.15769-5-zev@bewilderbeest.net>
+ <Zd24aCps4xD28c74@shell.armlinux.org.uk>
+ <e391cad0-7b98-4efd-bea1-cf5ab9c626bf@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <b938514c-61cc-41e6-b592-1003b8deccae@davidwei.uk>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <e391cad0-7b98-4efd-bea1-cf5ab9c626bf@gmx.de>
 
-On Sun, Mar 17, 2024 at 07:49:43PM -0700, David Wei wrote:
-> I'm working on a similar proposal for zero copy Rx but to host memory
-> and depend on this memory provider API.
+On Tue, Feb 27, 2024 at 11:53:59AM PST, Helge Deller wrote:
+>On 2/27/24 11:24, Russell King (Oracle) wrote:
+>>On Mon, Feb 26, 2024 at 05:35:41PM -0800, Zev Weiss wrote:
+>>>There exist systems other than PARISC where MDWE may not be feasible
+>>>to support; rather than cluttering up the generic code with additional
+>>>arch-specific logic let's add a generic function for checking MDWE
+>>>support and allow each arch to override it as needed.
+>>>
+>>>Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
+>>>Cc: <stable@vger.kernel.org> # v6.3+
+>>
+>>PA-RISC folk need to ack/review-by this patch.
+>
+>I'm fine with patch 1/2:
+>Acked-by: Helge Deller <deller@gmx.de> # parisc
+>
+>>Alternatively, it needs
+>>to be restructured to add the arch_memory_deny_write_exec_supported()
+>>override without touching the PA-RISC code, which then makes the Arm
+>>patch independent of the status of the PA-RISC patch. That will allow
+>>the Arm issue to be solved even if an ack is not forthcoming for the
+>>PA-RISC parts.
+>>>Alternatively, I wonder whether akpm would be willing to pick up this
+>>patch set as-is.
+>
+>I have no preference, but I think both patches should be pushed
+>together via arm tree or akpm.
+>
+>Helge
 
-How do you need a different provider for that vs just udmabuf?
+Ping...Russell, Andrew, any thoughts on how this could move forward?
 
-> Jakub also designed this API for hugepages too IIRC. Basically there's
-> going to be at least three fancy ways of providing pages (one of which
-> isn't actually pages, hence the merged netmem_t series) to drivers.
 
-How do hugepages different from a normal page allocation?  They should
-just a different ordered passed to the page allocator.
+Thanks,
+Zev
 
 
