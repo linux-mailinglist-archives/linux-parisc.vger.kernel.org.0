@@ -1,147 +1,208 @@
-Return-Path: <linux-parisc+bounces-996-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-998-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FD68920A0
-	for <lists+linux-parisc@lfdr.de>; Fri, 29 Mar 2024 16:40:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 085B4892558
+	for <lists+linux-parisc@lfdr.de>; Fri, 29 Mar 2024 21:35:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AF8D1C25C82
-	for <lists+linux-parisc@lfdr.de>; Fri, 29 Mar 2024 15:40:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DA381C21A73
+	for <lists+linux-parisc@lfdr.de>; Fri, 29 Mar 2024 20:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00FC018AF8;
-	Fri, 29 Mar 2024 15:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E803D86126;
+	Fri, 29 Mar 2024 20:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MUnOUR7H"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="QY1r+7rZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="RJiftMBu"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322D41FBA;
-	Fri, 29 Mar 2024 15:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EF61755B;
+	Fri, 29 Mar 2024 20:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711726810; cv=none; b=HdL6QUR0uK57/gTcFmuwvsxwp7Is231eNnIyOK3oJoSeiErgq7txZMZXkemJ706h/3MmF23TBwrqyhDa9y9T797U3gTA7l+PYCyGN3Vb9GQ6TMhG45bwnPk+c/GXRpXpOdQ5QM7Yl7gPnUD9NcZZiU/zvvniuIML2PnCNLTipfo=
+	t=1711744502; cv=none; b=XAS0zjTmWyP18iLsFtWshgfMuITmPUPTR/9nB1ln/sb3t6MjQkCqmJSf1ZKO5G8+MEq5zGVPR0KQoc0nDMkNJPntWjVRmiVI9bvneDhWDYYR/k+ny+oXLQGJ6lOImGEgJMWgljHZTloVavz1hIwCZniYR+LSY+p6WG8XDKuw/+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711726810; c=relaxed/simple;
-	bh=XCgoZLnAXnGDp3scNF5htnbob5J7JStC8D45eQoM9R4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oCDryKTCwNBa1XESY+HXrS2fCn9Ozuiym1DVVy5CR6Vvze0hKrsJPXVEBXqEViTLFl7Ah4vNuiXZkU1sw6aoJwNBYy/7swRzdJ6OJ4/g2oFdS5u6stGkcvDtlZvAxMIncnK4B4wXmzWtYqljaYhhZLEz+CdqsKwIqq45swgykpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MUnOUR7H; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-53fa455cd94so1519286a12.2;
-        Fri, 29 Mar 2024 08:40:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711726808; x=1712331608; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iN31wd2vCkiTGMz1OBtEaB4JW8VyiA1XbISlyEebr3E=;
-        b=MUnOUR7HY6vwYa92neIZHYGUvH5I1dF1Bo7/9/nYC/METJ1LcvRfTJ3UrdSMmUe6FC
-         gOsAAcZI5fuMBtnYd1XYteTpD7iilDnzNJGQCDkjNtdSbNtsjQ+H+tT/p1giGio6N6XG
-         c/fOoWgNLNBTXbnefO75MQyI51dLo+b1SVQJb2BkA3/hB5pZIlony882eQZu9ZFNh0ep
-         33bUFemjBqO3ZNk+x0tiQjkOnJ9fcXv2MQdOFypkFGG4FahpdXL6b/Vj7wCz/gfVSbTO
-         MJv/wJzO/jQ7Kdcxmde4Pb9pySSflIuFcgkUN32tfKWGxoR+Pm6mK6F5SJkvChQwYmRp
-         iBRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711726808; x=1712331608;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iN31wd2vCkiTGMz1OBtEaB4JW8VyiA1XbISlyEebr3E=;
-        b=UZeXNTugUFF7ZLvxjcEC/t4b+REmywz0B1oaHxSC/FPLuIS2hcg1pnvyr0iY283ORN
-         J5yEbOt82e+srx1WEoeZxx18mHADhxIVjqxIVbQNtO4YiNF84vQOwZMaHanx1QVhiyzi
-         30wGweoNPXMcu+4ZWuBv3tB2/AoFu/tSpvKnPAWTc7R6lGG+QXfoQhPIQ7qjxKDGkZ/v
-         ZJQajuGvmLhkcxFBNd/VvXMN8OomN4lQ8AYg3AZRV7z5QGBJz9SzBiYDR89eJ0i3NxkZ
-         b5QdJT8wzr3pwABneBZST1fjtCVvHVrB0uBTt6LeVO0XZJ6PaIXbQAQEZLISaKtvJJrU
-         M9VA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJOnvfqDstoGNWqya9c2CpvRlfeBuOGCz4oaW4BjNSstCi+JbsgNWSWKPkJTvDezGHP1l1yt3hbnjRuFMnFnP+ODAPa9B0KTgUzCTR4wBP509TYdlj1Yoc63C0gBx0PyATOTXRoU50jgTOCW5LOyzh02XO+PpOPZrzO6aKzu2WEDkkG11VeaYfUts4cuOCmJsj3BdXu8Ah9dTKuzXBAT0pXxXfErO3rzYezy4btqFL9YZzGWecZIDTEK13C8CLPsUfnn+9dXWOLXiWYAyrOYsmXUR2uml0icj4IJpVvUdrtlcQ8t8eBsSlQqEEb3VDGg==
-X-Gm-Message-State: AOJu0Yzacj+0ODnB61m4DFEwTd9U4g+aPd/faEYvzFALoBq7a3kkjEky
-	RWWg6gr0dcatrVIFarTUu05/TalspZjQ1+zHRsDZleqZmcPuyvLR
-X-Google-Smtp-Source: AGHT+IF0O7HII5MYlv2g0E+BHBSm5qRGKAR+0KxI+xwk6+g8c7fXn65jtKX0C7ci+tZdnr/ge20LGw==
-X-Received: by 2002:a05:6a20:3c90:b0:1a5:6bfb:76de with SMTP id b16-20020a056a203c9000b001a56bfb76demr2694088pzj.2.1711726808383;
-        Fri, 29 Mar 2024 08:40:08 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id m9-20020a170902db0900b001dd578121d4sm3581907plx.204.2024.03.29.08.40.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Mar 2024 08:40:07 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 29 Mar 2024 08:40:05 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Simon Horman <horms@kernel.org>
-Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kees Cook <keescook@chromium.org>,
-	Daniel Diaz <daniel.diaz@linaro.org>,
-	David Gow <davidgow@google.com>,
-	Arthur Grillo <arthurgrillo@riseup.net>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org, loongarch@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Linux Kernel Functional Testing <lkft@linaro.org>
-Subject: Re: [PATCH v2 12/14] sh: Add support for suppressing warning
- backtraces
-Message-ID: <d7663e19-74d5-478d-becc-0a080075e7d6@roeck-us.net>
-References: <20240325175248.1499046-1-linux@roeck-us.net>
- <20240325175248.1499046-13-linux@roeck-us.net>
- <20240327144431.GL403975@kernel.org>
- <320aacc6-b7e5-4c3d-948e-d0743ab26c5d@roeck-us.net>
- <20240327193920.GV403975@kernel.org>
+	s=arc-20240116; t=1711744502; c=relaxed/simple;
+	bh=ckMqFXi6kTsnOzb8osXAnAv4sHJYNyhIzPOzcZ99Dic=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VCqowHOpMD1Lrb63QvbHfwDu21haisFYfjDkJaVgSTEy1VOMFXKurT9HDLydY0aSbvqqdAeg9xBoPEgxNwIYmrzNO0wMz/Do7RHvFAgEDcbzFYKTRv0D2KXOs1ErHwfgh4OTI8TZoVWZF8YhvcXb/Dx+bOj4vXwtj+Q1/Nj0DRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=QY1r+7rZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RJiftMBu; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 05A20347A8;
+	Fri, 29 Mar 2024 20:34:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1711744498; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=smB51pG299mQ+sn5M49FhJbogDK6m3Fu/4A/11xq4sY=;
+	b=QY1r+7rZLp0OmxaZbOCAlEbX33erpNB/FSvGnP0OAXxFl9AD6xL1e8/zuT9t/6afGe1A/h
+	EOSxhk4UmNVeO6UPeem5fq96DouJ5AAgB6W6T5O7jifVpgESTYbdo+edHqNrTirp8k6K8K
+	M8G687la3ZBMSflDxzFTGY+d+vyVs90=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1711744498;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=smB51pG299mQ+sn5M49FhJbogDK6m3Fu/4A/11xq4sY=;
+	b=RJiftMBuEATBRYkGcBqrLySXzGby1sR+TC3iYmtCEDUHkAqAN2yFD05Gh/NJhVEFYOWHm/
+	x19G+fDjzW4if/CQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=none
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 5C5BD13A7E;
+	Fri, 29 Mar 2024 20:34:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id XkJhE/ElB2YTPgAAn2gu4w
+	(envelope-from <tzimmermann@suse.de>); Fri, 29 Mar 2024 20:34:57 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: arnd@arndb.de,
+	sam@ravnborg.org,
+	javierm@redhat.com,
+	deller@gmx.de,
+	sui.jingfeng@linux.dev
+Cc: linux-arch@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-parisc@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	loongarch@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v3 0/3] arch: Remove fbdev dependency from video helpers
+Date: Fri, 29 Mar 2024 21:32:09 +0100
+Message-ID: <20240329203450.7824-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240327193920.GV403975@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 05A20347A8
+X-Spamd-Result: default: False [-1.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.19)[-0.967];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_COUNT_TWO(0.00)[2];
+	FREEMAIL_TO(0.00)[arndb.de,ravnborg.org,redhat.com,gmx.de,linux.dev];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap2.dmz-prg2.suse.org:rdns,imap2.dmz-prg2.suse.org:helo];
+	FROM_EQ_ENVFROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmx.de]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Score: -1.80
+X-Spam-Level: 
+X-Spam-Flag: NO
 
-On Wed, Mar 27, 2024 at 07:39:20PM +0000, Simon Horman wrote:
-[ ... ]
-> > > 
-> > > Hi Guenter,
-> > > 
-> > > a minor nit from my side: this change results in a Kernel doc warning.
-> > > 
-> > >       .../bug.h:29: warning: expecting prototype for _EMIT_BUG_ENTRY(). Prototype was for HAVE_BUG_FUNCTION() instead
-> > > 
-> > > Perhaps either the new code should be placed above the Kernel doc,
-> > > or scripts/kernel-doc should be enhanced?
-> > > 
-> > 
-> > Thanks a lot for the feedback.
-> > 
-> > The definition block needs to be inside CONFIG_DEBUG_BUGVERBOSE,
-> > so it would be a bit odd to move it above the documentation
-> > just to make kerneldoc happy. I am not really sure that to do
-> > about it.
-> 
-> FWIIW, I agree that would be odd.
-> But perhaps the #ifdef could also move above the Kernel doc?
-> Maybe not a great idea, but the best one I've had so far.
-> 
+Make architecture helpers for display functionality depend on general
+video functionality instead of fbdev. This avoids the dependency on
+fbdev and makes the functionality available for non-fbdev code.
 
-I did that for the next version of the patch series. It is a bit more
-clumsy, so I left it as separate patch on top of this patch. I'd
-still like to get input from others before making the change final.
+Patch 1 replaces the variety of Kconfig options that control the
+Makefiles with CONFIG_VIDEO. More fine-grained control of the build
+can then be done within each video/ directory; see parisc for an
+example.
 
-Thanks,
-Guenter
+Patch 2 replaces fb_is_primary_device() with video_is_primary_device(),
+which has no dependencies on fbdev. The implementation remains identical
+on all affected platforms. There's one minor change in fbcon, which is
+the only caller of fb_is_primary_device().
+
+Patch 3 renames the source and header files from fbdev to video.
+
+v3:
+- arc, arm, arm64, sh, um: generate asm/video.h (Sam, Helge, Arnd)
+- fix typos (Sam)
+v2:
+- improve cover letter
+- rebase onto v6.9-rc1
+
+Thomas Zimmermann (3):
+  arch: Select fbdev helpers with CONFIG_VIDEO
+  arch: Remove struct fb_info from video helpers
+  arch: Rename fbdev header and source files
+
+ arch/arc/include/asm/fb.h                    |  8 ------
+ arch/arm/include/asm/fb.h                    |  6 -----
+ arch/arm64/include/asm/fb.h                  | 10 --------
+ arch/loongarch/include/asm/{fb.h => video.h} |  8 +++---
+ arch/m68k/include/asm/{fb.h => video.h}      |  8 +++---
+ arch/mips/include/asm/{fb.h => video.h}      | 12 ++++-----
+ arch/parisc/Makefile                         |  2 +-
+ arch/parisc/include/asm/fb.h                 | 14 -----------
+ arch/parisc/include/asm/video.h              | 16 ++++++++++++
+ arch/parisc/video/Makefile                   |  2 +-
+ arch/parisc/video/{fbdev.c => video-sti.c}   |  9 ++++---
+ arch/powerpc/include/asm/{fb.h => video.h}   |  8 +++---
+ arch/powerpc/kernel/pci-common.c             |  2 +-
+ arch/sh/include/asm/fb.h                     |  7 ------
+ arch/sparc/Makefile                          |  4 +--
+ arch/sparc/include/asm/{fb.h => video.h}     | 15 +++++------
+ arch/sparc/video/Makefile                    |  2 +-
+ arch/sparc/video/fbdev.c                     | 26 --------------------
+ arch/sparc/video/video.c                     | 25 +++++++++++++++++++
+ arch/um/include/asm/Kbuild                   |  2 +-
+ arch/x86/Makefile                            |  2 +-
+ arch/x86/include/asm/fb.h                    | 19 --------------
+ arch/x86/include/asm/video.h                 | 21 ++++++++++++++++
+ arch/x86/video/Makefile                      |  3 ++-
+ arch/x86/video/{fbdev.c => video.c}          | 21 +++++++---------
+ drivers/video/fbdev/core/fbcon.c             |  2 +-
+ include/asm-generic/Kbuild                   |  2 +-
+ include/asm-generic/{fb.h => video.h}        | 17 +++++++------
+ include/linux/fb.h                           |  2 +-
+ 29 files changed, 124 insertions(+), 151 deletions(-)
+ delete mode 100644 arch/arc/include/asm/fb.h
+ delete mode 100644 arch/arm/include/asm/fb.h
+ delete mode 100644 arch/arm64/include/asm/fb.h
+ rename arch/loongarch/include/asm/{fb.h => video.h} (86%)
+ rename arch/m68k/include/asm/{fb.h => video.h} (86%)
+ rename arch/mips/include/asm/{fb.h => video.h} (76%)
+ delete mode 100644 arch/parisc/include/asm/fb.h
+ create mode 100644 arch/parisc/include/asm/video.h
+ rename arch/parisc/video/{fbdev.c => video-sti.c} (78%)
+ rename arch/powerpc/include/asm/{fb.h => video.h} (76%)
+ delete mode 100644 arch/sh/include/asm/fb.h
+ rename arch/sparc/include/asm/{fb.h => video.h} (75%)
+ delete mode 100644 arch/sparc/video/fbdev.c
+ create mode 100644 arch/sparc/video/video.c
+ delete mode 100644 arch/x86/include/asm/fb.h
+ create mode 100644 arch/x86/include/asm/video.h
+ rename arch/x86/video/{fbdev.c => video.c} (66%)
+ rename include/asm-generic/{fb.h => video.h} (89%)
+
+-- 
+2.44.0
+
 
