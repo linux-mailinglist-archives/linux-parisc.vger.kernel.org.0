@@ -1,151 +1,205 @@
-Return-Path: <linux-parisc+bounces-1070-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1071-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD50689C801
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Apr 2024 17:18:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A89D989C868
+	for <lists+linux-parisc@lfdr.de>; Mon,  8 Apr 2024 17:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45E381F24A69
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Apr 2024 15:18:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FAF4285FA9
+	for <lists+linux-parisc@lfdr.de>; Mon,  8 Apr 2024 15:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F2313F44E;
-	Mon,  8 Apr 2024 15:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697761411D9;
+	Mon,  8 Apr 2024 15:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="6pRVWe9Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g2EAEEGQ"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-mtlrgo001.bell.net (mta-mtl-005.bell.net [209.71.208.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7F613F451;
-	Mon,  8 Apr 2024 15:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F38126F0A;
+	Mon,  8 Apr 2024 15:34:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712589487; cv=none; b=Dsu1Txemhlvu6EOQRBgHuFeqsOdkyG4uK+nhBWveS8VnsOZ6UKfKsdodKHV8QShJKH6TWDLdseBi8cPhPbAo/vARhE7UiUBK/fI9StdvXhTiYXIC/ZzxcT+UiXdqEwqFuWrqVCSaXUlauUfborKt3XY9hcrhRF2pUuLtKZ3w/pQ=
+	t=1712590471; cv=none; b=cbHXdu42OrOV7ykJUvlUdzgJ5+sIeoNH4vabPtPFWME4KFDDv/gtE5ndujGRv7s0xHnVbO177Kh7UFb4msbxp4nDMQNblZn2I3GucZALFypSBcL4KygdhiY1/B92KGef+kaj9v/JwsNuj+ZkzFhO1s4GzH2T60EVaggdPV8LDEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712589487; c=relaxed/simple;
-	bh=q/8HCJlQXxkUKiVEM9Yy1EVmgj2P8ecWfsvvPyBlddU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hPNRQt6sAq9UqS6aOoAc6qPnLhGMOAupKQTWxqFSixI04A5D9Wxi48OrecV7jU2XBcaGnj9UCGkaAwoBMleEqk5yRG7BCCmM5c7WLAIVdjlNtv4rfmT8a5NXuJF2yVue5TmnF9I5FnROXCMkzQ705u0/iYp5RDUSantkHYEgz9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=6pRVWe9Q; arc=none smtp.client-ip=209.71.208.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bell.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1712589485; 
-        bh=jmU7j5SzDSLYbcv2DruR5a7p1DjKSvcMVPXwtTe7Em8=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=6pRVWe9QmyFdsa097r9iJvNaI2eV2f81rVPnKjYCKOAJJbqbimTI8uwUMmqOKjt8D0bnAYM2f6iTefiueHjtiD6tFdZ1lOPHwH/G6mf6rwvvs0TVINvjrl0TeZgDgvFbdpwQbpAuIBbvX6D1eYS5j2v2IAOespXLSiJD6UQlmpilrqNJKCA0gvlBC7QcmB5g7IjPCXJjnBrE+dv/1t1JTWe8qsBjR5UHC9rkscEsXASHA8XTFE9DSqkbS4mIEFuiKchoZ2Oy/numiveQfKfe4TXelDPfYQK87erPuiFpaNMyQmAcV9yYUiT+IuD2otcjn9CLElMuwXliJN6s5TQiwA==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 660659AA00D59C98
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvledrudegiedgkeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuuefgnffnpdfqfgfvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomheplfhohhhnucffrghvihguucetnhhglhhinhcuoegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvtheqnecuggftrfgrthhtvghrnhepuddvjedvffffheffgeekuedtueelledtueffffehffekhfefgeevffeuhfehkefgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudegvddruddviedrudekkedrvdehudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedugedvrdduvdeirddukeekrddvhedupdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeejpdhrtghpthhtoheplfgrmhgvshdruehothhtohhmlhgvhiesjfgrnhhsvghnrfgrrhhtnhgvrhhshhhiphdrtghomhdprhgtphhtthhopegsvhgrnhgrshhstghhvgesrggtmhdrohhrghdprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopehgrhgvgheskhhrohgrhhdrtghomhdprhgtphhtthhopehlihhnuhigqdhprghrihhs
-	tgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhstghsihesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.126.188.251) by cmx-mtlrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
-        id 660659AA00D59C98; Mon, 8 Apr 2024 11:17:52 -0400
-Message-ID: <b3df77f6-2928-46cd-a7ee-f806d4c937d1@bell.net>
-Date: Mon, 8 Apr 2024 11:17:51 -0400
+	s=arc-20240116; t=1712590471; c=relaxed/simple;
+	bh=4YKRX0MlfiV5mpfCzOeBNiJQnPi5WzZXviugTinSpNM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QArUo6xInyOSGsy43zIZHs0a4wTh6fA4eALBmXPfrxvr0HaNti7YcbJ5tNYL59ueU+z8jK42WlJAABRnYW03heLiQ7QmDH56OynF/s1kZW2zo9KHpsCuE45doPkMOAEYbazFSEh1CjbK3klHFALpZaUZ5bB8Y7TwYCaj4YE+b14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g2EAEEGQ; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-6ed627829e6so439601b3a.1;
+        Mon, 08 Apr 2024 08:34:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712590469; x=1713195269; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=XzmG06Fco0ZTrSThkuHAMjjsKBRNcTmAqJu1Q2E5r5g=;
+        b=g2EAEEGQARbhbZodLg1Q71essx5NxOLt1+t7HXWuEBtP2GFhJ48uvE/BeeBMYYwu9g
+         yHs2iUYxM04BIDYiTV/mswHbYfKJxCyAybPY6rmR617sk1z27w/nUfjsTu6GvgoYidrV
+         K9icdU93ee85M1IMHlzcl3j+qPEMarUlF4m3t8N895aDUkyzAW4nufEt7eiaGp83PYz6
+         5smDlNPatzvuC95Q5VDHHGSfqocjm5x7YZTlQIG9gZb5bnxxEWmlPenZpUkYjO1d1iaj
+         dn1dyabZvQTnlDklvshhhPnd/JpckcVfjfbePZQaY4onHO1fiDW7PNk6eVizXYnOwKI+
+         5OFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712590469; x=1713195269;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XzmG06Fco0ZTrSThkuHAMjjsKBRNcTmAqJu1Q2E5r5g=;
+        b=R4/W27N65uwZMzN5dBdxizc8EfDzgMoLLqbuaOA/0Di+Llxw3lCW5Bmd6+3VoE6OnB
+         4o8ra0hpMIM5S8ifhcsbZf4Y1ENFe7x6yXrCsTnW+w321oAcJxHcXySQJnPDXKE3wxaS
+         eJ+ppH/24+91xcB7DAkifBPe0r8X9ARlTR75l19//Y9CW5w8AdqGsikLe3g27Lbqh2vx
+         SvPHsCVHKdUUNfCy7faDRfWXvy4SqQ6yi0p+yUEe9rJTMn57n+Zh66RTXXtQluMBBGV7
+         21fbB9dIAD4nhFa08EjG0Enk6gg8CEOKM7kO4ba0A0lAlEQ4w3PeMOUxGQ0v0DJWUOYO
+         Ky/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXYOzx06o08AlNy3qbEm8GGTgh6TmnlinybgbKX3mNfSOtPQ3wu6YGtfpO/+cvQ/06LYY1KskWCsIXo5/b5TN42p36iulmykd6L5gkrahmiI6XR1TcT99K9CjJieL++ydGVDC5g2xziNq6r56dPCiwJxZs8OAao4zF4l8ezyLvjFj7cJqzttsckJ7C4YonAtRZyNgtMzhKa43/1wF6ibUU/BFbGx8ZgFm5V5ZjjwSVgN019kGz6llBBQ37yP6irppi5AUEcFuyRO/afe3t+ShpeLbj9aSzoLm0uYPF8ZpVF23W6Sd/DLp0SI0JFVyaesSG539uieH37eeK+WsxbTghxYb5lKaad/ppa9pFg0GlKBZqo/u0eJ5ir4e/SQzgxtlTuTT/9ksgxlbWEUWnrrLQY6Y0qi25Wl46Ib7IFfxeV6CH7KmfECCf3HxbSa04NQGJOdq2bv40V4SVw/hHYLLX8+yztF4vX3YPQo8ah9z7gj8WICPqAk6I9c2aJ8dn0egu0o2RjXQ==
+X-Gm-Message-State: AOJu0YwcFJIAOg6DBsic/Gb3gnjT5zWImrA0tRUFYlNotbrkL9GK56pM
+	H5h12J7MII8snt7VEGC3aFrBH22GNot97N71JiaJNE2/yPuvm7Ep
+X-Google-Smtp-Source: AGHT+IHBXATYsnCAi18Pnmd94XM8gXF1KK2c5ntBdRmFa9x8kfwO+o1mRSI9SAgTVsohRvBTBjU3lg==
+X-Received: by 2002:a05:6a00:8618:b0:6ed:1c7:8c65 with SMTP id hg24-20020a056a00861800b006ed01c78c65mr9832006pfb.10.1712590468982;
+        Mon, 08 Apr 2024 08:34:28 -0700 (PDT)
+Received: from localhost ([2601:647:6881:9060:13a8:4fe8:4da1:7ea2])
+        by smtp.gmail.com with ESMTPSA id s7-20020aa78d47000000b006e5808b472esm6878408pfe.95.2024.04.08.08.34.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Apr 2024 08:34:27 -0700 (PDT)
+Date: Mon, 8 Apr 2024 08:34:26 -0700
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Marc Harvey <marcharvey@google.com>,
+	"Cong Wang ." <cong.wang@bytedance.com>, shakeel.butt@linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+	Matt Turner <mattst88@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Andreas Larsson <andreas@gaisler.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Yunsheng Lin <linyunsheng@huawei.com>,
+	Shailend Chand <shailend@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>
+Subject: Re: [RFC PATCH net-next v6 02/15] net: page_pool: create hooks for
+ custom page providers
+Message-ID: <ZhQOgjkna94y9VBx@pop-os.localdomain>
+References: <20240305020153.2787423-1-almasrymina@google.com>
+ <20240305020153.2787423-3-almasrymina@google.com>
+ <ZfegzB341oNc_Ocz@infradead.org>
+ <CAHS8izOUi6qGp=LSQb_o5oph-EnhNOuhLkPSfbQRU3eniZvbdA@mail.gmail.com>
+ <ZgC5JoSiWAYf3IgX@infradead.org>
+ <CAHS8izO5-giYhM1bVCLLOXRXq-Xd0=pi0kPq5E1-R=3i=XihmQ@mail.gmail.com>
+ <ZgUc07Szbx5x-obb@infradead.org>
+ <CAHS8izM8iLC9J1xSHScMrMkVyoY5HZ_nFMRO4V7HYarHhZhk6Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Broken Domain Validation in 6.1.84+
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
- Bart Van Assche <bvanassche@acm.org>,
- linux-parisc <linux-parisc@vger.kernel.org>, linux-scsi@vger.kernel.org,
- Greg KH <greg@kroah.com>
-References: <b0670b6f-b7f7-4212-9802-7773dcd7206e@bell.net>
- <d1fc0b8d-4858-4234-8b66-c8980f612ea2@acm.org>
- <db784080-2268-4e6d-84bd-b33055a3331b@bell.net>
- <028352c6-7e34-4267-bbff-10c93d3596d3@acm.org>
- <cf78b204-9149-4462-8e82-b8f98859004b@bell.net>
- <6cb06622e6add6309e8dbb9a8944d53d1b9c4aaa.camel@HansenPartnership.com>
- <03ef7afd-98f5-4f1b-8330-329f47139ddf@bell.net>
- <yq1wmp9pb0d.fsf@ca-mkp.ca.oracle.com>
-Content-Language: en-US
-From: John David Anglin <dave.anglin@bell.net>
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- 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
- T70V9SSrl2hiw38vRzsl
-In-Reply-To: <yq1wmp9pb0d.fsf@ca-mkp.ca.oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHS8izM8iLC9J1xSHScMrMkVyoY5HZ_nFMRO4V7HYarHhZhk6Q@mail.gmail.com>
 
-On 2024-04-07 9:19 a.m., Martin K. Petersen wrote:
-> Dave,
->
->> This change depends on the above change:
->> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.1.y&id=b73dd5f9997279715cd450ee8ca599aaff2eabb9
->>
->> Thus, more than just the initial patch needs to be backed out.
-> I'd really prefer to not bring any of the intrusive scsi_execute changes
-> back to 6.1.
->
-> Could you please try the patch below on top of v6.1.80?
-Works okay on top of v6.1.80:
+On Mon, Apr 01, 2024 at 12:22:24PM -0700, Mina Almasry wrote:
+> On Thu, Mar 28, 2024 at 12:31 AM Christoph Hellwig <hch@infradead.org> wrote:
+> >
+> > On Tue, Mar 26, 2024 at 01:19:20PM -0700, Mina Almasry wrote:
+> > >
+> > > Are you envisioning that dmabuf support would be added to the block
+> > > layer
+> >
+> > Yes.
+> >
+> > > (which I understand is part of the VFS and not driver specific),
+> >
+> > The block layer isn't really the VFS, it's just another core stack
+> > like the network stack.
+> >
+> > > or as part of the specific storage driver (like nvme for example)? If
+> > > we can add dmabuf support to the block layer itself that sounds
+> > > awesome. We may then be able to do devmem TCP on all/most storage
+> > > devices without having to modify each individual driver.
+> >
+> > I suspect we'll still need to touch the drivers to understand it,
+> > but hopefully all the main infrastructure can live in the block layer.
+> >
+> > > In your estimation, is adding dmabuf support to the block layer
+> > > something technically feasible & acceptable upstream? I notice you
+> > > suggested it so I'm guessing yes to both, but I thought I'd confirm.
+> >
+> > I think so, and I know there has been quite some interest to at least
+> > pre-register userspace memory so that the iommu overhead can be
+> > pre-loaded.  It also is a much better interface for Peer to Peer
+> > transfers than what we currently have.
+> >
 
-[   30.952668] scsi 6:0:0:0: Direct-Access     HP 73.4G ST373207LW       HPC1 PQ: 0 ANSI: 3
-[   31.072592] scsi target6:0:0: Beginning Domain Validation
-[   31.139334] scsi 6:0:0:0: Power-on or device reset occurred
-[   31.186227] scsi target6:0:0: Ending Domain Validation
-[   31.240482] scsi target6:0:0: FAST-160 WIDE SCSI 320.0 MB/s DT IU QAS RTI WRFLOW PCOMP (6.25 ns, offset 63)
-[   31.462587] ata5: SATA link down (SStatus 0 SControl 0)
-[   31.618798] scsi 6:0:2:0: Direct-Access     HP 73.4G ST373207LW       HPC1 PQ: 0 ANSI: 3
-[   31.732588] scsi target6:0:2: Beginning Domain Validation
-[   31.799201] scsi 6:0:2:0: Power-on or device reset occurred
-[   31.846724] scsi target6:0:2: Ending Domain Validation
-[   31.900822] scsi target6:0:2: FAST-160 WIDE SCSI 320.0 MB/s DT IU QAS RTI WRFLOW PCOMP (6.25 ns, offset 63)
+Thanks for copying me on this. This sounds really great. 
 
-Dave
+Also P2PDMA requires PCI root complex to support this kind of direct transfer,
+and IIUC dmabuf does not have such hardware dependency.
 
--- 
-John David Anglin  dave.anglin@bell.net
+> 
+> I think this is positively thrilling news for me. I was worried that
+> adding devmemTCP support to storage devices would involve using a
+> non-dmabuf standard of buffer sharing like pci_p2pdma_
+> (drivers/pci/p2pdma.c) and that would require messy changes to
+> pci_p2pdma_ that would get nacked. Also it would require adding
+> pci_p2pdma_ support to devmem TCP, which is a can of worms. If adding
+> dma-buf support to storage devices is feasible and desirable, that's a
+> much better approach IMO. (a) it will maybe work with devmem TCP
+> without any changes needed on the netdev side of things and (b)
+> dma-buf support may be generically useful and a good contribution even
+> outside of devmem TCP.
 
+I think the major difference is its interface, which exposes an mmap memory
+region instead of fd: https://lwn.net/Articles/906092/.
+
+> 
+> I don't have a concrete user for devmem TCP for storage devices but
+> the use case is very similar to GPU and I imagine the benefits in perf
+> can be significant in some setups.
+
+We have storage use cases at ByteDance, we use NVME SSD to cache videos
+transferred through network, so moving data directly from SSD to NIC
+would help a lot.
+
+Thanks!
 
