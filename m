@@ -1,357 +1,649 @@
-Return-Path: <linux-parisc+bounces-1074-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1075-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAFE789CA9E
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Apr 2024 19:20:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C5389D484
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 Apr 2024 10:36:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D38F1F25081
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Apr 2024 17:20:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB1032833CB
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 Apr 2024 08:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E87142E9F;
-	Mon,  8 Apr 2024 17:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100AC80630;
+	Tue,  9 Apr 2024 08:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ltEn/7Bm";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="0T08OcZk"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3skGGPeD"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1132563CB;
-	Mon,  8 Apr 2024 17:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712596809; cv=fail; b=ZJV3mmlholJ1KoMgKDEg1k6h3vgC4BiQnAogFv1OYnY+x5MQIzdwReilDnTVKlGWrFUUqu72DP+Ol+D5rRCXcdPmqKIFFfFzqQuF8Wg9IrfmAOcLACrBFEFurTWg0v9XNSbGQ+youproMThid+HW/bgKfLu/zSawCyrX9dtH5SA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712596809; c=relaxed/simple;
-	bh=sP9wBUk5SChK+AGXl5jhIQff25HYcSOEeF5Tn49KkpA=;
-	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
-	 Content-Type:MIME-Version; b=t+EqydsVkO4G9p5O+0Yxx3uODUWRrAqFPFwluP3cSf2VNwymC8pGtL0tURybeTmnr1SZ0jTKmuXbYbOee5tJlG5IsT7yNGf8dKRLFUdlNe/cwVu9tpwNFQy+byp0sTtfncEcHnjnzbqDHWqho7zWeo9JEStfUZyebN3pfGtX8SY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ltEn/7Bm; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=0T08OcZk; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 438EPXIZ011855;
-	Mon, 8 Apr 2024 17:19:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : in-reply-to : message-id : references : date : content-type :
- mime-version; s=corp-2023-11-20;
- bh=zHMI+fiTERGWzwBVsh5CUdFmQnS3iHDEQKcRuqNkc1I=;
- b=ltEn/7BmfyXnEx89ng0/HmkamJH+QrX2MoBCZVZhWWmyLKtrkJLi9HhtALP2mf0Ty+zf
- Mz2aKeGsmlYJcMqATfxUiS9OBc0+RArR9pqs4ZwDqnukKfJ/vgNW4i5/daJ9n6MwryF6
- cSpM4ZP+lF6uQO3Rjs/lyxC11wvuuqme79pVvcfRPP3Udxomi5yXunWL+ptF+Nrp2jQe
- olc3CpUCBmfPi6ICBhKAIJFH/n5s6AN5sqmO2U0EdhUDezRlP40ep7ttSE+y0lbh2icv
- yyHEtB0UJElHfg9wB6eORTPJ8QLDDh2tYygWk5AEQ/Jk3XezMv/O0NtsHfUA0GR9bygR 5A== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xaxxvb7er-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 08 Apr 2024 17:19:55 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 438GwuKF010766;
-	Mon, 8 Apr 2024 17:19:54 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2101.outbound.protection.outlook.com [104.47.58.101])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3xavu5sehp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 08 Apr 2024 17:19:54 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RAPWTqjiY08BaGwrE/Dfj+8+PEcpg0MB9rN1erizSYeEhozCDqbe6nOVna++A1yk0Hf5yxFnltG70u2O4QYEPeLS6m2Hpk8PwJAR3ROmzDNUqadF39p37UghUkuxRAzXVQO7LpjuvidZcdIsW1iT/kbptbzPk7M+F0jtpII6OSN0CwEYcaDM25caZZatJXK/oTdzAJThiRL8zl1Unr1/AsWn4h7J/riJTVyRKu3KGpaFMr7ODSeuY54rbJfvDMsiugjeU87AULuk8T91TiPufSnESiCf5MH2qt5X+jHXhmY7nuWYZ9+k9tcoX9pmIg7bdI+b4MT18V/HnAVif2tZrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zHMI+fiTERGWzwBVsh5CUdFmQnS3iHDEQKcRuqNkc1I=;
- b=D31MCyYWwHoyoQ2JbLUf4YA48sjX3CxoS8sk8Y1I81WwVqdqZvjsDjt1i1BhnHi2uWWpLf/Kh+ROvpUh3bF0NPb+czRRKfhVxT2+mG9rH2KbH0yuX4rKmt0JHvC9tY/yx2qJltmpYNfhc5ZY0HniwhsX61BuiPP0mY9LagdPKeHZtjc9WskPuIxf5bMSjZ7ihacZ7Zy2nt6zS9xrMIB1xKTHA9Ni3iKVb982Sj/g2GstpDfnU828dALoyfJNSlAGrHphie6oMFC9W0OUAM3nsQQPaTZW8U8EaQlIOkyBjbSZmFEYTRPozAzOM0BMNhtdMp4FO+wHsE2BFrlQugpqPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940A980629
+	for <linux-parisc@vger.kernel.org>; Tue,  9 Apr 2024 08:29:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712651387; cv=none; b=ekiRdwk4QEOg3r8p7HvBKA8c+bj+D98Mp0DaTbx59ED4HyOAhWnVLyLgMRRYsKWkGNtUlkKvli4dRZi20DebXqjH5sgCXKlxQoM36nT2GqASXXC43GE/4cnvNLotxNE0i8SancXWX51lNsQvRg/HLkT56qR43kQoIy/P9mCcV+Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712651387; c=relaxed/simple;
+	bh=Rj+XP9EcUjnoe6MI5JRWwBo8J7exOxydKID35acttMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EzwzQjAaLYmo4QH5z4LceDwmKPqQI1jV0s4J2K/OxiBed5xHnBjsNhxZ8HxNOmGuYMvpTEmlpg0HBwZreBS5R+pSE57+nPltiMkwgOYe5ktEzvzX1fkmanjt+tc+eeTjSeYqwdPtk3Gk9/UKJ4MqLS1V3HTr6cKHJVFUgSysFiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3skGGPeD; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4154d38ce9dso60415e9.0
+        for <linux-parisc@vger.kernel.org>; Tue, 09 Apr 2024 01:29:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zHMI+fiTERGWzwBVsh5CUdFmQnS3iHDEQKcRuqNkc1I=;
- b=0T08OcZkY/hW8FyDo/DjWR3IkyUB9gyfEF3y4XTzsQk4xLC5+2JLnXTelfi8lfkdZ0FJfSeuUrtari03ARrN/405Q6Br+uqpMzZNTVxMS42xPGeKf2S++tHjcqx/q9u55IY5uQUvAOAzC/Fr4iFxvewlPNt+PrLz5QRZl2wOG8c=
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
- by SJ2PR10MB6989.namprd10.prod.outlook.com (2603:10b6:a03:4cf::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Mon, 8 Apr
- 2024 17:19:52 +0000
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::7856:8db7:c1f6:fc59]) by PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::7856:8db7:c1f6:fc59%4]) with mapi id 15.20.7409.042; Mon, 8 Apr 2024
- 17:19:52 +0000
-To: John David Anglin <dave.anglin@bell.net>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
-        James Bottomley
- <James.Bottomley@HansenPartnership.com>,
-        Bart Van Assche
- <bvanassche@acm.org>,
-        linux-parisc <linux-parisc@vger.kernel.org>,
-        linux-scsi@vger.kernel.org, Greg KH <greg@kroah.com>,
-        stable@vger.kernel.org
-Subject: Re: Broken Domain Validation in 6.1.84+
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-In-Reply-To: <b3df77f6-2928-46cd-a7ee-f806d4c937d1@bell.net> (John David
-	Anglin's message of "Mon, 8 Apr 2024 11:17:51 -0400")
-Organization: Oracle Corporation
-Message-ID: <yq1frvvpymp.fsf@ca-mkp.ca.oracle.com>
-References: <b0670b6f-b7f7-4212-9802-7773dcd7206e@bell.net>
-	<d1fc0b8d-4858-4234-8b66-c8980f612ea2@acm.org>
-	<db784080-2268-4e6d-84bd-b33055a3331b@bell.net>
-	<028352c6-7e34-4267-bbff-10c93d3596d3@acm.org>
-	<cf78b204-9149-4462-8e82-b8f98859004b@bell.net>
-	<6cb06622e6add6309e8dbb9a8944d53d1b9c4aaa.camel@HansenPartnership.com>
-	<03ef7afd-98f5-4f1b-8330-329f47139ddf@bell.net>
-	<yq1wmp9pb0d.fsf@ca-mkp.ca.oracle.com>
-	<b3df77f6-2928-46cd-a7ee-f806d4c937d1@bell.net>
-Date: Mon, 08 Apr 2024 13:19:50 -0400
-Content-Type: text/plain
-X-ClientProxiedBy: BL1PR13CA0082.namprd13.prod.outlook.com
- (2603:10b6:208:2b8::27) To PH0PR10MB4759.namprd10.prod.outlook.com
- (2603:10b6:510:3d::12)
+        d=google.com; s=20230601; t=1712651382; x=1713256182; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2ztrxJI5rJttFOCwpmfdfVt0/zOOl0eKxyBMKFbJjLY=;
+        b=3skGGPeD83qC2q7zHJYE8b7LxN0PZoUsLA6y7Yd/SxjGVIFKwM/5WIn4rLk3GI5Fei
+         x5RZzZ/ziYGCeeGh0TgnaMZJ/nErLJjJw804n7sOouanZvFamOJKSZXNZiPA1/WS6LZt
+         0Sg+bMDESoP8dSQVzCWAgqGu+M3LeX1A3+t0oDrYQRYIIiZb6Bh5otnk+sNRfPGXhhCT
+         Pqjn2NFWbdUYaTASW9o9EpzrCQZwoheQgPjrx3Ad5Lp8ZjXxvkjNXS1Cr02JVaTWEQk6
+         XuNh3j8B1HeOunFQ8d29EgK3cpEdKMikvGw08C75Ji+LI0fG0bKIO2sFA9vkHiKT3rX3
+         lzIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712651382; x=1713256182;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2ztrxJI5rJttFOCwpmfdfVt0/zOOl0eKxyBMKFbJjLY=;
+        b=xLek+zKH5oloSt7XpzUkHK10E1n/O2QvTYM97zNGGLiSnx56AbWqPzTgrW9OwcNAnK
+         nI8HroOcp/OnU890cXqNS4ISdXAlPF4PRjO2TUS/ajjz8IkdAXQUF1ef180jqw4jfSDb
+         sjWXSXVt4UVxzsdVkr8julabudOLvFoklLnNbJdMdoCF1WZYO24IrSWk7xuI6gDZkcRK
+         5YDpIAM+yQywHfM9cjCLBcQNWShOX/HE25wcII9pGL29FD6TTNgZe7vTbzfEQSuLZ7t4
+         s/AfOCmE/UDJj5uJl/0ZUdKzdPBkiBJzX7vRG0UzzhzOlomK3EfNjyZ1+dlWPMXpF2kK
+         kWxA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtXMtYWz86ijNeuL5eZ4Hamp50LpkGFiitGm8Y+zkmPHYgldX6TLeiIhP7uH02O7IBiNCOgIro4U4CGYW1slTSkHWVhBwenYguiAgG
+X-Gm-Message-State: AOJu0YxH9rwj+nge2I6DJVEmE7JaHi0M787SkphFnZnbcSwKSCv3gjnX
+	bAnL1ND1i61txrnKJ1MHfbKPCcz6P+6wZ2Ov3Iy7Ftu3nSug3yYa0PEYAG3m+dhWIDvspr5JQU4
+	sUi/S16KzCJzyAF5LKp3jLlyISG/b7KWvtu3R
+X-Google-Smtp-Source: AGHT+IGN60qikBJ2TnvXDkLiAKeGKJtA8lMoXuaba+mNhsm81NX1Ko+ouWfYtBMoYyMS+yzPrbNrpDENV0LLD28XTxw=
+X-Received: by 2002:a05:600c:314c:b0:416:7f8a:c6ea with SMTP id
+ h12-20020a05600c314c00b004167f8ac6eamr92410wmo.1.1712651381537; Tue, 09 Apr
+ 2024 01:29:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB4759:EE_|SJ2PR10MB6989:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	jUdM1tfmENf5XF6ry0vCKs7Xs890ZwiTA8OjefG+7izO1OsZM1nlfnoyn9BcrSn1mcGuOg6smwmX+oHH1Ud8ic4S03IRXJ0rGhNOhB54mdphNaFaGh+6X+aIZ+03WoUmiBCsmfyXzOa6o4fTPnOCv/ho1zvL5PeS64GOxNVpmi1+WU6dBKKwcQkgSEl4Im0m6GQxlJhfHOLDNhedkMDTEY0sSQpvkjhJZ/UvM+VljxRHG+xACAnnEBxIzp7t42TC+QaWOSArdsdpIUD/8qNkRJqt8aP3R86I3SJCeV9F4/9iN44y9HVuPHGURdmyA9zeYqSA90gZYiFO5i91EXsdOl/B8oeitDpP1BIQmeenk8beaMb98LEvEs9aE+hTQxfZvr2v22rjOq0Gfg78i2Sfx/mv28jqU+w3Rpu8nsch0QS8/va+8yAz/FLeyNZE+A6zY+oE+oxnZIEIqMWG7kSkjAJlF3IF0JfIFpyMjg7DKm9wcCFu+70+nKj6z/V0v9PBYArtCZ2gYMeCxVJeLDNIqMRik0BsxNAaMEKFkyjJAORSrQKfpFfmIMQ7FqxdcAUXejpz3xgpVeIF/lhXRZGRzOfsK5nGDAMrP5gWZVLw3Nk=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?GorKIM0vgACGr6QPLNuXDKUPGKyeYb1EuRBW2Arsky0R92CTELsTfMrZGJbL?=
- =?us-ascii?Q?xyosi7rEMtKH7dgNXi96wUf6jyrmsDmu2At5DywLVkVotUDcEk38FePdHT9x?=
- =?us-ascii?Q?11m8S8dblxFfSvrs+VGWqWYT+rqWkWhd0MlzhiOhVFPd8Dt3SZrs4hG5tjRh?=
- =?us-ascii?Q?LO0QGnsn1z9tRAOpqL7gghndiANe+bnRJtKJKJ7LGQNGfchSJ+EMraeXiAEu?=
- =?us-ascii?Q?QD2gCwq3CTCPDBn4Y2r+rykMFql6Oi0gcrR4j8cWPUJ5ghHDttqwWDCjxT4p?=
- =?us-ascii?Q?WFOXtq3unusvVjB5S3TPkIvHd7UvxXwhKrBOkww1lkT8gYYruSca0T0SDO5Q?=
- =?us-ascii?Q?82vOo9feFjPu6PPZrhu/k1L7tGECw8CYwl7r8sSRNsg0Kmlx1ySnHgWFNpiA?=
- =?us-ascii?Q?s5CANob2JPRMi4siruIPR1A5NNUxnftdlGy5G2HMiALTZQWBJxpq7RTeq5lm?=
- =?us-ascii?Q?FCj7j/KuriwSou9b1Nhy1tLgC1OZH1tyYRs/pT+KY2pQQUrTPVMjLaLct0fx?=
- =?us-ascii?Q?GhlrysLGX9Fn2aCNSiENqn4+npkIS7769phGrdeYNa5EDACaUryetbthDJA1?=
- =?us-ascii?Q?BfXqOMLGnAB3wE80sMH+BcZ7zIpPZOmIJuNsKt9qwF3TJbS/RWeuuQeJVOg0?=
- =?us-ascii?Q?3573sTEKMlMn2XC+sHsUDrAwAWdVDo/+OP9+JJGsu0CvbJHgib/tcsiiTYGI?=
- =?us-ascii?Q?KDMZxIXHjdi/4WzynLHSfrAE3xAt+BrzDl5bIfH2rdZ+CUZqc/1o0OntgCOE?=
- =?us-ascii?Q?1vHZ3TQujqu5BKYgYL8nuvH2cKnZbRJOb8o3kT4KM00oiFBVWIgpl6Z6vpGf?=
- =?us-ascii?Q?IVD6kOTiOarR8g7o2XrhRZoEDi/weyIYsfSdQdmECHvpbYkpB0Z4SITN8U1/?=
- =?us-ascii?Q?D9wxVjHdjZouZxSaNxBrcQfJ8/KiI/X3BOkRPw7WdCNrch9MNoGorKghX/Tz?=
- =?us-ascii?Q?29d22T5Qb5/eZJgGeZbFCWojnhuTdtdqbdBK9AnhStgAYt/EQtnSR+0ikg1i?=
- =?us-ascii?Q?TCjtvxF3JT+EOFEs0t9kVngTrMLku8tcVr9LMBb5hO7xxntEZXDWsrIr21Zj?=
- =?us-ascii?Q?UjeSkb1qJ1nkLXxvB6hFIPz331p7SvsY7yza93YT0LJUyNhkti8rOQq+bOl/?=
- =?us-ascii?Q?scv9RCUYd+whgd/WlOtiDqTmJM7w5D6nPAIl/+t39NxTpKiN3YCHAPC7OFU0?=
- =?us-ascii?Q?dReGQhH+q6TKRrmPt5VtY4MSZTzzyx/k94N+CG0G02ahB73j8/jqeI2D3pRl?=
- =?us-ascii?Q?8Gyh2wCbLKnMHK+bP9wJvf63XuV5aKAStKfa27SP9VPa+vTZLUx2liD7ZCaN?=
- =?us-ascii?Q?bzYMxNjtxTAp1iBm2mg6Kdfir1IIvQgYw2UGtFBTHRIkwp2stHBW7mbdz5zS?=
- =?us-ascii?Q?iindoVEJtE07AKSMfgyOlz0ZzCe1KrDf5KQbmzNToGkkrk1M2N7G9kbcw6/E?=
- =?us-ascii?Q?YOKWyRVdQQVajKnknHgNwhWxMfPLRJk9GIqNcd1ty2iopwydLxq+8ZsMom2y?=
- =?us-ascii?Q?STiKlztakZLl+GoDwJzr94iK09VayR4IRqkNve1pc+1LNvR9/s590nA2I0YN?=
- =?us-ascii?Q?JbzQh71h/PZnD2EORakm+EaMWyf+1japLzGLW5hR2xFZV3nRT+gyuDNoLgBZ?=
- =?us-ascii?Q?gg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	FbsCxcT/3F4hf9Mwostu31PHa7RkYoLM1a63xUTVcf6au2Nq90fnF+uktNqVYfFi5W42QG3rvgx3JlVEZVqHITfMcp91YyqqmaUEYj8ID81uBZb0764dicuZCJ4y8gNgJHTesb9xL94BCcBDcRDqFdmH/Ygs/d2fdX4iIDibdvDzvBNhfZwjyllra2dyVif/GyeG59K/vpOmUkqMai7pZJcmJw8UiYvZT/TG20SKZCJUjSDO0xdftFriYzibJzSi3k+62gq3RxFxlnFgIvfR4sx71Q4xb4Na6AkRMzziAl/B/4x8vw3QVQUbjrp0sZAZxESQ53Fkl8iHs0PX0Nweg8Aa/D8ZbFRnhC+qWl6mrqO3SHXuqgSqMIA2IFzu14+v/jEKDuEp9e50j33TZKp/of3nsXfLJGW6+mly+YyGPpCzBLFXUNVoM47l0jR3VWJfrLKUJ/YmNzwRKY0JviZ6hEoyGeCipE+X0HzSdm/hqGXLccbmCYagp3CnV0E+ngsnF0uIjYV4qPU50gw4UNxVmuJhMgv5aLhdwkVVhki5gb0UWqaM0vaRwbYm/kXLccU/RSu6bqF+oulu3gb/NcGyMJia9Ymt5vm6YQ52kInQCrI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c11d96bf-a9dd-4762-02e1-08dc57f01a23
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Apr 2024 17:19:52.3690
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eXXiDM3R+ZS++C+69gmtCGvAUX4A5FDWZkwyiULT1HpVKhmbouFFWQcWCZTLwquffUajRdsFCHPQVzl26HFI5jfN0JyvD7j/rvexb7iNAIQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB6989
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-08_15,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- suspectscore=0 spamscore=0 mlxscore=0 bulkscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404080134
-X-Proofpoint-ORIG-GUID: jJW9QNKcd63n13MUjptevLLwZnB9HeEX
-X-Proofpoint-GUID: jJW9QNKcd63n13MUjptevLLwZnB9HeEX
+References: <20240403131936.787234-1-linux@roeck-us.net> <20240403131936.787234-2-linux@roeck-us.net>
+In-Reply-To: <20240403131936.787234-2-linux@roeck-us.net>
+From: David Gow <davidgow@google.com>
+Date: Tue, 9 Apr 2024 16:29:27 +0800
+Message-ID: <CABVgOSkNmmEn05B3HKopWt4T=6rNHCNgrd1JkQo46CS6C9hYJg@mail.gmail.com>
+Subject: Re: [PATCH v3 01/15] bug/kunit: Core support for suppressing warning backtraces
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Kees Cook <keescook@chromium.org>, 
+	Daniel Diaz <daniel.diaz@linaro.org>, Arthur Grillo <arthurgrillo@riseup.net>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, Naresh Kamboju <naresh.kamboju@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Maxime Ripard <mripard@kernel.org>, 
+	=?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org, 
+	kunit-dev@googlegroups.com, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	loongarch@lists.linux.dev, netdev@vger.kernel.org, x86@kernel.org, 
+	Linux Kernel Functional Testing <lkft@linaro.org>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000043707b0615a5b9ad"
 
+--00000000000043707b0615a5b9ad
+Content-Type: text/plain; charset="UTF-8"
 
-Dave,
-
->> Could you please try the patch below on top of v6.1.80?
-> Works okay on top of v6.1.80:
+On Wed, 3 Apr 2024 at 21:19, Guenter Roeck <linux@roeck-us.net> wrote:
 >
-> [   30.952668] scsi 6:0:0:0: Direct-Access     HP 73.4G ST373207LW       HPC1 PQ: 0 ANSI: 3
-> [   31.072592] scsi target6:0:0: Beginning Domain Validation
-> [   31.139334] scsi 6:0:0:0: Power-on or device reset occurred
-> [   31.186227] scsi target6:0:0: Ending Domain Validation
-> [   31.240482] scsi target6:0:0: FAST-160 WIDE SCSI 320.0 MB/s DT IU QAS RTI WRFLOW PCOMP (6.25 ns, offset 63)
-> [   31.462587] ata5: SATA link down (SStatus 0 SControl 0)
-> [   31.618798] scsi 6:0:2:0: Direct-Access     HP 73.4G ST373207LW       HPC1 PQ: 0 ANSI: 3
-> [   31.732588] scsi target6:0:2: Beginning Domain Validation
-> [   31.799201] scsi 6:0:2:0: Power-on or device reset occurred
-> [   31.846724] scsi target6:0:2: Ending Domain Validation
-> [   31.900822] scsi target6:0:2: FAST-160 WIDE SCSI 320.0 MB/s DT IU QAS RTI WRFLOW PCOMP (6.25 ns, offset 63)
+> Some unit tests intentionally trigger warning backtraces by passing
+> bad parameters to API functions. Such unit tests typically check the
+> return value from those calls, not the existence of the warning backtrace.
+>
+> Such intentionally generated warning backtraces are neither desirable
+> nor useful for a number of reasons.
+> - They can result in overlooked real problems.
+> - A warning that suddenly starts to show up in unit tests needs to be
+>   investigated and has to be marked to be ignored, for example by
+>   adjusting filter scripts. Such filters are ad-hoc because there is
+>   no real standard format for warnings. On top of that, such filter
+>   scripts would require constant maintenance.
+>
+> One option to address problem would be to add messages such as "expected
+> warning backtraces start / end here" to the kernel log.  However, that
+> would again require filter scripts, it might result in missing real
+> problematic warning backtraces triggered while the test is running, and
+> the irrelevant backtrace(s) would still clog the kernel log.
+>
+> Solve the problem by providing a means to identify and suppress specific
+> warning backtraces while executing test code. Since the new functionality
+> results in an image size increase of about 1% if CONFIG_KUNIT is enabled,
+> provide configuration option KUNIT_SUPPRESS_BACKTRACE to be able to disable
+> the new functionality. This option is by default enabled since almost all
+> systems with CONFIG_KUNIT enabled will want to benefit from it.
+>
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> Cc: Daniel Diaz <daniel.diaz@linaro.org>
+> Cc: Naresh Kamboju <naresh.kamboju@linaro.org>
+> Cc: Kees Cook <keescook@chromium.org>
+> Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> ---
 
-Great, thanks for testing!
+Sorry it took so long to get to this.
 
-Greg, please revert the following commits from linux-6.1.y:
+I love the idea, we've needed this for a while.
 
-b73dd5f99972 ("scsi: sd: usb_storage: uas: Access media prior to querying device properties")
-cf33e6ca12d8 ("scsi: core: Add struct for args to execution functions")
+There are some downsides to this being entirely based on the name of
+the function which contains WARN(). Partly because there could be
+several WARN()s within a function, and there'd be overlap, and partly
+because the function name is never actually printed during a warning
+(it may come from the stack trace, but that can be misleading with
+inlined functions).  I don't think either of these are showstoppers,
+though, but it'd be nice to extend this in the future with (a) other
+ways of identifying warnings, such as the format string, and (b) print
+the function name in the report, if it's present. The function name is
+probably a good middle ground, complexity-wise, though, so I'm happy
+to have it thus far.
 
-and include the patch below instead.
+ I also think we're missing some opportunities to integrate this
+better with existing KUnit infrastructure, like the
+action/resource/cleanup system. In particular, it'd be nice to have a
+way of ensuring that suppressions won't get leaked if the test aborts
+between START_SUPPRESSED_WARNING() and END_SUPPRESSED_WARNING(). It's
+not difficult to use this as-is, but it'd be nice to have some
+helpers, rather than having to, for instance:
+KUNIT_DEFINE_ACTION_WRAPPER(kunit_stop_suppressing_warning,
+__end_suppress_warning, struct __suppressed_warning *);
+DEFINE_SUPPRESSED_WARNING(vfree);
+START_SUPPRESSED_WARNING(vfree);
+kunit_add_action(test, kunit_stop_suppressing_warning, (void
+*)&__kunit_suppress_vfree);
 
-Thank you!
+(With the note that the DEFINE_SUPPRESSED_WARNING() will have to be
+global, or put on the heap, lest it become a dangling pointer by the
+time the suppression has stopped.)
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Equally, do we want to make the
+__{start,end,is}_suppress[ed]_warning()  functions KUnit 'hooks'? This
+would allow them to be used in modules which don't depend directly on
+KUnit. I suspect it's not important in this case: but worth keeping in
+mind in case we find a situation where we'd need to suppress a warning
+elsewhere.
 
-From 87441914d491c01b73b949663c101056a9d9b8c7 Mon Sep 17 00:00:00 2001
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-Date: Tue, 13 Feb 2024 09:33:06 -0500
-Subject: [PATCH] scsi: sd: usb_storage: uas: Access media prior to querying
- device properties
+These are all things which could be added/changed in follow-up
+patches, though, so I don't think they're blockers. Otherwise, this
+looks good: perhaps the naming could be a bit more consistent with
+other KUnit things, but that depends on how much we want this to be 'a
+part of KUnit' versus an independent bit of functionality.
 
-[ Upstream commit 321da3dc1f3c92a12e3c5da934090d2992a8814c ]
+> v2:
+> - Rebased to v6.9-rc1
+> - Added Tested-by:, Acked-by:, and Reviewed-by: tags
+> - Added CONFIG_KUNIT_SUPPRESS_BACKTRACE configuration option,
+>   enabled by default
+> v3:
+> - Rebased to v6.9-rc2
+>
+>  include/asm-generic/bug.h | 16 +++++++++---
+>  include/kunit/bug.h       | 51 +++++++++++++++++++++++++++++++++++++++
+>  include/kunit/test.h      |  1 +
+>  include/linux/bug.h       | 13 ++++++++++
+>  lib/bug.c                 | 51 ++++++++++++++++++++++++++++++++++++---
+>  lib/kunit/Kconfig         |  9 +++++++
+>  lib/kunit/Makefile        |  6 +++--
+>  lib/kunit/bug.c           | 40 ++++++++++++++++++++++++++++++
+>  8 files changed, 178 insertions(+), 9 deletions(-)
+>  create mode 100644 include/kunit/bug.h
+>  create mode 100644 lib/kunit/bug.c
+>
+> diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
+> index 6e794420bd39..c170b6477689 100644
+> --- a/include/asm-generic/bug.h
+> +++ b/include/asm-generic/bug.h
+> @@ -18,6 +18,7 @@
+>  #endif
+>
+>  #ifndef __ASSEMBLY__
+> +#include <kunit/bug.h>
+>  #include <linux/panic.h>
+>  #include <linux/printk.h>
+>
+> @@ -39,8 +40,14 @@ struct bug_entry {
+>  #ifdef CONFIG_DEBUG_BUGVERBOSE
+>  #ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
+>         const char      *file;
+> +#ifdef HAVE_BUG_FUNCTION
+> +       const char      *function;
+> +#endif
+>  #else
+>         signed int      file_disp;
+> +#ifdef HAVE_BUG_FUNCTION
+> +       signed int      function_disp;
+> +#endif
+>  #endif
+>         unsigned short  line;
+>  #endif
+> @@ -96,15 +103,18 @@ extern __printf(1, 2) void __warn_printk(const char *fmt, ...);
+>  #define __WARN()               __WARN_printf(TAINT_WARN, NULL)
+>  #define __WARN_printf(taint, arg...) do {                              \
+>                 instrumentation_begin();                                \
+> -               warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);      \
+> +               if (!IS_SUPPRESSED_WARNING(__func__))                   \
+> +                       warn_slowpath_fmt(__FILE__, __LINE__, taint, arg);\
+>                 instrumentation_end();                                  \
+>         } while (0)
+>  #else
+>  #define __WARN()               __WARN_FLAGS(BUGFLAG_TAINT(TAINT_WARN))
+>  #define __WARN_printf(taint, arg...) do {                              \
+>                 instrumentation_begin();                                \
+> -               __warn_printk(arg);                                     \
+> -               __WARN_FLAGS(BUGFLAG_NO_CUT_HERE | BUGFLAG_TAINT(taint));\
+> +               if (!IS_SUPPRESSED_WARNING(__func__)) {                 \
+> +                       __warn_printk(arg);                             \
+> +                       __WARN_FLAGS(BUGFLAG_NO_CUT_HERE | BUGFLAG_TAINT(taint));\
+> +               }                                                       \
+>                 instrumentation_end();                                  \
+>         } while (0)
+>  #define WARN_ON_ONCE(condition) ({                             \
+> diff --git a/include/kunit/bug.h b/include/kunit/bug.h
+> new file mode 100644
+> index 000000000000..bd0fe047572b
+> --- /dev/null
+> +++ b/include/kunit/bug.h
+> @@ -0,0 +1,51 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * KUnit helpers for backtrace suppression
+> + *
+> + * Copyright (c) 2024 Guenter Roeck <linux@roeck-us.net>
+> + */
+> +
+> +#ifndef _KUNIT_BUG_H
+> +#define _KUNIT_BUG_H
+> +
+> +#ifndef __ASSEMBLY__
+> +
+> +#include <linux/kconfig.h>
+> +
+> +#ifdef CONFIG_KUNIT_SUPPRESS_BACKTRACE
+> +
+> +#include <linux/stringify.h>
+> +#include <linux/types.h>
+> +
+> +struct __suppressed_warning {
+> +       struct list_head node;
+> +       const char *function;
+> +};
+> +
+> +void __start_suppress_warning(struct __suppressed_warning *warning);
+> +void __end_suppress_warning(struct __suppressed_warning *warning);
+> +bool __is_suppressed_warning(const char *function);
 
-It has been observed that some USB/UAS devices return generic properties
-hardcoded in firmware for mode pages for a period of time after a device
-has been discovered. The reported properties are either garbage or they do
-not accurately reflect the characteristics of the physical storage device
-attached in the case of a bridge.
+Do we want to call these '__kunit_start_suppress_warning', etc., to
+match other similar functions exported by KUnit to be used in macros,
+et al.
 
-Prior to commit 1e029397d12f ("scsi: sd: Reorganize DIF/DIX code to
-avoid calling revalidate twice") we would call revalidate several
-times during device discovery. As a result, incorrect values would
-eventually get replaced with ones accurately describing the attached
-storage. When we did away with the redundant revalidate pass, several
-cases were reported where devices reported nonsensical values or would
-end up in write-protected state.
+> +
+> +#define DEFINE_SUPPRESSED_WARNING(func)        \
+> +       struct __suppressed_warning __kunit_suppress_##func = \
 
-An initial attempt at addressing this issue involved introducing a
-delayed second revalidate invocation. However, this approach still
-left some devices reporting incorrect characteristics.
+We use the __kunit_ prefix here...
 
-Tasos Sahanidis debugged the problem further and identified that
-introducing a READ operation prior to MODE SENSE fixed the problem and that
-it wasn't a timing issue. Issuing a READ appears to cause the devices to
-update their state to reflect the actual properties of the storage
-media. Device properties like vendor, model, and storage capacity appear to
-be correctly reported from the get-go. It is unclear why these devices
-defer populating the remaining characteristics.
+> +               { .function = __stringify(func) }
+> +
+> +#define START_SUPPRESSED_WARNING(func) \
+> +       __start_suppress_warning(&__kunit_suppress_##func)
+> +
+> +#define END_SUPPRESSED_WARNING(func) \
+> +       __end_suppress_warning(&__kunit_suppress_##func)
+> +
+> +#define IS_SUPPRESSED_WARNING(func) \
+> +       __is_suppressed_warning(func)
+> +
 
-Match the behavior of a well known commercial operating system and
-trigger a READ operation prior to querying device characteristics to
-force the device to populate the mode pages.
+Similarly, do we want to give these KUNIT_ prefixes to match other KUnit macros.
 
-The additional READ is triggered by a flag set in the USB storage and
-UAS drivers. We avoid issuing the READ for other transport classes
-since some storage devices identify Linux through our particular
-discovery command sequence.
+One possibility would be to have both KUNIT_- and non-KUNIT_-
+variants, the latter of which accepts a struct kunit*, and registers
+the suppression with the test for automated cleanup.
 
-Link: https://lore.kernel.org/r/20240213143306.2194237-1-martin.petersen@oracle.com
-Fixes: 1e029397d12f ("scsi: sd: Reorganize DIF/DIX code to avoid calling revalidate twice")
-Cc: stable@vger.kernel.org
-Reported-by: Tasos Sahanidis <tasos@tasossah.com>
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Tested-by: Tasos Sahanidis <tasos@tasossah.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 31b5273f43a7..349b1455a2c6 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3284,6 +3284,24 @@ static bool sd_validate_opt_xfer_size(struct scsi_disk *sdkp,
- 	return true;
- }
- 
-+static void sd_read_block_zero(struct scsi_disk *sdkp)
-+{
-+	unsigned int buf_len = sdkp->device->sector_size;
-+	char *buffer, cmd[10] = { };
-+
-+	buffer = kmalloc(buf_len, GFP_KERNEL);
-+	if (!buffer)
-+		return;
-+
-+	cmd[0] = READ_10;
-+	put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
-+	put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
-+
-+	scsi_execute_req(sdkp->device, cmd, DMA_FROM_DEVICE, buffer, buf_len,
-+			 NULL, SD_TIMEOUT, sdkp->max_retries, NULL);
-+	kfree(buffer);
-+}
-+
- /**
-  *	sd_revalidate_disk - called the first time a new disk is seen,
-  *	performs disk spin up, read_capacity, etc.
-@@ -3323,7 +3341,13 @@ static int sd_revalidate_disk(struct gendisk *disk)
- 	 */
- 	if (sdkp->media_present) {
- 		sd_read_capacity(sdkp, buffer);
--
-+		/*
-+		 * Some USB/UAS devices return generic values for mode pages
-+		 * until the media has been accessed. Trigger a READ operation
-+		 * to force the device to populate mode pages.
-+		 */
-+		if (sdp->read_before_ms)
-+			sd_read_block_zero(sdkp);
- 		/*
- 		 * set the default to rotational.  All non-rotational devices
- 		 * support the block characteristics VPD page, which will
-diff --git a/drivers/usb/storage/scsiglue.c b/drivers/usb/storage/scsiglue.c
-index c54e9805da53..12cf9940e5b6 100644
---- a/drivers/usb/storage/scsiglue.c
-+++ b/drivers/usb/storage/scsiglue.c
-@@ -179,6 +179,13 @@ static int slave_configure(struct scsi_device *sdev)
- 		 */
- 		sdev->use_192_bytes_for_3f = 1;
- 
-+		/*
-+		 * Some devices report generic values until the media has been
-+		 * accessed. Force a READ(10) prior to querying device
-+		 * characteristics.
-+		 */
-+		sdev->read_before_ms = 1;
-+
- 		/*
- 		 * Some devices don't like MODE SENSE with page=0x3f,
- 		 * which is the command used for checking if a device
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index de3836412bf3..ed22053b3252 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -878,6 +878,13 @@ static int uas_slave_configure(struct scsi_device *sdev)
- 	if (devinfo->flags & US_FL_CAPACITY_HEURISTICS)
- 		sdev->guess_capacity = 1;
- 
-+	/*
-+	 * Some devices report generic values until the media has been
-+	 * accessed. Force a READ(10) prior to querying device
-+	 * characteristics.
-+	 */
-+	sdev->read_before_ms = 1;
-+
- 	/*
- 	 * Some devices don't like MODE SENSE with page=0x3f,
- 	 * which is the command used for checking if a device
-diff --git a/include/scsi/scsi_device.h b/include/scsi/scsi_device.h
-index d2751ed536df..1504d3137cc6 100644
---- a/include/scsi/scsi_device.h
-+++ b/include/scsi/scsi_device.h
-@@ -204,6 +204,7 @@ struct scsi_device {
- 	unsigned use_10_for_rw:1; /* first try 10-byte read / write */
- 	unsigned use_10_for_ms:1; /* first try 10-byte mode sense/select */
- 	unsigned set_dbd_for_ms:1; /* Set "DBD" field in mode sense */
-+	unsigned read_before_ms:1;	/* perform a READ before MODE SENSE */
- 	unsigned no_report_opcodes:1;	/* no REPORT SUPPORTED OPERATION CODES */
- 	unsigned no_write_same:1;	/* no WRITE SAME command */
- 	unsigned use_16_for_rw:1; /* Use read/write(16) over read/write(10) */
+> +#else /* CONFIG_KUNIT_SUPPRESS_BACKTRACE */
+> +
+> +#define DEFINE_SUPPRESSED_WARNING(func)
+> +#define START_SUPPRESSED_WARNING(func)
+> +#define END_SUPPRESSED_WARNING(func)
+> +#define IS_SUPPRESSED_WARNING(func) (false)
+> +
+> +#endif /* CONFIG_KUNIT_SUPPRESS_BACKTRACE */
+> +#endif /* __ASSEMBLY__ */
+> +#endif /* _KUNIT_BUG_H */
+> diff --git a/include/kunit/test.h b/include/kunit/test.h
+> index 61637ef32302..d0c44594d34c 100644
+> --- a/include/kunit/test.h
+> +++ b/include/kunit/test.h
+> @@ -10,6 +10,7 @@
+>  #define _KUNIT_TEST_H
+>
+>  #include <kunit/assert.h>
+> +#include <kunit/bug.h>
+>  #include <kunit/try-catch.h>
+>
+>  #include <linux/args.h>
+> diff --git a/include/linux/bug.h b/include/linux/bug.h
+> index 348acf2558f3..c668762dc76a 100644
+> --- a/include/linux/bug.h
+> +++ b/include/linux/bug.h
+> @@ -36,6 +36,9 @@ static inline int is_warning_bug(const struct bug_entry *bug)
+>         return bug->flags & BUGFLAG_WARNING;
+>  }
+>
+> +void bug_get_file_function_line(struct bug_entry *bug, const char **file,
+> +                               const char **function, unsigned int *line);
+> +
+>  void bug_get_file_line(struct bug_entry *bug, const char **file,
+>                        unsigned int *line);
+>
+> @@ -62,6 +65,16 @@ static inline enum bug_trap_type report_bug(unsigned long bug_addr,
+>  }
+>
+>  struct bug_entry;
+> +static inline void bug_get_file_function_line(struct bug_entry *bug,
+> +                                             const char **file,
+> +                                             const char **function,
+> +                                             unsigned int *line)
+> +{
+> +       *file = NULL;
+> +       *function = NULL;
+> +       *line = 0;
+> +}
+> +
+>  static inline void bug_get_file_line(struct bug_entry *bug, const char **file,
+>                                      unsigned int *line)
+>  {
+> diff --git a/lib/bug.c b/lib/bug.c
+> index e0ff21989990..aa8bb12b9809 100644
+> --- a/lib/bug.c
+> +++ b/lib/bug.c
+> @@ -26,6 +26,14 @@
+>         when CONFIG_DEBUG_BUGVERBOSE is not enabled, so you must generate
+>         the values accordingly.
+>
+> +  2a.Optionally implement support for the "function" entry in struct
+> +     bug_entry. This entry must point to the name of the function triggering
+> +     the warning or bug trap (normally __func__). This is only needed if
+> +     both CONFIG_DEBUG_BUGVERBOSE and CONFIG_KUNIT_SUPPRESS_BACKTRACE are
+> +     enabled and if the architecture wants to implement support for suppressing
+> +     warning backtraces. The architecture must define HAVE_BUG_FUNCTION if it
+> +     adds pointers to function names to struct bug_entry.
+> +
+>    3. Implement the trap
+>       - In the illegal instruction trap handler (typically), verify
+>         that the fault was in kernel mode, and call report_bug()
+> @@ -127,14 +135,21 @@ static inline struct bug_entry *module_find_bug(unsigned long bugaddr)
+>  }
+>  #endif
+>
+> -void bug_get_file_line(struct bug_entry *bug, const char **file,
+> -                      unsigned int *line)
+> +void bug_get_file_function_line(struct bug_entry *bug, const char **file,
+> +                               const char **function, unsigned int *line)
+>  {
+> +       *function = NULL;
+>  #ifdef CONFIG_DEBUG_BUGVERBOSE
+>  #ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
+>         *file = (const char *)&bug->file_disp + bug->file_disp;
+> +#ifdef HAVE_BUG_FUNCTION
+> +       *function = (const char *)&bug->function_disp + bug->function_disp;
+> +#endif
+>  #else
+>         *file = bug->file;
+> +#ifdef HAVE_BUG_FUNCTION
+> +       *function = bug->function;
+> +#endif
+>  #endif
+>         *line = bug->line;
+>  #else
+> @@ -143,6 +158,13 @@ void bug_get_file_line(struct bug_entry *bug, const char **file,
+>  #endif
+>  }
+>
+> +void bug_get_file_line(struct bug_entry *bug, const char **file, unsigned int *line)
+> +{
+> +       const char *function;
+> +
+> +       bug_get_file_function_line(bug, file, &function, line);
+> +}
+> +
+>  struct bug_entry *find_bug(unsigned long bugaddr)
+>  {
+>         struct bug_entry *bug;
+> @@ -157,8 +179,9 @@ struct bug_entry *find_bug(unsigned long bugaddr)
+>  static enum bug_trap_type __report_bug(unsigned long bugaddr, struct pt_regs *regs)
+>  {
+>         struct bug_entry *bug;
+> -       const char *file;
+> +       const char *file, *function;
+
+As mentioned, I'd love to see the function plumbed through and
+reported some day, both to make it easier to know what to suppress,
+and also because it's possibly more reliable even outside the
+suppression use-case. Could be a follow-up patch later, though.
+
+
+>         unsigned line, warning, once, done;
+> +       char __maybe_unused sym[KSYM_SYMBOL_LEN];
+>
+>         if (!is_valid_bugaddr(bugaddr))
+>                 return BUG_TRAP_TYPE_NONE;
+> @@ -169,12 +192,32 @@ static enum bug_trap_type __report_bug(unsigned long bugaddr, struct pt_regs *re
+>
+>         disable_trace_on_warning();
+>
+> -       bug_get_file_line(bug, &file, &line);
+> +       bug_get_file_function_line(bug, &file, &function, &line);
+> +#if defined(CONFIG_KUNIT_SUPPRESS_BACKTRACE) && defined(CONFIG_KALLSYMS)
+> +       if (!function) {
+> +               /*
+> +                * This will be seen if report_bug is called on an architecture
+> +                * with no architecture-specific support for suppressing warning
+> +                * backtraces, if CONFIG_DEBUG_BUGVERBOSE is not enabled, or if
+> +                * the calling code is from assembler which does not record a
+> +                * function name. Extracting the function name from the bug
+> +                * address is less than perfect since compiler optimization may
+> +                * result in 'bugaddr' pointing to a function which does not
+> +                * actually trigger the warning, but it is better than no
+> +                * suppression at all.
+> +                */
+> +               sprint_symbol_no_offset(sym, bugaddr);
+> +               function = sym;
+> +       }
+> +#endif /* defined(CONFIG_KUNIT_SUPPRESS_BACKTRACE) && defined(CONFIG_KALLSYMS) */
+>
+>         warning = (bug->flags & BUGFLAG_WARNING) != 0;
+>         once = (bug->flags & BUGFLAG_ONCE) != 0;
+>         done = (bug->flags & BUGFLAG_DONE) != 0;
+>
+> +       if (warning && IS_SUPPRESSED_WARNING(function))
+> +               return BUG_TRAP_TYPE_WARN;
+> +
+>         if (warning && once) {
+>                 if (done)
+>                         return BUG_TRAP_TYPE_WARN;
+> diff --git a/lib/kunit/Kconfig b/lib/kunit/Kconfig
+> index 68a6daec0aef..b1b899265acc 100644
+> --- a/lib/kunit/Kconfig
+> +++ b/lib/kunit/Kconfig
+> @@ -15,6 +15,15 @@ menuconfig KUNIT
+>
+>  if KUNIT
+>
+> +config KUNIT_SUPPRESS_BACKTRACE
+> +       bool "KUnit - Enable backtrace suppression"
+> +       default y
+> +       help
+> +         Enable backtrace suppression for KUnit. If enabled, backtraces
+> +         generated intentionally by KUnit tests are suppressed. Disable
+> +         to reduce kernel image size if image size is more important than
+> +         suppression of backtraces generated by KUnit tests.
+> +
+>  config KUNIT_DEBUGFS
+>         bool "KUnit - Enable /sys/kernel/debug/kunit debugfs representation" if !KUNIT_ALL_TESTS
+>         default KUNIT_ALL_TESTS
+> diff --git a/lib/kunit/Makefile b/lib/kunit/Makefile
+> index 309659a32a78..545b57c3be48 100644
+> --- a/lib/kunit/Makefile
+> +++ b/lib/kunit/Makefile
+> @@ -14,8 +14,10 @@ ifeq ($(CONFIG_KUNIT_DEBUGFS),y)
+>  kunit-objs +=                          debugfs.o
+>  endif
+>
+> -# KUnit 'hooks' are built-in even when KUnit is built as a module.
+> -obj-y +=                               hooks.o
+> +# KUnit 'hooks' and bug handling are built-in even when KUnit is built
+> +# as a module.
+> +obj-y +=                               hooks.o \
+> +                                       bug.o
+>
+>  obj-$(CONFIG_KUNIT_TEST) +=            kunit-test.o
+>
+> diff --git a/lib/kunit/bug.c b/lib/kunit/bug.c
+> new file mode 100644
+> index 000000000000..f93544d7a9d1
+> --- /dev/null
+> +++ b/lib/kunit/bug.c
+> @@ -0,0 +1,40 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * KUnit helpers for backtrace suppression
+> + *
+> + * Copyright (c) 2024 Guenter Roeck <linux@roeck-us.net>
+> + */
+> +
+> +#include <kunit/bug.h>
+> +#include <linux/export.h>
+> +#include <linux/list.h>
+> +#include <linux/string.h>
+> +
+> +static LIST_HEAD(suppressed_warnings);
+> +
+> +void __start_suppress_warning(struct __suppressed_warning *warning)
+> +{
+> +       list_add(&warning->node, &suppressed_warnings);
+> +}
+> +EXPORT_SYMBOL_GPL(__start_suppress_warning);
+> +
+> +void __end_suppress_warning(struct __suppressed_warning *warning)
+> +{
+> +       list_del(&warning->node);
+> +}
+> +EXPORT_SYMBOL_GPL(__end_suppress_warning);
+> +
+> +bool __is_suppressed_warning(const char *function)
+> +{
+> +       struct __suppressed_warning *warning;
+> +
+> +       if (!function)
+> +               return false;
+> +
+> +       list_for_each_entry(warning, &suppressed_warnings, node) {
+> +               if (!strcmp(function, warning->function))
+> +                       return true;
+> +       }
+> +       return false;
+> +}
+> +EXPORT_SYMBOL_GPL(__is_suppressed_warning);
+> --
+> 2.39.2
+>
+
+Thanks,
+-- David
+
+--00000000000043707b0615a5b9ad
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIIPqgYJKoZIhvcNAQcCoIIPmzCCD5cCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+gg0EMIIEtjCCA56gAwIBAgIQeAMYYHb81ngUVR0WyMTzqzANBgkqhkiG9w0BAQsFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSMzETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMDA3MjgwMDAwMDBaFw0yOTAzMTgwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFIzIFNNSU1FIENBIDIwMjAwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCvLe9xPU9W
+dpiHLAvX7kFnaFZPuJLey7LYaMO8P/xSngB9IN73mVc7YiLov12Fekdtn5kL8PjmDBEvTYmWsuQS
+6VBo3vdlqqXZ0M9eMkjcKqijrmDRleudEoPDzTumwQ18VB/3I+vbN039HIaRQ5x+NHGiPHVfk6Rx
+c6KAbYceyeqqfuJEcq23vhTdium/Bf5hHqYUhuJwnBQ+dAUcFndUKMJrth6lHeoifkbw2bv81zxJ
+I9cvIy516+oUekqiSFGfzAqByv41OrgLV4fLGCDH3yRh1tj7EtV3l2TngqtrDLUs5R+sWIItPa/4
+AJXB1Q3nGNl2tNjVpcSn0uJ7aFPbAgMBAAGjggGKMIIBhjAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0l
+BBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFHzM
+CmjXouseLHIb0c1dlW+N+/JjMB8GA1UdIwQYMBaAFI/wS3+oLkUkrk1Q+mOai97i3Ru8MHsGCCsG
+AQUFBwEBBG8wbTAuBggrBgEFBQcwAYYiaHR0cDovL29jc3AyLmdsb2JhbHNpZ24uY29tL3Jvb3Ry
+MzA7BggrBgEFBQcwAoYvaHR0cDovL3NlY3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvcm9vdC1y
+My5jcnQwNgYDVR0fBC8wLTAroCmgJ4YlaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9yb290LXIz
+LmNybDBMBgNVHSAERTBDMEEGCSsGAQQBoDIBKDA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3dy5n
+bG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzANBgkqhkiG9w0BAQsFAAOCAQEANyYcO+9JZYyqQt41
+TMwvFWAw3vLoLOQIfIn48/yea/ekOcParTb0mbhsvVSZ6sGn+txYAZb33wIb1f4wK4xQ7+RUYBfI
+TuTPL7olF9hDpojC2F6Eu8nuEf1XD9qNI8zFd4kfjg4rb+AME0L81WaCL/WhP2kDCnRU4jm6TryB
+CHhZqtxkIvXGPGHjwJJazJBnX5NayIce4fGuUEJ7HkuCthVZ3Rws0UyHSAXesT/0tXATND4mNr1X
+El6adiSQy619ybVERnRi5aDe1PTwE+qNiotEEaeujz1a/+yYaaTY+k+qJcVxi7tbyQ0hi0UB3myM
+A/z2HmGEwO8hx7hDjKmKbDCCA18wggJHoAMCAQICCwQAAAAAASFYUwiiMA0GCSqGSIb3DQEBCwUA
+MEwxIDAeBgNVBAsTF0dsb2JhbFNpZ24gUm9vdCBDQSAtIFIzMRMwEQYDVQQKEwpHbG9iYWxTaWdu
+MRMwEQYDVQQDEwpHbG9iYWxTaWduMB4XDTA5MDMxODEwMDAwMFoXDTI5MDMxODEwMDAwMFowTDEg
+MB4GA1UECxMXR2xvYmFsU2lnbiBSb290IENBIC0gUjMxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzAR
+BgNVBAMTCkdsb2JhbFNpZ24wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDMJXaQeQZ4
+Ihb1wIO2hMoonv0FdhHFrYhy/EYCQ8eyip0EXyTLLkvhYIJG4VKrDIFHcGzdZNHr9SyjD4I9DCuu
+l9e2FIYQebs7E4B3jAjhSdJqYi8fXvqWaN+JJ5U4nwbXPsnLJlkNc96wyOkmDoMVxu9bi9IEYMpJ
+pij2aTv2y8gokeWdimFXN6x0FNx04Druci8unPvQu7/1PQDhBjPogiuuU6Y6FnOM3UEOIDrAtKeh
+6bJPkC4yYOlXy7kEkmho5TgmYHWyn3f/kRTvriBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti
++w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGjQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8E
+BTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5NUPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEA
+S0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigHM8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9u
+bG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmUY/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaM
+ld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88
+q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcya5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/f
+hO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/XzCCBOMwggPLoAMCAQICEAHS+TgZvH/tCq5FcDC0
+n9IwDQYJKoZIhvcNAQELBQAwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYt
+c2ExKjAoBgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjMgU01JTUUgQ0EgMjAyMDAeFw0yNDAxMDcx
+MDQ5MDJaFw0yNDA3MDUxMDQ5MDJaMCQxIjAgBgkqhkiG9w0BCQEWE2RhdmlkZ293QGdvb2dsZS5j
+b20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDY2jJMFqnyVx9tBZhkuJguTnM4nHJI
+ZGdQAt5hic4KMUR2KbYKHuTQpTNJz6gZ54lsH26D/RS1fawr64fewddmUIPOuRxaecSFexpzGf3J
+Igkjzu54wULNQzFLp1SdF+mPjBSrcULSHBgrsFJqilQcudqXr6wMQsdRHyaEr3orDL9QFYBegYec
+fn7dqwoXKByjhyvs/juYwxoeAiLNR2hGWt4+URursrD4DJXaf13j/c4N+dTMLO3eCwykTBDufzyC
+t6G+O3dSXDzZ2OarW/miZvN/y+QD2ZRe+wl39x2HMo3Fc6Dhz2IWawh7E8p2FvbFSosBxRZyJH38
+84Qr8NSHAgMBAAGjggHfMIIB2zAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1Ud
+DwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFC+LS03D
+7xDrOPfX3COqq162RFg/MFcGA1UdIARQME4wCQYHZ4EMAQUBATBBBgkrBgEEAaAyASgwNDAyBggr
+BgEFBQcCARYmaHR0cHM6Ly93d3cuZ2xvYmFsc2lnbi5jb20vcmVwb3NpdG9yeS8wDAYDVR0TAQH/
+BAIwADCBmgYIKwYBBQUHAQEEgY0wgYowPgYIKwYBBQUHMAGGMmh0dHA6Ly9vY3NwLmdsb2JhbHNp
+Z24uY29tL2NhL2dzYXRsYXNyM3NtaW1lY2EyMDIwMEgGCCsGAQUFBzAChjxodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2F0bGFzcjNzbWltZWNhMjAyMC5jcnQwHwYDVR0jBBgw
+FoAUfMwKaNei6x4schvRzV2Vb4378mMwRgYDVR0fBD8wPTA7oDmgN4Y1aHR0cDovL2NybC5nbG9i
+YWxzaWduLmNvbS9jYS9nc2F0bGFzcjNzbWltZWNhMjAyMC5jcmwwDQYJKoZIhvcNAQELBQADggEB
+AK0lDd6/eSh3qHmXaw1YUfIFy07B25BEcTvWgOdla99gF1O7sOsdYaTz/DFkZI5ghjgaPJCovgla
+mRMfNcxZCfoBtsB7mAS6iOYjuwFOZxi9cv6jhfiON6b89QWdMaPeDddg/F2Q0bxZ9Z2ZEBxyT34G
+wlDp+1p6RAqlDpHifQJW16h5jWIIwYisvm5QyfxQEVc+XH1lt+taSzCfiBT0ZLgjB9Sg+zAo8ys6
+5PHxFaT2a5Td/fj5yJ5hRSrqy/nj/hjT14w3/ZdX5uWg+cus6VjiiR/5qGSZRjHt8JoApD6t6/tg
+ITv8ZEy6ByumbU23nkHTMOzzQSxczHkT+0q10/MxggJqMIICZgIBATBoMFQxCzAJBgNVBAYTAkJF
+MRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFzIFIz
+IFNNSU1FIENBIDIwMjACEAHS+TgZvH/tCq5FcDC0n9IwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZI
+hvcNAQkEMSIEIIOVQ6jwtkykbkD9amzlnbTHyE0Or6zi3BACy3iruk4SMBgGCSqGSIb3DQEJAzEL
+BgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI0MDQwOTA4Mjk0MlowaQYJKoZIhvcNAQkPMVww
+WjALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkq
+hkiG9w0BAQowCwYJKoZIhvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCtHWwf
+mfxClU2onqR3lXpGpINgyKUw3mJPMZ2BKHpZm6FwjOdSewD4tJCFQ08wIVRlRkilRaWBdqvjCd+F
+Ow0O2i7RWiS9Uv6B86Cyc5hP/SgbDecrwJ1OzYfm/1AxXEKcPGTip6ms8d3g2EAyQ+SQiM3DM06a
+etT36e4P5cxQWoZ1CvbC2swun7Dd7wCN8UuWTrF9E9xiMTPXDHgsQVBXAda8FlwvkjDDqEH7uuId
+VmiVn9Osn0BAU4eEpCP/5Q4mJwNM+WIbtK+XsEKX1JIw3ajR9szm85DUUKWBhQfp+x/uF+xWrXNf
+PD1HLD5osEEsfCuPtFTZemoY05vKK9H3
+--00000000000043707b0615a5b9ad--
 
