@@ -1,100 +1,138 @@
-Return-Path: <linux-parisc+bounces-1081-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1082-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D2A89EB38
-	for <lists+linux-parisc@lfdr.de>; Wed, 10 Apr 2024 08:46:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D78689F285
+	for <lists+linux-parisc@lfdr.de>; Wed, 10 Apr 2024 14:43:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0B95282BF0
-	for <lists+linux-parisc@lfdr.de>; Wed, 10 Apr 2024 06:46:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8197B237BC
+	for <lists+linux-parisc@lfdr.de>; Wed, 10 Apr 2024 12:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6251F29CFE;
-	Wed, 10 Apr 2024 06:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Asj7+RZD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0A415B135;
+	Wed, 10 Apr 2024 12:43:27 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688BA524A;
-	Wed, 10 Apr 2024 06:45:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8237412EBEF;
+	Wed, 10 Apr 2024 12:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712731511; cv=none; b=Fs47zeNsosy9B5CMTGiTwRasRyhKXMeQzqPIj6x1o8dU216vv364UdR7vgiEIYpMj+Pb4DEBcoyQx+nmWlA9om7QmiJDjs4NdogthsKK0Xj9mZmCgBaASrAAJcDYicMHe1H2PsIZ9tetQbsVZaGqk88X/pPDav5mQobpW+/md+s=
+	t=1712753007; cv=none; b=Z5HSWlGl97YtCfHtJCmYRzyFaWcqDt58uurGSJFN+F1W3aKtjAlISuRgzjZy6958PcsrLFsoGUoEvt3xIwVKkOLyTxi/gm9t06jDgz37oB6xJV6Zz5Qs57dAXcndPqghLV1UiyZjx3vmuTv72uhP2lc0Q0f8clXaTLpBaFzMaRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712731511; c=relaxed/simple;
-	bh=RNjTiw+z2UXgWb291KUYhTrh7oCU2XpYJTpoXJoJ2Ps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MGDIno2L0xoeVYQ4Frrw3h5TFsS55vWuyKAEoXkzHN93samR4FTisMCrgLkCRoHzWm3ERZIO4dfvaTK/48m/i9y0fcbKQNTMPRxmCFN0SyJlCsK+5/9eia1OJ3zwJonMgPXHGqqnH5SrkYAWWRcZDNUf4IC7+XYCo/Xk283OphU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Asj7+RZD; arc=none smtp.client-ip=115.124.30.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1712731506; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ebzbpFm8mKtEwX879U96DPZbzdY2iwe+NayJYElOkPM=;
-	b=Asj7+RZD2qJ3sk6kwrOGu/K8WACsgX4zQ/QnqQtLILH+U2iD9p19DDk+0mOnW/oklBThk5AI4z1MOorrcyXMNXUw7GLF6c9SN5gkXoJD0tFDaHt4nfwWIlWqU4joGLO/HjZxwvLcQJLpndBh9KPxU5llzB+d7hRcqatQjbraZF8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=yaoma@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0W4GtVHI_1712731503;
-Received: from 30.178.67.212(mailfrom:yaoma@linux.alibaba.com fp:SMTPD_---0W4GtVHI_1712731503)
-          by smtp.aliyun-inc.com;
-          Wed, 10 Apr 2024 14:45:04 +0800
-Message-ID: <f3c7ef07-8fad-4ef6-9095-16e4bd734477@linux.alibaba.com>
-Date: Wed, 10 Apr 2024 14:45:02 +0800
+	s=arc-20240116; t=1712753007; c=relaxed/simple;
+	bh=oNXkmJLZw0UUlzScvUERB+oZiwnYTzIkRhGzopuv6w0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OLcJmoohYh4zMuEfFMNApVZR8SGv9dkwP1SUPucNozgW4cC4qrPBKcAyFQ3eDuyjUj2oUuZtFdIw9Lydc7UcZSjtIVqVFUPtyJldlL7G1wuZX82OsEMgW5JqsPePevzbLjo2fA8yXumyFdvwCQMBMcPwzUoWUCJu2UYnCL9NoRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VF2Wn6z5Vz6K6Cs;
+	Wed, 10 Apr 2024 20:41:41 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id AB478140DD4;
+	Wed, 10 Apr 2024 20:43:19 +0800 (CST)
+Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 10 Apr
+ 2024 13:43:19 +0100
+Date: Wed, 10 Apr 2024 13:43:18 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+CC: Russell King <rmk+kernel@armlinux.org.uk>, <linux-pm@vger.kernel.org>,
+	<loongarch@lists.linux.dev>, <linux-acpi@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
+	<kvmarm@lists.linux.dev>, <x86@kernel.org>,
+	<acpica-devel@lists.linuxfoundation.org>, <linux-csky@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+	<linux-parisc@vger.kernel.org>, Salil Mehta <salil.mehta@huawei.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>, <jianyong.wu@arm.com>,
+	<justin.he@arm.com>, James Morse <james.morse@arm.com>
+Subject: Re: [PATCH RFC v4 02/15] ACPI: processor: Register all CPUs from
+ acpi_processor_get_info()
+Message-ID: <20240410134318.0000193c@huawei.com>
+In-Reply-To: <20240322185327.00002416@Huawei.com>
+References: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
+	<E1rVDmU-0027YP-Jz@rmk-PC.armlinux.org.uk>
+	<CAJZ5v0iiJpUWq5GMSnKFWQTzn_bdwoQz9m=hDaXNg4Lj_ePF4g@mail.gmail.com>
+	<20240322185327.00002416@Huawei.com>
+Organization: Huawei Technologies R&D (UK) Ltd.
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv12 1/4] genirq: Provide a snapshot mechanism for interrupt
- statistics
-To: Thomas Gleixner <tglx@linutronix.de>, dianders@chromium.org,
- liusong@linux.alibaba.com, akpm@linux-foundation.org, pmladek@suse.com,
- kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com,
- tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
- jan.kiszka@siemens.com
-Cc: linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- yaoma@linux.alibaba.com
-References: <20240306125208.71803-1-yaoma@linux.alibaba.com>
- <20240306125208.71803-2-yaoma@linux.alibaba.com> <87frvu7t85.ffs@tglx>
-Content-Language: en-US
-From: Bitao Hu <yaoma@linux.alibaba.com>
-In-Reply-To: <87frvu7t85.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Hi,
-
-On 2024/4/9 17:58, Thomas Gleixner wrote:
+> >   
+> > > diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
+> > > index 47de0f140ba6..13d052bf13f4 100644
+> > > --- a/drivers/base/cpu.c
+> > > +++ b/drivers/base/cpu.c
+> > > @@ -553,7 +553,11 @@ static void __init cpu_dev_register_generic(void)
+> > >  {
+> > >         int i, ret;
+> > >
+> > > -       if (!IS_ENABLED(CONFIG_GENERIC_CPU_DEVICES))
+> > > +       /*
+> > > +        * When ACPI is enabled, CPUs are registered via
+> > > +        * acpi_processor_get_info().
+> > > +        */
+> > > +       if (!IS_ENABLED(CONFIG_GENERIC_CPU_DEVICES) || !acpi_disabled)
+> > >                 return;    
+> > 
+> > Honestly, this looks like a quick hack to me and it absolutely
+> > requires an ACK from the x86 maintainers to go anywhere.  
+> Will address this separately.
 > 
-> This does not apply anymore.
-OK, I will update this patch based on the latest kernel code.
+
+So do people prefer this hack, or something along lines of the following?
+
+static int __init cpu_dev_register_generic(void)
+{
+        int i, ret = 0;
+
+        for_each_online_cpu(i) {
+                if (!get_cpu_device(i)) {
+                        ret = arch_register_cpu(i);
+                        if (ret)
+                                pr_warn("register_cpu %d failed (%d)\n", i, ret);
+                }
+        }
+	//Probably just eat the error.
+        return 0;
+}
+subsys_initcall_sync(cpu_dev_register_generic);
+
+Which may look familiar at it's effectively patch 3 from v3 which was dealing
+with CPUs missing from DSDT (something we think doesn't happen).
+
+It might be possible to elide the arch_register_cpu() in
+make_present() but that will mean we use different flows in this patch set
+for the hotplug and initially present cases which is a bit messy.
+
+I've tested this lightly on arm64 and x86 ACPI + DT booting and it "seems" fine.
+
+Jonathan
+
+> >   
+> > >
+> > >         for_each_present_cpu(i) {
+> > > --    
 > 
-> Also can you please split this apart to convert kstat_irqs to a struct
-> with just the count in it and then add the snapshot mechanics on top.
 > 
-OK, I will split this patch into two. The changelog for the first patch
-will be as follows.
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
-genirq: Convert kstat_irqs to a struct
-
-The irq_desc::kstat_irqs member is a per-CPU variable of type int, and
-it is only capable of counting. The snapshot mechanism for interrupt
-statistics will be added soon, which requires an additional variable to
-store snapshot. To facilitate expansion, convert kstat_irqs here to
-a struct containing only the count.
-
-By the way, what do you think of my reason for using printk() instead of
-pr_crit()? Should I change this part of the code in v13?
-
-Besides, are there any other issues with this set of patches? I hope we
-can resolve all points of contention in v13.
-
-Best Regards,
-
-	Bitao Hu
 
