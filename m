@@ -1,253 +1,290 @@
-Return-Path: <linux-parisc+bounces-1100-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1101-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497218A1579
-	for <lists+linux-parisc@lfdr.de>; Thu, 11 Apr 2024 15:27:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A758A1C8B
+	for <lists+linux-parisc@lfdr.de>; Thu, 11 Apr 2024 19:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C64A282F80
-	for <lists+linux-parisc@lfdr.de>; Thu, 11 Apr 2024 13:27:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AE5FB33ED9
+	for <lists+linux-parisc@lfdr.de>; Thu, 11 Apr 2024 17:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E36314D29C;
-	Thu, 11 Apr 2024 13:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8766E82862;
+	Thu, 11 Apr 2024 16:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T5KB0xj3"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB5514A4E5;
-	Thu, 11 Apr 2024 13:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3538F13FF6;
+	Thu, 11 Apr 2024 16:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712841938; cv=none; b=Y67uUdfhecAecGJemHuuIb1k94zdpfoC3n0U5E6BO9kqmvucfiX2pA5qLhAiGRHwbDvhQBkxy/XQP0AC6mTlVJdB2Pec9SspNMabeOfFPP6w/jvCwMVM5nm55+3mu163+Gk4MSvY3xoZ8AzsZkDV3Pb79Np3V0onqz1tW5pM9Fo=
+	t=1712851307; cv=none; b=db/Jd2MZXkzMYwRYk/OubYRlhFZPo7kGeTnHDDIizJxboHWEWI9orsm6Ia8zkLgkfOo3P+v287X3mNAUtKARSI+IynsvniReWrSYc+b5+FAmwKmB1RjXD+aMykgw3IbQi2XN6wh/f1obEGNHpEVZO3sL6QWm1GHH+IwNdBENCQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712841938; c=relaxed/simple;
-	bh=Al33H8tBW4A6jzfbjZ0ytcFA1i1I9DnlN0rcqsygs/Q=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JouMx9QMejJ1t9d3jNVIM47rNb2Qx9llSNxdobNPB031jtzKoMdGNawM2ieiH6t1u/cGwNdA5Ju8Bgw8zjgp6sc6P7JrgUKkgaEGvnbEniHfW3R96RJGwfMdsNjSOP81QDLDsxi6QELPkcWRqTZLCQsWMLcg903PlWENC7yimt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VFgPz4KDkz6K5xZ;
-	Thu, 11 Apr 2024 21:23:51 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8A1BD140B2A;
-	Thu, 11 Apr 2024 21:25:32 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 11 Apr
- 2024 14:25:31 +0100
-Date: Thu, 11 Apr 2024 14:25:30 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-CC: <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-riscv@lists.infradead.org>, <kvmarm@lists.linux.dev>,
-	<x86@kernel.org>, <acpica-devel@lists.linuxfoundation.org>,
-	<linux-csky@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-ia64@vger.kernel.org>, <linux-parisc@vger.kernel.org>, Salil Mehta
-	<salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	<jianyong.wu@arm.com>, <justin.he@arm.com>, James Morse
-	<james.morse@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Miguel Luis
-	<miguel.luis@oracle.com>
-Subject: Re: [PATCH RFC v4 12/15] arm64: psci: Ignore DENIED CPUs
-Message-ID: <20240411142530.00007617@huawei.com>
-In-Reply-To: <20240411123523.0000487a@huawei.com>
-References: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
-	<E1rVDnK-0027ZN-40@rmk-PC.armlinux.org.uk>
-	<20240411123523.0000487a@huawei.com>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+	s=arc-20240116; t=1712851307; c=relaxed/simple;
+	bh=VM+mAcmUT4ST1GIPe3Ume4vUEU6bbRVCEENqNvTxra8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iT1AvsA0wHG4e4fZzz39LTA9QFFV48/19qrNo2ST+HKepQXGDWkeUYnECDLvHigzNWBy66101LUywjlJmi3nEMlBFd2FSvKv61D4mP2T6keFAlDcCNgTdaUPoByr7wwfaZsS/AHIM/7iIohJDlnimixSirBoHB35swgs4pTfL8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T5KB0xj3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01453C072AA;
+	Thu, 11 Apr 2024 16:01:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712851305;
+	bh=VM+mAcmUT4ST1GIPe3Ume4vUEU6bbRVCEENqNvTxra8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=T5KB0xj3HoFt9efx6BzndmtI3wUUVJ9ztI+I33npb3JgsK1m3GQjgUJO6fe/2R1wU
+	 FuB2asS6mrBhxBwPzy5htiS2m2wnv8eqma76LMzVwKISSrCK3Xg/d5S95sPkEa9qP7
+	 MXdL8lqp730Eiez5zMg9oq9NYYTmlxQMyXoc24NqmjGwBNdRdxHwvCGtqJxBIUl2gd
+	 pKJMq2ohY0+FBwK5EzR5wecUfcrhOTRUjZcd13mr7RitGEoeHuc3D3av9oQx8+cm0K
+	 5qrVmeyilIq0VolT6GkIVKnWLkKVZyNdh9/yups4+lotbZFfNI7xkVBG42jxuPH+iF
+	 iuvzyfbgeFS+w==
+From: Mike Rapoport <rppt@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Donald Dutile <ddutile@redhat.com>,
+	Eric Chanudet <echanude@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Puranjay Mohan <puranjay12@gmail.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Song Liu <song@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-modules@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev,
+	netdev@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org
+Subject: [PATCH v4 00/15] mm: jit/text allocator
+Date: Thu, 11 Apr 2024 19:00:36 +0300
+Message-ID: <20240411160051.2093261-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 11 Apr 2024 12:35:23 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+From: "Mike Rapoport (IBM)" <rppt@kernel.org>
 
-> On Wed, 31 Jan 2024 16:50:38 +0000
-> Russell King (Oracle) <rmk+kernel@armlinux.org.uk> wrote:
-> 
-> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > 
-> > When a CPU is marked as disabled, but online capable in the MADT, PSCI
-> > applies some firmware policy to control when it can be brought online.
-> > PSCI returns DENIED to a CPU_ON request if this is not currently
-> > permitted. The OS can learn the current policy from the _STA enabled bit.
-> > 
-> > Handle the PSCI DENIED return code gracefully instead of printing an
-> > error.
-> > 
-> > See https://developer.arm.com/documentation/den0022/f/?lang=en page 58.
-> > 
-> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > [ morse: Rewrote commit message ]
-> > Signed-off-by: James Morse <james.morse@arm.com>
-> > Tested-by: Miguel Luis <miguel.luis@oracle.com>
-> > Tested-by: Vishnu Pajjuri <vishnu@os.amperecomputing.com>
-> > Tested-by: Jianyong Wu <jianyong.wu@arm.com>
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > ---  
-> 
-> This change to return failure from __cpu_up in non error cases exposes
-> an possible issue with cpu_up() in kernel/cpu.c in that it brings the numa node
-> before we try (and fail) to bring up CPUs that may be denied.
-> 
-> We could try offlining the numa node on error, or just register it later.
-> 
-> Currently I'm testing this change which I think is harmless for cases that don't
-> fail the cpu_up()
-> 
-> For the cpu hotplug path note the node only comes online wiht the cpu online, not
-> the earlier hotplug. Reasonable given there is nothing online in the node before
-> that point.
-> 
-> diff --git a/kernel/cpu.c b/kernel/cpu.c
-> index 537099bf5d02..a4730396ccea 100644
-> --- a/kernel/cpu.c
-> +++ b/kernel/cpu.c
-> @@ -1742,10 +1742,6 @@ static int cpu_up(unsigned int cpu, enum cpuhp_state target)
->                 return -EINVAL;
->         }
-> 
-> -       err = try_online_node(cpu_to_node(cpu));
-> -       if (err)
-> -               return err;
-> -
->         cpu_maps_update_begin();
-> 
->         if (cpu_hotplug_disabled) {
-> @@ -1760,7 +1756,10 @@ static int cpu_up(unsigned int cpu, enum cpuhp_state target)
->         err = _cpu_up(cpu, 0, target);
->  out:
->         cpu_maps_update_done();
-> -       return err;
-> +       if (err)
-> +               return err;
-> +
-> +       return try_online_node(cpu_to_node(cpu));
->  }
-> 
-> There is a kicker in the remove path where currently check_cpu_on_node()
-> checks for_each_present_cpu() whereas to work for us we need to use
-> for_each_online_cpu() or the node is never removed.
-> 
-> Now my current view is that we should only show
-> nodes in /sys/bus/nodes/devices/ if there is a CPU online (assuming no other
-> reasons the node should be online such as memory).
-> That's easy enough to make work but all I'm really learning is that the semantics
-> of what is an online form a node point of view is not consistent.
-> 
-> Fixing this will create a minor change on x86 but does anyone really care
-> about what happens in the offline path wrt to 'when' the node disappears?
-> I think the corner case is.
-> 
-> 1. Add 2 CPUs (A, B) in a CPU only node.
-> 2. Online CPU A - this brings /sys/bus/devices/nodeX online
-> 3. Remove CPU A - no effect because the check for try_remove is on presence and CPU B is
->    still present.
-> 4. Online CPU B - no change.
-> 5. Offline CPU B - no change.
-> 4. Remove CPU B - /sys/bus/device/nodeX offline (disappears)
-> 
-> To make it work on arm64 where we never make CPUs not present.
-> 
-> 1. Add 2 CPUs (A, B) in a CPU only node.
-> 2. Online CPU A - this brings /sys/bus/devices/nodeX online
-> 3. Remove CPU A - /sys/bus/devices/nodeX offline (disappears)
-> 4. Online CPU B - this brings /sys/bus/device/nodeX online
-> 5. Offline CPU B - no change (node updates only happen in hotplug code)
-> 6. Remove CPU B - /sys/bus/device/nodeX offline (disappears).
-> 
-> Step 5 may seem weird but I think we can't mess with nodes there because
-> userspace may well rely on them still being around for some reason
-> (it's a much more common situation).
-> 
-> My assumption is that step3 removing the node isn't going to hurt anyone?
-> 
-> If no one shouts, i'll go ahead with rolling a v5 patch set where this is done.
+Hi,
 
-This needs a little more thought as if we follow above sequence there isn't
-currently any cleanup of
-/sys/bus/cpu/devices/cpuB/node link.
+Since v3 I looked into making execmem more of an utility toolbox, as we
+discussed at LPC with Mark Rutland, but it was getting more hairier than
+having a struct describing architecture constraints and a type identifying
+the consumer of execmem.
 
-If you follow the sequence above an attempt is made to create it again.
-Whilst I have a WIP bit of dancing code that deals with this it is ugly as
-the check on whether a node is online needs to be dropped on this path.
-The problem coming back to the tear down and setup paths being in entirely different
-states and not remotely symmetric. 
+And I do think that having the description of architecture constraints for
+allocations of executable memory in a single place is better that having it
+spread all over the place.
 
-So my proposal for now is to treat the whole numa node problem as something
-for another day.
+The patches available via git:
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=execmem/v4
 
-Step 1)
-For ARM64 cpu hp - NUMA nodes created at boot for any present CPUs - so all
-of them.  They never go away, hence no annoying tear down to do.
+v4 changes:
+* rebase on v6.9-rc2
+* rename execmem_params to execmem_info and execmem_arch_params() to
+  execmem_arch_setup()
+* use single execmem_alloc() API instead of execmem_{text,data}_alloc() (Song)
+* avoid extra copy of execmem parameters (Rick)
+* run execmem_init() as core_initcall() except for the architectures that
+  may allocated text really early (currently only x86) (Will)
+* add acks for some of arm64 and riscv changes, thanks Will and Alexandre
+* new commits:
+  - drop call to kasan_alloc_module_shadow() on arm64 because it's not
+    needed anymore
+  - rename MODULE_START to MODULES_VADDR on MIPS
+  - use CONFIG_EXECMEM instead of CONFIG_MODULES on powerpc as per Christophe:
+    https://lore.kernel.org/all/79062fa3-3402-47b3-8920-9231ad05e964@csgroup.eu/
 
-Step 2)
-We can consider moving to dynamic numa node handling either via the messy
-approach I have working, or via more major surgery.
-I have a bunch of other work in this area for memory hotplug, so maybe
-I can role those 2 activities together.
+v3: https://lore.kernel.org/all/20230918072955.2507221-1-rppt@kernel.org
+* add type parameter to execmem allocation APIs
+* remove BPF dependency on modules
 
-Jonathan
-> 
-> 
-> Jonathan
-> 
-> 
-> 
-> 
-> 
-> > Changes since RFC v2
-> >  * Add specification reference
-> >  * Use EPERM rather than EPROBE_DEFER
-> > Changes since RFC v3:
-> >  * Use EPERM everywhere
-> >  * Drop unnecessary changes to drivers/firmware/psci/psci.c
-> > ---
-> >  arch/arm64/kernel/psci.c | 2 +-
-> >  arch/arm64/kernel/smp.c  | 3 ++-
-> >  2 files changed, 3 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm64/kernel/psci.c b/arch/arm64/kernel/psci.c
-> > index 29a8e444db83..fabd732d0a2d 100644
-> > --- a/arch/arm64/kernel/psci.c
-> > +++ b/arch/arm64/kernel/psci.c
-> > @@ -40,7 +40,7 @@ static int cpu_psci_cpu_boot(unsigned int cpu)
-> >  {
-> >  	phys_addr_t pa_secondary_entry = __pa_symbol(secondary_entry);
-> >  	int err = psci_ops.cpu_on(cpu_logical_map(cpu), pa_secondary_entry);
-> > -	if (err)
-> > +	if (err && err != -EPERM)
-> >  		pr_err("failed to boot CPU%d (%d)\n", cpu, err);
-> >  
-> >  	return err;
-> > diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
-> > index 4ced34f62dab..dc0e0b3ec2d4 100644
-> > --- a/arch/arm64/kernel/smp.c
-> > +++ b/arch/arm64/kernel/smp.c
-> > @@ -132,7 +132,8 @@ int __cpu_up(unsigned int cpu, struct task_struct *idle)
-> >  	/* Now bring the CPU into our world */
-> >  	ret = boot_secondary(cpu, idle);
-> >  	if (ret) {
-> > -		pr_err("CPU%u: failed to boot: %d\n", cpu, ret);
-> > +		if (ret != -EPERM)
-> > +			pr_err("CPU%u: failed to boot: %d\n", cpu, ret);
-> >  		return ret;
-> >  	}
-> >    
-> 
+v2: https://lore.kernel.org/all/20230616085038.4121892-1-rppt@kernel.org
+* Separate "module" and "others" allocations with execmem_text_alloc()
+and jit_text_alloc()
+* Drop ROX entailment on x86
+* Add ack for nios2 changes, thanks Dinh Nguyen
 
+v1: https://lore.kernel.org/all/20230601101257.530867-1-rppt@kernel.org
+
+= Cover letter from v1 (sligtly updated) =
+
+module_alloc() is used everywhere as a mean to allocate memory for code.
+
+Beside being semantically wrong, this unnecessarily ties all subsystmes
+that need to allocate code, such as ftrace, kprobes and BPF to modules and
+puts the burden of code allocation to the modules code.
+
+Several architectures override module_alloc() because of various
+constraints where the executable memory can be located and this causes
+additional obstacles for improvements of code allocation.
+
+A centralized infrastructure for code allocation allows allocations of
+executable memory as ROX, and future optimizations such as caching large
+pages for better iTLB performance and providing sub-page allocations for
+users that only need small jit code snippets.
+
+Rick Edgecombe proposed perm_alloc extension to vmalloc [1] and Song Liu
+proposed execmem_alloc [2], but both these approaches were targeting BPF
+allocations and lacked the ground work to abstract executable allocations
+and split them from the modules core.
+
+Thomas Gleixner suggested to express module allocation restrictions and
+requirements as struct mod_alloc_type_params [3] that would define ranges,
+protections and other parameters for different types of allocations used by
+modules and following that suggestion Song separated allocations of
+different types in modules (commit ac3b43283923 ("module: replace
+module_layout with module_memory")) and posted "Type aware module
+allocator" set [4].
+
+I liked the idea of parametrising code allocation requirements as a
+structure, but I believe the original proposal and Song's module allocator
+was too module centric, so I came up with these patches.
+
+This set splits code allocation from modules by introducing execmem_alloc()
+and and execmem_free(), APIs, replaces call sites of module_alloc() and
+module_memfree() with the new APIs and implements core text and related
+allocations in a central place.
+
+Instead of architecture specific overrides for module_alloc(), the
+architectures that require non-default behaviour for text allocation must
+fill execmem_info structure and implement execmem_arch_setup() that returns
+a pointer to that structure. If an architecture does not implement
+execmem_arch_setup(), the defaults compatible with the current
+modules::module_alloc() are used.
+
+Since architectures define different restrictions on placement,
+permissions, alignment and other parameters for memory that can be used by
+different subsystems that allocate executable memory, execmem APIs
+take a type argument, that will be used to identify the calling subsystem
+and to allow architectures to define parameters for ranges suitable for that
+subsystem.
+
+The new infrastructure allows decoupling of BPF, kprobes and ftrace from
+modules, and most importantly it paves the way for ROX allocations for
+executable memory.
+
+[1] https://lore.kernel.org/lkml/20201120202426.18009-1-rick.p.edgecombe@intel.com/
+[2] https://lore.kernel.org/all/20221107223921.3451913-1-song@kernel.org/
+[3] https://lore.kernel.org/all/87v8mndy3y.ffs@tglx/
+[4] https://lore.kernel.org/all/20230526051529.3387103-1-song@kernel.org
+
+
+Mike Rapoport (IBM) (15):
+  arm64: module: remove uneeded call to kasan_alloc_module_shadow()
+  mips: module: rename MODULE_START to MODULES_VADDR
+  nios2: define virtual address space for modules
+  module: make module_memory_{alloc,free} more self-contained
+  mm: introduce execmem_alloc() and execmem_free()
+  mm/execmem, arch: convert simple overrides of module_alloc to execmem
+  mm/execmem, arch: convert remaining overrides of module_alloc to
+    execmem
+  arm64: extend execmem_info for generated code allocations
+  riscv: extend execmem_params for generated code allocations
+  powerpc: extend execmem_params for kprobes allocations
+  arch: make execmem setup available regardless of CONFIG_MODULES
+  x86/ftrace: enable dynamic ftrace without CONFIG_MODULES
+  powerpc: use CONFIG_EXECMEM instead of CONFIG_MODULES where appropiate
+  kprobes: remove dependency on CONFIG_MODULES
+  bpf: remove CONFIG_BPF_JIT dependency on CONFIG_MODULES of
+
+ arch/Kconfig                         |   8 +-
+ arch/arm/kernel/module.c             |  34 -------
+ arch/arm/mm/init.c                   |  40 ++++++++
+ arch/arm64/kernel/module.c           | 126 ------------------------
+ arch/arm64/kernel/probes/kprobes.c   |   7 --
+ arch/arm64/mm/init.c                 | 136 ++++++++++++++++++++++++++
+ arch/arm64/net/bpf_jit_comp.c        |  11 ---
+ arch/loongarch/kernel/module.c       |   6 --
+ arch/loongarch/mm/init.c             |  20 ++++
+ arch/mips/include/asm/pgtable-64.h   |   4 +-
+ arch/mips/kernel/module.c            |  10 --
+ arch/mips/mm/fault.c                 |   4 +-
+ arch/mips/mm/init.c                  |  22 +++++
+ arch/nios2/include/asm/pgtable.h     |   5 +-
+ arch/nios2/kernel/module.c           |  20 ----
+ arch/nios2/mm/init.c                 |  19 ++++
+ arch/parisc/kernel/module.c          |  12 ---
+ arch/parisc/mm/init.c                |  22 ++++-
+ arch/powerpc/Kconfig                 |   2 +-
+ arch/powerpc/include/asm/kasan.h     |   2 +-
+ arch/powerpc/kernel/head_8xx.S       |   4 +-
+ arch/powerpc/kernel/head_book3s_32.S |   6 +-
+ arch/powerpc/kernel/kprobes.c        |  22 +----
+ arch/powerpc/kernel/module.c         |  38 --------
+ arch/powerpc/lib/code-patching.c     |   2 +-
+ arch/powerpc/mm/book3s32/mmu.c       |   2 +-
+ arch/powerpc/mm/mem.c                |  64 ++++++++++++
+ arch/riscv/kernel/module.c           |  12 ---
+ arch/riscv/kernel/probes/kprobes.c   |  10 --
+ arch/riscv/mm/init.c                 |  41 ++++++++
+ arch/riscv/net/bpf_jit_core.c        |  13 ---
+ arch/s390/kernel/ftrace.c            |   4 +-
+ arch/s390/kernel/kprobes.c           |   4 +-
+ arch/s390/kernel/module.c            |  42 +-------
+ arch/s390/mm/init.c                  |  28 ++++++
+ arch/sparc/kernel/module.c           |  30 ------
+ arch/sparc/mm/Makefile               |   2 +
+ arch/sparc/mm/execmem.c              |  25 +++++
+ arch/sparc/net/bpf_jit_comp_32.c     |   8 +-
+ arch/x86/Kconfig                     |   2 +
+ arch/x86/kernel/ftrace.c             |  16 +--
+ arch/x86/kernel/kprobes/core.c       |   4 +-
+ arch/x86/kernel/module.c             |  51 ----------
+ arch/x86/mm/init.c                   |  27 ++++++
+ include/linux/execmem.h              | 132 +++++++++++++++++++++++++
+ include/linux/moduleloader.h         |  15 ---
+ kernel/bpf/Kconfig                   |   2 +-
+ kernel/bpf/core.c                    |   6 +-
+ kernel/kprobes.c                     |  51 +++++-----
+ kernel/module/Kconfig                |   1 +
+ kernel/module/main.c                 | 105 +++++++++-----------
+ kernel/trace/trace_kprobe.c          |  11 +++
+ mm/Kconfig                           |   3 +
+ mm/Makefile                          |   1 +
+ mm/execmem.c                         | 139 +++++++++++++++++++++++++++
+ mm/mm_init.c                         |   2 +
+ 56 files changed, 858 insertions(+), 577 deletions(-)
+ create mode 100644 arch/sparc/mm/execmem.c
+ create mode 100644 include/linux/execmem.h
+ create mode 100644 mm/execmem.c
+
+
+base-commit: 39cd87c4eb2b893354f3b850f916353f2658ae6f
+-- 
+2.43.0
 
