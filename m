@@ -1,122 +1,144 @@
-Return-Path: <linux-parisc+bounces-1090-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1091-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E678A01B0
-	for <lists+linux-parisc@lfdr.de>; Wed, 10 Apr 2024 23:07:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41EA8A0731
+	for <lists+linux-parisc@lfdr.de>; Thu, 11 Apr 2024 06:40:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53DC41C22C2A
-	for <lists+linux-parisc@lfdr.de>; Wed, 10 Apr 2024 21:07:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F6081F22CBD
+	for <lists+linux-parisc@lfdr.de>; Thu, 11 Apr 2024 04:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D871836CA;
-	Wed, 10 Apr 2024 21:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CD553364;
+	Thu, 11 Apr 2024 04:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Sl0+COZq"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CA7181CFD;
-	Wed, 10 Apr 2024 21:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6202EAE5;
+	Thu, 11 Apr 2024 04:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712783241; cv=none; b=VQ6IksTT8/O8xAil77IXR4m/+ESi/umn+EX3uVLFwxx0C3ydccgyWryGMcm/YINH394pJbg/krcq+ky9AWBvnl5DQkvgvTpQYR+8lkamfJI77YxVaPdcbJLq4qYe84IxM6TWotHgBQx44pIUoCaZFWZkffYNrvJEszYwijyOdtY=
+	t=1712810436; cv=none; b=ZMHA0G4BrP8FQCCOWacGVpoIFAKvJiaRH48JxdBKlqxE2q5/lJtDbrZA1NxSaNg1sDUMU56RVViClT6a/XyN0PKrYGtRCyN8uvamBrnVSAIBo1ABUGEiWtxtX9ZYPinw1hOIfGl0vaUdwIj+KZdNidn2WaRcOWCFL+0azdMMdKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712783241; c=relaxed/simple;
-	bh=WUkQx3MHNfpPK223Za2QnwYdPQf2mwT7iuWRCuTCPQM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mLN/P1nqVz2HkBVi+OS6NK976bTyLo8RMRsOuNHvo54V4kq39PcVNIAHjkfffgizcF9rMNmfOaetlVp1CH9JU6MUSkinlmGf70QTspUEKWJKKDH8s2/cy2IWPJlom1bqE0ejPQqeJxVmwVKUn3gupbooCV/Zfn/oSFLCfHAAYwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VFFjC372rz6K6DM;
-	Thu, 11 Apr 2024 05:05:35 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 403711402C7;
-	Thu, 11 Apr 2024 05:07:14 +0800 (CST)
-Received: from localhost (10.126.168.81) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 10 Apr
- 2024 22:07:13 +0100
-Date: Wed, 10 Apr 2024 22:07:12 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: "Russell King (Oracle)" <linux@armlinux.org.uk>,
-	<linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
-	<linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-riscv@lists.infradead.org>, <kvmarm@lists.linux.dev>,
-	<x86@kernel.org>, <acpica-devel@lists.linuxfoundation.org>,
-	<linux-csky@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-ia64@vger.kernel.org>, <linux-parisc@vger.kernel.org>, Salil Mehta
-	<salil.mehta@huawei.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	<jianyong.wu@arm.com>, <justin.he@arm.com>, James Morse
-	<james.morse@arm.com>, Miguel Luis <miguel.luis@oracle.com>
-Subject: Re: [PATCH RFC v4 02/15] ACPI: processor: Register all CPUs from
- acpi_processor_get_info()
-Message-ID: <20240410220712.0000726f@Huawei.com>
-In-Reply-To: <CAJZ5v0gG0xLajHsWXVM+-V+fQZAudvojechUa-DzFgwCs2q8Dg@mail.gmail.com>
-References: <Zbp5xzmFhKDAgHws@shell.armlinux.org.uk>
-	<E1rVDmU-0027YP-Jz@rmk-PC.armlinux.org.uk>
-	<CAJZ5v0iiJpUWq5GMSnKFWQTzn_bdwoQz9m=hDaXNg4Lj_ePF4g@mail.gmail.com>
-	<20240322185327.00002416@Huawei.com>
-	<20240410134318.0000193c@huawei.com>
-	<CAJZ5v0ggD042sfz3jDXQVDUxQZu_AWaF2ox-Me8CvFeRB8nczw@mail.gmail.com>
-	<20240410145005.00003050@Huawei.com>
-	<ZhbgwBBvh6ccdO7x@shell.armlinux.org.uk>
-	<CAJZ5v0gG0xLajHsWXVM+-V+fQZAudvojechUa-DzFgwCs2q8Dg@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1712810436; c=relaxed/simple;
+	bh=M9LkEacLmCYCjfAuDabC1/gaX7o4sYY/+6Bxnvg9BJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VF1QLH6Kq0P9+hb5S1jil4ds1tnZn9dQ93vTyrZYgSyUN6LcHelWhJ5Fn8yK4BIpiQgtBpklGEXpHVMVcAIZIFzvNrBzu3t9Fy95AuAVogO9kdhZdfixqDFHQJDj+QF0XFPBWXkIrbFoCGNpjyns2FQChu0JIe9zIB7u1qEN0Vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Sl0+COZq; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0NEKVSxEHvmt2+My9K11tpjvFpMqhdWMGkUoH9YhH1A=; b=Sl0+COZqKR1yDCwEpK6T4H7g54
+	Tp3RJ1/ETGiUPLG6XaMSm3bNlbbmItgLdgkqAR6o4o0HpZHKZoDMoDlfQl1hDkrm+cIiK6qd0xrNB
+	BFZDYBG+5mia5PjkqV9U6J4D8g9I0rmboCHXNlWscmca6Lzkte+lobvCTP3XZJDyKoaDjSrK2m94o
+	v0tX88U7SOWTIE+mf/Z78GusUH+h38VXuJbh3TnFf4Z/eDZW6HTF3WqeL/cwen5Cqcs0yjCfBtnkJ
+	hXuhG3G2iILWwSbbPjD2n855AcYgRvUfoqZKWdn/pFAh92wpMwTXcnZ5NWlMXa3e1U+sp1gISGhXB
+	7X8NMTcg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <kibi@debian.org>)
+	id 1rumEZ-001YIg-Bb; Thu, 11 Apr 2024 04:40:24 +0000
+Date: Thu, 11 Apr 2024 06:40:21 +0200
+From: Cyril Brulebois <kibi@debian.org>
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: John David Anglin <dave.anglin@bell.net>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	linux-parisc <linux-parisc@vger.kernel.org>,
+	linux-scsi@vger.kernel.org, Greg KH <greg@kroah.com>,
+	stable@vger.kernel.org
+Subject: Re: Broken Domain Validation in 6.1.84+
+Message-ID: <20240411044021.xejk54iznz3cdxem@mraw.org>
+Organization: Debian
+References: <b0670b6f-b7f7-4212-9802-7773dcd7206e@bell.net>
+ <d1fc0b8d-4858-4234-8b66-c8980f612ea2@acm.org>
+ <db784080-2268-4e6d-84bd-b33055a3331b@bell.net>
+ <028352c6-7e34-4267-bbff-10c93d3596d3@acm.org>
+ <cf78b204-9149-4462-8e82-b8f98859004b@bell.net>
+ <6cb06622e6add6309e8dbb9a8944d53d1b9c4aaa.camel@HansenPartnership.com>
+ <03ef7afd-98f5-4f1b-8330-329f47139ddf@bell.net>
+ <yq1wmp9pb0d.fsf@ca-mkp.ca.oracle.com>
+ <b3df77f6-2928-46cd-a7ee-f806d4c937d1@bell.net>
+ <yq1frvvpymp.fsf@ca-mkp.ca.oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7oudawh4gfttuhvx"
+Content-Disposition: inline
+In-Reply-To: <yq1frvvpymp.fsf@ca-mkp.ca.oracle.com>
+X-Debian-User: kibi
+
+
+--7oudawh4gfttuhvx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, 10 Apr 2024 21:08:06 +0200
-"Rafael J. Wysocki" <rafael@kernel.org> wrote:
+Hi,
 
-> On Wed, Apr 10, 2024 at 8:56=E2=80=AFPM Russell King (Oracle)
-> <linux@armlinux.org.uk> wrote:
-> >
-> > On Wed, Apr 10, 2024 at 02:50:05PM +0100, Jonathan Cameron wrote: =20
-> > > If we get rid of this catch all, solution would be to move the
-> > > !acpi_disabled check into the arm64 version of arch_cpu_register()
-> > > because we would only want the delayed registration path to be
-> > > used on ACPI cases where the question of CPU availability can't
-> > > yet be resolved. =20
-> >
-> > Aren't we then needing two arch_register_cpu() implementations?
-> > I'm assuming that you're suggesting that the !acpi_disabled, then
-> > do nothing check is moved into arch_register_cpu() - or to put it
-> > another way, arch_register_cpu() does nothing if ACPI is enabled.
-> >
-> > If arch_register_cpu() does nothing if ACPI is enabled, how do
-> > CPUs get registered (and sysfs files get created to control them)
-> > on ACPI systems? ACPI wouldn't be able to call arch_register_cpu(),
-> > so I suspect you'll need an ACPI-specific version of this function. =20
+Martin K. Petersen <martin.petersen@oracle.com> (2024-04-08):
+> Great, thanks for testing!
 >=20
-> arch_register_cpu() will do what it does, but it will check (upfront)
-> if ACPI is enabled and if so, if the ACPI Namespace is available.  In
-> the case when ACPI is enabled and the ACPI Namespace is not ready, it
-> will return -EPROBE_DEFER (say).
+> Greg, please revert the following commits from linux-6.1.y:
+>=20
+> b73dd5f99972 ("scsi: sd: usb_storage: uas: Access media prior to querying=
+ device properties")
+> cf33e6ca12d8 ("scsi: core: Add struct for args to execution functions")
+>=20
+> and include the patch below instead.
 
-Exactly.  I oversimplified and wasn't clear enough.
-The check is there in the arch_register_cpu() and is one of the ways
-that function can decide to actually register the cpu but not the only one.
+According to James I've ran into another expression of the same issue,
+which in my case led to the loss of some SMART information:
+  https://lore.kernel.org/stable/20240410193207.qnb75osxuk4ovvm6@mraw.org/
+  https://lore.kernel.org/stable/0655cea93e52928d3e4a12b4fe2d2a4375492ed3.c=
+amel@linux.ibm.com/
 
-I think we may later want to consider breaking it into 2 arch calls
-(check if ready to register + register) to reduce code duplication
-in with the hotplug path where there is a little extra to do
-inbetween.
+I've just confirmed that both reverts plus that patch, applied on top of
+v6.1.85, fix that regression for me. That's tested in a QEMU VM with a
+SATA disk (that exposes only a few SMART attributes anyway) and also on
+baremetal with real disks (2 pairs of Seagate IronWolf): smartctl
+returns data again, including temperatures.
 
-Hopefully that can wait though.
+Closes: https://bugs.debian.org/1068675
+Tested-by: Cyril Brulebois <kibi@debian.org>
 
-Jonathan
+
+Cheers,
+--=20
+Cyril Brulebois (kibi@debian.org)            <https://debamax.com/>
+D-I release manager -- Release team member -- Freelance Consultant
+
+--7oudawh4gfttuhvx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEtg6/KYRFPHDXTPR4/5FK8MKzVSAFAmYXabUACgkQ/5FK8MKz
+VSASmA//f48sG/Fsmsc0usGNcYmVB6Zfu9y60OfNMJK/XJ2vW99Wcg6RNRqlhOiA
+F+zP7b/EXJjPkOn+6DbomjGcAjsN/0feT8UOHLRWMTT/7oym/j0hj+CWEYnJ3TTm
+6D6NFhTo+EzK6m4MqguSwCXe3jeEU+b0tugMGRUs7uqUr7wygkWjgwh1kjbZdFqX
+acSTp4BHZGCrMkihqREq8HqKYK2rnsJTk+RROVA4Mc8HevwV5Wkuq82ipZtwPwIl
+Dx6J0CNwF2udmLimXZh8j+8QxH6P9uP217gjg1P73vXY3q0jUDanXRVgP2a7QlSb
+NngZGaXcR0sKrLL9cmoqkW/yQrqNii+kynG1JUw9OE1N5Hs+nr1ncjj+F65rkrMr
+0mKymqAH8WYSUl0qa2a+abBO4i6z5MeQ1lntD0n0K2YZgeO9xA/lqeUjlt67n9Rb
+RsM7fBM3SauutOU+E/vWNA53SQ1M8SZAFmwuga1c97EzAxetC2bl5ws8vvvP60ht
+Zi03Rgq70EpkY364ecQUm+YKTsykh0GvsYdlAUtCgFyLJ2owQa7rhSv04Qbw8wkx
+tlu6SNbsJd/lMfzv4kVB8DvUugvAdwpMJcYWvTgsYKrg4jdNcLx7LGnIy+SyCP06
+lKJGvlGd6e8A2NRRhn03JgD1kXQS9r91vS3oMkq12lPnJ57xq34=
+=c5D5
+-----END PGP SIGNATURE-----
+
+--7oudawh4gfttuhvx--
 
