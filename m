@@ -1,76 +1,49 @@
-Return-Path: <linux-parisc+bounces-1131-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1132-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336C28A2AAF
-	for <lists+linux-parisc@lfdr.de>; Fri, 12 Apr 2024 11:16:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B31478A40B8
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Apr 2024 08:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E64302848E3
-	for <lists+linux-parisc@lfdr.de>; Fri, 12 Apr 2024 09:16:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 401731F21417
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Apr 2024 06:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4A74F5FD;
-	Fri, 12 Apr 2024 09:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253DB1CA82;
+	Sun, 14 Apr 2024 06:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OOfxs4gw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ExCk/4I4"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC2138DD8;
-	Fri, 12 Apr 2024 09:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0E2208A4;
+	Sun, 14 Apr 2024 06:55:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712913377; cv=none; b=NGjY0MkPICJqk/pof9+n6eROPtux8P3oo4vkhsrc9cKqDZjV5cpyT7u2inrB5kjMgXf0wHTSxfwdiP3Bs+AVUEgIyNHlE+Tuh2l7KMywTkCzlbonoV2iUChrYhMbwKiGICrBDWEh+lwai70zycKHLIFMMtlUaSjjp37WyI7sNJQ=
+	t=1713077714; cv=none; b=sNgAbe44+8KCXVOMWnMyi3DTHTI2GzrsliFL/yMDRAQman10MDCOo+8UyosQECDl15n3W42EL1MubMaZWfWAvmNw69CRTvr0KKPrDgHD7jdgqCMb0jZusTw7o1TyqVYG0CdSmXsL40esGjbtG5sJAsPZx42TwTvEy/MpG6axTCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712913377; c=relaxed/simple;
-	bh=T/TL4P6RqoXnShkICgxGFcoEXV/L8guRkl+BR8oz3qQ=;
+	s=arc-20240116; t=1713077714; c=relaxed/simple;
+	bh=yXFVMzCDhJLeup5ZM/cl95e9uW89yN9aiaOn424Za9g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ra6zP4ElDYTP0tsWtoX7uKraN2Fj4uGF707LCAB37cozdE29w55xB3xd0Zkby9UPN7Oxk8aI4me7VVNWYtCLWHY81VT6R6wmFuzna4JQkiyjs7UrcwtBGxUU1/s8fTQJDl39XoH8UbiIuUmOBH5IQfE0Rp1J+ShVeD6GTna4HPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OOfxs4gw; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-56c404da0ebso974821a12.0;
-        Fri, 12 Apr 2024 02:16:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712913374; x=1713518174; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1P5rS5dDZ6bz9RnNGWXjXGeZ5LSFZB2izV8TdsSyfhY=;
-        b=OOfxs4gwGdSJYF5Rg1YrEPMa7aeAv3TXdkArvWg7NxpuxZ+eQflhdOQQREts0AWpFH
-         OiCjfBQWQM0eYpv+b8QlzIkfhqgKkAdXKkJ8xIU8keCiO9qD/6L8dCADBbUJEVR7SxOq
-         DXe+RoOC2Be5trhfR+hNGmrVl3wkxSAYTZPs2i9bGawVCW7V86nVB/xqHRp8Fa9TCSWU
-         CandjXr5Bdh9jksVy37KzaU4YV58iY+HxPJIOPrgmqGt02QA+sL8Re56nvhddQ6DY2eF
-         UcnPl1y3nY7H8667oqVxZ4Ffu5M9GMM6NyAnNb1sjVlipM0fP8lSJYGo3BRU4KwtP3eZ
-         jpiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712913374; x=1713518174;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1P5rS5dDZ6bz9RnNGWXjXGeZ5LSFZB2izV8TdsSyfhY=;
-        b=Z7lqARcsm6CccpGbcjPISLnBHKJzfNk8pN08gMcCL2OD3v0oZ0/SMs2OiwRTOpBS66
-         UuLBr6pEQMRqfAx7osL/08VFpRekxub+LdF+7tLpgPE1dfMaxzkHqwcIMJG1mXJQMZ7t
-         9PZrwjuT2iCh6fEGmlxk3oK9HBfOz8FE/06p5wNK5Rbm9G+6HnSCTom7oNRXXoO0B4kW
-         TVdoS71chMLO1cCRDoJf2cSakvoeMGukwQlZhISe4S/n8EPmoIU26FIBaAwmqCjrzANI
-         UdmP9LJqNt651L/m/urQUZkIlfQN7nSD2+vN+G+K1eZPM5wp26fTLkGHNmB+OuCZYlh3
-         yN5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUPEX8P9Ow3xwnnn9l7E+J+ej1dDoB77dawHjEnNWSfOQaUpOd+hs4GzMVrq/1LnBkieU4uQ31wxq32CJDrxvg/NqZoY2COxkKJRSHIBcGxqutnoDFKDvsf+dw1f9PH8EyZbtjVbi52w7E8XZUUdZtC0xeQPm8U8qufFe7KeJU7eO+wSKqwXwRm4wM3VAjXQssJ6AkJcCoJO6qiq/5+QTDyWlS5CK0s6wL1s6NSakFqVgpyqhXT6Sm4rKSOLaKufjhtwXYCHqDlQYissNSY7xIv94C/p4Gm5aTYKBAZdNXF62AOWRe4iIDpA1IOYPqEpABUKjqzrwlTr1vJaJh34/BRBGBguHXOjst4+BeRiitNh9CakGpdgRUTdQGtW1u5lXxMKI6YpVUv/kIFuhg=
-X-Gm-Message-State: AOJu0YwKcgA7Q+Mgdg5hZnfBVwvIn/EJqMurxXosdswDTSCgg6jk3TYh
-	LcchT5B9Af7nZ+vSdVKRii+R89lIJIkMEZvMIvNwt/g3+6m/jGIU
-X-Google-Smtp-Source: AGHT+IF2JLt070H6U+NVwXUCGShMgUTVG3TFLf6L4pd2nPVSBBMwXn0qR7EXkAPf+SwG43RHlRZl8g==
-X-Received: by 2002:a50:f68d:0:b0:56e:4039:add5 with SMTP id d13-20020a50f68d000000b0056e4039add5mr1892328edn.22.1712913374186;
-        Fri, 12 Apr 2024 02:16:14 -0700 (PDT)
-Received: from gmail.com (1F2EF1A5.nat.pool.telekom.hu. [31.46.241.165])
-        by smtp.gmail.com with ESMTPSA id el9-20020a056402360900b0056fe755f1e6sm1454709edb.91.2024.04.12.02.16.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Apr 2024 02:16:13 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date: Fri, 12 Apr 2024 11:16:10 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UfoccgObn9EnkjBv9/uDVMKczF511MmardP1KOfr21WJgoPvmo8sVA34vRS8OMzYum+fhe6jGjiSTws1TwWKbRgww6+PFulfm8skHJk3rhZ/zFjYIHCKpWfGMtMSC2JRE+h/KCm4r53wL/+QJbJSwRjVrAGaJRfGBJ0ut2PPIoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ExCk/4I4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6995FC072AA;
+	Sun, 14 Apr 2024 06:55:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713077713;
+	bh=yXFVMzCDhJLeup5ZM/cl95e9uW89yN9aiaOn424Za9g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ExCk/4I4W5Phef5aKaCHl7yCjGPCdhEDo2t4j5gOOcRyNoNKAWaoFjcjUPNV/ZDjL
+	 NgPGAZFKEHXGgq8aJVi8Z2vvDSoVvCAV16D5jLcPzItS86EojO+p5yw5DDCakIbCdC
+	 uDA7f0oS8i29LKJV724dmx85sHqKA14tjFqITDp8vRb8dfZu8WBgwU1FYXq0TYmRGR
+	 7tSa/jZjNfXa/T7/J/CXr2wjq9OOfmF2PhtvRmpH6VXO/pNGCEo0ysFPCgbJcswH3+
+	 8pSQxW9Jh3lYLdHalhcMBeJUrFP7jE5aNtiOQBUuA7scvpAOHZqdofUGHWY2VvqQnF
+	 hEcRjO6WYTf+Q==
+Date: Sun, 14 Apr 2024 09:53:59 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Luis Chamberlain <mcgrof@kernel.org>
 Cc: linux-kernel@vger.kernel.org, Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
@@ -83,7 +56,6 @@ Cc: linux-kernel@vger.kernel.org, Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
 	Huacai Chen <chenhuacai@kernel.org>,
 	Kent Overstreet <kent.overstreet@linux.dev>,
-	Luis Chamberlain <mcgrof@kernel.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nadav Amit <nadav.amit@gmail.com>,
@@ -102,9 +74,10 @@ Cc: linux-kernel@vger.kernel.org, Alexandre Ghiti <alexghiti@rivosinc.com>,
 	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
 	netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
 Subject: Re: [PATCH v4 05/15] mm: introduce execmem_alloc() and execmem_free()
-Message-ID: <Zhj72l6uN9OFilxA@gmail.com>
+Message-ID: <Zht9hw_DhDsaTuEP@kernel.org>
 References: <20240411160051.2093261-1-rppt@kernel.org>
  <20240411160051.2093261-6-rppt@kernel.org>
+ <Zhg9DXzagPbpNGH1@bombadil.infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -113,43 +86,58 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240411160051.2093261-6-rppt@kernel.org>
+In-Reply-To: <Zhg9DXzagPbpNGH1@bombadil.infradead.org>
 
+On Thu, Apr 11, 2024 at 12:42:05PM -0700, Luis Chamberlain wrote:
+> On Thu, Apr 11, 2024 at 07:00:41PM +0300, Mike Rapoport wrote:
+> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> > 
+> > module_alloc() is used everywhere as a mean to allocate memory for code.
+> > 
+> > Beside being semantically wrong, this unnecessarily ties all subsystems
+> > that need to allocate code, such as ftrace, kprobes and BPF to modules and
+> > puts the burden of code allocation to the modules code.
+> > 
+> > Several architectures override module_alloc() because of various
+> > constraints where the executable memory can be located and this causes
+> > additional obstacles for improvements of code allocation.
+> > 
+> > Start splitting code allocation from modules by introducing execmem_alloc()
+> > and execmem_free() APIs.
+> > 
+> > Initially, execmem_alloc() is a wrapper for module_alloc() and
+> > execmem_free() is a replacement of module_memfree() to allow updating all
+> > call sites to use the new APIs.
+> > 
+> > Since architectures define different restrictions on placement,
+> > permissions, alignment and other parameters for memory that can be used by
+> > different subsystems that allocate executable memory, execmem_alloc() takes
+> > a type argument, that will be used to identify the calling subsystem and to
+> > allow architectures define parameters for ranges suitable for that
+> > subsystem.
+> 
+> It would be good to describe this is a non-fuctional change.
 
-* Mike Rapoport <rppt@kernel.org> wrote:
+Ok.
+ 
+> > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> > ---
+> 
+> > diff --git a/mm/execmem.c b/mm/execmem.c
+> > new file mode 100644
+> > index 000000000000..ed2ea41a2543
+> > --- /dev/null
+> > +++ b/mm/execmem.c
+> > @@ -0,0 +1,26 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> 
+> And this just needs to copy over the copyright notices from the main.c file.
 
-> +/**
-> + * enum execmem_type - types of executable memory ranges
-> + *
-> + * There are several subsystems that allocate executable memory.
-> + * Architectures define different restrictions on placement,
-> + * permissions, alignment and other parameters for memory that can be used
-> + * by these subsystems.
-> + * Types in this enum identify subsystems that allocate executable memory
-> + * and let architectures define parameters for ranges suitable for
-> + * allocations by each subsystem.
-> + *
-> + * @EXECMEM_DEFAULT: default parameters that would be used for types that
-> + * are not explcitly defined.
-> + * @EXECMEM_MODULE_TEXT: parameters for module text sections
-> + * @EXECMEM_KPROBES: parameters for kprobes
-> + * @EXECMEM_FTRACE: parameters for ftrace
-> + * @EXECMEM_BPF: parameters for BPF
-> + * @EXECMEM_TYPE_MAX:
-> + */
-> +enum execmem_type {
-> +	EXECMEM_DEFAULT,
-> +	EXECMEM_MODULE_TEXT = EXECMEM_DEFAULT,
-> +	EXECMEM_KPROBES,
-> +	EXECMEM_FTRACE,
-> +	EXECMEM_BPF,
-> +	EXECMEM_TYPE_MAX,
-> +};
+Will do.
+ 
+>   Luis
 
-s/explcitly
- /explicitly
-
-Thanks,
-
-	Ingo
+-- 
+Sincerely yours,
+Mike.
 
