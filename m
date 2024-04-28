@@ -1,119 +1,131 @@
-Return-Path: <linux-parisc+bounces-1245-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1246-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D7A8B474C
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Apr 2024 19:43:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA44F8B4A2C
+	for <lists+linux-parisc@lfdr.de>; Sun, 28 Apr 2024 08:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22E58281FF0
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Apr 2024 17:43:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E66661C2103A
+	for <lists+linux-parisc@lfdr.de>; Sun, 28 Apr 2024 06:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E381411D5;
-	Sat, 27 Apr 2024 17:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5084F618;
+	Sun, 28 Apr 2024 06:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRkIYij1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTZs9sEm"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23D612B75
-	for <linux-parisc@vger.kernel.org>; Sat, 27 Apr 2024 17:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DB6EED0;
+	Sun, 28 Apr 2024 06:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714239836; cv=none; b=jLLP9gA5vwMrGuJT7IaCMWP5dvLLUbKEfR+7/nQJGi7OdPXA3a5AHvdSnmy7NCP3hunYhKVrJEuK8YhlH3pukYsdSfNedudG+wfk5zV+jNInd3DRhGj/WR6/iZhLJ+63lnKqpd3YI+L8guhkVZyxSKswkk0TgOU9G7CKKYynKMA=
+	t=1714287394; cv=none; b=ayp2SHFhmGd+wutBIzD6ayDbef85RnziqESmRg6c5gRUihh9nEzhXmNGTgUyFryj68TbWD3+ddD92gYmk0wesyaiAH28gSAxGUmNKMoSTESWOFVs2ebXHEgvsp8nx3l/yMXL6savh59lY49HDQkJSagBgnwuzDTl6K0KqWDqaIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714239836; c=relaxed/simple;
-	bh=8FNQpk5WSEanTyFb5HMVAWpCkggEhZ0EMHJjTXAmtdE=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=YJtg2crbJFa/SAHqD7/F2rslLjjXqtyQvTMan8x4o3aN70MKpeCgeIRbuIATfHb593O+eDTIYlgWcMn+ghdbSsvosYFAh2PFHygif3VLjmHTpbimc/Xru//tggKlyH3pnGkXQUCGh6qPwgnp7Op1Xms3v232d+QyCva01Cyf6gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRkIYij1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8576EC113CE;
-	Sat, 27 Apr 2024 17:43:54 +0000 (UTC)
+	s=arc-20240116; t=1714287394; c=relaxed/simple;
+	bh=r0oXOuLVQhCBCby5vRLJpkXcTQDGNz/eiiiW5fCcIdI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a3imFH0UThs4DbUDvBr+5fkIgB6IpQo/fUZaBMk5DDIGuu6KfBltQKm3BV26tnRVo16uOcU4DKhJnJ2I59yYqHD82Xet+D1osjE743YGS1JtVIrC8jKFmmvgoNfrgzmFOo9N7WUs7LKNGlDt0jRy5A0N7f5uPFo9yZE7c9o/NZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTZs9sEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702DBC113CC;
+	Sun, 28 Apr 2024 06:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714239835;
-	bh=8FNQpk5WSEanTyFb5HMVAWpCkggEhZ0EMHJjTXAmtdE=;
-	h=Date:From:To:Subject:From;
-	b=gRkIYij1X42mwJWJ0yWQZqY79sCWml1W3Jcf/VYQUcG2Fnv9yI1tCtRJFSskYnroI
-	 sJnjMF/ODaPxXAk5uiWam/UYVAF/1B8HNyOrzvkjduiSg4xlFVyWlC3/3RRknRKhAw
-	 GsJmWtZe6Rk9facgtwioY3FJ/XsEO36QFN5urfCIzNA2pYedinV0MhfMl9Rvuk9rrw
-	 wUT0EjZsMrtQ9f5J/Ax12Qk20r0MQs3I6m/CKAiYPMVoqWwR1NBXvvGAV6XTadKgai
-	 jN+Zpd4Eyz7pZqKwHg6IUAYq8XzxgNi8nvd92UOzdO9GqZT+tJp+j1Hy5SaII5JqAP
-	 fdTg8xO3kmM3Q==
-Date: Sat, 27 Apr 2024 19:43:51 +0200
-From: Helge Deller <deller@kernel.org>
-To: linux-parisc@vger.kernel.org, John David Anglin <dave.anglin@bell.net>
-Subject: [PATCH] parisc: Move sigset_t typedef to parisc uapi header file
-Message-ID: <Zi05V6zEVXgXV5IL@p100>
+	s=k20201202; t=1714287393;
+	bh=r0oXOuLVQhCBCby5vRLJpkXcTQDGNz/eiiiW5fCcIdI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XTZs9sEmm6/FaMuCbn9MAi43Dw5JaVHQ6Qo9kJKbgmQydz8t76xJqWvnLhWUbFuTg
+	 eamwTb265HrxR6LlvTN02ea5enG0DyL5UUA409iL+FIlWuV8f+cOfIaceW/tsQa49F
+	 k2+JGlrBeOuDTKAFlJG+dXckGS6E9qKllGv1lUiwvcOxOHi2PgVOFnk2K6JjT6mOLy
+	 8wMBJhYy7rqcZ88dgAjki/503FzqraXQOZ8LtGXr77oJlvx8mQlCJ0bpcLxvSbj8II
+	 FNv6UFgUz6gnk7tZPPzx3XToNx6Luyxbilf/EWAJ9azbxmvqxQI0iy3aMf/86QxAUL
+	 09CFFAwUkdXQQ==
+Date: Sun, 28 Apr 2024 09:55:02 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Song Liu <song@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Donald Dutile <ddutile@redhat.com>,
+	Eric Chanudet <echanude@redhat.com>,
+	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nadav Amit <nadav.amit@gmail.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, linux-modules@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	netdev@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v6 08/16] mm/execmem, arch: convert remaining overrides
+ of module_alloc to execmem
+Message-ID: <Zi3yxk_7rMEPp0lT@kernel.org>
+References: <20240426082854.7355-1-rppt@kernel.org>
+ <20240426082854.7355-9-rppt@kernel.org>
+ <CAPhsuW52MYy4Md5O=7XVGvkw395-LB+BiSadxoDdw8CrLw5t7A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPhsuW52MYy4Md5O=7XVGvkw395-LB+BiSadxoDdw8CrLw5t7A@mail.gmail.com>
 
-The util-linux debian package fails to build on parisc, because
-sigset_t isn't defined in asm/signal.h when included from userspace.
-Move the sigset_t type into the uapi header to fix the build.
+On Fri, Apr 26, 2024 at 12:01:34PM -0700, Song Liu wrote:
+> On Fri, Apr 26, 2024 at 1:30 AM Mike Rapoport <rppt@kernel.org> wrote:
+> >
+> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> >
+> > Extend execmem parameters to accommodate more complex overrides of
+> > module_alloc() by architectures.
+> >
+> > This includes specification of a fallback range required by arm, arm64
+> > and powerpc, EXECMEM_MODULE_DATA type required by powerpc, support for
+> > allocation of KASAN shadow required by s390 and x86 and support for
+> > late initialization of execmem required by arm64.
+> >
+> > The core implementation of execmem_alloc() takes care of suppressing
+> > warnings when the initial allocation fails but there is a fallback range
+> > defined.
+> >
+> > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> > Acked-by: Will Deacon <will@kernel.org>
+> 
+> nit: We should probably move the logic for ARCH_WANTS_EXECMEM_LATE
+> to a separate patch.
 
-Link: https://buildd.debian.org/status/fetch.php?pkg=util-linux&arch=hppa&ver=2.40-7&stamp=1714163443&raw=0
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.0+
+This would require to split arm64 and I prefer to keep all these changes
+together. 
 
-diff --git a/arch/parisc/include/asm/signal.h b/arch/parisc/include/asm/signal.h
-index 715c96ba2ec8..e84883c6b4c7 100644
---- a/arch/parisc/include/asm/signal.h
-+++ b/arch/parisc/include/asm/signal.h
-@@ -4,23 +4,11 @@
+> Otherwise,
+> 
+> Acked-by: Song Liu <song@kernel.org>
  
- #include <uapi/asm/signal.h>
- 
--#define _NSIG		64
--/* bits-per-word, where word apparently means 'long' not 'int' */
--#define _NSIG_BPW	BITS_PER_LONG
--#define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
--
- # ifndef __ASSEMBLY__
- 
- /* Most things should be clean enough to redefine this at will, if care
-    is taken to make libc match.  */
- 
--typedef unsigned long old_sigset_t;		/* at least 32 bits */
--
--typedef struct {
--	/* next_signal() assumes this is a long - no choice */
--	unsigned long sig[_NSIG_WORDS];
--} sigset_t;
--
- #include <asm/sigcontext.h>
- 
- #endif /* !__ASSEMBLY */
-diff --git a/arch/parisc/include/uapi/asm/signal.h b/arch/parisc/include/uapi/asm/signal.h
-index 8e4895c5ea5d..40d7a574c5dd 100644
---- a/arch/parisc/include/uapi/asm/signal.h
-+++ b/arch/parisc/include/uapi/asm/signal.h
-@@ -57,10 +57,20 @@
- 
- #include <asm-generic/signal-defs.h>
- 
-+#define _NSIG		64
-+#define _NSIG_BPW	(sizeof(unsigned long) * 8)
-+#define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
-+
- # ifndef __ASSEMBLY__
- 
- #  include <linux/types.h>
- 
-+typedef unsigned long old_sigset_t;	/* at least 32 bits */
-+
-+typedef struct {
-+	unsigned long sig[_NSIG_WORDS];
-+} sigset_t;
-+
- /* Avoid too many header ordering problems.  */
- struct siginfo;
- 
+Thanks!
+
+-- 
+Sincerely yours,
+Mike.
 
