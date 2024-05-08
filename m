@@ -1,190 +1,255 @@
-Return-Path: <linux-parisc+bounces-1367-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1368-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0928C027D
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 May 2024 19:02:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6638C0521
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 May 2024 21:34:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 617D5283137
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 May 2024 17:02:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A7841C2182B
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 May 2024 19:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60416DF5C;
-	Wed,  8 May 2024 17:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9A3130A4A;
+	Wed,  8 May 2024 19:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OnynkGDj"
+	dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b="HmHIWQvt"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from matoro.tk (matoro.tk [104.188.251.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A327D3D6D;
-	Wed,  8 May 2024 17:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782E612CDBC
+	for <linux-parisc@vger.kernel.org>; Wed,  8 May 2024 19:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.188.251.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715187731; cv=none; b=UxH8eXHBHkuj34qgT9p99MVGWvI9rFKZIQSpHRWj2u5yGaKNOE9ALmtlXSBVUGvFHl+slDS2KsaSxQ1Pxav6CmQAfGTeMiEvnEg6oWQz67APrU6zUEqaECrcK8A9VROX+QD/V5IMkl9sC7Z6cmAQnIPWvM0arrFxqTS7I+TqFto=
+	t=1715196854; cv=none; b=HeCkB95jPVOWjhKBSvqDqbe3uE7WeF7aignNkyWsL7aYY6AAcA+RJePoSvT0ShNJfiNASt+EyQOAOSjxMawE9XU3LiNPU2GfNCW+DBA7/lb/GaWqcNyRHbOmkYKu6oTW3cPqg1WgysysY6DKP2pvBvMIr03/k5TefNAW83hD7s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715187731; c=relaxed/simple;
-	bh=RJTd0DFSkwcgQXADy0NPRv8wgTOjMh4ljQ8AnIpUJ68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l2oy45pIPoxI6s7jE2GHb4Fw9dOipddjkUxShixpx5G0Yt5PhU0P3Odnpvc/w2rhN/bTnjouPGPa1ePzx27ZaEf7BbMKTsiXd0iFIxYyH7pXPjFZts52pQ2qIg6swO+0Pnan+sqU0eI0Bjz2AJ3Kc7q6AMwUMT2q7d8FP96Q7ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OnynkGDj; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a599af16934so1168471766b.1;
-        Wed, 08 May 2024 10:02:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715187728; x=1715792528; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w63SX1W8IWtKWaRdVmF8DRJBTDth/aiRDPCWeP/m/u8=;
-        b=OnynkGDjg0vGkDGdSEon5d0xDjiqrzpioqZiHuL0Nag9NOdtNmLL3NPjDyUSxO/8Zh
-         Sl+gc5S7CVBd88KtjhJXiNeDchtVDDGKv6H/SAE6+GLdMr1ysapTuwr7Pr4/78062sv7
-         U1lM4WybzDoSe5R2r24p9NH3yIBvBq9+pDtp0CzFHUBmR/pJCTQiP0KU5gSlQeVFN4rX
-         IZgnJ+Sil5bIFR5pjfTpMuErMJKV2AJwbjhVuPdWn6lEcT1GnlbKS3hG7EdRBqH91WIf
-         QZNhxXRNenOywRA9FMky14JAU1+sR83V/REHv91nu+Q82sjYZhD1WE/rxIzMUY0c6uZX
-         cirQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715187728; x=1715792528;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=w63SX1W8IWtKWaRdVmF8DRJBTDth/aiRDPCWeP/m/u8=;
-        b=bmsFr1k1KAJQ7Q3VUl8EgsqIvJ4zlhHOTlJAFPNLqOfUOXUaUNjsa4FJ1cck1yIQ/E
-         qgmHYmaTf3bnH7E8vdW1sX2XKBWzJwT6Vg9cgxlyaHkrDKKvC0WKN8ncxsvQz9cdkJDk
-         DrragEDQ550BH3PcG5acaNQoJjjC8/zRHXiko+XZXNecX8+XWK5MOYMAqrCMjk7DxLdg
-         2GCWkLgDr274wq25oI/vkS1fmr1ikW6ZzDULYq0htd5k1lSi9uQP3PDDHOAbZh1XJmzK
-         KCVC7AwCLecgS/Gz+ocUG8uGMav5V7rYwdMSi4eKqqtKIpyXLTi6KsDmUWEYwIY2ZHnP
-         BeZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVpZDVMJVxmnosHfPGBUJMOY92ouCL7Dc7PEjsoGbREL1ZbBeSsordAD3mlP+0KGUAYo+xo+Z9CsdgRakUKWjkHXcs71G8S5O568Ki8JmyxizvHh2iqX+jmRSaQzHEiORYPR1UfuO8sfXG2unlshuu/BJvLBJ8yIhZukc3/RxrWKs2sUGBjENu0x9D+3+drv9jU6aty54HCvgwcyDXEEBOqIcuvylKvAPKGT9S8upE+KcSriQ6rjbTOpn86kI3OOQEK88UemXG2lsRnLMoKd3u9+Bep3b16RXRt/hiCNxLLvG9xfuN1rAAax2y8pbjCS+inxRjmwjJUNArkS3Guza5x69y5Rm3ApBxxizEcjyOLZ1gy0ZeT8E8Xv6/4ARSX3IKjjs0Gy5vfZossSp54rsDPqP3ZMSc+rNPULtkfQ3PIg/Us2jH7h1bPsZzDGqB9brrPJ/237rk0AKogMHh80g3k+ugvK9gOGVMWetnLavzm68pQBEPoP6iaq4QQAVmu1aEpk9QdQg==
-X-Gm-Message-State: AOJu0Yyj11/IJlgWqJLmmpp73awguVVf+GMiNUelEDHixyVS4C+4Of5W
-	MZeZKY7W70ZMHk5kmHJiaRKhShh5qBSlDiuepajjS5JyNVNG+1JV
-X-Google-Smtp-Source: AGHT+IGnIbHLe2S57apepPi+KOdstUOemuaNblSGc79A9OnsYp187XWHNbGjxYPqzEX3412l6BXKTQ==
-X-Received: by 2002:a17:907:7286:b0:a59:bacc:b07f with SMTP id a640c23a62f3a-a59fb9d6452mr265356266b.52.1715187727754;
-        Wed, 08 May 2024 10:02:07 -0700 (PDT)
-Received: from [192.168.42.40] ([163.114.131.193])
-        by smtp.gmail.com with ESMTPSA id n18-20020a170906841200b00a59a8a5dd15sm5634228ejx.206.2024.05.08.10.02.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 May 2024 10:02:07 -0700 (PDT)
-Message-ID: <8ced4c49-d153-40fb-9e62-0a5784cfa864@gmail.com>
-Date: Wed, 8 May 2024 18:02:14 +0100
+	s=arc-20240116; t=1715196854; c=relaxed/simple;
+	bh=3wt2WEB6LegHZI55/4Iesnw5H/sDjymAM9VA2jwnkXc=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=Ec+IOTFi/y+w4xbgxXNLjbp9D398hxWwak3R0UqmUjPQ1+zT/lEU7vh75irej0dGkJPtpnQYDmOYvpr6FoP+J5y6y63uihiNhY2TfRNNX6Q9MqYNhDOGZHMPmsldrCVqF8klgboHM5mB/oVAf1/54qvBzs/7E9QGbl8uZJsfj/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk; spf=pass smtp.mailfrom=matoro.tk; dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b=HmHIWQvt; arc=none smtp.client-ip=104.188.251.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matoro.tk
+DKIM-Signature: a=rsa-sha256; bh=1w9+Ma8Wf8pv0zcDDdDCZ3hD/OlTd+4TD9BPuKKkLTs=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20240416; t=1715195932; v=1; x=1715627932;
+ b=HmHIWQvt9+18Nv99ZO9c9nJiTf09Fpj1CmQR9HwRmCSdCq+TGZQeSXdez0z4gPDOH/HEkgyc
+ fsY27kOQr/CoDBTV9bEMGJx2tgA7KXbLRjp7Shw4KnmiVX9PLcAm/9++Ze5i6p8V3r++8dGI9Cj
+ mR9AjQwDBaBsFy26Hu+cCqyeOzSFsXAm/iQXd4CjvZbbB32SDeGQ7R2fkNk4/hSXEzlFXX3wKeP
+ jL12Pf3a+VDEqQ/f414dhbmJPoPSG+6gAiP0KTjHDEOe6VyGnhnLYIcgQHQsXFl/TYYIKLn/I7N
+ gGU4yFkGgGCOha/rpwfv75IV7C0DTehRMk5INC0G1VQ5WwUu02zUmPYfMLVEGqjYXehK+zVm23q
+ U7RxJi3EvLDXBsTAFnKT8IYgsTY3tEEkXElUHqpRvhUN2a+F2UoZInKeQ61cJlLJqUDnZWlcWxh
+ e0hVwlufPOyxUc377S4VOi19lIkCtI6seUEcyouwv9FL1iVoenLgx3POSI8kb1WzDXMG2k23Lq1
+ 7dSUHPuA0+LoBy6Rv1jQOjFT1eUmXi1jT5ZhUcSPfPKroyOUTKfYHUB/envzt8zIK7fkvWVNh/i
+ 5bgnvJAPVoty0uMoHtUGr51mwW+Rlp5l9CKtdpPBLiZ76ApVHmCfwMXn+BGJnbnlVbO1zbB36ZQ
+ 8B/vhL53qGA=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id 3561a11f; Wed, 08 May
+ 2024 15:18:52 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH net-next v8 02/14] net: page_pool: create hooks for
- custom page providers
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Mina Almasry <almasrymina@google.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
- <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Andreas Larsson <andreas@gaisler.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Steffen Klassert
- <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
- David Ahern <dsahern@kernel.org>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Shuah Khan <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Amritha Nambiar <amritha.nambiar@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Alexander Mikhalitsyn <alexander@mihalicyn.com>,
- Kaiyuan Zhang <kaiyuanz@google.com>, Christian Brauner <brauner@kernel.org>,
- Simon Horman <horms@kernel.org>, David Howells <dhowells@redhat.com>,
- Florian Westphal <fw@strlen.de>, Yunsheng Lin <linyunsheng@huawei.com>,
- Kuniyuki Iwashima <kuniyu@amazon.com>, Jens Axboe <axboe@kernel.dk>,
- Arseniy Krasnov <avkrasnov@salutedevices.com>,
- Aleksander Lobakin <aleksander.lobakin@intel.com>,
- Michael Lass <bevan@bi-co.net>, Jiri Pirko <jiri@resnulli.us>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Richard Gobert <richardbgobert@gmail.com>,
- Sridhar Samudrala <sridhar.samudrala@intel.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- Johannes Berg <johannes.berg@intel.com>, Abel Wu <wuyun.abel@bytedance.com>,
- Breno Leitao <leitao@debian.org>, David Wei <dw@davidwei.uk>,
- Shailend Chand <shailend@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Jeroen de Borst
- <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>
-References: <20240507161857.GA4718@ziepe.ca> <ZjpVfPqGNfE5N4bl@infradead.org>
- <CAHS8izPH+sRLSiZ7vbrNtRdHrFEf8XQ61XAyHuxRSL9Jjy8YbQ@mail.gmail.com>
- <20240507164838.GG4718@ziepe.ca>
- <0d5da361-cc7b-46e9-a635-9a7a4c208444@gmail.com>
- <20240507175644.GJ4718@ziepe.ca>
- <6a50d01a-b5b9-4699-9d58-94e5f8f81c13@gmail.com>
- <20240507233247.GK4718@ziepe.ca> <Zjsm3vO6rIY_sw5A@phenom.ffwll.local>
- <1e2823db-504b-4829-856f-3f45a45ccada@gmail.com>
- <ZjufddNVJs5Csaix@infradead.org>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <ZjufddNVJs5Csaix@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Wed, 08 May 2024 15:18:52 -0400
+From: matoro <matoro_mailinglist_kernel@matoro.tk>
+To: John David Anglin <dave.anglin@bell.net>
+Cc: Vidra.Jonas@seznam.cz, linux-parisc@vger.kernel.org, John David Anglin
+ <dave@parisc-linux.org>, Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH] parisc: Try to fix random segmentation faults in package
+ builds
+In-Reply-To: <91563ff7-349b-4815-bcfe-99f8f34b0b16@bell.net>
+References: <Zje6ywzNAltbG3R2@mx3210.localdomain>
+ <C4u.NueN.39ikIzqu}iW.1cEpt7@seznam.cz>
+ <91563ff7-349b-4815-bcfe-99f8f34b0b16@bell.net>
+Message-ID: <34fdf2250fe166372a15d74d28adc8d2@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 5/8/24 16:51, Christoph Hellwig wrote:
-> On Wed, May 08, 2024 at 12:35:52PM +0100, Pavel Begunkov wrote:
->>> all these, because e.g. ttm internally does have a page pool because
->>> depending upon allocator, that's indeed beneficial. Other drm drivers have
->>> more buffer-based concepts for opportunistically memory around, usually
->>> by marking buffers that are just kept as cache as purgeable (which is a
->>> concept that goes all the way to opengl/vulkan).
->>
->> Because in this case it solves nothing and helps with nothing, quite
->> the opposite. Just as well we can ask why NVMe doesn't wrap user pages
->> into a dmabuf while doing IO.
+On 2024-05-08 11:23, John David Anglin wrote:
+> On 2024-05-08 4:54 a.m., Vidra.Jonas@seznam.cz wrote:
+>> ---------- Original e-mail ----------
+>> From: John David Anglin
+>> To: linux-parisc@vger.kernel.org
+>> CC: Helge Deller
+>> Date: 5. 5. 2024 19:07:17
+>> Subject: [PATCH] parisc: Try to fix random segmentation faults in package 
+>> builds
+>> 
+>>> The majority of random segmentation faults that I have looked at
+>>> appear to be memory corruption in memory allocated using mmap and
+>>> malloc. This got me thinking that there might be issues with the
+>>> parisc implementation of flush_anon_page.
+>>> 
+>>> [...]
+>>> 
+>>> Lightly tested on rp3440 and c8000.
+>> Hello,
+>> 
+>> thank you very much for working on the issue and for the patch! I tested
+>> it on my C8000 with the 6.8.9 kernel with Gentoo distribution patches.
+> Thanks for testing.  Trying to fix these faults is largely guess work.
 > 
-> You seem to confused totally unrelated things.
->
-> For short-term pins, that is pin_user_pages without FOLL_LONGTERM there
-> would never be any point in using a dmabuf as the pin is transient.  For
-> long-term pin dmabufs in the block layer absolutely make sense, and I
+> In my opinion, the 6.1.x branch is the most stable branch on parisc.  6.6.x 
+> and later
+> branches have folio changes and haven't had very much testing in build 
+> environments.
+> I did run 6.8.7 and 6.8.8 on rp3440 for some time but I have gone back to a 
+> slightly
+> modified 6.1.90.
+>> 
+>> My machine is affected heavily by the segfaults – with some kernel
+>> configurations, I get several per hour when compiling Gentoo packages
+> That's more than normal although number seems to depend on package.
+> At this rate, you wouldn't be able to build gcc.
+>> on all four cores. This patch doesn't fix them, though. On the patched
+> Okay.  There are likely multiple problems.  The problem I was trying to 
+> address is null
+> objects in the hash tables used by ld and as.  The symptom is usually a null 
+> pointer
+> dereference after pointer has been loaded from null object.  These occur in 
+> multiple
+> places in libbfd during hash table traversal.  Typically, a couple would 
+> occur in a gcc
+> testsuite run.  _objalloc_alloc uses malloc.  One can see the faults on the 
+> console and
+> in the gcc testsuite log.
+> 
+> How these null objects are generated is not known.  It must be a kernel 
+> issue because
+> they don't occur with qemu.  I think the frequency of these faults is 
+> reduced with the
+> patch.  I suspect the objects are zeroed after they are initialized.  In 
+> some cases, ld can
+> successfully link by ignoring null objects.
+> 
+> The next time I see a fault caused by a null object, I think it would be 
+> useful to see if
+> we have a full null page.  This might indicate a swap problem.
+> 
+> random faults also occur during gcc compilations.  gcc uses mmap to allocate 
+> memory.
+> 
+>> kernel, it happened after ~8h of uptime during installation of the
+>> perl-core/Test-Simple package. I got no error output from the running
+>> program, but an HPMC was logged to the serial console:
+>> 
+>> [30007.186309] mm/pgtable-generic.c:54: bad pmd 539b0030.
+>> <Cpu3> 78000c6203e00000  a0e008c01100b009  CC_PAT_ENCODED_FIELD_WARNING
+>> <Cpu0> e800009800e00000  0000000041093be4  CC_ERR_CHECK_HPMC
+>> <Cpu1> e800009801e00000  00000000404ce130  CC_ERR_CHECK_HPMC
+>> <Cpu3> 76000c6803e00000  0000000000000520  CC_PAT_DATA_FIELD_WARNING
+>> <Cpu0> 37000f7300e00000  84000[30007.188321] Backtrace:
+>> [30007.188321]  [<00000000404eef9c>] pte_offset_map_nolock+0xe8/0x150
+>> [30007.188321]  [<00000000404d6784>] __handle_mm_fault+0x138/0x17e8
+>> [30007.188321]  [<00000000404d8004>] handle_mm_fault+0x1d0/0x3b0
+>> [30007.188321]  [<00000000401e4c98>] do_page_fault+0x1e4/0x8a0
+>> [30007.188321]  [<00000000401e95c0>] handle_interruption+0x330/0xe60
+>> [30007.188321]  [<0000000040295b44>] schedule_tail+0x78/0xe8
+>> [30007.188321]  [<00000000401e0f6c>] finish_child_return+0x0/0x58
+>> 
+>> A longer excerpt of the logs is attached. The error happened at boot
+>> time 30007, the preceding unaligned accesses seem to be unrelated.
+> I doubt this HPMC is related to the patch.  In the above, the pmd table 
+> appears to have
+> become corrupted.
+>> 
+>> The patch didn't apply cleanly, but all hunks succeeded with some
+>> offsets and fuzz. This may also be a part of it – I didn't check the
+>> code for merge conflicts manually.
+> Sorry, the patch was generated against 6.1.90.  This is likely the cause of 
+> the offsets
+> and fuzz.
+>> 
+>> If you want me to provide you with more logs (such as the HPMC dumps)
+>> or run some experiments, let me know.
+>> 
+>> 
+>> Some speculation about the cause of the errors follows:
+>> 
+>> I don't think it's a hardware error, as HP-UX 11i v1 works flawlessly on
+>> the same machine. The errors seem to be more frequent with a heavy IO
+>> load, so it might be system-bus or PCI-bus-related. Using X11 causes
+>> lockups rather quickly, but that could be caused by unrelated errors in
+>> the graphics subsystem and/or the Radeon drivers.
+> I am not using X11 on my c8000.  I have frame buffer support on. Radeon 
+> acceleration
+> is broken on parisc.
+> 
+> Maybe there are more problems with debian kernels because of its use of X11.
+>> 
+>> Limiting the machine to a single socket (2 cores) by disabling the other
+>> socket in firmware, or even booting on a single core using a maxcpus=1
+>> kernel cmdline option, decreases the error frequency, but doesn't
+>> prevent them completely, at least on an (unpatched) 6.1 kernel. So it's
+>> probably not an SMP bug. If it's related to cache coherency, it's
+>> coherency between the CPUs and bus IO.
+>> 
+>> The errors typically manifest as a null page access to a very low
+>> address, so probably a null pointer dereference. I think the kernel
+>> accidentally maps a zeroed page in place of one that the program was
+>> using previously, making it load (and subsequently dereference) a null
+>> pointer instead of a valid one. There are two problems with this theory,
+>> though:
+>> 1. It would mean the program could also load zeroed /data/ instead of a
+>> zeroed /pointer/, causing data corruption. I never conclusively observed
+>> this, although I am getting GCC ICEs from time to time, which could
+>> be explained by data corruption.
+> GCC catches page faults and no core dump is generated when it ICEs. So, it's 
+> harder
+> to debug memory issues in gcc.
+> 
+> I have observed zeroed data multiple times in ld faults.
+>> 2. The segfault is sometimes preceded by an unaligned access, which I
+>> believe is also caused by a corrupted machine state rather than by a
+>> coding error in the program – sometimes a bunch of unaligned accesses
+>> show up in the logs just prior to a segfault / lockup, even from
+>> unrelated programs such as random bash processes. Sometimes the machine
+>> keeps working afterwards (although I typically reboot it immediately
+>> to limit the consequences of potential kernel data structure damage),
+>> sometimes it HPMCs or LPMCs. This is difficult to explain by just a wild
+>> zeroed page appearance. But this typically happens when running X11, so
+>> again, it might be caused by another bug, such as the GPU randomly
+>> writing to memory via misconfigured DMA.
+> There was a bug in the unaligned handler for double word instructions (ldd) 
+> that was
+> recently fixed.  ldd/std are not used in userspace, so this problem didn't 
+> affect it.
+> 
+> Kernel unaligned faults are not logged, so problems could occur internal to 
+> the kernel
+> and not be noticed till disaster.  Still, it seems unlikely that an 
+> unaligned fault would
+> corrupt more than a single word.
+> 
+> We have observed that the faults appear SMP and memory size related.  A 
+> rp4440 with
+> 6 CPUs and 4 GB RAM faulted a lot.  It's mostly a PA8800/PA8900 issue.
+> 
+> It's months since I had a HPMC or LPMC on rp3440 and c8000.  Stalls still 
+> happen but they
+> are rare.
+> 
+> Dave
 
-Well, the example fell flat, but you don't use dmabuf when there are
-no upsides from using it. For instance, when you already have pinned
-pages, you're going to use pages, and there are no other refcounting
-concerns. Unless there is an advantage of dmabufs over FOLL_LONGTERM
-that I don't know about when used with normal user pages.
+Hi, I also tested this patch on an rp3440 with PA8900.  Unfortunately it 
+seems to have exacerbated an existing issue which takes the whole machine 
+down.  Occasionally I would get a message:
 
-> wish io_uring would have just implemented them from the start instead of
-> the current fixed buffers that are not quite as useful by not
-> pre-mapping DMA and not supporting P2P.
+[ 7497.061892] Kernel panic - not syncing: Kernel Fault
 
-fdget(dmabuf) would be horrible, I assume that's not the suggestion.
-But then it's really about kernel internals, and theoretically can
-be patched to wrap user pages into a dmabuf and pass it in. The tricky
-part is how that "pass it in" should looks like. Keith tried to cover
-both pre-mapping and p2p by registering dmabuf and passing the mapped
-addresses in an iter IIRC.
-
-Anyway, this discussion should better move from to block/fs lists,
-if there is any interest.
-
--- 
-Pavel Begunkov
+with no accompanying stack trace and then the BMC would restart the whole 
+machine automatically.  These were infrequent enough that the segfaults were 
+the bigger problem, but after applying this patch on top of 6.8, this changed 
+the dynamic.  It seems to occur during builds with varying I/O loads.  For 
+example, I was able to build gcc fine, with no segfaults, but I was unable to 
+build perl, a much smaller build, without crashing the machine.  I did not 
+observe any segfaults over the day or 2 I ran this patch, but that's not an 
+unheard-of stretch of time even without it, and I am being forced to revert 
+because of the panics.
 
