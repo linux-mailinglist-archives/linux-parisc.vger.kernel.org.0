@@ -1,300 +1,168 @@
-Return-Path: <linux-parisc+bounces-1380-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1381-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A732A8C19B5
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 May 2024 01:03:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A97D8C2566
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 May 2024 15:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23306B22B6B
-	for <lists+linux-parisc@lfdr.de>; Thu,  9 May 2024 23:03:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11DDE1F22BF0
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 May 2024 13:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6DC129A6F;
-	Thu,  9 May 2024 23:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6BE128376;
+	Fri, 10 May 2024 13:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bz0Mn4KH"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="nEg406pV"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA1512D757
-	for <linux-parisc@vger.kernel.org>; Thu,  9 May 2024 23:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27A5537E8;
+	Fri, 10 May 2024 13:10:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715295796; cv=none; b=E9htFvGF7yUePRTx5FPibTACsafpFr23ulODNcwJRo0lCsIfoZv51UkLWdDT1SDJdfIbIwHHfErCzJe60CpU0C/fffFTobfdl4SM/afpjCOyAGk2tOOjTwCOKyyY5QB5zMDHSzPI+K3qMq7qborBmNl7sBaDfXhOeIatE6OLj24=
+	t=1715346610; cv=none; b=DPLzM+7hD+Za+Rni2IW/rUcaZgDkSbfmdW0MZ8O/NrBIjiscG2i23+F/5TWi65oLULLa4XO8CzW3z0s5D9uhcMng7eGYyT9bWUSPADMdtYzT8QRKj0fe7ordBZMgr6iMK7hVCRmVDXnjprZZWh7/GurFi/cYbzpaxjgwUMpuSo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715295796; c=relaxed/simple;
-	bh=ougFZIosBTctHM8zWtMpj8Ny38PANKNU6OYVXuPbtLc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s9H3cGZtDFRih2iqc0zcyQqvZLp+6W45Sa5+SjrKxrV+vmbhvRsETluwGVzIBoJITn1555oQDm4So3cKquKIfHsP/MyqMYIPNAKfPgjQylUWlRPPoMU2x09iSdJh+zqd2LuHQbpQFo6gb4cELJaTCl0plYNoEPowyHWHzvaYRg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bz0Mn4KH; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-34e040ed031so1026156f8f.0
-        for <linux-parisc@vger.kernel.org>; Thu, 09 May 2024 16:03:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1715295792; x=1715900592; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cPbSvLzfel2aidHv4944fpA4agv4jm4lmrU+rS2yRC4=;
-        b=Bz0Mn4KH+LsXaKm37WnHMPcyUH5RBOUurbFAU5WiZgP/4AT1fIYuImcdSB9Bph118N
-         hnC8b8OR41TqTAhdp9eYcLDmKGi+ro2WUJg/17kXJrBK8GJX1eklQjxWeDeHdYkDBlA9
-         V4ozYePVfHQ9MMSLulAG89Ur2izUJafkvZcSb8WMfJUb0wX2fToKIRARbVymNT4W/cS0
-         CM4HDL/COWzaziG5tBN+DifTKYjuG9zlEmxApxh3itH5Qf8ADKcswMfLTbUv/GrAXshm
-         UPTwU60rRgjMuHqZg9XlYnbr3eKhZ27mKZfQ29Ukkc6C6XM47Cqzi0A0NS3vVvwjE/8X
-         7SNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715295792; x=1715900592;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cPbSvLzfel2aidHv4944fpA4agv4jm4lmrU+rS2yRC4=;
-        b=QZ3T/qOFLxrx50Ecg3TYYJZSh+PIljhmkAAj8zS7KuftCpxKX6jMCyT9QPVMHmlIxR
-         UYzvyyPiB3vUWaCwVRBU1oyJBcXYK1bSCedGMtlypMAp/sR8eBbDeR6Tj/Jq2ksJn+aW
-         9pC3l1+EbVLWVcQ6Gyy5urrvK6w5IHvkj2yfl5XWtkzN4FRnaW8iVw8pfACQBp59yANs
-         iuv81y4fSo3+FZVj0WDiKL+1DKNt4fpe5VafEhpl38Gp2Du6gFKRqRC7l3imGKWc4VWN
-         3BfYer+cX44I7dGQw2NRTUrQM/L1N7Fg/rqVvurmVnVPFQUhs1zOY3cRBNF4/gNjjOO2
-         FyKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ7xG4LZHPFBb8hnVfflWV1iiDj6YiyKrqkKrlnVkK3XDjrVTjif0yOO/UBaRUQ4wYFavR35+rYKpcsdXwVwp+Ws58V2UNbx1PomdG
-X-Gm-Message-State: AOJu0YypMHDiYcB88fq78KcHbNG92QRF80cNcYI7fc9PDX5jF6GozGyj
-	aVIuuKZsWiDW9+a247VMsJUzohkJk5m5X4MzAayPFGOrp08E4TYkKtigv4g0CshGZ47qlCmIfdX
-	O93lBraySxnd4RaCZFi2ea8aKMdXGfv0v4f4V
-X-Google-Smtp-Source: AGHT+IFhmWSmgHAekjGKzRtk8e+YHHuEDjTnB0xuUIijeYWCpcIdqwfIqifcfRX9laqU/XyPu9INnEX+SjRuGN5KTmg=
-X-Received: by 2002:a05:6000:e43:b0:34e:21cd:dbf3 with SMTP id
- ffacd0b85a97d-3504a73ec96mr677219f8f.36.1715295792241; Thu, 09 May 2024
- 16:03:12 -0700 (PDT)
+	s=arc-20240116; t=1715346610; c=relaxed/simple;
+	bh=TEjOAr2RBcw1JCUNuulbRKnV4fRzOVevxCBZSShKBfI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fS+MFTrzfiWiAZrHsxZGUFR5Vew8Riq9458bmdymfGH8/pfSd023LwINnxmhu8gX0gMNPr/7x3L+8b7tE4DzC/vJzhGHiok/kC8YySxojVHZTkfewV/eVsew1MzqGzebGCP1Arv41rQZ3bfI/Ftl36SRVVbyx4t9qrZSjkP1MU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=nEg406pV; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1715346602; x=1715951402; i=deller@gmx.de;
+	bh=TfThBHnieEcrMXwxApoo4pCodB7Hvz/a15x0aREPaOg=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=nEg406pVK+/SHrLvqGDyBOUokAajlV1nPrh+Kb3ew/2NV0nzoglpCYo/u+9cdWdz
+	 kqRYRrr+fSsbRGdBAEwqvSLm4jCcn3ftc6QAyqEbbKLQOSsaSIHBQZXXNIuoaFfpn
+	 IOEGye/evLUu1exc0Zd/+AP+UOBlEQ28HgIH/TAZrffQZORYnEpFZHPnJHjHrIwx+
+	 FA00m8XNgvJhEoR/eHEjMy+FXOAti0ulEQcg1zDK3qIM2BYXS477LP/IsoAaCQEzM
+	 piB8yWIjKd2iznMdnwpRj+wR5QbvuJ3fsNu3QISuyVEch7Qlm1TvmfKZ9xZfvIT87
+	 /4a1fMfJtjwDbYxtgQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([89.244.191.219]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Ml6mE-1sSfvq2XXw-00iGAu; Fri, 10
+ May 2024 15:10:02 +0200
+Message-ID: <d2da3581-7ca8-409d-97f1-6d3a19adc3c4@gmx.de>
+Date: Fri, 10 May 2024 15:10:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240509203907.504891-1-axelrasmussen@google.com>
- <20240509203907.504891-2-axelrasmussen@google.com> <Zj06qh2U0wTwAZLK@x1n>
-In-Reply-To: <Zj06qh2U0wTwAZLK@x1n>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Thu, 9 May 2024 16:02:33 -0700
-Message-ID: <CAJHvVcj1+GQoweAU0X=0Q-jx2ZC1yUsm1GsCQLsFRQ8fCzNWNw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] arch/fault: don't print logs for simulated poison errors
-To: Peter Xu <peterx@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>, 
-	Ingo Molnar <mingo@redhat.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Liu Shixin <liushixin2@huawei.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>, 
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Oscar Salvador <osalvador@suse.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] parisc/math-emu: Remove unused struct 'exc_reg'
+To: linux@treblig.org, James.Bottomley@HansenPartnership.com
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240505231059.680502-1-linux@treblig.org>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
+ HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
+ r+8w6mkccOM9GhoPU0vMaD/UVJcJQzvrxVHO8EHS36aUkjKd6cOpdVbCt3qx8cEhCmaFEO6u
+ CL+k5AZQoABbFQEBocZE1/lSYzaHkcHrjn4cQjc3CffXnUVYwlo8EYOtAHgMDC39s9a7S90L
+ 69l6G73lYBD/Br5lnDPlG6dKfGFZZpQ1h8/x+Qz366Ojfq9MuuRJg7ZQpe6foiOtqwKym/zV
+ dVvSdOOc5sHSpfwu5+BVAAyBd6hw4NddlAQUjHSRs3zJ9OfrEx2d3mIfXZ7+pMhZ7qX0Axlq
+ Lq+B5cfLpzkPAgKn11tfXFxP+hcPHIts0bnDz4EEp+HraW+oRCH2m57Y9zhcJTOJaLw4YpTY
+ GRUlF076vZ2Hz/xMEvIJddRGId7UXZgH9a32NDf+BUjWEZvFt1wFSW1r7zb7oGCwZMy2LI/G
+ aHQv/N0NeFMd28z+deyxd0k1CGefHJuJcOJDVtcE1rGQ43aDhWSpXvXKDj42vFD2We6uIo9D
+ 1VNre2+uAxFzqqf026H6cH8hin9Vnx7p3uq3Dka/Y/qmRFnKVQARAQABzRxIZWxnZSBEZWxs
+ ZXIgPGRlbGxlckBnbXguZGU+wsGRBBMBCAA7AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
+ FiEERUSCKCzZENvvPSX4Pl89BKeiRgMFAl3J1zsCGQEACgkQPl89BKeiRgNK7xAAg6kJTPje
+ uBm9PJTUxXaoaLJFXbYdSPfXhqX/BI9Xi2VzhwC2nSmizdFbeobQBTtRIz5LPhjk95t11q0s
+ uP5htzNISPpwxiYZGKrNnXfcPlziI2bUtlz4ke34cLK6MIl1kbS0/kJBxhiXyvyTWk2JmkMi
+ REjR84lCMAoJd1OM9XGFOg94BT5aLlEKFcld9qj7B4UFpma8RbRUpUWdo0omAEgrnhaKJwV8
+ qt0ULaF/kyP5qbI8iA2PAvIjq73dA4LNKdMFPG7Rw8yITQ1Vi0DlDgDT2RLvKxEQC0o3C6O4
+ iQq7qamsThLK0JSDRdLDnq6Phv+Yahd7sDMYuk3gIdoyczRkXzncWAYq7XTWl7nZYBVXG1D8
+ gkdclsnHzEKpTQIzn/rGyZshsjL4pxVUIpw/vdfx8oNRLKj7iduf11g2kFP71e9v2PP94ik3
+ Xi9oszP+fP770J0B8QM8w745BrcQm41SsILjArK+5mMHrYhM4ZFN7aipK3UXDNs3vjN+t0zi
+ qErzlrxXtsX4J6nqjs/mF9frVkpv7OTAzj7pjFHv0Bu8pRm4AyW6Y5/H6jOup6nkJdP/AFDu
+ 5ImdlA0jhr3iLk9s9WnjBUHyMYu+HD7qR3yhX6uWxg2oB2FWVMRLXbPEt2hRGq09rVQS7DBy
+ dbZgPwou7pD8MTfQhGmDJFKm2jvOwU0EXchrcwEQAOsDQjdtPeaRt8EP2pc8tG+g9eiiX9Sh
+ rX87SLSeKF6uHpEJ3VbhafIU6A7hy7RcIJnQz0hEUdXjH774B8YD3JKnAtfAyuIU2/rOGa/v
+ UN4BY6U6TVIOv9piVQByBthGQh4YHhePSKtPzK9Pv/6rd8H3IWnJK/dXiUDQllkedrENXrZp
+ eLUjhyp94ooo9XqRl44YqlsrSUh+BzW7wqwfmu26UjmAzIZYVCPCq5IjD96QrhLf6naY6En3
+ ++tqCAWPkqKvWfRdXPOz4GK08uhcBp3jZHTVkcbo5qahVpv8Y8mzOvSIAxnIjb+cklVxjyY9
+ dVlrhfKiK5L+zA2fWUreVBqLs1SjfHm5OGuQ2qqzVcMYJGH/uisJn22VXB1c48yYyGv2HUN5
+ lC1JHQUV9734I5cczA2Gfo27nTHy3zANj4hy+s/q1adzvn7hMokU7OehwKrNXafFfwWVK3OG
+ 1dSjWtgIv5KJi1XZk5TV6JlPZSqj4D8pUwIx3KSp0cD7xTEZATRfc47Yc+cyKcXG034tNEAc
+ xZNTR1kMi9njdxc1wzM9T6pspTtA0vuD3ee94Dg+nDrH1As24uwfFLguiILPzpl0kLaPYYgB
+ wumlL2nGcB6RVRRFMiAS5uOTEk+sJ/tRiQwO3K8vmaECaNJRfJC7weH+jww1Dzo0f1TP6rUa
+ fTBRABEBAAHCwXYEGAEIACAWIQRFRIIoLNkQ2+89Jfg+Xz0Ep6JGAwUCXchrcwIbDAAKCRA+
+ Xz0Ep6JGAxtdEAC54NQMBwjUNqBNCMsh6WrwQwbg9tkJw718QHPw43gKFSxFIYzdBzD/YMPH
+ l+2fFiefvmI4uNDjlyCITGSM+T6b8cA7YAKvZhzJyJSS7pRzsIKGjhk7zADL1+PJei9p9idy
+ RbmFKo0dAL+ac0t/EZULHGPuIiavWLgwYLVoUEBwz86ZtEtVmDmEsj8ryWw75ZIarNDhV74s
+ BdM2ffUJk3+vWe25BPcJiaZkTuFt+xt2CdbvpZv3IPrEkp9GAKof2hHdFCRKMtgxBo8Kao6p
+ Ws/Vv68FusAi94ySuZT3fp1xGWWf5+1jX4ylC//w0Rj85QihTpA2MylORUNFvH0MRJx4mlFk
+ XN6G+5jIIJhG46LUucQ28+VyEDNcGL3tarnkw8ngEhAbnvMJ2RTx8vGh7PssKaGzAUmNNZiG
+ MB4mPKqvDZ02j1wp7vthQcOEg08z1+XHXb8ZZKST7yTVa5P89JymGE8CBGdQaAXnqYK3/yWf
+ FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
+ 4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
+ ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
+In-Reply-To: <20240505231059.680502-1-linux@treblig.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:jcVzNKRtFAfAV0vdl20vebHyWvs1WK+UeixILDbjxPPrq88xOZp
+ h8441K8u3axZlqa/AeQeGmlv31D0pzn6XeoT7SHaNVIGE3iLUgnzg2MFd13JUP6YQyNxCKL
+ h027ULpIXTpVVTxTEjUDrxJl4QZHCrFcU8VwnTqUR2O7sAI1zqSaY7XUEVYQ6c58hC4SmCL
+ dBfmaQ7gVrJmrEYxTG+YA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:bZ/gyKCu+d0=;fZneFa1EwKk+aeT3ouemToxEtSM
+ AGrmXipEM9EkmBNMdrkHHadUh4n3xsDpXk6Q71pHh9roVec+9KGV+GNCWJqt6kuf1leopfspi
+ flQiNJTLEErGdQ3FH6aIs8kJneYXH2pTwqD+WCkkuk5BsqRXf+3PBINGRfsb0MyURqNQQ7xFB
+ Jp0xy5rv4Ajb07FGcr875EO2CMRqLb81qvgbHTjMuBzxmsxTpsq1UUvaOeMmwGku12tbI7C9W
+ yeOgb7AvQjfJbwWWG+CJBR63RkfoogQW1iy5BpURNfpTvntUNNeLwegtZmVkBEkA9BxT7cgTF
+ uJwMAmnUeRQ3nF0ZQRIIQdVl7BgFyA60cZFWoAeC1ls7+axFH6zJBwCF8IMwVLRC9yxG16FVD
+ e7v/5kgIU3lb92uty6AfABAuS81FBhcGSnWExRG58Bd2XHRmn0qLiJciPNRVqsIMfMkNvyij/
+ 0qO9bcUOATUaGKnN5c63AZRfcehgxUHD4Q6G5WODlXXQH0tysTaBIBVAyNObx1y+yPMIVg3nv
+ PZwDCZdBFlbVXCsKUelMBNFAbqWtYWm0jGyIae4I5Bclpl6VbCMP8DhU6R9vK02hMUYa/YA8V
+ ImOV1AI448JLqHdqji69qfvEkmmi8mRHV3Qa02tk9FcYBLCJLb00oXVtNiF7x5FU2wkgvvZa2
+ MOfMRR/oBsNwOXHX/FNWYcAgHkuCK4XzUTLdb5XF0CL7ORuMyDPEQE/l0tKVrVpeZXo2mNI/4
+ N2pDpfeMpav2Ewia119XkjNxpePi2q8YjUeBRPR2VpXCvInHckvanldpBsVcjqmiHHD7p9B+L
+ 8gPE26sRyFAMkLosU9ZXsMHmDC0NxS5nLe6Ng+oj6/0Q0=
 
-On Thu, May 9, 2024 at 2:05=E2=80=AFPM Peter Xu <peterx@redhat.com> wrote:
+On 5/6/24 01:10, linux@treblig.org wrote:
+> From: "Dr. David Alan Gilbert" <linux@treblig.org>
 >
-> On Thu, May 09, 2024 at 01:39:07PM -0700, Axel Rasmussen wrote:
-> > For real MCEs, various architectures print log messages when poisoned
-> > memory is accessed (which results in a SIGBUS). These messages can be
-> > important for users to understand the issue.
-> >
-> > On the other hand, we have the userfaultfd UFFDIO_POISON operation,
-> > which can "simulate" memory poisoning. That particular process will get
+> This has been here since pre-git.
 >
-> It also coveres swapin errors as we talked before, so not always SIM.
+> Build tested.
 >
-> I was thinking we should also do that report for swapin errors, however
-> then I noticed it wasn't reported before the replacement of pte markers,
-> in commit 15520a3f04, since 2022:
->
-> @@ -3727,8 +3731,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->                         put_page(vmf->page);
->                 } else if (is_hwpoison_entry(entry)) {
->                         ret =3D VM_FAULT_HWPOISON;
-> -               } else if (is_swapin_error_entry(entry)) {
-> -                       ret =3D VM_FAULT_SIGBUS;
->                 } else if (is_pte_marker_entry(entry)) {
->                         ret =3D handle_pte_marker(vmf);
->                 } else {
->
-> So I am guessing it could be fine to just turn this report off to syslog.
-> There will be a back-and-forth on this behavior, but hopefully this is ev=
-en
-> rarer than hwpoison so nobody will notice.
->
-> With that, the idea looks valid to me, but perhaps a rename is needed.
-> Maybe _QUIESCE or _SILENT?
+> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 
-Ah, I had forgotten about the swapin error case.
+applied.
+Thanks!
+Helge
 
-I think it still makes sense to silence the log in that case; if we
-consider a scenario like disk error, it could seem weird to get an MCE
-message for that, since the physical memory is fine and it wouldn't
-show up in mcelog or similar.
+> ---
+>   arch/parisc/math-emu/driver.c | 6 ------
+>   1 file changed, 6 deletions(-)
+>
+> diff --git a/arch/parisc/math-emu/driver.c b/arch/parisc/math-emu/driver=
+.c
+> index 6ce427b58836c..34495446e051c 100644
+> --- a/arch/parisc/math-emu/driver.c
+> +++ b/arch/parisc/math-emu/driver.c
+> @@ -26,12 +26,6 @@
+>
+>   #define FPUDEBUG 0
+>
+> -/* Format of the floating-point exception registers. */
+> -struct exc_reg {
+> -	unsigned int exception : 6;
+> -	unsigned int ei : 26;
+> -};
+> -
+>   /* Macros for grabbing bits of the instruction format from the 'ei'
+>      field above. */
+>   /* Major opcode 0c and 0e */
 
-I like _SILENT, I'll do the rename and update my comments to better
-explain in v2.
-
->
-> > SIGBUS on access to the memory, but this effect is tied to an MM, rathe=
-r
-> > than being global like a real poison event. So, we don't want to log
-> > about this case to the global kernel log; instead, let the process
-> > itself log or whatever else it wants to do. This avoids spamming the
-> > kernel log, and avoids e.g. drowning out real events with simulated
-> > ones.
-> >
-> > To identify this situation, add a new VM_FAULT_HWPOISON_SIM flag. This
-> > is expected to be set *in addition to* one of the existing
-> > VM_FAULT_HWPOISON or VM_FAULT_HWPOISON_LARGE flags (which are mutually
-> > exclusive).
-> >
-> > Signed-off-by: Axel Rasmussen <axelrasmussen@google.com>
-> > ---
-> >  arch/parisc/mm/fault.c   | 7 +++++--
-> >  arch/powerpc/mm/fault.c  | 6 ++++--
-> >  arch/x86/mm/fault.c      | 6 ++++--
-> >  include/linux/mm_types.h | 5 +++++
-> >  mm/hugetlb.c             | 3 ++-
-> >  mm/memory.c              | 2 +-
-> >  6 files changed, 21 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
-> > index c39de84e98b0..e5370bcadf27 100644
-> > --- a/arch/parisc/mm/fault.c
-> > +++ b/arch/parisc/mm/fault.c
-> > @@ -400,9 +400,12 @@ void do_page_fault(struct pt_regs *regs, unsigned =
-long code,
-> >  #ifdef CONFIG_MEMORY_FAILURE
-> >               if (fault & (VM_FAULT_HWPOISON|VM_FAULT_HWPOISON_LARGE)) =
-{
-> >                       unsigned int lsb =3D 0;
-> > -                     printk(KERN_ERR
-> > +
-> > +                     if (!(fault & VM_FAULT_HWPOISON_SIM)) {
-> > +                             pr_err(
-> >       "MCE: Killing %s:%d due to hardware memory corruption fault at %0=
-8lx\n",
-> > -                     tsk->comm, tsk->pid, address);
-> > +                             tsk->comm, tsk->pid, address);
-> > +                     }
-> >                       /*
-> >                        * Either small page or large page may be poisone=
-d.
-> >                        * In other words, VM_FAULT_HWPOISON_LARGE and
-> > diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-> > index 53335ae21a40..ac5e8a3c7fba 100644
-> > --- a/arch/powerpc/mm/fault.c
-> > +++ b/arch/powerpc/mm/fault.c
-> > @@ -140,8 +140,10 @@ static int do_sigbus(struct pt_regs *regs, unsigne=
-d long address,
-> >       if (fault & (VM_FAULT_HWPOISON|VM_FAULT_HWPOISON_LARGE)) {
-> >               unsigned int lsb =3D 0; /* shutup gcc */
-> >
-> > -             pr_err("MCE: Killing %s:%d due to hardware memory corrupt=
-ion fault at %lx\n",
-> > -                     current->comm, current->pid, address);
-> > +             if (!(fault & VM_FAULT_HWPOISON_SIM)) {
-> > +                     pr_err("MCE: Killing %s:%d due to hardware memory=
- corruption fault at %lx\n",
-> > +                             current->comm, current->pid, address);
-> > +             }
-> >
-> >               if (fault & VM_FAULT_HWPOISON_LARGE)
-> >                       lsb =3D hstate_index_to_shift(VM_FAULT_GET_HINDEX=
-(fault));
-> > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-> > index e4f3c7721f45..16d077a3ad14 100644
-> > --- a/arch/x86/mm/fault.c
-> > +++ b/arch/x86/mm/fault.c
-> > @@ -928,9 +928,11 @@ do_sigbus(struct pt_regs *regs, unsigned long erro=
-r_code, unsigned long address,
-> >               struct task_struct *tsk =3D current;
-> >               unsigned lsb =3D 0;
-> >
-> > -             pr_err_ratelimited(
-> > +             if (!(fault & VM_FAULT_HWPOISON_SIM)) {
-> > +                     pr_err_ratelimited(
-> >       "MCE: Killing %s:%d due to hardware memory corruption fault at %l=
-x\n",
-> > -                     tsk->comm, tsk->pid, address);
-> > +                             tsk->comm, tsk->pid, address);
-> > +             }
-> >               if (fault & VM_FAULT_HWPOISON_LARGE)
-> >                       lsb =3D hstate_index_to_shift(VM_FAULT_GET_HINDEX=
-(fault));
-> >               if (fault & VM_FAULT_HWPOISON)
-> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> > index 5240bd7bca33..7f8fc3efc5b2 100644
-> > --- a/include/linux/mm_types.h
-> > +++ b/include/linux/mm_types.h
-> > @@ -1226,6 +1226,9 @@ typedef __bitwise unsigned int vm_fault_t;
-> >   * @VM_FAULT_HWPOISON_LARGE: Hit poisoned large page. Index encoded
-> >   *                           in upper bits
-> >   * @VM_FAULT_SIGSEGV:                segmentation fault
-> > + * @VM_FAULT_HWPOISON_SIM    Hit poisoned, PTE marker; this indicates =
-a
-> > + *                           simulated poison (e.g. via usefaultfd's
-> > + *                              UFFDIO_POISON), not a "real" hwerror.
-> >   * @VM_FAULT_NOPAGE:         ->fault installed the pte, not return pag=
-e
-> >   * @VM_FAULT_LOCKED:         ->fault locked the returned page
-> >   * @VM_FAULT_RETRY:          ->fault blocked, must retry
-> > @@ -1245,6 +1248,7 @@ enum vm_fault_reason {
-> >       VM_FAULT_HWPOISON       =3D (__force vm_fault_t)0x000010,
-> >       VM_FAULT_HWPOISON_LARGE =3D (__force vm_fault_t)0x000020,
-> >       VM_FAULT_SIGSEGV        =3D (__force vm_fault_t)0x000040,
-> > +     VM_FAULT_HWPOISON_SIM   =3D (__force vm_fault_t)0x000080,
-> >       VM_FAULT_NOPAGE         =3D (__force vm_fault_t)0x000100,
-> >       VM_FAULT_LOCKED         =3D (__force vm_fault_t)0x000200,
-> >       VM_FAULT_RETRY          =3D (__force vm_fault_t)0x000400,
-> > @@ -1270,6 +1274,7 @@ enum vm_fault_reason {
-> >       { VM_FAULT_HWPOISON,            "HWPOISON" },   \
-> >       { VM_FAULT_HWPOISON_LARGE,      "HWPOISON_LARGE" },     \
-> >       { VM_FAULT_SIGSEGV,             "SIGSEGV" },    \
-> > +     { VM_FAULT_HWPOISON_SIM,        "HWPOISON_SIM" },       \
-> >       { VM_FAULT_NOPAGE,              "NOPAGE" },     \
-> >       { VM_FAULT_LOCKED,              "LOCKED" },     \
-> >       { VM_FAULT_RETRY,               "RETRY" },      \
-> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> > index 65456230cc71..2b4e0173e806 100644
-> > --- a/mm/hugetlb.c
-> > +++ b/mm/hugetlb.c
-> > @@ -6485,7 +6485,8 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, st=
-ruct vm_area_struct *vma,
-> >                               pte_marker_get(pte_to_swp_entry(entry));
-> >
-> >                       if (marker & PTE_MARKER_POISONED) {
-> > -                             ret =3D VM_FAULT_HWPOISON_LARGE |
-> > +                             ret =3D VM_FAULT_HWPOISON_SIM |
-> > +                                   VM_FAULT_HWPOISON_LARGE |
-> >                                     VM_FAULT_SET_HINDEX(hstate_index(h)=
-);
-> >                               goto out_mutex;
-> >                       }
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index d2155ced45f8..29a833b996ae 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -3910,7 +3910,7 @@ static vm_fault_t handle_pte_marker(struct vm_fau=
-lt *vmf)
-> >
-> >       /* Higher priority than uffd-wp when data corrupted */
-> >       if (marker & PTE_MARKER_POISONED)
-> > -             return VM_FAULT_HWPOISON;
-> > +             return VM_FAULT_HWPOISON | VM_FAULT_HWPOISON_SIM;
-> >
-> >       if (pte_marker_entry_uffd_wp(entry))
-> >               return pte_marker_handle_uffd_wp(vmf);
-> > --
-> > 2.45.0.118.g7fe29c98d7-goog
-> >
->
-> --
-> Peter Xu
->
 
