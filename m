@@ -1,126 +1,203 @@
-Return-Path: <linux-parisc+bounces-1404-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1405-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEB48C5A24
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2024 19:15:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5F98C5C4E
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2024 22:27:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB701C21A72
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2024 17:15:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEEBD1F23B75
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2024 20:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708431802BC;
-	Tue, 14 May 2024 17:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D632181BA1;
+	Tue, 14 May 2024 20:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0iOWUnBD"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="B26BTArW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1IRBTVc1";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="B26BTArW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1IRBTVc1"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6591C17F39D
-	for <linux-parisc@vger.kernel.org>; Tue, 14 May 2024 17:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5D618133B;
+	Tue, 14 May 2024 20:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715706937; cv=none; b=tYZfyJwqwGHqmMME1Fd3dXvgg6w4XfghVexfUbMBbp1z7xZ93pl2lhnEa4fEzpJdydH4GNyaGGEnmNgIhkIxZjRQrDecSlfTkRJ0UIvxXctX0V3ipwLRjxPtx3TTRaZTeFa5b5HVuFCLO9cH94cmx6qT+QHfYOUCw4guJpwezn0=
+	t=1715718420; cv=none; b=BXKVdn63ykt4W5OAAdOWqRLITe4aP1FQda9OsTq6HmGcO0niQkSjdz7JyQu0erw5JGbp5RcuvPOLqLaepRXaoLnP9ot2ygO7PnombnY4yuyipW9SmVwrHiCmn0tqoSQHWIm5fxJYtl+atztHR7MES545PRB6J40gg6xxkUDq1V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715706937; c=relaxed/simple;
-	bh=JphrTnGE11d/hcgLanrvMdnjxLSu0oYp2e2Hwwop9sM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c8bv3UMnpZTHD4qDnHpKgqHaStevRvJyap+/cFhsfuNbu4iK7MRuZYV71ei8IUU+UPSO87I3UE6Os3cYdI3jQNSdVK970RSnH3a5zy6mK4TIxOGpHNQQm93W3wXU/iouhtLLk45l2Oau6AgTbKWyGLkGkeORYpb9yo1oL9EgBc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0iOWUnBD; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a59a64db066so46549266b.3
-        for <linux-parisc@vger.kernel.org>; Tue, 14 May 2024 10:15:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1715706934; x=1716311734; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JphrTnGE11d/hcgLanrvMdnjxLSu0oYp2e2Hwwop9sM=;
-        b=0iOWUnBDzJP8ffTn7q6qGPHMBKoAK2jWGPB1fnj68OQljM1csqUFLvPtPlrkGkTqDY
-         Vqdbb3tImIM99DQ8Lglibm2JxMP7EWa1fUXdHtcBAfOkOZPh6XI3f535F8wRWntSYn3O
-         0t9exVre0Q9nMFx72/hEX35IFOOgJFYZMPJSQJuvvoitWok2x8anqnrLIN9k2E77gx3/
-         GMql6scUnB/KnFb2CYg+ikZG9YSGieC1q+VcKFydFMlbmiyCoTW5qJgM3qPxX4qw/SQc
-         BVSK6uLSIAeDmF+4lm1Q4UJaWQZUEaY/ocJSIVWJ+/RUhIg5dDBTwfiS+AqwJ529ZUQx
-         Z4XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715706934; x=1716311734;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JphrTnGE11d/hcgLanrvMdnjxLSu0oYp2e2Hwwop9sM=;
-        b=ozjjh0Bu9ujYqktQC6a/bCc3Myr49qbsW7635K9Q2AnIpp300E6Huz+Uat6GoYA/0v
-         GYOOfeVVh0nl+BQOB/JPd4eCJL93P5L0DYzGR5OQa8hPTjCQWPPSNigxzkx0dfhFvQQv
-         Ok0605ryjW3jRPEIEuV0ZOfoMH/CMQFNZDqEjEWFGZBsgNmOTJ8E6LLH3KnKoGPstSp8
-         BWJRj4sU5C+MR8TGaUAPD/Ub7SpDepBOC+Hb3Mq5JyxAjYGSNQsN4AUTuCmoYgtjRfis
-         c8yRFdiGpBq7lqrgWzzONpm5bhlHmruskUVi78ZhZfdBAdhZmwj5bAlR3iFPy8Hjbfi/
-         FI0g==
-X-Forwarded-Encrypted: i=1; AJvYcCXef1pBmByBUTJ4nREhoNAQ4b7WzEmVZKDFTu8lp4Vx4VTMziXjM0MyGS3Xg65AXb3qNfZNEHVIV+q8577+PMXSvj7aS2UhN6wh0Syb
-X-Gm-Message-State: AOJu0YwBIGzdBCUnhkt28oWUPkOtAvJq87NOfFsfoHCr3DFcRR9Zbxxu
-	J3c7BkTvsizf/oPVQDYRN9KldN7k6FEiCWCLAx1N/ZB9XEoNqzTZxAvXQgYorrQrt+JxLC7eM49
-	ZwfBP1TM4Npl9wk9gQQ8ycYjNAPNPCcfW47Ji
-X-Google-Smtp-Source: AGHT+IEwOQpqw4ZMKIlz9X6LbLlfb8P5lzGCaO4YFYW5AVzaTN7hWpB9KsS7Ts3tYb3EwJ+JwuI+UCM3+u1xlOEFWOo=
-X-Received: by 2002:a17:906:714a:b0:a5a:8ac4:3c4c with SMTP id
- a640c23a62f3a-a5a8ac43e15mr130162166b.68.1715706933383; Tue, 14 May 2024
- 10:15:33 -0700 (PDT)
+	s=arc-20240116; t=1715718420; c=relaxed/simple;
+	bh=oU0zTOQEazN2a80NqjhwaXY8nU6keZNiSCitSjyv7TQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RV/90qgpLUcom9nkGhmWMTbinWmsoDjHEjsLT/iLPRRapEbK6EJyZYebaLO5Vaa4s40LJH+fRY43Z7An45vSK658pBCoegEXdSko1HLzV6XuOEL1C7gqG0oR96sqHSi6uRHfzSHpy8ck5PneRpvb0kLUvfV0TnGvZr3oByMVUAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=B26BTArW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1IRBTVc1; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=B26BTArW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1IRBTVc1; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 731611F8BF;
+	Tue, 14 May 2024 20:26:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1715718416; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9yjxIwA1Fan6uISC9vU5afpsy0S0SjDWMQ82F600DAs=;
+	b=B26BTArW7pLJtAbCnS8oHTPC4ZDZhEY+OSzSERTB3KdheXmHuHHbJerwugQ/S4xJqV7buD
+	5mSzjHiXphrrAcFgozcOGhK+RBxF6kqZWb4uYjACars0BkL4RuLEL9E20b3DvyaNL2AxJJ
+	kRt1K249Nnxyi7njIRMt1tqGOy8m4fE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1715718416;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9yjxIwA1Fan6uISC9vU5afpsy0S0SjDWMQ82F600DAs=;
+	b=1IRBTVc1wBNIu6pO4byzhdDLYzRc7KSHpbB5c3jy4WMztCRTijmkU8eYjPHutAAcT0vUZ/
+	V4wKrHrvTZFnLpAg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=B26BTArW;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1IRBTVc1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1715718416; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9yjxIwA1Fan6uISC9vU5afpsy0S0SjDWMQ82F600DAs=;
+	b=B26BTArW7pLJtAbCnS8oHTPC4ZDZhEY+OSzSERTB3KdheXmHuHHbJerwugQ/S4xJqV7buD
+	5mSzjHiXphrrAcFgozcOGhK+RBxF6kqZWb4uYjACars0BkL4RuLEL9E20b3DvyaNL2AxJJ
+	kRt1K249Nnxyi7njIRMt1tqGOy8m4fE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1715718416;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9yjxIwA1Fan6uISC9vU5afpsy0S0SjDWMQ82F600DAs=;
+	b=1IRBTVc1wBNIu6pO4byzhdDLYzRc7KSHpbB5c3jy4WMztCRTijmkU8eYjPHutAAcT0vUZ/
+	V4wKrHrvTZFnLpAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0DB3B1372E;
+	Tue, 14 May 2024 20:26:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id IIFZOw7JQ2YLHwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 14 May 2024 20:26:54 +0000
+Date: Tue, 14 May 2024 22:26:49 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Muchun Song <muchun.song@linux.dev>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
+ poison errors
+Message-ID: <ZkPJCc5N1Eotpa4u@localhost.localdomain>
+References: <20240510182926.763131-1-axelrasmussen@google.com>
+ <20240510182926.763131-2-axelrasmussen@google.com>
+ <Zj51rEwZeSK4Vr1G@x1n>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240510232128.1105145-1-almasrymina@google.com> <20240513163114.52b44f66@kernel.org>
-In-Reply-To: <20240513163114.52b44f66@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 14 May 2024 10:15:18 -0700
-Message-ID: <CAHS8izMH9223wbHQk8zbtqP-hfydvqkmo3k3BYeWYrpkuVcnVw@mail.gmail.com>
-Subject: Re: [PATCH net-next v9 00/14] Device Memory TCP
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
-	Matt Turner <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan <shuah@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zj51rEwZeSK4Vr1G@x1n>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-6.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	ARC_NA(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[28];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	FREEMAIL_CC(0.00)[google.com,linux-foundation.org,kernel.org,alien8.de,csgroup.eu,linux.intel.com,redhat.com,zytor.com,gmx.de,hansenpartnership.com,nvidia.com,huawei.com,infradead.org,ellerman.id.au,linux.dev,linux.ibm.com,gmail.com,linutronix.de,vger.kernel.org,kvack.org,lists.ozlabs.org];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLeqp5gkuwhygrjzi4zhnnr4iu)];
+	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim]
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 731611F8BF
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Score: -6.51
 
-On Mon, May 13, 2024 at 4:31=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Fri, 10 May 2024 16:21:11 -0700 Mina Almasry wrote:
-> > Device Memory TCP
->
-> Sorry Mina, this is too big to apply during the merge window :(
+On Fri, May 10, 2024 at 03:29:48PM -0400, Peter Xu wrote:
+> IMHO we shouldn't mention that detail, but only state the effect which is
+> to not report the event to syslog.
+> 
+> There's no hard rule that a pte marker can't reflect a real page poison in
+> the future even MCE.  Actually I still remember most places don't care
+> about the pfn in the hwpoison swap entry so maybe we can even do it? But
+> that's another story regardless..
 
-No worries at all. I'll repost once it re-opens with any feedback I
-get in the meantime.
+But we should not use pte markers for real hwpoisons events (aka MCE), right?
+I mean, we do have the means to mark a page as hwpoisoned when a real
+MCE gets triggered, why would we want a pte marker to also reflect that?
+Or is that something for userfaultd realm?
 
---=20
-Thanks,
-Mina
+> And also not report swapin error is, IMHO, only because arch errors said
+> "MCE" in the error logs which may not apply here.  Logically speaking
+> swapin error should also be reported so admin knows better on why a proc is
+> killed.  Now it can still confuse the admin if it really happens, iiuc.
+
+I am bit confused by this.
+It seems we create poisoned pte markers on swap errors (e.g:
+unuse_pte()), which get passed down the chain with VM_FAULT_HWPOISON,
+which end up in sigbus (I guess?).
+
+This all seems very subtle to me.
+
+First of all, why not passing VM_FAULT_SIGBUS if that is what will end
+up happening?
+I mean, at the moment that is not possible because we convolute swaping
+errors and uffd poison in the same type of marker, so we do not have any
+means to differentiate between the two of them.
+
+Would it make sense to create yet another pte marker type to split that
+up? Because when I look at VM_FAULT_HWPOISON, I get reminded of MCE
+stuff, and that does not hold here.
+
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
