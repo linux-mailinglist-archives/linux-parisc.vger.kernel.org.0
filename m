@@ -1,144 +1,151 @@
-Return-Path: <linux-parisc+bounces-1414-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1415-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112518C693B
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 17:06:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A378C6B89
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 19:33:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4D8F283A07
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 15:06:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29DB21F20F42
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 17:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDE5155744;
-	Wed, 15 May 2024 15:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503A43EA7B;
+	Wed, 15 May 2024 17:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="Ulb1269i"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s9HJpiRk"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-005.bell.net [209.71.208.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC15015572C
-	for <linux-parisc@vger.kernel.org>; Wed, 15 May 2024 15:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DE539FE4
+	for <linux-parisc@vger.kernel.org>; Wed, 15 May 2024 17:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715785589; cv=none; b=nDBuKNfvt66yqEnysf3lwXD42qwJIsfVD/cPEUI29DEOXyJpnJMJ9/SoZd5GgVsy2Unpm3hWPQO9E2pIKPAaBr4gYQahe9sTdz/CcpOMjvdXmZ1NZsy+54LxqAOEfVTsz+3MQ0oV+l27YRVMWUFPm7/iY8fsBbU0FQSKAZFJAGs=
+	t=1715794427; cv=none; b=cwuF5p0a8uM3indYss04VT3oA7rMWL6WZPhyZuPibT0pjCv0dwzNJM6j1tzdhkhEr6n+wcx65AXDJFrmtO1Bf9ssbGRhoAAcOjW+9dRZLkOury5w1hSd4FvjQxP/RE1SaNceEFlP6BSaK/PBdPzVoUCQPGaJ2pzZMSGeeyG8qWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715785589; c=relaxed/simple;
-	bh=J1hsn+Hy2I7s8Vh9ZLSsOyKMr6M5x6z2EUopdj7bips=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=obASig64HfxZVSDD3aHf8TMU+FJgMP9t2rBR7f/0TCvrqLtcXbzr+i2YCUYutRelS9vuLxVcbACEYcLvnMYrOaoUD1omPe45wOy0WNL976A8wJoi2USfzk+62tAs7b78WYANTViOco6UdhkpPc06uD2HZ/I9IEU6ntcL5OfAG7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=Ulb1269i; arc=none smtp.client-ip=209.71.208.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1715785587; 
-        bh=NmjZGgXIxoh23nq+Z2TqIAxPonk7TT1ZJPtuV6RfLns=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=Ulb1269iH3vtneaubGcREIifa8nsUb5RpNtYYOH4PjrwmJQv9MY+dhnLwIEAxgVMqIVwWM7aXZkiUxsgCD6Kf5yv/r+xOzPosLkmSOYRa39BkYcSc9QmmichwC85DOn02He82bqQPb2yJ9MzSD+Qr5HA515pRSlLuYvX9WnHlO1mo6G5ex33meJSWJs48DvyOK8qI5c5RSiYzdt7V/wlRCuGac3hDtqlQFQsAJnldgFz6zIjVrbnfcSegy+xItpzrEKjflBYUmKrF5SCn69klAeSNAluBf7TPK2LlfrZJHOFZvqPlhlwycYkfoIPDaObONv/aPB7SoSq+iuMOUwVEQ==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 6643FD0200106A01
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvledrvdegkedgkedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuuefgnffnpdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhepkfffgggfuffvfhfhjggtgfesthejredttddvjeenucfhrhhomheplfhohhhnucffrghvihguucetnhhglhhinhcuoegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvtheqnecuggftrfgrthhtvghrnhephfeiteeujeehuedvhfehuefgheehtedukeetveehkeduheeltdeiuedvueehtdfgnecukfhppedugedvrdduvdeirddukeekrddvhedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepudegvddruddviedrudekkedrvdehuddpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepfedprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqphgrrhhishgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrvghvkffrpegsrhgrshdqsggrshgvqdhothifrghonhdtledtieifqdhgrhgtqdduhedqudegvddquddviedqudekkedqvdehuddrughslhdrsggvlhhlrdgtrgdprghuthhhpghushgvrhepuggrvhgvrdgrnhhglhhinhessggvlhhl
-	rdhnvghtpdhgvghokffrpeevte
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.126.188.251) by cmx-mtlrgo002.bell.net (authenticated as dave.anglin@bell.net)
-        id 6643FD0200106A01; Wed, 15 May 2024 11:06:15 -0400
-Message-ID: <d7a5fdbd-ddcb-4ef5-acdf-9f30bfcc99e2@bell.net>
-Date: Wed, 15 May 2024 11:06:15 -0400
+	s=arc-20240116; t=1715794427; c=relaxed/simple;
+	bh=BczV/FF4eIzKWVrSkkC8DYFt1QqsMU4CdnShIk6/U3M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bCcdxwhw9uhcApmNnQRj5NsZcJtJD0ffRij+IeGX24bMAJfiFsEkHew8SErkZoUwDXGck2byiczatIYlo+VvV0zTt3/7dD/tUYXg7Io5cQvwif7z5WwMuCXGdu2UVJRL/GfayhrZUOfPP1BfnrvpQfdnbWV1NAAPbpCz5MmpbbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s9HJpiRk; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-34f0e55787aso5649994f8f.2
+        for <linux-parisc@vger.kernel.org>; Wed, 15 May 2024 10:33:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1715794424; x=1716399224; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=REXKNTAxo862A8ReBddrMUjz3K+lbyLjZMQEflUAct8=;
+        b=s9HJpiRkvmLjvVF7EK6rqcWhZkYTfdp2i6sAc9gf8G1joqcuqe2fWvimC+lsmN3Iyd
+         F/cIbxok4h0TDxs92Inlt/2O7VG4Cj+87c3kIDhEPkVtlaA75A2wV+zbyZ28dHNYFFfW
+         /jeTm02s5ZuxCBjiLa1zQGr0Bw/smD0d1UnSLujEVLuVuJqK5b+69a0I9Tf81n3wVNdC
+         qhhieCMWqWhp8PCF9wYIQmHJnuq47Gk7fK0NsKMua0j/90CLBIpTpGhG++B7aKI/4AzA
+         vOydfcGb1+1O9u6VAR213zUoSTE2hjdn0Yg8JN7KyVjWX98U2tJ6uee3uH3TrK0r3ffv
+         ChDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715794424; x=1716399224;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=REXKNTAxo862A8ReBddrMUjz3K+lbyLjZMQEflUAct8=;
+        b=AXlBa29yCOO7VH3OTM/CRcuhFy8rCJOrPcMELhE2aESHLw8KGzt2TBOEpOfKCNqWxp
+         TtjlTXG2Vjx4Ln8Nyu2nHv14y/51bKm0raYgu9VB/HnUgTqNbn69icHcp9fAsAWj6gmY
+         nfqpdoyVVDwY0pglNHxX+Ro32WmmSMET5Q6WmO7g7bJDkWd4fxVAYBjXd2ZcHn+bmSej
+         2YZ0jCoPMryD8jKUcgK+muHkpytlYmyNIBbntlTRtjXzKPqvlJ20nFbiGfMRRFiDkQdb
+         ZB/1sp2Vcoj08Sw/4ioah41+RSiTuzRhau1UIRzegKI9c1scPMomc9a3Rx6qOFQ0McCm
+         cgIg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRNJWMMrMDEaoHdmqzGJU07ROKhkrgup0tqEGCf2GiCERUkjucuAxCbMD3/g6j5sOjvygGFDv8XC3iSLl32Nc6LTbF2+otmh33jgzt
+X-Gm-Message-State: AOJu0YyL2yJcoyMzJs1EK7MOl2H8ftwG/hPj8oL1mhwH4fuMwxk9bpip
+	+HcyLayh5SwbLUdIKsAWMWG0u0ESfM74FDPrNPJbzY2qs1ZRWTU7KW9TRXPdHuxJV/3zjk6+97L
+	pt5mkEkgxgJdWUjkZ1ss0C59Baw4WM6NCXPKI
+X-Google-Smtp-Source: AGHT+IECmpnR3hqErRAHKi5zZVxQqX+AzRVW0B5FrzgG6JtiQjlGQI3473zUOeMvDrH067XEBa75l4kB51sO6OrPOMs=
+X-Received: by 2002:a5d:5351:0:b0:343:e02f:1a46 with SMTP id
+ ffacd0b85a97d-3504a62fb12mr13056195f8f.2.1715794423681; Wed, 15 May 2024
+ 10:33:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: Define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
-To: deller@kernel.org, linux-parisc@vger.kernel.org
-References: <20240515125324.89101-2-deller@kernel.org>
-Content-Language: en-US
-From: John David Anglin <dave.anglin@bell.net>
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- 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
- T70V9SSrl2hiw38vRzsl
-In-Reply-To: <20240515125324.89101-2-deller@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240510182926.763131-1-axelrasmussen@google.com>
+ <20240510182926.763131-2-axelrasmussen@google.com> <20240515104142.GBZkSRZsa3cxJ3DKVy@fat_crate.local>
+ <ZkSUaVx3uCIPkpkJ@localhost.localdomain>
+In-Reply-To: <ZkSUaVx3uCIPkpkJ@localhost.localdomain>
+From: Axel Rasmussen <axelrasmussen@google.com>
+Date: Wed, 15 May 2024 10:33:03 -0700
+Message-ID: <CAJHvVchGGJkEX=qroW=+N-RJDMDGuxM4xoGe7iOtRu9YcfxEEw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker poison errors
+To: Oscar Salvador <osalvador@suse.de>
+Cc: Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andy Lutomirski <luto@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>, 
+	Ingo Molnar <mingo@redhat.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Liu Shixin <liushixin2@huawei.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>, 
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Peter Xu <peterx@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Tested-by: John David Anglin <dave.anglin@bell.net>
-
-Dave
-
-On 2024-05-15 8:53 a.m., deller@kernel.org wrote:
-> From: Helge Deller <deller@gmx.de>
+On Wed, May 15, 2024 at 3:54=E2=80=AFAM Oscar Salvador <osalvador@suse.de> =
+wrote:
 >
-> Define the HAVE_ARCH_HUGETLB_UNMAPPED_AREA macro like other platforms do in
-> their page.h files to avoid this compile warning:
-> arch/parisc/mm/hugetlbpage.c:25:1: warning: no previous prototype for 'hugetlb_get_unmapped_area' [-Wmissing-prototypes]
+> On Wed, May 15, 2024 at 12:41:42PM +0200, Borislav Petkov wrote:
+> > On Fri, May 10, 2024 at 11:29:26AM -0700, Axel Rasmussen wrote:
+> > > @@ -3938,7 +3938,7 @@ static vm_fault_t handle_pte_marker(struct vm_f=
+ault *vmf)
+> > >
+> > >     /* Higher priority than uffd-wp when data corrupted */
+> > >     if (marker & PTE_MARKER_POISONED)
+> > > -           return VM_FAULT_HWPOISON;
+> > > +           return VM_FAULT_HWPOISON | VM_FAULT_HWPOISON_SILENT;
+> >
+> > If you know here that this poisoning should be silent, why do you have
+> > to make it all complicated and propagate it into arch code, waste
+> > a separate VM_FAULT flag just for that instead of simply returning here
+> > a VM_FAULT_COMPLETED or some other innocuous value which would stop
+> > processing the fault?
 >
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Cc: stable@vger.kernel.org  # 6.0+
-> Reported-by: John David Anglin <dave.anglin@bell.net>
-> ---
->   arch/parisc/include/asm/page.h | 1 +
->   1 file changed, 1 insertion(+)
+> AFAIK, He only wants it to be silent wrt. the arch fault handler not scre=
+aming,
+> but he still wants to be able to trigger force_sig_mceerr().
+
+Right, the goal is to still have the process get a SIGBUS, but to
+avoid the "MCE error" log message. The basic issue is, unprivileged
+users can set these markers up, and thereby completely spam up the
+log.
+
+Also since this is a process-specific thing, and it's not a real
+hardware poison event, it's unclear system admins care at all at a
+global level (this is why we didn't want to switch to just
+printk_ratelimited for example). Better to let the process handle the
+SIGBUS however it likes for its use case (logging a message elsewhere,
+etc.).
+
+That said, one thing I'm not sure about is whether or not
+VM_FAULT_SIGBUS is a viable alternative (returned for a new PTE marker
+type specific to simulated poison). The goal of the simulated poison
+feature is to "closely simulate" a real hardware poison event. If you
+live migrate a VM from a host with real poisoned memory, to a new
+host: you'd want to keep the same behavior if the guest accessed those
+addresses again, so as not to confuse the guest about why it suddenly
+became "un-poisoned". At a basic level I think VM_FAULT_SIGBUS gives
+us what we want (send SIGBUS to the process, don't log about MCEs),
+but I'm not confident I know all the differences vs. VM_FAULT_HWPOISON
+on all the arches.
+
 >
-> diff --git a/arch/parisc/include/asm/page.h b/arch/parisc/include/asm/page.h
-> index ad4e15d12ed1..4bea2e95798f 100644
-> --- a/arch/parisc/include/asm/page.h
-> +++ b/arch/parisc/include/asm/page.h
-> @@ -8,6 +8,7 @@
->   #define PAGE_SIZE	(_AC(1,UL) << PAGE_SHIFT)
->   #define PAGE_MASK	(~(PAGE_SIZE-1))
->   
-> +#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
->   
->   #ifndef __ASSEMBLY__
->   
-
--- 
-John David Anglin  dave.anglin@bell.net
-
+>
+> --
+> Oscar Salvador
+> SUSE Labs
 
