@@ -1,174 +1,85 @@
-Return-Path: <linux-parisc+bounces-1412-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1413-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91028C6532
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 12:54:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C538C668F
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 14:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25D0C1C21021
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 10:54:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA68F1C21E68
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 12:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F96612D0;
-	Wed, 15 May 2024 10:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A94B84D0B;
+	Wed, 15 May 2024 12:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wghMJcAX";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="adNbIuSh";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wghMJcAX";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="adNbIuSh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PHPV0K+U"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0066B5F876;
-	Wed, 15 May 2024 10:54:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272EB84D05
+	for <linux-parisc@vger.kernel.org>; Wed, 15 May 2024 12:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715770479; cv=none; b=Ma3Ut9WklDT8aYHAc9IAoRXNyfIw+lmK7MI8R0r2fexMEt2c87iCqskhk7bNxm0BSIEQut4Wcz6lA1vUoxUADJz0J1BYhUjTuH9YT7Ag86RwTl1AAbqW3VNOcCzjro4KVyCCiWPH10gcynWHzemMBY+bgu7nzcfmdR/0HVBbUqg=
+	t=1715777646; cv=none; b=r1+ovXqdJrm71vqbr+7DDNo/FtItoC4wgV0hqdfOZ4287TzQvItDdV/ICCEmLfd6Psqz/fBPYIpa4M6Zio6ekg7BCnQX5KNHmYW82/vilzaexF3+Y/nuzQAmCwNM3FJfoKnSvTpLnEw4aawS6jL4yeaRtBqE3w5IYSWSuie1qEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715770479; c=relaxed/simple;
-	bh=Djb46qMbw8em2zSmuFBKViQD/CJimPI2Syj+DiIkc94=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kahur0CV6TC10eKefsfvbjh5PJfxpvbRTEAXoc7H6K6LSwlsX/Nk6m3XUq/qZAQF3LGEbORRtCxtZ5EOkjUQgJzbABpym1W69tNHPUuJ3oD9lQ/WLBrHwf3Tn3zKP8M+qbJhYgREKCbgsddlkiUK4awn8dFfrqncDquc6VSAZeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wghMJcAX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=adNbIuSh; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wghMJcAX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=adNbIuSh; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 10EB721FEC;
-	Wed, 15 May 2024 10:54:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715770476; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6jv9xWgEcYiTZtZfk0F4GwA5Qmgsj9Sim5edw+In6xE=;
-	b=wghMJcAX1wHVTVEJ1QoIFPZ0piA5e1uAq6rd4zr0RvXLe47i8WOcZLRMKa6sDG9du9370A
-	z0v4gplJD4re2RH6KD95ZbJF5/mdF1AGFIl8xlIMptY3WoNO2DAqZ1LaA+yRXIGqPRhLjz
-	696eY0ewpYovgoKTq1sXOTQVpuNeyhk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715770476;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6jv9xWgEcYiTZtZfk0F4GwA5Qmgsj9Sim5edw+In6xE=;
-	b=adNbIuShkFQwATA7ZymPl5DsSsG4uMUOfJXP6evMuVG0F2gCwQVnvirSvt7wOMeW8SRAQa
-	C6aNNNl/uwLKy3CA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1715770476; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6jv9xWgEcYiTZtZfk0F4GwA5Qmgsj9Sim5edw+In6xE=;
-	b=wghMJcAX1wHVTVEJ1QoIFPZ0piA5e1uAq6rd4zr0RvXLe47i8WOcZLRMKa6sDG9du9370A
-	z0v4gplJD4re2RH6KD95ZbJF5/mdF1AGFIl8xlIMptY3WoNO2DAqZ1LaA+yRXIGqPRhLjz
-	696eY0ewpYovgoKTq1sXOTQVpuNeyhk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1715770476;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6jv9xWgEcYiTZtZfk0F4GwA5Qmgsj9Sim5edw+In6xE=;
-	b=adNbIuShkFQwATA7ZymPl5DsSsG4uMUOfJXP6evMuVG0F2gCwQVnvirSvt7wOMeW8SRAQa
-	C6aNNNl/uwLKy3CA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7CCF7139B3;
-	Wed, 15 May 2024 10:54:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id UPO9G2qURGZLSgAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Wed, 15 May 2024 10:54:34 +0000
-Date: Wed, 15 May 2024 12:54:33 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Muchun Song <muchun.song@linux.dev>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>, Peter Xu <peterx@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
- poison errors
-Message-ID: <ZkSUaVx3uCIPkpkJ@localhost.localdomain>
-References: <20240510182926.763131-1-axelrasmussen@google.com>
- <20240510182926.763131-2-axelrasmussen@google.com>
- <20240515104142.GBZkSRZsa3cxJ3DKVy@fat_crate.local>
+	s=arc-20240116; t=1715777646; c=relaxed/simple;
+	bh=J6tHnTXaxW4j34Z7h378cPoXrROtzx6x0960Sk68cUA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=dSP253Rb3lmLDSKlHcwGs+z+Hj/2SNnyz2kDj5ibkPsOI4i3gh8hA6u6hBn1U7Su+hSyDNkaGD/1rx2V+MtpeMc1+p4B6H0mEXiZI6du2RtDEByuYvM+0dooRzhmfxUMI4+8xWxiFzMu3ssfVdrav+/PJ0uIN4cPoz9mi3SN864=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PHPV0K+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C46C32782
+	for <linux-parisc@vger.kernel.org>; Wed, 15 May 2024 12:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715777646;
+	bh=J6tHnTXaxW4j34Z7h378cPoXrROtzx6x0960Sk68cUA=;
+	h=From:To:Subject:Date:From;
+	b=PHPV0K+U8hyvbcRF6nbh0072d9MmZTH2fRvOMqZf5lgV2ngWLuAiJFQJrCVqtinJn
+	 nSl1NS7HoGjpkemjoEQVOIF3rfy5kQUAhOpenmSEI+c3Cn9f75nay7EDRUmCVFIXde
+	 YazCYcwWzr465jvQGLWCI7+sQcuXaYT6XWK0xcVf93zL0DGrRLP0XBX/+gTsM1skiZ
+	 Hz47mlzYGeseQk3yAU+EUC0VxLxodMqa4oyn8FAJTmiI1P+aT5k9AVIUA1QwLzuT6u
+	 jmolaFdxpB2gLpUURhJcVAGeWunp6jf470B5lFc/S9FcS7MO8EnTWSh9iTZo984PTk
+	 x7W8FS8EgvdZA==
+From: deller@kernel.org
+To: linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc: Define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+Date: Wed, 15 May 2024 14:53:25 +0200
+Message-ID: <20240515125324.89101-2-deller@kernel.org>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240515104142.GBZkSRZsa3cxJ3DKVy@fat_crate.local>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[google.com,linux-foundation.org,kernel.org,csgroup.eu,linux.intel.com,redhat.com,zytor.com,gmx.de,hansenpartnership.com,nvidia.com,huawei.com,infradead.org,ellerman.id.au,linux.dev,linux.ibm.com,gmail.com,linutronix.de,vger.kernel.org,kvack.org,lists.ozlabs.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 15, 2024 at 12:41:42PM +0200, Borislav Petkov wrote:
-> On Fri, May 10, 2024 at 11:29:26AM -0700, Axel Rasmussen wrote:
-> > @@ -3938,7 +3938,7 @@ static vm_fault_t handle_pte_marker(struct vm_fault *vmf)
-> >  
-> >  	/* Higher priority than uffd-wp when data corrupted */
-> >  	if (marker & PTE_MARKER_POISONED)
-> > -		return VM_FAULT_HWPOISON;
-> > +		return VM_FAULT_HWPOISON | VM_FAULT_HWPOISON_SILENT;
-> 
-> If you know here that this poisoning should be silent, why do you have
-> to make it all complicated and propagate it into arch code, waste
-> a separate VM_FAULT flag just for that instead of simply returning here
-> a VM_FAULT_COMPLETED or some other innocuous value which would stop
-> processing the fault?
+From: Helge Deller <deller@gmx.de>
 
-AFAIK, He only wants it to be silent wrt. the arch fault handler not screaming,
-but he still wants to be able to trigger force_sig_mceerr().
+Define the HAVE_ARCH_HUGETLB_UNMAPPED_AREA macro like other platforms do in
+their page.h files to avoid this compile warning:
+arch/parisc/mm/hugetlbpage.c:25:1: warning: no previous prototype for 'hugetlb_get_unmapped_area' [-Wmissing-prototypes]
 
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org  # 6.0+
+Reported-by: John David Anglin <dave.anglin@bell.net>
+---
+ arch/parisc/include/asm/page.h | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/arch/parisc/include/asm/page.h b/arch/parisc/include/asm/page.h
+index ad4e15d12ed1..4bea2e95798f 100644
+--- a/arch/parisc/include/asm/page.h
++++ b/arch/parisc/include/asm/page.h
+@@ -8,6 +8,7 @@
+ #define PAGE_SIZE	(_AC(1,UL) << PAGE_SHIFT)
+ #define PAGE_MASK	(~(PAGE_SIZE-1))
+ 
++#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+ 
+ #ifndef __ASSEMBLY__
+ 
 -- 
-Oscar Salvador
-SUSE Labs
+2.45.0
+
 
