@@ -1,216 +1,254 @@
-Return-Path: <linux-parisc+bounces-1406-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1407-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F798C5CE6
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2024 23:34:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A87198C6457
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 11:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AF6AB21383
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 May 2024 21:34:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8BA1C22360
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 09:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5920181BBE;
-	Tue, 14 May 2024 21:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6AE5F876;
+	Wed, 15 May 2024 09:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BTIT9KHw"
+	dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b="CyTK+oMk"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FC0181BA6
-	for <linux-parisc@vger.kernel.org>; Tue, 14 May 2024 21:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3DD5A0F8
+	for <linux-parisc@vger.kernel.org>; Wed, 15 May 2024 09:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715722478; cv=none; b=MvIigeZJHaxJ5KXRyL3nSBZJRo9KtkcoNRBrOH5pfSFD2QlDcO67dvHzXII6iVmMQNH+lfy2HNAVSJzrtIOYz+C/SIyY4/VhetLc+uosXv/SlnWf3xtAQ9/nGUbFTTzrJpNgnaZDU3lA0dQDaupE1eEQUFOk7U4/ku3FXWvHoFM=
+	t=1715766785; cv=none; b=qCQGzc04hvlsHopppFK/zdrh4QgzalXepgg3UdnZcjMBMD/1AIZva9aE2gq4640HvUoHbfCjTe/hyTJlvzc8X0cxm0MRr3G80jJ3rErxJ5wMAl4MovlZl+uk/t8YwH1pb//ztg28DnsW8E8uAX46WQG66Prmri4hT6WVgIG5B9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715722478; c=relaxed/simple;
-	bh=dg3D8jzXOepk90HJ2oawVVRby4i/Jql8l3UJpoy8uQg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CXkdBU95YF/SphQWHN3Mhn9u888PPN75GwOTk22lUdKhgp6fmA4KdTVczHj95IJDRCBJo3fWOf9rFu8btvPvr7jZ6y1HrMmsmCYT8osI17d6YKj/hJxx3MBvczUF3QBimSX8mXrdR8XkjvCTegQj5er2fg5sl1obJd3pUVUI8NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BTIT9KHw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715722475;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q2Xu6ycBxA1ncNcxZjTIGSkpvUsVz0mp4Jxa+4CoWmo=;
-	b=BTIT9KHw68mN4wCkOXqiaWaVuqqAC5cOpFTlCr7QNfcppPB8rDIGUjTJiGis4TBWK0wZ5S
-	Gr0j+aBgTggMB27XKFXm1kq0WwFhDv70iQ8JrG55FMq8L9aYQQpTyywwcoSsIr70XpHFL/
-	MZvmKHMadcFzuw7q8Hjt5BtSQIUahsY=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-248-O_XQF0CZNimDbtWegPvaPw-1; Tue, 14 May 2024 17:34:33 -0400
-X-MC-Unique: O_XQF0CZNimDbtWegPvaPw-1
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2b978f93aeeso423096a91.3
-        for <linux-parisc@vger.kernel.org>; Tue, 14 May 2024 14:34:33 -0700 (PDT)
+	s=arc-20240116; t=1715766785; c=relaxed/simple;
+	bh=TsOk3vFqremJkiKTf83L+7lVwN7NONoMxe4kSI6IvYw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ANUsh0DDsu8IGzj7/gHjv4+UZfoHKVGosfLRSeZRSijz2zrYluauhw2lScgX39pNotGIltaa7DOUiNQG5jNP1AMON/Y0q10md/SrxfgdBjs3vSYVd91P8kmexke4Xe//ehxbGb7Zlx6d2oGdhLyikjMuVxYeErca8SdK7Iql7t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall-org.20230601.gappssmtp.com header.i=@blackwall-org.20230601.gappssmtp.com header.b=CyTK+oMk; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-571be483ccaso1506074a12.2
+        for <linux-parisc@vger.kernel.org>; Wed, 15 May 2024 02:53:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall-org.20230601.gappssmtp.com; s=20230601; t=1715766782; x=1716371582; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=S1lmRXypy+tgqjJjCBelLKezDGdnEAnnPizIiNZdruM=;
+        b=CyTK+oMkbUZvJX+UEpXD2WFMSiEdaF9FbbEkHgrzxqIOXJh3IjX7fUED53WyhtfNCd
+         n2EIRkb6K9WTdMARS9VuK3lIcwCF+typcSHLH8KJGqwuPma5t+cvhe1NS61b8h6qwBS9
+         mwkIWHGaxIqTXF7Z16UhZF5rk3gXWnzQYKdn3/bSx+l9CaYvAZ7b1mGjre/zhtmIw1DR
+         RKNJlKAICoTaHxukGyzYNIJyvWGUzOle01tTAWgalCoZoqZ6ZcgK2yzNZGrfyW/vCVKi
+         Cqm3jpwjE0S+sh5WKfhm6aGR9HpoF3H7IOUypLZ8RwI1GxjJa/GYPwQbzgxCpJMUYCBL
+         n9Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715722473; x=1716327273;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q2Xu6ycBxA1ncNcxZjTIGSkpvUsVz0mp4Jxa+4CoWmo=;
-        b=Ah+eHw+wrzTpiIBoxVLq9ILandx9ngPrrKV/bm8nFSOYz5fqCn9xDCJrCz53amTckM
-         RCY7hAUWm/UlQk631YCWTWcJHDvNMWNgRIklCJnPmuEk0rbCTGu+48Aj4kunw08CAyZI
-         M7ACxyHwenXnmo/A1KYhkp1wIjMGwqGIQBZIrkR5p3q2mSncT1cBAEqZFqN51K/QtAyT
-         fq3tkBtcpdNk1FdSiMnqeFNJ8/+tFfXGHi51APWxfMq25Xjs65bgDx+mX1pSTeTAA22k
-         pTBWKJ9JiMljv4r+XJAOC3iSdWJXFDDW4lUdbNHJPkF6yGNSVlpiwqnqoZr54XiYlTm7
-         pryA==
-X-Forwarded-Encrypted: i=1; AJvYcCUukRlOXt7GzljWETsjC9hxz1qmM4DwFMUJqErRc+dAkpe+XH/w0FZWEhAQmeVNmKKpHxXII0gZqR+HCuNp1NfzmCA/NNmVbKnctQOY
-X-Gm-Message-State: AOJu0Yx494dEwsij8+intg3ZuAVf7wHNrCNkvvJAtPKq0RDoQb3rKBOB
-	gyoPFdISqYgjWNA7gBZcCQlOTcwdbtkArcIqBujBapKh5+H/rUIfHJcIkKDwLcvdMhCHRUe+A6Z
-	8mxR94H6kb0al56ImZ2zX6LzFlJl19cGJj4h0NQTeVzpcOcyUWWSPxdVZgAY5pg==
-X-Received: by 2002:a17:903:246:b0:1eb:50eb:c07d with SMTP id d9443c01a7336-1ef441aa0a2mr161489385ad.4.1715722472116;
-        Tue, 14 May 2024 14:34:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGlPBl9ea4KstMsjdvAfVmaII4uiOPY4sbbUGcaeXkU+KlSg8op9ntpdI4qQN60DSBg7ZfBtw==
-X-Received: by 2002:a17:903:246:b0:1eb:50eb:c07d with SMTP id d9443c01a7336-1ef441aa0a2mr161488855ad.4.1715722471349;
-        Tue, 14 May 2024 14:34:31 -0700 (PDT)
-Received: from x1n ([50.204.89.32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0bad9da4sm102645805ad.107.2024.05.14.14.34.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 May 2024 14:34:30 -0700 (PDT)
-Date: Tue, 14 May 2024 15:34:24 -0600
-From: Peter Xu <peterx@redhat.com>
-To: Oscar Salvador <osalvador@suse.de>
-Cc: Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Muchun Song <muchun.song@linux.dev>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
- poison errors
-Message-ID: <ZkPY4CSnZWZnxjTa@x1n>
-References: <20240510182926.763131-1-axelrasmussen@google.com>
- <20240510182926.763131-2-axelrasmussen@google.com>
- <Zj51rEwZeSK4Vr1G@x1n>
- <ZkPJCc5N1Eotpa4u@localhost.localdomain>
+        d=1e100.net; s=20230601; t=1715766782; x=1716371582;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S1lmRXypy+tgqjJjCBelLKezDGdnEAnnPizIiNZdruM=;
+        b=vc6PRFZm875My7GuFPOCovBzrXULT5KpBXh2smE3psJD8gnzv5W3vUwc8xfc7KBnOu
+         vM4oJi/VN4teTqV1jAc9ljdcPp7eMyqzHc7a39nHdaIIZIg4Wz+foTrgkAl7RkBFmUZ8
+         jugrHDwGEJnPV45EowLGBy6RVZtFaC0YsXghIYl4sxToyER3Sz6rkYYG0ZHVWrE548CI
+         S2RorIW8iypMHWxT5Foa2H+350/8vJhUUfGezGG7MbNrESpktV58L7a0kW33L8afbMsL
+         9THTjGeofNVQyY76t0a2S1fQHXiZ9M9JAirscKJpTr5ohVSzY4VM5QfQWHWedTm8aq+6
+         nlkg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/ykTjmPDCMliM5y3kGsvLfIMOgXDFNtNzFG5rSNfnoA9R5sRtki/Ck6epDEBTiljnpdZHaskaLvbDpdf6c7WUH4uwC5b9S9t8m4Xz
+X-Gm-Message-State: AOJu0YxKt5gmNyhVGNVgwY6szIa4cTZMu8kLM4cYSSaHeQ34N2/EkPUz
+	Ex9wZsl5WU3GrWIpbP5jgABxkcuO8NV36Ep34NqPkaTtObgFadQBmBNRnHfURIg=
+X-Google-Smtp-Source: AGHT+IHJ/nIQ9Mj+hR5RkGPoGTlj6+iE5Zdg+QT5yPe2HHYjGXYAnkxMww7zPjsNTDTMLKdw2VFCRA==
+X-Received: by 2002:a50:f699:0:b0:56e:f64:aaf6 with SMTP id 4fb4d7f45d1cf-5734d5c16dfmr11167023a12.5.1715766781663;
+        Wed, 15 May 2024 02:53:01 -0700 (PDT)
+Received: from [192.168.0.245] ([62.73.69.208])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5733bebb687sm8592378a12.25.2024.05.15.02.52.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 May 2024 02:53:01 -0700 (PDT)
+Message-ID: <0e5007fb-2d95-4cbb-b0a6-baa0d20e9469@blackwall.org>
+Date: Wed, 15 May 2024 12:52:57 +0300
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZkPJCc5N1Eotpa4u@localhost.localdomain>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v9 12/14] net: add SO_DEVMEM_DONTNEED setsockopt
+ to release RX frags
+To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski
+ <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
+ <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Andreas Larsson <andreas@gaisler.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
+ <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Steffen Klassert
+ <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ David Ahern <dsahern@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Shuah Khan <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Yunsheng Lin <linyunsheng@huawei.com>,
+ Shailend Chand <shailend@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Jeroen de Borst
+ <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
+ Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
+References: <20240510232128.1105145-1-almasrymina@google.com>
+ <20240510232128.1105145-13-almasrymina@google.com>
+Content-Language: en-US
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20240510232128.1105145-13-almasrymina@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, May 14, 2024 at 10:26:49PM +0200, Oscar Salvador wrote:
-> On Fri, May 10, 2024 at 03:29:48PM -0400, Peter Xu wrote:
-> > IMHO we shouldn't mention that detail, but only state the effect which is
-> > to not report the event to syslog.
-> > 
-> > There's no hard rule that a pte marker can't reflect a real page poison in
-> > the future even MCE.  Actually I still remember most places don't care
-> > about the pfn in the hwpoison swap entry so maybe we can even do it? But
-> > that's another story regardless..
+On 11/05/2024 02:21, Mina Almasry wrote:
+> Add an interface for the user to notify the kernel that it is done
+> reading the devmem dmabuf frags returned as cmsg. The kernel will
+> drop the reference on the frags to make them available for reuse.
 > 
-> But we should not use pte markers for real hwpoisons events (aka MCE), right?
-
-The question is whether we can't.
-
-Now we reserved a swp entry just for hwpoison and it makes sense only
-because we cached the poisoned pfn inside.  My long standing question is
-why do we ever need that pfn after all.  If we don't need the pfn, we
-simply need a bit in the pgtable entry saying that it's poisoned, if
-accessed we should kill the process using sigbus.
-
-I used to comment on this before, the only path that uses that pfn is
-check_hwpoisoned_entry(), which was introduced in:
-
-commit a3f5d80ea401ac857f2910e28b15f35b2cf902f4
-Author: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Date:   Mon Jun 28 19:43:14 2021 -0700
-
-    mm,hwpoison: send SIGBUS with error virutal address
-    
-    Now an action required MCE in already hwpoisoned address surely sends a
-    SIGBUS to current process, but the SIGBUS doesn't convey error virtual
-    address.  That's not optimal for hwpoison-aware applications.
-    
-    To fix the issue, make memory_failure() call kill_accessing_process(),
-    that does pagetable walk to find the error virtual address.  It could find
-    multiple virtual addresses for the same error page, and it seems hard to
-    tell which virtual address is correct one.  But that's rare and sending
-    incorrect virtual address could be better than no address.  So let's
-    report the first found virtual address for now.
-
-So this time I read more on this and Naoya explained why - it's only used
-so far to dump the VA of the poisoned entry.
-
-However what confused me is, if an entry is poisoned already logically we
-dump that message in the fault handler not memory_failure(), which is:
-
-MCE: Killing uffd-unit-tests:650 due to hardware memory corruption fault at 7f3589d7e000
-
-So perhaps we're trying to also dump that when the MCEs (points to the same
-pfn) are only generated concurrently?  I donno much on hwpoison so I cannot
-tell, there's also implication where it's only triggered if
-MF_ACTION_REQUIRED.  But I think it means hwpoison may work without pfn
-encoded, but I don't know the implication to lose that dmesg line.
-
-> I mean, we do have the means to mark a page as hwpoisoned when a real
-> MCE gets triggered, why would we want a pte marker to also reflect that?
-> Or is that something for userfaultd realm?
-
-No it's not userfaultfd realm.. it's just that pte marker should be a
-generic concept, so it logically can be used outside userfaultfd.  That's
-also why it's used in swapin errors, in which case we don't use anything
-else in this case but a bit to reflect "this page is bad".
-
+> Signed-off-by: Willem de Bruijn <willemb@google.com>
+> Signed-off-by: Kaiyuan Zhang <kaiyuanz@google.com>
+> Signed-off-by: Mina Almasry <almasrymina@google.com>
 > 
-> > And also not report swapin error is, IMHO, only because arch errors said
-> > "MCE" in the error logs which may not apply here.  Logically speaking
-> > swapin error should also be reported so admin knows better on why a proc is
-> > killed.  Now it can still confuse the admin if it really happens, iiuc.
+> ---
 > 
-> I am bit confused by this.
-> It seems we create poisoned pte markers on swap errors (e.g:
-> unuse_pte()), which get passed down the chain with VM_FAULT_HWPOISON,
-> which end up in sigbus (I guess?).
+> v7:
+> - Updated SO_DEVMEM_* uapi to use the next available entry (Arnd).
 > 
-> This all seems very subtle to me.
+> v6:
+> - Squash in locking optimizations from edumazet@google.com. With his
+>   changes we lock the xarray once per sock_devmem_dontneed operation
+>   rather than once per frag.
 > 
-> First of all, why not passing VM_FAULT_SIGBUS if that is what will end
-> up happening?
-> I mean, at the moment that is not possible because we convolute swaping
-> errors and uffd poison in the same type of marker, so we do not have any
-> means to differentiate between the two of them.
+> Changes in v1:
+> - devmemtoken -> dmabuf_token (David).
+> - Use napi_pp_put_page() for refcounting (Yunsheng).
+> - Fix build error with missing socket options on other asms.
 > 
-> Would it make sense to create yet another pte marker type to split that
-> up? Because when I look at VM_FAULT_HWPOISON, I get reminded of MCE
-> stuff, and that does not hold here.
+> ---
+>  arch/alpha/include/uapi/asm/socket.h  |  1 +
+>  arch/mips/include/uapi/asm/socket.h   |  1 +
+>  arch/parisc/include/uapi/asm/socket.h |  1 +
+>  arch/sparc/include/uapi/asm/socket.h  |  1 +
+>  include/uapi/asm-generic/socket.h     |  1 +
+>  include/uapi/linux/uio.h              |  4 ++
+>  net/core/sock.c                       | 61 +++++++++++++++++++++++++++
+>  7 files changed, 70 insertions(+)
+> 
+[snip]
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index 8d6e638b5426d..2edb988259e8d 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -124,6 +124,7 @@
+>  #include <linux/netdevice.h>
+>  #include <net/protocol.h>
+>  #include <linux/skbuff.h>
+> +#include <linux/skbuff_ref.h>
+>  #include <net/net_namespace.h>
+>  #include <net/request_sock.h>
+>  #include <net/sock.h>
+> @@ -1049,6 +1050,62 @@ static int sock_reserve_memory(struct sock *sk, int bytes)
+>  	return 0;
+>  }
+>  
+> +#ifdef CONFIG_PAGE_POOL
+> +static noinline_for_stack int
+> +sock_devmem_dontneed(struct sock *sk, sockptr_t optval, unsigned int optlen)
+> +{
+> +	unsigned int num_tokens, i, j, k, netmem_num = 0;
+> +	struct dmabuf_token *tokens;
+> +	netmem_ref netmems[16];
+> +	int ret;
+> +
+> +	if (sk->sk_type != SOCK_STREAM || sk->sk_protocol != IPPROTO_TCP)
+> +		return -EBADF;
+> +
+> +	if (optlen % sizeof(struct dmabuf_token) ||
+> +	    optlen > sizeof(*tokens) * 128)
+> +		return -EINVAL;
+> +
+> +	tokens = kvmalloc_array(128, sizeof(*tokens), GFP_KERNEL);
+> +	if (!tokens)
+> +		return -ENOMEM;
+> +
+> +	num_tokens = optlen / sizeof(struct dmabuf_token);
+> +	if (copy_from_sockptr(tokens, optval, optlen))
+> +		return -EFAULT;
 
-We used to not dump error for swapin error.  Note that here what I am
-saying is not that Axel is doing things wrong, but it's just that logically
-swapin error (as pte marker) can also be with !QUIET, so my final point is
-we may want to avoid having the assumption that "pte marker should always
-be QUITE", because I want to make it clear that pte marker can used in any
-form, so itself shouldn't imply anything..
+tokens isn't freed in this error case
 
-Thanks,
-
--- 
-Peter Xu
+> +
+> +	ret = 0;
+> +
+> +	xa_lock_bh(&sk->sk_user_frags);
+> +	for (i = 0; i < num_tokens; i++) {
+> +		for (j = 0; j < tokens[i].token_count; j++) {
+> +			netmem_ref netmem = (__force netmem_ref)__xa_erase(
+> +				&sk->sk_user_frags, tokens[i].token_start + j);
+> +
+> +			if (netmem &&
+> +			    !WARN_ON_ONCE(!netmem_is_net_iov(netmem))) {
+> +				netmems[netmem_num++] = netmem;
+> +				if (netmem_num == ARRAY_SIZE(netmems)) {
+> +					xa_unlock_bh(&sk->sk_user_frags);
+> +					for (k = 0; k < netmem_num; k++)
+> +						WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
+> +					netmem_num = 0;
+> +					xa_lock_bh(&sk->sk_user_frags);
+> +				}
+> +				ret++;
+> +			}
+> +		}
+> +	}
+> +
+> +	xa_unlock_bh(&sk->sk_user_frags);
+> +	for (k = 0; k < netmem_num; k++)
+> +		WARN_ON_ONCE(!napi_pp_put_page(netmems[k]));
+> +
+> +	kvfree(tokens);
+> +	return ret;
+> +}
+> +#endif
+> +
+>  void sockopt_lock_sock(struct sock *sk)
+>  {
+>  	/* When current->bpf_ctx is set, the setsockopt is called from
+> @@ -1200,6 +1257,10 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
+>  			ret = -EOPNOTSUPP;
+>  		return ret;
+>  		}
+> +#ifdef CONFIG_PAGE_POOL
+> +	case SO_DEVMEM_DONTNEED:
+> +		return sock_devmem_dontneed(sk, optval, optlen);
+> +#endif
+>  	}
+>  
+>  	sockopt_lock_sock(sk);
 
 
