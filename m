@@ -1,201 +1,329 @@
-Return-Path: <linux-parisc+bounces-1418-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1419-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428458C6D22
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 22:19:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634278C6E87
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 May 2024 00:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C52EA1F2355A
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 20:19:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15D45281C1B
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 22:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48E11591E8;
-	Wed, 15 May 2024 20:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DE315B540;
+	Wed, 15 May 2024 22:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Az+1uV24"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="aSRhpE3X";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="C1SzOQRo"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6D24206F;
-	Wed, 15 May 2024 20:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715804355; cv=none; b=OcgwWwDWUKrd1hjEQ1ERKIznH74fHhIWYQKwwW8fCAx32X/ttuUyZgiMj9fIKkYqkIh9j4dFqXoKCinkVazdF2Ig1CY5tuhzRBaINNpyHagsKkHXL3RmZug387+uyUgwIkKAkPXhptN/omHkPf4OtW0WzI0ntWcpQ4DsPeQvoLg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715804355; c=relaxed/simple;
-	bh=9goRToJ5OiITq+QXW6KIsVlsdZ7LiiRiNSA8UJa/MAU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c5rAZSvuB/L6AdwoVRGaYFhm4RnUguWZ2EyTa495hzvFg/hk5YbwskMs3rU4k04+iNTKl9GqTO7H6YzwPUz49TDnUK2P6/AMPtDO/fG2wCSspacTDUwe6suEX/f7ykJVhIq3C+hszcAy0ooMfPT2cB8QwaZiN8iuGKKchuMHRtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Az+1uV24; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5877940E01F6;
-	Wed, 15 May 2024 20:19:10 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Zw2uAITgrclB; Wed, 15 May 2024 20:19:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1715804346; bh=I+TM5XxPjG4Qj70u6A2s8F0ZAG2e+3pm2+5E6j0Lpho=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Az+1uV24MRhctKN9lhn5WrN0m6bLZJW5T1B5QK7KdnCkfR8tiY0xvI9TI3J+7QMA2
-	 Jc7aZ7V7U5MYr8ZSqAVux5K8Gwyru9TGzP80Estj5jxpPr82TnMdJlJohr5wjMcW14
-	 NNGJM59tyMkXpgMyHI2JL5vCleOogoChGPxNx+14IVz2JI5L5FwCTKxLDVC9T8pPic
-	 DTh+3HvaDA6N5J5X2UYtv7JCmvPce0lBy+aBjUcdck8TbyW8jpLsbJRMwQiua6jWMq
-	 6D9QJalBAQNftXhOXdt+d3tWXSzMxE4e6LFHzD9Y3XwTmQS5Aent2y9vLnifF/MQWf
-	 Z3L5OrHhoJtODBs7P9Q+UrBA4f4LADIOlXN6VnB8Y0GqFPnznDp4yZN07b2CR9gNK7
-	 cfjtqhCOYBbJEfTJt3PLQJCehLdHKI6T3W+25Td/Mi6QWwt2lBbz3y4YJrv4VEcmY+
-	 AhMaTvuSlCLocYJMCRSk6XeFJWioa81qeUuZrTQ0eztjVMYoMV4CX53dt7U0PjySDC
-	 EXEq0t8oh4oNPOzt4xXusfuOn9lF8ILJQeWUHiNvO/XvNgwKAsVelSBopUMx20Rxqg
-	 JfTuMNeGc8g/iZr5sDQGXgXALNOxkFMdRBlpYdyYPtkW2LfId/nM8T1YT5ICdhuaTp
-	 AIvm4Gkabd1B7ukayuBdD2NQ=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BB1C540E016A;
-	Wed, 15 May 2024 20:18:37 +0000 (UTC)
-Date: Wed, 15 May 2024 22:18:31 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Muchun Song <muchun.song@linux.dev>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>, Peter Xu <peterx@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
- poison errors
-Message-ID: <20240515201831.GDZkUYlybfejSh79ix@fat_crate.local>
-References: <20240510182926.763131-1-axelrasmussen@google.com>
- <20240510182926.763131-2-axelrasmussen@google.com>
- <20240515104142.GBZkSRZsa3cxJ3DKVy@fat_crate.local>
- <ZkSUaVx3uCIPkpkJ@localhost.localdomain>
- <CAJHvVchGGJkEX=qroW=+N-RJDMDGuxM4xoGe7iOtRu9YcfxEEw@mail.gmail.com>
- <20240515183222.GCZkT_tvEffgYtah4T@fat_crate.local>
- <CAJHvVcj+YBpLbjLy+M+b8K7fj0XvFSZLpsuY-RbCCn9ouV1WjQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1169115B103;
+	Wed, 15 May 2024 22:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715811589; cv=fail; b=d5aVmoZ/Gwup9zJyDXc1/+4DXkpdvIG9Aqed7AMxOihr5wKQgJcSEQzaRRjWAYpGKOO8kw0LqUjDImbawG76VDTv2vTS6cuZjLwgPA03ATlhmiyMJgnWug0MJ9lzB6h7dyQ1WkWL4zBFhAlsiCAz6lMk6IXmioTEI5Mf1GPW+6k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715811589; c=relaxed/simple;
+	bh=rnAeftOm/QLDF1EnE3k6MPtiv9nN/uBkojAWi2OKk8U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 Content-Type:MIME-Version; b=n7b3+maNsPG4CGOGohaHnjl6EmA6TCVDyPPnYWzlOt+9YnThk6NAWaCLhqCC1pylvWP2YqCaRJnWhkVAqRkIgWi2FfTkwgc2VqpLBqk5DWc2X3fsyn7JZoxmwrCu4ZIbhXQjQmaXYKuVow7gYGWjpfAGtsK7A5urvt6+lkNAZJc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=aSRhpE3X; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=C1SzOQRo; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44FL19pT003823;
+	Wed, 15 May 2024 22:18:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : in-reply-to : references : date : message-id : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=1vrh5wI1wNw6ugWZ/VwTP/wK4l8RZpuJUAeO3eNGC8M=;
+ b=aSRhpE3X/D6Yh8w8G3wdDNKQAN62Kqk4muyj+zSPCsXSPCwVk3C2CbdjIgJfi5h1mnRo
+ nyLrvcMkeRE1XOb5W/qli6IsB9oucw1pscNMHTZI36BY3YfeouN2ndJE77eOvm/TW8rY
+ u+w5HCIKPn/ywdMoiwuz8jpUtGqB7b7FKgKw6j6thDIhN/65uRGqiarLa5h6itCoBGwR
+ MtOvbItBEQ5GxYGcB2+oDFvXM44zmPJLDTpAGxfJm/cAba7YlzUUZtKZTHu88neXTsyG
+ nNhtAV/EHJ8DEfH1/jC8cL9xFh9hP+8a62rRM4Rc15Zrbk/k+HMLQc3d70XJIK4P1qZd 2A== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3y3tx8m4ad-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 May 2024 22:18:23 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 44FKT6AR000580;
+	Wed, 15 May 2024 22:18:22 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2101.outbound.protection.outlook.com [104.47.55.101])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3y4fssrg0y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 May 2024 22:18:22 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=j4Xqdngtmf8HTOZIeK8Ss+lU3QOj0Q4hYSakMfD7voc0mv3cFvJfrIGmCSjwX04qIzxvF5H+xnrqHG98Iu4kSyhy/rmfZK3+ceo0zVe7bFbw9atk3CbFLyEJL3CPuA8aib6Dod+9LgvvhgdaTJH4lhklnuwXUizNNdjYdEF0ENIZjEagTH/kw0cUxE27oWfhfcVABd3sHdC+YNQ7vzzsv2PXbWR3ImxcUrA8maW7rzTatfeHwURxbsc22cRSQ+F7jJqcrZb+8EHiALnKK/12KOHr60r2rGC4vw3Y20gG/qv5fo/mgUZoTaF1jPwzJMz4ZTZ3GYkjmmx6q1Jmw+pMwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1vrh5wI1wNw6ugWZ/VwTP/wK4l8RZpuJUAeO3eNGC8M=;
+ b=HXvLOjqPqvKjR28/FzWT74svyRXnuoDZwiwpPkdTd2tnYddndZUZwi0frYwQAhcIaeqxXscvJCgK2ueRQRPYbQs37kunGGJgf6ZzP3h+sU/zNtCsNSEHo6s63O9NUJYJ4n9YUBxrYnQOEyIkBKLdv9+fJtBtBFCdBz8TAcnSRSwWZLdtw/HwO1QyCZxTi6R4xzKdzdIWhwVqc41FGiFsShTsozLt1aNi+u4IG05F2J3PIaz18TLdWO1q0WToy9VcEhGD3dFh3OXL8DV0CMPlpUK7oV6Z+lhGHwItgM/hvh/Aa8MklPiL0R8xCkiabdp1rtwU9KninHO7TciJtCJbKA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1vrh5wI1wNw6ugWZ/VwTP/wK4l8RZpuJUAeO3eNGC8M=;
+ b=C1SzOQRonr8RnKTehW3B8IYxr7uzAGmWwtijqsQkrOms7ew1i1CTZZzlQMoBw9slIiPxQ90rivkXGmLmL0fof3/CaIic3tjdmRfgH/ojxM6NiU38sANkRkKBqoPa672XsllnVo8u0o0Sqvzq8JFQgKONOnm76eHwjEFvpSwuvUI=
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com (2603:10b6:510:226::20)
+ by CH0PR10MB7498.namprd10.prod.outlook.com (2603:10b6:610:18e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.55; Wed, 15 May
+ 2024 22:18:10 +0000
+Received: from PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6874:4af6:bf0a:6ca]) by PH8PR10MB6597.namprd10.prod.outlook.com
+ ([fe80::6874:4af6:bf0a:6ca%3]) with mapi id 15.20.7587.028; Wed, 15 May 2024
+ 22:18:10 +0000
+From: Stephen Brennan <stephen.s.brennan@oracle.com>
+To: Masami Hiramatsu <mhiramat@kernel.org>, Guo Ren <guoren@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu
+ <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Huacai Chen
+ <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+        "James E.J.
+ Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller
+ <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        "Naveen N. Rao"
+ <naveen.n.rao@linux.ibm.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger
+ <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas
+ Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav
+ Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org
+Subject: Re: [PATCH v3] kprobe/ftrace: bail out if ftrace was killed
+In-Reply-To: <20240502110348.016f190e0b0565b7e9ecdb48@kernel.org>
+References: <20240501162956.229427-1-stephen.s.brennan@oracle.com>
+ <CAJF2gTT8a4PBU3ekZFNTi6EuETT9hhKfhXrPgGGpn92rQMNSvg@mail.gmail.com>
+ <20240502110348.016f190e0b0565b7e9ecdb48@kernel.org>
+Date: Wed, 15 May 2024 15:18:08 -0700
+Message-ID: <87r0e2pvmn.fsf@oracle.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SJ0PR13CA0177.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::32) To PH8PR10MB6597.namprd10.prod.outlook.com
+ (2603:10b6:510:226::20)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAJHvVcj+YBpLbjLy+M+b8K7fj0XvFSZLpsuY-RbCCn9ouV1WjQ@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6597:EE_|CH0PR10MB7498:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1f3971a1-2707-4295-a665-08dc752ce75a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|366007|7416005|376005;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?eUIyVmNmYWtHWDlKOHg4djRjZWczMGx3TGlHS241OFZRejVSS0s0dUIyZUpG?=
+ =?utf-8?B?ZU0zUWxaS1R3YWF4WEhVcHllbzQ1VG9VZkNxTUtVWlJLK3lFUWxoNkE3YkJm?=
+ =?utf-8?B?U01FRjA4RnVoQURlZ0x2ZGtnc1NwWnB4RWFFV0IxaE50SG1waXVyTjdMYVll?=
+ =?utf-8?B?d3dHd2NFaXJkcm1wcDB0OTRNQUZYRDMxbkNQbzRlRSt3NlpPR3hOWkVMemFR?=
+ =?utf-8?B?T2FINE4rcjNlNVRVMnN3V0ZoTnVqWGZFb1VLN0pDSVBNaFBsTU5KNGt0UlFH?=
+ =?utf-8?B?VCtDTDlkRnVnZ0R2NDUyVzltRGZGZHVmdWpYRmdWUm1pZFFydFE2QkZqUEs3?=
+ =?utf-8?B?UHJKT1FuelFMU1kvNk51OTNuaWZyR05SeE5sd0JEaFJEaC9PNnRMblFKTWVG?=
+ =?utf-8?B?azBvM0Zqa3JSanhKM1B2TmZWMFJBblhKWnlMOW5Jb2RoUUVaeWJhNlB5TmFp?=
+ =?utf-8?B?VkVLSERkZUNTU3NUcmdVNWhyNXRVV3hBWHovZ05xSjZndXZWamNmZndRWTFQ?=
+ =?utf-8?B?ekptdGJTeGF0UXpRMmFsRVNlRVFEek1jRWl6OXJQVXhTczU0RWI5cmVVdzhZ?=
+ =?utf-8?B?Mmh3dDFTQzkzVEowU3Q1azBMMmJ6T1N0OUd1L3RXR3lIMTBzc3RJcy90cElU?=
+ =?utf-8?B?N3l0RGwyb1JVOEZwTkc4TWpKOW5aVkdyWXA2SmV3WUxUeDVRdzQ3ZDBiMUIv?=
+ =?utf-8?B?RUhUTGJwRTBnN3ZiR2dLS3B2dUdBaHNCRGpaUHZnTHhhNGdqRFJQRkoyZjdj?=
+ =?utf-8?B?TG9teTFEZllrU0dGMVZlWnJzMXYzSWRjNXNNQ2l6RXFHYTJySHQ4cmNIcUpM?=
+ =?utf-8?B?OWs4ZEFqWEl0ZENHRWtkUHdzdGNOdno5V3B1SmhnWXg2NW9NZFJYSVNWWnYv?=
+ =?utf-8?B?Q0pLaTBmWnJORU1nWW1QYzVpMWtBVUMyMHpham82VHU0WGd6NjYrbk1jOGln?=
+ =?utf-8?B?RGxpdTRuT1lheXNxZnV1Mm1YZVRxWUw0RGFpVzdBVFRSdlAxWSt6SmZ1TlN6?=
+ =?utf-8?B?U3BrT1o2b1ZRU2JJcVA4QXlsN3pkZEx3YXQ3MlMxanRBWXdTdkJBMlF1ZjFl?=
+ =?utf-8?B?eUtWTjMwWlgvUWpCd0hoY0JRQzUrUFpZL1dTTkVCbGQ4U2o3c1IxaFA5NlNB?=
+ =?utf-8?B?dGhFQlJFRytiem5OMFBsdXJrSUNnVzRUY3pkL1dBanhNOEtrV1NJeS81dmZm?=
+ =?utf-8?B?d29MK0IwUWZZYkwwN08wSGN2Z1lYV2tNNFJxSTFzbFk0aDgzSGlOQ1pQcmRi?=
+ =?utf-8?B?TWc3bndPY3hIL01YL0hPQ2tiNHQwS2NtbXhQclVycC9uNnN0SEVVYnNWV0w4?=
+ =?utf-8?B?T3QyTHU4K0lqMHJibFRydHVNdFJ2SThHSVJKWFk1MkJWSm9uWGJJZnBNZ2RQ?=
+ =?utf-8?B?SkoyY2ZhOXJIckcxU2lYanpHVDV6UkhkQU0ySExuamVNNEw1Y1lmd1JDaHdN?=
+ =?utf-8?B?SFpBSmxYVnU2dS9qVXZKd2RmcjEyanpaSmZLV1ZENm9raDFlUE5tZ0YzYmdO?=
+ =?utf-8?B?ZW9NMitaUEkrdzZPSjdXeTYycVRQbnVPZDQxQ2I5ZzZJbjd0c2t1SEVMSVBM?=
+ =?utf-8?B?SmI3UEd3M2ZnaWp5MXVSVG9pdVpWcTZNUjlyS0xJMTF6SVBaRm1MVlRDY04w?=
+ =?utf-8?Q?yQ/RQT9QxXgG+zDaaIY0DXjqnvd9ClBEg1O0owCWXq8w=3D?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6597.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(7416005)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?N3hvclREdVFDWmh2WXVhNXcxOVRRZTBhWkJkL0RNdVFYSWNKT2dMNHlwNlcr?=
+ =?utf-8?B?MG9ScEJRWEpUZDdXMmQzUFJXbWxSdDVLaENFYkNJMms1WDUwYVB2Zlp0ei83?=
+ =?utf-8?B?QSs1bEppRGowemxRVDl3c1k4cHBia2NHQXNzL2xWckpsY3JhQVN2d295Rkp3?=
+ =?utf-8?B?R1hJQ0Y0dVhpZi9UU0J3STJIeGZKUVpQUmVjdTFPVUdsdWdZZXl0dURwMVhY?=
+ =?utf-8?B?TGxMQWVCOExaUnFtZTZ2eFdPNzdtMEs2ak5tMXF3SEpNK3R6dHI0RDBUL1px?=
+ =?utf-8?B?TkxLS1F5aWVmelZ3VTZrMGVQRGNlTHFxcmxPejRJNythTFM2bjJ1ckpMNk5q?=
+ =?utf-8?B?UVVNUTh0SlFRUjVKMGE4aWRnOGpnVUtCTUoyU0xpd3UwbTQ2YUx0QnptTDVz?=
+ =?utf-8?B?eWVYWDBXV3BXTllsZnhJTi8veHBDVDI2YnBHaS9sbnQ1czltMDdsdkpWamdu?=
+ =?utf-8?B?eUVxU2R5bEJLeGpPYlVGSlRZellEWUpydEZFMUxJWmEwOTRJTUNkUUNJWEQy?=
+ =?utf-8?B?WWVmbitrMWxYYldSTkZIeHpqTnN5WHNJcUxOOG5NaHNEaHRwV0I0M0RzdlJs?=
+ =?utf-8?B?YW9PQnJsbWJDVHFvQ1FwYW5oQVZKR3hrZ2cxdk9DUm5RVWpiRkt2Mno5YVV6?=
+ =?utf-8?B?L3NuMmlpTnlZOGRyb0VhYjhNNG1tdDZyQmhVYUdPdDVabWNhMDZtTFA4eThT?=
+ =?utf-8?B?dTlnbmw1TVY1QTN3VnBFNFFROWtDY2FKZzJPRTJoWkhLS2dZTUlSWWZ1b3E4?=
+ =?utf-8?B?aFVQbzk3YnpxaldtWDZTcGZZOVlSbDBVeHcwRWRaZnl3T0k1STJuTzNpS3lo?=
+ =?utf-8?B?Wm1Xd2J4ZS8zSytvQWNjNDRTNjZFR3Blay9WczNxckt0ZkNKamozTDdLUGhw?=
+ =?utf-8?B?dVZzYWtBamxXVHkwdlpacHBMb0hFVlR1N1BJMjJMcmNtQklNMlJrVllRUmpo?=
+ =?utf-8?B?YkNRb3dRTnFBeE16cVJmalNnTllvY0FlaXluUnVMU0ZkWkZ6eEw5cTN5SDRh?=
+ =?utf-8?B?UnhEeG5Xb0Z0ZldMd3VjejVvVnUxcTMwUmRkc09hUlN0cTlneXE3SU1rVmtp?=
+ =?utf-8?B?MFdUd25qbHIwUVAvUHhUaU5wRW9TNmcycUtnWkhQWkprL0VnaXU2Sm95SmFM?=
+ =?utf-8?B?NFFZaFA3aGJQMVpjNUl1elVlbklKejdjblRRazg1UzdrWDgrOFQ2NTNuUkZW?=
+ =?utf-8?B?VXE5TkxiYUR2R25mWUhLUnEvRU9uVUY4RE1NS2pERmJ5VytTbTA4SmVobmZ1?=
+ =?utf-8?B?azRUYm13TFZYVDluMVJtelU2M2IrZFhXb0NFT09wK054b0NtMmJyOEpVR0tX?=
+ =?utf-8?B?MDJsN1ZzcGYwL0VDWHhObENsdlhmMThFeEpXN01PTVFnMGI3TWw1QkRmbzNB?=
+ =?utf-8?B?cHZhYnkwU0pReGJxOWN5ZzVWbjBDZnVoSkp3V0pTSkpoS1g5NldGUTlBVDRx?=
+ =?utf-8?B?S2MyMDlSUXptRmhWZWF5QTIzZ3hCbkZSZTVuNUdtbUxWZ21TTXgxU3VSL0d4?=
+ =?utf-8?B?SDFVWmFaL2M5dTg0bk9DZG90ZHdvY25ncm1DNDFGakFWV0RCRURRYnQyU2c2?=
+ =?utf-8?B?cGlLYnJhU21FVkZKTnBKeUdlVnlVU2xXQ0xhNUVBY0FGTnhkcFpoRjhwZmQz?=
+ =?utf-8?B?Rzk5M3dZYkhmVnJUMDEyNDdtZnFxYXVKa2J5RHd1RlRISkpxK080RnNtd0o2?=
+ =?utf-8?B?YmMwL28rakMvOFBNeVpDOW15ME9SRjB5MUVaM1dBZDdCU055NjF5aXVYYnRC?=
+ =?utf-8?B?Z04zY2w1T2NlaVNqRnArd1owSzI5Mm9yVWg5ZXpkRDZDVWhJMjZ5OFBLRW5V?=
+ =?utf-8?B?Smdwbm9XZE5kMzlRYVZ1WFhSYThwaVhtdmFwd01ycm1vUVlZTmdCVVMwZ1Vk?=
+ =?utf-8?B?Y1M0NFRsM0VxYUtHKytiajdMTzhkYkwvb0tWeG40YnJFNjhDUGNNNjk1OHA4?=
+ =?utf-8?B?R1ppdCt1Q1ZTOTVxSjRpdlM2ZW1zTE43MW1sY2RzUFFmM2ZkKzZoQlB1K3Rx?=
+ =?utf-8?B?Z0FFWUlpTDNtbElPeTZsTkQ3RlpSZTh6SGZBTjBxRmg5T3U4d05mR2lDNXFJ?=
+ =?utf-8?B?V3hxOWdBMFJ2Z05EQXN4Uk1JbkVzYkNtMlhWWkYwWHNyTFVMQ1RqbUprVTRR?=
+ =?utf-8?B?VHZFTHZweC9ER1dzbjVBVHJydXNaK1FrN3FROWxZREY5RkpLKzlMNjlpLy8z?=
+ =?utf-8?B?blhiQmplbkN1V29kVS9IOG1ockk2RkpYekdHODBPTXVCQVppUWVKSmgvNllw?=
+ =?utf-8?B?Ri83azNmUFJHNm4yQklGVEhGSXlBPT0=?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	dvbrj2qtt6f5n4HPZChCVSm+u7QScH9CGVQD+SyhGB3FYfI4QmcFnRWnsPm7n6RG7fypEPvCVO3Efv79wxFa3khTE4wAx6ZOUVhvI3Z70nHrCo0iO0bui90xglm/WqpdC45WoWp1mBkueFcKvjCUDJOf3V++RuGg+1AvJ2q43URyniRcK+n3TdPXeZTguaBZuMRkRzsToKN0vBv13dpSTGehS7uQASKhlnQ1Y8lflgnB6m2mgFUESEcJpybHwepRIA/BWVSTVSgnKXuBOuprWw5qoaDM/wQXxv8zErMN6viNpTgJLN/6F2Iu8SITMa7KsYnOjQNmJyCpJD+C2g6TdNcP1zZAVUrgjhgDeSeNl5xUe5hgssDh2ErINjDCqW4u/1bBS6TtFkFE7fzFFhzCi435sdRDTA+swSAp0ghAbJ19TkZ6PoGtRC0MrN2YoJ+3nzUeHLvXWjZMXLwwtJgw73/urDkXrvdm3x4qSy6veB1Mx8KCR3wVHXGW5IMGyFXmCwDs8m0ZXp8e32TaUF1gP/XbU5LKPiKh7vLKbhKcCI1BzwNiZALW0Kc998eeFYTfEaIJuNsjnw5Khs6JdTHAsRSE0r4/EfsBmBpxvO5m5qg=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f3971a1-2707-4295-a665-08dc752ce75a
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6597.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2024 22:18:10.1818
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 40ZCihD6ecQRTyxoUHJGbUfnu3E6FJ4Qyirca6PPxzkoIkqg5YYdTS+SRaPWblNGNzaeCXSLiVRUc4gZzXUknMZjoc04az/k9/oaFfTy2Zc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB7498
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-15_14,2024-05-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
+ mlxscore=0 spamscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405150160
+X-Proofpoint-GUID: 4o82Ffv-manoniq9ypVXdaF6r7cgJ7C9
+X-Proofpoint-ORIG-GUID: 4o82Ffv-manoniq9ypVXdaF6r7cgJ7C9
 
-On Wed, May 15, 2024 at 12:19:16PM -0700, Axel Rasmussen wrote:
-> An unprivileged process can allocate a VMA, use the userfaultfd API to
-> install one of these PTE markers, and then register a no-op SIGBUS
-> handler. Now it can access that address in a tight loop,
+Masami Hiramatsu (Google) <mhiramat@kernel.org> writes:
+> On Thu, 2 May 2024 01:35:16 +0800
+> Guo Ren <guoren@kernel.org> wrote:
+>
+>> On Thu, May 2, 2024 at 12:30=E2=80=AFAM Stephen Brennan
+>> <stephen.s.brennan@oracle.com> wrote:
+>> >
+>> > If an error happens in ftrace, ftrace_kill() will prevent disarming
+>> > kprobes. Eventually, the ftrace_ops associated with the kprobes will b=
+e
+>> > freed, yet the kprobes will still be active, and when triggered, they
+>> > will use the freed memory, likely resulting in a page fault and panic.
+>> >
+>> > This behavior can be reproduced quite easily, by creating a kprobe and
+>> > then triggering a ftrace_kill(). For simplicity, we can simulate an
+>> > ftrace error with a kernel module like [1]:
+>> >
+>> > [1]: https://github.com/brenns10/kernel_stuff/tree/master/ftrace_kille=
+r
+>> >
+>> >   sudo perf probe --add commit_creds
+>> >   sudo perf trace -e probe:commit_creds
+>> >   # In another terminal
+>> >   make
+>> >   sudo insmod ftrace_killer.ko  # calls ftrace_kill(), simulating bug
+>> >   # Back to perf terminal
+>> >   # ctrl-c
+>> >   sudo perf probe --del commit_creds
+>> >
+>> > After a short period, a page fault and panic would occur as the kprobe
+>> > continues to execute and uses the freed ftrace_ops. While ftrace_kill(=
+)
+>> > is supposed to be used only in extreme circumstances, it is invoked in
+>> > FTRACE_WARN_ON() and so there are many places where an unexpected bug
+>> > could be triggered, yet the system may continue operating, possibly
+>> > without the administrator noticing. If ftrace_kill() does not panic th=
+e
+>> > system, then we should do everything we can to continue operating,
+>> > rather than leave a ticking time bomb.
+>> >
+>> > Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+>> > ---
+>> > Changes in v3:
+>> >   Don't expose ftrace_is_dead(). Create a "kprobe_ftrace_disabled"
+>> >   variable and check it directly in the kprobe handlers.
+>> > Link to v1/v2 discussion:
+>> >   https://lore.kernel.org/all/20240426225834.993353-1-stephen.s.brenna=
+n@oracle.com/
+>> >
+>> >  arch/csky/kernel/probes/ftrace.c     | 3 +++
+>> >  arch/loongarch/kernel/ftrace_dyn.c   | 3 +++
+>> >  arch/parisc/kernel/ftrace.c          | 3 +++
+>> >  arch/powerpc/kernel/kprobes-ftrace.c | 3 +++
+>> >  arch/riscv/kernel/probes/ftrace.c    | 3 +++
+>> >  arch/s390/kernel/ftrace.c            | 3 +++
+>> >  arch/x86/kernel/kprobes/ftrace.c     | 3 +++
+>> >  include/linux/kprobes.h              | 7 +++++++
+>> >  kernel/kprobes.c                     | 6 ++++++
+>> >  kernel/trace/ftrace.c                | 1 +
+>> >  10 files changed, 35 insertions(+)
+>> >
+>> > diff --git a/arch/csky/kernel/probes/ftrace.c b/arch/csky/kernel/probe=
+s/ftrace.c
+>> > index 834cffcfbce3..7ba4b98076de 100644
+>> > --- a/arch/csky/kernel/probes/ftrace.c
+>> > +++ b/arch/csky/kernel/probes/ftrace.c
+>> > @@ -12,6 +12,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigne=
+d long parent_ip,
+>> >         struct kprobe_ctlblk *kcb;
+>> >         struct pt_regs *regs;
+>> >
+>> > +       if (unlikely(kprobe_ftrace_disabled))
+>> > +               return;
+>> > +
+>> For csky part.
+>> Acked-by: Guo Ren <guoren@kernel.org>
+>
+> Thanks Stephen, Guo and Steve!
+>
+> Let me pick this to probes/for-next!
 
-Maybe the userfaultfd should not allow this, I dunno. You made me look
-at this thing and to me it all sounds weird. One thread does page fault
-handling for the other and that helps with live migration somehow. OMG,
-whaaat?
+Thank you Masami!
 
-Maybe I don't understand it and probably never will...
+I did want to check, is this the correct git tree to be watching?
 
-But, for example, membarrier used do to a stupid thing of allowing one
-thread to hammer another with an IPI storm. Bad bad idea. So it got
-fixed.
+https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace.git/log/?=
+h=3Dprobes/for-next
 
-All I'm saying is, if unprivileged processes can do crap, they should be
-prevented from doing crap. Like ratelimiting the pagefaults or whatnot.
+( I'm not trying to pressure on timing, as I know the merge window is
+  hectic. Just making sure I'm watching the correct place! )
 
-One of the recovery action strategies from memory poison is, well, you
-kill the process. If you can detect the hammering process which
-installed that page marker, you kill it. Problem solved.
-
-But again, this userfaultfd thing sounds really weird so I could very
-well be way wrong.
-
-> Even in a non-contrived / non-malicious case, use of this API could
-> have similar effects. If nothing else, the log message can be
-> confusing to administrators: they state that an MCE occurred, whereas
-> with the simulated poison API, this is not the case; it isn't a "real"
-> MCE / hardware error.
-
-Yeah, I read that part in
-
-Documentation/admin-guide/mm/userfaultfd.rst
-
-Simulated poison huh? Another WTF.
-
-> In the KVM use case, the host can't just allocate a new page, because
-> it doesn't know what the guest might have had stored there. Best we
-
-Ok, let's think of real hw poison.
-
-When doing the recovery, you don't care what's stored there because as
-far as the hardware is concerned, if you consume that poison the *whole*
-machine might go down.
-
-So you lose the page. Plain and simple. And the guest can go visit the
-bureau of complaints and grievances.
-
-Still better than killing the guest or even the whole host with other
-guests running on it.
-
-> can do is propagate the poison into the guest, and let the guest OS
-> deal with it as it sees fit, and mark the page poisoned on the host.
-
-You mark the page as poison on the host and you yank it from under the
-guest. That physical frame is gone and the faster all the actors
-involved understand that, the better.
-
-> I don't disagree the guest *shouldn't* reaccess it in this case. :)
-> But if it did, it should get another poison event just as you say.
-
-Yes, it shouldn't. Look at memory_failure(). This will kill whole
-processes if it has to, depending on what the page is used for.
-
-> And, live migration between physical hosts should be transparent to
-> the guest. So if the guest gets a poison, and then we live migrate it,
-
-So if I were to design this, I'd do it this way:
-
-0. guest gets hw poison injected
-
-1. it runs memory_failure() and it kills the processes using the page.
-
-2. page is marked poisoned on the host so no other guest gets it.
-
-That's it. No second accesses whatsoever. At least this is how it works
-on baremetal.
-
-This hw poisoning emulation is just silly and unnecessary.
-
-But again, I probably am missing some aspects. It all just sounded
-really weird to me that's why I thought I should ask what's behind all
-that.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks,
+Stephen
 
