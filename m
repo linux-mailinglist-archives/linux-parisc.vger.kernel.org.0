@@ -1,170 +1,201 @@
-Return-Path: <linux-parisc+bounces-1417-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1418-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A648C6CBC
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 21:20:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428458C6D22
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 22:19:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59D0B28156B
-	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 19:20:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C52EA1F2355A
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 May 2024 20:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC681591FD;
-	Wed, 15 May 2024 19:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48E11591E8;
+	Wed, 15 May 2024 20:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NLN3mn1J"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Az+1uV24"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310463BBF6
-	for <linux-parisc@vger.kernel.org>; Wed, 15 May 2024 19:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6D24206F;
+	Wed, 15 May 2024 20:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715800798; cv=none; b=uq67kh+kJ6qllmOW4sDV4e05PPkYtLTYNuplF6ZFeMF4f9ZFjA9YgIyRMFEZc+rhzKs+DNWpzhPNNk9At9vAB4jW99U8TGk2JnnJPPS/5qUfaLBBu/Wyo6a38On+0KC2IAgiLRCkZT7fKkxaBqhFyOtlsKVMU+rKPQsvNx3VKFY=
+	t=1715804355; cv=none; b=OcgwWwDWUKrd1hjEQ1ERKIznH74fHhIWYQKwwW8fCAx32X/ttuUyZgiMj9fIKkYqkIh9j4dFqXoKCinkVazdF2Ig1CY5tuhzRBaINNpyHagsKkHXL3RmZug387+uyUgwIkKAkPXhptN/omHkPf4OtW0WzI0ntWcpQ4DsPeQvoLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715800798; c=relaxed/simple;
-	bh=eGs7U5U/Usv8Q9Cb5Iad3k8ObVnSouRKrZHuk/yJdnM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XZlpj6nx3Ajq+XDJ88UTfeABQRZYWgX3LoIBf8pJBTuJ7spVB0BDM/9HFYYapj0Pn4bnHgto67Cs8/uqZUQ7+x/DYipHTrZO/kP/WbtRYZEIdNEq6R+QTDc8IzmoV5T2RM2/1e52Fi96I6TYPOrB70cCyuBpH87T9HxZIDC9b88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NLN3mn1J; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2e0933d3b5fso108402321fa.2
-        for <linux-parisc@vger.kernel.org>; Wed, 15 May 2024 12:19:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1715800795; x=1716405595; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HXjROtfQXycrwTZbHgAfwgBM9LbMzawmBcCZtk8pkcY=;
-        b=NLN3mn1J6DEe/KeWjewHPvECzo5VJl4X27mS+Z7lYcI/abJI0RRydzpe6NPi9URcc6
-         0Qg8D1qExudgVFjoslCwvagwQNpFKo96QLjN3MyPa1J9Auw15xnR8pFJ2RsQchANdgvZ
-         nyXGV5lCUbgE5eVA16aFh2HxwmvJ14avbsKy68Kz6giYNrfDTkS/3hmAMm9QfblBVFd7
-         pn1/nbOdaeKKzKYe+vO/u0+yW3YLjcAX7HcaNTTSXCrfJF22JIqd+QK/o3CLQZguyLNX
-         cxIfFY5M6ag3XvoOWUbsVXb3GYyg7esbPhjeLKzOcZShBgPyHsF+26VtNWHKQ2VfvkTq
-         4y5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715800795; x=1716405595;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HXjROtfQXycrwTZbHgAfwgBM9LbMzawmBcCZtk8pkcY=;
-        b=lId/Acx4r9uwElpPfqA3Cy5732WoxmpaeOEFtmIZR9AQryPjk0NNcRUdTMYB5OzwUT
-         HBAF7wC9hwMl4cyoLI3/ub8/ZdDQ0tVe4q+CWIkCIt3iYsUDK6BBUmedc8EvgfzhfRDu
-         eHvGu1mbyQ7gwadkqSUG1ZZBvJltvaI0RiQvWFtiS0XR8CSGOfUL7offgV2X+luVBWjB
-         18QMqRK+n/8yry/b8tiL7lYzEypGTGiDYMRVBsPOg/BRIZlWZVqv6L/4KPdmaGHH3kbR
-         FfYjd/UNAPqcEKIVGoHSr5wcNISVrXQ67C65OkUNQoWUnpyfNkoRxtd5jFuqVF1yXtgF
-         URUA==
-X-Forwarded-Encrypted: i=1; AJvYcCXYmEk+veL9t0oe41YhD1LHsecOy2kBqa+ClPbcwEGEv507YfBAJ+I6uqd9x4rVo29H70KDSvTMxML4XcQh6mT6XC46SflfRYT54RkV
-X-Gm-Message-State: AOJu0YwPcZEZ5NoIWqyESawbRSRwE0sL3pQXgQZzjTStuObzpDHDR+0P
-	PwvmCHtHP9IlrCQJXXv/ths8c6kKgBQLNPHX2q9kaB9ddsfuy+/YrVkzXRxuBNHiwfnXqdB5juy
-	Riq2B+rAEhSwp23LeCGTq4BKGtLZEGS9ct2vV
-X-Google-Smtp-Source: AGHT+IEsh1fgFOZ5mQCmTXHCQZJjsjH7zDpAl9YdV3FVukl1MJHO71DKDwXJtDNtSkwq75f+AarVWw4jtJy3Fg3K69Q=
-X-Received: by 2002:a2e:a591:0:b0:2e2:9416:a649 with SMTP id
- 38308e7fff4ca-2e5205c3760mr118614971fa.53.1715800795037; Wed, 15 May 2024
- 12:19:55 -0700 (PDT)
+	s=arc-20240116; t=1715804355; c=relaxed/simple;
+	bh=9goRToJ5OiITq+QXW6KIsVlsdZ7LiiRiNSA8UJa/MAU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c5rAZSvuB/L6AdwoVRGaYFhm4RnUguWZ2EyTa495hzvFg/hk5YbwskMs3rU4k04+iNTKl9GqTO7H6YzwPUz49TDnUK2P6/AMPtDO/fG2wCSspacTDUwe6suEX/f7ykJVhIq3C+hszcAy0ooMfPT2cB8QwaZiN8iuGKKchuMHRtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Az+1uV24; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5877940E01F6;
+	Wed, 15 May 2024 20:19:10 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Zw2uAITgrclB; Wed, 15 May 2024 20:19:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1715804346; bh=I+TM5XxPjG4Qj70u6A2s8F0ZAG2e+3pm2+5E6j0Lpho=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Az+1uV24MRhctKN9lhn5WrN0m6bLZJW5T1B5QK7KdnCkfR8tiY0xvI9TI3J+7QMA2
+	 Jc7aZ7V7U5MYr8ZSqAVux5K8Gwyru9TGzP80Estj5jxpPr82TnMdJlJohr5wjMcW14
+	 NNGJM59tyMkXpgMyHI2JL5vCleOogoChGPxNx+14IVz2JI5L5FwCTKxLDVC9T8pPic
+	 DTh+3HvaDA6N5J5X2UYtv7JCmvPce0lBy+aBjUcdck8TbyW8jpLsbJRMwQiua6jWMq
+	 6D9QJalBAQNftXhOXdt+d3tWXSzMxE4e6LFHzD9Y3XwTmQS5Aent2y9vLnifF/MQWf
+	 Z3L5OrHhoJtODBs7P9Q+UrBA4f4LADIOlXN6VnB8Y0GqFPnznDp4yZN07b2CR9gNK7
+	 cfjtqhCOYBbJEfTJt3PLQJCehLdHKI6T3W+25Td/Mi6QWwt2lBbz3y4YJrv4VEcmY+
+	 AhMaTvuSlCLocYJMCRSk6XeFJWioa81qeUuZrTQ0eztjVMYoMV4CX53dt7U0PjySDC
+	 EXEq0t8oh4oNPOzt4xXusfuOn9lF8ILJQeWUHiNvO/XvNgwKAsVelSBopUMx20Rxqg
+	 JfTuMNeGc8g/iZr5sDQGXgXALNOxkFMdRBlpYdyYPtkW2LfId/nM8T1YT5ICdhuaTp
+	 AIvm4Gkabd1B7ukayuBdD2NQ=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BB1C540E016A;
+	Wed, 15 May 2024 20:18:37 +0000 (UTC)
+Date: Wed, 15 May 2024 22:18:31 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Muchun Song <muchun.song@linux.dev>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>, Peter Xu <peterx@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
+ poison errors
+Message-ID: <20240515201831.GDZkUYlybfejSh79ix@fat_crate.local>
+References: <20240510182926.763131-1-axelrasmussen@google.com>
+ <20240510182926.763131-2-axelrasmussen@google.com>
+ <20240515104142.GBZkSRZsa3cxJ3DKVy@fat_crate.local>
+ <ZkSUaVx3uCIPkpkJ@localhost.localdomain>
+ <CAJHvVchGGJkEX=qroW=+N-RJDMDGuxM4xoGe7iOtRu9YcfxEEw@mail.gmail.com>
+ <20240515183222.GCZkT_tvEffgYtah4T@fat_crate.local>
+ <CAJHvVcj+YBpLbjLy+M+b8K7fj0XvFSZLpsuY-RbCCn9ouV1WjQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240510182926.763131-1-axelrasmussen@google.com>
- <20240510182926.763131-2-axelrasmussen@google.com> <20240515104142.GBZkSRZsa3cxJ3DKVy@fat_crate.local>
- <ZkSUaVx3uCIPkpkJ@localhost.localdomain> <CAJHvVchGGJkEX=qroW=+N-RJDMDGuxM4xoGe7iOtRu9YcfxEEw@mail.gmail.com>
- <20240515183222.GCZkT_tvEffgYtah4T@fat_crate.local>
-In-Reply-To: <20240515183222.GCZkT_tvEffgYtah4T@fat_crate.local>
-From: Axel Rasmussen <axelrasmussen@google.com>
-Date: Wed, 15 May 2024 12:19:16 -0700
-Message-ID: <CAJHvVcj+YBpLbjLy+M+b8K7fj0XvFSZLpsuY-RbCCn9ouV1WjQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker poison errors
-To: Borislav Petkov <bp@alien8.de>
-Cc: Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Lutomirski <luto@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>, 
-	Ingo Molnar <mingo@redhat.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Liu Shixin <liushixin2@huawei.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>, 
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Peter Xu <peterx@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAJHvVcj+YBpLbjLy+M+b8K7fj0XvFSZLpsuY-RbCCn9ouV1WjQ@mail.gmail.com>
 
-On Wed, May 15, 2024 at 11:33=E2=80=AFAM Borislav Petkov <bp@alien8.de> wro=
-te:
->
-> On Wed, May 15, 2024 at 10:33:03AM -0700, Axel Rasmussen wrote:
-> > Right, the goal is to still have the process get a SIGBUS, but to
-> > avoid the "MCE error" log message. The basic issue is, unprivileged
-> > users can set these markers up, and thereby completely spam up the
-> > log.
->
-> What is the real attack scenario you want to protect against?
->
-> Or is this something hypothetical?
+On Wed, May 15, 2024 at 12:19:16PM -0700, Axel Rasmussen wrote:
+> An unprivileged process can allocate a VMA, use the userfaultfd API to
+> install one of these PTE markers, and then register a no-op SIGBUS
+> handler. Now it can access that address in a tight loop,
 
-An unprivileged process can allocate a VMA, use the userfaultfd API to
-install one of these PTE markers, and then register a no-op SIGBUS
-handler. Now it can access that address in a tight loop, generating a
-huge number of kernel log messages. This can e.g. bog down the system,
-or at least drown out other important log messages.
+Maybe the userfaultfd should not allow this, I dunno. You made me look
+at this thing and to me it all sounds weird. One thread does page fault
+handling for the other and that helps with live migration somehow. OMG,
+whaaat?
 
-For example the userfaultfd selftest does something similar to this to
-test that the API works properly. :)
+Maybe I don't understand it and probably never will...
 
-Even in a non-contrived / non-malicious case, use of this API could
-have similar effects. If nothing else, the log message can be
-confusing to administrators: they state that an MCE occurred, whereas
-with the simulated poison API, this is not the case; it isn't a "real"
-MCE / hardware error.
+But, for example, membarrier used do to a stupid thing of allowing one
+thread to hammer another with an IPI storm. Bad bad idea. So it got
+fixed.
 
->
-> > That said, one thing I'm not sure about is whether or not
-> > VM_FAULT_SIGBUS is a viable alternative (returned for a new PTE marker
-> > type specific to simulated poison). The goal of the simulated poison
-> > feature is to "closely simulate" a real hardware poison event. If you
-> > live migrate a VM from a host with real poisoned memory, to a new
-> > host: you'd want to keep the same behavior if the guest accessed those
-> > addresses again, so as not to confuse the guest about why it suddenly
-> > became "un-poisoned".
->
-> Well, the recovery action is to poison the page and the process should
-> be resilient enough and allocate a new, clean page which doesn't trigger
-> hw poison hopefully, if possible.
->
-> It doesn't make a whole lotta sense if poison "remains". Hardware poison
-> you don't want to touch a second time either - otherwise you might
-> consume that poison and die.
+All I'm saying is, if unprivileged processes can do crap, they should be
+prevented from doing crap. Like ratelimiting the pagefaults or whatnot.
 
-In the KVM use case, the host can't just allocate a new page, because
-it doesn't know what the guest might have had stored there. Best we
-can do is propagate the poison into the guest, and let the guest OS
-deal with it as it sees fit, and mark the page poisoned on the host. I
-don't disagree the guest *shouldn't* reaccess it in this case. :) But
-if it did, it should get another poison event just as you say.
+One of the recovery action strategies from memory poison is, well, you
+kill the process. If you can detect the hammering process which
+installed that page marker, you kill it. Problem solved.
 
-And, live migration between physical hosts should be transparent to
-the guest. So if the guest gets a poison, and then we live migrate it,
-and then it accesses that address again, it should likewise get
-another poison event, just as before. Even though the underlying
-physical memory is *not* poisoned on the new host machine.
+But again, this userfaultfd thing sounds really weird so I could very
+well be way wrong.
 
-So the use case is, after live migration, we install one of these PTE
-markers to simulate a poison event in case the address is accessed
-again. But since it isn't *really* a hardware error on the new host,
-no reason to spam the host kernel log when / if this occurs.
+> Even in a non-contrived / non-malicious case, use of this API could
+> have similar effects. If nothing else, the log message can be
+> confusing to administrators: they state that an MCE occurred, whereas
+> with the simulated poison API, this is not the case; it isn't a "real"
+> MCE / hardware error.
 
->
-> --
-> Regards/Gruss,
->     Boris.
->
-> https://people.kernel.org/tglx/notes-about-netiquette
+Yeah, I read that part in
+
+Documentation/admin-guide/mm/userfaultfd.rst
+
+Simulated poison huh? Another WTF.
+
+> In the KVM use case, the host can't just allocate a new page, because
+> it doesn't know what the guest might have had stored there. Best we
+
+Ok, let's think of real hw poison.
+
+When doing the recovery, you don't care what's stored there because as
+far as the hardware is concerned, if you consume that poison the *whole*
+machine might go down.
+
+So you lose the page. Plain and simple. And the guest can go visit the
+bureau of complaints and grievances.
+
+Still better than killing the guest or even the whole host with other
+guests running on it.
+
+> can do is propagate the poison into the guest, and let the guest OS
+> deal with it as it sees fit, and mark the page poisoned on the host.
+
+You mark the page as poison on the host and you yank it from under the
+guest. That physical frame is gone and the faster all the actors
+involved understand that, the better.
+
+> I don't disagree the guest *shouldn't* reaccess it in this case. :)
+> But if it did, it should get another poison event just as you say.
+
+Yes, it shouldn't. Look at memory_failure(). This will kill whole
+processes if it has to, depending on what the page is used for.
+
+> And, live migration between physical hosts should be transparent to
+> the guest. So if the guest gets a poison, and then we live migrate it,
+
+So if I were to design this, I'd do it this way:
+
+0. guest gets hw poison injected
+
+1. it runs memory_failure() and it kills the processes using the page.
+
+2. page is marked poisoned on the host so no other guest gets it.
+
+That's it. No second accesses whatsoever. At least this is how it works
+on baremetal.
+
+This hw poisoning emulation is just silly and unnecessary.
+
+But again, I probably am missing some aspects. It all just sounded
+really weird to me that's why I thought I should ask what's behind all
+that.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
