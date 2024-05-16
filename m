@@ -1,175 +1,210 @@
-Return-Path: <linux-parisc+bounces-1420-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1421-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4A98C6F78
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 May 2024 02:24:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E12E28C7DA8
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 May 2024 22:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C36D31F22784
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 May 2024 00:24:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84C252834FE
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 May 2024 20:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7667E19E;
-	Thu, 16 May 2024 00:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA69157A53;
+	Thu, 16 May 2024 20:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eyhYvQrh"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zAvTu0zw"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3285B1877;
-	Thu, 16 May 2024 00:24:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEC1156F29
+	for <linux-parisc@vger.kernel.org>; Thu, 16 May 2024 20:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715819046; cv=none; b=V/TIrWS3SwCcMSfMryZJ4Q64BlJjUobYFyQGbteHtMPbaeKF/DB7JC4tQp3pwcP4hrHK9/bKsHTCYimQ5lkEOaAkhnmJyyDXhsr5K/kUN4coeb0Uob0O7ZcSKlFKOm/BaklkchzUj70t0hqUZMON349WufcAHNC/WcSMxtK6N08=
+	t=1715891327; cv=none; b=EArxd4YSSlydlv5DlFLCvNsDQIs6uxy97rA6QBM+Zvul1IM+jBcCkRHgCkJV0jAhkPliVyRYIfuTPQKK2FDi2InCJZb3xUTWMKXjCb8cFWQLsAfqJhFjACrkQ5ixegFEfmeSKlayDJHgudlUIdQs2i+G6O1IdZ4j3Q/spJJD7Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715819046; c=relaxed/simple;
-	bh=2mTyV3yHsXnpIz+Hf8dHwdpSsS9bL76Nasiv3NlJOGU=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=l1QI9khiLElR7VFjzE5or0yCKtQTm1UPHdHFUtG8qZM/wRHYZZaRZmRraCJx+an6l6BO1PV8A6GVEiqLQm20tEPYY995CkuIwhIYYNEczIM7+014gTqnGq+xOz5amnD7OukLZYAwkx/JrjT1pmJKQRzhBrH86B3fx+r4YzJTjj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eyhYvQrh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B95C116B1;
-	Thu, 16 May 2024 00:23:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715819045;
-	bh=2mTyV3yHsXnpIz+Hf8dHwdpSsS9bL76Nasiv3NlJOGU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eyhYvQrhNljUOqI7QNUxGGddgXbxg9y2eAf3SrTd+rZn8BqfPQoiuSPf3cJR34dYa
-	 zSvce/f+OH48w4hBDOW3RJtYyeJg/nH46JmYm2E1PnSRHy3kF0o/T3lOVha7lvTJZL
-	 uwq0IQjHw/2eZmSVpTKVdnQCl4UR4thsmYHeiq/1GVjfoMBQqd3nuLCklTZ9PM9S84
-	 D8LoRdc+cO+u2c30aTUmBWeafhneREBkpHfzgJUF++utFsobb1GHqqrDGDR8WHyFxG
-	 uiknNVRd2iWPJ5aH2ELN/FibJPqRnrW3ba5PPk+Mf7re8cp/Bm8sj9dFC7CoxlOg4B
-	 VDJeBnkbZygiA==
-Date: Thu, 16 May 2024 09:23:55 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Stephen Brennan <stephen.s.brennan@oracle.com>
-Cc: Guo Ren <guoren@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Mark
- Rutland <mark.rutland@arm.com>, Huacai Chen <chenhuacai@kernel.org>, WANG
- Xuerui <kernel@xen0n.name>, "James E.J. Bottomley"
- <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, "Aneesh Kumar K.V"
- <aneesh.kumar@kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas
- Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
- Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v3] kprobe/ftrace: bail out if ftrace was killed
-Message-Id: <20240516092355.4eaab560b7f4e22953f73cfc@kernel.org>
-In-Reply-To: <87r0e2pvmn.fsf@oracle.com>
-References: <20240501162956.229427-1-stephen.s.brennan@oracle.com>
-	<CAJF2gTT8a4PBU3ekZFNTi6EuETT9hhKfhXrPgGGpn92rQMNSvg@mail.gmail.com>
-	<20240502110348.016f190e0b0565b7e9ecdb48@kernel.org>
-	<87r0e2pvmn.fsf@oracle.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1715891327; c=relaxed/simple;
+	bh=zdb4DJSVLAVhyLUnRgSpLVG1x3o+SG1M8q+bL9L58nc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cyykfv6rxsHze8UHUXVVsU8lx6EmSEWnow0Ry9KcrjppR3vKgtXe6dNujho1zeETJVceetneXiipx7hNKm3YK8cTXmF6OOrFvS2ujjHYTz2ynEDT53pgGugtHVl5b1WPdUw5OiEDwOmh0gBUjd/SyDKsudp4GmxCPpZu7MI7+pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zAvTu0zw; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-34d8f6cfe5bso6715456f8f.3
+        for <linux-parisc@vger.kernel.org>; Thu, 16 May 2024 13:28:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1715891324; x=1716496124; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YZSwX2jBcRCBdUFcHdErZ/3QKMz3PjihBzuXDa6XBd8=;
+        b=zAvTu0zw1wOw7qNRtdsfIf/JSMc7ahsPeiM6kGGEPARiONEHjc3uLJo8H7c3tsPxQ4
+         0T/q255K5OIfErb/gWAFT+Xjef5YGnIrEUa+I+GPCnoORRzPl7P+6lpUAbHPqNFEQ2Gm
+         49wp6q910ums1JwXcIckZn2P8ZkK20ZSEdiH+i8QJIemplipgGprZSYng9LT+/rJxli5
+         nTq4PdLllY3NDxMf+7ElnTcB6deIMf66JM5cA1QC5ZQtWg2eSYT9bS0C6EqzoTwsWbVi
+         2sc0uEVpyN+48PctHguc8RIvjAWm9cA6bZffDkqA8o3uGDLFYU0ukglIXicNMxuHh0aE
+         eFdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715891324; x=1716496124;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YZSwX2jBcRCBdUFcHdErZ/3QKMz3PjihBzuXDa6XBd8=;
+        b=VY6X6VERUGYvI8zPN1kuY99FDw/MoVBi/ZseFgbbsObXXJAbuuyn7J5iDWROWwJS7f
+         IoYQLbHucA0yKixybZ/xcguhtryu0aS4lbglW39TXFltcmZmu+Jf570ZyUnLcmhlb4ow
+         pKXAiwdBmNR6yYShPDxE7TIejMd8jwwpQGnEjXPO0JqQ6ewcU5UNoP1W/Blp0VtWcfWQ
+         xGUEKqhWsNnhNUxzlWQyOlB04ML+r5wQctIuz/bDx25OMUufr00Vmai5BFOmQIdaEB2i
+         mvZHaojsarmcQLJ1BpK3dA/OlwrHbY1NSe08CxwM6361Al2MeVokyx6uWoJcIPCmFciv
+         gBTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX99ds5MPGVWcTWU5ziDChnf++rx85qCeCBuVRozPzFlk6lGFPkY3PWID8zPtDMCZJDJaJsatQTJfbA37LwI27033n3lUSGW/tPf7n5
+X-Gm-Message-State: AOJu0YxxFwgBa0mOqpOIxxTqjcLiAiSYRfxA8vWuRNfLfZgPQW8m1uAu
+	KjuRMjLWcPBJJrtl948RojesQLSgJh6/E7lToL5MIK0UzO+P+/m2mt/piTHHTBM8PlfDknUST6G
+	EFYmqdmE3sCVFtsmq35Yqy1eIY0lysAivWzOO
+X-Google-Smtp-Source: AGHT+IHSs0PnvLr7K65U0pIJasei0dLnQZzcKZVqtNdpsde/9sHa0rl6+tv66pbq/0+Y0GTi9KV6Q72LZ1sl+YrcQZc=
+X-Received: by 2002:a05:6000:280d:b0:351:b2db:d7d2 with SMTP id
+ ffacd0b85a97d-351b2dbd889mr9447250f8f.27.1715891324087; Thu, 16 May 2024
+ 13:28:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+References: <20240510182926.763131-1-axelrasmussen@google.com>
+ <20240510182926.763131-2-axelrasmussen@google.com> <20240515104142.GBZkSRZsa3cxJ3DKVy@fat_crate.local>
+ <ZkSUaVx3uCIPkpkJ@localhost.localdomain> <CAJHvVchGGJkEX=qroW=+N-RJDMDGuxM4xoGe7iOtRu9YcfxEEw@mail.gmail.com>
+ <20240515183222.GCZkT_tvEffgYtah4T@fat_crate.local> <CAJHvVcj+YBpLbjLy+M+b8K7fj0XvFSZLpsuY-RbCCn9ouV1WjQ@mail.gmail.com>
+ <20240515201831.GDZkUYlybfejSh79ix@fat_crate.local>
+In-Reply-To: <20240515201831.GDZkUYlybfejSh79ix@fat_crate.local>
+From: Axel Rasmussen <axelrasmussen@google.com>
+Date: Thu, 16 May 2024 13:28:04 -0700
+Message-ID: <CAJHvVchVA4B8DCW=yUGQ6jg1sYXiMX2B-cWziyR3KiTkYNkX-g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker poison errors
+To: Borislav Petkov <bp@alien8.de>
+Cc: Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andy Lutomirski <luto@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>, 
+	Ingo Molnar <mingo@redhat.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Liu Shixin <liushixin2@huawei.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>, 
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Peter Xu <peterx@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 15 May 2024 15:18:08 -0700
-Stephen Brennan <stephen.s.brennan@oracle.com> wrote:
+On Wed, May 15, 2024 at 1:19=E2=80=AFPM Borislav Petkov <bp@alien8.de> wrot=
+e:
+>
+> On Wed, May 15, 2024 at 12:19:16PM -0700, Axel Rasmussen wrote:
+> > An unprivileged process can allocate a VMA, use the userfaultfd API to
+> > install one of these PTE markers, and then register a no-op SIGBUS
+> > handler. Now it can access that address in a tight loop,
+>
+> Maybe the userfaultfd should not allow this, I dunno. You made me look
+> at this thing and to me it all sounds weird. One thread does page fault
+> handling for the other and that helps with live migration somehow. OMG,
+> whaaat?
+>
+> Maybe I don't understand it and probably never will...
+>
+> But, for example, membarrier used do to a stupid thing of allowing one
+> thread to hammer another with an IPI storm. Bad bad idea. So it got
+> fixed.
+>
+> All I'm saying is, if unprivileged processes can do crap, they should be
+> prevented from doing crap. Like ratelimiting the pagefaults or whatnot.
+>
+> One of the recovery action strategies from memory poison is, well, you
+> kill the process. If you can detect the hammering process which
+> installed that page marker, you kill it. Problem solved.
+>
+> But again, this userfaultfd thing sounds really weird so I could very
+> well be way wrong.
+>
+> > Even in a non-contrived / non-malicious case, use of this API could
+> > have similar effects. If nothing else, the log message can be
+> > confusing to administrators: they state that an MCE occurred, whereas
+> > with the simulated poison API, this is not the case; it isn't a "real"
+> > MCE / hardware error.
+>
+> Yeah, I read that part in
+>
+> Documentation/admin-guide/mm/userfaultfd.rst
+>
+> Simulated poison huh? Another WTF.
+>
+> > In the KVM use case, the host can't just allocate a new page, because
+> > it doesn't know what the guest might have had stored there. Best we
+>
+> Ok, let's think of real hw poison.
+>
+> When doing the recovery, you don't care what's stored there because as
+> far as the hardware is concerned, if you consume that poison the *whole*
+> machine might go down.
+>
+> So you lose the page. Plain and simple. And the guest can go visit the
+> bureau of complaints and grievances.
+>
+> Still better than killing the guest or even the whole host with other
+> guests running on it.
+>
+> > can do is propagate the poison into the guest, and let the guest OS
+> > deal with it as it sees fit, and mark the page poisoned on the host.
+>
+> You mark the page as poison on the host and you yank it from under the
+> guest. That physical frame is gone and the faster all the actors
+> involved understand that, the better.
+>
+> > I don't disagree the guest *shouldn't* reaccess it in this case. :)
+> > But if it did, it should get another poison event just as you say.
+>
+> Yes, it shouldn't. Look at memory_failure(). This will kill whole
+> processes if it has to, depending on what the page is used for.
+>
+> > And, live migration between physical hosts should be transparent to
+> > the guest. So if the guest gets a poison, and then we live migrate it,
+>
+> So if I were to design this, I'd do it this way:
+>
+> 0. guest gets hw poison injected
+>
+> 1. it runs memory_failure() and it kills the processes using the page.
+>
+> 2. page is marked poisoned on the host so no other guest gets it.
+>
+> That's it. No second accesses whatsoever. At least this is how it works
+> on baremetal.
 
-> Masami Hiramatsu (Google) <mhiramat@kernel.org> writes:
-> > On Thu, 2 May 2024 01:35:16 +0800
-> > Guo Ren <guoren@kernel.org> wrote:
-> >
-> >> On Thu, May 2, 2024 at 12:30 AM Stephen Brennan
-> >> <stephen.s.brennan@oracle.com> wrote:
-> >> >
-> >> > If an error happens in ftrace, ftrace_kill() will prevent disarming
-> >> > kprobes. Eventually, the ftrace_ops associated with the kprobes will be
-> >> > freed, yet the kprobes will still be active, and when triggered, they
-> >> > will use the freed memory, likely resulting in a page fault and panic.
-> >> >
-> >> > This behavior can be reproduced quite easily, by creating a kprobe and
-> >> > then triggering a ftrace_kill(). For simplicity, we can simulate an
-> >> > ftrace error with a kernel module like [1]:
-> >> >
-> >> > [1]: https://github.com/brenns10/kernel_stuff/tree/master/ftrace_killer
-> >> >
-> >> >   sudo perf probe --add commit_creds
-> >> >   sudo perf trace -e probe:commit_creds
-> >> >   # In another terminal
-> >> >   make
-> >> >   sudo insmod ftrace_killer.ko  # calls ftrace_kill(), simulating bug
-> >> >   # Back to perf terminal
-> >> >   # ctrl-c
-> >> >   sudo perf probe --del commit_creds
-> >> >
-> >> > After a short period, a page fault and panic would occur as the kprobe
-> >> > continues to execute and uses the freed ftrace_ops. While ftrace_kill()
-> >> > is supposed to be used only in extreme circumstances, it is invoked in
-> >> > FTRACE_WARN_ON() and so there are many places where an unexpected bug
-> >> > could be triggered, yet the system may continue operating, possibly
-> >> > without the administrator noticing. If ftrace_kill() does not panic the
-> >> > system, then we should do everything we can to continue operating,
-> >> > rather than leave a ticking time bomb.
-> >> >
-> >> > Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-> >> > ---
-> >> > Changes in v3:
-> >> >   Don't expose ftrace_is_dead(). Create a "kprobe_ftrace_disabled"
-> >> >   variable and check it directly in the kprobe handlers.
-> >> > Link to v1/v2 discussion:
-> >> >   https://lore.kernel.org/all/20240426225834.993353-1-stephen.s.brennan@oracle.com/
-> >> >
-> >> >  arch/csky/kernel/probes/ftrace.c     | 3 +++
-> >> >  arch/loongarch/kernel/ftrace_dyn.c   | 3 +++
-> >> >  arch/parisc/kernel/ftrace.c          | 3 +++
-> >> >  arch/powerpc/kernel/kprobes-ftrace.c | 3 +++
-> >> >  arch/riscv/kernel/probes/ftrace.c    | 3 +++
-> >> >  arch/s390/kernel/ftrace.c            | 3 +++
-> >> >  arch/x86/kernel/kprobes/ftrace.c     | 3 +++
-> >> >  include/linux/kprobes.h              | 7 +++++++
-> >> >  kernel/kprobes.c                     | 6 ++++++
-> >> >  kernel/trace/ftrace.c                | 1 +
-> >> >  10 files changed, 35 insertions(+)
-> >> >
-> >> > diff --git a/arch/csky/kernel/probes/ftrace.c b/arch/csky/kernel/probes/ftrace.c
-> >> > index 834cffcfbce3..7ba4b98076de 100644
-> >> > --- a/arch/csky/kernel/probes/ftrace.c
-> >> > +++ b/arch/csky/kernel/probes/ftrace.c
-> >> > @@ -12,6 +12,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
-> >> >         struct kprobe_ctlblk *kcb;
-> >> >         struct pt_regs *regs;
-> >> >
-> >> > +       if (unlikely(kprobe_ftrace_disabled))
-> >> > +               return;
-> >> > +
-> >> For csky part.
-> >> Acked-by: Guo Ren <guoren@kernel.org>
-> >
-> > Thanks Stephen, Guo and Steve!
-> >
-> > Let me pick this to probes/for-next!
-> 
-> Thank you Masami!
-> 
-> I did want to check, is this the correct git tree to be watching?
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace.git/log/?h=probes/for-next
-> 
-> ( I'm not trying to pressure on timing, as I know the merge window is
->   hectic. Just making sure I'm watching the correct place! )
+I agree with almost all of the above. But one point is, I don't think
+we can trust the guest to be reasonable. :)
 
-Sorry, I forgot to push it from my local tree. Now it should be there.
+Public cloud provider customers might run some OS other than Linux, or
+an old / buggy kernel, or one with out-of-tree patches which make it
+do who knows what. There can also be users who are actively malicious.
 
-Thanks,
+Some customers may try to do fancy "poison recovery" where they can
+avoid killing the in-guest process when a poison event occurs. These
+implementations can be buggy :) and unintentionally reaccess.
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+
+>
+> This hw poisoning emulation is just silly and unnecessary.
+>
+> But again, I probably am missing some aspects. It all just sounded
+> really weird to me that's why I thought I should ask what's behind all
+> that.
+>
+> Thx.
+>
+> --
+> Regards/Gruss,
+>     Boris.
+>
+> https://people.kernel.org/tglx/notes-about-netiquette
 
