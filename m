@@ -1,74 +1,75 @@
-Return-Path: <linux-parisc+bounces-1428-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1429-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8354A8C8EEE
-	for <lists+linux-parisc@lfdr.de>; Sat, 18 May 2024 02:39:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7B98C91EF
+	for <lists+linux-parisc@lfdr.de>; Sat, 18 May 2024 20:46:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3899C282C81
-	for <lists+linux-parisc@lfdr.de>; Sat, 18 May 2024 00:39:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5192A282148
+	for <lists+linux-parisc@lfdr.de>; Sat, 18 May 2024 18:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B464A29;
-	Sat, 18 May 2024 00:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE7C56454;
+	Sat, 18 May 2024 18:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="SV2zemg5"
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="eR1BZGWi"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C35E4A21
-	for <linux-parisc@vger.kernel.org>; Sat, 18 May 2024 00:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690EF54907
+	for <linux-parisc@vger.kernel.org>; Sat, 18 May 2024 18:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715992775; cv=none; b=cn6CMv72VH2RHMKhaoqckk7BWL0aMUCKMwKuxNgfly96NdYOUCuSVe2tU1Ior2Pl/iL4f92B/G+2+//AR1QzXfEmRB2HkAzmWrRPos/+SkR+v9qJ0Z2ooo+GLZ7DzzJcaXlQ9LZEn9PHla2qErFEUxbVY3MViJrr1ejAvuyF3Oc=
+	t=1716057974; cv=none; b=fBNSpN7ins9jlhKcxVH/TJtZvaRS3ZjK6KuEr9N+NbhXKJY0+1O8lwgQ4HbGc0zU5pPxMSTq5oLsP8lAC39smwZNrZbUrfm9u7Bq5dyt/yGHf0zOsM2g4aFOlT82A72Rfa5JE+zXLGE8d6tIjYm1ksCqdyhwbuRc4/qxljj/4t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715992775; c=relaxed/simple;
-	bh=4V5YW8ORGMY45KRj8UEqSm59pF8Y+sc6mDeE+TSeGJM=;
+	s=arc-20240116; t=1716057974; c=relaxed/simple;
+	bh=zQdyUAfqyEGFQFtZHOsOkjixcTwdwCIOHdjVrBr5h0Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R/D2F75T4wMiCCpjOn/OP38DLixCOLyUU/3B84wK/8bCFu7+KiGV/E/7ru2FOqIAxZvOFgcoYS9KjRz0NNRNU970avKxI0U+aFSbg3gpdvHVTTkmWrfAb11GK3fZPjH4w3HA1vtU2W1tYIBANeNxmZX3lesF2ezxvVfiGdDKC4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=SV2zemg5; arc=none smtp.client-ip=209.85.214.181
+	 In-Reply-To:Content-Type; b=u3BxvK40VKxTBxNXjkCEq/pYfVJKRWWjBpYQSL7rSjEhBoa9zMBGecfH0U2YI0mhQUWrD1UgeLC5U6FBPmNBEn3dqFKWDpoUWCludOje6ks2sTjB1MZhi5ywo3wdYFbO0y0azugoF4DPlLApiyEFKReWd7z/Rdz2E/8A5qyrS6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=eR1BZGWi; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1edfc57ac0cso24918045ad.3
-        for <linux-parisc@vger.kernel.org>; Fri, 17 May 2024 17:39:32 -0700 (PDT)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1ee42b97b32so41065255ad.2
+        for <linux-parisc@vger.kernel.org>; Sat, 18 May 2024 11:46:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1715992772; x=1716597572; darn=vger.kernel.org;
+        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1716057973; x=1716662773; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=p7Punv+O2VI5RKAkHRkhtEk7CBj9yRK2PJX5XN6bfhc=;
-        b=SV2zemg5NtIR3pbXcUpjQL4Nh2uV808bM0bYra4XbVqoECYENJz6/Yy1du6GUsBF1T
-         XjClNZyHgkq1IjzGsNu0VF4KSRcFvP8duWW93pNhihxONKxIBHEuEju184pzDGSNNupq
-         ib3YMvRdDHjiHmp2OxcZgusnPxfFWYkd34Nlw+eS/M5SIsLUf3Mrx9wPF3j4JbN0L51J
-         8Ns52iIbDMMJzhPw7VAE6tB2RCkaU9f1rM9auoIgPX19Bn4lqARdC5AzZbrjVYBG9xPX
-         cdNuEoJX1TmbwOv4k+7AFSI4ow5gFWRUrYzogvoH4IJNgoo7XBVgU2ba15ADfeNZaYsV
-         sGRA==
+        bh=gtghe09oJ6h1zM6r9/hcuib2w+0SfFSyUIep5UEjz/8=;
+        b=eR1BZGWiXUpu2rNKW2Dg0cebePtcPzqYX2u5sAFvIGD+F4YpaI4u3yxUrMF+gvTohG
+         affruCAaUkXyjjMKkYm2juD+Qy8Su66gtY7GTZSw/0NV8Lp5VsnFW5Eeuy9jLGUqnduO
+         sfBEHdUFPniJ+ymxgStYAf3knUbYbu13wMvCjt/gGpJUao1H7fIMRVoIo3Zdk0e1j7Jk
+         gGrny5nnCtrzU5wwSTUSnMoslxlmwQHgozR5HStBaLReUsSSObFhENpDWdzmADxItp1p
+         prY4wfdoqXZl+zZLTNCR26qlRpJN3t4e0Nz2ujcdkegRJyydgbisxR10yo8UJA7lcKKl
+         M0sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715992772; x=1716597572;
+        d=1e100.net; s=20230601; t=1716057973; x=1716662773;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p7Punv+O2VI5RKAkHRkhtEk7CBj9yRK2PJX5XN6bfhc=;
-        b=iERq0cY4RNjuQKW+zcoNFgQbRCvIp1Wsw2M+yATRNyoakidIHjTNqvrLmlqeopDi57
-         QprEq9xwjAu/OvL4hWPBgM/ibYlFIuyQ3Vsj61KRogNJU9BgMCyzzzrRuOLLT7gYOyVi
-         CnmBXdGQvm9/O6haLyw1WJthHPe6T54Iz3N0HRRyVsoiCj7JlOrcOK6TZgbl4Yzgmd6O
-         0/EwPQIVI+fI7Ynw399f/HsnD9GVtB+K+R9Y9w5wm86bXZbJA9LiEiAImDuffIXPyvM/
-         qotKODhWqwvaWB8u7apxi5LxqH0ph0PoWz4QHzk/PCo5xFwuhfKrWMxonCGMjsCLD8RO
-         /Rrw==
-X-Forwarded-Encrypted: i=1; AJvYcCVn0E7JArvK+e5hv3sP3oi5xK22l6gjNyfHjKWbesrZPU7bj7lhPxujkzbyT2QWhm7yeK9xGReAsWFX1aUzdr0gL488pp0780bSRX8j
-X-Gm-Message-State: AOJu0Ywt5qwRH/Pd+RMM66pKuDXMpCZ8oYNtE/oXdKSQmnyforHVtp3w
-	sF/5HcBT3EmTbyJ+yrP2mzZWWa9uIyyn+a7ATNbvLS7kRSrd7n0qptNRDqt7wRk=
-X-Google-Smtp-Source: AGHT+IG2kizdOiSw0uylPEq0qK5Nujj1quEtxgB2wxc39/tXdkGx33RSfpvHjRCh3dNNGsAUN6Msjg==
-X-Received: by 2002:a05:6a00:1397:b0:6e6:89ad:1233 with SMTP id d2e1a72fcca58-6f4e02a6150mr30537733b3a.2.1715992772166;
-        Fri, 17 May 2024 17:39:32 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1156:1:1cbd:da2b:a9f2:881? ([2620:10d:c090:500::6:9fd9])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2af2bccsm16503658b3a.170.2024.05.17.17.39.26
+        bh=gtghe09oJ6h1zM6r9/hcuib2w+0SfFSyUIep5UEjz/8=;
+        b=SBOt7sS8Y8f6I+3gJ3VxDNL/R6NdZaGohwS35eTH+gQe9ZRtbXAIVJzEBXq/eYQcWx
+         YeqklRdjFRjETXx3P9VAOhWQYzN4cXzs1qiA29VRgLrn6mfw/3RvvvP0FSYly7PL/K2h
+         1d4e9h6/3GCu7OL9NUlCdXxinUwreDKC8X5EmrsHikzCsDkOO/1A3FpJOJwD+ATyQCNr
+         KuFhCvMzHMKKIy4CNImBW2MvMrbKlWOvWWmFvK5YR+8BwJUtUeeKanYs9JaJXFeIcoMN
+         rZnIPhvYyH1UXQ64E5+lrLVYsUqUsg4SAg6he1ljKXG1qpIFZ1oKGlf7qhheidnBg+o/
+         oQzw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4RmJrNT4/2swBe0KN7rQTH0wNbei0Z79/0AcotmudPoGl7yn2em++qS3kRCi2dwgvYs3jf/xVrE9EYEt4ZBmYZnlsdqGbOkopaejm
+X-Gm-Message-State: AOJu0YwKRV6ItuHfo59LlGsoiRFYu5xw3RsxTvuMcxoXtW8sC+fKIrit
+	IMUqSXAnAI1yc7MOFDUWtXrHe/HUs9ZLURvKrq05hIZntUCYYTlENnJ7yD/wlsWNt49r3EGP97M
+	ZAJ8=
+X-Google-Smtp-Source: AGHT+IGg0S5X0hOpYwIoBA7prkwh880WzDoU3RkbOFeT/k39JSwrbImT1CJOj9wyUMDIZCVhykRgQw==
+X-Received: by 2002:a05:6a00:1988:b0:6f3:8468:f9d1 with SMTP id d2e1a72fcca58-6f4e02c7d62mr28356985b3a.14.1716057972513;
+        Sat, 18 May 2024 11:46:12 -0700 (PDT)
+Received: from [192.168.1.16] (174-21-188-197.tukw.qwest.net. [174.21.188.197])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2a6656esm16665141b3a.38.2024.05.18.11.46.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 May 2024 17:39:31 -0700 (PDT)
-Message-ID: <090be3c0-42e6-4b97-8b03-eb64b06a2911@davidwei.uk>
-Date: Fri, 17 May 2024 17:39:25 -0700
+        Sat, 18 May 2024 11:46:11 -0700 (PDT)
+Message-ID: <d85f4ba4-774f-4577-985f-45a5a1866da7@davidwei.uk>
+Date: Sat, 18 May 2024 11:46:09 -0700
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -76,7 +77,8 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 05/14] netdev: netdevice devmem allocator
+Subject: Re: [PATCH net-next v9 04/14] netdev: support binding dma-buf to
+ netdevice
 Content-Language: en-GB
 To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
@@ -118,94 +120,46 @@ Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski
  <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
  Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
 References: <20240510232128.1105145-1-almasrymina@google.com>
- <20240510232128.1105145-6-almasrymina@google.com>
+ <20240510232128.1105145-5-almasrymina@google.com>
 From: David Wei <dw@davidwei.uk>
-In-Reply-To: <20240510232128.1105145-6-almasrymina@google.com>
+In-Reply-To: <20240510232128.1105145-5-almasrymina@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 2024-05-10 16:21, Mina Almasry wrote:
-> +/* This returns the absolute dma_addr_t calculated from
-> + * net_iov_owner(niov)->owner->base_dma_addr, not the page_pool-owned
-> + * niov->dma_addr.
-> + *
-> + * The absolute dma_addr_t is a dma_addr_t that is always uncompressed.
-> + *
-> + * The page_pool-owner niov->dma_addr is the absolute dma_addr compressed into
-> + * an unsigned long. Special handling is done when the unsigned long is 32-bit
-> + * but the dma_addr_t is 64-bit.
-> + *
-> + * In general code looking for the dma_addr_t should use net_iov_dma_addr(),
-> + * while page_pool code looking for the unsigned long dma_addr which mirrors
-> + * the field in struct page should use niov->dma_addr.
-> + */
-> +static inline dma_addr_t net_iov_dma_addr(const struct net_iov *niov)
+> +void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
 > +{
-> +	struct dmabuf_genpool_chunk_owner *owner = net_iov_owner(niov);
+> +	struct netdev_rx_queue *rxq;
+> +	unsigned long xa_idx;
+> +	unsigned int rxq_idx;
 > +
-> +	return owner->base_dma_addr +
-> +	       ((dma_addr_t)net_iov_idx(niov) << PAGE_SHIFT);
-> +}
+> +	if (!binding)
+> +		return;
+> +
+> +	if (binding->list.next)
+> +		list_del(&binding->list);
+> +
+> +	xa_for_each(&binding->bound_rxq_list, xa_idx, rxq) {
+> +		if (rxq->mp_params.mp_priv == binding) {
+> +			/* We hold the rtnl_lock while binding/unbinding
+> +			 * dma-buf, so we can't race with another thread that
+> +			 * is also modifying this value. However, the page_pool
+> +			 * may read this config while it's creating its
+> +			 * rx-queues. WRITE_ONCE() here to match the
+> +			 * READ_ONCE() in the page_pool.
+> +			 */
+> +			WRITE_ONCE(rxq->mp_params.mp_ops, NULL);
+> +			WRITE_ONCE(rxq->mp_params.mp_priv, NULL);
+> +
+> +			rxq_idx = get_netdev_rx_queue_index(rxq);
+> +
+> +			netdev_rx_queue_restart(binding->dev, rxq_idx);
 
-This part feels like devmem TCP specific, yet the function is in
-netmem.h. Please consider moving it into devmem.{h,c} which makes it
-less likely that people not reading your comment will try using it.
+What if netdev_rx_queue_restart() fails? Depending on where it failed, a
+queue might still be filled from struct net_devmem_dmabuf_binding. This
+is one downside of the current situation with netdev_rx_queue_restart()
+needing to do allocations each time.
 
-> +
-> +static inline struct net_devmem_dmabuf_binding *
-> +net_iov_binding(const struct net_iov *niov)
-> +{
-> +	return net_iov_owner(niov)->binding;
-> +}
-> +
->  /* netmem */
->  
->  /**
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index d82f92d7cf9ce..1f90e23a81441 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -54,6 +54,42 @@ void __net_devmem_dmabuf_binding_free(struct net_devmem_dmabuf_binding *binding)
->  	kfree(binding);
->  }
->  
-> +struct net_iov *
-> +net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding)
-> +{
-> +	struct dmabuf_genpool_chunk_owner *owner;
-> +	unsigned long dma_addr;
-> +	struct net_iov *niov;
-> +	ssize_t offset;
-> +	ssize_t index;
-> +
-> +	dma_addr = gen_pool_alloc_owner(binding->chunk_pool, PAGE_SIZE,
-> +					(void **)&owner);
-> +	if (!dma_addr)
-> +		return NULL;
-> +
-> +	offset = dma_addr - owner->base_dma_addr;
-> +	index = offset / PAGE_SIZE;
-> +	niov = &owner->niovs[index];
-> +
-> +	niov->dma_addr = 0;
-> +
-> +	net_devmem_dmabuf_binding_get(binding);
-> +
-> +	return niov;
-> +}
-> +
-> +void net_devmem_free_dmabuf(struct net_iov *niov)
-> +{
-> +	struct net_devmem_dmabuf_binding *binding = net_iov_binding(niov);
-> +	unsigned long dma_addr = net_iov_dma_addr(niov);
-> +
-> +	if (gen_pool_has_addr(binding->chunk_pool, dma_addr, PAGE_SIZE))
-> +		gen_pool_free(binding->chunk_pool, dma_addr, PAGE_SIZE);
-> +
-> +	net_devmem_dmabuf_binding_put(binding);
-> +}
-> +
->  /* Protected by rtnl_lock() */
->  static DEFINE_XARRAY_FLAGS(net_devmem_dmabuf_bindings, XA_FLAGS_ALLOC1);
->  
+Perhaps a full reset if individual queue restart fails?
+
 
