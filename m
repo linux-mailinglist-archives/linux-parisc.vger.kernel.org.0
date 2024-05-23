@@ -1,193 +1,223 @@
-Return-Path: <linux-parisc+bounces-1434-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1435-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55B68CCAEF
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2024 05:08:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCF38CCBFD
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2024 08:03:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EE412830A9
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2024 03:08:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8A621C20E21
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2024 06:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAF98467;
-	Thu, 23 May 2024 03:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16EA77581F;
+	Thu, 23 May 2024 06:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="YcGnkarf";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8seKvAx3";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="xo8J9aYV";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nN513p3S"
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="Uz2AHfik"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83927EF;
-	Thu, 23 May 2024 03:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E9313B2BC
+	for <linux-parisc@vger.kernel.org>; Thu, 23 May 2024 06:02:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716433720; cv=none; b=Ahyg6PsdmKOYu9XLL9G68SsgposTnjZ8tLfI6LM46VpPGTvE7nRcK4mmZSsa9MUD6m6RNhZTpfoAK0wnwhOkE77sm2fC5KthMfRC04jcM16+gs3AdVWFSdbGdILD0jRziKxU0iFF8050tc9bkbuDAjeT+qrkgXChj71nCXNDpdQ=
+	t=1716444178; cv=none; b=qiopGRnTwSKQwrvr1kgzQjGtETk5aajwZQHjlUGbhxcAYF+BcEMz5+PSX4+Senq8R1Wu9CgesUCOdy9Al/gUe5JG2fuMSLvKkjFLZnxYgcxputSs0szJ+fXMD6/dEEEQT2u0rrzF4Oxw2gxdHfxPqDP2M+emmps8EBhXZ2xR42s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716433720; c=relaxed/simple;
-	bh=395EtBMeKvhaqcyJa2SJSdImD3drPDcuSCs8TeGMsS4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GWw4OAO+QuT/BXvg6EFQ2B5IuDgk6MDCwhtErIN34KZ03sFO1TFblbr6vbzu5GkctgZygAuxMYSHZC5VImRBjqFxmr0/uoMZzhfpAam9MctXyIu8Cr13dNGESTItSZC5ndXfAugsqvktjsQTYB9v1BTl7r/119fIlq3iOb7o/yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=YcGnkarf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8seKvAx3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=xo8J9aYV; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nN513p3S; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EDE2C1FDCE;
-	Thu, 23 May 2024 03:08:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1716433716; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V0N0S6r8IeovFdxww9RN8WulP8rYDdid/w2zv2NcHlY=;
-	b=YcGnkarfP7rAwvhiOINxsKMbHpbeoO5PLcP2+nhBTfDiy176wv+VbDX11CO6faQrg2kZ6B
-	xmEWJFNLm4TqJ8NB5pQi4TQ4HlbCqxki0PZnYqRfn/1PGf2sp5uIgzPHi8DO5YYkntL13s
-	/PoGuujuJZycBq23rlOpbta8wOEdouU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1716433716;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V0N0S6r8IeovFdxww9RN8WulP8rYDdid/w2zv2NcHlY=;
-	b=8seKvAx34N9zbAbSXvZmX90nlXbI+J0lTECHG1ywHskkNPLTJeU0OCKKXM714nxIgCjOPv
-	cAqnqxCS4rF9SjAQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xo8J9aYV;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=nN513p3S
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1716433715; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V0N0S6r8IeovFdxww9RN8WulP8rYDdid/w2zv2NcHlY=;
-	b=xo8J9aYV2HvLfM1cXOQxHP9mc8VPZLhgd60GR2simJH6IFQTHl2BisCBQ80uUL+up4OfDt
-	IKTrH+tCZw22ujA2Fz5M+WpPbZ4dxsWOe2MMd5DqaEBJJMod50MovReFjtWnyfWYgNWUhU
-	Kp8Uhrbt/BtvEopATR1oY6dRnd4z+VU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1716433715;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=V0N0S6r8IeovFdxww9RN8WulP8rYDdid/w2zv2NcHlY=;
-	b=nN513p3S5maKAmTkBL5gb+fzrqAqgWdB+u8EK73ofQkChx9IgR8Rg6R7AxhnOx1vhmHiHn
-	oIj72gUreXnNf5Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 948A813A6B;
-	Thu, 23 May 2024 03:08:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id x4UfITKzTmZrEAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Thu, 23 May 2024 03:08:34 +0000
-Date: Thu, 23 May 2024 05:08:29 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Muchun Song <muchun.song@linux.dev>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
-Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
- poison errors
-Message-ID: <Zk6zLRimo6Q6ZrwM@localhost.localdomain>
-References: <20240510182926.763131-1-axelrasmussen@google.com>
- <20240510182926.763131-2-axelrasmussen@google.com>
- <Zj51rEwZeSK4Vr1G@x1n>
- <ZkPJCc5N1Eotpa4u@localhost.localdomain>
- <ZkPY4CSnZWZnxjTa@x1n>
- <ZkSMv31Cwx080no7@localhost.localdomain>
- <Zk5noUEYI4lknyJy@x1n>
+	s=arc-20240116; t=1716444178; c=relaxed/simple;
+	bh=B9lGrOwbzZ9cwWP1ohGSBcMGMvcXioUh06F1RRqtc5A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BuHStP3lUhb8HOYxjn6BGsyfZqrGMAfJdw7GBypqGwjoDIDGKd6yx76tKyNoDcUv/jmMGo2Pg/AwRrVR5dFSV5L3cBniqGGV2DYXLdbvmPqp2n1Ghrc0fi1rcDoG9V5i9vUeQPfHe5fyA174CNWmYOnrkt09itS+IzFkWUjtdbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=Uz2AHfik; arc=none smtp.client-ip=209.85.166.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7e1c2b07507so344606239f.2
+        for <linux-parisc@vger.kernel.org>; Wed, 22 May 2024 23:02:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1716444176; x=1717048976; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=txOSv1K2CA1USg0Ze10vD1qMyJxbEs9Mfk9GiCoI090=;
+        b=Uz2AHfikahhuUowwWHZ/rUV3mnPgvxCUBUVLy75Ni4QVr3Zm8DMJc7X+YPT/ZlueFf
+         fM09t2fSBt5pPpQRo2M2zZC0pkRmdXI9FCcScF4/EKN/cySBOR/qDzA5ekE4ILkpPwpy
+         5mKNJ6bHDg+TEheZbQ3IkCrHP/NZCEn3hQOxoKAsaSNFqq1PjKOo0dSQD72z4WdrL11T
+         SDuOkvOaGOZFmfxRTdXg/vfbkBY5oBXpiOFGPI2dN03MwRCRVp7zTktF7l5JeFQL9kbh
+         gj4aNjvikrd9qQBAiO+5XOkySFNkgVh2QVR/GkOax5g1Q2KM/PsKBO5u3BVjXDevfa5r
+         Zpcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716444176; x=1717048976;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=txOSv1K2CA1USg0Ze10vD1qMyJxbEs9Mfk9GiCoI090=;
+        b=EjOxe9yRyVGRNYBwoTjwUZfyML6UHux1lkVkpAfKaRFuw5imlASuNv0c4vKDMRUmS3
+         IKPuyZ/auskEMNvHPH0eMe1+SNSiU5grsxgWmE5ZcG6BIfdy6SgiWZD9uvPFpHlm841U
+         XPvHgiRe1FGNvRPlW+EOh6I8KAFgcj4T2fE2UppUZfjZCx7xGBmvUS8SNRqyCxCl8NkK
+         WP5KY+BqP6ldlb5pCYWr0j7iWX7hshyLnrMPuQ+2o4WvX/WsGkV1bey8Xj+Av0vZNMxP
+         OeFHlaInCCcngYYVnJZsb8h4yAlflWwWN+rqf3/6389r8Y3KPJFSq9m78wqRjCJ8pV64
+         OF5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVbNJ2MRrVIoqXwYivKcMJ/bRA8c292ZVWntp0fw9hWtIDMS3E1EBNpt62lMRsyJrfDwXyLiN2Qm5h/bgL8/LvdmuaJDsTCqdwqdRn+
+X-Gm-Message-State: AOJu0YzEzs3sULiCU8WVDfu60aBwonqxzyYi1IafoJJ8hn6Eyf0PYmdV
+	fG+PDiN54zqstFBKaV7M9IEH92tTCxwL5mv7g8J9Zt0gQaz8fk19Jl/29LOMZRE=
+X-Google-Smtp-Source: AGHT+IEHlOqXvdbfYiugVF0TXgIiftVk0fEr87owHTsVUKSpnXRyU8iozPM5JlvqTh0LUpuxvOHGhg==
+X-Received: by 2002:a05:6e02:1447:b0:36c:7f3d:59a with SMTP id e9e14a558f8ab-371f7c80fe6mr48056835ab.4.1716444176327;
+        Wed, 22 May 2024 23:02:56 -0700 (PDT)
+Received: from [192.168.1.16] (174-21-188-197.tukw.qwest.net. [174.21.188.197])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-634117190absm23448503a12.87.2024.05.22.23.02.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 May 2024 23:02:55 -0700 (PDT)
+Message-ID: <9097e78d-0e7d-43bd-bafd-e53a4872a4d1@davidwei.uk>
+Date: Wed, 22 May 2024 23:02:54 -0700
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zk5noUEYI4lknyJy@x1n>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[28];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[google.com,linux-foundation.org,kernel.org,alien8.de,csgroup.eu,linux.intel.com,redhat.com,zytor.com,gmx.de,hansenpartnership.com,nvidia.com,huawei.com,infradead.org,ellerman.id.au,linux.dev,linux.ibm.com,gmail.com,linutronix.de,vger.kernel.org,kvack.org,lists.ozlabs.org];
-	R_RATELIMIT(0.00)[to_ip_from(RLeqp5gkuwhygrjzi4zhnnr4iu)];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: EDE2C1FDCE
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v9 11/14] tcp: RX path for devmem TCP
+Content-Language: en-GB
+To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski
+ <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
+ <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Andreas Larsson <andreas@gaisler.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
+ <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Steffen Klassert
+ <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ David Ahern <dsahern@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Shuah Khan <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Pavel Begunkov <asml.silence@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Jeroen de Borst
+ <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
+ Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
+References: <20240510232128.1105145-1-almasrymina@google.com>
+ <20240510232128.1105145-12-almasrymina@google.com>
+From: David Wei <dw@davidwei.uk>
+In-Reply-To: <20240510232128.1105145-12-almasrymina@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 22, 2024 at 05:46:09PM -0400, Peter Xu wrote:
-> > Now, ProcessB still has the page mapped, so upon re-accessing it,
-> > it will trigger a new MCE event. memory-failure code will see that this
-> 
-> The question is why accessing that hwpoison entry from ProcB triggers an
-> MCE.  Logically that's a swap entry and it should generate a page fault
-> rather than MCE.  Then in the pgfault hanlder we don't need that encoded
-> pfn as we have vmf->address.
+On 2024-05-10 16:21, Mina Almasry wrote:
+> +/* On error, returns the -errno. On success, returns number of bytes sent to the
+> + * user. May not consume all of @remaining_len.
+> + */
+> +static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
+> +			      unsigned int offset, struct msghdr *msg,
+> +			      int remaining_len)
+> +{
+> +	struct dmabuf_cmsg dmabuf_cmsg = { 0 };
+> +	struct tcp_xa_pool tcp_xa_pool;
+> +	unsigned int start;
+> +	int i, copy, n;
+> +	int sent = 0;
+> +	int err = 0;
+> +
+> +	tcp_xa_pool.max = 0;
+> +	tcp_xa_pool.idx = 0;
+> +	do {
+> +		start = skb_headlen(skb);
+> +
+> +		if (skb_frags_readable(skb)) {
+> +			err = -ENODEV;
+> +			goto out;
+> +		}
+> +
+> +		/* Copy header. */
+> +		copy = start - offset;
+> +		if (copy > 0) {
+> +			copy = min(copy, remaining_len);
+> +
+> +			n = copy_to_iter(skb->data + offset, copy,
+> +					 &msg->msg_iter);
+> +			if (n != copy) {
+> +				err = -EFAULT;
+> +				goto out;
+> +			}
+> +
+> +			offset += copy;
+> +			remaining_len -= copy;
+> +
+> +			/* First a dmabuf_cmsg for # bytes copied to user
+> +			 * buffer.
+> +			 */
+> +			memset(&dmabuf_cmsg, 0, sizeof(dmabuf_cmsg));
+> +			dmabuf_cmsg.frag_size = copy;
+> +			err = put_cmsg(msg, SOL_SOCKET, SO_DEVMEM_LINEAR,
+> +				       sizeof(dmabuf_cmsg), &dmabuf_cmsg);
+> +			if (err || msg->msg_flags & MSG_CTRUNC) {
+> +				msg->msg_flags &= ~MSG_CTRUNC;
+> +				if (!err)
+> +					err = -ETOOSMALL;
+> +				goto out;
+> +			}
+> +
+> +			sent += copy;
+> +
+> +			if (remaining_len == 0)
+> +				goto out;
+> +		}
+> +
+> +		/* after that, send information of dmabuf pages through a
+> +		 * sequence of cmsg
+> +		 */
+> +		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+> +			skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
+> +			struct net_iov *niov;
+> +			u64 frag_offset;
+> +			int end;
+> +
+> +			/* !skb_frags_readable() should indicate that ALL the
+> +			 * frags in this skb are dmabuf net_iovs. We're checking
+> +			 * for that flag above, but also check individual frags
+> +			 * here. If the tcp stack is not setting
+> +			 * skb_frags_readable() correctly, we still don't want
+> +			 * to crash here.
+> +			 */
+> +			if (!skb_frag_net_iov(frag)) {
+> +				net_err_ratelimited("Found non-dmabuf skb with net_iov");
+> +				err = -ENODEV;
+> +				goto out;
+> +			}
+> +
+> +			niov = skb_frag_net_iov(frag);
 
-It would be a swap entry if we reach try_to_umap_one() without trouble.
-Then we have the code that converts it:
+Sorry if we've already discussed this.
 
- ...
- if (PageHWPoison(p))
-         pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
-	 set_{huge_}pte_at
- ...
+We have this additional hunk:
 
-But maybe we could only do that for ProcA, while ProcB failed to do that,
-which means that for ProcA that is a hwpoisoned-swap-entry, but ProcB still
-has this page mapped as usual, so if ProcB re-access it, that will not
-trigger a fault (because the page is still mapped in its pagetables).
++ if (niov->pp->mp_ops != &dmabuf_devmem_ops) {
++ 	err = -ENODEV;
++ 	goto out;
++ }
 
-
--- 
-Oscar Salvador
-SUSE Labs
+In case one of our skbs end up here, skb_frag_is_net_iov() and
+!skb_frags_readable(). Does this even matter? And if so then is there a
+better way to distinguish between our two types of net_iovs?
 
