@@ -1,223 +1,154 @@
-Return-Path: <linux-parisc+bounces-1435-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1436-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCF38CCBFD
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2024 08:03:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B818CD7FC
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2024 18:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8A621C20E21
-	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2024 06:03:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29C2B1C219FC
+	for <lists+linux-parisc@lfdr.de>; Thu, 23 May 2024 16:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16EA77581F;
-	Thu, 23 May 2024 06:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A055E22F08;
+	Thu, 23 May 2024 15:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="Uz2AHfik"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DFmd42fT"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E9313B2BC
-	for <linux-parisc@vger.kernel.org>; Thu, 23 May 2024 06:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3171DDC5
+	for <linux-parisc@vger.kernel.org>; Thu, 23 May 2024 15:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716444178; cv=none; b=qiopGRnTwSKQwrvr1kgzQjGtETk5aajwZQHjlUGbhxcAYF+BcEMz5+PSX4+Senq8R1Wu9CgesUCOdy9Al/gUe5JG2fuMSLvKkjFLZnxYgcxputSs0szJ+fXMD6/dEEEQT2u0rrzF4Oxw2gxdHfxPqDP2M+emmps8EBhXZ2xR42s=
+	t=1716479976; cv=none; b=HxHpGautT3u2Eu+epzMYh4Xvz8n3joa/TEqz9Re3KtW1GYfDzMJQCO+HSNSBoY1f5fpxBS0C3dBawIpzQM4IE5nJwX8QtUHC9FeCDZYfcH+L0RidPEcVdcp7zgsamcqRkkZBIRAZpzeGLSwQMwI5rRQmnZ+q0I3dzleOjAgkQns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716444178; c=relaxed/simple;
-	bh=B9lGrOwbzZ9cwWP1ohGSBcMGMvcXioUh06F1RRqtc5A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BuHStP3lUhb8HOYxjn6BGsyfZqrGMAfJdw7GBypqGwjoDIDGKd6yx76tKyNoDcUv/jmMGo2Pg/AwRrVR5dFSV5L3cBniqGGV2DYXLdbvmPqp2n1Ghrc0fi1rcDoG9V5i9vUeQPfHe5fyA174CNWmYOnrkt09itS+IzFkWUjtdbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=Uz2AHfik; arc=none smtp.client-ip=209.85.166.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7e1c2b07507so344606239f.2
-        for <linux-parisc@vger.kernel.org>; Wed, 22 May 2024 23:02:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1716444176; x=1717048976; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=txOSv1K2CA1USg0Ze10vD1qMyJxbEs9Mfk9GiCoI090=;
-        b=Uz2AHfikahhuUowwWHZ/rUV3mnPgvxCUBUVLy75Ni4QVr3Zm8DMJc7X+YPT/ZlueFf
-         fM09t2fSBt5pPpQRo2M2zZC0pkRmdXI9FCcScF4/EKN/cySBOR/qDzA5ekE4ILkpPwpy
-         5mKNJ6bHDg+TEheZbQ3IkCrHP/NZCEn3hQOxoKAsaSNFqq1PjKOo0dSQD72z4WdrL11T
-         SDuOkvOaGOZFmfxRTdXg/vfbkBY5oBXpiOFGPI2dN03MwRCRVp7zTktF7l5JeFQL9kbh
-         gj4aNjvikrd9qQBAiO+5XOkySFNkgVh2QVR/GkOax5g1Q2KM/PsKBO5u3BVjXDevfa5r
-         Zpcw==
+	s=arc-20240116; t=1716479976; c=relaxed/simple;
+	bh=pA/B+a/y3U9ldxjseVE8egOj7d/OGgdF6dVVS7fWRkg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BOOPgQoZMok+i6GL8hzfMyv0/frBmSVGK/5kTfTgzZSMrVv8paPP9nXpfSN1SYYkIpiJ0PQIZrAVM/ebzPu2x3qrYYE3JBiWVx+H0Lo3hQgtnTsFhp+lYtlo6Y5Oiof8cD37iMi+f3by9SwKJnUuz16R2VX8k11lY7PorJpSoLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DFmd42fT; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716479973;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SFW+xu7QNxeGwrYT708qIRdLA+B0NE1DkW6W5XAywxE=;
+	b=DFmd42fTFXeg0TFTVUe322IXwchPDc1ELNHNRB1GJPmf6fpKe+XEzX9cqCkBuAf0cyVeID
+	QPeTxFK2kgX2ejlFX9EGTVeZpMtXWpvSVRDTEULO7r4UgLgtmE6nAX370C9mymbSu+EW2Z
+	zewO6ORahc5/Qi5tdZwi3KedNxBZoBA=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-470-B4Oet9ZSNvGWm1eYEGjSXw-1; Thu, 23 May 2024 11:59:31 -0400
+X-MC-Unique: B4Oet9ZSNvGWm1eYEGjSXw-1
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6a0dc98ce3fso294756d6.3
+        for <linux-parisc@vger.kernel.org>; Thu, 23 May 2024 08:59:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716444176; x=1717048976;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=txOSv1K2CA1USg0Ze10vD1qMyJxbEs9Mfk9GiCoI090=;
-        b=EjOxe9yRyVGRNYBwoTjwUZfyML6UHux1lkVkpAfKaRFuw5imlASuNv0c4vKDMRUmS3
-         IKPuyZ/auskEMNvHPH0eMe1+SNSiU5grsxgWmE5ZcG6BIfdy6SgiWZD9uvPFpHlm841U
-         XPvHgiRe1FGNvRPlW+EOh6I8KAFgcj4T2fE2UppUZfjZCx7xGBmvUS8SNRqyCxCl8NkK
-         WP5KY+BqP6ldlb5pCYWr0j7iWX7hshyLnrMPuQ+2o4WvX/WsGkV1bey8Xj+Av0vZNMxP
-         OeFHlaInCCcngYYVnJZsb8h4yAlflWwWN+rqf3/6389r8Y3KPJFSq9m78wqRjCJ8pV64
-         OF5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVbNJ2MRrVIoqXwYivKcMJ/bRA8c292ZVWntp0fw9hWtIDMS3E1EBNpt62lMRsyJrfDwXyLiN2Qm5h/bgL8/LvdmuaJDsTCqdwqdRn+
-X-Gm-Message-State: AOJu0YzEzs3sULiCU8WVDfu60aBwonqxzyYi1IafoJJ8hn6Eyf0PYmdV
-	fG+PDiN54zqstFBKaV7M9IEH92tTCxwL5mv7g8J9Zt0gQaz8fk19Jl/29LOMZRE=
-X-Google-Smtp-Source: AGHT+IEHlOqXvdbfYiugVF0TXgIiftVk0fEr87owHTsVUKSpnXRyU8iozPM5JlvqTh0LUpuxvOHGhg==
-X-Received: by 2002:a05:6e02:1447:b0:36c:7f3d:59a with SMTP id e9e14a558f8ab-371f7c80fe6mr48056835ab.4.1716444176327;
-        Wed, 22 May 2024 23:02:56 -0700 (PDT)
-Received: from [192.168.1.16] (174-21-188-197.tukw.qwest.net. [174.21.188.197])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-634117190absm23448503a12.87.2024.05.22.23.02.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 May 2024 23:02:55 -0700 (PDT)
-Message-ID: <9097e78d-0e7d-43bd-bafd-e53a4872a4d1@davidwei.uk>
-Date: Wed, 22 May 2024 23:02:54 -0700
+        d=1e100.net; s=20230601; t=1716479970; x=1717084770;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SFW+xu7QNxeGwrYT708qIRdLA+B0NE1DkW6W5XAywxE=;
+        b=S+M3GGY+KUjHpm6IJqKakkU17ShsBr3g9usQv2ptBfvqnd/337HKVHzXtDuY6xQ4rH
+         ufF16BCUg4JMerr7ux2ZBZk5HX065G+z4X1FuNeta3k89/4Wmgbf8jZbcN9YZUqyCVGI
+         caJU4Mt34Cer/Z2z4phm/J9zBkKDkLLm/pAVsp55smRPbBrS+qQ93Fdrq0Gzhv1EgB3e
+         ATCrUl0xsq+qVG1n3yLFeB2PXEsxiyN2n4rGzGv2LtEMBWfe2kB0EA5GWK0FvGTY33/8
+         4VgfRxB1J3piovPsc6MkD3BnlF6a73tU0oDTLGrrZmDuEdniJL0s58+bKQ3p+Cavy/tp
+         eNng==
+X-Forwarded-Encrypted: i=1; AJvYcCUXR1yVvxep21U9I7EAuFoUHzfaxIuXrPafAt7m5UDcuNQN28ZrzK6tD6ssb5IeEPCyHUNw7FC1mBdrwZh2uVn3hwr2hgLSY/xANx4+
+X-Gm-Message-State: AOJu0Yzd4CzjUSnQVy+ocZ7n4FtOUa4Cj0pfa/2O4KVLwkulzowTc+DJ
+	L4rgolzBTyWV1AyqaASKVdBsnB6gTm3RXtxGdI189i8oq3B3++W1MisglyM3H3DEXNom9TXIXtX
+	c21B+89F5Cb9TXIoCiW9hb7Pks5o/54xIYj8etOU6ZLXknzslI/Sa1JYCPaJD+g==
+X-Received: by 2002:a05:6214:2484:b0:69b:1c5c:28fb with SMTP id 6a1803df08f44-6ab7f19ec6amr55473206d6.0.1716479969637;
+        Thu, 23 May 2024 08:59:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHfEZ/MxR7kXEObGm96kXld53lPLAn57DT2wv2+Ejd7pVHUF2vvfPDOcD/zLRIDa0eVAMCLMw==
+X-Received: by 2002:a05:6214:2484:b0:69b:1c5c:28fb with SMTP id 6a1803df08f44-6ab7f19ec6amr55472786d6.0.1716479968823;
+        Thu, 23 May 2024 08:59:28 -0700 (PDT)
+Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com. [99.254.121.117])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6a15f17960csm144178206d6.25.2024.05.23.08.59.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 May 2024 08:59:28 -0700 (PDT)
+Date: Thu, 23 May 2024 11:59:25 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Oscar Salvador <osalvador@suse.de>
+Cc: Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Muchun Song <muchun.song@linux.dev>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Subject: Re: [PATCH v2 1/1] arch/fault: don't print logs for pte marker
+ poison errors
+Message-ID: <Zk9n3aXbOufWpAhn@x1n>
+References: <20240510182926.763131-1-axelrasmussen@google.com>
+ <20240510182926.763131-2-axelrasmussen@google.com>
+ <Zj51rEwZeSK4Vr1G@x1n>
+ <ZkPJCc5N1Eotpa4u@localhost.localdomain>
+ <ZkPY4CSnZWZnxjTa@x1n>
+ <ZkSMv31Cwx080no7@localhost.localdomain>
+ <Zk5noUEYI4lknyJy@x1n>
+ <Zk6zLRimo6Q6ZrwM@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v9 11/14] tcp: RX path for devmem TCP
-Content-Language: en-GB
-To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc: Donald Hunter <donald.hunter@gmail.com>, Jakub Kicinski
- <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Jonathan Corbet <corbet@lwn.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
- <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Andreas Larsson <andreas@gaisler.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Steffen Klassert
- <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
- David Ahern <dsahern@kernel.org>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Shuah Khan <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Pavel Begunkov <asml.silence@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Jeroen de Borst
- <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
- Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
-References: <20240510232128.1105145-1-almasrymina@google.com>
- <20240510232128.1105145-12-almasrymina@google.com>
-From: David Wei <dw@davidwei.uk>
-In-Reply-To: <20240510232128.1105145-12-almasrymina@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Zk6zLRimo6Q6ZrwM@localhost.localdomain>
 
-On 2024-05-10 16:21, Mina Almasry wrote:
-> +/* On error, returns the -errno. On success, returns number of bytes sent to the
-> + * user. May not consume all of @remaining_len.
-> + */
-> +static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *skb,
-> +			      unsigned int offset, struct msghdr *msg,
-> +			      int remaining_len)
-> +{
-> +	struct dmabuf_cmsg dmabuf_cmsg = { 0 };
-> +	struct tcp_xa_pool tcp_xa_pool;
-> +	unsigned int start;
-> +	int i, copy, n;
-> +	int sent = 0;
-> +	int err = 0;
-> +
-> +	tcp_xa_pool.max = 0;
-> +	tcp_xa_pool.idx = 0;
-> +	do {
-> +		start = skb_headlen(skb);
-> +
-> +		if (skb_frags_readable(skb)) {
-> +			err = -ENODEV;
-> +			goto out;
-> +		}
-> +
-> +		/* Copy header. */
-> +		copy = start - offset;
-> +		if (copy > 0) {
-> +			copy = min(copy, remaining_len);
-> +
-> +			n = copy_to_iter(skb->data + offset, copy,
-> +					 &msg->msg_iter);
-> +			if (n != copy) {
-> +				err = -EFAULT;
-> +				goto out;
-> +			}
-> +
-> +			offset += copy;
-> +			remaining_len -= copy;
-> +
-> +			/* First a dmabuf_cmsg for # bytes copied to user
-> +			 * buffer.
-> +			 */
-> +			memset(&dmabuf_cmsg, 0, sizeof(dmabuf_cmsg));
-> +			dmabuf_cmsg.frag_size = copy;
-> +			err = put_cmsg(msg, SOL_SOCKET, SO_DEVMEM_LINEAR,
-> +				       sizeof(dmabuf_cmsg), &dmabuf_cmsg);
-> +			if (err || msg->msg_flags & MSG_CTRUNC) {
-> +				msg->msg_flags &= ~MSG_CTRUNC;
-> +				if (!err)
-> +					err = -ETOOSMALL;
-> +				goto out;
-> +			}
-> +
-> +			sent += copy;
-> +
-> +			if (remaining_len == 0)
-> +				goto out;
-> +		}
-> +
-> +		/* after that, send information of dmabuf pages through a
-> +		 * sequence of cmsg
-> +		 */
-> +		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
-> +			skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
-> +			struct net_iov *niov;
-> +			u64 frag_offset;
-> +			int end;
-> +
-> +			/* !skb_frags_readable() should indicate that ALL the
-> +			 * frags in this skb are dmabuf net_iovs. We're checking
-> +			 * for that flag above, but also check individual frags
-> +			 * here. If the tcp stack is not setting
-> +			 * skb_frags_readable() correctly, we still don't want
-> +			 * to crash here.
-> +			 */
-> +			if (!skb_frag_net_iov(frag)) {
-> +				net_err_ratelimited("Found non-dmabuf skb with net_iov");
-> +				err = -ENODEV;
-> +				goto out;
-> +			}
-> +
-> +			niov = skb_frag_net_iov(frag);
+On Thu, May 23, 2024 at 05:08:29AM +0200, Oscar Salvador wrote:
+> On Wed, May 22, 2024 at 05:46:09PM -0400, Peter Xu wrote:
+> > > Now, ProcessB still has the page mapped, so upon re-accessing it,
+> > > it will trigger a new MCE event. memory-failure code will see that this
+> > 
+> > The question is why accessing that hwpoison entry from ProcB triggers an
+> > MCE.  Logically that's a swap entry and it should generate a page fault
+> > rather than MCE.  Then in the pgfault hanlder we don't need that encoded
+> > pfn as we have vmf->address.
+> 
+> It would be a swap entry if we reach try_to_umap_one() without trouble.
+> Then we have the code that converts it:
+> 
+>  ...
+>  if (PageHWPoison(p))
+>          pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+> 	 set_{huge_}pte_at
+>  ...
+> 
+> But maybe we could only do that for ProcA, while ProcB failed to do that,
+> which means that for ProcA that is a hwpoisoned-swap-entry, but ProcB still
+> has this page mapped as usual, so if ProcB re-access it, that will not
+> trigger a fault (because the page is still mapped in its pagetables).
 
-Sorry if we've already discussed this.
+But in that case "whether encode pfn in hwpoison swap entry" doesn't matter
+either.. as it's not yet converted to a swap entry, so the pfn is there.
 
-We have this additional hunk:
+Thanks,
 
-+ if (niov->pp->mp_ops != &dmabuf_devmem_ops) {
-+ 	err = -ENODEV;
-+ 	goto out;
-+ }
+-- 
+Peter Xu
 
-In case one of our skbs end up here, skb_frag_is_net_iov() and
-!skb_frags_readable(). Does this even matter? And if so then is there a
-better way to distinguish between our two types of net_iovs?
 
