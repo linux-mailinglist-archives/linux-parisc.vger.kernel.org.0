@@ -1,310 +1,249 @@
-Return-Path: <linux-parisc+bounces-1442-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1443-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8464E8D11CE
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 May 2024 04:21:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B968D2288
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 May 2024 19:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A1AF284AC7
-	for <lists+linux-parisc@lfdr.de>; Tue, 28 May 2024 02:21:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD549287FBD
+	for <lists+linux-parisc@lfdr.de>; Tue, 28 May 2024 17:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D834CA64;
-	Tue, 28 May 2024 02:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DBDF20309;
+	Tue, 28 May 2024 17:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XpEnBpfF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F4p6t/tW"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5166D4CE09;
-	Tue, 28 May 2024 02:19:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A726329406
+	for <linux-parisc@vger.kernel.org>; Tue, 28 May 2024 17:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716862748; cv=none; b=Jr8UwF0YiQKVr+nwWEK9i+sQne+PaJrkHhNT7nAT8a65LYfk9B6bmhgn6CZEbn9BxPLO2sCBpXJHnd2MqF4UPbNiRNi66d7swuYHEX8qaWRHph3FCnNxKCLlpuRtcpuZ9obk4/F2/ZcQ/W4hFWghDr1z/P1uIB3D+xEh5efhp9I=
+	t=1716917816; cv=none; b=mrwpeXdaNOT3UGwx8Nhu3aZL2ncfNswa+74yWOEKaWXza0ve+IOCeCMCGJJpreo3pEzsLZS2oeGChouWwk4w3ExVUkqc7opk6AuLsbMZ4C9z8NW0M21Q0wkIXCbJUmtPwe6UQhl+qixGs1ncz+YgDPbAJoWXQ8mmKxii0Dqtm+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716862748; c=relaxed/simple;
-	bh=DYwIRoN2C7rBJfLlUVd7IdAgf6u/jVHpwWH2EcdaZ94=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUr+rgu/iOP/7zpXXA11VhrGIJ13/fx/SOpiFCrowhCDmaAmAageHC+HOXd9Shxt/woiH+L645vUH6tm42Y+WtZQh6JNQr+yiQmtTgLbDTkoqtG9onnOS6Tar++Yytq4jH/sM8Yw0pJ44haBn5EVPlZaQEb5XS2gXp7xnKo19fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XpEnBpfF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02233C2BBFC;
-	Tue, 28 May 2024 02:19:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716862748;
-	bh=DYwIRoN2C7rBJfLlUVd7IdAgf6u/jVHpwWH2EcdaZ94=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XpEnBpfFtPGHxHkGcvJKww/D6f4dF/3j/joEH05If9tPrbU74Ddk9zRReYGlvt1up
-	 nKi5A3PymMXULM3I3s0etiUxCigLqDjFh6JE9mXaIeWP0RRgGi4tyFv2OICCeBasaa
-	 +7a9bq6+5GQnzgt60vJn0IPQgfNzSjph+7smS/kL44t3tr9ifUug39yQx9fT6b4Z9n
-	 Aqln8NjxpnKX39X9zYfmvPwhKMPYpXoDXpwQ9No3z7moE+i3Agbsb+SjMgpt3N+OJj
-	 0/5P2iK/UeyeXLDpA4RioUtx7Weya1WhOYPmwtkP+s/FR6JTdKaYnOu2cQ+f0evLvH
-	 O/S785S6Nzm1w==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Stephen Brennan <stephen.s.brennan@oracle.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Guo Ren <guoren@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	jejb@parisc-linux.org,
-	deller@gmx.de,
-	benh@kernel.crashing.org,
-	paulus@samba.org,
-	mpe@ellerman.id.au,
-	palmer@sifive.com,
-	aou@eecs.berkeley.edu,
-	schwidefsky@de.ibm.com,
-	heiko.carstens@de.ibm.com,
-	tglx@linutronix.de,
-	bp@alien8.de,
-	x86@kernel.org,
-	naveen.n.rao@linux.vnet.ibm.com,
-	anil.s.keshavamurthy@intel.com,
-	davem@davemloft.net,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 4/4] kprobe/ftrace: bail out if ftrace was killed
-Date: Mon, 27 May 2024 22:18:53 -0400
-Message-ID: <20240528021854.3905245-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240528021854.3905245-1-sashal@kernel.org>
-References: <20240528021854.3905245-1-sashal@kernel.org>
+	s=arc-20240116; t=1716917816; c=relaxed/simple;
+	bh=5jqpjWDjCYeF0iZMmfNh1F02B5hbFSGCHFwvks87kGw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jcYQxVMeEG4QJxAIABkVwo7pclp+KhlRiX1A23iiu4p6O5tWqBK0F7sr+u1I0+wm03aidNm68xzmZ7fOPSjV2e5mHYsxrOd7Nz3UjevPFFTurgw+6rJ4SknORLYqAM+IkYL82HY32Hjcdyai0oB7xK6PbUenlP8TJNvwytJzmkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F4p6t/tW; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a634e03339dso116694466b.3
+        for <linux-parisc@vger.kernel.org>; Tue, 28 May 2024 10:36:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1716917813; x=1717522613; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h1nTYMe9Sz2kd146CNINlSxaoddIUqGPBCQrAMYzjnQ=;
+        b=F4p6t/tWtjSOVYylJbwcLVV6UTyM4sNrgf29x/I2qiaXmlzGuSs/libx4uluVN+nqU
+         Q1wu6ZyJ+t/J5G4TTactfmH72bg+9gQMI6XUV/JPUvIcgZPTSklK6xODqYbVvKUruZsd
+         qGcZJqKk9SLen5tkhgx7pjnVQN79mjH/J3XY5cJYmSYfwEdHgeAgZgJLCWfItyd1aUlo
+         m8SST44+ucTlAuYiprzs7++Q4aRuTHjVObQuxYwumcTSK42endimDnDiRHgNYuUyIKni
+         X0y60pnKnN3oBLyeEGWlqJk5sfZxG3gqEzLBOt9HDhyBsgJwOczZkJZdgWzCHvs7ja5e
+         tsGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716917813; x=1717522613;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h1nTYMe9Sz2kd146CNINlSxaoddIUqGPBCQrAMYzjnQ=;
+        b=g9LXm/AGCkHpWvJHtzz5Uj3btCV1QsTftl1dMchpFkKwIYQ6ki7rDcHaQV/IAqxpAp
+         Bq0r4MnIVyCcU99Pbi3b2xzs2hseqlahBj5xjZYvfTKg4ItZQiLkZrwyP9vtDi5DX0za
+         kn4tvHXOF3YcSEO4Z1QQ+uqsWOUJObESTRQ74eFmOd1R0PXnLk7jf3AEdbrbmNzAY3IK
+         NDPtroWe100QXaCyjnN2HBkzLGCqiLZgTVwVAyQud72sawRfHCukTNL/VdQRAucynEXq
+         EYD/2zYsAc+l9jSVPZm9xoISa2gwoSVPGZ9FMwSY3J/UeddnidpeOAKlcCOOGTDwoS9y
+         DUMw==
+X-Forwarded-Encrypted: i=1; AJvYcCWjGv8NtDWr5mNo9Buta+ksI820idvvVCWLgnwHBFFsMQzg5csr91ySYLZvlo0tjA/sxv18J27afUjwgGu1+x9hNE7qZDH1hBNkBTr8
+X-Gm-Message-State: AOJu0YyKHDzdjhscY4LD2CWISUF+pihK+JCSq9niHK/fVnoWmDy3kaSH
+	38mH6HAG5qw1vNmKvivLx8dAjzfk+I89ZWzJMjtucMGpcfjzZhYPNFOW+G8Xx9Vf33vCAzLBeb0
+	ocBvDpRl2gYd86bgh8szkrUnPAFplSN5NahAz
+X-Google-Smtp-Source: AGHT+IFf32eXkuapluEvlBEyoJKJxifsmiVKQ0AvF4ow+8ygeGf1col+Xo1abUwIXzRnUJhSc+Yk6CUkl0RPaD3UYic=
+X-Received: by 2002:a17:906:3c1a:b0:a63:42b6:1976 with SMTP id
+ a640c23a62f3a-a6342b619f5mr156681366b.68.1716917812713; Tue, 28 May 2024
+ 10:36:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.32
-Content-Transfer-Encoding: 8bit
+References: <20240510232128.1105145-1-almasrymina@google.com>
+ <20240510232128.1105145-12-almasrymina@google.com> <9097e78d-0e7d-43bd-bafd-e53a4872a4d1@davidwei.uk>
+In-Reply-To: <9097e78d-0e7d-43bd-bafd-e53a4872a4d1@davidwei.uk>
+From: Mina Almasry <almasrymina@google.com>
+Date: Tue, 28 May 2024 10:36:40 -0700
+Message-ID: <CAHS8izOe-uYjm0ttQgHOFpvp_Tj4_oRHV6d1Y1sWJAZJdCdCBA@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 11/14] tcp: RX path for devmem TCP
+To: David Wei <dw@davidwei.uk>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, 
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan <shuah@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Pavel Begunkov <asml.silence@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
+	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
+	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Stephen Brennan <stephen.s.brennan@oracle.com>
+On Wed, May 22, 2024 at 11:02=E2=80=AFPM David Wei <dw@davidwei.uk> wrote:
+>
+> On 2024-05-10 16:21, Mina Almasry wrote:
+> > +/* On error, returns the -errno. On success, returns number of bytes s=
+ent to the
+> > + * user. May not consume all of @remaining_len.
+> > + */
+> > +static int tcp_recvmsg_dmabuf(struct sock *sk, const struct sk_buff *s=
+kb,
+> > +                           unsigned int offset, struct msghdr *msg,
+> > +                           int remaining_len)
+> > +{
+> > +     struct dmabuf_cmsg dmabuf_cmsg =3D { 0 };
+> > +     struct tcp_xa_pool tcp_xa_pool;
+> > +     unsigned int start;
+> > +     int i, copy, n;
+> > +     int sent =3D 0;
+> > +     int err =3D 0;
+> > +
+> > +     tcp_xa_pool.max =3D 0;
+> > +     tcp_xa_pool.idx =3D 0;
+> > +     do {
+> > +             start =3D skb_headlen(skb);
+> > +
+> > +             if (skb_frags_readable(skb)) {
+> > +                     err =3D -ENODEV;
+> > +                     goto out;
+> > +             }
+> > +
+> > +             /* Copy header. */
+> > +             copy =3D start - offset;
+> > +             if (copy > 0) {
+> > +                     copy =3D min(copy, remaining_len);
+> > +
+> > +                     n =3D copy_to_iter(skb->data + offset, copy,
+> > +                                      &msg->msg_iter);
+> > +                     if (n !=3D copy) {
+> > +                             err =3D -EFAULT;
+> > +                             goto out;
+> > +                     }
+> > +
+> > +                     offset +=3D copy;
+> > +                     remaining_len -=3D copy;
+> > +
+> > +                     /* First a dmabuf_cmsg for # bytes copied to user
+> > +                      * buffer.
+> > +                      */
+> > +                     memset(&dmabuf_cmsg, 0, sizeof(dmabuf_cmsg));
+> > +                     dmabuf_cmsg.frag_size =3D copy;
+> > +                     err =3D put_cmsg(msg, SOL_SOCKET, SO_DEVMEM_LINEA=
+R,
+> > +                                    sizeof(dmabuf_cmsg), &dmabuf_cmsg)=
+;
+> > +                     if (err || msg->msg_flags & MSG_CTRUNC) {
+> > +                             msg->msg_flags &=3D ~MSG_CTRUNC;
+> > +                             if (!err)
+> > +                                     err =3D -ETOOSMALL;
+> > +                             goto out;
+> > +                     }
+> > +
+> > +                     sent +=3D copy;
+> > +
+> > +                     if (remaining_len =3D=3D 0)
+> > +                             goto out;
+> > +             }
+> > +
+> > +             /* after that, send information of dmabuf pages through a
+> > +              * sequence of cmsg
+> > +              */
+> > +             for (i =3D 0; i < skb_shinfo(skb)->nr_frags; i++) {
+> > +                     skb_frag_t *frag =3D &skb_shinfo(skb)->frags[i];
+> > +                     struct net_iov *niov;
+> > +                     u64 frag_offset;
+> > +                     int end;
+> > +
+> > +                     /* !skb_frags_readable() should indicate that ALL=
+ the
+> > +                      * frags in this skb are dmabuf net_iovs. We're c=
+hecking
+> > +                      * for that flag above, but also check individual=
+ frags
+> > +                      * here. If the tcp stack is not setting
+> > +                      * skb_frags_readable() correctly, we still don't=
+ want
+> > +                      * to crash here.
+> > +                      */
+> > +                     if (!skb_frag_net_iov(frag)) {
+> > +                             net_err_ratelimited("Found non-dmabuf skb=
+ with net_iov");
+> > +                             err =3D -ENODEV;
+> > +                             goto out;
+> > +                     }
+> > +
+> > +                     niov =3D skb_frag_net_iov(frag);
+>
+> Sorry if we've already discussed this.
+>
+> We have this additional hunk:
+>
+> + if (niov->pp->mp_ops !=3D &dmabuf_devmem_ops) {
+> +       err =3D -ENODEV;
+> +       goto out;
+> + }
+>
+> In case one of our skbs end up here, skb_frag_is_net_iov() and
+> !skb_frags_readable(). Does this even matter? And if so then is there a
+> better way to distinguish between our two types of net_iovs?
 
-[ Upstream commit 1a7d0890dd4a502a202aaec792a6c04e6e049547 ]
+Thanks for bringing this up, yes, maybe we do need a way to
+distinguish, but it's not 100% critical, no? It's mostly for debug
+checking?
 
-If an error happens in ftrace, ftrace_kill() will prevent disarming
-kprobes. Eventually, the ftrace_ops associated with the kprobes will be
-freed, yet the kprobes will still be active, and when triggered, they
-will use the freed memory, likely resulting in a page fault and panic.
+I would say add a helper, like net_iov_is_dmabuf() or net_iov_is_io_uring()=
+.
 
-This behavior can be reproduced quite easily, by creating a kprobe and
-then triggering a ftrace_kill(). For simplicity, we can simulate an
-ftrace error with a kernel module like [1]:
+Checking for niov->pp->mp_ops seems a bit hacky to me, and may be
+outright broken. IIRC niov's can be disconnected from the page_pool
+via page_pool_clear_pp_info(), and niov->pp may be null. Abstractly
+speaking the niov type maybe should be a property of the niov itself,
+and not the pp the niov is attached to.
 
-[1]: https://github.com/brenns10/kernel_stuff/tree/master/ftrace_killer
+It is not immediately obvious to me what the best thing to do here is,
+maybe it's best to add a flag to niov or to use niov->pp_magic for
+this.
 
-  sudo perf probe --add commit_creds
-  sudo perf trace -e probe:commit_creds
-  # In another terminal
-  make
-  sudo insmod ftrace_killer.ko  # calls ftrace_kill(), simulating bug
-  # Back to perf terminal
-  # ctrl-c
-  sudo perf probe --del commit_creds
+I would humbly ask that your follow up patchset takes care of this
+bit, if possible. I think mine is doing quite a bit of heavy lifting
+as is (and I think may be close to ready?), when it comes to concerns
+of devmem + io_uring coexisting if you're able to take care, awesome,
+if not, I can look into squashing some fix.
 
-After a short period, a page fault and panic would occur as the kprobe
-continues to execute and uses the freed ftrace_ops. While ftrace_kill()
-is supposed to be used only in extreme circumstances, it is invoked in
-FTRACE_WARN_ON() and so there are many places where an unexpected bug
-could be triggered, yet the system may continue operating, possibly
-without the administrator noticing. If ftrace_kill() does not panic the
-system, then we should do everything we can to continue operating,
-rather than leave a ticking time bomb.
-
-Link: https://lore.kernel.org/all/20240501162956.229427-1-stephen.s.brennan@oracle.com/
-
-Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/csky/kernel/probes/ftrace.c     | 3 +++
- arch/loongarch/kernel/ftrace_dyn.c   | 3 +++
- arch/parisc/kernel/ftrace.c          | 3 +++
- arch/powerpc/kernel/kprobes-ftrace.c | 3 +++
- arch/riscv/kernel/probes/ftrace.c    | 3 +++
- arch/s390/kernel/ftrace.c            | 3 +++
- arch/x86/kernel/kprobes/ftrace.c     | 3 +++
- include/linux/kprobes.h              | 7 +++++++
- kernel/kprobes.c                     | 6 ++++++
- kernel/trace/ftrace.c                | 1 +
- 10 files changed, 35 insertions(+)
-
-diff --git a/arch/csky/kernel/probes/ftrace.c b/arch/csky/kernel/probes/ftrace.c
-index 834cffcfbce32..7ba4b98076de1 100644
---- a/arch/csky/kernel/probes/ftrace.c
-+++ b/arch/csky/kernel/probes/ftrace.c
-@@ -12,6 +12,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
- 	struct kprobe_ctlblk *kcb;
- 	struct pt_regs *regs;
- 
-+	if (unlikely(kprobe_ftrace_disabled))
-+		return;
-+
- 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		return;
-diff --git a/arch/loongarch/kernel/ftrace_dyn.c b/arch/loongarch/kernel/ftrace_dyn.c
-index 73858c9029cc9..bff058317062e 100644
---- a/arch/loongarch/kernel/ftrace_dyn.c
-+++ b/arch/loongarch/kernel/ftrace_dyn.c
-@@ -287,6 +287,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
- 	struct kprobe *p;
- 	struct kprobe_ctlblk *kcb;
- 
-+	if (unlikely(kprobe_ftrace_disabled))
-+		return;
-+
- 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		return;
-diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
-index 621a4b386ae4f..c91f9c2e61ed2 100644
---- a/arch/parisc/kernel/ftrace.c
-+++ b/arch/parisc/kernel/ftrace.c
-@@ -206,6 +206,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
- 	struct kprobe *p;
- 	int bit;
- 
-+	if (unlikely(kprobe_ftrace_disabled))
-+		return;
-+
- 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		return;
-diff --git a/arch/powerpc/kernel/kprobes-ftrace.c b/arch/powerpc/kernel/kprobes-ftrace.c
-index 072ebe7f290ba..f8208c027148f 100644
---- a/arch/powerpc/kernel/kprobes-ftrace.c
-+++ b/arch/powerpc/kernel/kprobes-ftrace.c
-@@ -21,6 +21,9 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
- 	struct pt_regs *regs;
- 	int bit;
- 
-+	if (unlikely(kprobe_ftrace_disabled))
-+		return;
-+
- 	bit = ftrace_test_recursion_trylock(nip, parent_nip);
- 	if (bit < 0)
- 		return;
-diff --git a/arch/riscv/kernel/probes/ftrace.c b/arch/riscv/kernel/probes/ftrace.c
-index 7142ec42e889f..a69dfa610aa85 100644
---- a/arch/riscv/kernel/probes/ftrace.c
-+++ b/arch/riscv/kernel/probes/ftrace.c
-@@ -11,6 +11,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
- 	struct kprobe_ctlblk *kcb;
- 	int bit;
- 
-+	if (unlikely(kprobe_ftrace_disabled))
-+		return;
-+
- 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		return;
-diff --git a/arch/s390/kernel/ftrace.c b/arch/s390/kernel/ftrace.c
-index c46381ea04ecb..7f6f8c438c265 100644
---- a/arch/s390/kernel/ftrace.c
-+++ b/arch/s390/kernel/ftrace.c
-@@ -296,6 +296,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
- 	struct kprobe *p;
- 	int bit;
- 
-+	if (unlikely(kprobe_ftrace_disabled))
-+		return;
-+
- 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		return;
-diff --git a/arch/x86/kernel/kprobes/ftrace.c b/arch/x86/kernel/kprobes/ftrace.c
-index dd2ec14adb77b..15af7e98e161a 100644
---- a/arch/x86/kernel/kprobes/ftrace.c
-+++ b/arch/x86/kernel/kprobes/ftrace.c
-@@ -21,6 +21,9 @@ void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
- 	struct kprobe_ctlblk *kcb;
- 	int bit;
- 
-+	if (unlikely(kprobe_ftrace_disabled))
-+		return;
-+
- 	bit = ftrace_test_recursion_trylock(ip, parent_ip);
- 	if (bit < 0)
- 		return;
-diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
-index 8de5d51a0b5e7..45d5b0a76b0bd 100644
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -383,11 +383,15 @@ static inline void wait_for_kprobe_optimizer(void) { }
- extern void kprobe_ftrace_handler(unsigned long ip, unsigned long parent_ip,
- 				  struct ftrace_ops *ops, struct ftrace_regs *fregs);
- extern int arch_prepare_kprobe_ftrace(struct kprobe *p);
-+/* Set when ftrace has been killed: kprobes on ftrace must be disabled for safety */
-+extern bool kprobe_ftrace_disabled __read_mostly;
-+extern void kprobe_ftrace_kill(void);
- #else
- static inline int arch_prepare_kprobe_ftrace(struct kprobe *p)
- {
- 	return -EINVAL;
- }
-+static inline void kprobe_ftrace_kill(void) {}
- #endif /* CONFIG_KPROBES_ON_FTRACE */
- 
- /* Get the kprobe at this addr (if any) - called with preemption disabled */
-@@ -496,6 +500,9 @@ static inline void kprobe_flush_task(struct task_struct *tk)
- static inline void kprobe_free_init_mem(void)
- {
- }
-+static inline void kprobe_ftrace_kill(void)
-+{
-+}
- static inline int disable_kprobe(struct kprobe *kp)
- {
- 	return -EOPNOTSUPP;
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index c2841e5957130..c8720bed8ed6a 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1068,6 +1068,7 @@ static struct ftrace_ops kprobe_ipmodify_ops __read_mostly = {
- 
- static int kprobe_ipmodify_enabled;
- static int kprobe_ftrace_enabled;
-+bool kprobe_ftrace_disabled;
- 
- static int __arm_kprobe_ftrace(struct kprobe *p, struct ftrace_ops *ops,
- 			       int *cnt)
-@@ -1136,6 +1137,11 @@ static int disarm_kprobe_ftrace(struct kprobe *p)
- 		ipmodify ? &kprobe_ipmodify_ops : &kprobe_ftrace_ops,
- 		ipmodify ? &kprobe_ipmodify_enabled : &kprobe_ftrace_enabled);
- }
-+
-+void kprobe_ftrace_kill()
-+{
-+	kprobe_ftrace_disabled = true;
-+}
- #else	/* !CONFIG_KPROBES_ON_FTRACE */
- static inline int arm_kprobe_ftrace(struct kprobe *p)
- {
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 83ba342aef31f..4bdaed40e30d0 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -7892,6 +7892,7 @@ void ftrace_kill(void)
- 	ftrace_disabled = 1;
- 	ftrace_enabled = 0;
- 	ftrace_trace_function = ftrace_stub;
-+	kprobe_ftrace_kill();
- }
- 
- /**
--- 
-2.43.0
-
+--=20
+Thanks,
+Mina
 
