@@ -1,183 +1,143 @@
-Return-Path: <linux-parisc+bounces-1448-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1449-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE298D3F12
-	for <lists+linux-parisc@lfdr.de>; Wed, 29 May 2024 21:49:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4EA8D44A3
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 May 2024 07:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0A3F1F24AE5
-	for <lists+linux-parisc@lfdr.de>; Wed, 29 May 2024 19:49:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E93E2B23CB7
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 May 2024 05:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B6F1C6899;
-	Wed, 29 May 2024 19:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A799863CF;
+	Thu, 30 May 2024 05:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WaKJxj2r"
+	dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b="IXZfgg85"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from matoro.tk (matoro.tk [104.188.251.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374EA1C6884
-	for <linux-parisc@vger.kernel.org>; Wed, 29 May 2024 19:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E687C634
+	for <linux-parisc@vger.kernel.org>; Thu, 30 May 2024 05:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.188.251.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717012166; cv=none; b=j1BwbliQZ6GdUfwMAbNjefd0NGpG4D7uWDu5yiUJAl66+T/Si/Xb50caXjwQ4P2ahSNGkbxzltg3nLGgnaFvsHhB//OB902D/ZahE+h0SRnQESCdlqdL2bPSTvg9s14+cz0gY3we/nyB9l4CoohVe5BAv4EAcz9nHSDJfB3PP40=
+	t=1717045239; cv=none; b=WqRoAKqYJK4pOeGOXvNcx7fRuWBQJJ6mP0zPQVu/V5/EA17kJCRC851B9toxHqMkNhLm8c2vGaQt7X3PVHXmmfnJVLypdyoeOfdisL26NxTHazRxa/33yWtywgFmA7mJJVFf4wIiS2a2Fygv7J7xUGyJJqU674Rg8vHGd/srSdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717012166; c=relaxed/simple;
-	bh=6SM4nGMq6YXwjPx3hzOgTtkr8rnEX3Vki2GtQ9/v/Tg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S6cKk51hsQJJ741JOthGgOutpC9+NNKkSuetGvyaRf0D5ygkSW3gIOxmvbhBhIVZ4hS8jLAXhFQtuKgDTbjjlBGJYnbOAPEIyWewrzHtt+1idI5XXXiiFvLjv5VL8qz8WL5Xmtgc5zEoyN/0kBr9XvAJet9+EBd1HrJ/AZfNsug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WaKJxj2r; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-578626375ffso109343a12.3
-        for <linux-parisc@vger.kernel.org>; Wed, 29 May 2024 12:49:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717012162; x=1717616962; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mc6m1mM9m4Ud5DdSGHmt9Zcx4NpBQQ1agEgintMCgFk=;
-        b=WaKJxj2rSmiptfxPuIpvUd4DO37VpSMk36dQcSjU2nfbhLrs/6sj+L957ozHRkSxyE
-         TahFIlyXavs4CwVkXbGgibHaZ78nBGAoNz1E+2HWXC9+7wpBE9x3fU/+vVUNcUW6rJqc
-         n0wSQUBi2d3dc4nr8ulLpmSegCq86rCBEhG/icMRdmocKpO4NWAppHoIuWkJ8uNPH+jX
-         o2ArPykUTi8L9m/w0vlaDn5Dc8OxRXwlaoO9jd/ezYSXQJ3I6lBNJtlfF/AcwBvjH0to
-         Qv6SqMuA/Yte/M52TzTy7XMHZ3YE8iF0RhhZ/93YZjD2Ch6+/yU4fVLtCjI9qC9Bx0KN
-         3KUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717012162; x=1717616962;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mc6m1mM9m4Ud5DdSGHmt9Zcx4NpBQQ1agEgintMCgFk=;
-        b=JoUsTcqMhOu9jH7K0/B1onijQ5SdjyE4RyZaEiYKBHS2rGqp0CyBHgWXvaSyqOxjIc
-         E+6feFt2syjMtCCeDy/htWyoCkD5bJ8CopcirSPxdtaVRMs4Fw1ueckgqSnKMS728LL7
-         Q5IZrFz7e4OO0SB6fLJPhOpQOtbPYpoV3HX5s4cr5aQFM0bZdY0qgezbScsgkMBA1HQe
-         KV9LMu96SUxE6rGmYPVpjTVqaJpgEHitrrK458fC3wa/qUV/Hv+6lEd2COx2OFZzt20G
-         QrnjcjFGkNiVYY1VG5h3QnvMclFIggLQfo3IcGorGMBFxfB3pqU9fMSy6JOYbPfASU4Q
-         5gSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUaYu+x62iVE6qU3FO3Tojsbe3/8OjWVt8Yzk7ckYPuNdyUQlV0LzNauKOHklqN+Wd+bdfhEKBbqEk0SyHUqJfvl2AUvS1lz2fa+ayA
-X-Gm-Message-State: AOJu0Yz4f2GGLiOo7J0HbMb8zpeSfP2kjvpqO2r8yY97brkx0mOXkWZz
-	ldMFmP6xQTDz5dptV3ichG7+AUT9ibRxhSGBXog+A0wfbj7siLLHQ8KP+v1ENrB7/ncLmJHAdCT
-	WYtMtZHlOEJd4erl9cIQak/bpawblMRhA8X3f
-X-Google-Smtp-Source: AGHT+IF9PV9JeYxxToH3qJtJfXsnwGUXtNUCB5FusC4DI8sGVRwbRTrnhLkmsIc9tQHh+KHAMPViyk6pTFPRs1HCH10=
-X-Received: by 2002:a17:906:c18f:b0:a63:49a5:9390 with SMTP id
- a640c23a62f3a-a65e8f74d3dmr11845366b.41.1717012162364; Wed, 29 May 2024
- 12:49:22 -0700 (PDT)
+	s=arc-20240116; t=1717045239; c=relaxed/simple;
+	bh=8Z2N3TgsnpMP+MA1PzMSnrazMh9QWExhuMCXe0+0lq0=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=qoMzC0MvbGFh0gHhLZAHh9H1b0TTt1je96il3+OGZ3/qYwwFvLuCXoKFIpN1YkHlT/1NvPtHYdAG+28zCbjxv4FvK43ectsfXMjwl4TyyRGjIP3I4Vaezfdj+2aWQeY6ntRd708dSDCYW85+VjlSkxR6WnvCs2DHQ0igsM5OOnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk; spf=pass smtp.mailfrom=matoro.tk; dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b=IXZfgg85; arc=none smtp.client-ip=104.188.251.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matoro.tk
+DKIM-Signature: a=rsa-sha256; bh=Qc41mZpK93maFtefISbzxtc3GU0hFdvysj8Eij5Y05k=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20240416; t=1717045218; v=1; x=1717477218;
+ b=IXZfgg85GuO0ICU6uXmwC8K4bG/O3xWas+ceHas+JOhPJTmqKPacp/hd5BqR4eFXCZ6R7cNe
+ dbEYiTJ72avPbykJ4Mi7sRkAVjDjVGVg5oBTfxGvxPagZGiIE2eE6oKj6QqlYIbfzG06elf0pN4
+ XwYxQIUEG4I3OlTtL3UZi7u+sg4dNdbd2/bbAnFlALDIlmXtN80DAiCsiphmeVdoKdJVJvV9/Oe
+ e+rGdsAs35SyaQhXNTU1a2nOVyYcF/jD6BVcnvRMj60dSweQyvZw3lsLHBNyRhI99s5sjxge/mz
+ b50CI4YhG0hNDqN7mYYTaODnCdbTU/yZrs24878ZYm71/El/d3399Kvqy8CV45+w0xYsKTt607e
+ YQcr0rW0oJ7E/hdJsw3ynh6wKN/uL/axd3QZydqkC6wjZPgH83w9EvYFDMP/xe7iN/kqIfYYyHf
+ FiUDTy6aurLiXHkS0YthSUlSZotYlAICqIN515wQXrtZUNnEjW8CcKiXYpF5tH4CbGQQ15bH7Ow
+ cFuhBbHXaKSeruRMgiY4/+NmgF0Mmrj8ZBUNtXmOzXSe2HYgtU74DLOIbWIsBSt0h2rOuQw7lJn
+ Kurtal7g4/e8Ne1KTxjl2kPXATewsDL0Gkp4pNL2XN1MAM/hdbUf/PPITHtxs0NziYl3kUcpdaV
+ IdgfCp97m3Q=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id 084921f1; Thu, 30 May
+ 2024 01:00:18 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240510232128.1105145-1-almasrymina@google.com>
- <20240510232128.1105145-5-almasrymina@google.com> <d85f4ba4-774f-4577-985f-45a5a1866da7@davidwei.uk>
-In-Reply-To: <d85f4ba4-774f-4577-985f-45a5a1866da7@davidwei.uk>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 29 May 2024 12:49:08 -0700
-Message-ID: <CAHS8izPVhDaokO9C+S4RR9b6+77OV2CsNb8jnGGKxNqGTa6DXg@mail.gmail.com>
-Subject: Re: [PATCH net-next v9 04/14] netdev: support binding dma-buf to netdevice
-To: David Wei <dw@davidwei.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, 
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan <shuah@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Thu, 30 May 2024 01:00:18 -0400
+From: matoro <matoro_mailinglist_kernel@matoro.tk>
+To: John David Anglin <dave.anglin@bell.net>
+Cc: Vidra.Jonas@seznam.cz, linux-parisc@vger.kernel.org, John David Anglin
+ <dave@parisc-linux.org>, Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH] parisc: Try to fix random segmentation faults in package
+ builds
+In-Reply-To: <16d8c07c-9fbe-4e81-b1f1-3127ab05410a@bell.net>
+References: <Zje6ywzNAltbG3R2@mx3210.localdomain>
+ <C4u.NueN.39ikIzqu}iW.1cEpt7@seznam.cz>
+ <91563ff7-349b-4815-bcfe-99f8f34b0b16@bell.net>
+ <34fdf2250fe166372a15d74d28adc8d2@matoro.tk>
+ <e88cebf4-bec6-4247-93ae-39eff59cfc8e@bell.net>
+ <88756923-4c3c-41bf-97a8-aab25bc93644@bell.net>
+ <28cea8aa7cce7c56bbb8f88067c3f3ba@matoro.tk>
+ <16d8c07c-9fbe-4e81-b1f1-3127ab05410a@bell.net>
+Message-ID: <7345472b8bfa050ec2b86df5f69f99a4@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, May 18, 2024 at 11:46=E2=80=AFAM David Wei <dw@davidwei.uk> wrote:
->
-> On 2024-05-10 16:21, Mina Almasry wrote:
-> > +void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *bindin=
-g)
-> > +{
-> > +     struct netdev_rx_queue *rxq;
-> > +     unsigned long xa_idx;
-> > +     unsigned int rxq_idx;
-> > +
-> > +     if (!binding)
-> > +             return;
-> > +
-> > +     if (binding->list.next)
-> > +             list_del(&binding->list);
-> > +
-> > +     xa_for_each(&binding->bound_rxq_list, xa_idx, rxq) {
-> > +             if (rxq->mp_params.mp_priv =3D=3D binding) {
-> > +                     /* We hold the rtnl_lock while binding/unbinding
-> > +                      * dma-buf, so we can't race with another thread =
-that
-> > +                      * is also modifying this value. However, the pag=
-e_pool
-> > +                      * may read this config while it's creating its
-> > +                      * rx-queues. WRITE_ONCE() here to match the
-> > +                      * READ_ONCE() in the page_pool.
-> > +                      */
-> > +                     WRITE_ONCE(rxq->mp_params.mp_ops, NULL);
-> > +                     WRITE_ONCE(rxq->mp_params.mp_priv, NULL);
-> > +
-> > +                     rxq_idx =3D get_netdev_rx_queue_index(rxq);
-> > +
-> > +                     netdev_rx_queue_restart(binding->dev, rxq_idx);
->
-> What if netdev_rx_queue_restart() fails? Depending on where it failed, a
-> queue might still be filled from struct net_devmem_dmabuf_binding. This
-> is one downside of the current situation with netdev_rx_queue_restart()
-> needing to do allocations each time.
->
-> Perhaps a full reset if individual queue restart fails?
->
+On 2024-05-29 12:33, John David Anglin wrote:
+> On 2024-05-29 11:54 a.m., matoro wrote:
+>> On 2024-05-09 13:10, John David Anglin wrote:
+>>> On 2024-05-08 4:52 p.m., John David Anglin wrote:
+>>>>> with no accompanying stack trace and then the BMC would restart the 
+>>>>> whole machine automatically. These were infrequent enough that the 
+>>>>> segfaults were the bigger problem, but after applying this patch on top 
+>>>>> of 6.8, this changed the dynamic.  It seems to occur during builds with 
+>>>>> varying I/O loads.  For example, I was able to build gcc fine, with no 
+>>>>> segfaults, but I was unable to build perl, a much smaller build, without 
+>>>>> crashing the machine. I did not observe any segfaults over the day or 2 
+>>>>> I ran this patch, but that's not an unheard-of stretch of 
+>>>>> time even without it, and I am being forced to revert because of the panics.
+>>>> Looks like there is a problem with 6.8.  I'll do some testing with it.
+>>> So far, I haven't seen any panics with 6.8.9 but I have seen some random 
+>>> segmentation faults
+>>> in the gcc testsuite.  I looked at one ld fault in some detail. 18 
+>>> contiguous words in the  elf_link_hash_entry
+>>> struct were zeroed starting with the last word in the bfd_link_hash_entry 
+>>> struct causing the fault.
+>>> The section pointer was zeroed.
+>>> 
+>>> 18 words is a rather strange number of words to corrupt and corruption 
+>>> doesn't seem related
+>>> to object structure.  In any case, it is not page related.
+>>> 
+>>> It's really hard to tell how this happens.  The corrupt object was at a 
+>>> slightly different location
+>>> than it is when ld is run under gdb.  Can't duplicate in gdb.
+>>> 
+>>> Dave
+>> 
+>> Dave, not sure how much testing you have done with current mainline 
+>> kernels, but I've had to temporarily give up on 6.8 and 6.9 for now, as 
+>> most heavy builds quickly hit that kernel panic. 6.6 does not seem to have 
+>> the problem though.  The patch from this thread does not seem to have made 
+>> a difference one way or the other w.r.t. segfaults.
+> My latest patch is looking good.  I have 6 days of testing on c8000 (1 GHz 
+> PA8800) with 6.8.10 and 6.8.11, and I haven't had any random segmentation
+> faults.  System has been building debian packages.  In addition, it has been 
+> building and testing gcc.  It's on its third gcc build and check with patch.
+> 
+> The latest version uses lpa_user() with fallback to page table search in 
+> flush_cache_page_if_present() to obtain physical page address.
+> It revises copy_to_user_page() and copy_from_user_page() to flush kernel 
+> mapping with tmpalias flushes.  copy_from_user_page()
+> was missing kernel mapping flush.  flush_cache_vmap() and 
+> flush_cache_vunmap() are moved into cache.c.  TLB is now flushed before
+> cache flush to inhibit move-in in these routines. flush_cache_vmap() now 
+> handles small VM_IOREMAP flushes instead of flushing
+> entire cache.  This latter change is an optimization.
+> 
+> If random faults are still present, I believe we will have to give up trying 
+> to optimize flush_cache_mm() and flush_cache_range() and
+> flush the whole cache in these routines.
+> 
+> Some work would be needed to backport my current patch to longterm kernels 
+> because of folio changes in 6.8.
+> 
+> Dave
 
-Sorry for the late reply, I've been out on vacation for a few days and
-caught up to some other work.
-
-Yes, netdev_rx_queue_restart() can fail, but I'm not sure how to
-recover. Full reset would be an option, but it may be way too big of a
-hammer to do a full reset on this failure. Also, last I discussed with
-Jakub, AFAIU, there is no way for core to reset the driver? I had
-suggested to Jakub to use ndo_stop/ndo_open to reset the driver on
-queue binding/unbinding, but he rejected that as it could cause the
-driver to fail to come back up, which would leave the machine stranded
-from the network. This is why we implemented the queue API, as a way
-to do the binding/unbinding without risking the machine stranding via
-a full reset. This is the previous convo from months back[1].
-
-So, all in all, I don't see anything amazing we can do here to
-recover. How about just log? I will add a warning in the next
-iteration.
-
-(I applied most of the rest of your suggestions btw).
-
-[1] https://patchwork.kernel.org/project/netdevbpf/patch/20231106024413.280=
-1438-13-almasrymina@google.com/#25590262
-
---=20
-Thanks,
-Mina
+Thanks a ton Dave, I've applied this on top of 6.9.2 and also think I'm 
+seeing improvement!  No panics yet, I have a couple week's worth of package 
+testing to catch up on so I'll report if I see anything!
 
