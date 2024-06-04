@@ -1,166 +1,206 @@
-Return-Path: <linux-parisc+bounces-1475-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1476-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D08E8FB08C
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jun 2024 12:53:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70CA78FB697
+	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jun 2024 17:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF2F61F21E27
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jun 2024 10:53:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 872C61C22593
+	for <lists+linux-parisc@lfdr.de>; Tue,  4 Jun 2024 15:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8201459F1;
-	Tue,  4 Jun 2024 10:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA9213D2B6;
+	Tue,  4 Jun 2024 15:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XoGCQM1u"
+	dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b="aYNOychQ"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from matoro.tk (matoro.tk [104.188.251.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0E4145338
-	for <linux-parisc@vger.kernel.org>; Tue,  4 Jun 2024 10:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06CB8BF7
+	for <linux-parisc@vger.kernel.org>; Tue,  4 Jun 2024 15:07:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.188.251.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717498425; cv=none; b=MLRbQGxjUgsFL23gqDwE9vgPXWasSxBXCZ3IthVV9tFFvehu7BOxcB0Ajj1JXpFSCb1az4legFfri54kDGXG23KgwHv+J/NueW1PKXt4agzRdPak69Yz0RRmI9QfPTtNCfPa0KpoNFLgy81ZJlQotOdQJGT7XbT6eDMOoS2U/dk=
+	t=1717513688; cv=none; b=VJJc7zoaai61WXFiMCYQNGE6lZB1XCIc/ynSEFT3ZZncz4+IwgeMT8lZJ4VgyMdNUMJ1SGSdyEMav4MLedVFrqjB8Evt/1aohSuASqe2PR1LplMabpmfWSOSy7ULi9vwMUDSs1ISL9mQekh5C7/dPh6KTN7K48+4NQLe5xhVNP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717498425; c=relaxed/simple;
-	bh=sWJfxrg7DaNSgc2gmCC3cAQqrzVJfSocaCuwhh48x1I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iMwoDAY0EYWrmEPRXN0Ks6rkEANSm+tCgaBbmuQmTNiXefxwxVjOuRraTb3tGGMcPicgqgbJtR2C3dxQX0tx4bHc6nYGbV7W/iydR7SjO8rP4N1EkMm6u48CpB/i3ewhBQONm4XPpja+g7IyslS0xF0llA2TolcjxxdzsWhPuTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XoGCQM1u; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717498422;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=woIW2rG36WjVplYf1XFEiaOd0JQOnrJYxOcJXRhrDbw=;
-	b=XoGCQM1uUREZhqrTKNRLKWVMpMs8507DrbhTwSPlwV25zBascauDjOxHZHw5rVU/iIXB7F
-	Fgn88wjHOnmQ5QM2pZDDAkU8XQbCPZIxQa+G9PhajFiIZl0Ysihas57XURxOHTpvHnXvXU
-	/9ULqSruHN6JdMZYEwLOSNOk/dEhwg8=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-168-QiJap3FDNEydLRYF8kj_SA-1; Tue, 04 Jun 2024 06:53:40 -0400
-X-MC-Unique: QiJap3FDNEydLRYF8kj_SA-1
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2ea940c4061so5140941fa.0
-        for <linux-parisc@vger.kernel.org>; Tue, 04 Jun 2024 03:53:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717498419; x=1718103219;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=woIW2rG36WjVplYf1XFEiaOd0JQOnrJYxOcJXRhrDbw=;
-        b=kH2kcfFHcSqjnk0HE3c1STEdDojifiwn6AAQFnXcXpRPDr6+fEW5+ovn1vk0bYytjY
-         NfqUTAAQQ4uSW4UWIMRfVqCZ+Zdq3dmup8rdejyQXm81ekQANYssfL6RutIRMNtPPiq0
-         wOxElJ5rp/dwjsbObUjoQkeokEW+jV1CKyBAqHzRx7/72KAQOu+qgtp4/cTQXTQIXPNM
-         GpgUiSREV4b8/+ZQ90D3ipQRAS5gFJ3xUlJ8m9hRzWQSK4vZTxwN58bnetToW7ATejuY
-         YdEmQbtgiwQhm0mKL6kbIYmkq1KoY6j6zNbbklOe2/kw3waPLtnbYcHCWatXon1ceXom
-         Q6wg==
-X-Forwarded-Encrypted: i=1; AJvYcCV/vj0mSgTagsJGuiD8Y2681p0gFFnRIp2eHzvMRP/MHJZy0qVvaH4B46uOLpDwPzeeieXNxng+qQZ3eBkzmPYksvmTRoZF+NRRcAk5
-X-Gm-Message-State: AOJu0YwjjWLdmA8vlC56YJM1cbOJmNIm56r6p7NEnDv2mwCijK8TAkyH
-	WlrtkFjb+mWh5M3bgTvYB5Uos1CvHKB2dfSXtWk2fKSwbCsHIDqNgSxcGObauFufcajboPN5SUh
-	TPfadzfgwUtWYMxolhZSgVdXE8LQE5re0nQHtQYO4OAjDnnbnpJL3wrBEHZ9svQ==
-X-Received: by 2002:a2e:8949:0:b0:2ea:9449:7713 with SMTP id 38308e7fff4ca-2ea94f5a049mr64304111fa.0.1717498419101;
-        Tue, 04 Jun 2024 03:53:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFmvWfpwajfG6uAbSLakYYmoy41vLEHP3DZ25SAdv9f73cp/s3ZE335ECe8kt5W34Xy9/SQtA==
-X-Received: by 2002:a2e:8949:0:b0:2ea:9449:7713 with SMTP id 38308e7fff4ca-2ea94f5a049mr64303521fa.0.1717498418643;
-        Tue, 04 Jun 2024 03:53:38 -0700 (PDT)
-Received: from gerbillo.redhat.com ([2a0d:3344:1b74:3a10::f71])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4212b84f8e7sm148788635e9.20.2024.06.04.03.53.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jun 2024 03:53:38 -0700 (PDT)
-Message-ID: <9c302fffa10085760eac3d0c64fa66063be3f407.camel@redhat.com>
-Subject: Re: [PATCH net-next v10 11/14] tcp: RX path for devmem TCP
-From: Paolo Abeni <pabeni@redhat.com>
-To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>, Donald Hunter
- <donald.hunter@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Richard
- Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky
- <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, Thomas
- Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, 
- Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer
- <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven
- Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnd Bergmann
- <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, Martin KaFai
- Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu
- <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend
- <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav
- Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>,  Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,  Shuah Khan
- <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Christian
- =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Pavel Begunkov
- <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, Jason Gunthorpe
- <jgg@ziepe.ca>, Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand
- <shailend@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Jeroen de Borst
- <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
- Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
-Date: Tue, 04 Jun 2024 12:53:35 +0200
-In-Reply-To: <20240530201616.1316526-12-almasrymina@google.com>
-References: <20240530201616.1316526-1-almasrymina@google.com>
-	 <20240530201616.1316526-12-almasrymina@google.com>
-Autocrypt: addr=pabeni@redhat.com; prefer-encrypt=mutual; keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1717513688; c=relaxed/simple;
+	bh=jJYL4kqjFfD6Z5Yagptutl7tUwdJHKcmoRoWC2yH8lY=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=lX92V90K/90IaD5J66bDz1oqq8Fdbe6Hnk3sGAtXPUqOKBcWHGSwhMzaDRQGED5/86GL9ZMDkbF+ecbMIZir7tebev9kEShADQMvxEfc+FXz+9sVNtIfJNsgm9uv31tyySDi45yTIf6JMa7UFt/ML5YcfuEMB/TiFQYHIp2gteU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk; spf=pass smtp.mailfrom=matoro.tk; dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b=aYNOychQ; arc=none smtp.client-ip=104.188.251.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matoro.tk
+DKIM-Signature: a=rsa-sha256; bh=3JH8izjNjuYVHGeWeNwqj80Vgl9oCdKRHIdLVgpGJ2g=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20240416; t=1717513648; v=1; x=1717945648;
+ b=aYNOychQZBgKIfFDqzY0DvkkzJADkAkpyzcb2ZazekKmdmvXjXBeUwXAxxYiqORidMjTit/W
+ EvUEnqyYrvG39/cuvAe/y8Jptw1lP/swoZE6G02kX0n7C9ZCoROGnttJdfRI+lie/zchJDvQfPE
+ E+FJI3UMlAEdkWLgemcVXc8Xl4Q6BfESaORymeD5fdxqdgNlApHP7stRp05vQ2xTexELK/mqaKj
+ hW4SDdBcBXIlTqhBLRmkMUdsbNJ4hfap7fJpZSbU4kO4D9auD+mNxQ+4InnsKBXfdyTR4iRcdTt
+ Xe2iGb2Uttue/MAEChWUy/UhhqoZhbHV/JHJZD3uB+GSWIlrqH1t/tfmQ8Ys90ij5okbtvaaqd1
+ 5J2TN4GBuDhxlWcKV2VUfREfnw1VEVoJsjavqT6ZHpWu182mGVHvwSYwOdkBynOKDhmtecTNhD4
+ AG1bX29AiQFITwaugsBS9pb6QOd6Mbkfo8md/dj3i7Jy2fSQe83uEuXPzXGLmalXnT4yDSjb5rN
+ ODFFYLu/qt8SP2CpBNz0IaXAMJmj7E6D29MkFCmOnMf5+nLua+AOk9XXCtIvbIvwmKTbUO6RTSD
+ Yf8kMA5o8bIMptPBW0l/WWZ1eRYocI/yg5s82Rb+roP90/VSMXZZAcvonCu0Y8EAkf5d7ffGqJr
+ 1V1LJ8SFMFY=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id 12593053; Tue, 04 Jun
+ 2024 11:07:28 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Tue, 04 Jun 2024 11:07:27 -0400
+From: matoro <matoro_mailinglist_kernel@matoro.tk>
+To: John David Anglin <dave.anglin@bell.net>
+Cc: Vidra.Jonas@seznam.cz, linux-parisc@vger.kernel.org, John David Anglin
+ <dave@parisc-linux.org>, Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH] parisc: Try to fix random segmentation faults in package
+ builds
+In-Reply-To: <7345472b8bfa050ec2b86df5f69f99a4@matoro.tk>
+References: <Zje6ywzNAltbG3R2@mx3210.localdomain>
+ <C4u.NueN.39ikIzqu}iW.1cEpt7@seznam.cz>
+ <91563ff7-349b-4815-bcfe-99f8f34b0b16@bell.net>
+ <34fdf2250fe166372a15d74d28adc8d2@matoro.tk>
+ <e88cebf4-bec6-4247-93ae-39eff59cfc8e@bell.net>
+ <88756923-4c3c-41bf-97a8-aab25bc93644@bell.net>
+ <28cea8aa7cce7c56bbb8f88067c3f3ba@matoro.tk>
+ <16d8c07c-9fbe-4e81-b1f1-3127ab05410a@bell.net>
+ <7345472b8bfa050ec2b86df5f69f99a4@matoro.tk>
+Message-ID: <52c0dfa7e2054d883bd66da7ab2e68b8@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2024-05-30 at 20:16 +0000, Mina Almasry wrote:
-> @@ -2317,6 +2318,213 @@ static int tcp_inq_hint(struct sock *sk)
->  	return inq;
->  }
-> =20
-> +/* batch __xa_alloc() calls and reduce xa_lock()/xa_unlock() overhead. *=
-/
-> +struct tcp_xa_pool {
-> +	u8		max; /* max <=3D MAX_SKB_FRAGS */
-> +	u8		idx; /* idx <=3D max */
-> +	__u32		tokens[MAX_SKB_FRAGS];
-> +	netmem_ref	netmems[MAX_SKB_FRAGS];
-> +};
-> +
-> +static void tcp_xa_pool_commit(struct sock *sk, struct tcp_xa_pool *p,
-> +			       bool lock)
-> +{
-> +	int i;
-> +
-> +	if (!p->max)
-> +		return;
-> +	if (lock)
-> +		xa_lock_bh(&sk->sk_user_frags);
+On 2024-05-30 01:00, matoro wrote:
+> On 2024-05-29 12:33, John David Anglin wrote:
+>> On 2024-05-29 11:54 a.m., matoro wrote:
+>>> On 2024-05-09 13:10, John David Anglin wrote:
+>>>> On 2024-05-08 4:52 p.m., John David Anglin wrote:
+>>>>>> with no accompanying stack trace and then the BMC would restart the 
+>>>>>> whole machine automatically. These were infrequent enough that the 
+>>>>>> segfaults were the bigger problem, but after applying this patch on top 
+>>>>>> of 6.8, this changed the dynamic.  It seems to occur during builds with 
+>>>>>> varying I/O loads.  For example, I was able to build gcc fine, with no 
+>>>>>> segfaults, but I was unable to build perl, a much smaller build, 
+>>>>>> without crashing the machine. I did not observe any segfaults over the 
+>>>>>> day or 2 I ran this patch, but that's not an unheard-of stretch of 
+>>>>>> time even without it, and I am being forced to revert because of the panics.
+>>>>> Looks like there is a problem with 6.8.  I'll do some testing with it.
+>>>> So far, I haven't seen any panics with 6.8.9 but I have seen some random 
+>>>> segmentation faults
+>>>> in the gcc testsuite.  I looked at one ld fault in some detail. 18 
+>>>> contiguous words in the  elf_link_hash_entry
+>>>> struct were zeroed starting with the last word in the bfd_link_hash_entry 
+>>>> struct causing the fault.
+>>>> The section pointer was zeroed.
+>>>> 
+>>>> 18 words is a rather strange number of words to corrupt and corruption 
+>>>> doesn't seem related
+>>>> to object structure.  In any case, it is not page related.
+>>>> 
+>>>> It's really hard to tell how this happens.  The corrupt object was at a 
+>>>> slightly different location
+>>>> than it is when ld is run under gdb.  Can't duplicate in gdb.
+>>>> 
+>>>> Dave
+>>> 
+>>> Dave, not sure how much testing you have done with current mainline 
+>>> kernels, but I've had to temporarily give up on 6.8 and 6.9 for now, as 
+>>> most heavy builds quickly hit that kernel panic. 6.6 does not seem to have 
+>>> the problem though.  The patch from this thread does not seem to have made 
+>>> a difference one way or the other w.r.t. segfaults.
+>> My latest patch is looking good.  I have 6 days of testing on c8000 (1 GHz 
+>> PA8800) with 6.8.10 and 6.8.11, and I haven't had any random segmentation
+>> faults.  System has been building debian packages.  In addition, it has 
+>> been building and testing gcc.  It's on its third gcc build and check with 
+>> patch.
+>> 
+>> The latest version uses lpa_user() with fallback to page table search in 
+>> flush_cache_page_if_present() to obtain physical page address.
+>> It revises copy_to_user_page() and copy_from_user_page() to flush kernel 
+>> mapping with tmpalias flushes.  copy_from_user_page()
+>> was missing kernel mapping flush.  flush_cache_vmap() and 
+>> flush_cache_vunmap() are moved into cache.c.  TLB is now flushed before
+>> cache flush to inhibit move-in in these routines. flush_cache_vmap() now 
+>> handles small VM_IOREMAP flushes instead of flushing
+>> entire cache.  This latter change is an optimization.
+>> 
+>> If random faults are still present, I believe we will have to give up 
+>> trying to optimize flush_cache_mm() and flush_cache_range() and
+>> flush the whole cache in these routines.
+>> 
+>> Some work would be needed to backport my current patch to longterm kernels 
+>> because of folio changes in 6.8.
+>> 
+>> Dave
+> 
+> Thanks a ton Dave, I've applied this on top of 6.9.2 and also think I'm 
+> seeing improvement!  No panics yet, I have a couple week's worth of package 
+> testing to catch up on so I'll report if I see anything!
 
-The conditional lock here confuses sparse.
+I've seen a few warnings in my dmesg while testing, although I didn't see any 
+immediately corresponding failures.  Any danger?
 
-I think you can avoid it providing a unlocked version (no need to check
-for '!p->max' the only caller wanting the unlocked version already
-performs such check) and a locked one, calling the other.
+[Sun Jun  2 18:46:29 2024] ------------[ cut here ]------------
+[Sun Jun  2 18:46:29 2024] WARNING: CPU: 0 PID: 26808 at 
+arch/parisc/kernel/cache.c:624 flush_cache_page_if_present+0x1a4/0x330
+[Sun Jun  2 18:46:29 2024] Modules linked in: raw_diag tcp_diag inet_diag 
+netlink_diag unix_diag nfnetlink overlay loop nfsv4 dns_resolver nfs
+lockd grace sunrpc netfs autofs4 binfmt_misc sr_mod ohci_pci cdrom ehci_pci 
+ohci_hcd ehci_hcd tg3 pata_cmd64x usbcore ipmi_si hwmon usb_common
+libata libphy ipmi_devintf nls_base ipmi_msghandler
+[Sun Jun  2 18:46:29 2024] CPU: 0 PID: 26808 Comm: bash Tainted: G        W   
+        6.9.3-gentoo-parisc64 #1
+[Sun Jun  2 18:46:29 2024] Hardware name: 9000/800/rp3440
 
-Cheers,
+[Sun Jun  2 18:46:29 2024]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+[Sun Jun  2 18:46:29 2024] PSW: 00001000000001101111100100001111 Tainted: G   
+      W
+[Sun Jun  2 18:46:29 2024] r00-03  000000ff0806f90f 000000004106b280 
+00000000402090bc 000000005160c6a0
+[Sun Jun  2 18:46:29 2024] r04-07  0000000040f99a80 00000000f96da000 
+00000001659a2360 000000000800000f
+[Sun Jun  2 18:46:29 2024] r08-11  0000000c0063f89c 0000000000000000 
+000000004ce09e9c 000000005160c5a8
+[Sun Jun  2 18:46:29 2024] r12-15  000000004ce09eb0 00000000414ebd70 
+0000000041687768 0000000041646830
+[Sun Jun  2 18:46:29 2024] r16-19  00000000516333c0 0000000001200000 
+00000001c36be780 0000000000000003
+[Sun Jun  2 18:46:29 2024] r20-23  0000000000001a46 000000000f584000 
+ffffffffc0000000 000000000000000f
+[Sun Jun  2 18:46:29 2024] r24-27  0000000000000000 000000000800000f 
+000000004ce09ea0 0000000040f99a80
+[Sun Jun  2 18:46:29 2024] r28-31  0000000000000000 000000005160c720 
+000000005160c750 0000000000000000
+[Sun Jun  2 18:46:29 2024] sr00-03  00000000052be800 00000000052be800 
+0000000000000000 00000000052be800
+[Sun Jun  2 18:46:29 2024] sr04-07  0000000000000000 0000000000000000 
+0000000000000000 0000000000000000
 
-Paolo
+[Sun Jun  2 18:46:29 2024] IASQ: 0000000000000000 0000000000000000 IAOQ: 
+0000000040209104 0000000040209108
+[Sun Jun  2 18:46:29 2024]  IIR: 03ffe01f    ISR: 0000000010240000  IOR: 
+0000003382609ea0
+[Sun Jun  2 18:46:29 2024]  CPU:        0   CR30: 00000000516333c0 CR31: 
+fffffff0f0e05ee0
+[Sun Jun  2 18:46:29 2024]  ORIG_R28: 000000005160c7b0
+[Sun Jun  2 18:46:29 2024]  IAOQ[0]: flush_cache_page_if_present+0x1a4/0x330
+[Sun Jun  2 18:46:29 2024]  IAOQ[1]: flush_cache_page_if_present+0x1a8/0x330
+[Sun Jun  2 18:46:29 2024]  RP(r2): flush_cache_page_if_present+0x15c/0x330
+[Sun Jun  2 18:46:29 2024] Backtrace:
+[Sun Jun  2 18:46:29 2024]  [<000000004020afb8>] flush_cache_mm+0x1a8/0x1c8
+[Sun Jun  2 18:46:29 2024]  [<000000004023cf3c>] copy_mm+0x2a8/0xfd0
+[Sun Jun  2 18:46:29 2024]  [<0000000040241040>] copy_process+0x1684/0x26e8
+[Sun Jun  2 18:46:29 2024]  [<0000000040242218>] kernel_clone+0xcc/0x754
+[Sun Jun  2 18:46:29 2024]  [<0000000040242908>] __do_sys_clone+0x68/0x80
+[Sun Jun  2 18:46:29 2024]  [<0000000040242d14>] sys_clone+0x30/0x60
+[Sun Jun  2 18:46:29 2024]  [<0000000040203fbc>] syscall_exit+0x0/0x10
 
+[Sun Jun  2 18:46:29 2024] ---[ end trace 0000000000000000 ]---
 
