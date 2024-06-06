@@ -1,70 +1,70 @@
-Return-Path: <linux-parisc+bounces-1488-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1489-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A719F8FF2DD
-	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jun 2024 18:50:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 021258FF363
+	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jun 2024 19:11:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 177601F2749B
-	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jun 2024 16:50:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD7E0B27DA4
+	for <lists+linux-parisc@lfdr.de>; Thu,  6 Jun 2024 16:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002F31990BE;
-	Thu,  6 Jun 2024 16:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9885B1990C0;
+	Thu,  6 Jun 2024 16:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FJhdTGIx"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ymO+zb85"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FE8198E6A
-	for <linux-parisc@vger.kernel.org>; Thu,  6 Jun 2024 16:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B740F198E61
+	for <linux-parisc@vger.kernel.org>; Thu,  6 Jun 2024 16:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717692594; cv=none; b=g1LE47zOA3Xb/yr7I11x6TgRdKUO7frrNuv8G+cAfEpm3rYE4PuDKRdRNrn4Wlnlgh7d6VikL2o9QY6+g6FsDza/vElCdjPcnyC+OiDMYW8WEHYGXk0gm5Vlc4ZRXIZ4ypumGEwhkGktIcq6Z+H20wP2wagil5AfqpDDPxpOECw=
+	t=1717693101; cv=none; b=gOyzbc1CmSn0CzhM/HQchr/DYjhFbnUr5qNIeEw2FV+IcyxFIOrChT/2e+5i8rug67xETclPt11i7rrDvyAHPZ0qbNMJwgP+H7kLpTGe2Sv9nOV3pFhuUgZ0QZZoGA7biYFinYZ+lGPN7FOGR/vlQS6ry/EBSWcbMqjt5cY++4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717692594; c=relaxed/simple;
-	bh=QlINFaI4LTvEN0VfK5cNmlEbpI0ZCm9ojcKkqo+H+CY=;
+	s=arc-20240116; t=1717693101; c=relaxed/simple;
+	bh=4LAT/qwUx+hpUWMrCfCLSnOxPPMN46bQKs4JM+ecNVs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=necRZ4Itlq/fWWQAWQR3s4PJI4B58aLTZyb+pUBIHvUTwSbZkrJuDIgJQ2u4eLcF/ptHoRE0mjf1fCBgXTLaC4hCV9EVUY0EkoGO41/KkhU0gGJ4tWKL5txmtBRO9xen3/x1vu/917bYAk+zRJO6wlyn8+h/kOVljn9ND5Wu+zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FJhdTGIx; arc=none smtp.client-ip=209.85.218.41
+	 To:Cc:Content-Type; b=ZQs8XV79GetdYYnv/UYwFEoK1w2KVLCmEFxU+EUYxfNBhgp52RMLQC1R07y/rr59WtZveVcoauyNIQDxsuzxEfodrZcTUIk55MHFJ0Gs0YMj2nQa3kBj/P5UN1ERPBUc46r4nabt3afkDdsaVeO9e1N/CIiZ/R5iOX5MALJ8cVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ymO+zb85; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a696cde86a4so131703466b.1
-        for <linux-parisc@vger.kernel.org>; Thu, 06 Jun 2024 09:49:51 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a68a9a4e9a6so121660266b.3
+        for <linux-parisc@vger.kernel.org>; Thu, 06 Jun 2024 09:58:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717692590; x=1718297390; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1717693097; x=1718297897; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kXklq3VgB30R+o4fq7okdZC1G76cerOH8ymTCu7s03o=;
-        b=FJhdTGIxctQIk6xOF7Zd1CW+slog1vE6ixCwSs90XTWdHvLrBkGDpnZvoFXFyz1T1o
-         V4F8vhBb8Z9pLu4Hey3uN7SpOw98HEw5zZfZg9nMeeIq15SzcDrkfc3yFfMIQ7cGDLhS
-         uzuog7ycVldhDgR/tnY8wgKRLn4ZW48PynK4NO30CtEOjuoJprXwbn/n4AAzAzVSv1eV
-         YT0AOV+hEMO0OE5fYOn1IKcOU5GzjY3ixs74XLG4XOqY9urvq4k+mtpko+C7uMZ+/mT5
-         RJdnLuvYqSwOku/GHAfZY23nQtqTtYRUtFX7oZeCPiXA05AnDfx9g6sPjP2AepkKYJom
-         UYfg==
+        bh=jylD5VdLotA86Z7MUVU8wz6TNgXb9980vHa3X2PNUNQ=;
+        b=ymO+zb85cAZLDHJE/Q2j4AcadlWeBcb6wnlFVDkSgfUydQUphDuqPFEh3fzOICf5Ug
+         S6930QhLrCEFBqOeEvijakHaPdZb4pcvdZFNyeeFn5OIxKUmLmreD+uAz4FxLtUYaT4i
+         8+igBhkXPEi91hwoCvk6LCC83a751kELtVORkwxyasdVO+JjZ9bJCP+8DK6PbIpkcdTA
+         DayoEFDxalP1IemDK6Al3zp7ltoiff5/CA5SRhaQ12t6LjsFDAwWv5EjIXHW/QUYoU+s
+         fADBKLlGmzTxFwErv1j3cfv/f94mdc6pGuUDPQBLNsyScEte5k+Kutvy5sJZYWR9Zqis
+         Yg7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717692590; x=1718297390;
+        d=1e100.net; s=20230601; t=1717693097; x=1718297897;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kXklq3VgB30R+o4fq7okdZC1G76cerOH8ymTCu7s03o=;
-        b=nL6cd8v/+0U2sOtSlhVy8vPm47xisOsHlTCO86Enn5SQ5XykDbGQoQsT9uHCtb+zNA
-         f6LvvtX0S7a9YCpNTbOQPjU8iN1+V437iPRcI/pvTW9i6hM7VkKENgsmR17Zvtpxl1MF
-         Dx4mLpAMC6q1DyiLJmmvptM3A85xu/Pp6kYkxYgqste0YsyneBmcxP0mtU6nY7A77g0x
-         rbTgWT8HWRt3gZarW2Z+kCpyVb24/LxrKVnR76u9UQ4eODkmIQenFdSOktzXTbvIksBV
-         LdGgQcDs2YHzj6rXCBSMhyPuuWK571pWxEPy4jB1fq0MOGK/Z6pSV2sX2yZ20bUGnClT
-         iJXg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHj+jLgswmA6JYHBxFli0FZ3ju4NMUIJ6M9n6ZjsnY3JTNUvt9Rj8OCDZmV2Cbr+NT1QJ+1CHWDLFy2qN4ecABKESALSTdkwn2SW/M
-X-Gm-Message-State: AOJu0Yz6FrbnYXRkEfAmtHLGxonCJsVriBxRDWD6vphOMYz9ZhBqaB8G
-	pZtU6pmISrmC3H/Wv/wEPGU4TpD+PvgmVqkPeWB4DS0P95tyqW/PdJnhFYzmrIK+MGXyUz4Uwpy
-	jMFwLBmXB3cunO66/bGN2l5FtSz0dN93gVtfj
-X-Google-Smtp-Source: AGHT+IH2yDy4H26F3I2+8dO9xS+2+lL/iHck43y2iBW4jw1+n0fE7mBk6YXmrPpbRP2wxNUQ12+YElL3P5ewJrljwbU=
-X-Received: by 2002:a17:907:7786:b0:a68:c9fa:f19f with SMTP id
- a640c23a62f3a-a6cdb0f542cmr7959966b.53.1717692590194; Thu, 06 Jun 2024
- 09:49:50 -0700 (PDT)
+        bh=jylD5VdLotA86Z7MUVU8wz6TNgXb9980vHa3X2PNUNQ=;
+        b=X55ri5LbqIhv6ScAp1+e1EciAvJrPt9hBkZrlqWgijJXtEa0RtnFoR9srSYhKboMrZ
+         wjz58zTc+uDwfQo0G03RtCSYYtXO1LXXIg5TwJHKD1k/5H5GYFGRFTDb+FtTxaBmlCCX
+         sfkpSmLoTwCUBQ6bD/0pjYLut7VqMAOgoXW5F8iASvVDWAKZCk921Z3y5VAuDOi7y5+3
+         yTDT3fQNY8i2bMZGk1uf7556mTgSse082laoQdjF7uSY1U1NVp21W8+9IN7VDcHENf5+
+         8kT385ZgIeIbSu0sRqKdLeAnyfbaMRYIeid3ZafgvUsI32cvUv/FNjQCHlED69MNWLwB
+         Eutw==
+X-Forwarded-Encrypted: i=1; AJvYcCXlxYjGLDSHQT7kTgzgFwjNYjuMkUvL/YJ9BTNSjf8j+eQeq8ld5a8l+/Gn4nL9PS7Dh5es1Mrb25K3qJeB/+qwzTOaAwDjgoMV/Za7
+X-Gm-Message-State: AOJu0YzCvsDR+YblDtSn3gTcI55bZdxzqujzw/f9NFLteXBRC47D5q83
+	OOXHCAbITthvu2gfcxTBjqU7hIh8VU4C5Lqvj6w77jEjKasuffyMfmiiU8e9SN50GyPrVjn30tT
+	UfjX/lguTmbOMqPUGe1HSSRLvZ7W0ssvaWn+hWTgKkYaZR/A1dZoS2daG+w==
+X-Google-Smtp-Source: AGHT+IEy8tF4w5nFKpMjgp4LNCeJXDsMNuKu99RJBZQa2eob/f6gFlNSUxoAYqR0tlHBDkAdRThFWqNLt5Xt32HaUnk=
+X-Received: by 2002:a17:906:1453:b0:a68:3e32:384 with SMTP id
+ a640c23a62f3a-a6cd7a7eb86mr10614366b.46.1717693096783; Thu, 06 Jun 2024
+ 09:58:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -73,10 +73,11 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240530201616.1316526-1-almasrymina@google.com>
  <20240530201616.1316526-11-almasrymina@google.com> <84162ef4c695cb764454087ca0bc81082d4fac8d.camel@redhat.com>
-In-Reply-To: <84162ef4c695cb764454087ca0bc81082d4fac8d.camel@redhat.com>
+ <CAHS8izNupu9u1zx9YD9KaNxahBeZeaajOUUSFePbQk+rfUFn+Q@mail.gmail.com>
+In-Reply-To: <CAHS8izNupu9u1zx9YD9KaNxahBeZeaajOUUSFePbQk+rfUFn+Q@mail.gmail.com>
 From: Mina Almasry <almasrymina@google.com>
-Date: Thu, 6 Jun 2024 09:49:38 -0700
-Message-ID: <CAHS8izNupu9u1zx9YD9KaNxahBeZeaajOUUSFePbQk+rfUFn+Q@mail.gmail.com>
+Date: Thu, 6 Jun 2024 09:58:04 -0700
+Message-ID: <CAHS8izPw-R8MjZdgZTLcKoTe6=gSp1rh3GKZ9Q-Z7Txgc_RVjw@mail.gmail.com>
 Subject: Re: [PATCH net-next v10 10/14] net: add support for skbs with
  unreadable frags
 To: Paolo Abeni <pabeni@redhat.com>
@@ -112,68 +113,72 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 4, 2024 at 3:46=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wrot=
-e:
+On Thu, Jun 6, 2024 at 9:49=E2=80=AFAM Mina Almasry <almasrymina@google.com=
+> wrote:
 >
-> On Thu, 2024-05-30 at 20:16 +0000, Mina Almasry wrote:
-> > diff --git a/net/core/gro.c b/net/core/gro.c
-> > index 26f09c3e830b7..7b9d018f552bd 100644
-> > --- a/net/core/gro.c
-> > +++ b/net/core/gro.c
-> > @@ -422,6 +422,9 @@ static void gro_pull_from_frag0(struct sk_buff *skb=
-, int grow)
-> >  {
-> >       struct skb_shared_info *pinfo =3D skb_shinfo(skb);
+> On Tue, Jun 4, 2024 at 3:46=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wr=
+ote:
 > >
-> > +     if (WARN_ON_ONCE(!skb_frags_readable(skb)))
-> > +             return;
-> > +
-> >       BUG_ON(skb->end - skb->tail < grow);
+> > On Thu, 2024-05-30 at 20:16 +0000, Mina Almasry wrote:
+> > > diff --git a/net/core/gro.c b/net/core/gro.c
+> > > index 26f09c3e830b7..7b9d018f552bd 100644
+> > > --- a/net/core/gro.c
+> > > +++ b/net/core/gro.c
+> > > @@ -422,6 +422,9 @@ static void gro_pull_from_frag0(struct sk_buff *s=
+kb, int grow)
+> > >  {
+> > >       struct skb_shared_info *pinfo =3D skb_shinfo(skb);
+> > >
+> > > +     if (WARN_ON_ONCE(!skb_frags_readable(skb)))
+> > > +             return;
+> > > +
+> > >       BUG_ON(skb->end - skb->tail < grow);
+> > >
+> > >       memcpy(skb_tail_pointer(skb), NAPI_GRO_CB(skb)->frag0, grow);
+> > > @@ -443,7 +446,7 @@ static void gro_try_pull_from_frag0(struct sk_buf=
+f *skb)
+> > >  {
+> > >       int grow =3D skb_gro_offset(skb) - skb_headlen(skb);
+> > >
+> > > -     if (grow > 0)
+> > > +     if (grow > 0 && skb_frags_readable(skb))
+> > >               gro_pull_from_frag0(skb, grow);
+> > >  }
 > >
-> >       memcpy(skb_tail_pointer(skb), NAPI_GRO_CB(skb)->frag0, grow);
-> > @@ -443,7 +446,7 @@ static void gro_try_pull_from_frag0(struct sk_buff =
-*skb)
-> >  {
-> >       int grow =3D skb_gro_offset(skb) - skb_headlen(skb);
+> > I'm unsure if this was already mentioned, so please pardon the eventual
+> > duplicate...
 > >
-> > -     if (grow > 0)
-> > +     if (grow > 0 && skb_frags_readable(skb))
-> >               gro_pull_from_frag0(skb, grow);
-> >  }
+> > The above code is quite critical performance wise, and the previous
+> > patch already prevent frag0 from being set to a non paged frag,
 >
-> I'm unsure if this was already mentioned, so please pardon the eventual
-> duplicate...
 >
-> The above code is quite critical performance wise, and the previous
-> patch already prevent frag0 from being set to a non paged frag,
-
-
-Hi Paolo!
-
-The last patch, d4d25dd237a61 ("net: support non paged skb frags"),
-AFAICT doesn't prevent frag0 from being a non-paged frag. What we do
-is set ->frag0=3Dskb->data, then prevent it from being reset to
-skb_frag_address() for non-paged skbs. ->frag0 will likely actually be
-a bad value for non-paged frags, so we need to check in
-gro_pul_from_frag0() so that we don't accidentally pull from a bad
-->frag0 value.
-
-What I think I should do here is what you said. I should make sure
-frag0 and frag0_len is not set if it's a non-paged frag. Then, we
-don't need special checks in gro_pull_from_frag0 I think, because
-skb_gro_may_pull() should detect that frag0_len is 0 and should
-prevent a pull.
-
-I will apply this fix to the next iteration for your review. Let me
-know if I missed something.
-
-
-> so what
-> about dropping the above additional checks?
+> Hi Paolo!
+>
+> The last patch, d4d25dd237a61 ("net: support non paged skb frags"),
+> AFAICT doesn't prevent frag0 from being a non-paged frag. What we do
+> is set ->frag0=3Dskb->data, then prevent it from being reset to
+> skb_frag_address() for non-paged skbs. ->frag0 will likely actually be
+> a bad value for non-paged frags, so we need to check in
+> gro_pul_from_frag0() so that we don't accidentally pull from a bad
+> ->frag0 value.
+>
+> What I think I should do here is what you said. I should make sure
+> frag0 and frag0_len is not set if it's a non-paged frag. Then, we
+> don't need special checks in gro_pull_from_frag0 I think, because
+> skb_gro_may_pull() should detect that frag0_len is 0 and should
+> prevent a pull.
+>
+> I will apply this fix to the next iteration for your review. Let me
+> know if I missed something.
+>
 >
 
+Actually, sorry you're right. As written, d4d25dd237a61 ("net: support
+non paged skb frags") prevents frag0 from being a non-paged frag. I
+can just drop these excessive checks with no downside. Sorry for the
+noise!
 
---
+--=20
 Thanks,
 Mina
 
