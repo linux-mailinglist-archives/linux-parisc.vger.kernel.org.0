@@ -1,180 +1,237 @@
-Return-Path: <linux-parisc+bounces-1527-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1528-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E5490295C
-	for <lists+linux-parisc@lfdr.de>; Mon, 10 Jun 2024 21:32:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC28D902982
+	for <lists+linux-parisc@lfdr.de>; Mon, 10 Jun 2024 21:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60C2A28467F
-	for <lists+linux-parisc@lfdr.de>; Mon, 10 Jun 2024 19:32:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36CECB2293B
+	for <lists+linux-parisc@lfdr.de>; Mon, 10 Jun 2024 19:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E0F14F10E;
-	Mon, 10 Jun 2024 19:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772C4149C43;
+	Mon, 10 Jun 2024 19:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WE9/dnSq"
+	dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b="PlYiQYLb"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from matoro.tk (matoro.tk [104.188.251.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913591487C5;
-	Mon, 10 Jun 2024 19:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF911BC39
+	for <linux-parisc@vger.kernel.org>; Mon, 10 Jun 2024 19:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.188.251.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718047942; cv=none; b=PftlkzNw6h8FnEx13fzNUKrHavKxCTKIU3ee/jwCzCrszjmbNS/uhq9nt5yIN5AzsgYScaZyR996X8+shssLI1UMjYvc7eItbMf5vTyx5cfGWUSw8aN0Q3Xrzv7hwvc1e991rmZsUse7CfSz1DdXSxnfxSEfneFdIvoL7PsG+bk=
+	t=1718049194; cv=none; b=mvHZ6SPH9RSKUCTfIUVdfgl9pPdcn8xw3Da92fqj+QCyOQN1+OU32PUNfUGqv7tvBsZn43lyz5gx35/ZS8ToCd+H1ZtQZAWbkaKV1jDKWoITtRma0pkuqCaIxrlLf7Zl9d9GgRdpTzKmSrH2Gt7ORdOUtMlITsulsWCxSFipT6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718047942; c=relaxed/simple;
-	bh=VuTq4b10N4/opfBKMwzqFtKLSskXYPKPtG7BtOveSas=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wtb1jzJaLjVAYasbna/MzyXPYIKM8dLI3PyhDLmEOzOxRQLYb22erO+vqXO7z3tR162menWUaGdCbosQWRIXVyBuv6dY7SoqUkB4Um3DejmA7F0NB2JA07BK++HGrg7Znsu1g2Fcyk41PWQTHzs8cv1WomMVP0CAdoaNsOT6OiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WE9/dnSq; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-35dc9cef36dso309382f8f.3;
-        Mon, 10 Jun 2024 12:32:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718047939; x=1718652739; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cH6LVxT06plsrA1ReD8cM9W1acWe7q6EhO7RV1s6Td4=;
-        b=WE9/dnSqN3r8tM5kG9pDm5UEpCR/364ome8tT2CGY6rbwmhnleWIOAyPzxMO4ldTDX
-         Ss37g6/L61ssC5UDmjRYsrE+751vN09Lyn02fhZUPn6kOrOYF3E3Qqd1KBSjK+dq7Gui
-         0CuZ6kUCxOugmj3L23bipe5Rf/U+9FGtj8kp3mJj4Uc7ZzFTab5zgTuCOsRQQQuEVNml
-         +WRzvgwNpa3rYdpF51y954J9/8llhR1iVRE3Kt7+6+vFpAUZrk38qWYnZzHGhWxPdkQW
-         qZCC6tjjtaAbxcjQGL0q1pfX/uaGOwj0lcx0q8CSgyy2+3NKcrRBcaBP9PFK+jksN1Vf
-         s4Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718047939; x=1718652739;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cH6LVxT06plsrA1ReD8cM9W1acWe7q6EhO7RV1s6Td4=;
-        b=MKO9J27OBZfKIbygAP9ZmyelmIHgN+UnCbusxJEbK7ab+GBqsQKTu8kLods2RnzbDX
-         WI9J2qBB76LUL1TThUtVLJkyxVh08+1FINkbBpwKuSyx27WTIQj5xAyJTIssscjQFLcC
-         YBq3XJnzhcdInuYTznclWCvPIojGLgmuXf1wbU8HisoVi31RWsR68hgtZKIXPhpr/TBp
-         kqjMyd1FlTYWJxp0KigeRzdMcR33r5/kP4cKmx1lowQDXxVwB1dTlUyiRC8XWVOQ8dr+
-         iZ3EfcYhzEtVoDsyVTot5jvYjnA/g84iZV1h0tRQa9Y/S9mx47qziIj7ET6nRmPYxbfU
-         DMpg==
-X-Forwarded-Encrypted: i=1; AJvYcCUzTHz/qeWe79ekn6RsiOx+cT9VGRorUrRKukY+ehv7rm/+yEw2i14al1f05aM72KhvcKzu2dVssIE9SLutIbcMuGvGKsR4ov4fxtyG73ewI1eNQTT4koxBemXfdUE57M8oEzQJ1ZDTekxf7R73GpmpnvoLGD5Rc3smEhNZBMB47uBhMA3MABZtPBexVzvpxDcvOkfD89hhFSgVYe4dtur61T09TzkO+UPq7z+NgBfdpjwyyGTLnPRmClQ65EkLn97B4eHobxDHfaZzoA3g9m4fke7MtELOjFXAK1DoOysu4lsURkapdghr18+PSBJi0DLigZbgTPkMK/CoiZPZ0OpiLa+JMBWEIR6K7Mym6yqd/KwCy5jMqPvlrzN/U4hvDZAgaa3alvdvQhyhl4l9pBS4Ln5Bc1KBsqrpa7kgakADUZYBEtmC75ndZepR3fpVePiOFRfhPLfYSkZ0wWba1RIzEh8nULNDI4S5UWbN07SurDNe444F1WzZpLcugLI8Lh1wQYrh9g==
-X-Gm-Message-State: AOJu0YwutSUG3RfUji42u2rH72AZykuAlmwGGcog9uFD9FBcfk7tzGGl
-	X7e+ULr8iBIex08koXtdO3/5uAywhBX/4lQmMCHH/ekAtzHlhx4w
-X-Google-Smtp-Source: AGHT+IHyebdJqoC8N9cFVipCugkjo2s6jygXE3iaN8ED6lgnlN+5ynOFecePOgT3p/WcNF0ptUpPjg==
-X-Received: by 2002:a05:600c:1551:b0:421:4786:eb0c with SMTP id 5b1f17b1804b1-42164a44b35mr87551775e9.33.1718047938725;
-        Mon, 10 Jun 2024 12:32:18 -0700 (PDT)
-Received: from [192.168.42.64] ([148.252.129.53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421cd1fdec7sm47319585e9.25.2024.06.10.12.32.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jun 2024 12:32:18 -0700 (PDT)
-Message-ID: <4c4739df-c2fc-4e9a-a27e-aec00a5667da@gmail.com>
-Date: Mon, 10 Jun 2024 20:32:16 +0100
+	s=arc-20240116; t=1718049194; c=relaxed/simple;
+	bh=iqhCKU9Sy5iBIqwmD5hrTQsoPfD72z2peVOIhxcIPwU=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=CAO3Naetaxa5GdR/XyMxKWFRTZjOye9Z3HGlwGZMU6AhQH21NXVDafTgTT9YGm49VPnxh0Uy24kMPndYPewOOUVqHuf35zSlHyti7mRTAd2vSuxXoMIeXzIEe9aJuzXxWdWwPcI2aaVnLySNgWWPKITAAUUXSxFCS3XMjXAfrt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk; spf=pass smtp.mailfrom=matoro.tk; dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b=PlYiQYLb; arc=none smtp.client-ip=104.188.251.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matoro.tk
+DKIM-Signature: a=rsa-sha256; bh=xyDxicyGBS8OGMWVYS4KACQhu8e2uCNMUtfADyGa1Zw=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20240416; t=1718049172; v=1; x=1718481172;
+ b=PlYiQYLbhUd0WWQTrnlbXM9WJP70YK0YepT8U69y0o7iRIt/TXSaovE5VDEOWyvdvczI6WiW
+ eqlJGvNGjYhd0PDK2SrNjc7y5OYfLb539nPJcTYR8PdXSMNMNRvq3e+z2F4EKUfNJdQFWAuxeQY
+ 9SauErXk6UJ8J7Q/BxdGbv0JDVItp7LJp/gVRgH+SySNjcRw6sKiabUmLSrG8KheO/iLEwj25Og
+ R1oUe3D2/gtrRThO/1/witjiE+ibhjAq98/Kx78E7VfTLRpWRJf5LaHSbcQ7ciI32FvS0/04oSp
+ LpIZ41DQpz4eTpARcvjQDkpV3EfJSOvvbTqDn19gc1A13aukC9tnJbFebwLnZy2P9rdBDoc9OT7
+ v9wabrN8/cJ7SLOhhnDJBFDi/qq45aX4JOSRvxx8xv+5qWUAwfCcwD9M6qT49zeKoQbG4VmK7r5
+ nz8nxJb+F1ieKzL6jYUi4rcIjfHLgVjdHAJa+owU/kyRwfTn/DHUW+7X/NfbGxPyypaY0/cXpOW
+ 0RrFMYGBkwxtxlaX8aTH3Ru5WrzExpSvLBXZzPOSftbx7Jt04oaFguErNymldQ+PY08/5JtdEj3
+ 3s2zz32JGKaUTTkrhBp3qE24Lws/ZQaShJ/2xlWmg1Ms9I8tyMVhEAttEuMMCYsZTw3ewOka2x3
+ 1W8ozuxfQVs=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id d2d4f4ec; Mon, 10 Jun
+ 2024 15:52:52 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 02/14] net: page_pool: create hooks for
- custom page providers
-To: Mina Almasry <almasrymina@google.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, David Wei <dw@davidwei.uk>,
- David Ahern <dsahern@kernel.org>, Christoph Hellwig <hch@infradead.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
- Jonathan Corbet <corbet@lwn.net>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
- <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Andreas Larsson <andreas@gaisler.com>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Arnd Bergmann <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Steffen Klassert
- <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Shuah Khan <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Jeroen de Borst
- <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>
-References: <20240530201616.1316526-3-almasrymina@google.com>
- <ZlqzER_ufrhlB28v@infradead.org>
- <CAHS8izMU_nMEr04J9kXiX6rJqK4nQKA+W-enKLhNxvK7=H2pgA@mail.gmail.com>
- <5aee4bba-ca65-443c-bd78-e5599b814a13@gmail.com>
- <CAHS8izNmT_NzgCu1pY1RKgJh+kP2rCL_90Gqau2Pkd3-48Q1_w@mail.gmail.com>
- <eb237e6e-3626-4435-8af5-11ed3931b0ac@gmail.com>
- <be2d140f-db0f-4d15-967c-972ea6586b5c@kernel.org>
- <20240607145247.GG791043@ziepe.ca>
- <45803740-442c-4298-b47e-2d87ae5a6012@davidwei.uk>
- <54975459-7a5a-46ff-a9ae-dc16ceffbab4@gmail.com>
- <20240610121625.GI791043@ziepe.ca>
- <cdbc0d5f-bfbc-4f58-a6dd-c13b0bb5ff1c@amd.com>
- <CAHS8izNwmXQTLc9VADpushYKyeJ4ZY4G9aV47W2-1St65-tKUg@mail.gmail.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <CAHS8izNwmXQTLc9VADpushYKyeJ4ZY4G9aV47W2-1St65-tKUg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Date: Mon, 10 Jun 2024 15:52:52 -0400
+From: matoro <matoro_mailinglist_kernel@matoro.tk>
+To: John David Anglin <dave.anglin@bell.net>
+Cc: Vidra.Jonas@seznam.cz, linux-parisc@vger.kernel.org, John David Anglin
+ <dave@parisc-linux.org>, Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH] parisc: Try to fix random segmentation faults in package
+ builds
+In-Reply-To: <213f7afe-5bc8-40ff-835c-1fadaae0a96d@bell.net>
+References: <Zje6ywzNAltbG3R2@mx3210.localdomain>
+ <C4u.NueN.39ikIzqu}iW.1cEpt7@seznam.cz>
+ <91563ff7-349b-4815-bcfe-99f8f34b0b16@bell.net>
+ <34fdf2250fe166372a15d74d28adc8d2@matoro.tk>
+ <e88cebf4-bec6-4247-93ae-39eff59cfc8e@bell.net>
+ <88756923-4c3c-41bf-97a8-aab25bc93644@bell.net>
+ <28cea8aa7cce7c56bbb8f88067c3f3ba@matoro.tk>
+ <16d8c07c-9fbe-4e81-b1f1-3127ab05410a@bell.net>
+ <7345472b8bfa050ec2b86df5f69f99a4@matoro.tk>
+ <52c0dfa7e2054d883bd66da7ab2e68b8@matoro.tk>
+ <213f7afe-5bc8-40ff-835c-1fadaae0a96d@bell.net>
+Message-ID: <13894865a496a7f2a6ed607e2ef708c4@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 6/10/24 16:41, Mina Almasry wrote:
-> On Mon, Jun 10, 2024 at 5:38 AM Christian König
-> <christian.koenig@amd.com> wrote:
->>
->> Am 10.06.24 um 14:16 schrieb Jason Gunthorpe:
->>> On Mon, Jun 10, 2024 at 02:07:01AM +0100, Pavel Begunkov wrote:
->>>> On 6/10/24 01:37, David Wei wrote:
->>>>> On 2024-06-07 17:52, Jason Gunthorpe wrote:
->>>>>> IMHO it seems to compose poorly if you can only use the io_uring
->>>>>> lifecycle model with io_uring registered memory, and not with DMABUF
->>>>>> memory registered through Mina's mechanism.
->>>>> By this, do you mean io_uring must be exclusively used to use this
->>>>> feature?
->>>>>
->>>>> And you'd rather see the two decoupled, so userspace can register w/ say
->>>>> dmabuf then pass it to io_uring?
->>>> Personally, I have no clue what Jason means. You can just as
->>>> well say that it's poorly composable that write(2) to a disk
->>>> cannot post a completion into a XDP ring, or a netlink socket,
->>>> or io_uring's main completion queue, or name any other API.
->>> There is no reason you shouldn't be able to use your fast io_uring
->>> completion and lifecycle flow with DMABUF backed memory. Those are not
->>> widly different things and there is good reason they should work
->>> together.
->>
->> Well there is the fundamental problem that you can't use io_uring to
->> implement the semantics necessary for a dma_fence.
->>
->> That's why we had to reject the io_uring work on DMA-buf sharing from
->> Google a few years ago.
->>
+On 2024-06-04 13:08, John David Anglin wrote:
+> On 2024-06-04 11:07 a.m., matoro wrote:
+>>> Thanks a ton Dave, I've applied this on top of 6.9.2 and also think I'm 
+>>> seeing improvement!  No panics yet, I have a couple week's worth of 
+>>> package testing to catch up on so I'll report if I see anything!
+>> 
+>> I've seen a few warnings in my dmesg while testing, although I didn't see 
+>> any immediately corresponding failures.  Any danger?
+> We have determined most of the warnings arise from pages that have been 
+> swapped out.  Mostly, it seems these
+> pages have been flushed to memory before the pte is changed to a swap pte.  
+> There might be issues for pages that
+> have been cleared.  It is possible the random faults aren't related to the 
+> warning I added for pages with an invalid pfn
+> in flush_cache_page_if_present.  The only thing I know for certain is there 
+> is no way to flush these pages on parisc
+> other than flushing the whole cache.
 > 
-> Any chance someone can link me to this? io_uring, as far as my
-> primitive understanding goes, is not yet very adopted at Google, and
-> I'm curious what this effort is.
-I'm curious as well, I don't remember it floating anywhere in mailing
-lists. The only discussion I recall was about
-DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT, but it didn't get through only because
-someone pushed for evenfds.
+> My c8000 has run almost two weeks without any random faults.  On the other 
+> hand, Helge has two machines that
+> frequently fault and generate these warnings.
+> 
+> Flushing the whole cache in flush_cache_mm and flush_cache_range might 
+> eliminate the random faults but
+> there will be a significant performance hit.
+> 
+> Dave
 
--- 
-Pavel Begunkov
+Unfortunately I had a few of these faults trip today after ~4 days of uptime 
+with corresponding random segfaults.  One of the WARNs was emitted shortly 
+before, though not for the same PID.  Reattempted the build twice and 
+randomly segfaulted all 3 times.  Had to reboot as usual to get it out of the 
+bad state.
+
+[Mon Jun 10 14:26:20 2024] ------------[ cut here ]------------
+[Mon Jun 10 14:26:20 2024] WARNING: CPU: 1 PID: 26453 at 
+arch/parisc/kernel/cache.c:624 flush_cache_page_if_present+0x1a4/0x330
+[Mon Jun 10 14:26:20 2024] Modules linked in: nfnetlink af_packet overlay 
+loop nfsv4 dns_resolver nfs lockd grace sunrpc netfs autofs4 binfmt_m
+isc sr_mod ohci_pci cdrom ehci_pci ohci_hcd ehci_hcd tg3 usbcore pata_cmd64x 
+ipmi_si hwmon usb_common ipmi_devintf libata libphy nls_base ipmi_
+msghandler
+[Mon Jun 10 14:26:20 2024] CPU: 1 PID: 26453 Comm: ld.so.1 Tainted: G        
+W          6.9.3-gentoo-parisc64 #1
+[Mon Jun 10 14:26:20 2024] Hardware name: 9000/800/rp3440
+
+[Mon Jun 10 14:26:20 2024]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+[Mon Jun 10 14:26:20 2024] PSW: 00001000000001001111100100001111 Tainted: G   
+      W
+[Mon Jun 10 14:26:20 2024] r00-03  000000ff0804f90f 000000004106b280 
+00000000402090bc 000000007f4c85f0
+[Mon Jun 10 14:26:20 2024] r04-07  0000000040f99a80 00000000f855d000 
+00000000561b6360 000000000800000f
+[Mon Jun 10 14:26:20 2024] r08-11  0000000c009674de 0000000000000000 
+0000004100b2e39c 000000007f4c81c0
+[Mon Jun 10 14:26:20 2024] r12-15  00000000561b6360 0000004100b2e330 
+0000000000000002 0000000000000000
+[Mon Jun 10 14:26:20 2024] r16-19  0000000040f50360 fffffffffffffff4 
+000000007f4c8108 0000000000000003
+[Mon Jun 10 14:26:20 2024] r20-23  0000000000001a46 0000000011b81000 
+ffffffffc0000000 00000000f859d000
+[Mon Jun 10 14:26:20 2024] r24-27  0000000000000000 000000000800000f 
+0000004100b2e3a0 0000000040f99a80
+[Mon Jun 10 14:26:20 2024] r28-31  0000000000000000 000000007f4c8670 
+000000007f4c86a0 0000000000000000
+[Mon Jun 10 14:26:20 2024] sr00-03  000000000604d000 000000000604d000 
+0000000000000000 000000000604d000
+[Mon Jun 10 14:26:20 2024] sr04-07  0000000000000000 0000000000000000 
+0000000000000000 0000000000000000
+
+[Mon Jun 10 14:26:20 2024] IASQ: 0000000000000000 0000000000000000 IAOQ: 
+0000000040209104 0000000040209108
+[Mon Jun 10 14:26:20 2024]  IIR: 03ffe01f    ISR: 0000000000000000  IOR: 
+0000000000000000
+[Mon Jun 10 14:26:20 2024]  CPU:        1   CR30: 00000001e700e780 CR31: 
+fffffff0f0e05ee0
+[Mon Jun 10 14:26:20 2024]  ORIG_R28: 00000000414cab90
+[Mon Jun 10 14:26:20 2024]  IAOQ[0]: flush_cache_page_if_present+0x1a4/0x330
+[Mon Jun 10 14:26:20 2024]  IAOQ[1]: flush_cache_page_if_present+0x1a8/0x330
+[Mon Jun 10 14:26:20 2024]  RP(r2): flush_cache_page_if_present+0x15c/0x330
+[Mon Jun 10 14:26:20 2024] Backtrace:
+[Mon Jun 10 14:26:20 2024]  [<000000004020b110>] 
+flush_cache_range+0x138/0x158
+[Mon Jun 10 14:26:20 2024]  [<00000000405fdfc8>] 
+change_protection+0x134/0xb78
+[Mon Jun 10 14:26:20 2024]  [<00000000405feb4c>] mprotect_fixup+0x140/0x478
+[Mon Jun 10 14:26:20 2024]  [<00000000405ff15c>] 
+do_mprotect_pkey.constprop.0+0x2d8/0x5f0
+[Mon Jun 10 14:26:20 2024]  [<00000000405ff4a4>] sys_mprotect+0x30/0x60
+[Mon Jun 10 14:26:20 2024]  [<0000000040203fbc>] syscall_exit+0x0/0x10
+
+[Mon Jun 10 14:26:20 2024] ---[ end trace 0000000000000000 ]---
+
+[Mon Jun 10 14:28:04 2024] do_page_fault() command='ld.so.1' type=15 
+address=0x161236a0 in libc.so[f8b9c000+1b6000]
+                            trap #15: Data TLB miss fault, vm_start = 
+0x4208e000, vm_end = 0x420af000
+[Mon Jun 10 14:28:04 2024] CPU: 0 PID: 26681 Comm: ld.so.1 Tainted: G        
+W          6.9.3-gentoo-parisc64 #1
+[Mon Jun 10 14:28:04 2024] Hardware name: 9000/800/rp3440
+
+[Mon Jun 10 14:28:04 2024]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+[Mon Jun 10 14:28:04 2024] PSW: 00000000000001100000000000001111 Tainted: G   
+      W
+[Mon Jun 10 14:28:04 2024] r00-03  000000000006000f 00000000f8d584a8 
+00000000f8c46e33 0000000000000028
+[Mon Jun 10 14:28:04 2024] r04-07  00000000f8d54660 00000000f8d54648 
+0000000000000020 000000000001ab91
+[Mon Jun 10 14:28:04 2024] r08-11  00000000f8d54654 00000000f8d5bf78 
+0000000000000005 00000000f9ad87c8
+[Mon Jun 10 14:28:04 2024] r12-15  0000000000000000 0000000000000000 
+000000000000003f 00000000000003e9
+[Mon Jun 10 14:28:04 2024] r16-19  000000000001a000 000000000001a000 
+000000000001a000 00000000f8d56ca8
+[Mon Jun 10 14:28:04 2024] r20-23  0000000000000000 00000000f8c46bcc 
+000000000001a2d8 00000000ffffffff
+[Mon Jun 10 14:28:04 2024] r24-27  0000000000000000 0000000000000020 
+00000000f8d54648 000000000001a000
+[Mon Jun 10 14:28:04 2024] r28-31  0000000000000001 0000000016123698 
+00000000f9ad8cc0 00000000f9ad8c2c
+[Mon Jun 10 14:28:04 2024] sr00-03  0000000006069400 0000000006069400 
+0000000000000000 0000000006069400
+[Mon Jun 10 14:28:04 2024] sr04-07  0000000006069400 0000000006069400 
+0000000006069400 0000000006069400
+
+[Mon Jun 10 14:28:04 2024]       VZOUICununcqcqcqcqcqcrmunTDVZOUI
+[Mon Jun 10 14:28:04 2024] FPSR: 00000000000000000000000000000000
+[Mon Jun 10 14:28:04 2024] FPER1: 00000000
+[Mon Jun 10 14:28:04 2024] fr00-03  0000000000000000 0000000000000000 
+0000000000000000 0000000000000000
+[Mon Jun 10 14:28:04 2024] fr04-07  3fbc58dcd6e825cf 41d98fdb92c00000 
+00001d29b5e9bfb4 41d999952df718f9
+[Mon Jun 10 14:28:04 2024] fr08-11  ffe3d998c543273c ff60537aba025d00 
+004698b61bd9b9ee 000527c1bed53af7
+[Mon Jun 10 14:28:04 2024] fr12-15  0000000000000000 0000000000000000 
+0000000000000000 0000000000000000
+[Mon Jun 10 14:28:04 2024] fr16-19  0000000000000000 0000000000000000 
+0000000000000000 0000000000000000
+[Mon Jun 10 14:28:04 2024] fr20-23  0000000000000000 0000000000000000 
+0000000000000020 0000000000000000
+[Mon Jun 10 14:28:04 2024] fr24-27  0000000000000003 0000000000000000 
+3d473181aed58d64 bff0000000000000
+[Mon Jun 10 14:28:04 2024] fr28-31  3fc999b324f10111 057028cc5c564e70 
+dbc91a3f6bd13476 02632fb493c76730
+
+[Mon Jun 10 14:28:04 2024] IASQ: 0000000006069400 0000000006069400 IAOQ: 
+00000000f8c44063 00000000f8c44067
+[Mon Jun 10 14:28:04 2024]  IIR: 0fb0109c    ISR: 0000000006069400  IOR: 
+00000000161236a0
+[Mon Jun 10 14:28:04 2024]  CPU:        0   CR30: 00000001e70099e0 CR31: 
+fffffff0f0e05ee0
+[Mon Jun 10 14:28:04 2024]  ORIG_R28: 0000000000000000
+[Mon Jun 10 14:28:04 2024]  IAOQ[0]: 00000000f8c44063
+[Mon Jun 10 14:28:04 2024]  IAOQ[1]: 00000000f8c44067
+[Mon Jun 10 14:28:04 2024]  RP(r2): 00000000f8c46e33
 
