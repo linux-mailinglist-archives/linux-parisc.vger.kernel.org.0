@@ -1,115 +1,54 @@
-Return-Path: <linux-parisc+bounces-1570-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1571-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7BA9098A0
-	for <lists+linux-parisc@lfdr.de>; Sat, 15 Jun 2024 16:27:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D7FC909DFC
+	for <lists+linux-parisc@lfdr.de>; Sun, 16 Jun 2024 16:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3924F1F223BA
-	for <lists+linux-parisc@lfdr.de>; Sat, 15 Jun 2024 14:27:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 334F61F20418
+	for <lists+linux-parisc@lfdr.de>; Sun, 16 Jun 2024 14:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00171482E4;
-	Sat, 15 Jun 2024 14:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAD712B82;
+	Sun, 16 Jun 2024 14:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="MX4ei3uI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TiCdP8/U"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69051E511;
-	Sat, 15 Jun 2024 14:27:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30B812B73;
+	Sun, 16 Jun 2024 14:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718461646; cv=none; b=q3VmaNo+KbIg7aY99Ymw51D6bZjrYMQN/q10ooLGjGr+2NJKP0cQvmIOPc3GchlulFgeYIM+FT3bcszTZRRWHuDs/OXc2B0aTh6MxUg6vEbfVqSNhvQU/XuBfIWIBwqRuzguTcUOcqwQtMmPe9SOLEClRd+yTeg+U1tUZLtUbl8=
+	t=1718549821; cv=none; b=L5N2Uzjko8wGFLnv3QrQ3juDmqzgcSqJgNthf0XkIsVUQBXl4JXsSYkCbCG3ui/8Vvv9qWGeIsEiuZatxm80JPbAKafkh7HdeIuDEMe4ji6FovTpY0s09oUdrBRS7MUdRrmUOJYp23Jp6leG+ylgAN+1MXI8szAYsH2PI824IHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718461646; c=relaxed/simple;
-	bh=o/SQd+brB2QkhekD2Nrpw7e1Fn3IUdRHYI44H3HScPI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XSVZPOKaC31DOEnrvHMMWoMnrFqgyqs1hyCEvAvaFsd3heT29vtj3WVJF3qy53o2hR9juUcNBxnGIWhGbCS3Ifk5ImVuHtI7GAdgxCoehSN2/F+w3ikCAcPWcxHtv4pU/cC07E6C4f6yhCfEf1rxyndOKk8uYyTtU3oWVPookkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=MX4ei3uI; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WMV4XdfigA9k42kYaaxbDI3Cm/CZfKkOSa4d9FAnLBU=; b=MX4ei3uInKB1tI7JcTqP72OeAy
-	dAOfULdNDyKssbwffE64lKqDt1qPcRwnmYki7uISHpalFK3Sjz+iistgd0XgbiGLtzs89mevgmISM
-	ImrsPYaQpLvEw5Phh/i3yvlf7inlN3S0pzbU9GojESRqQ8uAeFXUZJUkow9Fm+H/1X8oBu/mLnmRq
-	9KaqOzmhz1xLB1XksP4LJz8QjpGXNQ/awK+/Fm/9fA5aTCEzGfHyVwaUPxr/l/qe+aq/QXFM3w+YG
-	EVkOwrIShH1qhBOmLK+G7AsdGnZ871aaaCCVzH2vqnFOpwV4pDOcfLcGzWTk+QUOVhhlilPvTeTZk
-	szS/VgLg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40990)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1sIUMt-0003Oz-1J;
-	Sat, 15 Jun 2024 15:26:59 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1sIUMc-00039D-Bw; Sat, 15 Jun 2024 15:26:42 +0100
-Date: Sat, 15 Jun 2024 15:26:42 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: linux-kernel@vger.kernel.org,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Matt Turner <mattst88@gmail.com>, Guo Ren <guoren@kernel.org>,
-	Michal Simek <monstr@monstr.eu>, Dinh Nguyen <dinguyen@kernel.org>,
-	Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Daniel Bristot de Oliveira <bristot@redhat.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Benjamin Gray <bgray@linux.ibm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Xin Li <xin3.li@intel.com>, Kees Cook <keescook@chromium.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tony Battersby <tonyb@cybernetics.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Brian Gerst <brgerst@gmail.com>, Leonardo Bras <leobras@redhat.com>,
-	Imran Khan <imran.f.khan@oracle.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	David Vernet <void@manifault.com>,
-	Julia Lawall <julia.lawall@inria.fr>, linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
-	x86@kernel.org
-Subject: Re: [PATCH v2 00/14] Introducing TIF_NOTIFY_IPI flag
-Message-ID: <Zm2kouKx/NSSrr6x@shell.armlinux.org.uk>
-References: <20240613181613.4329-1-kprateek.nayak@amd.com>
+	s=arc-20240116; t=1718549821; c=relaxed/simple;
+	bh=OEK/0Wk/iV7IEcoaqWDTQRqddRJOamy6tc1nYeMGQJU=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=c6j0KiZLClRqXqNeRu3w/sXJHQbwUxkImJg3UTmqxjVJF5IZJyu5YP91HREvhK3d+kuqg+HIDYoSkDBNMbEtM0hpO2WcU4VI0YV7VbyndDxAi+pc+H+XCPL1qk6TVhXveRfkgFzHx8uTe97uk6EJR5WPoBT015laAApab3wZ9Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TiCdP8/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD05BC2BBFC;
+	Sun, 16 Jun 2024 14:56:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718549821;
+	bh=OEK/0Wk/iV7IEcoaqWDTQRqddRJOamy6tc1nYeMGQJU=;
+	h=Date:From:To:Subject:From;
+	b=TiCdP8/UqBSTE4E6gEWu9g5q415/3DC3e5HU8CoslGfDI7V7XRIkKoMsD7/z40MA7
+	 H+5IxK3m1Fk3+zjwYiVEnDGQHSL3KxrvfhRlf7xhe30HH8jJ758gzMwQ3KHQZnXjBn
+	 JbPIcC0JLpFn+AD4erqR5doGhSPqO9i5lENENPmUd1+Y9OrkJ0R3ZPG2raraRtLwLu
+	 PftoVPzjtkdsf/XyRWL0bHqnB4u+c/09FkcBJrUnfrxsN/d2QfV0uSvgLuoJVmeLqO
+	 OKYl4JAa+PEmIEZGDGvooaUdcuuVvaue+gYDkMFvY1O/iW1M7cQtjCO6SEXZrLAMBC
+	 DXAkHX3oAXWhQ==
+Date: Sun, 16 Jun 2024 16:56:57 +0200
+From: Helge Deller <deller@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	John David Anglin <dave.anglin@bell.net>
+Subject: [GIT PULL] parisc architecture fix for v6.10-rc4
+Message-ID: <Zm79OUifsEhG8CMT@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -118,24 +57,59 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240613181613.4329-1-kprateek.nayak@amd.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Jun 13, 2024 at 06:15:59PM +0000, K Prateek Nayak wrote:
-> o Dropping the ARM results since I never got my hands on the ARM64
->   system I used in my last testing. If I do manage to get my hands on it
->   again, I'll rerun the experiments and share the results on the thread.
->   To test the case where TIF_NOTIFY_IPI is not enabled for a particular
->   architecture, I applied the series only until Patch 3 and tested the
->   same on my x86 machine with a WARN_ON_ONCE() in do_idle() to check if
->   tif_notify_ipi() ever return true and then repeated the same with
->   Patch 4 applied.
+Hi Linus,
 
-Confused. ARM (32-bit) or ARM64? You patch 32-bit ARM, but you don't
-touch 64-bit Arm. "ARM" on its own in the context above to me suggests
-32-bit, since you refer to ARM64 later.
+Please pull one fix for the parisc architecture for 6.10-rc4.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+On parisc we have suffered since years from random segfaults which seem to
+have been triggered due to cache inconsistencies. Those segfaults happened
+more often on machines with PA8800 and PA8900 CPUs, which have much bigger
+caches than the earlier machines.
+
+Dave Anglin has worked over the last few weeks to fix this bug.
+His patch has been successfully tested by various people on various machines
+and with various kernels (6.6, 6.8 and 6.9), and the debian buildd servers
+haven't shown a single random segfault with this patch.
+
+Since the cache handling has been reworked, the patch is slightly bigger than
+I would like in this stage, but the greatly improved stability IMHO justifies
+the inclusion now.
+
+Please pull.
+
+Thanks!
+Helge
+
+----------------------------------------------------------------
+The following changes since commit 83a7eefedc9b56fe7bfeff13b6c7356688ffa670:
+
+  Linux 6.10-rc3 (2024-06-09 14:19:43 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.10-rc4
+
+for you to fetch changes up to 72d95924ee35c8cd16ef52f912483ee938a34d49:
+
+  parisc: Try to fix random segmentation faults in package builds (2024-06-12 01:57:05 +0200)
+
+----------------------------------------------------------------
+parisc architecture fix for kernel v6.10-rc4:
+
+One patch from John David Anglin which reworks the parisc cache flushing
+routines with the aim to fix the random segmentation faults on machines with
+PA8800 and PA8900 processors. We have faced those segfaults since many years,
+but with this patch no single segfault could be triggered any longer. The
+patch was tested by 3 people on 5 different machines with various stable
+kernels (6.6, 6.8 and 6.9).
+
+----------------------------------------------------------------
+John David Anglin (1):
+      parisc: Try to fix random segmentation faults in package builds
+
+ arch/parisc/include/asm/cacheflush.h |  15 +-
+ arch/parisc/include/asm/pgtable.h    |  27 +--
+ arch/parisc/kernel/cache.c           | 413 ++++++++++++++++++++++-------------
+ 3 files changed, 275 insertions(+), 180 deletions(-)
 
