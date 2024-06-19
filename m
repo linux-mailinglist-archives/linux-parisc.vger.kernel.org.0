@@ -1,53 +1,53 @@
-Return-Path: <linux-parisc+bounces-1591-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1592-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D127590F521
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Jun 2024 19:32:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892E590F626
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Jun 2024 20:37:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58963B2265C
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Jun 2024 17:32:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BDB01C22DF3
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Jun 2024 18:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23807156256;
-	Wed, 19 Jun 2024 17:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C2F15748B;
+	Wed, 19 Jun 2024 18:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Se7Za0se"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOro2vEn"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E663F155C8E;
-	Wed, 19 Jun 2024 17:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BA01848
+	for <linux-parisc@vger.kernel.org>; Wed, 19 Jun 2024 18:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718818322; cv=none; b=GdD9qB62hZza1Nd96XltoLrelKatrIEVmvIl8AfGaEGS6AK14FznrMR+cCnB5Cb3Inoo0lhvVY+3eWkN7VyBxwCaQsN9/MzZck4IFHwPxsUUcAS6f06SLnCEXVm1R15uNwiNDQdSuB4IRhEbYfKf8TXsxbOWwny6/+UVc8EYdXg=
+	t=1718822219; cv=none; b=LzEX3zbIqdLXwvp2tfQoKNLCFNATQx+P+SW3BM4o6ZgYrGZseggOF/wbvwz3oYYMbAbLDstLYlkW3zLHPW9U1OFjPfb9IJSLtbBQkGW8gFKBhg1uBr0i5TN/wktHrbj+CCuV3imUHdHJmPmTpWlkK70sD5cOrzyffDekeHMNqLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718818322; c=relaxed/simple;
-	bh=Bk8pDU+SPg5xF1wbzUJW8YF5QkNMCQk0wDQv5SKdeSo=;
+	s=arc-20240116; t=1718822219; c=relaxed/simple;
+	bh=n8i4X26S+B3dDSJXqlazgUhMmhZqMxQCAiiFwyQeqGo=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=kLRj7/AVvqnHi3hN9W3+HJGr204l5XUkQTSWInKxJglFzQnZOqcH94IOxKW87ukL5xEC0HhHVt3CtaknHmu2BdMBfeYHhleETPOYwDcVIXE+uxh1cYb1akrQzSXSCP+CLE36CF35AM56ZTeL4ElDtqFx3g4ssctKKb+qhQxkKXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Se7Za0se; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE82C2BBFC;
-	Wed, 19 Jun 2024 17:32:00 +0000 (UTC)
+	 Content-Disposition; b=kPp+inCAbl23RNa8PfuQjvwxfafG1ii35AH0mk9D9301JEXEXMVrRMgExwq02sgUUl/hzAwsPg/UURO0w5c+ggaxTcoJkJIyxJLweuhzYAl3DZ0CKPt6G+r2uWCgX0AJ8G4ANhHWZg6uln6D80U6XiZrAUuj4zu6KUieKBXBvF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOro2vEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC2AC2BBFC;
+	Wed, 19 Jun 2024 18:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718818321;
-	bh=Bk8pDU+SPg5xF1wbzUJW8YF5QkNMCQk0wDQv5SKdeSo=;
+	s=k20201202; t=1718822218;
+	bh=n8i4X26S+B3dDSJXqlazgUhMmhZqMxQCAiiFwyQeqGo=;
 	h=Date:From:To:Cc:Subject:From;
-	b=Se7Za0segNU66V+823W3EJnFXofqChSRcSnLsR/AgAb6p4vYOhC+VMTVfY7TlIfRG
-	 aJydnAvXCtRMAJzQG7rTyGY4TreNQszmg6i3At0w/TH9Ld8FmhUE9M8NUjfn+PD6Fb
-	 ynZUBbnIw0Pmw+BogfQNDX19+3NTfCXShYu0FrV10FeLk8nxnblUjKjdVmRi/6tKfw
-	 JTU5/Nvq9lS0e6Cz7lRypYNzsEjd85FqtM0Rjyu4aHU0hVgQ+afMhNEcOuP72bQUoY
-	 PUSOeEIF2eaaH1XNnn6M2dq457+/f7zWfE8DolizUG8rxinvygznA8TgQmotAi86mW
-	 bGnFusMSNGsCQ==
-Date: Wed, 19 Jun 2024 19:31:57 +0200
+	b=YOro2vEnmFMTVQayC5+11WgqWVCFrr/T1luyiVkXO2sF2e3SL8vA3zU/YAbnnW2dw
+	 Jrmrj3gsszHxbxG5ClUHCjfyulz1hLtgRbGWZZUbltlMZPLd8tB7BStmxgm9Dx74yb
+	 PEhZfa+m95FyZYt+fbmP+6jwB6Py0KeKnhbT3r/DTzr9YI6h0imJKCI0tjlgxEWH5j
+	 2Fs3DnwNfmsEKrve3s6UuEicl6KRZnsAZ1IiNLI9J2h85FPmQekFmhtQm+E83HaIro
+	 LHnjjicZUxNQ+CASeoFOTL2GvXEaa3PsrwPVma/cuvb9AGFGc8K2LSsThy86WPtO2q
+	 T/BDfxabsKheA==
+Date: Wed, 19 Jun 2024 20:36:54 +0200
 From: Helge Deller <deller@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>, linux-crypto@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>, linux-parisc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: xor - fix template benchmarking
-Message-ID: <ZnMWDdKJHfYQLDzS@p100>
+To: libc-alpha@sourceware.org, John David Anglin <dave.anglin@bell.net>,
+	carlos@redhat.com
+Cc: linux-parisc@vger.kernel.org
+Subject: [PATCH] hppa/vdso: Add wrappers for vDSO functions
+Message-ID: <ZnMlRrsmHzrEkpYL@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -57,85 +57,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Commit c055e3eae0f1 ("crypto: xor - use ktime for template benchmarking")
-switched from using jiffies to ktime-based performance benchmarking.
+The upcoming parisc (hppa) Linux kernel v6.11 will include basic vDSO
+support for gettimeofday(), clock_gettime() and clock_gettime64()
+syscalls for 32-bit userspace.
+The patch below adds the necessary glue code for glibc.
 
-This works nicely on machines which have a fine-grained ktime()
-clocksource as e.g. x86 machoines with TSC.
-But other machines, e.g. my 4-way HP PARISC server, don't have such
-fine-grained clocksources, which is why it seems that 800 xor loops
-take zero seconds, which then calculates in the logs as:
-
- xor: measuring software checksum speed
-    8regs           : -1018167296 MB/sec
-    8regs_prefetch  : -1018167296 MB/sec
-    32regs          : -1018167296 MB/sec
-    32regs_prefetch : -1018167296 MB/sec
-
-Fix this with some small modifications to the existing code to improve
-the algorithm to always produce correct results without introducing
-major delays for architectures with a fine-grained ktime()
-clocksource:
-a) Delay start of the timing until ktime() just advanced. On machines
-with a fast ktime() this should be just one additional ktime() call.
-b) Count the number of loops. Run at minimum 800 loops and finish
-earliest when the ktime() counter has progressed.
-
-With that the throughput can now be calculated more accurately under all
-conditions.
-
-Fixes: c055e3eae0f1 ("crypto: xor - use ktime for template benchmarking")
 Signed-off-by: Helge Deller <deller@gmx.de>
 
-diff --git a/crypto/xor.c b/crypto/xor.c
-index 8e72e5d5db0d..29b4c0fd89d7 100644
---- a/crypto/xor.c
-+++ b/crypto/xor.c
-@@ -83,33 +83,29 @@ static void __init
- do_xor_speed(struct xor_block_template *tmpl, void *b1, void *b2)
- {
- 	int speed;
--	int i, j;
--	ktime_t min, start, diff;
-+	unsigned long reps;
-+	ktime_t min, start, t0;
+
+diff -up ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org ./sysdeps/unix/sysv/linux/hppa/sysdep.h
+--- ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org	2024-06-15 20:20:58.992000000 +0000
++++ ./sysdeps/unix/sysv/linux/hppa/sysdep.h	2024-06-19 18:26:08.324000000 +0000
+@@ -468,6 +468,16 @@ L(pre_end):					ASM_LINE_SEP	\
+ #define CLOB_ARGS_1 CLOB_ARGS_2, "%r25"
+ #define CLOB_ARGS_0 CLOB_ARGS_1, "%r26"
  
- 	tmpl->next = template_list;
- 	template_list = tmpl;
++#ifndef __LP64__
++# define VDSO_NAME	"LINUX_6.11"
++# define VDSO_HASH	182951793
++
++/* List of system calls which are supported as vsyscalls.  */
++# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
++# define HAVE_CLOCK_GETTIME64_VSYSCALL  "__vdso_clock_gettime64"
++# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
++#endif /* __LP64__ */
++
+ #endif	/* __ASSEMBLER__ */
  
- 	preempt_disable();
- 
--	min = (ktime_t)S64_MAX;
--	for (i = 0; i < 3; i++) {
--		start = ktime_get();
--		for (j = 0; j < REPS; j++) {
--			mb(); /* prevent loop optimization */
--			tmpl->do_2(BENCH_SIZE, b1, b2);
--			mb();
--		}
--		diff = ktime_sub(ktime_get(), start);
--		if (diff < min)
--			min = diff;
--	}
-+	t0 = ktime_get();
-+	/* delay start until time has advanced */
-+	do { start = ktime_get(); } while (start == t0);
-+	reps = 0;
-+	do {
-+		mb(); /* prevent loop optimization */
-+		tmpl->do_2(BENCH_SIZE, b1, b2);
-+		mb();
-+	} while (reps++ < REPS || (t0 = ktime_get()) == start);
-+	min = ktime_sub(t0, start);
- 
- 	preempt_enable();
- 
- 	// bytes/ns == GB/s, multiply by 1000 to get MB/s [not MiB/s]
--	if (!min)
--		min = 1;
--	speed = (1000 * REPS * BENCH_SIZE) / (unsigned int)ktime_to_ns(min);
-+	speed = (1000 * reps * BENCH_SIZE) / (unsigned int)ktime_to_ns(min);
- 	tmpl->speed = speed;
- 
- 	pr_info("   %-16s: %5d MB/sec\n", tmpl->name, speed);
+ #endif /* _LINUX_HPPA_SYSDEP_H */
 
