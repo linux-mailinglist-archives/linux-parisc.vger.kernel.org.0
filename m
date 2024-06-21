@@ -1,52 +1,62 @@
-Return-Path: <linux-parisc+bounces-1629-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1630-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC873912DD7
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Jun 2024 21:26:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C194912E4E
+	for <lists+linux-parisc@lfdr.de>; Fri, 21 Jun 2024 22:12:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BC241F229CF
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Jun 2024 19:26:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70DBFB24EBC
+	for <lists+linux-parisc@lfdr.de>; Fri, 21 Jun 2024 20:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339B117B40B;
-	Fri, 21 Jun 2024 19:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vAMKk4rq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FE317BB09;
+	Fri, 21 Jun 2024 20:12:17 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from brightrain.aerifal.cx (brightrain.aerifal.cx [104.156.224.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E083179949
-	for <linux-parisc@vger.kernel.org>; Fri, 21 Jun 2024 19:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E34D16D4F6
+	for <linux-parisc@vger.kernel.org>; Fri, 21 Jun 2024 20:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.156.224.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718998011; cv=none; b=u8w94ppMG/jaDZ2ICfDjgU2jdACZ+I/airbLHaWpIVapdBUoIn0T+GKGA55rRxjhlvkzXmHME51Qg9Eg5Pkrwq/sBdeHxyR1XW1qlTOLoejzis4/Nr8eJS3M5gbXIMPdURjg9xDcklqyTGDnNwZAIWkWgsRGLI+ozzYdgXVbsLI=
+	t=1719000737; cv=none; b=bGo20aVxbbcEzPTBNILtgD/2D898wydmSTLUIR9cfwT3BZ0jvSRFUDNd1Beh7mwdZ8di74ABIU5FeNdSIFKaP7JFWqve/9AIycnqPT/c1KNlaq7OA/HecNE+9YzdC5I55yFdyPixQ8Sx7Gwxv7Sf0AH5Mlfx9Jbu7VmXd6NEoAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718998011; c=relaxed/simple;
-	bh=ZhnlL38L55WYXqjIVFjxbTLQ3LNiflOEz64b8JZQ8fk=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=JTnfA344pUsgCRwZgtV283iedqKoekiV/FuUaI3WaJI7Q9BNMYzRscynm1wp3rQIGoX99SBJO8Novu+mr9yvH2e7PDxejeVmHqzmld6PgMS/y/LlVGfXvB73ANWsOx7YDIGUv/dkpF18twvp6q3sevudC4PbmYmJuznFZ1L1m+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vAMKk4rq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFC5C2BBFC;
-	Fri, 21 Jun 2024 19:26:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718998010;
-	bh=ZhnlL38L55WYXqjIVFjxbTLQ3LNiflOEz64b8JZQ8fk=;
-	h=Date:From:To:Subject:From;
-	b=vAMKk4rqF1zb0/fahpaDRvM/1WejHSFLD/8p25lL7TFSd6kOmuCuYoua2fv0Qy6bu
-	 W3ppuMfT+1uqx3ijV9VNP8+IUPEjGWwtNRF2Ck+E67cJCQxMnzdzMgoKE4xHOdvlwt
-	 tt6ckoXkqIlOvunqbwGoYz+2BLOgC5CoQF5sm97AOtKIMTbUpBC6lIi1/YfDUhVaoD
-	 16S+2pjwTTAvaUwznFx4CiWyRqGPlkpqo+vuEeB/ezfhSHMQs/6sGva8Bw5iaOrtp9
-	 3z7Ud4GaVfqQ9mKO2pHzFHqV6Pb9aLFybinY1mW4Di98xVs0AwIwVt5s13F3B/uYlu
-	 a2Wsv8vor+rSg==
-Date: Fri, 21 Jun 2024 21:26:46 +0200
-From: Helge Deller <deller@kernel.org>
-To: libc-alpha@sourceware.org, John David Anglin <dave.anglin@bell.net>,
-	carlos@redhat.com, linux-parisc@vger.kernel.org
-Subject: [PATCH v2] hppa/vdso: Add wrappers for vDSO functions
-Message-ID: <ZnXT9hNtYWLg9MID@carbonx1>
+	s=arc-20240116; t=1719000737; c=relaxed/simple;
+	bh=vhcmxHuEfXQE4obMPoKgf5UPHRF9VVw2LNmHi4WI0f8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o+mcpJO6EWGbRCWUtV1cYJUHtsxPxdOGx1scHnhoRwPH8mPjATHpJGifxExxM9Wvra9cetElqijsiarf6R9uVIw06uIMx7g1F9SIUeuoPL1tsv07LrRBIa1khkjdjZoq84GqjTL+NtonrNiPVjBQa9vbqMt5tdn1vXRRWFU3jAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=libc.org; spf=pass smtp.mailfrom=aerifal.cx; arc=none smtp.client-ip=104.156.224.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=libc.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aerifal.cx
+Date: Fri, 21 Jun 2024 15:57:23 -0400
+From: Rich Felker <dalias@libc.org>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Arnd Bergmann <arnd@kernel.org>, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org, Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org, Brian Cain <bcain@quicinc.com>,
+	linux-hexagon@vger.kernel.org, Guo Ren <guoren@kernel.org>,
+	linux-csky@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org, libc-alpha@sourceware.org,
+	musl@lists.openwall.com, ltp@lists.linux.it, stable@vger.kernel.org
+Subject: Re: [musl] Re: [PATCH 09/15] sh: rework sync_file_range ABI
+Message-ID: <20240621195723.GB10433@brightrain.aerifal.cx>
+References: <20240620162316.3674955-1-arnd@kernel.org>
+ <20240620162316.3674955-10-arnd@kernel.org>
+ <366548c1a0d9749e42c0d0c993414a353c9b0b02.camel@physik.fu-berlin.de>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -55,37 +65,111 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <366548c1a0d9749e42c0d0c993414a353c9b0b02.camel@physik.fu-berlin.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-The upcoming parisc (hppa) v6.11 Linux kernel will include vDSO
-support for gettimeofday(), clock_gettime() and clock_gettime64()
-syscalls for 32- and 64-bit userspace.
-The patch below adds the necessary glue code for glibc.
+On Fri, Jun 21, 2024 at 10:44:39AM +0200, John Paul Adrian Glaubitz wrote:
+> Hi Arnd,
+> 
+> thanks for your patch!
+> 
+> On Thu, 2024-06-20 at 18:23 +0200, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> > 
+> > The unusual function calling conventions on superh ended up causing
+>                                               ^^^^^^
+>                                        It's spelled SuperH
+> 
+> > sync_file_range to have the wrong argument order, with the 'flags'
+> > argument getting sorted before 'nbytes' by the compiler.
+> > 
+> > In userspace, I found that musl, glibc, uclibc and strace all expect the
+> > normal calling conventions with 'nbytes' last, so changing the kernel
+> > to match them should make all of those work.
+> > 
+> > In order to be able to also fix libc implementations to work with existing
+> > kernels, they need to be able to tell which ABI is used. An easy way
+> > to do this is to add yet another system call using the sync_file_range2
+> > ABI that works the same on all architectures.
+> > 
+> > Old user binaries can now work on new kernels, and new binaries can
+> > try the new sync_file_range2() to work with new kernels or fall back
+> > to the old sync_file_range() version if that doesn't exist.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 75c92acdd5b1 ("sh: Wire up new syscalls.")
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> > ---
+> >  arch/sh/kernel/sys_sh32.c           | 11 +++++++++++
+> >  arch/sh/kernel/syscalls/syscall.tbl |  3 ++-
+> >  2 files changed, 13 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/sh/kernel/sys_sh32.c b/arch/sh/kernel/sys_sh32.c
+> > index 9dca568509a5..d5a4f7c697d8 100644
+> > --- a/arch/sh/kernel/sys_sh32.c
+> > +++ b/arch/sh/kernel/sys_sh32.c
+> > @@ -59,3 +59,14 @@ asmlinkage int sys_fadvise64_64_wrapper(int fd, u32 offset0, u32 offset1,
+> >  				 (u64)len0 << 32 | len1, advice);
+> >  #endif
+> >  }
+> > +
+> > +/*
+> > + * swap the arguments the way that libc wants it instead of
+> 
+> I think "swap the arguments to the order that libc wants them" would
+> be easier to understand here.
+> 
+> > + * moving flags ahead of the 64-bit nbytes argument
+> > + */
+> > +SYSCALL_DEFINE6(sh_sync_file_range6, int, fd, SC_ARG64(offset),
+> > +                SC_ARG64(nbytes), unsigned int, flags)
+> > +{
+> > +        return ksys_sync_file_range(fd, SC_VAL64(loff_t, offset),
+> > +                                    SC_VAL64(loff_t, nbytes), flags);
+> > +}
+> > diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
+> > index bbf83a2db986..c55fd7696d40 100644
+> > --- a/arch/sh/kernel/syscalls/syscall.tbl
+> > +++ b/arch/sh/kernel/syscalls/syscall.tbl
+> > @@ -321,7 +321,7 @@
+> >  311	common	set_robust_list			sys_set_robust_list
+> >  312	common	get_robust_list			sys_get_robust_list
+> >  313	common	splice				sys_splice
+> > -314	common	sync_file_range			sys_sync_file_range
+> > +314	common	sync_file_range			sys_sh_sync_file_range6
+>                                                                  ^^^^^^ Why the suffix 6 here?
+> 
+> >  315	common	tee				sys_tee
+> >  316	common	vmsplice			sys_vmsplice
+> >  317	common	move_pages			sys_move_pages
+> > @@ -395,6 +395,7 @@
+> >  385	common	pkey_alloc			sys_pkey_alloc
+> >  386	common	pkey_free			sys_pkey_free
+> >  387	common	rseq				sys_rseq
+> > +388	common	sync_file_range2		sys_sync_file_range2
+> >  # room for arch specific syscalls
+> >  393	common	semget				sys_semget
+> >  394	common	semctl				sys_semctl
+> 
+> I wonder how you discovered this bug. Did you look up the calling convention on SuperH
+> and compare the argument order for the sys_sync_file_range system call documented there
+> with the order in the kernel?
+> 
+> Did you also check what order libc uses? I would expect libc on SuperH misordering the
+> arguments as well unless I am missing something. Or do we know that the code is actually
+> currently broken?
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+No, there's no reason libc would misorder them because syscalls aren't
+function calls, and aren't subject to function call ABI. We have to
+explicitly bind the arguments to registers and make a syscall
+instruction.
 
-Changes in v2:
-- add vsyscalls for 64-bit too
- 
-diff -up ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org ./sysdeps/unix/sysv/linux/hppa/sysdep.h
---- ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org	2024-06-15 20:20:58.992000000 +0000
-+++ ./sysdeps/unix/sysv/linux/hppa/sysdep.h	2024-06-21 19:19:02.132000000 +0000
-@@ -468,6 +468,18 @@ L(pre_end):					ASM_LINE_SEP	\
- #define CLOB_ARGS_1 CLOB_ARGS_2, "%r25"
- #define CLOB_ARGS_0 CLOB_ARGS_1, "%r26"
- 
-+#define VDSO_NAME	"LINUX_6.11"
-+#define VDSO_HASH	182951793
-+
-+#ifdef __LP64__
-+# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
-+# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
-+#else
-+# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
-+# define HAVE_CLOCK_GETTIME64_VSYSCALL  "__vdso_clock_gettime64"
-+# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
-+#endif /* __LP64__ */
-+
- #endif	/* __ASSEMBLER__ */
- 
- #endif /* _LINUX_HPPA_SYSDEP_H */
+The only reason this bug happened on the kernel side is that someone
+thought it would be a smart idea to save maybe 10 instructions by
+treating the register state on entry as directly suitable to jump from
+asm to a C function rather than explicitly marshalling the arguments
+out of the user-kernel syscall ABI positions into actual arguments to
+a C function call.
+
+Rich
 
