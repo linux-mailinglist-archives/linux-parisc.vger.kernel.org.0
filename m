@@ -1,262 +1,213 @@
-Return-Path: <linux-parisc+bounces-1631-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1632-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD526912E8B
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Jun 2024 22:32:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB729913216
+	for <lists+linux-parisc@lfdr.de>; Sat, 22 Jun 2024 07:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B3641F2326F
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Jun 2024 20:32:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29F88B251BC
+	for <lists+linux-parisc@lfdr.de>; Sat, 22 Jun 2024 05:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD94F17BB3B;
-	Fri, 21 Jun 2024 20:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438AA1494C5;
+	Sat, 22 Jun 2024 05:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a1aBUw0V"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kqV/89UM"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EFA17BB1A
-	for <linux-parisc@vger.kernel.org>; Fri, 21 Jun 2024 20:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1AF1494C2;
+	Sat, 22 Jun 2024 05:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719001908; cv=none; b=U08XcjEqFrnD2SKOzl5m/qEQdrbsXNpWuWsZs9eX4Sgco4+KMO8negpOTK9L5k3kyIMyssSefLRB0MKzC1e7Qqotj/Fqk3z2Mkgl6eMp3D23iXIXQmIEteAhT9gV6xPLN5pOdBBFU6iholIT0wyNocj4OG7E+PUBF/xekZrI7EI=
+	t=1719033283; cv=none; b=QL8Ev+efq6mjFAP2Qv986Z6U2THCve5wSFdcOjLqK/+bpjAenT5vFpfD/swjc7Vzd20LQxLFqpviHhHXZQ1MYD0m1jyRTcjLMInz0uehJgn/1kOZ1y2zB+75+LkAHZkt6IDJzuvO1xXii2qSAI7pP73z4RknkV/aimYKwslYK24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719001908; c=relaxed/simple;
-	bh=J/WeQifhAeBIIgjlkHp6YVizjCJ078ih4ojm5iVrUNI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UGgFXsRtYUj4yotNlKRuJ+G/x4fGmMMwAlfA4d3yHUmjsop2RIf0vFLcmq3bMX6G3VQ/3jQhMSzXPhQFq9zWqMDI2rPB5n/TzKbHi1Ju8JrG3g0vCmxQra/l+hcBChMemAcG0L+XmpWgjVjCEQsbY2P6eyM6Pwozfi48dOY47aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a1aBUw0V; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a63359aaacaso358852666b.1
-        for <linux-parisc@vger.kernel.org>; Fri, 21 Jun 2024 13:31:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719001904; x=1719606704; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CnCN0NXOSNtwy42IdVdysfTTD5ti/ff9XMDOhhfiLx4=;
-        b=a1aBUw0VkzZ3oSHlCqDR+ATOXDYi+sX+izSgTyOwlIGSfvtoki8ooXg63v6L0Z3SBf
-         KiyzZ1pJvQ1WWzksNTFwyyeoqTssrN8S10fKlK5s9S/d//Xvdx2XwzEhza32lsyerNAI
-         rrRvIQQqKXdtV/r5lndW2K+6e9aaYnNAPI/MpYaRwcXuVF5DzUOzTrBFgxEDNxedSwyv
-         BDdLcthc9hfrnKRIXR37CCa55VW1UJHSxCushckLKFvJozqRZelHSsccnM0cLejLlUU3
-         IKIynf0IwbAzXqvQqepVmjQ/q13kNtP0V4e9VpvIE+GxavHiACiAIZqmCNhoB7dnJzlU
-         DDtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719001904; x=1719606704;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CnCN0NXOSNtwy42IdVdysfTTD5ti/ff9XMDOhhfiLx4=;
-        b=XVTfAuzcojvmJ2Cp+KXD8tzKzCGl/0e7K9DqWG5MH4+sLAcZ0gqFiAWjfQWz8eT7nh
-         HIrTvpi3yMr4Sioz3eOw3AalA1JcKRWe6c8EOs9dCQ7qynTNF9D7PnWY5vuZMHu1goXI
-         vV2f0LU05PHEuh/34Kx7T0VCH0mmjdYaK72eNTbB6osGVwby5unKnsTQzJusVXhiMZ+t
-         lOdH/JHmXIv+Bf/Q+vZpgZ0Rc7aINwWegkkBg8QPKBCxhBkQyRBFzzOZ7FIIXCxF5XyG
-         4GwFYIwEsz86dMTfklREZ9PfmKshfx7DtcJqjwwGGqCSOPjirFJczm6Yi4/aB6cs2inB
-         /8fw==
-X-Forwarded-Encrypted: i=1; AJvYcCVZoPKHPheh8OeQ2Y0+yLPSCV36IbNp6CIpBnxD84XfI40Tg+pRncDq4W+Bo6zdcgIY+3Q35rNFrOmlTN06E3WaPd/1AzAU0j6bxirN
-X-Gm-Message-State: AOJu0YxyoLr21QT2eK2PjgApFJTO7E3QrtpEd4hggk7vOrI6LN/SiRD+
-	lrNqRHe4ekkevydfs+N48/m/969kvgt6u3hEqZQwyYJfpSRMgXxlciIRIzvfYsdjmazIHw9P1fx
-	1sy47Aemurp0ZCf6Id+SX69sfPBY3TjiUx/EB
-X-Google-Smtp-Source: AGHT+IH800HqMIWMw3Gfm64r6WN21nh+bezjnNGagk7G9R1DzDSpY7p4WYQEQWPwKzYCAyy4hb9MTRJUxXOTUM+VMbg=
-X-Received: by 2002:a17:906:f349:b0:a6f:49eb:31a5 with SMTP id
- a640c23a62f3a-a6fab7d0b64mr465681666b.77.1719001903259; Fri, 21 Jun 2024
- 13:31:43 -0700 (PDT)
+	s=arc-20240116; t=1719033283; c=relaxed/simple;
+	bh=Kc+RLa88gMNDqwCT0XNZP+Etw8F29FOxxQSrex6WpHE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=E0f3RK5pLM/N5+U+ASlYHm2jx09cV+6FucUvYeM6snNwNQ1f6w46OHi+igixy5fEH2y9QK/Tm/Z4MFWAVCRUv1eqHSV/08Sd436aLSHGKnXlHK+EBH3Lst6EHXBwdC9hOO8My/eTJSMSu3T5/Je/fdhMVMKxjWrxHTi3V7bsGXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kqV/89UM; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45M20da8009993;
+	Sat, 22 Jun 2024 05:14:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=LpgiY1T2xyR94KEGJpace7
+	s5QMmwxFqU+xjV0/oUM0U=; b=kqV/89UMnfhyKtHbcRpZ4Xch73eErgqZsev/h6
+	RIK7+i83CFxrgrIu3MKeOzIS14Bh57dHBs/9/ZLMs6d5xpu1ehuNCVVUqV2J54X8
+	Ox0E1ShRfErLlz2FUeh9vENqlg4LoVKG6JATBIjSP/fkxcM4QVC6Ae+32BWffOWB
+	utIxrnx0hxGA9ER1RUna/3j3OXivqGer6LKyu1oba+3sAAfmGq3n1dtO4uLZFFTq
+	4NP0UoGLl0EMTndOfLQB//srWmjPnv6C1RIYklpA19abf+V/9elIj7UC+hCl/76b
+	qqGGo2fIB35R/h4jAPFN+FQWo95JFovdz511IIGOLIL04euw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywkyn08uu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 22 Jun 2024 05:14:33 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45M5EWmD031409
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 22 Jun 2024 05:14:32 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 21 Jun
+ 2024 22:14:32 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Fri, 21 Jun 2024 22:14:29 -0700
+Subject: [PATCH] agp: add remaining missing MODULE_DESCRIPTION() macros
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240613013557.1169171-1-almasrymina@google.com>
- <20240613013557.1169171-11-almasrymina@google.com> <20a6a727-d9f2-495c-bf75-72c27740dd82@gmail.com>
-In-Reply-To: <20a6a727-d9f2-495c-bf75-72c27740dd82@gmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 21 Jun 2024 13:31:29 -0700
-Message-ID: <CAHS8izMce36FwLhFB0znHQYmxpe5hmTSXtZA7+b5VsmSJUfhRw@mail.gmail.com>
-Subject: Re: [PATCH net-next v12 10/13] tcp: RX path for devmem TCP
-To: Pavel Begunkov <asml.silence@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Donald Hunter <donald.hunter@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
-	Matt Turner <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Andreas Larsson <andreas@gaisler.com>, Sergey Shtylyov <s.shtylyov@omp.ru>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan <shuah@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Bagas Sanjaya <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240621-md-i386-drivers-char-agp-v1-1-fa03ec5c86ac@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIALRddmYC/x3M0QqDMAyF4VeRXC/Qxs3KXmXsotpMA9pJ4kQQ3
+ 33dLj845z/AWIUN7tUBypuYvHOBv1TQjzEPjJKKgRxdXUMe54RStw0mlY3VsKwU47BgCkTeuVs
+ KdYByX5Rfsv/Tj2dxF42x05j78RecJH92nKOtrHCeX4Fy262JAAAA
+To: David Airlie <airlied@redhat.com>,
+        "James E.J. Bottomley"
+	<James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>
+CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <linux-parisc@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Jeff
+ Johnson" <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.14.0
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: ADBUmVQHdNsgoHGcV58XcD_ucv2Nhhc0
+X-Proofpoint-GUID: ADBUmVQHdNsgoHGcV58XcD_ucv2Nhhc0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-22_02,2024-06-21_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ mlxscore=0 impostorscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ mlxlogscore=999 spamscore=0 clxscore=1015 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406220031
 
-On Mon, Jun 17, 2024 at 9:36=E2=80=AFAM Pavel Begunkov <asml.silence@gmail.=
-com> wrote:
->
-> On 6/13/24 02:35, Mina Almasry wrote:
-> >
-> > The pages awaiting freeing are stored in the newly added
-> > sk->sk_user_frags, and each page passed to userspace is get_page()'d.
-> > This reference is dropped once the userspace indicates that it is
-> > done reading this page.  All pages are released when the socket is
-> > destroyed.
->
-> One small concern is that if the pool gets destroyed (i.e.
-> page_pool_destroy) before sockets holding netiov, page pool will
-> semi-busily poll until the sockets die or such and will spam with
-> pr_warn(). E.g. when a user drops the nl but leaks data sockets
-> and continues with its userspace business. You can probably do
-> it in a loop and create dozens of such pending
-> page_pool_release_retry().
->
+With ARCH=i386, make allmodconfig && make W=1 C=1 reports:
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/agp/ali-agp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/agp/ati-agp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/agp/amd-k7-agp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/agp/efficeon-agp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/agp/nvidia-agp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/agp/sworks-agp.o
 
-Yes, true, but this is not really an issue with netiovs per se, it's a
-quirk with the page_pool in general. If a non-devmem page_pool is
-destroyed while there are pages waiting in the receive queues to be
-recvmsg'd, the behavior you described happens anyway AFAIU.
+Add the missing invocation of the MODULE_DESCRIPTION() macro to all
+files which have a MODULE_LICENSE().
 
-Jakub did some work to improve this. IIRC he disabled the regular
-warning and he reparents the orphan page_pools so they appear in the
-stats of his netlink API.
+This includes alpha-agp.c and parisc-agp.c which, although they did
+not produce a warning with the i386 allmodconfig configuration, may
+cause this warning with other configurations.
 
-Since this is behavior already applying to pages, I did not seek to
-improve it as I add devmem support, I just retain it. We could improve
-it in a separate patchset, but I do not see this behavior as a
-critical issue really, especially since the alarming pr_warn has been
-removed.
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+ drivers/char/agp/ali-agp.c      | 1 +
+ drivers/char/agp/alpha-agp.c    | 1 +
+ drivers/char/agp/amd-k7-agp.c   | 1 +
+ drivers/char/agp/ati-agp.c      | 1 +
+ drivers/char/agp/efficeon-agp.c | 1 +
+ drivers/char/agp/nvidia-agp.c   | 1 +
+ drivers/char/agp/parisc-agp.c   | 1 +
+ drivers/char/agp/sworks-agp.c   | 1 +
+ 8 files changed, 8 insertions(+)
 
-> > +static int tcp_xa_pool_refill(struct sock *sk, struct tcp_xa_pool *p,
-> > +                           unsigned int max_frags)
-> > +{
-> > +     int err, k;
-> > +
-> > +     if (p->idx < p->max)
-> > +             return 0;
-> > +
-> > +     xa_lock_bh(&sk->sk_user_frags);
-> > +
-> > +     tcp_xa_pool_commit_locked(sk, p);
-> > +
-> > +     for (k =3D 0; k < max_frags; k++) {
-> > +             err =3D __xa_alloc(&sk->sk_user_frags, &p->tokens[k],
-> > +                              XA_ZERO_ENTRY, xa_limit_31b, GFP_KERNEL)=
-;
-> > +             if (err)
-> > +                     break;
-> > +     }
-> > +
-> > +     xa_unlock_bh(&sk->sk_user_frags);
-> > +
-> > +     p->max =3D k;
-> > +     p->idx =3D 0;
-> > +     return k ? 0 : err;
-> > +}
->
-> Personally, I'd prefer this optimisation to be in a separate patch,
-> especially since there is some degree of hackiness to it.
->
->
+diff --git a/drivers/char/agp/ali-agp.c b/drivers/char/agp/ali-agp.c
+index 760d9a931289..2eaab502ec29 100644
+--- a/drivers/char/agp/ali-agp.c
++++ b/drivers/char/agp/ali-agp.c
+@@ -418,5 +418,6 @@ module_init(agp_ali_init);
+ module_exit(agp_ali_cleanup);
+ 
+ MODULE_AUTHOR("Dave Jones");
++MODULE_DESCRIPTION("ALi AGPGART routines");
+ MODULE_LICENSE("GPL and additional rights");
+ 
+diff --git a/drivers/char/agp/alpha-agp.c b/drivers/char/agp/alpha-agp.c
+index f0d0c044731c..e1763ecb8111 100644
+--- a/drivers/char/agp/alpha-agp.c
++++ b/drivers/char/agp/alpha-agp.c
+@@ -217,4 +217,5 @@ module_init(agp_alpha_core_init);
+ module_exit(agp_alpha_core_cleanup);
+ 
+ MODULE_AUTHOR("Jeff Wiedemeier <Jeff.Wiedemeier@hp.com>");
++MODULE_DESCRIPTION("Alpha AGP support");
+ MODULE_LICENSE("GPL and additional rights");
+diff --git a/drivers/char/agp/amd-k7-agp.c b/drivers/char/agp/amd-k7-agp.c
+index 55397ba765d2..795c8c9ff680 100644
+--- a/drivers/char/agp/amd-k7-agp.c
++++ b/drivers/char/agp/amd-k7-agp.c
+@@ -549,4 +549,5 @@ static void __exit agp_amdk7_cleanup(void)
+ module_init(agp_amdk7_init);
+ module_exit(agp_amdk7_cleanup);
+ 
++MODULE_DESCRIPTION("AMD K7 AGPGART routines");
+ MODULE_LICENSE("GPL and additional rights");
+diff --git a/drivers/char/agp/ati-agp.c b/drivers/char/agp/ati-agp.c
+index 3c1fce48aabe..f7871afe08cf 100644
+--- a/drivers/char/agp/ati-agp.c
++++ b/drivers/char/agp/ati-agp.c
+@@ -572,5 +572,6 @@ module_init(agp_ati_init);
+ module_exit(agp_ati_cleanup);
+ 
+ MODULE_AUTHOR("Dave Jones");
++MODULE_DESCRIPTION("ATi AGPGART routines");
+ MODULE_LICENSE("GPL and additional rights");
+ 
+diff --git a/drivers/char/agp/efficeon-agp.c b/drivers/char/agp/efficeon-agp.c
+index f28d42319269..0d25bbdc7e6a 100644
+--- a/drivers/char/agp/efficeon-agp.c
++++ b/drivers/char/agp/efficeon-agp.c
+@@ -465,4 +465,5 @@ module_init(agp_efficeon_init);
+ module_exit(agp_efficeon_cleanup);
+ 
+ MODULE_AUTHOR("Carlos Puchol <cpglinux@puchol.com>");
++MODULE_DESCRIPTION("Transmeta's Efficeon AGPGART driver");
+ MODULE_LICENSE("GPL and additional rights");
+diff --git a/drivers/char/agp/nvidia-agp.c b/drivers/char/agp/nvidia-agp.c
+index dbcbc06cc202..e424360fb4a1 100644
+--- a/drivers/char/agp/nvidia-agp.c
++++ b/drivers/char/agp/nvidia-agp.c
+@@ -462,6 +462,7 @@ static void __exit agp_nvidia_cleanup(void)
+ module_init(agp_nvidia_init);
+ module_exit(agp_nvidia_cleanup);
+ 
++MODULE_DESCRIPTION("Nvidia AGPGART routines");
+ MODULE_LICENSE("GPL and additional rights");
+ MODULE_AUTHOR("NVIDIA Corporation");
+ 
+diff --git a/drivers/char/agp/parisc-agp.c b/drivers/char/agp/parisc-agp.c
+index edbc4d338117..93a48070b2a1 100644
+--- a/drivers/char/agp/parisc-agp.c
++++ b/drivers/char/agp/parisc-agp.c
+@@ -432,4 +432,5 @@ parisc_agp_init(void)
+ module_init(parisc_agp_init);
+ 
+ MODULE_AUTHOR("Kyle McMartin <kyle@parisc-linux.org>");
++MODULE_DESCRIPTION("HP Quicksilver AGP GART routines");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/char/agp/sworks-agp.c b/drivers/char/agp/sworks-agp.c
+index b91da5998dd7..0ab7562d17c9 100644
+--- a/drivers/char/agp/sworks-agp.c
++++ b/drivers/char/agp/sworks-agp.c
+@@ -564,5 +564,6 @@ static void __exit agp_serverworks_cleanup(void)
+ module_init(agp_serverworks_init);
+ module_exit(agp_serverworks_cleanup);
+ 
++MODULE_DESCRIPTION("Serverworks AGPGART routines");
+ MODULE_LICENSE("GPL and additional rights");
+ 
 
-To be honest this optimization is very necessary from my POV. We ran
-into real production problems due to the excessive locking when we use
-regular xa_alloc(), and Eric implemented this optimization to resolve
-that. I simply squashed the optimization for this upstream series.
+---
+base-commit: 6ba59ff4227927d3a8530fc2973b80e94b54d58f
+change-id: 20240621-md-i386-drivers-char-agp-d7221005d737
 
-If absolutely necessary I can refactor it into a separate patch or
-carry the optimization locally, but this seems like a problem everyone
-looking to use devmem TCP will re-discover, so probably worth just
-having here?
-
-> > +             /* if remaining_len is not satisfied yet, we need to go t=
-o the
-> > +              * next frag in the frag_list to satisfy remaining_len.
-> > +              */
-> > +             skb =3D skb_shinfo(skb)->frag_list ?: skb->next;
-> > +
-> > +             offset =3D offset - start;
->
-> It's an offset into the current skb, isn't it? Wouldn't
-> offset =3D 0; be less confusing?
->
-
-Seems so, AFAICT. Let me try to apply this and see if it trips up any tests=
-.
-
-> > +     } while (skb);
-> > +
-> > +     if (remaining_len) {
-> > +             err =3D -EFAULT;
-> > +             goto out;
-> > +     }
->
-> Having data left is not a fault,
-
-I think it is. The caller of tcp_recvmsg_dmabuf() expects all of
-remaining_len to be used up, otherwise it messes up with the math in
-the caller. __skb_datagram_iter(), which is the equivalent to this one
-for pages, regards having left over data as a fault and also returns
--EFAULT, AFAICT.
-
-> and to get here you
-> need to get an skb with no data left, which shouldn't
-> happen. Seems like everything you need is covered by
-> the "!sent" check below.
->
-
-I think we can get here if we run out of skbs with data, no?
-
-> > @@ -2503,6 +2504,15 @@ static void tcp_md5sig_info_free_rcu(struct rcu_=
-head *head)
-> >   void tcp_v4_destroy_sock(struct sock *sk)
-> >   {
-> >       struct tcp_sock *tp =3D tcp_sk(sk);
-> > +     __maybe_unused unsigned long index;
-> > +     __maybe_unused void *netmem;
->
-> How about adding a function to get rid of __maybe_unused?.
->
-> static void sock_release_devmem_frags() {
-> #ifdef PP
->         unsigned index;
->         ...
-> #endif PP
-> }
->
-
-Will do.
-
-> Also, even though you wire it up for TCP, since ->sk_user_frags
-> is in struct sock I'd expect the release to be somewhere in the
-> generic sock path like __sk_destruct(), and same for init.
-> Perhpas, it's better to leave it for later.
->
-
-
---=20
-Thanks,
-Mina
 
