@@ -1,145 +1,158 @@
-Return-Path: <linux-parisc+bounces-1643-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1644-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72CE6913D03
-	for <lists+linux-parisc@lfdr.de>; Sun, 23 Jun 2024 19:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 203A4913F43
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jun 2024 01:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EE9528354A
-	for <lists+linux-parisc@lfdr.de>; Sun, 23 Jun 2024 17:10:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFCDB281956
+	for <lists+linux-parisc@lfdr.de>; Sun, 23 Jun 2024 23:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA10C183091;
-	Sun, 23 Jun 2024 17:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE77D450E2;
+	Sun, 23 Jun 2024 23:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHcWkbRT"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="FxGJn4SP"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cmx-torrgo002.bell.net (mta-tor-005.bell.net [209.71.212.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9549F183082;
-	Sun, 23 Jun 2024 17:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E8A185E7B
+	for <linux-parisc@vger.kernel.org>; Sun, 23 Jun 2024 23:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719162640; cv=none; b=KJZQqP/BhlVu6ZhCAgMZdmQuoDwd2SfyD2NwEDwfyGqJbOIoFEH3iZ40SRa8XDlTWKX1p0FFYVZhImbiX9lfwoQHQrwbHLEgo5CLP/LOHO/QUddYNWoi/9/AgYVWcCEypQ/jC1ob/bdm4sDKft/OxTrQxp60vols2R3TlWmKBVQ=
+	t=1719186154; cv=none; b=PuJ8YWRJmnr8mz9k543HMpvstepdVAAfPyAHR9CxNuEN30N6PiHCTb/hIomDJkUI2hACLzq8M1uCGmFQIPUgjxt6W9/SXJLzosl+B45Uc7aGfdKSJvPLBf0a1iIZ1Zn4JuGq7zwYMpUI1QDdjLH+pKnfFPeVDWMC6A85f7Mgvis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719162640; c=relaxed/simple;
-	bh=aosSO/S+etUamgM4SS3mlQ3heoMUr6FZbeXpiXEovy0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OtiE5Nt0nFcnQljGlPPSqKqqVt9Ta7s/HUCXkDn/V4bo76YLtVeH6GBdyEVZJqf7Z1z+LNIJhaDnH4Do1ogb1FPxyQ0BjymFDIYH7Sb0oKfTNnGO8Tf5dwGG+I57rGIXar6MKGvALPUhXBRLlaDGp8bc+5gU+L9J+U8pc0kBr2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHcWkbRT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1215EC4AF19;
-	Sun, 23 Jun 2024 17:10:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719162640;
-	bh=aosSO/S+etUamgM4SS3mlQ3heoMUr6FZbeXpiXEovy0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SHcWkbRTRysffowmKeNtbvp9bhDl+zoDvjEJ2fFDHg7LSDrwqFsJdD9YYXV4Vr+sp
-	 2E8pAnecGBkfcW3fYWlLjSsfPlPKcXnQ8nJbcMvEmYSYZS0YcgH+rt/qDOrTB8Gvu+
-	 agZuIo6AmTpr2D4xK4pBnUswovpS9ueZT7VqTzkz0VoNehsJKjKIbT7Hxbmzrk7px2
-	 nKkeeohgJbLaTj1UD/4bc2iBlfTD7iIkm5ON/CNdK03bV+FGcWIvguDXvdHM+5cgLf
-	 OB8EHfsL2MFz6vrCmyH5CregCIOmWkoz7MbvmFg/cF39yMwxMHUAlyiXqW1imSaGS0
-	 Nv1EJ4Jnnv/6A==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2eaafda3b5cso38463451fa.3;
-        Sun, 23 Jun 2024 10:10:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUABcrWO+546WA1uq/7iZtUfrtI/F8b3SCqjuQoTkdlv00T6gIbcBPtNW860k9lZCksUyptHLTKTPx5Ry9PlTGpYgXaz8Q6Pc8d4ViFGEGXd00NSe5SY080a7But/HVjU/K/XbEm4TcqPYSyFraOEjoGPQnCETFMgAS8syfAd1KuhZHOKsCiFbYygqoLXuKzE0YDjH0BIZok7JLuYRNtKYh1cDqEbYIg0zMOffnXEuL8oCsRUB5E9Aoo2HxJXIHkOHykqq+OmC0s6JxPGesMrTN0oAr467I+B4OJgef7fy8pVehj7mUnWwR71Jgmti7yYhFuLBR83jIcWn74u8BqTaD9Qr7CrC/Q+W7WixgrxRhm5Oym2OJ533GrvLiArZ7iNUNPgi8XL/4e/YCewaZ1V2EWkcIdpt+F9D7lLyZ6/aZYhBr5cMOLgMJ5d0=
-X-Gm-Message-State: AOJu0YwlgS3fibMxZXsahhE6nqg8Txd2oqTFnvZr/y0iSDTRuMZIOiFl
-	AzkjI2K/klNnQ5tYVDglow4ULt7DWn7CPfw2aHP8VAbsQZFzWYqAIK/Jh76DQE+I6ik18Zmwi9B
-	sWDR9R06h9ucP+I2mFYh3Nt8ApuI=
-X-Google-Smtp-Source: AGHT+IHxMABTsjE/bTBoMOuJE1ctF+u0ZebsEtw1bh3nJ1bb3woGpWj5W/Pz1qQmYslYoKzzGRd0eu1pNlr+yN6Ofzo=
-X-Received: by 2002:a2e:3101:0:b0:2ec:1cf1:b74c with SMTP id
- 38308e7fff4ca-2ec594cfe8fmr16740431fa.32.1719162638077; Sun, 23 Jun 2024
- 10:10:38 -0700 (PDT)
+	s=arc-20240116; t=1719186154; c=relaxed/simple;
+	bh=QTUcYuRdSHd0TWvpKciHeKrTogaQabWHmoVzXhzeByg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=aTevaLMh3lcmdZYNxrn7yKuHmGg/sokDMkrHX1FrDg1km45gf8DfzhKaWTS6vclJcelc9Z0N6ayHvFKIOCpOpI/sV0IGD8FIp4IqKZrfw8eCmO0ztMfjth0P+hq/0UdQAjqEMVe4paHiZtEoXhyivTwV6RjakdfV8sn6pW9B+5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=FxGJn4SP; arc=none smtp.client-ip=209.71.212.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1719186152; 
+        bh=BPi1iQbuLJ27VtR0ip7ezhrgoEwNuVhEvhTClToll20=;
+        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
+        b=FxGJn4SP6zzVK3v7cJL5tNE1JVtTSYtgezjiwNAUxbbIKbYfe6HN0H9YvUCVh/lJ30Z5k1VylQtIisPLDmha6Tkh06v76K5jYc53IuPAEfL7tHLfQ201c3niyCvoJFfESEk3WcfO4IUGao1QfzqirIGFvQmLHxxWXNQEYJ4/hRE+R8cDYzIA6w+SVsqRF5M5xEcYU3OqJDEmaz70ATI3iO3wYoTAwa+cZomgdi4utL058FyR1gNDpjsKy05CSVsOyYlQPmkxuwoEtnAjc4Xxot37R/zEBux8GWry3YUx8/CPp46RDwK07I7YX/rDL3EnwNIxerA08poBGmrt0+lKDg==
+X-RG-SOPHOS: Clean
+X-RG-VADE-SC: 0
+X-RG-VADE: Clean
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 66755C0F004F9A19
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvledrfeegtddgvdehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuuefgnffnpdfqfgfvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpefhieetueejheeuvdfhheeugfehheetudekteevheekudehledtieeuvdeuhedtgfenucfkphepjedtrdehvddrudeivddrieejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepjedtrdehvddrudeivddrieejpdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeehpdhrtghpthhtoheptggrrhhlohhssehrvgguhhgrthdrtghomhdprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhisggtqdgrlhhphhgrsehsohhurhgtvgifrghrvgdrohhrghdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgvvhfkrfepsghrrghsqdgsrghsvgdqohht
+	figrohhntdeltdeifidqghhrtgdqvdejqdejtddqhedvqdduiedvqdeijedrughslhdrsggvlhhlrdgtrg
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received-SPF: softfail (cmx-torrgo002.bell.net: domain bell.net does not
+ designate 70.52.162.67 as permitted sender) identity=mailfrom;
+ receiver=cmx-torrgo002.bell.net; client-ip=70.52.162.67;
+ envelope-from=dave.anglin@bell.net; helo=[192.168.2.49];
+Received: from [192.168.2.49] (70.52.162.67) by cmx-torrgo002.bell.net (authenticated as dave.anglin@bell.net)
+        id 66755C0F004F9A19; Sun, 23 Jun 2024 19:41:05 -0400
+Message-ID: <2789c31d-6a15-4d6b-b96c-dc2eac2ee0c6@bell.net>
+Date: Sun, 23 Jun 2024 19:41:06 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240620162316.3674955-1-arnd@kernel.org> <20240620162316.3674955-11-arnd@kernel.org>
-In-Reply-To: <20240620162316.3674955-11-arnd@kernel.org>
-From: Guo Ren <guoren@kernel.org>
-Date: Mon, 24 Jun 2024 01:10:25 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTS9xKLSbSN2Scs016Boxzr6TdNxVLr2TYEfbJ0KqSgppw@mail.gmail.com>
-Message-ID: <CAJF2gTS9xKLSbSN2Scs016Boxzr6TdNxVLr2TYEfbJ0KqSgppw@mail.gmail.com>
-Subject: Re: [PATCH 10/15] csky, hexagon: fix broken sys_sync_file_range
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Arnd Bergmann <arnd@arndb.de>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, 
-	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, 
-	linuxppc-dev@lists.ozlabs.org, Brian Cain <bcain@quicinc.com>, 
-	linux-hexagon@vger.kernel.org, linux-csky@vger.kernel.org, 
-	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-sh@vger.kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	libc-alpha@sourceware.org, musl@lists.openwall.com, ltp@lists.linux.it, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] hppa/vdso: Add wrappers for vDSO functions
+To: Helge Deller <deller@kernel.org>, libc-alpha@sourceware.org,
+ carlos@redhat.com, linux-parisc@vger.kernel.org
+References: <ZnXT9hNtYWLg9MID@carbonx1>
+Content-Language: en-US
+From: John David Anglin <dave.anglin@bell.net>
+Autocrypt: addr=dave.anglin@bell.net; keydata=
+ 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
+ T70V9SSrl2hiw38vRzsl
+In-Reply-To: <ZnXT9hNtYWLg9MID@carbonx1>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 21, 2024 at 12:24=E2=80=AFAM Arnd Bergmann <arnd@kernel.org> wr=
-ote:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> Both of these architectures require u64 function arguments to be
-> passed in even/odd pairs of registers or stack slots, which in case of
-> sync_file_range would result in a seven-argument system call that is
-> not currently possible. The system call is therefore incompatible with
-> all existing binaries.
->
-> While it would be possible to implement support for seven arguments
-> like on mips, it seems better to use a six-argument version, either
-> with the normal argument order but misaligned as on most architectures
-> or with the reordered sync_file_range2() calling conventions as on
-> arm and powerpc.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/csky/include/uapi/asm/unistd.h    | 1 +
->  arch/hexagon/include/uapi/asm/unistd.h | 1 +
->  2 files changed, 2 insertions(+)
->
-> diff --git a/arch/csky/include/uapi/asm/unistd.h b/arch/csky/include/uapi=
-/asm/unistd.h
-> index 7ff6a2466af1..e0594b6370a6 100644
-> --- a/arch/csky/include/uapi/asm/unistd.h
-> +++ b/arch/csky/include/uapi/asm/unistd.h
-> @@ -6,6 +6,7 @@
->  #define __ARCH_WANT_SYS_CLONE3
->  #define __ARCH_WANT_SET_GET_RLIMIT
->  #define __ARCH_WANT_TIME32_SYSCALLS
-> +#define __ARCH_WANT_SYNC_FILE_RANGE2
-For csky part.
-Acked-by: Guo Ren <guoren@kernel.org>
+Committed to glibc master.
 
->  #include <asm-generic/unistd.h>
+Dave
+
+On 2024-06-21 3:26 p.m., Helge Deller wrote:
+> The upcoming parisc (hppa) v6.11 Linux kernel will include vDSO
+> support for gettimeofday(), clock_gettime() and clock_gettime64()
+> syscalls for 32- and 64-bit userspace.
+> The patch below adds the necessary glue code for glibc.
 >
->  #define __NR_set_thread_area   (__NR_arch_specific_syscall + 0)
-> diff --git a/arch/hexagon/include/uapi/asm/unistd.h b/arch/hexagon/includ=
-e/uapi/asm/unistd.h
-> index 432c4db1b623..21ae22306b5d 100644
-> --- a/arch/hexagon/include/uapi/asm/unistd.h
-> +++ b/arch/hexagon/include/uapi/asm/unistd.h
-> @@ -36,5 +36,6 @@
->  #define __ARCH_WANT_SYS_VFORK
->  #define __ARCH_WANT_SYS_FORK
->  #define __ARCH_WANT_TIME32_SYSCALLS
-> +#define __ARCH_WANT_SYNC_FILE_RANGE2
+> Signed-off-by: Helge Deller <deller@gmx.de>
 >
->  #include <asm-generic/unistd.h>
-> --
-> 2.39.2
+> Changes in v2:
+> - add vsyscalls for 64-bit too
+>   
+> diff -up ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org ./sysdeps/unix/sysv/linux/hppa/sysdep.h
+> --- ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org	2024-06-15 20:20:58.992000000 +0000
+> +++ ./sysdeps/unix/sysv/linux/hppa/sysdep.h	2024-06-21 19:19:02.132000000 +0000
+> @@ -468,6 +468,18 @@ L(pre_end):					ASM_LINE_SEP	\
+>   #define CLOB_ARGS_1 CLOB_ARGS_2, "%r25"
+>   #define CLOB_ARGS_0 CLOB_ARGS_1, "%r26"
+>   
+> +#define VDSO_NAME	"LINUX_6.11"
+> +#define VDSO_HASH	182951793
+> +
+> +#ifdef __LP64__
+> +# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+> +# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+> +#else
+> +# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+> +# define HAVE_CLOCK_GETTIME64_VSYSCALL  "__vdso_clock_gettime64"
+> +# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+> +#endif /* __LP64__ */
+> +
+>   #endif	/* __ASSEMBLER__ */
+>   
+>   #endif /* _LINUX_HPPA_SYSDEP_H */
 >
 
 
---=20
-Best Regards
- Guo Ren
+-- 
+John David Anglin  dave.anglin@bell.net
+
 
