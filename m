@@ -1,76 +1,76 @@
-Return-Path: <linux-parisc+bounces-1641-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1642-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F31913557
-	for <lists+linux-parisc@lfdr.de>; Sat, 22 Jun 2024 19:21:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5EDA913BBA
+	for <lists+linux-parisc@lfdr.de>; Sun, 23 Jun 2024 16:28:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A02161C210E9
-	for <lists+linux-parisc@lfdr.de>; Sat, 22 Jun 2024 17:21:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58C4228219C
+	for <lists+linux-parisc@lfdr.de>; Sun, 23 Jun 2024 14:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB7217C61;
-	Sat, 22 Jun 2024 17:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EBD1474C5;
+	Sun, 23 Jun 2024 14:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aPqj1UuX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c0N5t4Ky"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1742C144;
-	Sat, 22 Jun 2024 17:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43252C95;
+	Sun, 23 Jun 2024 14:28:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719076911; cv=none; b=d1EoS3SRmVFpEIhqv/445npxG1BfQvKYy7LVNfr2YRnJoNWnbk0pHHmvun3lz0mT9QZHDjsYPi6x4QpaqckV8BFvPAgVg5B+a00D1rIyF/ruppf0fs+nPThGlzWWi516J1yGuuwEC0f7m8giXa37SmMJ/8BKlY2UEJEGh8t6YnA=
+	t=1719152889; cv=none; b=iBlixIVN4DFgWQaLUVuPsMUYljKmEUn2WQiRii7ATvkJiGfuRaupIU8EUrRrdnkM23kmxf2gL6nq09TzGaXFJQ1wXOyjavUxIAWhLDzYTN7mKliJtzzZakULTynH/0ttC66OzJ+83Ec1Gx7Q211cM1LL/ed6j5vLPzElY78j9NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719076911; c=relaxed/simple;
-	bh=wi1zijj/NaTT97gyb/PBd3LtxmwV0hv21d/gsbmq8ic=;
+	s=arc-20240116; t=1719152889; c=relaxed/simple;
+	bh=uTS0y5tk4q5zjkmZUAian/2KuNlmbhkj5TWIK/NgBTw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YInM8Pmv/UMHERpnQnq+sft4g9WniY6/hcL/T1zskzGQfaBL2lxO8LFRo9pLwkrM2qgYcx3HWMv87CG/hLoZXzTb0V0lGdeICaVHJml6zebGHWv5swwQ1REDUztu9AjvUIgtkniCYW6QYh8GnXOL485J3PW7mq00W2G/83nbbr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aPqj1UuX; arc=none smtp.client-ip=209.85.210.181
+	 In-Reply-To:Content-Type; b=iDpt7TksvWfZtUnzNSiMOuHD541jXxHVQyUjgV2SD4TlDOcGnE1T8POSbqtA15FgLAAsOx3JY168C3mlHYc+ju9J0uNMCF8cCwP8NoH8KzGNk5or8azEaOgzMIRESRxReQQDL5Cb4/+wvZEV0MV4IHdzGNtSS4QU7CE7hihWeK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c0N5t4Ky; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7065a2f4573so1041766b3a.2;
-        Sat, 22 Jun 2024 10:21:49 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1fa2ea1c443so2971895ad.0;
+        Sun, 23 Jun 2024 07:28:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719076909; x=1719681709; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719152887; x=1719757687; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=7EkDbyT3Dt70fUNnAz4nlBxrbTY5DZaErD75W4as88k=;
-        b=aPqj1UuXR4QnBakw8ZjEAIUgPn1sxjf5STg4WvRyN1UbNQoZidnuzwJtTXQlC8o4v5
-         MRollO0zeUMaPIwP4Cgba/7joFDwGWeH2XhZVrbb9G1XQg/obIg7HOz7jDT0/Aa9iT1t
-         UngKarfrmX1CALLsO0M55XugXk7Wf/alzHVMuPh22PxRmfh/jzI6K7+slFHv95Cg1jZB
-         yzM9indPbpf1ySBzGgF5qbWos/FTpj74UXSuNYZ8JChyiNwqOh/ZqYy/wSbCYVJWlOVX
-         8HltGtnzANM4ui9CAcPRfjHwTfK6pI2lh/itXoZvSESehFvATYu1viFqEZ3JVD98ROf8
-         bInA==
+        bh=jqO6Icdxzq7ad8wELujObe1VLZwcjB87wmoeNB6xN1Y=;
+        b=c0N5t4KygW8RwyF45+qBcInRq2Xd9iFY/UXMnRQSb55r+zZLOcOG/2mLhXzXgV7wOY
+         vYxEChTOwVivK8km9tM6rvqNNrLVnoxHKw34u4NERd3jd3bBC99aBm7w/QZyyCBKmf6q
+         BdV3rk1bV2w7xzam91sUAjcRRj4X0wC/d+Zc9AgV5pu/I3xu7b9XJMFxnRMuWGe4nobj
+         Zl+BD/yNSpsG1Wnu82ymswBCFj/xBRglXb94V19D3x33WvUUD7Tne8syi2a6dsbggWeW
+         GPJ0bNzjFqBa2rL57rsYD5sQ6vX+28w5Rx5ACDbvhbe1hZYwfoeyINnYFtZhi82LLKnV
+         /UhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719076909; x=1719681709;
+        d=1e100.net; s=20230601; t=1719152887; x=1719757687;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7EkDbyT3Dt70fUNnAz4nlBxrbTY5DZaErD75W4as88k=;
-        b=Yu2h+OmeJcUF4BlDZRhAmbXGq/QbwXsQ3FsOidIfwpmxUJYgmECfaqyjiTGpf+WWLB
-         FBGscpHPNfXjKrjfV4uYjKBpRseWVLpSkh8TKQ7QNX8j4uH95oQpwTm3Kcg2J60IZWfS
-         gAZAdCTqWhKppOySxQXNQuj9lN8oL1rb0+qNhJBAoJTOZkB0X3xLc9XrQeJhZ08M8Fhw
-         1UpF9XqSdQ0iQd9NebO7/RvgXH3fgQrsd9M9vvLin+pozwTWSEVTDrMqDdhzat2R7H8G
-         F+loYBmY0MIh2zkegLizpUPH9kcO/QiFo5qu/73BXcsO34Xm6D4AN7WW6fakGVa0Oglc
-         OShQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV6MgdkRc18w5937FVHnguxHoqQwiEBiz4KLrSNqXhrffZ/Nl5CCEgGCtQsfIyL3q54eCPx2tmOEIRlcTBUGvslZSbaJWzKaILkkjSv3ez48fLhzHjlKTszuk0E+s62cPNa4Webr1HT2kj1u/iK4wcrU5DZngKTYHmWhxLDVqSFm7RR
-X-Gm-Message-State: AOJu0Yye0ByaWi7TQ3/2xQbh7hOcmIP+AQ3fhWDRYbxYHS6SzlWipxaI
-	4joMNqROzJk9pkbmCjQCOSVGldTZK6iaHXrZvNh/weLeiOMyXjLv
-X-Google-Smtp-Source: AGHT+IHYEHPLjoCQlVctUffypJdS55HqBSmMlsOea7YoyGgEtJhzdDwTXJcnJHDFWNJkHod6UJcDBQ==
-X-Received: by 2002:a05:6a00:26d9:b0:704:2bdd:82fe with SMTP id d2e1a72fcca58-706745b2ademr451664b3a.15.1719076908935;
-        Sat, 22 Jun 2024 10:21:48 -0700 (PDT)
+        bh=jqO6Icdxzq7ad8wELujObe1VLZwcjB87wmoeNB6xN1Y=;
+        b=M5Tr3IMHC+uzn/XNOSs3vBilAleGi+djSDySUVnZVGx5ujcaboY36enPSYt+ISJZco
+         aryKydLDSfI/liY66jRai7i6YMoaZ9Je+9/7MXXMdIx2L9ar2cgqQQLKSbbOAyDYQyFw
+         Hi4QLcTmasZYz7tPR47v0c6DnuqZH1N/r6VyB96VxBdRIltL1gLkoPeBJaNaBclbx2NX
+         KZp/1QA6zXKJRcW7EXJs5tUccKfM+9GPkhnrKkXnxt7Z+F3llDaDjEDlgBeD5YAkeViP
+         v6IPq1kM6tX3JuTKMI0hZei1TqCEFirDxRtJFpp4jPVKsU3kQuX4jXSV3ONgnJo3NYuc
+         14Gg==
+X-Forwarded-Encrypted: i=1; AJvYcCUEeIZQ0l4VHL3plyajjAIG+WqNgz6ytk/xL8lWNAaKf5PQn9uJiAKv60DGWZI76XdoOq0moBQ0tj+9idFHTTpn8RWTR6fur6R7ZacKGcj+KGdF2QfXjTUXuoZxo+Sq6HZBs+agm7+gCBPnu3wF59JYzUPTeoceK5PGdaHS5H2xwD0Y
+X-Gm-Message-State: AOJu0YyVxD9qiKg2GBBEzv7/Sv0V2g/YNlebqPaJCleR4QgzXlLEff0o
+	0TlCEqXe36T4UzBTQdkSAnmvtZJQ0CMvwSEnKOoOOAgTzguSs5Kg
+X-Google-Smtp-Source: AGHT+IFjDr9GyxsTqtQNjKwUjgnNG16nBwyUcLpr72RPNRsO+MVzjMOQUZQg2+OpvuosWHHKPL+Q8w==
+X-Received: by 2002:a17:902:ea08:b0:1f6:5013:7842 with SMTP id d9443c01a7336-1fa23cd95edmr31101595ad.27.1719152887013;
+        Sun, 23 Jun 2024 07:28:07 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7066857e9a8sm1411789b3a.89.2024.06.22.10.21.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fa2e3d0389sm10487575ad.107.2024.06.23.07.28.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jun 2024 10:21:48 -0700 (PDT)
+        Sun, 23 Jun 2024 07:28:06 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <3171b508-eb23-4a2c-a78d-c538c50be615@roeck-us.net>
-Date: Sat, 22 Jun 2024 10:21:45 -0700
+Message-ID: <7a496413-0317-48d2-ad78-2ce32f92f12b@roeck-us.net>
+Date: Sun, 23 Jun 2024 07:28:04 -0700
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -93,8 +93,6 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
 References: <20240619125556.491243678@linuxfoundation.org>
  <614d86a1-72c4-489b-94f9-fbe553c25f28@roeck-us.net>
  <21d5c00f-a373-4173-84e5-33dbd6305b57@gmx.de>
- <2760c168-974b-41da-9f1c-171a07bb60fb@roeck-us.net>
- <48aa5db8-2605-42e3-a1e3-1bf3428380ee@gmx.de>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -140,19 +138,72 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <48aa5db8-2605-42e3-a1e3-1bf3428380ee@gmx.de>
+In-Reply-To: <21d5c00f-a373-4173-84e5-33dbd6305b57@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/22/24 08:49, Helge Deller wrote:
-[ ... ]
+On 6/22/24 08:13, Helge Deller wrote:
+> On 6/22/24 16:58, Guenter Roeck wrote:
+>> [ Copying parisc maintainers - maybe they can test on real hardware ]
+>>
+>> On 6/19/24 05:54, Greg Kroah-Hartman wrote:
+>>> This is the start of the stable review cycle for the 6.1.95 release.
+>>> There are 217 patches in this series, all will be posted as a response
+>>> to this one.  If anyone has any issues with these being applied, please
+>>> let me know.
+>>>
+>>> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
+>>> Anything received after that time might be too late.
+>>>
+>> ...
+>>> Oleg Nesterov <oleg@redhat.com>
+>>>      zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING
+>>>
+>>
+>> I can not explain it, but this patch causes all my parisc64 (C3700)
+>> boot tests to crash. There are lots of memory corruption BUGs such as
+>>
+>> [    0.000000] =============================================================================
+>> [    0.000000] BUG kmalloc-96 (Not tainted): Padding overwritten. 0x0000000043411dd0-0x0000000043411f5f @offset=3536
+>>
+>> ultimately followed by
+>>
+>> [    0.462562] Unaligned handler failed, ret = -14
+>> ...
+>> [    0.469160]  IAOQ[0]: idr_alloc_cyclic+0x48/0x118
+>> [    0.469372]  IAOQ[1]: idr_alloc_cyclic+0x54/0x118
+>> [    0.469548]  RP(r2): __kernfs_new_node.constprop.0+0x160/0x420
+>> [    0.469782] Backtrace:
+>> [    0.469928]  [<00000000404af108>] __kernfs_new_node.constprop.0+0x160/0x420
+>> [    0.470285]  [<00000000404b0cac>] kernfs_new_node+0xbc/0x118
+>> [    0.470523]  [<00000000404b158c>] kernfs_create_empty_dir+0x54/0xf0
+>> [    0.470756]  [<00000000404b665c>] sysfs_create_mount_point+0x4c/0xb0
+>> [    0.470996]  [<00000000401181cc>] cgroup_init+0x5b4/0x738
+>> [    0.471213]  [<0000000040102220>] start_kernel+0x1238/0x1308
+>> [    0.471429]  [<0000000040107c90>] start_parisc+0x188/0x1d0
+>> ...
+>> [    0.474956] Kernel panic - not syncing: Attempted to kill the idle task!
+>> SeaBIOS wants SYSTEM RESET.
+>>
+>> This is with qemu v9.0.1.
 > 
-> I just booted 6.1.95 successfully in qemu and on my physical C3700 machine.
+> Just to be sure, did you tested the same kernel on physical hardware as well?
+> 
+> Please note, that 64-bit hppa (C3700) support in qemu was just recently added
+> and is still considered experimental.
+> So, maybe it's not a bug in the source, but in qemu...?!?
+> 
 
-FWIW, I don't see the problem either if I just build and boot
-generic-64bit_defconfig. Sorry, I didn't really expect this,
-so I didn't mention that my configuration adds lots of debug and
-unit test options.
+Following up on this for everyone: Helge doesn't see the problem on real hardware.
+I can make the problem disappear by any of the following:
+- Use gcc 13.3 instead of 12.3
+- Disable CONFIG_KUNIT
+- Enable CONFIG_PAGE_POISONING (without actually enabling it in the runtime)
+
+Overall, that suggests some kind of heisenbug, most likely in qemu,
+unrelated to the commit above.
+
+Thanks, and sorry for the noise.
 
 Guenter
 
