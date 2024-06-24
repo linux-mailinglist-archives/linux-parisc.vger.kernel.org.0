@@ -1,100 +1,132 @@
-Return-Path: <linux-parisc+bounces-1662-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1663-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28BAE9155FD
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jun 2024 19:56:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0859157FD
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jun 2024 22:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D80B228AC9B
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jun 2024 17:56:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A20228772A
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Jun 2024 20:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD23C1A01DF;
-	Mon, 24 Jun 2024 17:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A82383B1;
+	Mon, 24 Jun 2024 20:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="keEVTVT+"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E8E13B59C
-	for <linux-parisc@vger.kernel.org>; Mon, 24 Jun 2024 17:54:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC2B2233B
+	for <linux-parisc@vger.kernel.org>; Mon, 24 Jun 2024 20:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719251644; cv=none; b=h+FM5yA7KOzkfpeeBz3lUUsTR/xZDjD7DTn8MWpicFlACxDNtARUJF7BW6cTP63W0NAjwEGLzhNy6+Pdh3MJ0oP9mVRHDpGjSs9FyeqHe9Kb0I2qTEWh7HzG0K/EHWmuNjmyfhFAib3mrwffh+qy39fXrqxVOVi1FyEsqGrRhGc=
+	t=1719261120; cv=none; b=GI0xGNobfP1PI9Pwkw9ACPQ7nPuawkEWOgZKzan0Nr212K4CHZK3WwQIBurGPgOH0iH2/zoMCOsKJC+B5VLfZ1iAe8E2y0ytVfiHLYEptxvTJoR7nNukCuVBvmGWj/YnGeu0aie/7LsufiqeBz/VnPaxGvW8Ox+w88Un7Tu4icw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719251644; c=relaxed/simple;
-	bh=BFZTOS+6UUxcIsopT/PSSLG5gM/kaNsm7fOq8uT2SDs=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=I1vy5Sy6LD+LiNhKifuUxJ986apKRtiCik7nljoPvKOqrRSxupyYK3NFLbfXKzzjf2w9uBrkllROjV2SWvCs/jpOaEvArUGEN+NyfvNTR4z4+5zQZ5JXe4jZVGM30clESDHT0Q+RraeKnhc9Xa2ZQTTxoGZrNUmBxqLp7Qf+7X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-375ea274166so56228445ab.1
-        for <linux-parisc@vger.kernel.org>; Mon, 24 Jun 2024 10:54:03 -0700 (PDT)
+	s=arc-20240116; t=1719261120; c=relaxed/simple;
+	bh=0rnOQ19AryhurMEysYkGMiCDNJEYThhn2HKbg8xQhjY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=mNfhvo4wyltIW+Awe0rPVfJEQ6rn4pcTLIfMJqQl04ATWuPpJ7I7XKqJPzeOKc2aHqZ1De4I2UqQkvacsjtXzUIUvbQ+FvvueRdnx9s6UtVKyzW3RJLoKTdKvpd7rd7hk8GlFWwKHMhF6foQDtdQTm7Y9UEVlYlALtRZXeWWTNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=keEVTVT+; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-440f035214eso20518881cf.2
+        for <linux-parisc@vger.kernel.org>; Mon, 24 Jun 2024 13:31:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719261115; x=1719865915; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=FVnyDWT3JbKsDqbdmtpQH9OZmELabgmImESGWBGI5t0=;
+        b=keEVTVT+JOAVkVw2k9IsjqRnYC7av+CMxOXSsVVLc1HNRT4p3B8kDLFkBSGs2yifhN
+         39YtrWzaBQMz1cC/TqtIWMtjgpKnydNwKRVElaaSpOR9darh+zDn+yNKdnX//TCVfuzU
+         YRY7ZzoPPLCbLxiCQO1Jkjw/IQJeQDnM7PkqIBc1YhpaSZFDOaJSJYm9SC9zXRWIxFvU
+         RtmdcMfmngK2wYq5MeFWeHIUtKCl3yrb3tVxIoWOZBX+c7W8WzCO6zQmX4H+oUufdyGc
+         BFot6/078AP4lzVe/2nic8L41es1qR73M61n9JTkzh1IBsXEh2suTlXJBx+m1Ws/cXIx
+         ml/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719251642; x=1719856442;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GzCKyK0zAE0pyal4RPcwORnN1X/VtugtKH06mEuQykw=;
-        b=mOLVBUxsDy2xEdoxOr2UeukpmdHUfMppgV8OQdrMiO3XBO4fhieH+ZpCMoiXxOOvWD
-         oUnxmtnhGkAvcYSgP291+Ue1aQHFccTB6sT3bg6S9I3Q4NEFACp0PJPlPsK2YlNdCN+3
-         qGBKbta1yhHxYJHdsxOWfNaJkm3oZf5KebZHeBvfDJjGWMqm+X70+QJG2NOEKpXr7+YM
-         v9fG6uAmmKazz24NLspvTAZPhBY3Pa4U3rIjxv2ApcaExqPU860jSrKpC5EgLmIf9BEV
-         90b62WCe7nYd9A229yJkPdrW+Vzo5mHVDN9P9qO4/sQayaPqfe7ZMEDil7st8E5Y6B+o
-         XwcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVR19YKabW5f1CyfgW6AtW0DMrPCgXo6bs3t/FEJCB8ikhi1kms9nRMg7fSqJabO8bn5bLNbPqUzYHbIgZBB6GD6tJze2OeV9E/tSdw
-X-Gm-Message-State: AOJu0YxQupRqp9vuaNpkIc9MHqbszyvq0lK81gyexMpf4NcgQNzQokr4
-	KtrmsBKRTre2VC5FTbpQIygkz1Hs5pqcQ5tCBTPbfj1vOzPSoBhV+ye5bxV6HNdlkd6iZTprTO9
-	Kz4Rsv7eHPzih3RI6kLa3O3JHQ7/wad2qsG8QmRXf4dCWKUxtDO3LCTk=
-X-Google-Smtp-Source: AGHT+IFvlUCBRcqMRnAMMzQZCF1nxnRlu+ZLYSY5fQOEYrcnpFhzGgam/jc53s/GdBXuorTslpc96gfIFHBQgkljdpPr4HR2/pmn
+        d=1e100.net; s=20230601; t=1719261115; x=1719865915;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FVnyDWT3JbKsDqbdmtpQH9OZmELabgmImESGWBGI5t0=;
+        b=suTSKuuwzsWfgAUsXibCoMXohcrDb/oF5kM8XlIx7vOMBnBOfr5okBEx0KUcHOE7Zd
+         /l90FSVhviqCI024wyy/0d76Xc/gcHaffqUoIvE3qalHHWLYbeWDfhVQs1VMIOwvr+Vw
+         REM+3SrIosE2d4JaaEDVR4+reXrLsxgk9G+qKm670/lPQhrQ29xMPHsAra3Ru3bNbIJP
+         gHh5nSIo7xhMvDaNHKvsgfGbugpDGceiu68KbA5diiIBqjEFC4En8yVeWndBsxVOvJ/G
+         DI8uQaezwdIB6gQiFm3LjbkWZfF+onNTAExDVoU+J67lXFgxyKj7jxRQpCWPL8NQpkjH
+         nYhg==
+X-Forwarded-Encrypted: i=1; AJvYcCUikThoGeGHVW1ytIzJoHs0egowJsjQo6G+h1YjRloK9Ac7xEfkItTkML3s5HI4A68oU2Mma72vXQELKqIJLh28gNoax+fwCKYJc1j7
+X-Gm-Message-State: AOJu0YxDOj5b+z1tEVGu48cFHILfc7WV19qjZ19PxgxMA+Xlr8h9LCEh
+	HuIYJ8XpKJ/XCKVl2TqOrAL4suzQ+fZbZkG4CQt3Euil6D+QNYDUyDaDpRAE0HJyLP0aINXAe+7
+	K
+X-Google-Smtp-Source: AGHT+IGnLFA+NpWZ45X3c7ZLJwUpLirYI4uwUHTrcJnOLyw+Z0xMv2NemRVHLbMou3cTaZ1SK+bV6g==
+X-Received: by 2002:a05:6a00:3e2a:b0:705:a32c:8b35 with SMTP id d2e1a72fcca58-70670eeb107mr7338263b3a.19.1719261094884;
+        Mon, 24 Jun 2024 13:31:34 -0700 (PDT)
+Received: from ?IPV6:2804:1b3:a7c1:e1e5:c9c:830f:c9ec:d9b8? ([2804:1b3:a7c1:e1e5:c9c:830f:c9ec:d9b8])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7068922cd19sm1928307b3a.107.2024.06.24.13.31.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jun 2024 13:31:34 -0700 (PDT)
+Message-ID: <fd19f26c-0ebf-42ef-bfc3-686a82104d07@linaro.org>
+Date: Mon, 24 Jun 2024 17:31:30 -0300
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1d16:b0:376:4a18:a4ca with SMTP id
- e9e14a558f8ab-3764a18a6b5mr3045875ab.4.1719251642392; Mon, 24 Jun 2024
- 10:54:02 -0700 (PDT)
-Date: Mon, 24 Jun 2024 10:54:02 -0700
-In-Reply-To: <00000000000026100c060e143e5a@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000006cb461061ba67748@google.com>
-Subject: Re: [syzbot] [net?] [nfc?] INFO: task hung in nfc_targets_found
-From: syzbot <syzbot+2b131f51bb4af224ab40@syzkaller.appspotmail.com>
-To: James.Bottomley@HansenPartnership.com, airlied@gmail.com, daniel@ffwll.ch, 
-	davem@davemloft.net, deller@gmx.de, deller@kernel.org, dianders@chromium.org, 
-	dri-devel@lists.freedesktop.org, eadavis@qq.com, edumazet@google.com, 
-	gregkh@linuxfoundation.org, hdanton@sina.com, jernej.skrabec@gmail.com, 
-	krzk@kernel.org, krzysztof.kozlowski@linaro.org, kuba@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linux-sunxi@lists.linux.dev, mripard@kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, penguin-kernel@i-love.sakura.ne.jp, 
-	samuel@sholland.org, stern@rowland.harvard.edu, 
-	syzkaller-bugs@googlegroups.com, torvalds@linux-foundation.org, 
-	u.kleine-koenig@pengutronix.de, wens@csie.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] hppa/vdso: Add wrappers for vDSO functions
+To: Helge Deller <deller@kernel.org>, libc-alpha@sourceware.org,
+ John David Anglin <dave.anglin@bell.net>, carlos@redhat.com,
+ linux-parisc@vger.kernel.org
+References: <ZnXT9hNtYWLg9MID@carbonx1>
+Content-Language: en-US
+From: Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>
+Organization: Linaro
+In-Reply-To: <ZnXT9hNtYWLg9MID@carbonx1>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-syzbot suspects this issue was fixed by commit:
 
-commit 487fa28fa8b60417642ac58e8beda6e2509d18f9
-Author: Helge Deller <deller@kernel.org>
-Date:   Sat Apr 27 17:43:51 2024 +0000
 
-    parisc: Define sigset_t in parisc uapi header
+On 21/06/24 16:26, Helge Deller wrote:
+> The upcoming parisc (hppa) v6.11 Linux kernel will include vDSO
+> support for gettimeofday(), clock_gettime() and clock_gettime64()
+> syscalls for 32- and 64-bit userspace.
+> The patch below adds the necessary glue code for glibc.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> 
+> Changes in v2:
+> - add vsyscalls for 64-bit too
+>  
+> diff -up ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org ./sysdeps/unix/sysv/linux/hppa/sysdep.h
+> --- ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org	2024-06-15 20:20:58.992000000 +0000
+> +++ ./sysdeps/unix/sysv/linux/hppa/sysdep.h	2024-06-21 19:19:02.132000000 +0000
+> @@ -468,6 +468,18 @@ L(pre_end):					ASM_LINE_SEP	\
+>  #define CLOB_ARGS_1 CLOB_ARGS_2, "%r25"
+>  #define CLOB_ARGS_0 CLOB_ARGS_1, "%r26"
+>  
+> +#define VDSO_NAME	"LINUX_6.11"
+> +#define VDSO_HASH	182951793
+> +
+> +#ifdef __LP64__
+> +# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+> +# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+> +#else
+> +# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+> +# define HAVE_CLOCK_GETTIME64_VSYSCALL  "__vdso_clock_gettime64"
+> +# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+> +#endif /* __LP64__ */
+> +
+>  #endif	/* __ASSEMBLER__ */
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=17038a61980000
-start commit:   acc657692aed keys, dns: Fix size check of V1 server-list h..
-git tree:       upstream
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5c882ebde8a5f3b4
-dashboard link: https://syzkaller.appspot.com/bug?extid=2b131f51bb4af224ab40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=103698bde80000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1617e0fbe80000
-
-If the result looks correct, please mark the issue as fixed by replying with:
-
-#syz fix: parisc: Define sigset_t in parisc uapi header
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+Not sure why you have added the gettimeofday support, currently 32 bits
+it is already routed to to clock_gettime (which will use 
+__vdso_clock_gettime64 anyway).  For hppa to actually use, it would
+require to add a way to call it for !USE_IFUNC_GETTIMEOFDAY gettimeofday,
+which I am not it really be an improvement here.
 
