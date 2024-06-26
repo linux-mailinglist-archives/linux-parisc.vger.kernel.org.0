@@ -1,163 +1,101 @@
-Return-Path: <linux-parisc+bounces-1696-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1697-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88BA4917254
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Jun 2024 22:14:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544B69178E3
+	for <lists+linux-parisc@lfdr.de>; Wed, 26 Jun 2024 08:27:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8529B234A9
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Jun 2024 20:14:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2AA22867B4
+	for <lists+linux-parisc@lfdr.de>; Wed, 26 Jun 2024 06:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D87815746B;
-	Tue, 25 Jun 2024 20:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E3B14D2A8;
+	Wed, 26 Jun 2024 06:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DinPGHju"
+	dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b="MJAnYGdQ"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from matoro.tk (matoro.tk [104.188.251.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2151448D9
-	for <linux-parisc@vger.kernel.org>; Tue, 25 Jun 2024 20:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812EC14D29D
+	for <linux-parisc@vger.kernel.org>; Wed, 26 Jun 2024 06:27:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.188.251.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719346467; cv=none; b=WNt6E66efA17F9e7kp78mWY/7jCha/GHRoKQEYLWcOimhuUWpXxWi3tXKaPLZyuRIHAOHE2AE/psbeYxRxFThpIPzzw4MDQHYh6Pa6B2vjyGmblRGBRn+JPNNh7bIlZpiLfe8zcAI88SfEC06YoODqaDb3fEwqiKyWxzfP3pwto=
+	t=1719383256; cv=none; b=KAJJGOdLbNZAZrXze6jiJ9y30noSL6T5PE6KMiJr8LfDEFEFZzbxt6GeQNJ8Zh5OcNM18Al28bvxaXxDftmA47v6OycWZG4Ws2m2jnqfViQp8EUhwKjIXm35Y8oFsnwC4TMhcqk/7y17kr0+uFujAaZ0ZAfqp5AxJ0byKzgjAYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719346467; c=relaxed/simple;
-	bh=vq7QDba8YZ4n/QSw4tfUJ9x4MrNSePAevdMcnYty5vs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=IMzQlSDkELPJ9Q2kSe393ZwX9yxTi6bDA7x3vMy+yQVZ/VIGk9dQV8pQVSsIMIR+tJhYqb3P8ILTVQ9b6kv/XeXy7lQLlvwfY4EaNQVopF+tpCu+L0Qq9RfQSAtKUVhf1GbrqLoIFYz8mF7hz9MlXXbOQNja2xcIRorcOPxFPL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DinPGHju; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-70673c32118so2296014b3a.3
-        for <linux-parisc@vger.kernel.org>; Tue, 25 Jun 2024 13:14:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719346465; x=1719951265; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=tHMJP+pw/aO0MToXU8TYqDflI3ERiaoNdiZqYwnMujY=;
-        b=DinPGHjumPtYu2uWWzyeWgW36BQtqF6Y3Jj3I+QUky8D6tyWa5QxtrgCxl/Jg1NN4w
-         OiarEOXNtUM5uN9OtA+RNlA/SbDxAT2ZHLG4kMGw97+/qkHuR4oYZM4lNlw5YWmPFQsd
-         qh4//GAI1q+NACZpA4xTE3aqZxVKZ93WY++xGutemBYx+oHiIPhVCQfS0PVRB6JTDLaj
-         HFy169QRMsHmfXtW8BSqdmf4zjmvXIH20krZE/Vd/i6Nezw2oxzga4bhTVXucB65PcHc
-         Xl6mXYeOR5sUozKaNORt914aXKDK1qG/OZspxaHtp6gamPFGzF4jxfKIhPFrprXnb/XS
-         YOXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719346465; x=1719951265;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tHMJP+pw/aO0MToXU8TYqDflI3ERiaoNdiZqYwnMujY=;
-        b=U64T0xcG8LvDjLwabgy9gCvOa6vt3bZwrFLzsKWXFNIu1rpi1Q/aurpwpaL33e3no7
-         MFc3PkB/asKmE8+R1cislLc84zCGM3u4fMXC5+R4EfRbK9KQ9jIqqHjrcfhfON2miJUt
-         IanK7ku38IZPd9mfDT9fOKwKjsYuRuLspfOmFRSA43Uq5FMyFed17pk3dGjICZv4bQtq
-         s3CDuO4/VcwBjvsMAf80nyhqVTJqUWI9eWrlCahNgcP/6VNwtxAxUdulUJ2rFORwNPo4
-         ADjBtezhNuv5Qlt4jdw92dIe89IZ28JMgdiyqd7GScPkbScdDGGPZJufTbDXPcb+QMZC
-         bCsA==
-X-Forwarded-Encrypted: i=1; AJvYcCWUz6LWso/c26hUjo/WEZVn3HJCfWk0H6IjjqNaIjt2wNMrOOrwbjEsDdJ9Wpwfo1HcrQ/XLY5u3YoF78htLNVzMQpW5ou18FrHFtFe
-X-Gm-Message-State: AOJu0YxkAlSmh8FDPcTJKCwqi+7tCzoMtY8rcJv0AgsFp4lReTDTnznS
-	Bstj4DxABWgjxzygqe4a91Fbpic+cqhlHCMub6PauV9naYoR7BQ3n/MRwI+bg7I=
-X-Google-Smtp-Source: AGHT+IH3izUuOymMbKDvQWc4CHwf/VqgBrB2crdg/yQgyi1VI5FMFinFgUgdfucPqs+bc3H+dV/Ubw==
-X-Received: by 2002:a05:6a00:c95:b0:705:9992:e7f2 with SMTP id d2e1a72fcca58-7067459a63cmr10704055b3a.12.1719346465113;
-        Tue, 25 Jun 2024 13:14:25 -0700 (PDT)
-Received: from ?IPV6:2804:1b3:a7c1:e1e5:1dfb:a750:9574:3865? ([2804:1b3:a7c1:e1e5:1dfb:a750:9574:3865])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70666de7bc0sm6783678b3a.74.2024.06.25.13.14.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jun 2024 13:14:24 -0700 (PDT)
-Message-ID: <433fdb50-85e6-4b2d-8bd5-371b8cac4921@linaro.org>
-Date: Tue, 25 Jun 2024 17:14:20 -0300
+	s=arc-20240116; t=1719383256; c=relaxed/simple;
+	bh=7/9crsos3qwpagGVCe3vR0VnV8W/UaK8lyuVExFGVC8=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=APtJ9UJ7MwvGBGHrCOTNfQ/rX6U8cA5zwGHiFuYcUNhX31sHO6uKmVYYN+4tqDoMxCz7onGK7gIqo7XmsURnH+7GFZUFKT5hbEwnZvp+JwGbSBnWcn4MqqLTpRAi9NR39lclgKO6nn9C5KOrGm7Ow2FVYnvia2CsUzh6gcnmZCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk; spf=pass smtp.mailfrom=matoro.tk; dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b=MJAnYGdQ; arc=none smtp.client-ip=104.188.251.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matoro.tk
+DKIM-Signature: a=rsa-sha256; bh=qTnZTX5H2WztAXSZcVmsn1jziIGlW9aPDKJoGKwli9Y=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20240416; t=1719382334; v=1; x=1719814334;
+ b=MJAnYGdQwSZRsVgNFpaMO/luk8QzvH7rCeAhogRrXaMdeC/T/GCJloiETRDfjJ3njM8WtIWW
+ 82QCW+zkWX3c1EIpKh+5woZofApAVA2uEDlslP+bYQtLLZw4s8cdKo7HbdTN8uzrmRiG6wDtiR9
+ 64gfRUN6HPKjaVlSdlGQ1CjC8Ree8qLCgdZi+rHsa4sORh/lRm3uWXto7jP3w5A1gTI9RFWMtq9
+ MS4IPR+JSVsFH9viadvsBIaLPnR8Kd+K9c26CDfXICD9O/QdCFw3C7tNcqcTTdrl/23ZrKw6E/D
+ B1UuYdkveCKgEn+hugUv9ByC3A1rajJZWILgMc/XlCGdqhp2hupLuWajhPEML1X1xKYxHY/Kx0c
+ Do4l1sQgkDYfal2OmcGQ776phFyy6AYlE9eA/1ZShRGISsZ5MhEPqwKaBjSIgTynYlgzu4IXBqg
+ CBMzWLol9Pa2Qe9Ll6EnZeG2kYO+56ok5xwkvQ+raNE6Xa4FSP89jPPJBiuS4NBq1ilgzkxgrY5
+ hdm5VLJtjaTf87NqUn+EYu4hTjSQ3peMwqphj3qjrxKvh83SplGE96Kdk64A2gUk0zkBNSxXR8g
+ TartSPpH3wCuS/ghyDD13v28HB39N1Ao9Fj6f5d+05Suu9YBVEUANe/BwHNj3l/EQCAkzrzltf5
+ 9JCqJ/UehBo=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id e37b8ad6; Wed, 26 Jun
+ 2024 02:12:14 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] hppa/vdso: Add wrappers for vDSO functions
-To: Helge Deller <deller@gmx.de>, Helge Deller <deller@kernel.org>,
- libc-alpha@sourceware.org, John David Anglin <dave.anglin@bell.net>,
- carlos@redhat.com, linux-parisc@vger.kernel.org
-References: <ZnXT9hNtYWLg9MID@carbonx1>
- <fd19f26c-0ebf-42ef-bfc3-686a82104d07@linaro.org>
- <47136a43-058f-4258-bd1b-3475fd7ea14a@gmx.de>
-Content-Language: en-US
-From: Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>
-Organization: Linaro
-In-Reply-To: <47136a43-058f-4258-bd1b-3475fd7ea14a@gmx.de>
-Content-Type: text/plain; charset=UTF-8
+Date: Wed, 26 Jun 2024 02:12:13 -0400
+From: matoro <matoro_mailinglist_kernel@matoro.tk>
+To: John David Anglin <dave.anglin@bell.net>
+Cc: Vidra.Jonas@seznam.cz, linux-parisc@vger.kernel.org, John David Anglin
+ <dave@parisc-linux.org>, Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH] parisc: Try to fix random segmentation faults in package
+ builds
+In-Reply-To: <37cf9a08-decf-4ba9-802d-7e19dee2f6a5@bell.net>
+References: <Zje6ywzNAltbG3R2@mx3210.localdomain>
+ <C4u.NueN.39ikIzqu}iW.1cEpt7@seznam.cz>
+ <91563ff7-349b-4815-bcfe-99f8f34b0b16@bell.net>
+ <34fdf2250fe166372a15d74d28adc8d2@matoro.tk>
+ <e88cebf4-bec6-4247-93ae-39eff59cfc8e@bell.net>
+ <88756923-4c3c-41bf-97a8-aab25bc93644@bell.net>
+ <28cea8aa7cce7c56bbb8f88067c3f3ba@matoro.tk>
+ <16d8c07c-9fbe-4e81-b1f1-3127ab05410a@bell.net>
+ <7345472b8bfa050ec2b86df5f69f99a4@matoro.tk>
+ <52c0dfa7e2054d883bd66da7ab2e68b8@matoro.tk>
+ <213f7afe-5bc8-40ff-835c-1fadaae0a96d@bell.net>
+ <13894865a496a7f2a6ed607e2ef708c4@matoro.tk>
+ <37cf9a08-decf-4ba9-802d-7e19dee2f6a5@bell.net>
+Message-ID: <d16e4a184dcc1a6df2b356e89b76f3f8@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
 
-
-
-On 25/06/24 16:48, Helge Deller wrote:
-> On 6/24/24 22:31, Adhemerval Zanella Netto wrote:
->>
->>
->> On 21/06/24 16:26, Helge Deller wrote:
->>> The upcoming parisc (hppa) v6.11 Linux kernel will include vDSO
->>> support for gettimeofday(), clock_gettime() and clock_gettime64()
->>> syscalls for 32- and 64-bit userspace.
->>> The patch below adds the necessary glue code for glibc.
->>>
->>> Signed-off-by: Helge Deller <deller@gmx.de>
->>>
->>> Changes in v2:
->>> - add vsyscalls for 64-bit too
->>>
->>> diff -up ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org ./sysdeps/unix/sysv/linux/hppa/sysdep.h
->>> --- ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org    2024-06-15 20:20:58.992000000 +0000
->>> +++ ./sysdeps/unix/sysv/linux/hppa/sysdep.h    2024-06-21 19:19:02.132000000 +0000
->>> @@ -468,6 +468,18 @@ L(pre_end):                    ASM_LINE_SEP    \
->>>   #define CLOB_ARGS_1 CLOB_ARGS_2, "%r25"
->>>   #define CLOB_ARGS_0 CLOB_ARGS_1, "%r26"
->>>
->>> +#define VDSO_NAME    "LINUX_6.11"
->>> +#define VDSO_HASH    182951793
->>> +
->>> +#ifdef __LP64__
->>> +# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
->>> +# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
->>> +#else
->>> +# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
->>> +# define HAVE_CLOCK_GETTIME64_VSYSCALL  "__vdso_clock_gettime64"
->>> +# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
->>> +#endif /* __LP64__ */
->>> +
->>>   #endif    /* __ASSEMBLER__ */
->>
->> Not sure why you have added the gettimeofday support, currently 32 bits
->> it is already routed to to clock_gettime (which will use
->> __vdso_clock_gettime64 anyway).
+On 2024-06-10 16:17, John David Anglin wrote:
+> Hi Matoro,
 > 
-> Yep, you are right.
-> I actually didn't checked if it's being used but just saw it's defined
-> for other arches too, so I assumed it to be used.
+> On 2024-06-10 3:52 p.m., matoro wrote:
+>> Unfortunately I had a few of these faults trip today after ~4 days of 
+>> uptime with corresponding random segfaults.  One of the WARNs was emitted 
+>> shortly before, though not for the same PID.  Reattempted the build twice 
+>> and randomly segfaulted all 3 times.  Had to reboot as usual to get it out 
+>> of the bad state.
+> Please try v3 patch sent today.
 > 
->> For hppa to actually use, it would require to add a way to call it
->> for !USE_IFUNC_GETTIMEOFDAY gettimeofday, which I am not it really be
->> an improvement here.
-> 
-> Yes, that doesn't make sense.
-> 
-> Looking at the code it seems riscv, sparc, arm, mips and s390 define it
-> too, without being used. Do you suggest we should remove gettimeofday
-> vsyscall from hppa again (or just keep like the others even if not being used)?
+> Dave
 
-The riscv only added it for CONFIG_64BIT, while old ABIs like arm, sparc,
-mips, and s390 added before 64 bit time_t landed on 5.1.  With current 
-32 bits ABIs moving to 64 bit time_t userland, there is no much sense in 
-providing a 32 bit gettimeofday, nor I think I adding a  gettimeoday64 would 
-make much sense (maybe on really high sensitive workloads that require 
-low-latency timestamping, but clock_gettime would work better anyway).
-
-It is highly unlikely that the symbol will ever be used by userland,
-and I think it only make sense to provide clock_gettime64.  The glibc 
-32 bit time_t clock_gettime routes to clock_gettime64 and it will only 
-fallback to 32 bit vDSO symbol if the 64 bit time_t one is not present.
-
-
+I think this patch is probably a winner!  I now have 14 days continuous 
+uptime where I've done a lot of intense package testing and not a single 
+random corruption or crash observed.  I'm switching to vanilla 6.9.6 now that 
+it's in tree.  Thanks so much for your great work!
 
