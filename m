@@ -1,151 +1,114 @@
-Return-Path: <linux-parisc+bounces-1702-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1703-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BC1918626
-	for <lists+linux-parisc@lfdr.de>; Wed, 26 Jun 2024 17:44:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4976919A62
+	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jun 2024 00:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30351F212C4
-	for <lists+linux-parisc@lfdr.de>; Wed, 26 Jun 2024 15:44:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ECC61F235CD
+	for <lists+linux-parisc@lfdr.de>; Wed, 26 Jun 2024 22:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF4518C32B;
-	Wed, 26 Jun 2024 15:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0AA194094;
+	Wed, 26 Jun 2024 22:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="AsE2NiV4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Azand2s9"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-torrgo002.bell.net (mta-tor-001.bell.net [209.71.212.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31DD185E65
-	for <linux-parisc@vger.kernel.org>; Wed, 26 Jun 2024 15:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E9B18FC9D;
+	Wed, 26 Jun 2024 22:08:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719416657; cv=none; b=ne+r6KKbXxp6Ssaaan2r0rMGU3vwkwQTqqGS7cYp+rQB4+A2EPD8A3LTMHvWvG5X6rQpIpH2V7JbyVedO31AMlD3v772ksfkvgX7uL9HheZBZLjf3j6wdsGJHl5tO2zgb3TPtpXklx0z5E3/Zpyxg6twMqptZEhuA43SDexVGzk=
+	t=1719439706; cv=none; b=on0tWNEyBQtEtz+DaP8sfJaqaDDuXUzSQatzn8eA+1DBZkVc2Qq+ateQd9Azv43SjM/OMlyBUVf2fgMJM7rnVbU8fl5xGrSOCp+T0bMS7hbwzeLot6kvqprEimfB3dtegpR+YUDVoHpu4PQCLBtCF8pSPM1qf5pAYueFcRXX1XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719416657; c=relaxed/simple;
-	bh=7C+UsNfI8kBfTVaWfQ5tv2yHUbemcE7GTzy9TWKmACA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sTYt33W/A5T70B7SuwOZzFoj/3MAD3J9IbewNg6hsIRv6Soxft3jjxYaZnUNPjJvGG/klfRQRXB9cGpuLCAodx8QmxNMMDoZMSSzBWKtVFaLygkoDorMVVnk8zBMAAyeRTLURb/ROpBsuAhcaOZaDYMugT5snCDZLk9XDXFTrvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=AsE2NiV4; arc=none smtp.client-ip=209.71.212.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1719416655; 
-        bh=Rtn2/g6K/lEeDfU2DIDml0t3Wp8retjiCrGYFjtD3Lg=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=AsE2NiV4fEkWgqz2Gw+CJy8eipyHF8pqrmKMvdkCV8G6qhaLlvN6f5QO22mmnm3zC64MOiJv/AOQ5IihoyJA4Gdra46ePHKFRYzoNXWldvX9AmFNLpicA4B6kqv3UgWjKQrSYtm/1WRhXpd33/6McXjtAr/Z6PaJLt0uYOgkvqAR2Kye++Qmb2KLM3bwYY+Rh0nFKRVGy7KnpO5AkwO+xbbj0J5+h8++fC/V+jYa1AW4BnDHNNaH0nDIht+eZOP0oZkhI50I2MhMgklaxjz3E1v0XqNXVIjcfrCJHPeV6jzuV2tNFP9Q1NRMNmq7KVlisJXX4uEFN6V7VcceKpSE3A==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 667C08FD00063EAF
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeeftddrtddvgdelfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejleffffejhefggfeuheelgeefgeeuieegtdekffegudeuteffgeffjedukefgueenucfkphepjedtrdehvddrudeivddrieejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepjedtrdehvddrudeivddrieejpdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeeipdhrtghpthhtohepgghiughrrgdrlfhonhgrshesshgviihnrghmrdgtiidprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopegurghvvgesphgrrhhishgtqdhlihhnuhigrdhorhhgpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghtohhrohgpmhgrihhlihhnghhl
-	ihhsthgpkhgvrhhnvghlsehmrghtohhrohdrthhk
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received-SPF: softfail (cmx-torrgo002.bell.net: domain bell.net does not
- designate 70.52.162.67 as permitted sender) identity=mailfrom;
- receiver=cmx-torrgo002.bell.net; client-ip=70.52.162.67;
- envelope-from=dave.anglin@bell.net; helo=[192.168.2.49];
-Received: from [192.168.2.49] (70.52.162.67) by cmx-torrgo002.bell.net (authenticated as dave.anglin@bell.net)
-        id 667C08FD00063EAF; Wed, 26 Jun 2024 11:44:04 -0400
-Message-ID: <f4e65947-710a-40c7-9c4a-662e92d86155@bell.net>
-Date: Wed, 26 Jun 2024 11:44:04 -0400
+	s=arc-20240116; t=1719439706; c=relaxed/simple;
+	bh=5d7H9/borh2oqA2du5mHYiDRGDELCSRd3Xk3e6IKGpk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RY8dfRrQK/38MpWf+P58rr1ijKJISkpc0xIzVZ2iMZGiWFQH6FJ1qvQshMJmH0jhKpblSEXphGzvsywsj9oSCw0CyunSxwIU1Ep9puVywXw8z79inzN1bsj91LuvG80M6IzIaCWq80fIKIqAvHhbktwEbmvi59V9c+v2KkndlXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Azand2s9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EFCDC116B1;
+	Wed, 26 Jun 2024 22:08:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719439705;
+	bh=5d7H9/borh2oqA2du5mHYiDRGDELCSRd3Xk3e6IKGpk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Azand2s9PJ5hpj1pJhfR2k36lgYX4q5EVbYEyRHHreykGtMrk+xW0MQHsApc0A76v
+	 R1ziYuRsJSA+U/KWvr5SnBpOp8/FKkRiM6PI0nOu1ho2WTtUmR6G5sIpL6x7taOS74
+	 BKU7UERaSnhVXfErVlfARVzsOmJFhRxiu5ZNmdcpweU0PcrGPzi9VXvWtjUYhKPfz4
+	 PU9tdlZOctUnOe/hbtETyla9PYMBK4jPfl5YaFALjxIDPqvgUbpKhQGLjYAm+LNu/A
+	 FcxJ5FSoDrgKEIR6AfIX7N+H0c4Zxj7PfzVnZeblZVvSM942WHMP2TU9Mpm39Qb57l
+	 1EyKxF3wvDs6w==
+Date: Wed, 26 Jun 2024 15:08:22 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet
+ <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, Ivan
+ Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
+ Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven
+ Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnd Bergmann
+ <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, Martin KaFai
+ Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend
+ <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav
+ Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa
+ <jolsa@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan
+ <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, "Christian
+ =?UTF-8?B?S8O2bmln?=" <christian.koenig@amd.com>, Bagas Sanjaya
+ <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, Nikolay
+ Aleksandrov <razor@blackwall.org>, Pavel Begunkov <asml.silence@gmail.com>,
+ David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, Yunsheng Lin
+ <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, Harshitha
+ Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi
+ <pkaligineedi@google.com>, Stanislav Fomichev <sdf@google.com>
+Subject: Re: [PATCH net-next v14 13/13] selftests: add ncdevmem, netcat for
+ devmem TCP
+Message-ID: <20240626150822.742eaf6a@kernel.org>
+In-Reply-To: <20240625195407.1922912-14-almasrymina@google.com>
+References: <20240625195407.1922912-1-almasrymina@google.com>
+	<20240625195407.1922912-14-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: Try to fix random segmentation faults in package
- builds
-To: matoro <matoro_mailinglist_kernel@matoro.tk>
-Cc: Vidra.Jonas@seznam.cz, linux-parisc@vger.kernel.org,
- John David Anglin <dave@parisc-linux.org>, Helge Deller <deller@gmx.de>
-References: <Zje6ywzNAltbG3R2@mx3210.localdomain>
- <C4u.NueN.39ikIzqu}iW.1cEpt7@seznam.cz>
- <91563ff7-349b-4815-bcfe-99f8f34b0b16@bell.net>
- <34fdf2250fe166372a15d74d28adc8d2@matoro.tk>
- <e88cebf4-bec6-4247-93ae-39eff59cfc8e@bell.net>
- <88756923-4c3c-41bf-97a8-aab25bc93644@bell.net>
- <28cea8aa7cce7c56bbb8f88067c3f3ba@matoro.tk>
- <16d8c07c-9fbe-4e81-b1f1-3127ab05410a@bell.net>
- <7345472b8bfa050ec2b86df5f69f99a4@matoro.tk>
- <52c0dfa7e2054d883bd66da7ab2e68b8@matoro.tk>
- <213f7afe-5bc8-40ff-835c-1fadaae0a96d@bell.net>
- <13894865a496a7f2a6ed607e2ef708c4@matoro.tk>
- <37cf9a08-decf-4ba9-802d-7e19dee2f6a5@bell.net>
- <d16e4a184dcc1a6df2b356e89b76f3f8@matoro.tk>
-Content-Language: en-US
-From: John David Anglin <dave.anglin@bell.net>
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- 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
- T70V9SSrl2hiw38vRzsl
-In-Reply-To: <d16e4a184dcc1a6df2b356e89b76f3f8@matoro.tk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 2024-06-26 2:12 a.m., matoro wrote:
-> On 2024-06-10 16:17, John David Anglin wrote:
->> Hi Matoro,
->>
->> On 2024-06-10 3:52 p.m., matoro wrote:
->>> Unfortunately I had a few of these faults trip today after ~4 days of uptime with corresponding random segfaults.  One of the WARNs was 
->>> emitted shortly before, though not for the same PID.  Reattempted the build twice and randomly segfaulted all 3 times.  Had to reboot as 
->>> usual to get it out of the bad state.
->> Please try v3 patch sent today.
->>
->> Dave
->
-> I think this patch is probably a winner!  I now have 14 days continuous uptime where I've done a lot of intense package testing and not a 
-> single random corruption or crash observed.  I'm switching to vanilla 6.9.6 now that it's in tree.  Thanks so much for your great work!
-The important change in v3 and the version committed was to flush the cache page when a page table entry was cleared.
+On Tue, 25 Jun 2024 19:54:01 +0000 Mina Almasry wrote:
+> +CFLAGS += -I../../../net/ynl/generated/
+> +CFLAGS += -I../../../net/ynl/lib/
+> +
+> +LDLIBS += ../../../net/ynl/lib/ynl.a ../../../net/ynl/generated/protos.a
 
-Dave
+Not as easy as this.. Please add this commit to your series:
+https://github.com/kuba-moo/linux/commit/c130e8cc7208be544ec4f6f3627f1d36875d8c47
 
+And here's an example of how you then use ynl.mk to code gen and build
+for desired families (note the ordering of variables vs includes,
+I remember that part was quite inflexible..):
+https://github.com/kuba-moo/linux/commit/5d357f97ccd0248ca6136c5e11ca3eadf5091bb3
+
+Feel free to repost as soon as you got it fixed.
 -- 
-John David Anglin  dave.anglin@bell.net
-
+pw-bot: cr
 
