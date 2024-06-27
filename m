@@ -1,142 +1,164 @@
-Return-Path: <linux-parisc+bounces-1704-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1705-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77F3919C0B
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jun 2024 02:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A162D91A2EE
+	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jun 2024 11:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9381F2822E1
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jun 2024 00:46:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B80E2824E7
+	for <lists+linux-parisc@lfdr.de>; Thu, 27 Jun 2024 09:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AF12139AC;
-	Thu, 27 Jun 2024 00:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2135313AD04;
+	Thu, 27 Jun 2024 09:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mBlNUmVM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xu/Ix/c6"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69A5A50;
-	Thu, 27 Jun 2024 00:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14DD132492
+	for <linux-parisc@vger.kernel.org>; Thu, 27 Jun 2024 09:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719449198; cv=none; b=dffrzsLCroNS9h1WB8+Yu55SaT96NPALW5h/2VQC3peqhoUQ0TsJRAHHteGw+rESE3dbN9LNOUtCSajqxo84xnNnj7h/OWBurqNALw12isCUzqpyMzNNHzZVpRfqdxvfqRxdXnYMWpDCpvlsXI6hmw3f3OV3o8A24o3xoMk9+bA=
+	t=1719481585; cv=none; b=n5ISXA868RZMN59z+gHnJDdA5rGxvyakC4CRbqrXj3b1nGRXsi6QkHSrLnx2T5HfWYrC+5avM0IR31jlx7JcRX0yOd4IcvS7VhPqoVQp3UkVo4lI7us1qpPhBkwW7mTiUNSXTkJVVVSDhfBsV7++9nfqBQY/YXLGRWeznE0za1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719449198; c=relaxed/simple;
-	bh=0SG3laByZlaFUISZCHp29XT3JkoNZdaHE8iSnv9r4Ww=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e29aBtSG5yk6cFLdUcnnEn6RFj9wDNBzdPp4zP4Jeksm16qg7avahlVDm3hjcfYB1tuokJ7m8F0h5j8sHtVSHbcpiJavSUIB+oANT8FQcdSqYLj8khQpxh5DFfPrNxtkiohAGM319MfYbv0dYgDPImW5PuOPgaAsYTCHYpKL3b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mBlNUmVM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B63CC116B1;
-	Thu, 27 Jun 2024 00:46:35 +0000 (UTC)
+	s=arc-20240116; t=1719481585; c=relaxed/simple;
+	bh=Pc3RsDqwa2YNWbz2wKwZvmJ5tvIbsWipQ1V22JUuMb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JRWo/tXZY3sMW4tRiYPT3xGIlFCENjnDLeOBbAmrLpe/1K0WxvdKdCjgByRWy5UuYQNHIOkNZ9bW50+mglrMNR/kyrX8VBnEVnqYfX8F9rj/54CWXsx9SzldzLmSkDr2sTGuIMCfXy2VUotkrxuWGgT6q246AzxjLnukxiG5MwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xu/Ix/c6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6BDC2BBFC;
+	Thu, 27 Jun 2024 09:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719449197;
-	bh=0SG3laByZlaFUISZCHp29XT3JkoNZdaHE8iSnv9r4Ww=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mBlNUmVMzPFiiYZI8a8E65frgk5k1lxp0RkrYfN3Nlf/2A5ch4UMQN/KRSpXjJb2O
-	 djBU41eFDkc5BhBiVK+bvijq7reE+WvVLOjI6abwchbipLi50MqkLBcE9HAZXML2ZB
-	 vcXNkl0oVc41ZWhheArOwYfFHV0uN/gdJSrWAvNZjaO4ES7wR4BNnUbOfdxD7g2qby
-	 10el+2M74ZCpdaxOCG4dY/gaD016jFvumOcdSt4+KsTBMcEqxEPu2v7WSj29kUUMx0
-	 pwpxnw8AxBcF47BxCRsv11U6w9kvZBBbsJL9xFpmJWoMiS8guNVpQsYJOkzW+Fd5BG
-	 bUJejdYs3QDaw==
-Date: Wed, 26 Jun 2024 17:46:34 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet
- <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, Ivan
- Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
- Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer
- <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven
- Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnd Bergmann
- <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, Martin KaFai
- Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu
- <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend
- <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav
- Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan
- <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, "Christian
- =?UTF-8?B?S8O2bmln?=" <christian.koenig@amd.com>, Bagas Sanjaya
- <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, Nikolay
- Aleksandrov <razor@blackwall.org>, Pavel Begunkov <asml.silence@gmail.com>,
- David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, Yunsheng Lin
- <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, Harshitha
- Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi
- <pkaligineedi@google.com>, Stanislav Fomichev <sdf@google.com>
-Subject: Re: [PATCH net-next v14 13/13] selftests: add ncdevmem, netcat for
- devmem TCP
-Message-ID: <20240626174634.2adec19d@kernel.org>
-In-Reply-To: <20240626150822.742eaf6a@kernel.org>
-References: <20240625195407.1922912-1-almasrymina@google.com>
-	<20240625195407.1922912-14-almasrymina@google.com>
-	<20240626150822.742eaf6a@kernel.org>
+	s=k20201202; t=1719481584;
+	bh=Pc3RsDqwa2YNWbz2wKwZvmJ5tvIbsWipQ1V22JUuMb8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xu/Ix/c6xNz+CBoFjmI0BtHW/Nlf6WhyrMnS5Bin7pa/OuwTlI4n5AaxMDloXG0KZ
+	 kgbXUPno+1BZD/4XoMnynacAM5D89fV4+g7/DXYOQZf5RWmiuClyCs4brjck6jFQgx
+	 TCqf6P59gO84hQ7X/yUalroi2vdkFbZ9JQK+XaJ8uylLx2ybb9x3YMJ1JtO18r7buW
+	 UFjCqdFwLzdCMBAGcs3+W6ydAkTc7rQb9AOgV8DCGzAEe2dP/DS5s3fv4bqLGp6SPj
+	 HIE/Hu/Tb2wVDW0+tJIlT/xh8f94zPmU/ON9IO9Bospsdx8NPNRP9YhvfXJtW0zDNn
+	 CJYFr2gC8ry0A==
+Date: Thu, 27 Jun 2024 11:46:19 +0200
+From: Helge Deller <deller@kernel.org>
+To: Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>
+Cc: libc-alpha@sourceware.org, John David Anglin <dave.anglin@bell.net>,
+	linux-parisc@vger.kernel.org
+Subject: Re: [PATCH v2] hppa/vdso: Add wrappers for vDSO functions
+Message-ID: <Zn006zh2vSqfgii6@carbonx1>
+References: <ZnXT9hNtYWLg9MID@carbonx1>
+ <fd19f26c-0ebf-42ef-bfc3-686a82104d07@linaro.org>
+ <47136a43-058f-4258-bd1b-3475fd7ea14a@gmx.de>
+ <433fdb50-85e6-4b2d-8bd5-371b8cac4921@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <433fdb50-85e6-4b2d-8bd5-371b8cac4921@linaro.org>
 
-On Wed, 26 Jun 2024 15:08:22 -0700 Jakub Kicinski wrote:
-> On Tue, 25 Jun 2024 19:54:01 +0000 Mina Almasry wrote:
-> > +CFLAGS += -I../../../net/ynl/generated/
-> > +CFLAGS += -I../../../net/ynl/lib/
-> > +
-> > +LDLIBS += ../../../net/ynl/lib/ynl.a ../../../net/ynl/generated/protos.a  
+* Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>:
 > 
-> Not as easy as this.. Please add this commit to your series:
-> https://github.com/kuba-moo/linux/commit/c130e8cc7208be544ec4f6f3627f1d36875d8c47
+> On 25/06/24 16:48, Helge Deller wrote:
+> > On 6/24/24 22:31, Adhemerval Zanella Netto wrote:
+> >>
+> >>
+> >> On 21/06/24 16:26, Helge Deller wrote:
+> >>> The upcoming parisc (hppa) v6.11 Linux kernel will include vDSO
+> >>> support for gettimeofday(), clock_gettime() and clock_gettime64()
+> >>> syscalls for 32- and 64-bit userspace.
+> >>> The patch below adds the necessary glue code for glibc.
+> >>>
+> >>> Signed-off-by: Helge Deller <deller@gmx.de>
+> >>>
+> >>> Changes in v2:
+> >>> - add vsyscalls for 64-bit too
+> >>>
+> >>> diff -up ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org ./sysdeps/unix/sysv/linux/hppa/sysdep.h
+> >>> --- ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org    2024-06-15 20:20:58.992000000 +0000
+> >>> +++ ./sysdeps/unix/sysv/linux/hppa/sysdep.h    2024-06-21 19:19:02.132000000 +0000
+> >>> @@ -468,6 +468,18 @@ L(pre_end):                    ASM_LINE_SEP    \
+> >>>   #define CLOB_ARGS_1 CLOB_ARGS_2, "%r25"
+> >>>   #define CLOB_ARGS_0 CLOB_ARGS_1, "%r26"
+> >>>
+> >>> +#define VDSO_NAME    "LINUX_6.11"
+> >>> +#define VDSO_HASH    182951793
+> >>> +
+> >>> +#ifdef __LP64__
+> >>> +# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+> >>> +# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+> >>> +#else
+> >>> +# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+> >>> +# define HAVE_CLOCK_GETTIME64_VSYSCALL  "__vdso_clock_gettime64"
+> >>> +# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+> >>> +#endif /* __LP64__ */
+> >>> +
+> >>>   #endif    /* __ASSEMBLER__ */
+> >>
+> >> Not sure why you have added the gettimeofday support, currently 32 bits
+> >> it is already routed to to clock_gettime (which will use
+> >> __vdso_clock_gettime64 anyway).
+> > 
+> > Yep, you are right.
+> > I actually didn't checked if it's being used but just saw it's defined
+> > for other arches too, so I assumed it to be used.
+> > 
+> >> For hppa to actually use, it would require to add a way to call it
+> >> for !USE_IFUNC_GETTIMEOFDAY gettimeofday, which I am not it really be
+> >> an improvement here.
+> > 
+> > Yes, that doesn't make sense.
+> > 
+> > Looking at the code it seems riscv, sparc, arm, mips and s390 define it
+> > too, without being used. Do you suggest we should remove gettimeofday
+> > vsyscall from hppa again (or just keep like the others even if not being used)?
 > 
-> And here's an example of how you then use ynl.mk to code gen and build
-> for desired families (note the ordering of variables vs includes,
-> I remember that part was quite inflexible..):
-> https://github.com/kuba-moo/linux/commit/5d357f97ccd0248ca6136c5e11ca3eadf5091bb3
+> The riscv only added it for CONFIG_64BIT, while old ABIs like arm, sparc,
+> mips, and s390 added before 64 bit time_t landed on 5.1.  With current 
+> 32 bits ABIs moving to 64 bit time_t userland, there is no much sense in 
+> providing a 32 bit gettimeofday, nor I think I adding a  gettimeoday64 would 
+> make much sense (maybe on really high sensitive workloads that require 
+> low-latency timestamping, but clock_gettime would work better anyway).
+> 
+> It is highly unlikely that the symbol will ever be used by userland,
+> and I think it only make sense to provide clock_gettime64.  The glibc 
+> 32 bit time_t clock_gettime routes to clock_gettime64 and it will only 
+> fallback to 32 bit vDSO symbol if the 64 bit time_t one is not present.
 
-Investigating this further my patches will not work for O=xyz builds
-either. Please squash this into the relevant changes:
+Like patch below?
+Helge
 
-diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
-index db60d2718b35..9966e5b7139b 100644
---- a/tools/testing/selftests/drivers/net/Makefile
-+++ b/tools/testing/selftests/drivers/net/Makefile
-@@ -9,7 +9,8 @@ TEST_PROGS := \
- 	stats.py \
- # end of TEST_PROGS
+
+[PATCH] hppa/vdso: Provide 64-bit clock_gettime() vDSO only
+
+Adhemerval noticed that the gettimeofday() and 32-bit clock_gettime()
+vDSO calls won't be used by glibc on hppa, so there is no need to
+declare them.  Both syscalls will be emulated by utilizing return values
+of the 64-bit clock_gettime() vDSO instead..
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Suggested-by: Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>
+
+diff --git a/sysdeps/unix/sysv/linux/hppa/sysdep.h b/sysdeps/unix/sysv/linux/hppa/sysdep.h
+index af62f7501e..e47975e5cf 100644
+--- a/sysdeps/unix/sysv/linux/hppa/sysdep.h
++++ b/sysdeps/unix/sysv/linux/hppa/sysdep.h
+@@ -473,11 +473,8 @@ L(pre_end):					ASM_LINE_SEP	\
  
--# YNL files
-+# YNL files, must be before "include ..lib.mk"
-+EXTRA_CLEAN += $(OUTPUT)/libynl.a
- YNL_GEN_FILES := psp_responder
- TEST_GEN_FILES += $(YNL_GEN_FILES)
+ #ifdef __LP64__
+ # define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+-# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+ #else
+-# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+ # define HAVE_CLOCK_GETTIME64_VSYSCALL  "__vdso_clock_gettime64"
+-# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+ #endif /* __LP64__ */
  
-diff --git a/tools/testing/selftests/net/ynl.mk b/tools/testing/selftests/net/ynl.mk
-index 0e01ad12b30e..59cb26cf3f73 100644
---- a/tools/testing/selftests/net/ynl.mk
-+++ b/tools/testing/selftests/net/ynl.mk
-@@ -18,6 +18,4 @@ $(YNL_OUTPUTS): CFLAGS += \
- 
- $(OUTPUT)/libynl.a:
- 	$(Q)$(MAKE) -C $(top_srcdir)/tools/net/ynl GENS="$(YNL_GENS)" libynl.a
--	$(Q)cp $(top_srcdir)/tools/net/ynl/libynl.a ./
--
--EXTRA_CLEAN += libynl.a
-+	$(Q)cp $(top_srcdir)/tools/net/ynl/libynl.a $(OUTPUT)/libynl.a
+ #endif	/* __ASSEMBLER__ */
 
