@@ -1,199 +1,198 @@
-Return-Path: <linux-parisc+bounces-1751-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1752-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A85F924727
-	for <lists+linux-parisc@lfdr.de>; Tue,  2 Jul 2024 20:15:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CD99248A0
+	for <lists+linux-parisc@lfdr.de>; Tue,  2 Jul 2024 21:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A21301F23D73
-	for <lists+linux-parisc@lfdr.de>; Tue,  2 Jul 2024 18:15:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB12C1F21E0C
+	for <lists+linux-parisc@lfdr.de>; Tue,  2 Jul 2024 19:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790E31CCCA2;
-	Tue,  2 Jul 2024 18:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F436F06A;
+	Tue,  2 Jul 2024 19:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OId6xSvb"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="guB7eFCA"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743A01BE24D
-	for <linux-parisc@vger.kernel.org>; Tue,  2 Jul 2024 18:15:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1D84084E
+	for <linux-parisc@vger.kernel.org>; Tue,  2 Jul 2024 19:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719944112; cv=none; b=Y2wc/i5sfeQtZBdzwWji0HD8Mngc+YOG5EA0vw0l1asn4/xKJHOo4qOwbrrBRepoZK5prPtEmO1tlo8meWxm8Rzb7MwvbX53mpFEaGmIGRplEa+yz2Qn1CRjw3r/mR6qho4wZPDf8rkMgzq3Toq0lQ1bb+rZVTKUqc8bnpfs7eE=
+	t=1719949936; cv=none; b=BJtJTaFIV8OvQZhloiDYst/PNIWF7xsOx6WUxL2U8tW6MV7NopkyOQjVZILTZFz99Z1wqO1Pvj4NKuZu5ZjoaDu8a3WGpegBaDsvQ4Jy8lkFCN7rbxdVXX59o1qs/d7clfyNiECfsgBvb/koMnZ0BmOwwVno22o2sHMpHekTHPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719944112; c=relaxed/simple;
-	bh=0CMjZNAv1nBlCPOqB5DYQ1PD8oGveRJ0LZf9zKKTpi8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sRSZUAAi3W/xlO6ni5xAlRtRCYytRtVSLCJ0jf33E0j9G2EeaiaUcbfjbvkjsth3fg6WSBksCHDvmYJAyBbw+h3TJfkx4OswwpFr58b+olHBObC4XMC9RjqWC2KVwY+To6B57Qe57GKTlUwDJGrlj4I+KRQgeQLZSKil5CBAvuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OId6xSvb; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-79c054b65d4so288482585a.1
-        for <linux-parisc@vger.kernel.org>; Tue, 02 Jul 2024 11:15:09 -0700 (PDT)
+	s=arc-20240116; t=1719949936; c=relaxed/simple;
+	bh=nseBvjfPn9zZ+YB4vQVOAWD2o2cbUtZBDRyf45jbyH4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NbCa34E/jXBRsgKIBsOCwZFW5TACihYFGx8XxzBzoAm6aiD6px+94dwz/1g8INgZV0fNHcUb4L8i9cbVsJxiY27wO9mTRp9geiNKcBp59o0vbDgLDYweeUg+yUzsYpyPFgOAEZAnF2sfbmv30ASUiG40E7ZCYUaZo2+Yutax6LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=guB7eFCA; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-713fa1aea36so1943770a12.1
+        for <linux-parisc@vger.kernel.org>; Tue, 02 Jul 2024 12:52:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719944108; x=1720548908; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3jfhmwJ2ZaitPnbChce0yHI1r7AowuVw/8E/XjQzADk=;
-        b=OId6xSvbiTDYJSJaSbC2v23KBA2j3vhMYwcnrnwrrQTl+w4PNtJbVmtlIDJzQs8bD/
-         +YhisCsjMkO06aSHPkRv+ntZmvGwNxCg7d+K5/tPDnBSYy9CZ0AwBmVOB7UTgHoH3Kns
-         pZ1kgMl8RYFenVTQFIiMZUrugonxeJmmHXfd/iZRsv0XhVhqd4EX2RHEYVGaFqd7rzHv
-         mnwjftoL0GtZn5x3JKsl4DSC7OZjKMDKqScnpylJr+j+tVDEf8Ooa1k57KhcF+IvL+d7
-         kAtITI7ekJHdUIsNkK9WL2K90fUdFMpnJ3bCkYA792EsYO3k765cUnwqr5odbYKrD05n
-         bcVg==
+        d=linaro.org; s=google; t=1719949934; x=1720554734; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=WOx6ZQaB+ew4nIO0JZFFt3QsesterOkn2Yd9aM9pEno=;
+        b=guB7eFCAUmDikha5TQVj11K2ohC7suOnE7IBBvt8Q9NNRR4zf13IzZ96AzLBy5BLCI
+         Ww1fpvZ41Bej0EZvfIDg7dKP/Bs4sNEV3wlwUkrupFbMvnO9w+WJMCjA2asTAxHNFeQ8
+         X1WSo54QhW0HufIOCjf6gDsbYh138o4k9LTGJRsZQt4U+yh/u35HLWqcmONYXpmef3y8
+         KjVB9qUggU7pS2i+UdfdYdiSn8zTngC2vuRMeuogSCN/PLs8TTryCe2qj88yjMq9zb1v
+         0mLtgzh6zZAGgN/oUng4FNq5V/p1hzaekf7zmVU7zS2YwMAkzt340LOh4E9sLFYxbpCo
+         VMXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719944108; x=1720548908;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3jfhmwJ2ZaitPnbChce0yHI1r7AowuVw/8E/XjQzADk=;
-        b=aHxSGhgTc8kFa9MQKP2cM4LJnrxarg94tD+2OuSvzPVZGSSuzaWOSnKaD/s3ymjvBt
-         xhtCtPUnqf9uty/gqDVDe4UWaLGYSPbPK5Cl1d/CZdAKvuQuVC/3qH3oLelQykPZo8je
-         DLPft5GAg2AMMXtl8pr5wOhTTqUm0kh+x0bLnNI/sxJgsMiuM0/lWaEgRoUQe6tUUFiW
-         0APTxzyKFRXlE7Nvw45emEafz/ik0H+rFyABy20at3s/APGAsG8/S6b3pRmkfv3UPhJN
-         KyuHrytu9kID+9XcLd4MCnuxGsVKxEfETP1yFa1V5eh/nSgWICU/bWqej2uVrtP18N17
-         f/qA==
-X-Forwarded-Encrypted: i=1; AJvYcCVXux7aPUjUEmZWcN+AZg8xkHJNy5wB/fFAEdvBBvB3vhf9BNxtD8OeOWgkPH6a4zmmpvbJIKDq5JaMjJO1sFm5bX4N/orKO1BHk0p4
-X-Gm-Message-State: AOJu0YwC7KUSv55oRBtyub0jLAgeIul9Ank1nUydVzRc8Zyr+h2jNBIQ
-	1ggZ3FXsN8IAioRX0zp6WvX8jdoXWjbCDNvd9Ru6zUEdw8LAYb+k+K6ypnNd8kxn5/9pQzxN3gx
-	eXqgyHXqR5voIa4Sq3YEZ0n4JsjNalnpLtkW/
-X-Google-Smtp-Source: AGHT+IFmyhMURbw09NuTqgYr3jOM6q8xc9WTxYBf4c7zqxp++C39G8nCnNJajyD2MlYoocDGcyD9JLOGWT3xUoIcMjk=
-X-Received: by 2002:a05:6214:1d2f:b0:6b5:a4f6:514 with SMTP id
- 6a1803df08f44-6b5b70caff8mr117075946d6.35.1719944108107; Tue, 02 Jul 2024
- 11:15:08 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1719949934; x=1720554734;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WOx6ZQaB+ew4nIO0JZFFt3QsesterOkn2Yd9aM9pEno=;
+        b=kepasBlAKxUuEgC+1DQn//uQmchPMJtK7cymdjl1QSINuQultH6uMkzWZBC77SZmcF
+         rYJJPnxWqnpFXCZnoD9QJHnPIN/EcBe80iVW5IpHHDdCnfusQ4GIHy3Wbn3t03xY9c40
+         cEgGKuUv7NHWe4B0O4nNAgVr32HiJl3idOFwJs/JBTlKknn+wawmdDpIVZ6ay7NO2FxS
+         ypBrUXURRrZ0VYF6KG2tGJkep/Pujg6Jx6ZSsQSS4QNY5+DfvXHKyazz698y07JHfRfP
+         knqpsNx7rcJpTb5QcY1w9/hfFjTb+Y5aWUJxqVLBvV6tlKwFMDH5RGMFTKn+XRSpdB51
+         Bbkg==
+X-Forwarded-Encrypted: i=1; AJvYcCXqg28qhf5TVeEh6SmJUvBta7jIbuIU2CSn7ntjh6NlQR1CQ7/gbUTKWH1I7xbDTqBRvytN+g1HY6SxvPkyZAGfBisxOWLXAyolodta
+X-Gm-Message-State: AOJu0YyAiMCaL0+GQvgL3i4YcdDWhawNpqBRWuiSDHVgcTUVMftBXrB8
+	Igi5oubaXTfx8EKtOAGrmtoMsQk5Av9vjGkYcbcX9YCTQoavP9q4bV4d6T6h97A=
+X-Google-Smtp-Source: AGHT+IFoMSNVH5UOEyyMYsm99bbIyBJZfwO/n3/M3oBvf8Ah93DI13XK6tSQS401LTvkjaYsYODqWg==
+X-Received: by 2002:a05:6a20:3ca3:b0:1bf:594:ea91 with SMTP id adf61e73a8af0-1bf0594eef1mr7274492637.42.1719949933797;
+        Tue, 02 Jul 2024 12:52:13 -0700 (PDT)
+Received: from [192.168.15.31] ([187.56.129.198])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7080246f656sm8915609b3a.65.2024.07.02.12.52.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Jul 2024 12:52:13 -0700 (PDT)
+Message-ID: <4d89c58d-e23a-4e3a-b7ce-b02687985d8f@linaro.org>
+Date: Tue, 2 Jul 2024 16:52:08 -0300
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240628003253.1694510-1-almasrymina@google.com>
- <20240628003253.1694510-11-almasrymina@google.com> <35691b55-436c-4c52-b241-f0c5326227cb@app.fastmail.com>
-In-Reply-To: <35691b55-436c-4c52-b241-f0c5326227cb@app.fastmail.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 2 Jul 2024 11:14:53 -0700
-Message-ID: <CAHS8izN+wiY8rNDhK7XdF-9L=PdHGMSj7uHKkyCDsW8_6M76SQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v15 10/14] tcp: RX path for devmem TCP
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	Linux-Arch <linux-arch@vger.kernel.org>, bpf@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Donald Hunter <donald.hunter@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
-	Matt Turner <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, shuah <shuah@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Bagas Sanjaya <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Yunsheng Lin <linyunsheng@huawei.com>, 
-	Shailend Chand <shailend@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Jeroen de Borst <jeroendb@google.com>, 
-	Praveen Kaligineedi <pkaligineedi@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] hppa/vdso: Add wrappers for vDSO functions
+To: Helge Deller <deller@kernel.org>
+Cc: libc-alpha@sourceware.org, John David Anglin <dave.anglin@bell.net>,
+ linux-parisc@vger.kernel.org
+References: <ZnXT9hNtYWLg9MID@carbonx1>
+ <fd19f26c-0ebf-42ef-bfc3-686a82104d07@linaro.org>
+ <47136a43-058f-4258-bd1b-3475fd7ea14a@gmx.de>
+ <433fdb50-85e6-4b2d-8bd5-371b8cac4921@linaro.org> <Zn006zh2vSqfgii6@carbonx1>
+Content-Language: en-US
+From: Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>
+Organization: Linaro
+In-Reply-To: <Zn006zh2vSqfgii6@carbonx1>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 2, 2024 at 8:25=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Fri, Jun 28, 2024, at 02:32, Mina Almasry wrote:
-> > --- a/arch/alpha/include/uapi/asm/socket.h
-> > +++ b/arch/alpha/include/uapi/asm/socket.h
-> > @@ -140,6 +140,11 @@
-> >  #define SO_PASSPIDFD         76
-> >  #define SO_PEERPIDFD         77
-> >
-> > +#define SO_DEVMEM_LINEAR     78
-> > +#define SCM_DEVMEM_LINEAR    SO_DEVMEM_LINEAR
-> > +#define SO_DEVMEM_DMABUF     79
-> > +#define SCM_DEVMEM_DMABUF    SO_DEVMEM_DMABUF
->
-> Something is still wrong with the number assignment:
->
-> > --- a/arch/mips/include/uapi/asm/socket.h
-> > +++ b/arch/mips/include/uapi/asm/socket.h
-> > @@ -151,6 +151,11 @@
-> >  #define SO_PASSPIDFD         76
-> >  #define SO_PEERPIDFD         77
-> >
-> > +#define SO_DEVMEM_LINEAR     78
-> > +#define SCM_DEVMEM_LINEAR    SO_DEVMEM_LINEAR
-> > +#define SO_DEVMEM_DMABUF     79
-> > +#define SCM_DEVMEM_DMABUF    SO_DEVMEM_DMABUF
-> > +
-> >  #if !defined(__KERNEL__)
-> >
-> >  #if __BITS_PER_LONG =3D=3D 64
->
-> so alpha and mips use the same numbering system as
-> the generic version for existing numbers
->
-> > diff --git a/arch/parisc/include/uapi/asm/socket.h
-> > b/arch/parisc/include/uapi/asm/socket.h
-> > index be264c2b1a117..2b817efd45444 100644
-> > --- a/arch/parisc/include/uapi/asm/socket.h
-> > +++ b/arch/parisc/include/uapi/asm/socket.h
-> > @@ -132,6 +132,11 @@
-> >  #define SO_PASSPIDFD         0x404A
-> >  #define SO_PEERPIDFD         0x404B
-> >
-> > +#define SO_DEVMEM_LINEAR     78
-> > +#define SCM_DEVMEM_LINEAR    SO_DEVMEM_LINEAR
-> > +#define SO_DEVMEM_DMABUF     79
-> > +#define SCM_DEVMEM_DMABUF    SO_DEVMEM_DMABUF
->
-> parisc uses a different number, but you start using the
-> generic version here. This is probably fine but needs
-> a comment.
->
-> > index 8ce8a39a1e5f0..25a2f5255f523 100644
-> > --- a/include/uapi/asm-generic/socket.h
-> > +++ b/include/uapi/asm-generic/socket.h
-> > @@ -135,6 +135,11 @@
-> >  #define SO_PASSPIDFD         76
-> >  #define SO_PEERPIDFD         77
-> >
-> > +#define SO_DEVMEM_LINEAR     98
-> > +#define SCM_DEVMEM_LINEAR    SO_DEVMEM_LINEAR
-> > +#define SO_DEVMEM_DMABUF     99
-> > +#define SCM_DEVMEM_DMABUF    SO_DEVMEM_DMABUF
->
-> These on the other hand look like a typo: did you
-> mean number 78 and 79 instead of 98 and 99?
->
 
-Ooops, I think this is a typo or error indeed. I will fix.
 
-> Alternatively, you could continue with number 87,
-> which is the next unused number on sparc, and have
-> the same numbers on all architectures?
->
+On 27/06/24 06:46, Helge Deller wrote:
+> * Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>:
+>>
+>> On 25/06/24 16:48, Helge Deller wrote:
+>>> On 6/24/24 22:31, Adhemerval Zanella Netto wrote:
+>>>>
+>>>>
+>>>> On 21/06/24 16:26, Helge Deller wrote:
+>>>>> The upcoming parisc (hppa) v6.11 Linux kernel will include vDSO
+>>>>> support for gettimeofday(), clock_gettime() and clock_gettime64()
+>>>>> syscalls for 32- and 64-bit userspace.
+>>>>> The patch below adds the necessary glue code for glibc.
+>>>>>
+>>>>> Signed-off-by: Helge Deller <deller@gmx.de>
+>>>>>
+>>>>> Changes in v2:
+>>>>> - add vsyscalls for 64-bit too
+>>>>>
+>>>>> diff -up ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org ./sysdeps/unix/sysv/linux/hppa/sysdep.h
+>>>>> --- ./sysdeps/unix/sysv/linux/hppa/sysdep.h.org    2024-06-15 20:20:58.992000000 +0000
+>>>>> +++ ./sysdeps/unix/sysv/linux/hppa/sysdep.h    2024-06-21 19:19:02.132000000 +0000
+>>>>> @@ -468,6 +468,18 @@ L(pre_end):                    ASM_LINE_SEP    \
+>>>>>   #define CLOB_ARGS_1 CLOB_ARGS_2, "%r25"
+>>>>>   #define CLOB_ARGS_0 CLOB_ARGS_1, "%r26"
+>>>>>
+>>>>> +#define VDSO_NAME    "LINUX_6.11"
+>>>>> +#define VDSO_HASH    182951793
+>>>>> +
+>>>>> +#ifdef __LP64__
+>>>>> +# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+>>>>> +# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+>>>>> +#else
+>>>>> +# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+>>>>> +# define HAVE_CLOCK_GETTIME64_VSYSCALL  "__vdso_clock_gettime64"
+>>>>> +# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+>>>>> +#endif /* __LP64__ */
+>>>>> +
+>>>>>   #endif    /* __ASSEMBLER__ */
+>>>>
+>>>> Not sure why you have added the gettimeofday support, currently 32 bits
+>>>> it is already routed to to clock_gettime (which will use
+>>>> __vdso_clock_gettime64 anyway).
+>>>
+>>> Yep, you are right.
+>>> I actually didn't checked if it's being used but just saw it's defined
+>>> for other arches too, so I assumed it to be used.
+>>>
+>>>> For hppa to actually use, it would require to add a way to call it
+>>>> for !USE_IFUNC_GETTIMEOFDAY gettimeofday, which I am not it really be
+>>>> an improvement here.
+>>>
+>>> Yes, that doesn't make sense.
+>>>
+>>> Looking at the code it seems riscv, sparc, arm, mips and s390 define it
+>>> too, without being used. Do you suggest we should remove gettimeofday
+>>> vsyscall from hppa again (or just keep like the others even if not being used)?
+>>
+>> The riscv only added it for CONFIG_64BIT, while old ABIs like arm, sparc,
+>> mips, and s390 added before 64 bit time_t landed on 5.1.  With current 
+>> 32 bits ABIs moving to 64 bit time_t userland, there is no much sense in 
+>> providing a 32 bit gettimeofday, nor I think I adding a  gettimeoday64 would 
+>> make much sense (maybe on really high sensitive workloads that require 
+>> low-latency timestamping, but clock_gettime would work better anyway).
+>>
+>> It is highly unlikely that the symbol will ever be used by userland,
+>> and I think it only make sense to provide clock_gettime64.  The glibc 
+>> 32 bit time_t clock_gettime routes to clock_gettime64 and it will only 
+>> fallback to 32 bit vDSO symbol if the 64 bit time_t one is not present.
+> 
+> Like patch below?
+> Helge
+> 
+> 
+> [PATCH] hppa/vdso: Provide 64-bit clock_gettime() vDSO only
+> 
+> Adhemerval noticed that the gettimeofday() and 32-bit clock_gettime()
+> vDSO calls won't be used by glibc on hppa, so there is no need to
+> declare them.  Both syscalls will be emulated by utilizing return values
+> of the 64-bit clock_gettime() vDSO instead..
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Suggested-by: Adhemerval Zanella Netto <adhemerval.zanella@linaro.org>
+> 
+> diff --git a/sysdeps/unix/sysv/linux/hppa/sysdep.h b/sysdeps/unix/sysv/linux/hppa/sysdep.h
+> index af62f7501e..e47975e5cf 100644
+> --- a/sysdeps/unix/sysv/linux/hppa/sysdep.h
+> +++ b/sysdeps/unix/sysv/linux/hppa/sysdep.h
+> @@ -473,11 +473,8 @@ L(pre_end):					ASM_LINE_SEP	\
+>  
+>  #ifdef __LP64__
+>  # define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+> -# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+>  #else
+> -# define HAVE_CLOCK_GETTIME_VSYSCALL    "__vdso_clock_gettime"
+>  # define HAVE_CLOCK_GETTIME64_VSYSCALL  "__vdso_clock_gettime64"
+> -# define HAVE_GETTIMEOFDAY_VSYSCALL     "__vdso_gettimeofday"
+>  #endif /* __LP64__ */
+>  
+>  #endif	/* __ASSEMBLER__ */
 
-I don't know enough about the tradeoffs of either approach to be
-honest, so I'll do what you prefer. I think I'll just fix the ones in
-asm-generic/socket.h since that is what we aligned on from previous
-iterations I believe, unless you tell me to do differently.
-
---=20
-Thanks,
-Mina
+Yeah, it seems ok thanks.
 
