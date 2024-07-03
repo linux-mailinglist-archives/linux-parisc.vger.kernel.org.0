@@ -1,105 +1,129 @@
-Return-Path: <linux-parisc+bounces-1762-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1763-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656DC9267D7
-	for <lists+linux-parisc@lfdr.de>; Wed,  3 Jul 2024 20:11:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A62A92682E
+	for <lists+linux-parisc@lfdr.de>; Wed,  3 Jul 2024 20:31:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72A841C2145A
-	for <lists+linux-parisc@lfdr.de>; Wed,  3 Jul 2024 18:11:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B329F1F2395F
+	for <lists+linux-parisc@lfdr.de>; Wed,  3 Jul 2024 18:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DC3185E53;
-	Wed,  3 Jul 2024 18:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BED187543;
+	Wed,  3 Jul 2024 18:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="ZRmmUp+y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2b4SjCO"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642F5F9D4;
-	Wed,  3 Jul 2024 18:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A3B5FEED;
+	Wed,  3 Jul 2024 18:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720030285; cv=none; b=kVQefD1gbCeGMWDe8s+TU4AGUS16pOd2zFb/8QIL06z5siASmxYYhF1jBjSjnWzSYk1i50GtMBwu7GdCz9nqNfMtRfDEgcc/q/Dc2C2mMpJauOI4g6tUK2VNXJGL1fW46Gx8fpwk9ur9UuYyW5rxWaB4cM2jMwm34mdw9HBQpcc=
+	t=1720031471; cv=none; b=gZRUbwCxleJQSqljueUQSr8t+y24hU+elUu2+wfE0ComuBIUZf145ea748rQXyIRU5cxaic8kzORmlBp4VRw1u2YS54pf7d9ZgwW428Esi7NBrTbpHTIN+YQ2nvy4nBcb0c/eO8uBMcuh+qmkRxQJ497CnkkuT1Qh4KCTPZS7+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720030285; c=relaxed/simple;
-	bh=jMbdZCqb2xj39Jt2FZtd0/bUiZqytApbTjMfDgh7J1A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N06srUaVYfxYknIGHkXG9/ytke36aW5xfKWi0650xoygE3VUv04K5gZvowLDsPdqZVBIjf40Icpw+lXFoj5pnDJV92sUZ0RncsDTSu6/20RtWI80ssES+eUFx/mJVHt/iEkurZ9H6Q9YJnidkvmpJg2v0enoVGy+ZwTkBH9zgmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=ZRmmUp+y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB1EC2BD10;
-	Wed,  3 Jul 2024 18:11:24 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="ZRmmUp+y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1720030281;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nxP95z8H/D5jQ1acVpMchUAdQN8JTrhlX7OCXvz9kwQ=;
-	b=ZRmmUp+yHoawM9i6CE4ye6v4+uhrw5XL1V05sJWeH8bJ/BFb28hVJYr8s42ypVo6hLtbE1
-	f2Lb+p++NVADqKpyDm9yUuASkqsTIjXFbJv4F+oyM5hDzpg/YFBrk9r7BjP+/VuxaGi3Jx
-	0/4hlTNikRoAD/60UEWeTujua408ac8=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id a2dcc16d (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Wed, 3 Jul 2024 18:11:20 +0000 (UTC)
-Date: Wed, 3 Jul 2024 20:11:14 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Helge Deller <deller@kernel.org>
-Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH] wireguard: allowedips: Prevent unaligned memory accesses
-Message-ID: <ZoWUQho7noWwAqrF@zx2c4.com>
-References: <ZoV6Q6lWgVRqe7eh@p100>
+	s=arc-20240116; t=1720031471; c=relaxed/simple;
+	bh=Mv6mqBHDiM3rqFh3B+/o0KLetPfZfBn8uV4dFhO0sVc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Gv/wyqiUacUf7iGaAPrFmOQcQ8hOYt0jHM0t/v7Xp3BsFcI2j8PbNmfnzFec/C8q4PI+OsJ58i7JHwsL5qjaFG5o+HGmpLNEx4+0Jw9crOsknpEgBN+UQixOyxBnAOrm2n09MrlLVpi1c3iqSkVsrvPN+5SFCUu2IX0fSW0vLvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2b4SjCO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E514C2BD10;
+	Wed,  3 Jul 2024 18:31:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720031470;
+	bh=Mv6mqBHDiM3rqFh3B+/o0KLetPfZfBn8uV4dFhO0sVc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Q2b4SjCOlyBR4b/A3cmxrRvK0ldKPKPA/5Ju8X3w1MZKrzDVOjm9dFDbkuHNXVTjV
+	 Yc1e0yhldj7plTo3apSg+jVo6STh8apoZk6wpDfN0MqfhsFyigTWNB9g2DX4j2jS4b
+	 +w8JA7QKiAncIv+0WG92BVz3xe8SwulYg9HPOlqQm6UjlUb3YkYr+TjunG3SDVCbcB
+	 sB9aAIY80O1Db9Z1a1S1h+eAsTQNk+2QlMSIpNIoEBjXnifANuXwfRYiD0tmztUbty
+	 viYAY7ZzuNIMsS4G6hLdlW+IpND3TTcBhbU/XLJe3wOZj+bdJP08UkDGbYMOx4a12C
+	 iLv3UkwECWtkA==
+Date: Wed, 3 Jul 2024 11:31:07 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, bpf@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Donald
+ Hunter <donald.hunter@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Richard
+ Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky
+ <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley"
+ <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>,
+ Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven
+ Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnd Bergmann
+ <arnd@arndb.de>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, Martin KaFai
+ Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend
+ <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav
+ Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa
+ <jolsa@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan
+ <shuah@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Christian
+ =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Bagas Sanjaya
+ <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, Nikolay
+ Aleksandrov <razor@blackwall.org>, Pavel Begunkov <asml.silence@gmail.com>,
+ David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, Yunsheng Lin
+ <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, Harshitha
+ Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi
+ <pkaligineedi@google.com>, Willem de Bruijn <willemb@google.com>, Kaiyuan
+ Zhang <kaiyuanz@google.com>
+Subject: Re: [PATCH net-next v15 03/14] netdev: support binding dma-buf to
+ netdevice
+Message-ID: <20240703113107.11ed8a18@kernel.org>
+In-Reply-To: <CAHS8izOCuNZWfZR_jecFOMu2XGqcYUkuVf38wRqBvoE9tmGzoQ@mail.gmail.com>
+References: <20240628003253.1694510-1-almasrymina@google.com>
+	<20240628003253.1694510-4-almasrymina@google.com>
+	<20240702180908.0eccf78f@kernel.org>
+	<CAHS8izOCuNZWfZR_jecFOMu2XGqcYUkuVf38wRqBvoE9tmGzoQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZoV6Q6lWgVRqe7eh@p100>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Helge,
-
-On Wed, Jul 03, 2024 at 06:20:19PM +0200, Helge Deller wrote:
-> On the parisc platform the Linux kernel issues kernel warnings because
-> swap_endian() tries to load a 128-bit IPv6 address from an unaligned
-> memory location:
->  Kernel: unaligned access to 0x55f4688c in wg_allowedips_insert_v6+0x2c/0x80 [wireguard] (iir 0xf3010df)
->  Kernel: unaligned access to 0x55f46884 in wg_allowedips_insert_v6+0x38/0x80 [wireguard] (iir 0xf2010dc)
+On Wed, 3 Jul 2024 09:56:45 -0700 Mina Almasry wrote:
+> > Is this really sufficient in terms of locking? @binding is not
+> > RCU-protected and neither is the reader guaranteed to be in
+> > an RCU critical section. Actually the "reader" tries to take a ref
+> > and use this struct so it's not even a pure reader.
+> >
+> > Let's add a lock or use one of the existing locks
 > 
-> Avoid such unaligned memory accesses by instead using the
-> get_unaligned_be64() helper macro.
+> Can we just use rtnl_lock() for this synchronization? It seems it's
+> already locked everywhere that access mp_params.mp_priv, so the
+> WRITE/READ_ONCE are actually superfluous. Both the dmabuf bind/unbind
+> already lock rtnl_lock, and the only other place that access
+> mp_params.mp_priv is page_pool_init(). I think it's reasonable to
+> assume rtnl_lock is also held during page_pool_init, no? AFAICT it
+> would be very weird for some code path to be reconfiguring the driver
+> page_pools without holding rtnl_lock?
 > 
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> 
-> diff --git a/drivers/net/wireguard/allowedips.c b/drivers/net/wireguard/allowedips.c
-> index 0ba714ca5185..daf967130b72 100644
-> --- a/drivers/net/wireguard/allowedips.c
-> +++ b/drivers/net/wireguard/allowedips.c
-> @@ -15,8 +15,8 @@ static void swap_endian(u8 *dst, const u8 *src, u8 bits)
->  	if (bits == 32) {
->  		*(u32 *)dst = be32_to_cpu(*(const __be32 *)src);
->  	} else if (bits == 128) {
-> -		((u64 *)dst)[0] = be64_to_cpu(((const __be64 *)src)[0]);
-> -		((u64 *)dst)[1] = be64_to_cpu(((const __be64 *)src)[1]);
-> +		((u64 *)dst)[0] = get_unaligned_be64(src);
+> What I wanna do here is delete the incorrect comment, remove the
+> READ/WRITE_ONCE, and maybe add a DEBUG_NET_WARN_ON(!rtnl_is_locked())
+> in mp_dmabuf_devmem_init() but probably that is too defensive.
 
-Ahh, right, in6_addr only has a u32 member, not a u64 member, so that's
-potentially unaligned.
+The only concern I have is driver error recovery paths. They may be
+async and may happen outside of rtnl_lock. Same situation we have
+with the queue <> NAPI <> IRQ mapping helpers. queue <> NAPI <> IRQ
+helpers require rtnl_lock today, and Intel recently had a number of
+fixes because that complicates their error recovery paths.
 
-> +		((u64 *)dst)[1] = get_unaligned_be64(src[8]);
-
-src[8] is not correct, however. (This crashes; did you test it?) I've
-fixed it up and put it in the wireguard tree:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/zx2c4/wireguard-linux.git/commit/?id=ad3d9eef8e1b304b243e63124581f97c88ce7ff9
-
-I'll push this up to net.git soon. Thanks for the patch.
-
-Jason
+But I guess any locking here will take non-trivial amount of analysis.
+Let's go with rtnl_lock, that's fine.
 
