@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-1775-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1776-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A23929E95
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Jul 2024 10:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB3792A036
+	for <lists+linux-parisc@lfdr.de>; Mon,  8 Jul 2024 12:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274631C222DB
-	for <lists+linux-parisc@lfdr.de>; Mon,  8 Jul 2024 08:58:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFF401C2186F
+	for <lists+linux-parisc@lfdr.de>; Mon,  8 Jul 2024 10:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F7313ACC;
-	Mon,  8 Jul 2024 08:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649597D06B;
+	Mon,  8 Jul 2024 10:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="K6KNHXvS"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="SVj1RND2"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8150BB66F
-	for <linux-parisc@vger.kernel.org>; Mon,  8 Jul 2024 08:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4E17C081;
+	Mon,  8 Jul 2024 10:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720429130; cv=none; b=QmY6IwMknPxVmcHACO4ma7dlKudFc5VOUS9Tyhn0IDXMjSN+AGlASqdR21MxQgQTvXUzv5Ii5V+DrmHTtz/cSgOXS+T36zvrOcklrhSiU6S03F/RLysTra8CqcDK2H5WB7XJBJkiaAFWRo5MwA3oanbnaA+tSk/NDz+/zG5YbNw=
+	t=1720434532; cv=none; b=gTL0HlLqjb6GGePhB4sBOJ/XB7aIx70pKbbkDodlRIX6BGkbwq1XiIBk130NT3Lek5ne5QnIdnbP4vS8fy0EfwH75E2mRQgbKOo0zEIK6tNGbbuviP7tCodnd1LRt2wac7Lw905TO7Kf5gGlWtfReIm2ACiFG7MzKc5nlYl97hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720429130; c=relaxed/simple;
-	bh=71zXLS/ZQSATNgXQ0XSHSJJvSAF1JidqjFcgDAQXOck=;
+	s=arc-20240116; t=1720434532; c=relaxed/simple;
+	bh=2r3DNPEzj/wQbKvfTrp1wPLKF/BAwlKvXqtPxJ1qJ9k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r3dUXV2i6aXfGsqJC7xchiugb1OJybbgETqBtClnH2qVOdlvV6nyhymZvzi+gZDiSm8BKqGPE+KNrrNiGhDKiItHxLNjkNNUf1QZjB10Q6823hBUtjDpR3kHXnB3+gqdTxaPmdq1qLpG4jWeWa3dWgzwzBpgc8W9UmTKTlfJEr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=K6KNHXvS; arc=none smtp.client-ip=212.227.15.18
+	 In-Reply-To:Content-Type; b=jJ08LYS6hgoD6VWGsgCSyo413R8j7Pr3alFwMCAfRyHnrkw1lmKbPBOSozXMdElE1NVFw1kA7LVlEFG7FfjGQGLrNviuTwwBLp8l5TdERvNhgndtbTGrKwHVr1Nw9A7VchsCygsmYFQKeF+5CBpXDKFrfRApQdUUsuEWRm8fCnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=SVj1RND2; arc=none smtp.client-ip=212.227.15.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1720429117; x=1721033917; i=deller@gmx.de;
-	bh=o6SffuRJols1saHsPvfOcOHmKosaLv2+vz7Loc63bL0=;
+	s=s31663417; t=1720434515; x=1721039315; i=deller@gmx.de;
+	bh=I1gYTLcVw0gXZoZ9Ilgn+lc2dfK4AhJQ9D7jZiy+2Jg=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=K6KNHXvSHIC5h6HgN6R7XyaecwiE2NsuthVlcwHqLf0L6k2hDnBTe/zrGr1wnc5m
-	 9vSl5oBduGda8XRqvYYxzl8obcNh/NO0NxbJXZclhW9AH/RJnHYnFVV+R5uN9cHdA
-	 +dlQHA0DiQ1E1/HseEhgbOMdXwZxKu74wxBdJac9b9RCmvRJiRp6lQLZ8o8Jjwjcg
-	 t7v7W6EDtwICnI14Ou4Tj5XcRbwDS6pOMAvISPVKah/W0UkceC7/5Nu0gTCXKgDTv
-	 hbwHvAJkeocY6CPy5fWPYtxy1XJyRg25xL7obvfh4zk85ZuXINItLA5WtzO7B7Ljc
-	 Z2RFTS09g4t5FYEpwg==
+	b=SVj1RND2SP8elBLOFlsPkgO572y+VlT+27KzhU856rgYT2hFOazng8OUv4ldeZIS
+	 YCAxxhRFIW4/ISE2s1iJ1waUFrI2FJsjHne/zGliivLXCztj3cLxu02F1dRMlTWXG
+	 hkPhOWNvz8eDJivW+muyWGrBv0cd2u/VfJPjk1d7YQk83RTQNHJMrqqiK1xHoMqIU
+	 372Lzo3yK6K15MaJu3bodspq0REgoUcRFzLNRAWql+Su30ZTfi++JR2o4Rk747gF0
+	 kMzds5rkn4rNq5pD+j8u8h/iX6IjM55eqcU9C1PMBkV+OaYb6DGFQ+JUC1FzMKPxA
+	 DxRBW9BMTa2pitwzkg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.33]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N4z6k-1sIwkS3bxU-010CP7; Mon, 08
- Jul 2024 10:58:37 +0200
-Message-ID: <a6a933be-9795-4614-a925-25049736d3c1@gmx.de>
-Date: Mon, 8 Jul 2024 10:58:35 +0200
+Received: from [192.168.20.55] ([109.250.63.33]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M5fMe-1sSOAT2hQo-008rOP; Mon, 08
+ Jul 2024 12:28:35 +0200
+Message-ID: <e5bac456-1760-48ff-9759-382ef7f3f392@gmx.de>
+Date: Mon, 8 Jul 2024 12:28:33 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,12 +58,11 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hppa: Wire up cacheflush syscall
-To: Florian Weimer <fweimer@redhat.com>, Helge Deller <deller@kernel.org>,
- John David Anglin <dave.anglin@bell.net>
-Cc: libc-alpha@sourceware.org, linux-parisc@vger.kernel.org
-References: <Zos8gVaGUcuaaNaI@carbonx1>
- <877cdwfgi9.fsf@oldenburg.str.redhat.com>
+Subject: Re: [PATCH] crypto: xor - fix template benchmarking
+To: Herbert Xu <herbert@gondor.apana.org.au>, Helge Deller <deller@kernel.org>
+Cc: linux-crypto@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+ linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <ZnMWDdKJHfYQLDzS@p100> <ZoiKD2A4pJhaEWpW@gondor.apana.org.au>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -109,67 +108,47 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <877cdwfgi9.fsf@oldenburg.str.redhat.com>
+In-Reply-To: <ZoiKD2A4pJhaEWpW@gondor.apana.org.au>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:wVL7hDVCthPl/fItuo2yT1ivzndSrBYnyhn8MlUlul7mgmiJ1w6
- R2OhCcrCvQ1m39jcorX0eRyFbnJPtBL+c5bENHR/H+PFMIxdG1zzayrEtJAQ2aYHcivBSIq
- yzlEjWXu+r+ZrtTrGoHkivOeTrY806KqGcpkqGlTQYpUGNI1hzFh7GFdFoAF8q3ayR6lTiu
- MItCJkK0Gpa7R+7te5MZw==
+X-Provags-ID: V03:K1:4gnEIKZwOc7F1KNOy6SDMVuSLkGFl5k4O8hHqW5PizzyGufM9BK
+ 5ytvx0m86b1fUTkmckyfKX1/j6P/qGk8k2HUhTSo7f0qQcZSyvwT25SbkB2uJ6EvqDUyrGZ
+ gPdPVHzbWV8TWiBsyvSCyiUSHGgGVC/gjD712t5hW33+zuEKzF7USPQFGgCl7FpWUO47Rvk
+ 2AqGnU06vS7K9WHqr7qag==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:kcepeUxciQw=;DSVvOSQRWsKFnL65va44gKCRh6i
- 5M/hBnynDo6gUftCRRAu0oQDl5YF5MOahOnIbvt/6COIDslufYcxzg4FBmXQiiichuoOzuUmt
- XyZWZv4ZHaagW1w7ZybkykGEWr73BMJXgQDKbRqio4YgXfuu0BVfX7iUTb1Pl9pPHvqq78Ypp
- I25GzeAtm/grV1P1eDQhypazpOHBSwzKYnPOF3Q76hG9L/9VlRBbgA4OhmY8WWh4a26hRQ+1T
- NXKNMYzfdaNEwsgGxaEx3JZvGExxwYhHIcQQSHdfYefH5rgn9kSFCChaKA/sTClXaVeJ7EuoY
- G8RSlSmH/S/+MJbJ1wq2GTrKaT0Q7CA4nEfLFS+1HUTNOmSogvXai7o/6aI3DJIz1rpzPxEBE
- vUwXE16bDCahymWa8IZLnN9xGy2jI4pPH+FbfQFQbfMyTADVMggnWGl9ULnWTXZ6oGdRHU5+m
- r6LBGwp4qZaxUBplkc00rx/zYGMr+sb4lB/U/k7D0hUEDyXvVjt3t4mCPAScvHY8skPN6/KPz
- wHO3vCx0mZ7RiP/oX21QeGn9X6LQnaFrvtKe96njz9PGSeSY0SXXdYOM/XDoYTB0/lJY6Y1zw
- 5qL2Et6eRvWN6doRPgjp0bTiTPuSsYr6QT2sJOVO06tCIVERoVCE10k3YmamJkGNAIH9KcR7v
- CPJKjx9DUcIVHWKw+9plbx+OWhHGeMay5WP6e9jaTHjw3qy+IwErHUoyx5Bdhju3o+ZS7xh+h
- QmlbZs46q5RDRubdAE//sd2iRd4NE/Pz+Cixg6Lo6r27fJ8T/BbwyQ/4ji06ca7p9o6oz02eT
- FZA9P3kKDAif7jsZBAVnMtgmphVxJGuuLMoEpTjI6uuc8=
+UI-OutboundReport: notjunk:1;M01:P0:ZcU8CC2TWnU=;PInqwIhf/Yd+DiyY0edES811vxi
+ UxwnsTT7Qkdrh8mZTrnrSIqV8iEnr+58wsDPV12DA59QPftU6H0ew0tDLDVnu0V4OwX9rUfTf
+ QHlPUPrqveURJ0PSIkujKUpzf0w3lPwJouTscXDevvMX815I82lxQIVCLOWzOtj02to9Uldas
+ KTS0AzIZS9tpnAcF3Kz1DlI+mASJe99Xc//K+3mURgMOBizc/nXH1sUcHm6eqis7kOoWcyxAl
+ r4LLPlLS0DGqDX8f36p9TVMjaN+EDg6fHVBZHbnrdxQ2vpr/jT/QVtqjKc0K8SRz3cly9Ij1F
+ Yjr1xH4iC2k9F1uclk8fASBU4sUvg6Iol/llxQfb87Bp1YVrr/In3mEG79DAY327S7i0HyJCo
+ jiyE7xSLj9FMW8kze+rFnvk+w/l/jRjruCHukkB3InVzosWKTboDqfSLcv4qkIi2G8X3VOAqR
+ nvMNfUtdC9U4vst2ZxGozDE5G6j128qNn9/ZigO5zGg8UBhC/JHTcWVpq1PWLHi+X1knlYRxP
+ LOdZL+IE26qWm52U0ipvpoWmGy0K1UI8Ob88NPaXu2vZSsws5FtIzmWbT5cRmX/sU8M9MkaAX
+ H9BkLoUGixjB1B25ijtG+IxDyvx5ApN0gvLe/XPTvb1CA0HNAfk1j9KKEDU1r0Qr44kgyV/xq
+ gPw7bhKqrnaRaIO7DMBYh2qVwQ2yX9kIPl5xBZ7few084nCUaPlyf9WmBjNQJySLvaeA6P4tt
+ TxblKZlFpohbKqLIZyaHBtadI0qiCIeaA/idWwtbJtxTwMauAgaEHFJqUz+CwDQ+HDRA6Kx9S
+ IJvpx2Hg7AMevM/VDMoU5Xg5+3xlqPPGhZWO5nJNv/EaY=
 
-On 7/8/24 10:13, Florian Weimer wrote:
-> * Helge Deller:
+On 7/6/24 02:04, Herbert Xu wrote:
+> On Wed, Jun 19, 2024 at 07:31:57PM +0200, Helge Deller wrote:
+>>
+>> +	t0 =3D ktime_get();
+>> +	/* delay start until time has advanced */
+>> +	do { start =3D ktime_get(); } while (start =3D=3D t0);
 >
->> diff --git a/sysdeps/unix/sysv/linux/hppa/sys/cachectl.h b/sysdeps/unix=
-/sysv/linux/hppa/sys/cachectl.h
->> new file mode 100644
->> index 0000000000..16e47d1329
->> --- /dev/null
->> +++ b/sysdeps/unix/sysv/linux/hppa/sys/cachectl.h
->> @@ -0,0 +1,36 @@
+> Please rewrite this loop in the usual kernel coding style.
+
+Ok.
+
+> What about adding a cpu_relax() in there if ktime_get doesn't
+> advance? Something like
 >
->> +#ifndef _SYS_CACHECTL_H
->> +#define _SYS_CACHECTL_H 1
->> +
->> +#include <features.h>
->> +
->> +/* Get the kernel definition for the op bits.  */
->> +#include <asm/cachectl.h>
->
-> This makes this header (<sys/cachectl.h>) unusable with older kernel
-> headers.  I think it also results in a test failure with older headers.
-> Is this a problem?
+> 	while ((start =3D ktime_get()) =3D=3D t0)
+> 		cpu_relax();
 
-hppa lives in debian unstable, so basically you should always use
-the latest kernel & kernel headers when upgrading glibc.
-So, personally I think it's ok to ask people to upgrade.
-Dave, any opinion on this?
-
-> In similar cases, we use LINUX_VERSION_CODE checks (for older compilers)
-> and __has_include to support backports.
-
-I'd prefer to not add additional checks.
-Another (maybe easier) possibility is to simply backport the kernel asm/ca=
-chectl.h
-file (just the header, not the implementation, so the syscall will return =
--ENOSYS on
-older kernels):
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
-?id=3Dc6d96328fecdda16e12f3b3c33f3677f4bcef89f
+Yes, looks better.
+Will send updated patch.
 
 Helge
 
