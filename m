@@ -1,46 +1,46 @@
-Return-Path: <linux-parisc+bounces-1789-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1790-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE7392C01E
-	for <lists+linux-parisc@lfdr.de>; Tue,  9 Jul 2024 18:31:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D0192C087
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 Jul 2024 18:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD222289442
-	for <lists+linux-parisc@lfdr.de>; Tue,  9 Jul 2024 16:31:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98D631F226FF
+	for <lists+linux-parisc@lfdr.de>; Tue,  9 Jul 2024 16:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EBB1B47BE;
-	Tue,  9 Jul 2024 16:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F7D1CFD78;
+	Tue,  9 Jul 2024 16:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2pHGJYL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KNes54zh"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CD319EEAB;
-	Tue,  9 Jul 2024 16:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489891A072B;
+	Tue,  9 Jul 2024 16:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720542093; cv=none; b=KvQkngfzUKdT8b8WEQeU+/mU/gAzLH5NIpUen3MxUMPDesmwPcHNLVqGPdBpQc0/s/4RJgsFYJ4waD4U8aDRDGTmqhZe3UQpqOyebw3UoeXgJ7dELl20q8LRRSMxc7P/XwIf4UCAN1gRWaqm7S5e04gvHMveDjb57kUCkO5kOzY=
+	t=1720542215; cv=none; b=O8ny5dn7DfWtqn8TIfk5bT6/d06GkIVyG1IdZMWmC+SZ4/Kqvrz6CQ71N6TyQPXtLEwowBEz67ljB1P20SeekSO+OI3CG2CJimKfo4mymo16wShYafbhI5w3FiAb8IKO4KvwjYVkkI4dKCGAxJZ2wcRiFFOQ7ZOwwBxOKDLIFX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720542093; c=relaxed/simple;
-	bh=v9rvoRUQHVGnHKtl1x+EcTFtm143JcGpOnUaUvgNJ3s=;
+	s=arc-20240116; t=1720542215; c=relaxed/simple;
+	bh=EVHioFDJMrNOHhrxV27HKOEClTpqsFm+Ls1n3whjt1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLCNwwB12flMW37yuYzRcIqiZhFXqmrux71g0sPf9ZB5+OVkaPBA+wcaTMh4UhFNZEbMeGXo4o/6J1T30t3zjVwU8ML4ZaJgL6H15mxGnNDmoyx+8n9FYyCyma2JawxWTdXGs8fZi9U9Q1x/UsceAbnbx1l4YEsmdNJG0+rxo7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2pHGJYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16C3C32782;
-	Tue,  9 Jul 2024 16:21:30 +0000 (UTC)
+	 MIME-Version; b=mVGroVV9zJlLNSHnd2uxE5cfnZw8QEvODltqSlIGRUxld+mhKlLabFjuAAObR+Ux0Svq3ZCFxI5YLpvOl9EiUQrLXsQulL3CiCk3rwW4X84hlGBWqilxEJ41ht4oeY3OWuC/Erbo0JopVdg1Ndh8T8H2nGyLcVD98RkeALgdUEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KNes54zh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BDE1C32786;
+	Tue,  9 Jul 2024 16:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720542092;
-	bh=v9rvoRUQHVGnHKtl1x+EcTFtm143JcGpOnUaUvgNJ3s=;
+	s=k20201202; t=1720542215;
+	bh=EVHioFDJMrNOHhrxV27HKOEClTpqsFm+Ls1n3whjt1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2pHGJYLDv0hvHYKeXO1bRbwpvkbTSIAKodUdZjW/CDRvK/hMPoYmtTuDUM43Im7T
-	 Hwbt8GUDk+5NpCDwedNhEhI/2gMU2xdd1Crpw8UDHuv4MC+iPB2aC4fnIBOUt0mRX1
-	 0tjM/NX6ArJYETAunJ9E/javG4cO+rDzEyEfuYfHOsTygezP6QdBQsFKi5W0ge0yje
-	 VPlWKT5FnTAAzCKkXNXFjMKigHdS1ttg6VxjKuRY5wvcISrVqUO0XIZBEphurFaXTo
-	 n0FvrrFTBhAm6jVD32IKrh8cbcYI4DpgMfeNECLzRUw173Pox0nm95Jft8csiS8FjN
-	 +Z0UCIw7wcnZg==
+	b=KNes54zh8d6zJzmjTQiQdWJm+qstfyGbolAsNMzNdTon7/qSCfQF7eaYvfQWDzbqm
+	 7S0Lr6vn7tTdW4yfAWLRCcPWbKMS4xGMbkKUneBHdfWW11AZ5tMxyfFV2Ub+/upTWp
+	 OP3Nq3zGVy2DGBzfAcmw8gG7yqb9ydm6AnQF/jbbNKmlSgqG0mQqy7000E4nYUQC4M
+	 e3qLNOdazVKX3tupXYdfHumgQ+1302q+bGqcvrUhkIYn5EZe2Bh/HFCB8u6hZVI4A1
+	 BcWekGJ9l2ROYp6zOvKORvKETYLKkK3x06+YtSoKmHerun5wR+94hcWbH+Ed1IumYn
+	 fM43hP+RKsKuQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,17 +52,17 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	geert@linux-m68k.org,
 	peterz@infradead.org,
 	tglx@linutronix.de,
-	kees@kernel.org,
 	sohil.mehta@intel.com,
-	casey@schaufler-ca.com,
+	jeffxu@chromium.org,
 	mszeredi@redhat.com,
+	casey@schaufler-ca.com,
 	linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 37/40] parisc: use generic sys_fanotify_mark implementation
-Date: Tue,  9 Jul 2024 12:19:17 -0400
-Message-ID: <20240709162007.30160-37-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 31/33] parisc: use generic sys_fanotify_mark implementation
+Date: Tue,  9 Jul 2024 12:21:57 -0400
+Message-ID: <20240709162224.31148-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240709162007.30160-1-sashal@kernel.org>
-References: <20240709162007.30160-1-sashal@kernel.org>
+In-Reply-To: <20240709162224.31148-1-sashal@kernel.org>
+References: <20240709162224.31148-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.8
+X-stable-base: Linux 6.6.38
 Content-Transfer-Encoding: 8bit
 
 From: Arnd Bergmann <arnd@arndb.de>
@@ -124,11 +124,11 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 2 insertions(+), 10 deletions(-)
 
 diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index daafeb20f9937..dc9b902de8ea9 100644
+index 4adeb73d5885c..722e83edad282 100644
 --- a/arch/parisc/Kconfig
 +++ b/arch/parisc/Kconfig
-@@ -16,6 +16,7 @@ config PARISC
- 	select ARCH_HAS_UBSAN
+@@ -14,6 +14,7 @@ config PARISC
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
  	select ARCH_HAS_PTE_SPECIAL
  	select ARCH_NO_SG_CHAIN
 +	select ARCH_SPLIT_ARG64 if !64BIT
@@ -153,7 +153,7 @@ index 2a12a547b447b..826c8e51b5853 100644
 -			 dfd, pathname);
 -}
 diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
-index b236a84c4e127..5439ff05bdb2d 100644
+index e97c175b56f96..b2515974ea954 100644
 --- a/arch/parisc/kernel/syscalls/syscall.tbl
 +++ b/arch/parisc/kernel/syscalls/syscall.tbl
 @@ -364,7 +364,7 @@
