@@ -1,124 +1,152 @@
-Return-Path: <linux-parisc+bounces-1827-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1830-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E18E92F140
-	for <lists+linux-parisc@lfdr.de>; Thu, 11 Jul 2024 23:41:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A6593096F
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Jul 2024 11:06:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A3B11C22472
-	for <lists+linux-parisc@lfdr.de>; Thu, 11 Jul 2024 21:41:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9DBF1F216D0
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Jul 2024 09:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2C51A00DF;
-	Thu, 11 Jul 2024 21:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540EE49656;
+	Sun, 14 Jul 2024 09:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zp1w1M0V"
+	dkim=pass (4096-bit key) header.d=envs.net header.i=@envs.net header.b="N9D5n6Gt"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.envs.net (mail.envs.net [5.199.136.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F4742042;
-	Thu, 11 Jul 2024 21:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E5945000;
+	Sun, 14 Jul 2024 09:06:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.199.136.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720734070; cv=none; b=NkAdIyl/ln7Yr9JDS83PO99lR8Yp/7Facpdt66a3fQVW+qftYUjHw1NU5xf+ESTm44cdM1sdHUNtScHyAJZZlSLFwmLrBvkag7ZO3KFc72YprsGK35YNW7+OZsIPCramfyorf+B0r/czICMkSzskEBn6uoZbkVAEzL4O4XN7HT8=
+	t=1720947967; cv=none; b=eRqefWMEcOTxbypA/f/FNaweMqIcOEziBVO6sJRZIJDZCXrwREsmg6GK0CAlTB/5FWNfKNfBV7MIfmNp4HNsHV68qrOPvZbxXZPbhyndbzMwNIe+bgj1L4iENvVftUgvJC/soPVjHgOo6BrjBv5T67jg1Qs7qPqNESkkNgnXrBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720734070; c=relaxed/simple;
-	bh=g1fNHOiGZm5mn96BaOhihxmzcRcyf74Q/bsZs8K17xc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mS15uyU7uEN/YBA8rcw3899mmQM+1tliJ4Cub2R+B+zltPaz2nWpw5G52i1Fqg4sJGKX3MBekcmWIe9eVF7u941w7JWggt4VU0hJvEymXdJv+3wrpt/9TjbfxkbYMpKqaVgjOrpIdyFyRZRxt82dmSZLZg4yWwVEH+DsJXtbsAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zp1w1M0V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45582C116B1;
-	Thu, 11 Jul 2024 21:41:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720734070;
-	bh=g1fNHOiGZm5mn96BaOhihxmzcRcyf74Q/bsZs8K17xc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Zp1w1M0VOLmBNoOKjAT5CTE8BYrya+H1UwJrflrWESuo7uZue7iRKRZ4zpVGBcO2r
-	 JfHDmhOh1K91cHcdNCjHshXjwawtPn6kxyHX3Y6rlLk3zHEnjhuBZX277+OqLX05+W
-	 +wUPVw/el9mcJ7uNpa3f0WEVqpMx9whj46qVyNBYA1YxFt6Gc+Aap+0IpsZsYS6b6x
-	 99LfRRVFyVT/9XwfcLz99b+8pOGsjni6NXPXPe6e3QNwec5LKy0mZnyaCTJLepsVDG
-	 wYu/+B5BdVB3cVS+n3GFpmp+4R/sbXU58e8C1Y6LSMHLZtG/aJJGaGXSa+fE4rRz4E
-	 M3SWkeRQ1GlnA==
-Date: Thu, 11 Jul 2024 14:41:07 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
- bpf@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet
- <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, Ivan
- Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley"
- <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>,
- Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer
- <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven
- Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnd Bergmann
- <arnd@arndb.de>, Steffen Klassert <steffen.klassert@secunet.com>, Herbert
- Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, Willem
- de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan <shuah@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Christoph
- Hellwig <hch@infradead.org>, Nikolay Aleksandrov <razor@blackwall.org>,
- Taehee Yoo <ap420073@gmail.com>, Pavel Begunkov <asml.silence@gmail.com>,
- David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, Yunsheng Lin
- <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, Harshitha
- Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi
- <pkaligineedi@google.com>, linux-mm@kvack.org, Matthew Wilcox
- <willy@infradead.org>
-Subject: Re: [PATCH net-next v16 05/13] page_pool: devmem support
-Message-ID: <20240711144107.0086e0e1@kernel.org>
-In-Reply-To: <CAHS8izNMsCHhJM4hf7pf2p98sp9-3gxL6o7sC6JQnqThxiWjYw@mail.gmail.com>
-References: <20240710001749.1388631-1-almasrymina@google.com>
-	<20240710001749.1388631-6-almasrymina@google.com>
-	<20240710094900.0f808684@kernel.org>
-	<CAHS8izPTqsNQnQWKpDPTxULTFL4vr4k6j9Zw8TQzJVDBMXWMaA@mail.gmail.com>
-	<20240710182322.667f0108@kernel.org>
-	<CAHS8izNMsCHhJM4hf7pf2p98sp9-3gxL6o7sC6JQnqThxiWjYw@mail.gmail.com>
+	s=arc-20240116; t=1720947967; c=relaxed/simple;
+	bh=JON8F2LhEpKeCfNUzxa5Cw3iz9OiKleIBXDTxpGM5Ds=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M5RdjVmBlgF+uo1yzrSjIVpF2AfdBXSl019nQJrU/r9vF48TJ+YDSGUgknqXgkLp6YjpAGOABkaTGMKwaukKMGnk9AchFlh2arhGddR92bimGihUfevG53RAH3SIP5JHDcpwhmLXrQqzTk67PbapL39E9p1XSB2uCO29Bf6IhwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=envs.net; spf=pass smtp.mailfrom=envs.net; dkim=pass (4096-bit key) header.d=envs.net header.i=@envs.net header.b=N9D5n6Gt; arc=none smtp.client-ip=5.199.136.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=envs.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=envs.net
+Received: from localhost (mail.envs.net [127.0.0.1])
+	by mail.envs.net (Postfix) with ESMTP id 58F5638A399D;
+	Sun, 14 Jul 2024 08:58:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=envs.net; s=modoboa;
+	t=1720947486; bh=B10Vnlot+2ilvHh7OCvlmhyXD6mosKAEgX9C4cq3ecg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=N9D5n6GtwH3qiq3p2Rzh9SVuJAnEifqgMQyqesEqh+rAcGqNpZ6q9N9b0nhJiPNlJ
+	 PEDPoE3u41YojQH+7XAMCQEKnXMRTlqFjGrhy6MJDDh2aIb+VtL1gSthA5kxqmyOyN
+	 3ZoeWdceL9TP/JWEe9pIZBQbUIv00JAlxRpCZNniJHRC6CQDRSr7ufL4DGpth/2sdO
+	 TEKPrwzRH4vqz3fxgS9PMoErT2yNwY5ghdNNkfH+s2/E9Uk/VRgScWp9ABq71z+so2
+	 asZZh8t+lH2mNxDjZjOJgF5i0V2/C8imuDXoi6qWCA5tKfNPRnRKJ7tg78BDgQd8M/
+	 kGYuUOGE1KHimjYZSAJ2kfC4vmYtdT4BCjGSETK1ZNOKD6d0/4t+OXI5E7U5cngxEF
+	 fvDsbR9PyEOBKuB5EcBlKliQEg/mzXJ+g3oKKZ5SdHREM3MBmSi3Tcs0B+iHVyHaxp
+	 YIH+agaGkHtPkDO8eVN50i7feX/ovB73Wfbf5dR347DlCZFkVn10UTktYSoa49yWIt
+	 cVyAS01Y4MLkyxd6ca04e5RNOuVjIWdecu3zBmhqmWWdmQrTb9HaJN6nTqhaw5V9/G
+	 uDtg+M5JyeT/e16lqkqdH0tT55WGB1DA5XlwzgFl7OSD/keHJq/okoE19Fl5pNpdhM
+	 7a75ulRRnKxBl8Q5K22HnnqU=
+X-Virus-Scanned: Debian amavisd-new at mail.envs.net
+Received: from mail.envs.net ([127.0.0.1])
+	by localhost (mail.envs.net [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id fJoepO1z1VH4; Sun, 14 Jul 2024 08:57:55 +0000 (UTC)
+Received: from xtexx.eu.org (unknown [120.230.214.120])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.envs.net (Postfix) with ESMTPSA;
+	Sun, 14 Jul 2024 08:57:55 +0000 (UTC)
+From: Zhang Bingwu <xtex@envs.net>
+To: Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Zhang Bingwu <xtexchooser@duck.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>
+Cc: x86@kernel.org,
+	linux-kbuild@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org
+Subject: [RESEND PATCH 0/2] kbuild: Fix install errors when INSTALL_PATH does not exist
+Date: Sun, 14 Jul 2024 16:57:49 +0800
+Message-ID: <20240714085751.176357-1-xtex@envs.net>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 11 Jul 2024 13:57:01 -0700 Mina Almasry wrote:
-> > > Sorry none of those are only used by net/core/*. Pretty much all of
-> > > these are used by include/net/page_pool/helpers.h, and some have
-> > > callers in net/core/devmem.c or net/core/skbuff.c
-> > >
-> > > Would you like me to move these pp specific looking ones to
-> > > include/net/page_pool/netmem.h or something similar?  
-> >
-> > That's because some things already in helpers have no real business
-> > being there either. Why is page_pool_set_pp_info() in helpers.h?  
-> 
-> OK, I looked into this a bit. It looks like I can trivially move
-> page_pool_set/clear_pp_info() to page_pool_priv.h, and that lets me
-> move out a few of these netmem helpers to a header under net/core.
-> 
-> However, to move more of these netmem helpers to a private header, I
-> think I need to move all the page pool dma helpers and reffing helpers
-> to a private header or the .c file, which I think will uninline them
-> as they're eventually called from drivers.
-> 
-> I had guessed the previous authors put those dma and ref helpers in
-> the .h file to inline them as they're used in fast paths. Do you think
-> the refactor and the uninling is desirable? Or should I just do with
-> the trivial moving of the page_pool_set/clear_pp_info() to the private
-> file?
+From: Zhang Bingwu <xtexchooser@duck.com>
 
-The helpers which modify pp_magic and dma_addr should go. I don't see
-anything else on a quick look, but in general the public header
-shouldn't contain helpers which are meant for setup / init of a buffer.
+When running 'make zinstall INSTALL_PATH=somepath'
+ where 'somepath' does not exist, the install
+ scripts (install.sh) print error messages
+ but also return a success status code.
+This will make 'make' regard 'install' (and 'zinstall', etc)
+ succeeded.
+When there are also other targets at the same time,
+ for example, 'make zinstall dtbs_install modules_install',
+ make will keep going on and other outputs will fill stdout,
+ and make the error message hard to find.
+
+dtbs_install and modules_install creates the target directory
+ if it does not exist. install, zinstall and others should
+ have the same behaviour.
+
+If INSTALL_PATH is not a valid directory, we should create it.
+If the installation process still fails with errors, for example,
+ insufficient space on disk or permission denied, make should regard
+ the install target failed, stop as soon as possible,
+ and exit with error.
+
+Zhang Bingwu (2):
+  kbuild: Abort make on install failures
+  kbuild: Create INSTALL_PATH directory if it does not exist
+
+ arch/arm/boot/install.sh   | 2 ++
+ arch/arm64/boot/install.sh | 2 ++
+ arch/m68k/install.sh       | 2 ++
+ arch/nios2/boot/install.sh | 2 ++
+ arch/parisc/install.sh     | 2 ++
+ arch/riscv/boot/install.sh | 2 ++
+ arch/s390/boot/install.sh  | 2 ++
+ arch/sparc/boot/install.sh | 2 ++
+ arch/x86/boot/install.sh   | 2 ++
+ scripts/install.sh         | 4 ++++
+ 10 files changed, 22 insertions(+)
+
+
+base-commit: d0f86d080e3d7d5e1e75a56d88daf8e5f56a4146
+-- 
+2.43.0
+
 
