@@ -1,172 +1,154 @@
-Return-Path: <linux-parisc+bounces-1845-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1846-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62BC93C7B7
-	for <lists+linux-parisc@lfdr.de>; Thu, 25 Jul 2024 19:38:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2DA93C7C0
+	for <lists+linux-parisc@lfdr.de>; Thu, 25 Jul 2024 19:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BFFD281CA7
-	for <lists+linux-parisc@lfdr.de>; Thu, 25 Jul 2024 17:38:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A561F212A0
+	for <lists+linux-parisc@lfdr.de>; Thu, 25 Jul 2024 17:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D1F1C286;
-	Thu, 25 Jul 2024 17:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B1619D8AF;
+	Thu, 25 Jul 2024 17:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EQDMGfxf"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="xWn3g0q1";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="xWn3g0q1"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9BC19E7D8
-	for <linux-parisc@vger.kernel.org>; Thu, 25 Jul 2024 17:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D58E1C286
+	for <linux-parisc@vger.kernel.org>; Thu, 25 Jul 2024 17:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721929072; cv=none; b=HuEmq4Mo3nj6Z7T1s1S3SlhFOaZDahcAfmdlvWV8yJf62akhvL0WnykrD09agPD2wzoy62OCPtCoS8Bv3q33i2O/ZK4KBG4B9N8Scz8IiOChCYmm3WA+H4vRXVnV9J7qEs2LERU5Tr9bDQzd6vmGCmo19z5shnU7hUVomWnopYc=
+	t=1721929411; cv=none; b=K9Rduuwa/Cgu+vvlENyECX4nu5AZOuI5W9Wx4PzgeCbEhqzjBAD3bIDnowtwvhUM0VUa4+RmckkVJil2IYtylTja3UoPEhd6xRZWZJtTPW2UKdN9ZvxxssrGC7FT/zj5x50XUUyN5bTmRfTJkWbF7M6D9LONuRBZayL7gHq8Oe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721929072; c=relaxed/simple;
-	bh=Vov7kntyBxdF56A6k27RplCUc33cdxyRCyagLbLXggo=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=tgTHu6SVKLOTou/16KTJNPweUJJ2xRP05eNV+HEYVPfVmUZZZSrs85sNFYtqtiXit+xQgCRzzaMJ+X4HiX+evNQ5rePDy4WLbkke8fbWZXxKbT5rl3mVBtQ+NRlAWhV2oBhj8E/5NEMuVp3f5HFlpi3flRi+5grEqkpwWj01lnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EQDMGfxf; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721929069;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0nFEclw+kucnIx+mGYCeop9Rte5/17vR9qIYrvs5w3A=;
-	b=EQDMGfxfxyQ2dUsCA1hSg0smYGQQ2u4izFUVYxL837uKtW3NOiNcpXIPoHwubVEwQClTgs
-	sP4/b1MqHTPRNSwPRa2MZBybHSCIEpd7oGAjW7aJlghUf0ZUMYf1j/t3ge/9bq/WFaLuRV
-	FBwgbwckSLJR5h5+RXOjPlO6+IbaorM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-533-LtkVOEL8Ma6ybv8a5OHxzw-1; Thu,
- 25 Jul 2024 13:37:45 -0400
-X-MC-Unique: LtkVOEL8Ma6ybv8a5OHxzw-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4DB651955D4B;
-	Thu, 25 Jul 2024 17:37:43 +0000 (UTC)
-Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 774023000194;
-	Thu, 25 Jul 2024 17:37:42 +0000 (UTC)
-Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
-	id 5273A30C1C17; Thu, 25 Jul 2024 17:37:41 +0000 (UTC)
+	s=arc-20240116; t=1721929411; c=relaxed/simple;
+	bh=oStT2XiZ92rL81IXAFF1f6sUMBBlgNjMeAnGRGRRg8M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pDqR4GPcC/NsrKasqCBRNFg7mAVv1GqUNNhaUjYi47+apRVyn7At3V+H6kHlZFTtkPnDCQsMroNse1lYfy3sz3UDRK7mGn8PgayvCxBiUlZixwfBlYP355jZwobVSKx01YyA+51ZCOnf12m9SGLYXXG4RRRTXgKx/JyhDLrx37g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=xWn3g0q1; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=xWn3g0q1; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1721929409;
+	bh=oStT2XiZ92rL81IXAFF1f6sUMBBlgNjMeAnGRGRRg8M=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=xWn3g0q1UQWzX1X9IPLTCURRfpIXBOw2OJ7Gs4UII024a4IB9WgC4LWyqXIuMWCMu
+	 hGvBIZlE4Nspply6vsk9xrJPCnGKdd8CM2FNeUwAeiEbsfREtoZFSdyD4KLBadIe1j
+	 67GUQDwkD5otLFJ4ReVrm2jNGBz/M6BVySYwPppc=
 Received: from localhost (localhost [127.0.0.1])
-	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 4FA9E3FD4B;
-	Thu, 25 Jul 2024 19:37:41 +0200 (CEST)
-Date: Thu, 25 Jul 2024 19:37:41 +0200 (CEST)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-cc: John David Anglin <dave@parisc-linux.org>, Helge Deller <deller@gmx.de>, 
-    linux-parisc@vger.kernel.org
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 582161280B26;
+	Thu, 25 Jul 2024 13:43:29 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id BnJxBkSqNZMG; Thu, 25 Jul 2024 13:43:29 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1721929409;
+	bh=oStT2XiZ92rL81IXAFF1f6sUMBBlgNjMeAnGRGRRg8M=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=xWn3g0q1UQWzX1X9IPLTCURRfpIXBOw2OJ7Gs4UII024a4IB9WgC4LWyqXIuMWCMu
+	 hGvBIZlE4Nspply6vsk9xrJPCnGKdd8CM2FNeUwAeiEbsfREtoZFSdyD4KLBadIe1j
+	 67GUQDwkD5otLFJ4ReVrm2jNGBz/M6BVySYwPppc=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::db7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 886B0128021B;
+	Thu, 25 Jul 2024 13:43:28 -0400 (EDT)
+Message-ID: <3b09e01e90d144043934eafed8b9c70da3b754b4.camel@HansenPartnership.com>
 Subject: Re: ARCH_DMA_MINALIGN on PA-RISC
-In-Reply-To: <ef1f849ca7ace78c67b9a398440f012fd29db2c1.camel@HansenPartnership.com>
-Message-ID: <8d37457f-cd84-571c-a121-c39ccb961220@redhat.com>
-References: <93fcf9-f61b-7620-b5f1-d44449d280c9@redhat.com> <ef1f849ca7ace78c67b9a398440f012fd29db2c1.camel@HansenPartnership.com>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Mikulas Patocka <mpatocka@redhat.com>, John David Anglin
+	 <dave.anglin@bell.net>
+Cc: John David Anglin <dave@parisc-linux.org>, Helge Deller <deller@gmx.de>,
+  linux-parisc@vger.kernel.org
+Date: Thu, 25 Jul 2024 13:43:26 -0400
+In-Reply-To: <fa37987e-568f-9716-719e-85e3da8db47@redhat.com>
+References: <93fcf9-f61b-7620-b5f1-d44449d280c9@redhat.com>
+	 <ef1f849ca7ace78c67b9a398440f012fd29db2c1.camel@HansenPartnership.com>
+	 <54cb80b8-9c89-4b61-b1cd-1e626daf6719@bell.net>
+	 <fa37987e-568f-9716-719e-85e3da8db47@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 8bit
 
-
-
-On Wed, 24 Jul 2024, James Bottomley wrote:
-
-> On Wed, 2024-07-24 at 20:17 +0200, Mikulas Patocka wrote:
-> > Hi
+On Thu, 2024-07-25 at 19:27 +0200, Mikulas Patocka wrote:
+> 
+> 
+> On Thu, 25 Jul 2024, John David Anglin wrote:
+> 
+> > On 2024-07-24 3:25 p.m., James Bottomley wrote:
+> > > On Wed, 2024-07-24 at 20:17 +0200, Mikulas Patocka wrote:
+> > > > Hi
+> > > > 
+> > > > Thanks for fixing the cache aliasing issues on PA-RISC in the
+> > > > commit 72d95924ee35c8cd16ef52f912483ee938a34d49.
+> > > > 
+> > > > I think there is still one problem left - and that is
+> > > > ARCH_DMA_MINALIGN. Currently, it is 16, which is obviously
+> > > > wrong.
+> > > I don't think that's obvious, why is it wrong?
+> > I see this comment in arch/arm64/include/asm/cache.h:
 > > 
-> > Thanks for fixing the cache aliasing issues on PA-RISC in the commit 
-> > 72d95924ee35c8cd16ef52f912483ee938a34d49.
+> > /*
+> >  * Memory returned by kmalloc() may be used for DMA, so we must
+> > make
+> >  * sure that all such allocations are cache aligned. Otherwise,
+> >  * unrelated code may cause parts of the buffer to be read into the
+> >  * cache before the transfer is done, causing old data to be seen
+> > by
+> >  * the CPU.
+> >  */
+
+This comment is copied from the same file in arch/arm.  arm is mostly
+VIVT caching and has even worse problems than the PA VIPT cache. 
+aarch64 has variable cache policy (CTR_EL0 register), but I think most
+of them are actually PIPT or VIPT.
+
+> > #define ARCH_DMA_MINALIGN       (128)
+> > #define ARCH_KMALLOC_MINALIGN   (8)
 > > 
-> > I think there is still one problem left - and that is
-> > ARCH_DMA_MINALIGN. Currently, it is 16, which is obviously wrong.
+> > L1_CACHE_BYTES is 64 on arm64.
+> > 
+> > Possibly, the same can occur on parisc.
+> > 
+> > Dave
 > 
-> I don't think that's obvious, why is it wrong?
-
-Suppose that two unrelated kernel subsystems allocate a 16-byte region and 
-the regions happen to be placed next to each other - in the same 
-cacheline.
-
-The first subsystem does DMA into its 16-byte region and the second 
-subsystem writes to its region using cacheable write.
-
-Because the regions share a cache line, the cacheable write may corrupt 
-the data that were loaded using DMA. For example
-1. load a cache line into CPU cache
-2. DMA writes to the region that was loaded
-3. the cache line is modified
-4. the cache line is written back and it overwrites the result of the DMA 
-operation
-
-ARCH_DMA_MINALIGN prevents this situation from hapenning. See the 
-explanation of ARCH_DMA_MINALIGN in 
-Documentation/core-api/dma-api-howto.rst
-
-> > Some comments n the kernel say that PA8900 has L2 cache with 128-byte
-> > line size, so I think that ARCH_DMA_MINALIGN should be 128 as well.
+> L1_CACHE_BYTES is a performance hint that is used to avoid cache line
+> ping-pong when multiple CPUs modify nearby data.
 > 
-> The L2+ caches on PA88 and 89 systems are PIPT and fully coherent with
-> the PCI bus, so the L2+ line size doesn't matter that much (well,
-> except we could possibly get better performance with more judicious DMA
-> alignment).
-
-I didn't know that.
-
-> All the parisc coherency protocols rely on the CPU L1 cache, which is
-> still VIPT.  Additionally, the CPU architects kept the minimum line
-> size for the L1 at 16, so even in the later CPUs which have larger
-> actual VIPT cache line sizes there's a splitting mechanism which means
-> they can operate coherency protocols at a line size of 16.  This was
-> done so the only spinlock primitive parisc has (LDCW) can still operate
-> correctly with only 16 bytes of alignment.
-
-But you still need to flush L1 cache when doing DMA.
-
-> > The question is - can the CPU speculatively mark a cache line as
-> > dirty and write it back?
+> ARCH_DMA_MINALIGN is the biggest possible cache line size to avoid
+> DMA data corruption. As there are some arm64 machines with 128-byte
+> cache line, arm64 has to define it to 128.
 > 
-> No, the CPU may only mark a line as dirty if something actually wrote
-> to it; it may not do it speculatively.  The L1 cache can speculatively
-> move in clean lines if a TLB exists for them and once a line is marked
-> dirty it's within the gift of the CPU to decide when to write it back
-> absent a flush.
+> James said that the L2 cache on PA8800/8900 is coherent with PCI. So,
+> I  think that ARCH_DMA_MINALIGN should be 64 (is that the L1 cache
+> line size  on PA8800/8900?).
 
-That's good.
+By default, if unset, ARCH_DMA_MINALIGN defaults to alignof(long long),
+so it is already 64 on parisc.
 
-> >  If yes, we have a big problem - Linux assumes that a part of the
-> > page may be used for DMA transfer and another part of that page may
-> > be used for normal cacheable structures. If the PA-RISC CPU
-> > speculatively  prefetched and wrote back a cache line, it could
-> > corrupt the DMA transfer.
+James
+
+> L1_CACHE_BYTES could be 128 to avoid ping-pong between sockets.
 > 
-> The L2 PIPT PCI coherence protocol ensures that DMA can't corrupt
-> memory adjacent objects on PA88 and 89.  Earlier CPUs, which were fully
-> VIPT, do suffer from this problem because they have no PCI coherence,
-> but they all operate at a line size of 16 anyway and so
-> ARCH_DMA_MINALIGN works for them.
-
-I read somewhere on internet that PA7300LC has 32-byte cache line size. 
-So, ARCH_DMA_MINALIGN 16 is too small for it.
-
-> > If the CPU doesn't speculatively mark cache lines as dirty, then 
-> > increasing ARCH_DMA_MINALIGN would be sufficient solution.
+> For ARCH_KMALLOC_MINALIGN, there is an arm64 commit 
+> 9382bc44b5f58ccee375f08f518e53c0280051dc, it is an optimization, so
+> that they can use cache line size probed at startup instead of 128. I
+> think we don't have to do this optimization on PA-RISC, the PA-RISC
+> machines with 16-byte or 32-byte cache line size are old and slow -
+> so that there is no point in trying to optimize kmalloc pools for
+> them.
 > 
-> Well, it's relatively safe to try without exploding all our hashed
-> spinlocks because the LDCW alignment isn't tied to this (it's a
-> separate #define in ldcw.h) if you want to benchmark it.
-> 
-> James
-
-Mikulas
+> Mikulas
 
 
