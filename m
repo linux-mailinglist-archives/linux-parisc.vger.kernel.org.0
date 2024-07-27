@@ -1,72 +1,72 @@
-Return-Path: <linux-parisc+bounces-1854-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1855-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2418793DEA4
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jul 2024 12:06:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE7493DEA9
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jul 2024 12:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 550D41C2040D
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jul 2024 10:06:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676B81F21ED5
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jul 2024 10:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DCF8F6D;
-	Sat, 27 Jul 2024 10:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10FD40848;
+	Sat, 27 Jul 2024 10:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e4qi0sHe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q2JYYPYi"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8F440848
-	for <linux-parisc@vger.kernel.org>; Sat, 27 Jul 2024 10:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4AB8F6D
+	for <linux-parisc@vger.kernel.org>; Sat, 27 Jul 2024 10:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722074808; cv=none; b=hPD4R1jBbqnLhIZeF4I4NZbkpOVNRw9xu1MOtgEKvV5CG/VdzeAxRYW2MREOCD7xIPZjzi8E1YyWc2a6MjofeLwjgNOG2VU6qtgxhql1onmw9e9j/i4HeRC1Sm6m44SGMnXw2J5E0GaylMS4LXOPrr6DlGDMFUdHNcP7z6LayBI=
+	t=1722075074; cv=none; b=LiqIPprAVPfam6S0ZlC0MvlyCt0Ptd03dYoNgJyQRXRkrz0n/zAhXx3z8+G/jfGnWbW1p2TNaDwrxsbJSs1TKXkoPEbUCiYcZmjgxNG6uNXMdzDZ/TRPi1e3LQTQAw9TEbZp1tO/RN2QeX6sstpL5BlCtf+ZP0mkNPDX9jNInAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722074808; c=relaxed/simple;
-	bh=Jd3bSmkof5sMiikKifDUtoRsswa+iArKG5VC9LoBH9s=;
-	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=YtWSVBByRxaAtBDhqr7ivjoa4MCbpqOk6+wIk5vAqvgwWpH538P/FK/9SvAUHsv7rzSPyvuBgGmq7bxaFI1bu6HhdrDhRb/yAstyFtItfRRpLSxDMJ80508PH5bKtmxWTxP2ZhexGc8vBhX65OgB80PeMjjUiD2togfj3a0sMkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e4qi0sHe; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1722075074; c=relaxed/simple;
+	bh=0IpraM1NzrR5tsTj6oHJYwc1RLUyItBlkiAzbMTzUSs=;
+	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=Q3HTPiqz5rkk3MUuHfDgcGfBf+vFnhA78Wik/hsg6ZEcZ1jWIUEoCfwR0mQAUaS6hleC+cD+amqHc0xXZ9/xlXhEFuC3RKd0ZVDqjX3VAMk4miLydgruLsPTo2QtBGATlNJiktnB14NolkP7j03EswmjSmYnscUUDV4Zz1YBcy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q2JYYPYi; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722074805;
+	s=mimecast20190719; t=1722075071;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=Xy2rnxv7bXV57Hb9FmbrGZ22Me0/5cLLvHo9pDLn1zU=;
-	b=e4qi0sHemc/m6ko9NcTV/wiPSKtMg0la5kffYUYE/hf/RP2MSB/i25OSQ49bdLE3vQl+/U
-	qyzfaem//k1ZqN6ELGihA3u14ZGwK5/qhFlIG9wiqgUNrUR5lViFUYmNbD41X9keBJyo9+
-	0rw1mf1tHRB15Jl/vANoQkj9p9el3AM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=jkGf8ZckPPCVdIiK39jJrmOOUULO/ys+8HYOYAnyQRY=;
+	b=Q2JYYPYiCk44iylVpAGAx6MgI7jCRme7dMZdh8/GYxpU0zQOMnj7d9z6OVZuHicdjuLMf6
+	s06/TMPI7d9YmojJvYp8A5rNL3HCpxDRJmGt+5frD/gCB0wP8dg9SKowpcjO8lVVYKvPez
+	eAEhwabiaDwMoAPeyiBlTlQIT/GISC0=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-367--n8mMLGJOF66KUfO09brbw-1; Sat,
- 27 Jul 2024 06:06:41 -0400
-X-MC-Unique: -n8mMLGJOF66KUfO09brbw-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-05V1x8ELNDeSKSadxevYiQ-1; Sat,
+ 27 Jul 2024 06:11:06 -0400
+X-MC-Unique: 05V1x8ELNDeSKSadxevYiQ-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E1F0C1955D42;
-	Sat, 27 Jul 2024 10:06:39 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F2CB819560B0;
+	Sat, 27 Jul 2024 10:11:04 +0000 (UTC)
 Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CEAEB300018D;
-	Sat, 27 Jul 2024 10:06:38 +0000 (UTC)
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0DDE21955D42;
+	Sat, 27 Jul 2024 10:11:03 +0000 (UTC)
 Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
-	id 7DB4030C1C17; Sat, 27 Jul 2024 10:06:37 +0000 (UTC)
+	id E7A7F30C1C17; Sat, 27 Jul 2024 10:11:02 +0000 (UTC)
 Received: from localhost (localhost [127.0.0.1])
-	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 79ACB3FD04;
-	Sat, 27 Jul 2024 12:06:37 +0200 (CEST)
-Date: Sat, 27 Jul 2024 12:06:37 +0200 (CEST)
+	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id E6FDE3FD04;
+	Sat, 27 Jul 2024 12:11:02 +0200 (CEST)
+Date: Sat, 27 Jul 2024 12:11:02 +0200 (CEST)
 From: Mikulas Patocka <mpatocka@redhat.com>
 To: John David Anglin <dave.anglin@bell.net>, 
     John David Anglin <dave@parisc-linux.org>, 
     James Bottomley <James.Bottomley@HansenPartnership.com>, 
     Helge Deller <deller@gmx.de>
 cc: linux-parisc@vger.kernel.org
-Subject: [PATCH] parisc: fix a possible DMA corruption
-Message-ID: <76f39b33-4066-a891-94e5-671b1d82df27@redhat.com>
+Subject: [PATCH] parisc: fix unaligned accesses in BPF
+Message-ID: <1e96c3f-d45c-b128-907b-ca2fba5f6a2d@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -74,58 +74,47 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-ARCH_DMA_MINALIGN was defined as 16 - this is too small - it may be 
-possible that two unrelated 16-byte allocations share a cache line. If one 
-of these allocations is written using DMA and the other is written using 
-cached write, the value that was written with DMA may be corrupted.
+There were spurious unaligned access warnings when calling BPF code.
+Sometimes, the warnings were triggered with any incoming packet, making
+the machine hard to use.
 
-This commit changes ARCH_DMA_MINALIGN to be 128 - that's the largest 
-possible cache line size on parisc.
+The reason for the warnings is this: on parisc64, pointers to functions
+are not really pointers to functions, they are pointers to 16-byte
+descriptor. The first 8 bytes of the descriptor is a pointer to the
+function and the next 8 bytes of the descriptor is the content of the
+"dp" register. This descriptor is generated in the function
+bpf_jit_build_prologue.
 
-As different parisc microarchitectures have different cache line size, we 
-define arch_slab_minalign(), cache_line_size() and 
-dma_get_cache_alignment() so that the kernel may tune slab cache 
-parameters dynamically, based on the detected cache line size.
+The problem is that the function bpf_int_jit_compile advertises 4-byte
+alignment when calling bpf_jit_binary_alloc, bpf_jit_binary_alloc
+randomizes the returned array and if the array happens to be not aligned
+on 8-byte boundary, the descriptor generated in bpf_jit_build_prologue is
+also not aligned and this triggers the unaligned access warning.
+
+Fix this by advertising 8-byte alignment on parisc64 when calling
+bpf_jit_binary_alloc.
 
 Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
 
 ---
- arch/parisc/Kconfig             |    1 +
- arch/parisc/include/asm/cache.h |    7 ++++++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ arch/parisc/net/bpf_jit_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: linux-6.10/arch/parisc/include/asm/cache.h
+Index: linux-6.10/arch/parisc/net/bpf_jit_core.c
 ===================================================================
---- linux-6.10.orig/arch/parisc/include/asm/cache.h	2023-09-18 11:33:40.000000000 +0200
-+++ linux-6.10/arch/parisc/include/asm/cache.h	2024-07-26 20:27:06.000000000 +0200
-@@ -20,7 +20,12 @@
- 
- #define SMP_CACHE_BYTES L1_CACHE_BYTES
- 
--#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
-+#define ARCH_DMA_MINALIGN	128
-+#define ARCH_KMALLOC_MINALIGN	8
-+
-+#define arch_slab_minalign()	((unsigned)dcache_stride)
-+#define cache_line_size()	dcache_stride
-+#define dma_get_cache_alignment cache_line_size
- 
- #define __read_mostly __section(".data..read_mostly")
- 
-Index: linux-6.10/arch/parisc/Kconfig
-===================================================================
---- linux-6.10.orig/arch/parisc/Kconfig	2024-07-23 20:35:34.000000000 +0200
-+++ linux-6.10/arch/parisc/Kconfig	2024-07-26 19:41:15.000000000 +0200
-@@ -20,6 +20,7 @@ config PARISC
- 	select ARCH_SUPPORTS_HUGETLBFS if PA20
- 	select ARCH_SUPPORTS_MEMORY_FAILURE
- 	select ARCH_STACKWALK
-+	select ARCH_HAS_CACHE_LINE_SIZE
- 	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select HAVE_RELIABLE_STACKTRACE
- 	select DMA_OPS
+--- linux-6.10.orig/arch/parisc/net/bpf_jit_core.c	2024-07-23 20:35:34.000000000 +0200
++++ linux-6.10/arch/parisc/net/bpf_jit_core.c	2024-07-27 11:40:17.000000000 +0200
+@@ -114,7 +114,7 @@ struct bpf_prog *bpf_int_jit_compile(str
+ 			jit_data->header =
+ 				bpf_jit_binary_alloc(prog_size + extable_size,
+ 						     &jit_data->image,
+-						     sizeof(u32),
++						     sizeof(long),
+ 						     bpf_fill_ill_insns);
+ 			if (!jit_data->header) {
+ 				prog = orig_prog;
 
 
