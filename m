@@ -1,53 +1,53 @@
-Return-Path: <linux-parisc+bounces-1857-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1858-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8762893DFC9
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jul 2024 16:39:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A688993DFE0
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jul 2024 17:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 148781F219C5
-	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jul 2024 14:39:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAF101C2100D
+	for <lists+linux-parisc@lfdr.de>; Sat, 27 Jul 2024 15:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7924917A91B;
-	Sat, 27 Jul 2024 14:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886141E521;
+	Sat, 27 Jul 2024 15:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="4Yj6S1Yr"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="wYOQ69Hk"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-torrgo001.bell.net (mta-tor-001.bell.net [209.71.212.28])
+Received: from cmx-torrgo002.bell.net (mta-tor-003.bell.net [209.71.212.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2DC17E479
-	for <linux-parisc@vger.kernel.org>; Sat, 27 Jul 2024 14:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB7A16F274
+	for <linux-parisc@vger.kernel.org>; Sat, 27 Jul 2024 15:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722091169; cv=none; b=sxkH8OiQ+VfTaOn14HLWawoGpGbUJnHUNrB9MjhqxGMAEt79r5AydFutFYvxv/pJxuR4Snw1ZaxUXZnad/xMSw+em4mzx6aSza4aAhlW8k+YTe5e1pKlFKDO9glPfo5aEYB8UnYJupJPHuOErOFe/fhk5RHZ0OPhIJhRrn1glJg=
+	t=1722092814; cv=none; b=nPYsoOOPWy4kK8MDFLb0JKinqK3ms41qn06TLd6izQGI9NIRKMYJzXFZPVaqMsseSFONXpL3wcJfSvB8qNXj8rfx8vGecZLhK8tyg+6UryTBJCfSTI6Yg/+SFZ7BzYJFq71hfpBuFVe1z+cQvMGu+oIHsM2OZNATzEZsbxdzmBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722091169; c=relaxed/simple;
-	bh=n3Ts2JzTDLdkxLHBdNS/3oV6efYtxkrD6E8/Ko3tzQw=;
+	s=arc-20240116; t=1722092814; c=relaxed/simple;
+	bh=PUMDzSjv5zDGV5VC3jwAx/pe05wbU4MkZE9CKIw4Ow4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SJ+nKbI6POmLlmzZX2+w8PCNl8CrvJsRMvIVhMUjCgpZmZO+w3Gfk6mm0+ezL65sHYylPTKUeB0BlHc9RtuuMEdI59JKiaoAVMcXmCjtNiPn837zPlUQPZMw2SuGdS8PLu7OtfamW6rbWBSwODFeKkYmZOJroQYkiQnySi0hmTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=4Yj6S1Yr; arc=none smtp.client-ip=209.71.212.28
+	 In-Reply-To:Content-Type; b=sVaVczx+8PEcI1o++r0Pg5V0iuAJnDdt9ziVv3IkMtvwbMFovA8UO+Tlhu2kvQ4J03QAsH9k1W3YKm9TeWAcqMoJhsEAvHdO3mXEm3MthOP9Cmmz/VMLnhf8NfRakuw05RB+t+p+U06QAYXcAPu4HOfIlG28nKp7fySLtX63cu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=wYOQ69Hk; arc=none smtp.client-ip=209.71.212.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1722091167; 
-        bh=L5WTrtQYsgTJeY6U2DE6HCKNIc2Jqm6hoFn13K//agQ=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1722092812; 
+        bh=qiTo1xc4f/cYBfsFNfNI/GHrLM1404UfnM/va4pCET4=;
         h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=4Yj6S1YrRJIyexOLjRojXeLwKRxITjCV8wZ3hL4UeLfs6Cpb1FWzrLmvVFqLwCnF5NvqY6HhZ9cnqzpnPHhdXONwgHwTXQ8LW/iwtWIbTDS3EXp3Ar11tyFeAYuhn1nTYDsYuIDH/jRVTsnvjgBPj9SquJxTHfEW90DWNZVunQJ8O+mlzNprQ3LWj4LChJ3nhgfkYNfagYw7tjO8mu1bMuycsFhtEH0Tx7PpCSC9luE8GWMWJtcYlKIYyFW07qHZkGAQeVqc5ZpR9MrGI/xCkw9tJFfG6VQgx19ymtODBwmJUTfei42mofY/1x5UBI9SuWJ+XHUtLhzuuiU68HAwhA==
+        b=wYOQ69HkRSkP0ZuhgpRPqyY58jJfcsOWCBE44asEJT1EBJi79RHsXGP+PL3tN15gtjCj2QQh+8pmb8U2fNBilbiTqA34azm67qqGzkHtJhhLCupLVmjE5KvsuivpBYobZZo36NeAD+Lt8LEz3a9UukvbrWeTqWTmQ+Chk+x/xakmDUkloBXmw8FMwpF54atz1oWnv3ksNjfJFA1p6kflS6Y5HxaNi/IH3ZV8b8EKUu/M/gIzvgdg0xc5DSmRX69YAM+gzVsbjgpI8UE6q9ywjUzm5/31pVZcx1U0TXxQ3rXytgiBjmAeJVr7kGQFQpRivbMnVtwor4BgrPIFZWl9Mg==
 X-RG-SOPHOS: Clean
 X-RG-VADE-SC: 0
 X-RG-VADE: Clean
 X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 669E799D00A7B4AB
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeeftddrieejgdektdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejleffffejhefggfeuheelgeefgeeuieegtdekffegudeuteffgeffjedukefgueenucfkphepudejgedrkeekrdelkedrvddvtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedujeegrdekkedrleekrddvvddtpdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplfgrmhgvshdruehothhtohhmlhgvhiesjfgrnhhsvghnrfgrrhhtnhgvrhhshhhiphdrtghomhdprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopegurghvvgesphgrrhhishgtqdhlihhnuhigrdhorhhgpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+X-RG-Rigid: 66A3BFFF001997CF
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeeftddrieejgdekiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejleffffejhefggfeuheelgeefgeeuieegtdekffegudeuteffgeffjedukefgueenucfkphepudejgedrkeekrdelkedrvddvtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedujeegrdekkedrleekrddvvddtpdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeeipdhrtghpthhtoheplfgrmhgvshdruehothhtohhmlhgvhiesjfgrnhhsvghnrfgrrhhtnhgvrhhshhhiphdrtghomhdprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopegurghvvgesphgrrhhishgtqdhlihhnuhigrdhorhhgpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
 	thhopehmphgrthhotghkrgesrhgvughhrghtrdgtohhmpdhrvghvkffrpegsrhgrshdqsggrshgvqdhothifrghonhdtledtieifqdhgrhgtqdegvddqudejgedqkeekqdelkedqvddvtddrughslhdrsggvlhhlrdgtrgdprghuthhhpghushgvrhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvght
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (174.88.98.220) by cmx-torrgo001.bell.net (authenticated as dave.anglin@bell.net)
-        id 669E799D00A7B4AB; Sat, 27 Jul 2024 10:39:09 -0400
-Message-ID: <38510add-ed4d-4e99-beca-e29efaf94f4b@bell.net>
-Date: Sat, 27 Jul 2024 10:39:09 -0400
+Received: from [192.168.2.49] (174.88.98.220) by cmx-torrgo002.bell.net (authenticated as dave.anglin@bell.net)
+        id 66A3BFFF001997CF; Sat, 27 Jul 2024 11:06:37 -0400
+Message-ID: <f5c8171e-65f1-4009-97f8-6a33fd1d3573@bell.net>
+Date: Sat, 27 Jul 2024 11:06:38 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -55,13 +55,20 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: fix a possible DMA corruption
-To: Mikulas Patocka <mpatocka@redhat.com>,
- John David Anglin <dave@parisc-linux.org>,
+Subject: Re: ARCH_DMA_MINALIGN on PA-RISC
+To: Mikulas Patocka <mpatocka@redhat.com>
+Cc: John David Anglin <dave@parisc-linux.org>,
  James Bottomley <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-References: <76f39b33-4066-a891-94e5-671b1d82df27@redhat.com>
+ Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+References: <93fcf9-f61b-7620-b5f1-d44449d280c9@redhat.com>
+ <ef1f849ca7ace78c67b9a398440f012fd29db2c1.camel@HansenPartnership.com>
+ <54cb80b8-9c89-4b61-b1cd-1e626daf6719@bell.net>
+ <fa37987e-568f-9716-719e-85e3da8db47@redhat.com>
+ <f3f59d8a-3ea4-4a21-8b0d-ba0d63ef1ff6@bell.net>
+ <ff54aa24-15be-4bca-8b9e-1b1166b0e0d9@bell.net>
+ <436be3ae-a1b8-a14d-88f9-447355959064@redhat.com>
+ <b3254b3c-438a-473a-87a4-b627ec706d2f@bell.net>
+ <5b706825-a022-85a-4fba-14975654dec0@redhat.com>
 Content-Language: en-US
 From: John David Anglin <dave.anglin@bell.net>
 Autocrypt: addr=dave.anglin@bell.net; keydata=
@@ -107,70 +114,32 @@ Autocrypt: addr=dave.anglin@bell.net; keydata=
  XV2KRzaE359RgbM3pNEViXp3NclPYmeu+XI8Ls/y6tSq5e/o/egktdyJj+xvAj9ZS18b10Jp
  e67qK8wZC/+N7LGON05VcLrdZ+FXuEEojJWbabF6rJGN5X/UlH5OowVFEMhD9s31tciAvBwy
  T70V9SSrl2hiw38vRzsl
-In-Reply-To: <76f39b33-4066-a891-94e5-671b1d82df27@redhat.com>
+In-Reply-To: <5b706825-a022-85a-4fba-14975654dec0@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2024-07-27 6:06 a.m., Mikulas Patocka wrote:
-> ARCH_DMA_MINALIGN was defined as 16 - this is too small - it may be
-> possible that two unrelated 16-byte allocations share a cache line. If one
-> of these allocations is written using DMA and the other is written using
-> cached write, the value that was written with DMA may be corrupted.
-Agreed.
+On 2024-07-27 6:24 a.m., Mikulas Patocka wrote:
+>>> L1_CACHE_SHIFT can be set to arbitrary value - setting it badly could
+>>> degrade performance, but it shouldn't cause data corruption.
+>> If we set to an arbitrary value, we need to document why we do it. The naming
+>> suggests that L1_CACHE_BYTES should be the L1 cache length.
+> It's hard to say what should we set it to, if we have different
+> microarchitectures with different cache line size. ARM64 sets it to 64,
+> despite the fact that there are some ARM64 machines with 128-byte cache
+> line.
 >
-> This commit changes ARCH_DMA_MINALIGN to be 128 - that's the largest
-> possible cache line size on parisc.
-We could use 32 if CONFIG_PA20 isn't defined.
+> L1_CACHE_BYTES is a matter of performance. Do you have some benchmarks, so
+> that you could try to tune it?
 >
-> As different parisc microarchitectures have different cache line size, we
-> define arch_slab_minalign(), cache_line_size() and
-> dma_get_cache_alignment() so that the kernel may tune slab cache
-> parameters dynamically, based on the detected cache line size.
->
-> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-> Cc: stable@vger.kernel.org
->
-> ---
->   arch/parisc/Kconfig             |    1 +
->   arch/parisc/include/asm/cache.h |    7 ++++++-
->   2 files changed, 7 insertions(+), 1 deletion(-)
->
-> Index: linux-6.10/arch/parisc/include/asm/cache.h
-> ===================================================================
-> --- linux-6.10.orig/arch/parisc/include/asm/cache.h	2023-09-18 11:33:40.000000000 +0200
-> +++ linux-6.10/arch/parisc/include/asm/cache.h	2024-07-26 20:27:06.000000000 +0200
-> @@ -20,7 +20,12 @@
->   
->   #define SMP_CACHE_BYTES L1_CACHE_BYTES
->   
-> -#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
-> +#define ARCH_DMA_MINALIGN	128
-I would use 128 for if CONFIG_PA20 is defined and 32 otherwise.
-> +#define ARCH_KMALLOC_MINALIGN	8
-Looks okay if we don't need 16-byte alignment for ldcw.  Because PA 2.0 has
-coherent ldcw support, we would only see this on PA 1.1 build.
+> The commit a01fece2e4185ac173abd16d10304d73d47ebf00 says that setting
+> L1_CACHE_BYTES == 16 improves performance.
+I can't recall what tests were used at the time.  However, L1_CACHE_BYTES == 16 reduces
+the kernel size and this probably helps performance.  16 bytes would be the minimum alignment
+for ldcw locks.
 
-Default is ARCH_DMA_MINALIGN.  So, current value is 16.
-> +
-> +#define arch_slab_minalign()	((unsigned)dcache_stride)
-> +#define cache_line_size()	dcache_stride
-> +#define dma_get_cache_alignment cache_line_size
->   
->   #define __read_mostly __section(".data..read_mostly")
->   
-> Index: linux-6.10/arch/parisc/Kconfig
-> ===================================================================
-> --- linux-6.10.orig/arch/parisc/Kconfig	2024-07-23 20:35:34.000000000 +0200
-> +++ linux-6.10/arch/parisc/Kconfig	2024-07-26 19:41:15.000000000 +0200
-> @@ -20,6 +20,7 @@ config PARISC
->   	select ARCH_SUPPORTS_HUGETLBFS if PA20
->   	select ARCH_SUPPORTS_MEMORY_FAILURE
->   	select ARCH_STACKWALK
-> +	select ARCH_HAS_CACHE_LINE_SIZE
->   	select ARCH_HAS_DEBUG_VM_PGTABLE
->   	select HAVE_RELIABLE_STACKTRACE
->   	select DMA_OPS
->
+The comment about the L1 line length being 16 bytes is wrong.  The notes we have from the
+PA8800 ERS clearly state that the L1 stride is 128 bytes.  The notes show how to flush the L1
+cache.  I think the L1 and L2 lengths have always been the same.
 
 Dave
 
