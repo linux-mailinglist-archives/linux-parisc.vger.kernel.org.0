@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-1860-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1861-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89A193E587
-	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jul 2024 15:25:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5096C93E588
+	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jul 2024 15:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BC31B21470
-	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jul 2024 13:25:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09CF22817AA
+	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jul 2024 13:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB3A1A28D;
-	Sun, 28 Jul 2024 13:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21AF3A1BF;
+	Sun, 28 Jul 2024 13:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="NhwDKsvY"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="XOVPS6Lf"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C09E1B86C2
-	for <linux-parisc@vger.kernel.org>; Sun, 28 Jul 2024 13:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9D71A28D
+	for <linux-parisc@vger.kernel.org>; Sun, 28 Jul 2024 13:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722173128; cv=none; b=mSAYyuJArC3e1SfN6/zKnRiCAdAKEtjX/04GTbVOTz9bCQGoGcKKbsN3PNrEuMxcPi2Ap/QDdnwAu7w26Ir3NTM9HIiSuWTLmeh7qfK79CX2DE17zDwT+QQ4v0LM9zBeGnSYIMBYnnHD/+aGvCEIMUe+u4SkPqNk7X7bxu1nYPo=
+	t=1722173178; cv=none; b=kxthwSTepE8vVi1djJM3jvpj9pjwXvfNiDDpGiz8PWDdv2lMViNaSejwhkVPvXDXJvNXAy2qjK9A5J/GlJP08YVDHshdHNC1n/XnaF1W5eFh5P2kRs2Swt2819yGKDOy3oeAsbI3QnIHcOO1nMkRblH2pArkYwbgYjEBa+ifnnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722173128; c=relaxed/simple;
-	bh=wFbcfMWIRqWGXS6tQ9IER55I+HJItjaqEBrtIqBemh0=;
+	s=arc-20240116; t=1722173178; c=relaxed/simple;
+	bh=i7OBWf8F4iHzaNfiN+FawibrpYkQmw6WUT1ohhTqpck=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eawhG2ZIBCYBPiNbwcIl6qifoJRguElle1w/dLuYnWGFMovQBeuH1y0/eLaE22tBSaJ+R1DvrNQCiaOJbIhlZhk/bO+zs8iNbeK0sVt4aYdjl2G1M/dQZw9P0iZULgRXr7UF+OG0I952R2O6l5oJD4IMDfD1czdH8oMgfXYdq0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=NhwDKsvY; arc=none smtp.client-ip=212.227.15.18
+	 In-Reply-To:Content-Type; b=Ezh/PNWjSTml0zJxYcyB9kyxyPDNfp/+Ut51li8FDrAQbougQi0PGDBe8im/KO5qyI3txUg2LujW5p7miKl1yuKt03+ekuhPVo50PG+hSP+SP7yEGywTSDQtIc3Se+n5GA7vzqeknGEiQmhMHrukxx7B/E+HkZN9bt8hjDO1C3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=XOVPS6Lf; arc=none smtp.client-ip=212.227.15.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1722173116; x=1722777916; i=deller@gmx.de;
-	bh=6u3OmaPbOzBEzWz/Kc0uqQiFPQNBMIQtVucgdHc2pz0=;
+	s=s31663417; t=1722173168; x=1722777968; i=deller@gmx.de;
+	bh=x7lg0ixPH3y9jYobLTk9qYN1Cjawop8pu7g+g8gQ85Y=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=NhwDKsvYlN20uU+99/eGfOOMBiXmmNQvQTHAmvrQ0A9SER//a19FcA7ZR5qRoEYA
-	 hEEb4lv2stSpmywemRE+G9C9WUex1bsbbG8+YflopQ5EAEfDw18AqwI2heS46pYVO
-	 eA5lJ98ED+nASejq6QN6WQqs6xCqjv0P270J7lkJTNUzeARWL/pVSVGBNGcoL4UWB
-	 6D14pbViyCCVLc3uyp++IjpZCIXimoUANp/yUzy54bx3x/HXOJT2YV7yj+MOTIe89
-	 ZdgS+ZIB4UysjZrFa15j1xUavk7gkOuPmSa/RYnXayn9wnLjpS6TRb0F+C197KlzX
-	 nLSq8hsnkq7RU8JSFA==
+	b=XOVPS6LfUTIKAMp3EnjJ+UZAIKLN1voIXsRlyIkV1kYxiXlgH9n/e5uOwTqHrY93
+	 i5JPtfnRLzaZ/9sPxDEz7PMBpzVKcP9ceTQVwzRaERNg4Bk7SuEAYU0B+4tPm+UGD
+	 P7qAIHsY/AOpNID4/E0Bwn+eA/xQuS3eBB+gyxsW1UH+17bQGHLu598xSvi32eZs7
+	 NUl9xOS2N2dO/jatGI+EHUcyyF/PGL8iY+vJ19eoZJOPTj4eeOdCxPqLH6jDSidFI
+	 XuYGtkxEugkrkD68qexrV4+BwlDWT0u0nXtPUmDDtA8PjQp3XuOnDeCwd9oShYKbp
+	 QcX3gGa1rv9se1jSfA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.55] ([109.250.63.33]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MdNY2-1rz0840bGC-00m7Jp; Sun, 28
- Jul 2024 15:25:16 +0200
-Message-ID: <c629285c-6113-417d-ae29-18345b2533d0@gmx.de>
-Date: Sun, 28 Jul 2024 15:25:14 +0200
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MTzay-1sgH5Z3MPK-00KvQx; Sun, 28
+ Jul 2024 15:26:07 +0200
+Message-ID: <14682bd6-0cb6-419b-998b-fcb8a54e7c1d@gmx.de>
+Date: Sun, 28 Jul 2024 15:26:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,15 +58,13 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] parisc: fix a possible DMA corruption
+Subject: Re: [PATCH] parisc: fix unaligned accesses in BPF
 To: Mikulas Patocka <mpatocka@redhat.com>,
- John David Anglin <dave.anglin@bell.net>
-Cc: John David Anglin <dave@parisc-linux.org>,
- James Bottomley <James.Bottomley@HansenPartnership.com>,
- linux-parisc@vger.kernel.org
-References: <76f39b33-4066-a891-94e5-671b1d82df27@redhat.com>
- <38510add-ed4d-4e99-beca-e29efaf94f4b@bell.net>
- <a233f8cd-ec48-3d2c-cfca-d863bb9912f5@redhat.com>
+ John David Anglin <dave.anglin@bell.net>,
+ John David Anglin <dave@parisc-linux.org>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: linux-parisc@vger.kernel.org
+References: <1e96c3f-d45c-b128-907b-ca2fba5f6a2d@redhat.com>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -112,100 +110,81 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <a233f8cd-ec48-3d2c-cfca-d863bb9912f5@redhat.com>
+In-Reply-To: <1e96c3f-d45c-b128-907b-ca2fba5f6a2d@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:qIRxGD6dFyqqFwSAWLsFBi3/T0bXyhnJIUVwP5p2+hEteubhLy1
- 3JkKuGhZzlLnnL5ZVpl4DUikKoqSMQPJbEGjYhukZpZ37JBZoCUaEO2IQ0vTcAfYL8tD8+s
- 3iGDNiMZ+bsz2qhYX09uVOHabCULe9UAJbsFWuxeJAaCMple8EKCIbDAQ6S07t/gafWyhMn
- /2Gzb/mt0N/lW/4cZURkw==
+X-Provags-ID: V03:K1:P1FapXjTahVExIdPQMaNdWQrB7hXcogi5q2LH2UXO5UFVzX7nDJ
+ Wt9LgQSZ4s9+MU38gBPhyz/cS4qCER01NzDu4nTfiTUWnb5NV6GVtsYLwti+9AngYDw/vmb
+ mARi9EF1IKHm3RN+3y/5dCWoauMBhSL98BJwTq5RjEt/M9Nhf0PJ+6lp6eSffGKVVfqmo5k
+ SD35vpVNv7kKaLQ8R00sQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:qSnDBh3RS8s=;fj7Wq14MtDCilVomfJGdLmjnLZX
- FjorAiaMajS4A8CyaTvfoYJJu7WY3WuXLzk91yq3Rlo17179sq3ez2YoEXiSJ/wopIcMdY/5b
- VGwDCiXDmezOVJH5HWf+S27oemYEEW0gbOVWAPfDSQgY/TAdvBtkw03dTwwyTF26+4xzLt1Cy
- mpCUGHTNrE74sc1aDrtVsMPInOyKgMxT5hzL3hRqcxR6sLbMh+dgS0dj1prJ4wiMK53MUWvYg
- qqVCirPYp1WDW2iJPlOCQiqCK0WdH7TxniRFlLNGGup1iuFQON1vB1tc3cDAxZXA0AXD2k9KS
- NiyHXJvGc5bK/8xnpF0v2byXFoV4PQnAG476dOpPKEe+w3JyeWuupLPSsQ0JY6z/taD0+y/4c
- bbJNx0Zsnry6+bW3QLSlc0QXfn4j1AdjNleG48Z2k4Rf/6EzF2bsxInlLXShC1q7yJnmCjPnE
- xwHT33zL1l3xzLEQ1mj8nyO6+mBQnsWhdWFxwG2y4U9Apb4ZTpCzcmA8e5MRodV72iQw+dyDT
- waFnhxR1iyvOoNlp2FEF/Qat/7WXnTHYJgsO3jBWXm6BIBLfRFxBSr5F+NR9xwDBVRXeJ9V45
- nDHZzRT2ZH5CZP+TJ3gg0LEDHI8MxiJH0vwutYxdq32NBSxUDhCJIGBjfj7c26MEqNSIptPst
- UAcdNTR4LLt93kvehmlnMuqQ4ViwOI15a4cQIDcILLuWIxULjIjiCCxpnA69oej1Ll1fQzvug
- mmFCpsjZWbfETr5PpjXuT25qvwS89vM6amdkyG8qDPN5yedxaeTvutH0owUMTTSGLrm85WR5Y
- J5L5xStdIOUaiF47PC1Al/9A==
+UI-OutboundReport: notjunk:1;M01:P0:tl715ew64W8=;N4IaZnAGvefND/mUT1A5UfODoKZ
+ 6oOt97Pwu4VxhSbTVIVZvYyKK5VHlEZT+Zr/XwQCIAkBwLalsTXpLjWYNdOe+viVibSEqTYRn
+ v5UWoQCGBPDQBm/YqBrGorvP7qPRi/1omtjpqJ8w1n+402LIqWUQSCqRuQ5Ufh0yQy1nNNlIK
+ PzSwvp650cTGl+y7KjHMlHS6QluFRZeEdNvNgc9CCnsIs+gyVtlyj/ny2tUtsFIRfy/aXBSM8
+ 3FRV1a7i4RwhXs0lAwazWX+v1rcJR7YErHQv3RJgTbOFFpRMzsjMy+r7MKU+PEQanvBmDNo5c
+ 0mhJyuQ/vX9dr4/WLjJTELrPtWKN2pWHjkgnW2orcd79r8xkoEqC6khIMTMsGcGr1zJKVqvQq
+ 3X8zqgA0vkaoO9cLpPBi7Diy9p1P2HshHmAZohvi6jEHpUQQtJRXBpozPHaRVWyIb+uNB2q+P
+ /nVPWO6G5E0R9mKhKx/qEGeP4i9yL/LOLYoIvSxyl9bbjOl3kfv+MV1MctZKySyZP6YF3wPRK
+ PKZNh7XL4Nxr+kKhzzMHVe3ak1JXPUQ6oLSr1KuiDIelHHFd3BUe3+FxTLV720/Z1ppNv3gC/
+ qxkslIMq5caAlSjEt4+F8/k220PHwyy2VB1sNS8Rw+rmHJlLB3NHCCtloYZUasXmaEkU4dfmD
+ cwAjzMryo0NgpAESj5p72DM/GG5iRXbDPb26UgWvFACLUdqx5JzdeLgzS2g63M4UfmtMMt7LU
+ D8lr/Ulh/Ma9rFEv9Zh34xZt7NRT4ulibJYTByLHozURNaHzWH8GMXVSXP4WNKPgLTfJf4Ovr
+ sfIn2w53hqwulA7fJIJ12aZg==
 
-On 7/27/24 20:22, Mikulas Patocka wrote:
-> ARCH_DMA_MINALIGN was defined as 16 - this is too small - it may be
-> possible that two unrelated 16-byte allocations share a cache line. If
-> one of these allocations is written using DMA and the other is written
-> using cached write, the value that was written with DMA may be
-> corrupted.
+On 7/27/24 12:11, Mikulas Patocka wrote:
+> There were spurious unaligned access warnings when calling BPF code.
+> Sometimes, the warnings were triggered with any incoming packet, making
+> the machine hard to use.
 >
-> This commit changes ARCH_DMA_MINALIGN to be 128 on PA20 and 32 on PA1.1 =
--
-> that's the largest possible cache line size.
+> The reason for the warnings is this: on parisc64, pointers to functions
+> are not really pointers to functions, they are pointers to 16-byte
+> descriptor. The first 8 bytes of the descriptor is a pointer to the
+> function and the next 8 bytes of the descriptor is the content of the
+> "dp" register. This descriptor is generated in the function
+> bpf_jit_build_prologue.
 >
-> As different parisc microarchitectures have different cache line size, w=
-e
-> define arch_slab_minalign(), cache_line_size() and
-> dma_get_cache_alignment() so that the kernel may tune slab cache
-> parameters dynamically, based on the detected cache line size.
+> The problem is that the function bpf_int_jit_compile advertises 4-byte
+> alignment when calling bpf_jit_binary_alloc, bpf_jit_binary_alloc
+> randomizes the returned array and if the array happens to be not aligned
+> on 8-byte boundary, the descriptor generated in bpf_jit_build_prologue i=
+s
+> also not aligned and this triggers the unaligned access warning.
+>
+> Fix this by advertising 8-byte alignment on parisc64 when calling
+> bpf_jit_binary_alloc.
 >
 > Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 > Cc: stable@vger.kernel.org
 
-applied.
+Nice catch!
+Applied.
 
 Thanks!
 Helge
 
 >
 > ---
->   arch/parisc/Kconfig             |    1 +
->   arch/parisc/include/asm/cache.h |   11 ++++++++++-
->   2 files changed, 11 insertions(+), 1 deletion(-)
+>   arch/parisc/net/bpf_jit_core.c |    2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> Index: linux-6.10/arch/parisc/include/asm/cache.h
+> Index: linux-6.10/arch/parisc/net/bpf_jit_core.c
 > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- linux-6.10.orig/arch/parisc/include/asm/cache.h	2023-09-18 11:33:40.=
-000000000 +0200
-> +++ linux-6.10/arch/parisc/include/asm/cache.h	2024-07-27 19:28:18.00000=
-0000 +0200
-> @@ -20,7 +20,16 @@
->
->   #define SMP_CACHE_BYTES L1_CACHE_BYTES
->
-> -#define ARCH_DMA_MINALIGN	L1_CACHE_BYTES
-> +#ifndef CONFIG_PA20
-> +#define ARCH_DMA_MINALIGN	32
-> +#else
-> +#define ARCH_DMA_MINALIGN	128
-> +#endif
-> +#define ARCH_KMALLOC_MINALIGN	16	/* ldcw requires 16-byte alignment */
-> +
-> +#define arch_slab_minalign()	((unsigned)dcache_stride)
-> +#define cache_line_size()	dcache_stride
-> +#define dma_get_cache_alignment cache_line_size
->
->   #define __read_mostly __section(".data..read_mostly")
->
-> Index: linux-6.10/arch/parisc/Kconfig
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- linux-6.10.orig/arch/parisc/Kconfig	2024-07-23 20:35:34.000000000 +0=
-200
-> +++ linux-6.10/arch/parisc/Kconfig	2024-07-26 19:41:15.000000000 +0200
-> @@ -20,6 +20,7 @@ config PARISC
->   	select ARCH_SUPPORTS_HUGETLBFS if PA20
->   	select ARCH_SUPPORTS_MEMORY_FAILURE
->   	select ARCH_STACKWALK
-> +	select ARCH_HAS_CACHE_LINE_SIZE
->   	select ARCH_HAS_DEBUG_VM_PGTABLE
->   	select HAVE_RELIABLE_STACKTRACE
->   	select DMA_OPS
+> --- linux-6.10.orig/arch/parisc/net/bpf_jit_core.c	2024-07-23 20:35:34.0=
+00000000 +0200
+> +++ linux-6.10/arch/parisc/net/bpf_jit_core.c	2024-07-27 11:40:17.000000=
+000 +0200
+> @@ -114,7 +114,7 @@ struct bpf_prog *bpf_int_jit_compile(str
+>   			jit_data->header =3D
+>   				bpf_jit_binary_alloc(prog_size + extable_size,
+>   						     &jit_data->image,
+> -						     sizeof(u32),
+> +						     sizeof(long),
+>   						     bpf_fill_ill_insns);
+>   			if (!jit_data->header) {
+>   				prog =3D orig_prog;
 >
 
 
