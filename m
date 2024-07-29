@@ -1,190 +1,111 @@
-Return-Path: <linux-parisc+bounces-1861-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1862-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5096C93E588
-	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jul 2024 15:26:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 149B49401BB
+	for <lists+linux-parisc@lfdr.de>; Tue, 30 Jul 2024 01:27:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09CF22817AA
-	for <lists+linux-parisc@lfdr.de>; Sun, 28 Jul 2024 13:26:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C515F1F23147
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Jul 2024 23:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21AF3A1BF;
-	Sun, 28 Jul 2024 13:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4951315CD41;
+	Mon, 29 Jul 2024 23:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="XOVPS6Lf"
+	dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b="eQoJoSN2"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from matoro.tk (matoro.tk [104.188.251.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9D71A28D
-	for <linux-parisc@vger.kernel.org>; Sun, 28 Jul 2024 13:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131D581AD2
+	for <linux-parisc@vger.kernel.org>; Mon, 29 Jul 2024 23:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.188.251.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722173178; cv=none; b=kxthwSTepE8vVi1djJM3jvpj9pjwXvfNiDDpGiz8PWDdv2lMViNaSejwhkVPvXDXJvNXAy2qjK9A5J/GlJP08YVDHshdHNC1n/XnaF1W5eFh5P2kRs2Swt2819yGKDOy3oeAsbI3QnIHcOO1nMkRblH2pArkYwbgYjEBa+ifnnk=
+	t=1722295619; cv=none; b=SLYi1wc3sQcWgKozuT0Jv66l7YC0tX2AbrcpQPbv0yT8LWVFDiOyyO7A2FNQA5rEg/fBOktNdXrVrT2RskxPCUiPLz1RLNMW6E0hFwSYbhze9hWMEjuD8zdrfeT5CYlpxRmmFj24QFPEYibIYwLwnO7FvymtSRlv601zwc8rXOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722173178; c=relaxed/simple;
-	bh=i7OBWf8F4iHzaNfiN+FawibrpYkQmw6WUT1ohhTqpck=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ezh/PNWjSTml0zJxYcyB9kyxyPDNfp/+Ut51li8FDrAQbougQi0PGDBe8im/KO5qyI3txUg2LujW5p7miKl1yuKt03+ekuhPVo50PG+hSP+SP7yEGywTSDQtIc3Se+n5GA7vzqeknGEiQmhMHrukxx7B/E+HkZN9bt8hjDO1C3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=XOVPS6Lf; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1722173168; x=1722777968; i=deller@gmx.de;
-	bh=x7lg0ixPH3y9jYobLTk9qYN1Cjawop8pu7g+g8gQ85Y=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=XOVPS6LfUTIKAMp3EnjJ+UZAIKLN1voIXsRlyIkV1kYxiXlgH9n/e5uOwTqHrY93
-	 i5JPtfnRLzaZ/9sPxDEz7PMBpzVKcP9ceTQVwzRaERNg4Bk7SuEAYU0B+4tPm+UGD
-	 P7qAIHsY/AOpNID4/E0Bwn+eA/xQuS3eBB+gyxsW1UH+17bQGHLu598xSvi32eZs7
-	 NUl9xOS2N2dO/jatGI+EHUcyyF/PGL8iY+vJ19eoZJOPTj4eeOdCxPqLH6jDSidFI
-	 XuYGtkxEugkrkD68qexrV4+BwlDWT0u0nXtPUmDDtA8PjQp3XuOnDeCwd9oShYKbp
-	 QcX3gGa1rv9se1jSfA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.33]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MTzay-1sgH5Z3MPK-00KvQx; Sun, 28
- Jul 2024 15:26:07 +0200
-Message-ID: <14682bd6-0cb6-419b-998b-fcb8a54e7c1d@gmx.de>
-Date: Sun, 28 Jul 2024 15:26:07 +0200
+	s=arc-20240116; t=1722295619; c=relaxed/simple;
+	bh=mQkC+kZHg+SONmBNU5Zxx0BPH0jRAirvG7VHGR4whAw=;
+	h=MIME-Version:Date:From:To:Cc:Subject:Message-ID:Content-Type; b=TFHFSUgK3IhdBdRfHrfNdiO1DJJFUlJkMW81FL7ETow2W/U3Atmg2inEJoG2wI2hOuXnnhilE6bauJDds9D7do01zbJKNFsjywkes5lWnIlCL84KM+R0DL2pi1gcr9ERbl9x4pOXqO+WVGQq53x0BSBpve6D0wZPlHUr7DdgWoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk; spf=pass smtp.mailfrom=matoro.tk; dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b=eQoJoSN2; arc=none smtp.client-ip=104.188.251.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matoro.tk
+DKIM-Signature: a=rsa-sha256; bh=nJ4+yrlRy+jAUYawvTmkmWMpLRVtLtmevabXsLyqbxs=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:Message-Id:Message-Id:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20240626; t=1722294700; v=1; x=1722726700;
+ b=eQoJoSN2N9RFkdxRJmSoDdeNwsQZRJaVvbMflVJil8f0mhKPU+Ro+NmKURmj1/3F9hJ4E3jH
+ 1kCQxLSrvnpmOhE5qUPgn/VJ9rEYEZRfgvKTDoTme0IbAdNQ9z00YiOkYKJVr8b96RZ+V3jJn+8
+ 8U1L/cgOXEzrmL7mrD55Nm81Ozy/g4lhafM+zX3VtTZcqVs79s3iHudQrqEI+1+zf5x0xo3vlLF
+ Z47Qy1UMLIstNfPzO1xeU7VJZWFJMRGGXCHxmYSszvPXKkqECTo8535vBUQQ1q1K7UK4tAHXjpw
+ d7k1z4RXr8lxWh2kW3NQ5v1Ohi6WrbWEt6muB7PQ6B58YMh94HBTt/xxVk7UwQRGJH7v6PpPH5p
+ By3qQbd9AQZQRyTrOpXYLC4Sl9E+e6kedgMLtFHmCoDgBpd26UZkwqAzo0zJVh8Dlv7IXnKLSqH
+ pDq4PcA9uKp8Pv0KY2TCvrsg86TXZzDonTql52bh3RstF7ZTR6FWO1nzTG7hfrfKQ3nZhy8ZfF7
+ 9WsNq07C60cC7+N6IRctOwnkK/I7rTzxJSwqAOMA27PllXMplnOURAT5YWeu5WKeLbJmV+ku/iX
+ 4L/Qns5Tb+pADYn5y6pXWM/ZMaKAexxdmHBGZvtX8PDyk/5fbABclNZxD3DaV1SQSXriS0BjQg9
+ hcX2kuFAWT8=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id aac71aba; Mon, 29 Jul
+ 2024 19:11:40 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: fix unaligned accesses in BPF
-To: Mikulas Patocka <mpatocka@redhat.com>,
- John David Anglin <dave.anglin@bell.net>,
- John David Anglin <dave@parisc-linux.org>,
- James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: linux-parisc@vger.kernel.org
-References: <1e96c3f-d45c-b128-907b-ca2fba5f6a2d@redhat.com>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <1e96c3f-d45c-b128-907b-ca2fba5f6a2d@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:P1FapXjTahVExIdPQMaNdWQrB7hXcogi5q2LH2UXO5UFVzX7nDJ
- Wt9LgQSZ4s9+MU38gBPhyz/cS4qCER01NzDu4nTfiTUWnb5NV6GVtsYLwti+9AngYDw/vmb
- mARi9EF1IKHm3RN+3y/5dCWoauMBhSL98BJwTq5RjEt/M9Nhf0PJ+6lp6eSffGKVVfqmo5k
- SD35vpVNv7kKaLQ8R00sQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:tl715ew64W8=;N4IaZnAGvefND/mUT1A5UfODoKZ
- 6oOt97Pwu4VxhSbTVIVZvYyKK5VHlEZT+Zr/XwQCIAkBwLalsTXpLjWYNdOe+viVibSEqTYRn
- v5UWoQCGBPDQBm/YqBrGorvP7qPRi/1omtjpqJ8w1n+402LIqWUQSCqRuQ5Ufh0yQy1nNNlIK
- PzSwvp650cTGl+y7KjHMlHS6QluFRZeEdNvNgc9CCnsIs+gyVtlyj/ny2tUtsFIRfy/aXBSM8
- 3FRV1a7i4RwhXs0lAwazWX+v1rcJR7YErHQv3RJgTbOFFpRMzsjMy+r7MKU+PEQanvBmDNo5c
- 0mhJyuQ/vX9dr4/WLjJTELrPtWKN2pWHjkgnW2orcd79r8xkoEqC6khIMTMsGcGr1zJKVqvQq
- 3X8zqgA0vkaoO9cLpPBi7Diy9p1P2HshHmAZohvi6jEHpUQQtJRXBpozPHaRVWyIb+uNB2q+P
- /nVPWO6G5E0R9mKhKx/qEGeP4i9yL/LOLYoIvSxyl9bbjOl3kfv+MV1MctZKySyZP6YF3wPRK
- PKZNh7XL4Nxr+kKhzzMHVe3ak1JXPUQ6oLSr1KuiDIelHHFd3BUe3+FxTLV720/Z1ppNv3gC/
- qxkslIMq5caAlSjEt4+F8/k220PHwyy2VB1sNS8Rw+rmHJlLB3NHCCtloYZUasXmaEkU4dfmD
- cwAjzMryo0NgpAESj5p72DM/GG5iRXbDPb26UgWvFACLUdqx5JzdeLgzS2g63M4UfmtMMt7LU
- D8lr/Ulh/Ma9rFEv9Zh34xZt7NRT4ulibJYTByLHozURNaHzWH8GMXVSXP4WNKPgLTfJf4Ovr
- sfIn2w53hqwulA7fJIJ12aZg==
+Date: Mon, 29 Jul 2024 19:11:40 -0400
+From: matoro <matoro_mailinglist_kernel@matoro.tk>
+To: Linux Parisc <linux-parisc@vger.kernel.org>
+Cc: John David Anglin <dave.anglin@bell.net>, Deller <deller@gmx.de>, John
+ David Anglin <dave@parisc-linux.org>
+Subject: Crash on booth with 6.10
+Message-ID: <096cad5aada514255cd7b0b9dbafc768@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 7/27/24 12:11, Mikulas Patocka wrote:
-> There were spurious unaligned access warnings when calling BPF code.
-> Sometimes, the warnings were triggered with any incoming packet, making
-> the machine hard to use.
->
-> The reason for the warnings is this: on parisc64, pointers to functions
-> are not really pointers to functions, they are pointers to 16-byte
-> descriptor. The first 8 bytes of the descriptor is a pointer to the
-> function and the next 8 bytes of the descriptor is the content of the
-> "dp" register. This descriptor is generated in the function
-> bpf_jit_build_prologue.
->
-> The problem is that the function bpf_int_jit_compile advertises 4-byte
-> alignment when calling bpf_jit_binary_alloc, bpf_jit_binary_alloc
-> randomizes the returned array and if the array happens to be not aligned
-> on 8-byte boundary, the descriptor generated in bpf_jit_build_prologue i=
-s
-> also not aligned and this triggers the unaligned access warning.
->
-> Fix this by advertising 8-byte alignment on parisc64 when calling
-> bpf_jit_binary_alloc.
->
-> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-> Cc: stable@vger.kernel.org
+Hi all, just bumped to the newest mainline starting with 6.10.2 and 
+immediately ran into a crash on boot.  Fully reproducible, reverting back to 
+last known good (6.9.8) resolves the issue.  Any clue what's going on here?  
+I can provide full boot logs, start bisecting, etc if needed...
 
-Nice catch!
-Applied.
-
-Thanks!
-Helge
-
->
-> ---
->   arch/parisc/net/bpf_jit_core.c |    2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> Index: linux-6.10/arch/parisc/net/bpf_jit_core.c
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --- linux-6.10.orig/arch/parisc/net/bpf_jit_core.c	2024-07-23 20:35:34.0=
-00000000 +0200
-> +++ linux-6.10/arch/parisc/net/bpf_jit_core.c	2024-07-27 11:40:17.000000=
-000 +0200
-> @@ -114,7 +114,7 @@ struct bpf_prog *bpf_int_jit_compile(str
->   			jit_data->header =3D
->   				bpf_jit_binary_alloc(prog_size + extable_size,
->   						     &jit_data->image,
-> -						     sizeof(u32),
-> +						     sizeof(long),
->   						     bpf_fill_ill_insns);
->   			if (!jit_data->header) {
->   				prog =3D orig_prog;
->
-
+[   23.444211] VFS: Mounted root (ext4 filesystem) on device 8:2.
+[   24.347318] Freeing unused kernel image (initmem) memory: 1024K
+[   24.546256] Backtrace:
+[   24.546307]  [<0000000040ed9700>] kernel_init+0x154/0x3c8
+[   24.546391]  [<0000000040202020>] ret_from_kernel_thread+0x20/0x28
+[   24.546741]
+[   24.546775]
+[   24.546809] Kernel Fault: Code=26 (Data memory access rights trap) at addr 
+0000000041252808
+[   24.550224] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 
+6.10.2-gentoo-parisc64 #1
+[   24.550224] Hardware name: 9000/800/rp3440
+[   24.550224]
+[   24.550224]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+[   24.550224] PSW: 00001000000001000000000000001111 Not tainted
+[   24.550224] r00-03  000000000804000f 0000000041081ba0 000000004055dab4 
+000000004b5dc450
+[   24.550224] r04-07  0000000040fadba0 0000000041415d64 000000004b850d00 
+000000004108-11  0000000041647a50 0000000000000000 0000000000000001 
+00000000414168b0
+[   24.550224] r12-15  0000000041611818 0000000040ed16-19  0000000000000000 
+0000000000800700 000000004b850000 000000004125f9b0
+[   24.550224] r20-23  0000000000000002 00000000412424-27  000000004b850d00 
+0000000000000000 00000000415cf158 0000000040fadba0
+[   24.550224] r28-31  0000000041252800 000000004b5dr00-03  0000000000000000 
+0000000000000000 0000000000000000 0000000000000000
+[   24.550224] sr04-07  0000000000000000 0000000000
+                                                    [   24.550224] IASQ: 
+0000000000000000 0000000000000000 IAOQ: 000000004055db24 000000004055db28
+[   24.550224]  IIR: 0f9412d0  [   24.550224]  CPU:        0   CR30: 
+000000004b850d00 CR31: fffffff0f0e05ee0
+[   24.550224]  ORIG_R28: 000000004b5dc650
+[   2[   24.550224]  IAOQ[1]: jump_label_init_ro+0xec/0x190
+[   24.550224]  RP(r2): jump_label_init_ro+0x78/0x190
+[   24.550224] Ba+0x154/0x3c8
+[   24.550224]  [<0000000040202020>] ret_from_kernel_thread+0x20/0x28
+[   24.550224]
+[   24.550224] Kernel pani
 
