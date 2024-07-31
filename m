@@ -1,98 +1,115 @@
-Return-Path: <linux-parisc+bounces-1884-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1885-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138D4942CC3
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jul 2024 13:07:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF30B9430E9
+	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jul 2024 15:32:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B29F81F214A9
-	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jul 2024 11:07:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74D8E1F21A46
+	for <lists+linux-parisc@lfdr.de>; Wed, 31 Jul 2024 13:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999031AD9C3;
-	Wed, 31 Jul 2024 11:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eYkOn8h1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA171B29C7;
+	Wed, 31 Jul 2024 13:32:02 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75241AED47
-	for <linux-parisc@vger.kernel.org>; Wed, 31 Jul 2024 11:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A9D1AD9CB;
+	Wed, 31 Jul 2024 13:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722423986; cv=none; b=fAESLKH1cy54JTp5JJMIk0uIbcyfIo3NjML1D/xuCjQ1aAyf9w8c8GImCr3zO0ktMzO7TJiH4LcSaQAOLYC9CheEXZ3dVcAF5G3PY5xA8wrPcVQGMtDemQVTGsSXryINhSQluizs+gb8SUDGc4D4MUo2ySKuqV/6oXQQ/7Gj1aY=
+	t=1722432722; cv=none; b=S8XQMonQ5ehEdv7PWrLrXKwtkMCRX8Lh9HrdPur4G9RAWjXxoaxu5cyg9HQhArVyl1cLq5Gtsz1/EybidQl10P+A+go6XHr/XMZ6Is2F/ocVVucEK8axQjR0/nefQOTr1V63dyMhpPCztFToVYl9A3XJVoJYgNsublFC9UvA9rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722423986; c=relaxed/simple;
-	bh=BOftzJBxXph8wdZVbIeyBWRCXnn59nLVw2WeZ8HBKCY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U4f4iOYeDrYPcWqPpOAb26o7YUgLaF744iI1jnZkz/BqoBJZv3GP0GhFAbU6UWeW4Du5ikZayI6W1qDKfHAhbGp1znUIVpquz8BtcLBn0pG34FJ/VBk7BPcLg+st+pkMRqBpIw/tY2FB54mJi6B5o0YJtgtsY6+Kz+K+HLb62sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=eYkOn8h1; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=MH0EcLHW2IroO+I9AnzBysuaGZCDwF38n2qMlFLBB6g=; b=eYkOn8h1WFY+yWWaxGbBLRIKxp
-	yklVWH1kwdmtXnH/c43ShzjUqO83jBbUFbxqMphLB1Kk1eLNq56Kb5O1wBRnqGNHHD871w9jHgA0M
-	6IifV2+C8KXCooXB0TAIyq+O5WPUaFcUomVQ6Z9HzwR9BnO1Z+VrpfVUsyhFihdRQuLOh2Spq4Syf
-	8sxkfw1M/Qk6FJnUst7pThbjBF9Zw0620BDdFI1JLcuhBy3YYol1G6c1Bex7rF/cbAJKYaRHLo/G4
-	RgPOtRPpLC1ymcYuV9V8wAoOR6unYcxAWhVK0sbydDtHE0A5rx0t35tzrSDGrgxy4sSL4mbNn77Ri
-	HIpE/AKg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sZ79u-00000005CiZ-2cGn;
-	Wed, 31 Jul 2024 11:06:19 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id D54F2300820; Wed, 31 Jul 2024 13:06:17 +0200 (CEST)
-Date: Wed, 31 Jul 2024 13:06:17 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: matoro <matoro_mailinglist_kernel@matoro.tk>
-Cc: John David Anglin <dave.anglin@bell.net>,
-	Linux Parisc <linux-parisc@vger.kernel.org>, Deller <deller@gmx.de>,
-	John David Anglin <dave@parisc-linux.org>
+	s=arc-20240116; t=1722432722; c=relaxed/simple;
+	bh=ZrOrYZWPguaGZbZEYM0RvPWlavBLs7B2YJ4QWINxkJs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=gQfRzYSxDK+Sv7obsdbBspyuYS7JFM8/f/8Bkzqg6YtOVCRi8WQpJeYXukKueuZ61eaKTGmwz0cfQ2uL06kdylpkWJrHH+h1cAEtxBwTYKmg9N08U2ZkCwPakAkV4cQYs0TA7naz/UkS3j2j3lp1V2Y7i12u5fXrkFcsxoci2/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+From: Sam James <sam@gentoo.org>
+To: Peter Zijlstra <peterz@infradead.org>, Greg KH <gregkh@linuxfoundation.org>
+Cc: matoro <matoro_mailinglist_kernel@matoro.tk>,  John David Anglin
+ <dave.anglin@bell.net>,  Linux Parisc <linux-parisc@vger.kernel.org>,
+  Deller <deller@gmx.de>,  John David Anglin <dave@parisc-linux.org>,
+ stable@vger.kernel.org
 Subject: Re: Crash on boot with CONFIG_JUMP_LABEL in 6.10
-Message-ID: <20240731110617.GZ33588@noisy.programming.kicks-ass.net>
+In-Reply-To: <20240731110617.GZ33588@noisy.programming.kicks-ass.net> (Peter
+	Zijlstra's message of "Wed, 31 Jul 2024 13:06:17 +0200")
+Organization: Gentoo
 References: <096cad5aada514255cd7b0b9dbafc768@matoro.tk>
- <bebe64f6-b1e1-4134-901c-f911c4a6d2e6@bell.net>
- <11e13a9d-3942-43a5-b265-c75b10519a19@bell.net>
- <cb2c656129d3a4100af56c74e2ae3060@matoro.tk>
+	<bebe64f6-b1e1-4134-901c-f911c4a6d2e6@bell.net>
+	<11e13a9d-3942-43a5-b265-c75b10519a19@bell.net>
+	<cb2c656129d3a4100af56c74e2ae3060@matoro.tk>
+	<20240731110617.GZ33588@noisy.programming.kicks-ass.net>
+Date: Wed, 31 Jul 2024 14:31:55 +0100
+Message-ID: <877cd1bsc4.fsf@gentoo.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cb2c656129d3a4100af56c74e2ae3060@matoro.tk>
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-On Tue, Jul 30, 2024 at 08:36:13PM -0400, matoro wrote:
-> On 2024-07-30 09:50, John David Anglin wrote:
-> > On 2024-07-30 9:41 a.m., John David Anglin wrote:
-> > > On 2024-07-29 7:11 p.m., matoro wrote:
-> > > > Hi all, just bumped to the newest mainline starting with 6.10.2
-> > > > and immediately ran into a crash on boot. Fully reproducible,
-> > > > reverting back to last known good (6.9.8) resolves the issue. 
-> > > > Any clue what's going on here?
-> > > > I can provide full boot logs, start bisecting, etc if needed...
-> > > 6.10.2 built and booted okay on my c8000 with the attached config.
-> > > You could start
-> > > with it and incrementally add features to try to identify the one
-> > > that causes boot failure.
-> > Oh, I have an experimental clocksource patch installed.  You will need
-> > to regenerate config
-> > with "make oldconfig" to use the current timer code.  Probably, this
-> > would happen automatically.
-> > > 
-> > > Your config would be needed to duplicate.    Full boot log would also help.
-> > 
-> > Dave
-> 
-> Hi Dave, bisecting quickly revealed the cause here.
+--=-=-=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-https://lkml.kernel.org/r/20240731105557.GY33588@noisy.programming.kicks-ass.net
+Peter Zijlstra <peterz@infradead.org> writes:
+
+> On Tue, Jul 30, 2024 at 08:36:13PM -0400, matoro wrote:
+>> On 2024-07-30 09:50, John David Anglin wrote:
+>> > On 2024-07-30 9:41 a.m., John David Anglin wrote:
+>> > > On 2024-07-29 7:11 p.m., matoro wrote:
+>> > > > Hi all, just bumped to the newest mainline starting with 6.10.2
+>> > > > and immediately ran into a crash on boot. Fully reproducible,
+>> > > > reverting back to last known good (6.9.8) resolves the issue.=C2=A0
+>> > > > Any clue what's going on here?
+>> > > > I=C2=A0can=C2=A0provide=C2=A0full=C2=A0boot=C2=A0logs,=C2=A0start=
+=C2=A0bisecting,=C2=A0etc=C2=A0if=C2=A0needed...
+>> > > 6.10.2 built and booted okay on my c8000 with the attached config.
+>> > > You could start
+>> > > with it and incrementally add features to try to identify the one
+>> > > that causes boot failure.
+>> > Oh, I have an experimental clocksource patch installed.=C2=A0 You will=
+ need
+>> > to regenerate config
+>> > with "make oldconfig" to use the current timer code.=C2=A0 Probably, t=
+his
+>> > would happen automatically.
+>> > >=20
+>> > > Your config would be needed to duplicate.=C2=A0 =C2=A0 Full boot log=
+ would also help.
+>> >=20
+>> > Dave
+>>=20
+>> Hi Dave, bisecting quickly revealed the cause here.
+>
+> https://lkml.kernel.org/r/20240731105557.GY33588@noisy.programming.kicks-=
+ass.net
+
+Greg, I see tglx's jump_label fix is queued for 6.10.3 but this one
+isn't as it came too late. Is there any chance of chucking it in? It's
+pretty nasty.
+
+thanks,
+sam
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iOUEARYKAI0WIQQlpruI3Zt2TGtVQcJzhAn1IN+RkAUCZqo8zF8UgAAAAAAuAChp
+c3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MjVB
+NkJCODhERDlCNzY0QzZCNTU0MUMyNzM4NDA5RjUyMERGOTE5MA8cc2FtQGdlbnRv
+by5vcmcACgkQc4QJ9SDfkZAp6gD+Jm3iAhmMIV9r5hvD6WNKeZdCdAYrODOt99Is
+RcnaizEA/1U+frbXA8Gr1fY7tf906NsumEtw8yk+6GhBs1nrXY0B
+=OHJC
+-----END PGP SIGNATURE-----
+--=-=-=--
 
