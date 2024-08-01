@@ -1,127 +1,199 @@
-Return-Path: <linux-parisc+bounces-1889-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1890-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF18943FF6
-	for <lists+linux-parisc@lfdr.de>; Thu,  1 Aug 2024 03:57:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4369444D5
+	for <lists+linux-parisc@lfdr.de>; Thu,  1 Aug 2024 08:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7561B2F722
-	for <lists+linux-parisc@lfdr.de>; Thu,  1 Aug 2024 01:56:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26B801F242E4
+	for <lists+linux-parisc@lfdr.de>; Thu,  1 Aug 2024 06:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82508149C4B;
-	Thu,  1 Aug 2024 01:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b="amSApraO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295EF15854E;
+	Thu,  1 Aug 2024 06:53:39 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from matoro.tk (matoro.tk [104.188.251.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from h3cspam02-ex.h3c.com (smtp.h3c.com [60.191.123.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459BE1E522;
-	Thu,  1 Aug 2024 01:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=104.188.251.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A5015853E;
+	Thu,  1 Aug 2024 06:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.191.123.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722474785; cv=none; b=PitkauYf0F3scEVjC08hG8aj/vhHt1Ac1IIUB3+YwlXgwqvpCg2DH4WT86DJWPgCUT2Te2KRh4DQE6qSR5wMzkmYWYFWrBWLTyUsNSf77FNFSQyacL6fnPmNk48kTUveZ55UzoaP6WitkxE5jTCuMUXmzLob/haTQq40noqEnHg=
+	t=1722495219; cv=none; b=WteHPJVY0aWd9+QV4udYd+zQh3YNcZOzm9mY4ZSuUdPK026qoX5NJCgnxH1NV/32MuEp0zudRkraHdYmTRUXxp6LuSIklXlqUD+YXHI6xcuduLn5WrnXLSWJ+zfaoz9rQQnf0Bda/cUuXriP/S3IGn3BR69xhrqwjXeKYmtVdCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722474785; c=relaxed/simple;
-	bh=OTGVbcCMbNvLvJQ/QBZCA9l5OmR6fPq+pO/6FFWww4s=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=MJz0rDVjAh0sPoyX0LDDZillzhJY1dWoas4QC6QU3SJWsFEtoasuVsIpxyJzoxr9iQy9+ibGNxVjAxqApRrjxE8JriaHa5GfsMWGBCB6n91KnSMVnpVLFfmonIJHL93X1i6SkYDiMSaQj1U3iHblMSPmMeuKvYKgxW2aRbBYTI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk; spf=pass smtp.mailfrom=matoro.tk; dkim=pass (4096-bit key) header.d=matoro.tk header.i=@matoro.tk header.b=amSApraO; arc=none smtp.client-ip=104.188.251.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=matoro.tk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matoro.tk
-DKIM-Signature: a=rsa-sha256; bh=Rj7elK2MD3WTzzUdUJeS0uUk8LdFv5i73Vo+oyMhhVM=;
- c=relaxed/relaxed; d=matoro.tk;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@matoro.tk; s=20240626; t=1722474745; v=1; x=1722906745;
- b=amSApraOrkhUaYHzcBCly5aMQC1ZSt4BStSxtMCbOouBnPohgWMfqOvr30lkv7EWZVoAb6I7
- RC9kjkvgXR05jhlUrCcvlgTVvtAjbkK1O2rqcrU/I1w6otTto9aAyWbqgTigxdhYBasV7uGla6F
- Tfl5Fns3Y+XMeyRxNUrJyl3d+MgBdZHGp/iSyt4d8g33L30m69cK+c/Dtbp/8Ceglxx9X6nclYG
- +hsZLh23N4NoPdlpNyGdzLwp4L78shFTU/yMIk7TD8YkJSLABkB88XC42nNWS+45qovv4LAfz2K
- 6DLNngbsbZ6Zwqm9eRP6q/XpfWKuYfNKtkvoBF+XOyFMGy8Mv+VaujV5WnptRff0+5wrQIv+alJ
- JIhPYKWvVb8W+BWSyMHHfdgGoHKssWjBcNrkWK0B2wxrOUdVhKUOBr/GUc0Ad++s0/9PX8FmLVK
- IgZukjC1meOfZXYZQSfReXe4/XnU9ocuFd8s22wwLfsTvSm7b9MQ0vkXvSR+EyuwnWVIRWQ1Tma
- SXk+bMArapmwkKw7nwnPBL4fFj/xBv9xhMOgug0fJZGdFPa0MCEPUK9sEMIw/8zbe5Ur65ObKe0
- xJnZHQKn7Ot9UaBSEU4mlyS89aEiOe7Wou3vtGBTdGNYPct7sLybNKYs7o31pyV58A/ouGqOSVq
- dIrq82MpIf0=
-Received: by matoro.tk (envelope-sender
- <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id 2a6d37e5; Wed, 31 Jul
- 2024 21:12:25 -0400
+	s=arc-20240116; t=1722495219; c=relaxed/simple;
+	bh=4hc8SFJafE8nX5khHv3obkGEDR7jGjNXZ+RQ3UyZ4p4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mpw/NV1A26HN4JV472VGygdUKAXouh+jOiT8QyXir740Ad1BmuadLFJcwNZaJIE3NNKnQFTAS9z9oDvICFPNhBi+XSHZCAzYPlM7zI2OmjFnQ0I4S/3lkJQV8Zl3zQD7j4LXD61fQAN25UxVEAYw1zhIZgg1gtcVLhTNjV9HIYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=h3c.com; spf=pass smtp.mailfrom=h3c.com; arc=none smtp.client-ip=60.191.123.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=h3c.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h3c.com
+Received: from mail.maildlp.com ([172.25.15.154])
+	by h3cspam02-ex.h3c.com with ESMTP id 4716p8Fp012906;
+	Thu, 1 Aug 2024 14:51:08 +0800 (GMT-8)
+	(envelope-from zhang.renze@h3c.com)
+Received: from DAG6EX09-BJD.srv.huawei-3com.com (unknown [10.153.34.11])
+	by mail.maildlp.com (Postfix) with ESMTP id B360A20071B5;
+	Thu,  1 Aug 2024 14:55:54 +0800 (CST)
+Received: from localhost.localdomain (10.99.206.12) by
+ DAG6EX09-BJD.srv.huawei-3com.com (10.153.34.11) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1258.27; Thu, 1 Aug 2024 14:51:10 +0800
+From: BiscuitOS Broiler <zhang.renze@h3c.com>
+To: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <akpm@linux-foundation.org>
+CC: <arnd@arndb.de>, <linux-arch@vger.kernel.org>, <chris@zankel.net>,
+        <jcmvbkbc@gmail.com>, <James.Bottomley@HansenPartnership.com>,
+        <deller@gmx.de>, <linux-parisc@vger.kernel.org>,
+        <tsbogend@alpha.franken.de>, <rdunlap@infradead.org>,
+        <bhelgaas@google.com>, <linux-mips@vger.kernel.org>,
+        <richard.henderson@linaro.org>, <ink@jurassic.park.msu.ru>,
+        <mattst88@gmail.com>, <linux-alpha@vger.kernel.org>,
+        <jiaoxupo@h3c.com>, <zhou.haofan@h3c.com>, <zhang.renze@h3c.com>
+Subject: [PATCH 0/1] mm: introduce MADV_DEMOTE/MADV_PROMOTE
+Date: Thu, 1 Aug 2024 14:50:34 +0800
+Message-ID: <20240801065035.15377-1-zhang.renze@h3c.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 31 Jul 2024 21:12:25 -0400
-From: matoro <matoro_mailinglist_kernel@matoro.tk>
-To: Sam James <sam@gentoo.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Peter Zijlstra
- <peterz@infradead.org>, John David Anglin <dave.anglin@bell.net>, Linux
- Parisc <linux-parisc@vger.kernel.org>, Deller <deller@gmx.de>, John David
- Anglin <dave@parisc-linux.org>, stable@vger.kernel.org
-Subject: Re: Crash on boot with CONFIG_JUMP_LABEL in 6.10
-In-Reply-To: <87sevpa44q.fsf@gentoo.org>
-References: <096cad5aada514255cd7b0b9dbafc768@matoro.tk>
- <bebe64f6-b1e1-4134-901c-f911c4a6d2e6@bell.net>
- <11e13a9d-3942-43a5-b265-c75b10519a19@bell.net>
- <cb2c656129d3a4100af56c74e2ae3060@matoro.tk>
- <20240731110617.GZ33588@noisy.programming.kicks-ass.net>
- <877cd1bsc4.fsf@gentoo.org> <2024073133-attentive-important-d419@gregkh>
- <87sevpa44q.fsf@gentoo.org>
-Message-ID: <a4d106187eeb2c3d6aca4ba50238783a@matoro.tk>
-X-Sender: matoro_mailinglist_kernel@matoro.tk
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BJSMTP02-EX.srv.huawei-3com.com (10.63.20.133) To
+ DAG6EX09-BJD.srv.huawei-3com.com (10.153.34.11)
+Content-Transfer-Encoding: quoted-printable
+X-DNSRBL: 
+X-SPAM-SOURCE-CHECK: pass
+X-MAIL:h3cspam02-ex.h3c.com 4716p8Fp012906
 
-On 2024-07-31 13:00, Sam James wrote:
-> Greg KH <gregkh@linuxfoundation.org> writes:
-> 
->> On Wed, Jul 31, 2024 at 02:31:55PM +0100, Sam James wrote:
->>> Peter Zijlstra <peterz@infradead.org> writes:
->>> 
->>> > On Tue, Jul 30, 2024 at 08:36:13PM -0400, matoro wrote:
->>> >> On 2024-07-30 09:50, John David Anglin wrote:
->>> >> > On 2024-07-30 9:41 a.m., John David Anglin wrote:
->>> >> > > On 2024-07-29 7:11 p.m., matoro wrote:
->>> >> > > > Hi all, just bumped to the newest mainline starting with 6.10.2
->>> >> > > > and immediately ran into a crash on boot. Fully reproducible,
->>> >> > > > reverting back to last known good (6.9.8) resolves the issue. 
->>> >> > > > Any clue what's going on here?
->>> >> > > > I can provide full boot logs, start bisecting, etc if needed...
->>> >> > > 6.10.2 built and booted okay on my c8000 with the attached config.
->>> >> > > You could start
->>> >> > > with it and incrementally add features to try to identify the one
->>> >> > > that causes boot failure.
->>> >> > Oh, I have an experimental clocksource patch installed.  You will need
->>> >> > to regenerate config
->>> >> > with "make oldconfig" to use the current timer code.  Probably, this
->>> >> > would happen automatically.
->>> >> > >
->>> >> > > Your config would be needed to duplicate.    Full boot log would also help.
->>> >> >
->>> >> > Dave
->>> >>
->>> >> Hi Dave, bisecting quickly revealed the cause here.
->>> >
->>> > https://lkml.kernel.org/r/20240731105557.GY33588@noisy.programming.kicks-ass.net
->>> 
->>> Greg, I see tglx's jump_label fix is queued for 6.10.3 but this one
->>> isn't as it came too late. Is there any chance of chucking it in? It's
->>> pretty nasty.
->> 
->> What is the git id of this in Linus's tree?
-> 
-> Ah, you're right, it's not there. Sorry, I thought I'd seen it pulled.
-> 
->> 
->> thanks,
->> 
->> greg k-h
+Sure, here's the Scalable Tiered Memory Control (STMC)
 
-Hi Peter, sorry I'm not quite following, exactly what patches need to be 
-applied to fix this?  I checked out the thread you linked but it does not 
-apply cleanly to 6.10.
+**Background**
+
+In the era when artificial intelligence, big data analytics, and
+machine learning have become mainstream research topics and
+application scenarios, the demand for high-capacity and high-
+bandwidth memory in computers has become increasingly important.
+The emergence of CXL (Compute Express Link) provides the
+possibility of high-capacity memory. Although CXL TYPE3 devices
+can provide large memory capacities, their access speed is lower
+than traditional DRAM due to hardware architecture limitations.
+
+To enjoy the large capacity brought by CXL memory while minimizing
+the impact of high latency, Linux has introduced the Tiered Memory
+architecture. In the Tiered Memory architecture, CXL memory is
+treated as an independent, slower NUMA NODE, while DRAM is
+considered as a relatively faster NUMA NODE. Applications allocate
+memory from the local node, and Tiered Memory, leveraging memory
+reclamation and NUMA Balancing mechanisms, can transparently demote
+physical pages not recently accessed by user processes to the slower
+CXL NUMA NODE. However, when user processes re-access the demoted
+memory, the Tiered Memory mechanism will, based on certain logic,
+decide whether to promote the demoted physical pages back to the
+fast NUMA NODE. If the promotion is successful, the memory accessed
+by the user process will reside in DRAM; otherwise, it will reside in
+the CXL NODE. Through the Tiered Memory mechanism, Linux balances
+betweenlarge memory capacity and latency, striving to maintain an
+equilibrium for applications.
+
+**Problem**
+Although Tiered Memory strives to balance between large capacity and
+latency, specific scenarios can lead to the following issues:
+
+  1. In scenarios requiring massive computations, if data is heavily
+     stored in CXL slow memory and Tiered Memory cannot promptly
+     promote this memory to fast DRAM, it will significantly impact
+     program performance.
+  2. Similar to the scenario described in point 1, if Tiered Memory
+     decides to promote these physical pages to fast DRAM NODE, but
+     due to limitations in the DRAM NODE promote ratio, these physical
+     pages cannot be promoted. Consequently, the program will keep
+     running in slow memory.
+  3. After an application finishes computing on a large block of fast
+     memory, it may not immediately re-access it. Hence, this memory
+     can only wait for the memory reclamation mechanism to demote it.
+  4. Similar to the scenario described in point 3, if the demotion
+     speed is slow, these cold pages will occupy the promotion
+     resources, preventing some eligible slow pages from being
+     immediately promoted, severely affecting application efficiency.
+
+**Solution**
+We propose the **Scalable Tiered Memory Control (STMC)** mechanism,
+which delegates the authority of promoting and demoting memory to the
+application. The principle is simple, as follows:
+
+  1. When an application is preparing for computation, it can promote
+     the memory it needs to use or ensure the memory resides on a fast
+     NODE.
+  2. When an application will not use the memory shortly, it can
+     immediately demote the memory to slow memory, freeing up valuable
+     promotion resources.
+
+STMC mechanism is implemented through the madvise system call, providing
+two new advice options: MADV_DEMOTE and MADV_PROMOTE. MADV_DEMOTE
+advises demote the physical memory to the node where slow memory
+resides; this advice only fails if there is no free physical memory on
+the slow memory node. MADV_PROMOTE advises retaining the physical memory
+in the fast memory; this advice only fails if there are no promotion
+slots available on the fast memory node. Benefits brought by STMC
+include:
+
+  1. The STMC mechanism is a variant of on-demand memory management
+     designed to let applications enjoy fast memory as much as possible,
+     while actively demoting to slow memory when not in use, thus
+     freeing up promotion slots for the NODE and allowing it to run in
+     an optimized Tiered Memory environment.
+  2. The STMC mechanism better balances large capacity and latency.
+
+**Shortcomings of STMC**
+The STMC mechanism requires the caller to manage memory demotion and
+promotion. If the memory is not promptly demoting after an promotion,
+it may cause issues similar to memory leaks, leading to short-term
+promotion bottlenecks.
+
+
+BiscuitOS Broiler (1):
+  mm: introduce MADV_DEMOTE/MADV_PROMOTE
+
+ arch/alpha/include/uapi/asm/mman.h           |   3 +
+ arch/mips/include/uapi/asm/mman.h            |   3 +
+ arch/parisc/include/uapi/asm/mman.h          |   3 +
+ arch/xtensa/include/uapi/asm/mman.h          |   3 +
+ include/uapi/asm-generic/mman-common.h       |   3 +
+ mm/internal.h                                |   1 +
+ mm/madvise.c                                 | 251 +++++++++++++++++++
+ mm/vmscan.c                                  |  57 +++++
+ tools/include/uapi/asm-generic/mman-common.h |   3 +
+ 9 files changed, 327 insertions(+)
+
+--
+2.34.1
+
+---------------------------------------------------------------------------=
+----------------------------------------------------------
+=B1=BE=D3=CA=BC=FE=BC=B0=C6=E4=B8=BD=BC=FE=BA=AC=D3=D0=D0=C2=BB=AA=C8=FD=BC=
+=AF=CD=C5=B5=C4=B1=A3=C3=DC=D0=C5=CF=A2=A3=AC=BD=F6=CF=DE=D3=DA=B7=A2=CB=CD=
+=B8=F8=C9=CF=C3=E6=B5=D8=D6=B7=D6=D0=C1=D0=B3=F6
+=B5=C4=B8=F6=C8=CB=BB=F2=C8=BA=D7=E9=A1=A3=BD=FB=D6=B9=C8=CE=BA=CE=C6=E4=CB=
+=FB=C8=CB=D2=D4=C8=CE=BA=CE=D0=CE=CA=BD=CA=B9=D3=C3=A3=A8=B0=FC=C0=A8=B5=AB=
+=B2=BB=CF=DE=D3=DA=C8=AB=B2=BF=BB=F2=B2=BF=B7=D6=B5=D8=D0=B9=C2=B6=A1=A2=B8=
+=B4=D6=C6=A1=A2
+=BB=F2=C9=A2=B7=A2=A3=A9=B1=BE=D3=CA=BC=FE=D6=D0=B5=C4=D0=C5=CF=A2=A1=A3=C8=
+=E7=B9=FB=C4=FA=B4=ED=CA=D5=C1=CB=B1=BE=D3=CA=BC=FE=A3=AC=C7=EB=C4=FA=C1=A2=
+=BC=B4=B5=E7=BB=B0=BB=F2=D3=CA=BC=FE=CD=A8=D6=AA=B7=A2=BC=FE=C8=CB=B2=A2=C9=
+=BE=B3=FD=B1=BE
+=D3=CA=BC=FE=A3=A1
+This e-mail and its attachments contain confidential information from New H=
+3C, which is
+intended only for the person or entity whose address is listed above. Any u=
+se of the
+information contained herein in any way (including, but not limited to, tot=
+al or partial
+disclosure, reproduction, or dissemination) by persons other than the inten=
+ded
+recipient(s) is prohibited. If you receive this e-mail in error, please not=
+ify the sender
+by phone or email immediately and delete it!
 
