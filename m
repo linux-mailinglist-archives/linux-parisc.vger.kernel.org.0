@@ -1,56 +1,53 @@
-Return-Path: <linux-parisc+bounces-1902-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1903-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023AE9468A0
-	for <lists+linux-parisc@lfdr.de>; Sat,  3 Aug 2024 10:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 317639468C3
+	for <lists+linux-parisc@lfdr.de>; Sat,  3 Aug 2024 11:00:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6580281D22
-	for <lists+linux-parisc@lfdr.de>; Sat,  3 Aug 2024 08:10:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D82BF282178
+	for <lists+linux-parisc@lfdr.de>; Sat,  3 Aug 2024 09:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051F414B978;
-	Sat,  3 Aug 2024 08:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74EA14C5AA;
+	Sat,  3 Aug 2024 08:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="ebbxUNfa"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="raM0KXim"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from cmx-torrgo001.bell.net (mta-tor-003.bell.net [209.71.212.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAA17173C;
-	Sat,  3 Aug 2024 08:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB2426286
+	for <linux-parisc@vger.kernel.org>; Sat,  3 Aug 2024 08:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722672654; cv=none; b=V3IplkhS2UUUdycGb1xLQTK9FI63HGrCNEwIzVDVHOtno4H7p5h+KruR0NOZSp8BhG/gbGZCDgtCCR3Lu6k4oWOM7OtYCvW+NaUbb0/ScvhDY9ELTcy0VVUNLHMmXesPf3t/Z0RgatRTw6U58nEEfMZ7e4v5eYl0DU+4mU0eVb4=
+	t=1722675599; cv=none; b=e7irf6knxNuFe52LBNHi8ZJ9eD/d7cW12arIDct1cVvp9ibYUdNywnLQHXGO1j45XYVpal4WpOi6dLyGGz3K79bJZ0xM9W2AQ5PFEhD9FA6YdKX98z7JoHTjdXnmb7urXTnSSV5wIWblOs4jZZ6Pwmy0Pcpjx79afoSBsVyeZes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722672654; c=relaxed/simple;
-	bh=FkcYtlmddf6NYrg57vXu2fJt6dx+Qgx7jkxyhH9TrXk=;
-	h=Message-ID:Date:MIME-Version:Subject:References:To:From:
-	 In-Reply-To:Content-Type; b=CO/kRFDNFqYHrVUnRsUEh1AedtZdahuACyIiudYXoGEbEmSuopsQbEtHrwIOBN6RWtNwPHk4JJDYz4QeexLSSSvn0HpPsO5V+l4rxJuyoB9yYUU+7T1wpPKdVSpfmVYz58T0gMrgklvntJ79/GQCD9azc5r+9bIuApSYguZDjBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=ebbxUNfa; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1722672649; x=1723277449; i=deller@gmx.de;
-	bh=Qa5vx4DnbC6bBFNxo53rhlDyVa7w+bnw/DeUS+ya9q4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:
-	 References:To:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=ebbxUNfaRhICY/6l9lUgF+oKXIPlPkPJBvtXXCcLlvofMBsHMKvNvIqBIeFAsVc7
-	 so26zcuHzKo1N+OlaiATdhCQlB9+XrvpnmZQL1ZxXc4k98KSKWNyAZsrfJPa3YRv4
-	 KupffH0l3ZezoPOo5o8ZexGIKjyTq/BtVSLZdY0aqJQ43rAFmXToQz3TFMtb7PFzf
-	 KeUm1cZH477B7uSOUoGPmvvS7GOtrK84SbZyihjmxPeTINWn82Q0LnSSIbwbojsXr
-	 8kHuE9YMe+b9uAQsrKPvBocbr6iGgObz8NvY+adnGwiTmpmePTa5/5xmyZT7CAXJf
-	 GhqMt46fnHk81Pk/aQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.33]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MVeMG-1shkaL11tM-00JlrP; Sat, 03
- Aug 2024 10:10:49 +0200
-Message-ID: <7ab022d9-c1f3-446f-b27e-1d95f725e75b@gmx.de>
-Date: Sat, 3 Aug 2024 10:10:48 +0200
+	s=arc-20240116; t=1722675599; c=relaxed/simple;
+	bh=a3sKydD4Jc/Nq3EMzW/L87Bc0jcz8pQAhEge6u8gLfw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SGyPuqhb5ikT4N5m/Ulj40pVCyq57KLcxdHJV/aucBnHPOU5zClPyZ5u6XWuZo1Pn6hXrZjo9wImIxxBtm9DQlYWyj/UWTbEpOZR4T+D0LVL2QmQZpBbIItsK6maP776nPCUJh692xqAuZbdE4RV40akUvxkq2uFWIE6OlPStiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=raM0KXim; arc=none smtp.client-ip=209.71.212.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1722675597; 
+        bh=DfnU2SwbS3ys5R9/H9ZtH9bvJwCgEG+EF9eTxkJy6No=;
+        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
+        b=raM0KXimvnfvkbVmW0jfzF3g6RVVvR/BazGRCBCIOdk97adAiLnsGE4pgKZE+77M5bYmChv6N4EleZuhJ3/EY/5dx503XplVoy6LExXQOIVohFhEpnNo1PNC//zN8P5Uj1lBXjAl/HT7CG+Q8QS/ZqoqCVmXfLm7BVihXGWJPafkKaCUtYWY7HrkLpFRL3w8+ct6lWfjSJrFmcqhGz4xB6S5W5ovoNud48Ksar6b9QKKY93HiSPCMfcH/dJ4OH6QQ3Uot9OO3Suq8fin2uZUoKAiTr7sEmtm2pZ6Ao1iDSicjzAvCe4F5OnNB4Imr08dl6ySrelLFZkQMKr0UlvLaA==
+X-RG-SOPHOS: Clean
+X-RG-VADE-SC: 0
+X-RG-VADE: Clean
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 669E799D015EBD8B
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeeftddrkedvgddtkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejleffffejhefggfeuheelgeefgeeuieegtdekffegudeuteffgeffjedukefgueenucfkphepjeeirdejuddrudduhedrjeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepjeeirdejuddrudduhedrjeehpdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeekpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopeguvghllhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepughilhhfrhhiughgvgesghgvnhhtohhordhorhhgpdhrtghpthhtohepfhifvghimhgvrhesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhisggtqdgrlhhphhgrsehsohhurhgtvgifrghrvgdrohhrghdprhgtphht
+	thhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghmsehgvghnthhoohdrohhrgh
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from [192.168.2.49] (76.71.115.75) by cmx-torrgo001.bell.net (authenticated as dave.anglin@bell.net)
+        id 669E799D015EBD8B; Sat, 3 Aug 2024 04:57:48 -0400
+Message-ID: <e959c48b-8584-440a-a46e-a7442043076f@bell.net>
+Date: Sat, 3 Aug 2024 04:57:47 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,115 +55,75 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [GIT PULL] parisc architecture fixes for v6.11-rc2
-References: <Zq1B366giNrrbU3W@p100>
+Subject: Re: [PATCH] hppa: Wire up cacheflush syscall
+To: Sam James <sam@gentoo.org>, Helge Deller <deller@gmx.de>
+Cc: "Andreas K. Huettel" <dilfridge@gentoo.org>,
+ Florian Weimer <fweimer@redhat.com>, Helge Deller <deller@kernel.org>,
+ libc-alpha@sourceware.org, linux-parisc@vger.kernel.org
+References: <Zos8gVaGUcuaaNaI@carbonx1>
+ <877cdwfgi9.fsf@oldenburg.str.redhat.com>
+ <a6a933be-9795-4614-a925-25049736d3c1@gmx.de> <2572286.PYKUYFuaPT@kona>
+ <b494d5e4-123e-4625-b947-644ac4283838@gmx.de> <87a5iq7kdh.fsf@gentoo.org>
 Content-Language: en-US
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Linux Kernel Development <linux-kernel@vger.kernel.org>,
- linux-parisc <linux-parisc@vger.kernel.org>
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <Zq1B366giNrrbU3W@p100>
-X-Forwarded-Message-Id: <Zq1B366giNrrbU3W@p100>
+From: John David Anglin <dave.anglin@bell.net>
+Autocrypt: addr=dave.anglin@bell.net; keydata=
+ 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
+ T70V9SSrl2hiw38vRzsl
+In-Reply-To: <87a5iq7kdh.fsf@gentoo.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:kOrloD4yD2JadP+FAQ2mI3YZm6/O67E2hwxwoxEh4a/nZDyPlKb
- Pudiwhj4YCvI3x0VE2bXctjqqnMsDQKyStqWO8d7geDEYIVj0rFGJSdWxL8lPWJPq17y72S
- FddRbc0LMp0SQ5kAP/tRLa3fukevniw7Ag8Z+VlddtzgElEKzEJTSAfSntNAD811A69mYNR
- eF+2Ltphz1fo5639ofR5w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:mcKuhzmrkeg=;UNJG7B4wcl6+EqLP3xD3sTizvOo
- bMwHa6rigyDmpbIBVaN4lquSxXbP/9krkC0KkorsbFaowAdLLAZ7IVXHdSTVg3I6SAqM8K3vJ
- xKiWjBfesgsFBmih3w4kwEF8fp5iYW/T6/t0DOwvvLi8kawi6a67QGLjlLXRV9GR8qiY1n77S
- rAOQRliAhMLHVjCm3CqgdEHCOW4Ulji7rbThHxHaOujmsMIDTKtKJxYQb0iyY814wri8AAxV1
- ppiMdyZbx/FZPGdTNQNWiFwQ66c/M6RU5Opg/TzK/2uMLIlNETpDbwunHnoT/o1XVa2emR05E
- +HjQZMA5iPoGuDxQFRAk6YB2/Hx8jVYa9tz+elteJ7G/nrVu8kLzO4dMQkswoC2ewswuAooH5
- 9t1LeLtiiK0lqaN/RM27kbdPmIJyA52pccV9MYcieE2b+7C82oWNiUOzGI+KnL/zve6sASGab
- TdWMUO/6KbsHZNUhrZaeGfO0ij9CPYFwQEh9FgD+K8jhhrxcm8fWM/gKTq/VLm/NCMaDMgsg2
- vtUH/gsatNCzrIqcTd07afKYD6DmkBAEM9bjwrcWFSU0+r8PixAfmniPMRoPAhelUGs4mfWi+
- 2v19IO4N6FuOr+B8a1ls51jR8OCdiM9qPprZrJmtl9Opx30qfhlSJcqHq9RgFHdOb+Lb4jRM7
- LPLSeXQxZftpY51HX/CwmPKjbYvl4YRMl35g6xV2PyQB79SEvw6p8JBxSmKIfmQsTkXQD0xPF
- M1qPecUM7SZuRZrPdeta7vSxcFJe4zNF3ULxET/VEtZKzyId44h7X1eKsGklXH52P1jY3a1iZ
- eeJBBj1GfRdE+G6xunIC1dig==
+Content-Transfer-Encoding: 8bit
 
-Hi Linus,
+On 2024-07-09 9:41 a.m., Sam James wrote:
+> In this instance, I wonder if we should do the extra checks. The kernel
+> instability because of the cache / TLB issues means at least one of our
+> machines runs an older kernel for now. (Dave's latest patches seem to
+> help a lot there, but you get the point.)
+Can you be more specific?  Do you still experience instability due to cache / TLB issues
+on this machine?
 
-Please pull to receive two fixes from Mikulas Patocka for the parisc architecture for 6.11-rc2.
+Dave
 
-The fixes avoid unaligned memory access warnings when calling BPF functions
-and fix possible DMA corruptions.
+-- 
+John David Anglin  dave.anglin@bell.net
 
-Thanks!
-Helge
-
-----------------------------------------------------------------
-The following changes since commit 8400291e289ee6b2bf9779ff1c83a291501f017b:
-
-   Linux 6.11-rc1 (2024-07-28 14:19:55 -0700)
-
-are available in the Git repository at:
-
-   git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.11-rc2
-
-for you to fetch changes up to 7ae04ba36b381bffe2471eff3a93edced843240f:
-
-   parisc: fix a possible DMA corruption (2024-07-29 16:19:07 +0200)
-
-----------------------------------------------------------------
-parisc architecture fixes for kernel v6.11-rc2:
-
-- fix unaligned memory accesses when calling BPF functions
-- adjust memory size constants to fix possible DMA corruptions
-
-----------------------------------------------------------------
-Mikulas Patocka (2):
-       parisc: fix unaligned accesses in BPF
-       parisc: fix a possible DMA corruption
-
-  arch/parisc/Kconfig             |  1 +
-  arch/parisc/include/asm/cache.h | 11 ++++++++++-
-  arch/parisc/net/bpf_jit_core.c  |  2 +-
-  3 files changed, 12 insertions(+), 2 deletions(-)
 
