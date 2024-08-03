@@ -1,129 +1,79 @@
-Return-Path: <linux-parisc+bounces-1903-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1904-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 317639468C3
-	for <lists+linux-parisc@lfdr.de>; Sat,  3 Aug 2024 11:00:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5615946A87
+	for <lists+linux-parisc@lfdr.de>; Sat,  3 Aug 2024 18:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D82BF282178
-	for <lists+linux-parisc@lfdr.de>; Sat,  3 Aug 2024 09:00:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EE16281753
+	for <lists+linux-parisc@lfdr.de>; Sat,  3 Aug 2024 16:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74EA14C5AA;
-	Sat,  3 Aug 2024 08:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81356134DE;
+	Sat,  3 Aug 2024 16:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="raM0KXim"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IEl20ahU"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-torrgo001.bell.net (mta-tor-003.bell.net [209.71.212.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB2426286
-	for <linux-parisc@vger.kernel.org>; Sat,  3 Aug 2024 08:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2D9134A9;
+	Sat,  3 Aug 2024 16:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722675599; cv=none; b=e7irf6knxNuFe52LBNHi8ZJ9eD/d7cW12arIDct1cVvp9ibYUdNywnLQHXGO1j45XYVpal4WpOi6dLyGGz3K79bJZ0xM9W2AQ5PFEhD9FA6YdKX98z7JoHTjdXnmb7urXTnSSV5wIWblOs4jZZ6Pwmy0Pcpjx79afoSBsVyeZes=
+	t=1722702762; cv=none; b=T2/CrCHcaD8lLnJxjpp99HnOzNedPX4slvXKCmk4a3+86XZ2RBWHJt51MOBpjsW7qwRo+YOfTu3f1JPKyvkbDT0rlVJYHgAaSy2beJ4Eydp90B9leRdWjsIJo4zq4YXqdKkh02L4lki+N9yqAACYd5BKgIbPYAk4WGZF7uOMB1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722675599; c=relaxed/simple;
-	bh=a3sKydD4Jc/Nq3EMzW/L87Bc0jcz8pQAhEge6u8gLfw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SGyPuqhb5ikT4N5m/Ulj40pVCyq57KLcxdHJV/aucBnHPOU5zClPyZ5u6XWuZo1Pn6hXrZjo9wImIxxBtm9DQlYWyj/UWTbEpOZR4T+D0LVL2QmQZpBbIItsK6maP776nPCUJh692xqAuZbdE4RV40akUvxkq2uFWIE6OlPStiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=raM0KXim; arc=none smtp.client-ip=209.71.212.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1722675597; 
-        bh=DfnU2SwbS3ys5R9/H9ZtH9bvJwCgEG+EF9eTxkJy6No=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=raM0KXimvnfvkbVmW0jfzF3g6RVVvR/BazGRCBCIOdk97adAiLnsGE4pgKZE+77M5bYmChv6N4EleZuhJ3/EY/5dx503XplVoy6LExXQOIVohFhEpnNo1PNC//zN8P5Uj1lBXjAl/HT7CG+Q8QS/ZqoqCVmXfLm7BVihXGWJPafkKaCUtYWY7HrkLpFRL3w8+ct6lWfjSJrFmcqhGz4xB6S5W5ovoNud48Ksar6b9QKKY93HiSPCMfcH/dJ4OH6QQ3Uot9OO3Suq8fin2uZUoKAiTr7sEmtm2pZ6Ao1iDSicjzAvCe4F5OnNB4Imr08dl6ySrelLFZkQMKr0UlvLaA==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 669E799D015EBD8B
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeeftddrkedvgddtkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejleffffejhefggfeuheelgeefgeeuieegtdekffegudeuteffgeffjedukefgueenucfkphepjeeirdejuddrudduhedrjeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepjeeirdejuddrudduhedrjeehpdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeekpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopeguvghllhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepughilhhfrhhiughgvgesghgvnhhtohhordhorhhgpdhrtghpthhtohepfhifvghimhgvrhesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhisggtqdgrlhhphhgrsehsohhurhgtvgifrghrvgdrohhrghdprhgtphht
-	thhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghmsehgvghnthhoohdrohhrgh
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (76.71.115.75) by cmx-torrgo001.bell.net (authenticated as dave.anglin@bell.net)
-        id 669E799D015EBD8B; Sat, 3 Aug 2024 04:57:48 -0400
-Message-ID: <e959c48b-8584-440a-a46e-a7442043076f@bell.net>
-Date: Sat, 3 Aug 2024 04:57:47 -0400
+	s=arc-20240116; t=1722702762; c=relaxed/simple;
+	bh=l+GsN6fvjMRiQKKYKQBxIZyd4R4E9u6bHc9VzAZu3RQ=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=E8rJxa88nIMqlylLGpBOXiyud91PfFYIj4IxlTWIksnPzZqej71nFIRe6B/wHXWilk935jSnuRbJS+TDjhbwYvuNvU8ERQ3P3p76Q9IGrPDyrLzZzasdlLgneFxP+7mGgkvFQ5K4k3LAqJ4yKz6RivkaU79k9etNaRALQWsNuQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IEl20ahU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2C698C116B1;
+	Sat,  3 Aug 2024 16:32:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722702762;
+	bh=l+GsN6fvjMRiQKKYKQBxIZyd4R4E9u6bHc9VzAZu3RQ=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=IEl20ahUg0smHYk4MaA0Hq179lMbY1QTRaAyhCSppwwNVrSxjbjP6SwPQ+b7fDjmK
+	 W7pUNN9CJG3PMlfgpTUddpIFMAPKQf7x9tibxKyFkFgtvNcSrEKgVTjgfuLrucouT1
+	 MYdNEUjgJJdWB7LCxpgHi+Q+GFUIMeibXkSXNexrOeoOc65oazLAYAIF52/GVzOhYU
+	 q/ugHOq/bH+kjz7nQkjULg/xdfM7w1vF9D3BWOPhkIOc7R5v7qDJqj6/TbaZ6wPoYP
+	 gyfebbe/0citbjydbATuE0HzWBYZOkL6Hxqew2H4FDMRYpbrienbw6TF+tEt9nr7Dk
+	 b0JmxW46n5JnA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 22505C433F2;
+	Sat,  3 Aug 2024 16:32:42 +0000 (UTC)
+Subject: Re: [GIT PULL] parisc architecture fixes for v6.11-rc2
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <7ab022d9-c1f3-446f-b27e-1d95f725e75b@gmx.de>
+References: <Zq1B366giNrrbU3W@p100> <7ab022d9-c1f3-446f-b27e-1d95f725e75b@gmx.de>
+X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
+X-PR-Tracked-Message-Id: <7ab022d9-c1f3-446f-b27e-1d95f725e75b@gmx.de>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.11-rc2
+X-PR-Tracked-Commit-Id: 7ae04ba36b381bffe2471eff3a93edced843240f
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 1dd950f2888f63ec163f3f142161e21a66685e35
+Message-Id: <172270276213.23596.15937313810472071921.pr-tracker-bot@kernel.org>
+Date: Sat, 03 Aug 2024 16:32:42 +0000
+To: Helge Deller <deller@gmx.de>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Linux Kernel Development <linux-kernel@vger.kernel.org>, linux-parisc <linux-parisc@vger.kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hppa: Wire up cacheflush syscall
-To: Sam James <sam@gentoo.org>, Helge Deller <deller@gmx.de>
-Cc: "Andreas K. Huettel" <dilfridge@gentoo.org>,
- Florian Weimer <fweimer@redhat.com>, Helge Deller <deller@kernel.org>,
- libc-alpha@sourceware.org, linux-parisc@vger.kernel.org
-References: <Zos8gVaGUcuaaNaI@carbonx1>
- <877cdwfgi9.fsf@oldenburg.str.redhat.com>
- <a6a933be-9795-4614-a925-25049736d3c1@gmx.de> <2572286.PYKUYFuaPT@kona>
- <b494d5e4-123e-4625-b947-644ac4283838@gmx.de> <87a5iq7kdh.fsf@gentoo.org>
-Content-Language: en-US
-From: John David Anglin <dave.anglin@bell.net>
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- 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
- T70V9SSrl2hiw38vRzsl
-In-Reply-To: <87a5iq7kdh.fsf@gentoo.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 2024-07-09 9:41 a.m., Sam James wrote:
-> In this instance, I wonder if we should do the extra checks. The kernel
-> instability because of the cache / TLB issues means at least one of our
-> machines runs an older kernel for now. (Dave's latest patches seem to
-> help a lot there, but you get the point.)
-Can you be more specific?  Do you still experience instability due to cache / TLB issues
-on this machine?
+The pull request you sent on Sat, 3 Aug 2024 10:10:48 +0200:
 
-Dave
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.11-rc2
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/1dd950f2888f63ec163f3f142161e21a66685e35
+
+Thank you!
 
 -- 
-John David Anglin  dave.anglin@bell.net
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
