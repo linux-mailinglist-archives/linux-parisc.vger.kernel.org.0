@@ -1,59 +1,57 @@
-Return-Path: <linux-parisc+bounces-1906-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1907-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D6F9477BF
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Aug 2024 10:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 121B0947B3E
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Aug 2024 14:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CE13B231D7
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Aug 2024 08:59:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DECDB2153B
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Aug 2024 12:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD53F14EC7E;
-	Mon,  5 Aug 2024 08:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C62C158DC8;
+	Mon,  5 Aug 2024 12:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Lv8666Vr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2/hJLDsq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M0h6Z+Bq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5SdBuif6"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98E614D71A;
-	Mon,  5 Aug 2024 08:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2305A1553BD;
+	Mon,  5 Aug 2024 12:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722848165; cv=none; b=qcx7UlTd6djhIvytWqWB+VZ94BCgLAT+IPD3/Gkct+iZ2jbzIgGdlSdKWzJbsXxMcx3GQUtoCmE1IhqTOpW+MkY7TGR3OQJHn4+b/zgbiM6tTRQMC4yftaG4eE55HgQ04InQWalnzJHs4HGa089QUM3S3tryxHrXbmXW7pCMeFQ=
+	t=1722862283; cv=none; b=OYwlrV2UjKcegBhy2eR3pZ59I0qFhDIgEZk0XPhIkWxx9YJnPzWmSs7XCtuvwDsFMpcyyHK33Mhb1VywdIhbJOZkzCA2cWikhei68JUsYmBt13DxXh16I/kQJurUdQjJNxok38ADxJYVJnG0n0WTR0JhUNnaYuQimCJoYbzLtvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722848165; c=relaxed/simple;
-	bh=s1n91oB+uxsmRXvCFdhDBqrbPSA/dUPO6Se1kMtbbH8=;
+	s=arc-20240116; t=1722862283; c=relaxed/simple;
+	bh=z4BX1QzEnxJRLmvdrew9bP42NWdLaykq40FAW0BPEKo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=K1UscGnIMhBO8G/5mAXEWaUPobjga6QGMMiMYWqc6x1OcrHJ0m9Ia0PiqLf5P1TxgZ3eNJjH83rhSlY2wTOtiolsFpMN0wTi4HYyMEjxGkH9rOyh+vJGAP4Eam+OIFxo52RvPiJ2QESdaln4qV1xzwLtDB0kU0cl9nAF7J/Avpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Lv8666Vr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2/hJLDsq; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version:Content-Type; b=dHIsWBzsYJUItbzPxqP8ZlNDNyS/qOdA64QWZ18iwTSQgEkIfskz2+gUA4EmlQV+FkufoAYDps5EK2Cs5W1crIjM0lmJ3wsyUqJtJu3NtIDUW0t8L1nflsTczv88F/JQnWbpZZij9t7wO3wzTh0ZD4YgM8xhCLJztZNb6rIjZAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M0h6Z+Bq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5SdBuif6; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722848162;
+	s=2020; t=1722862280;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aYRnHbF7uXJvUBwRmwiJny8X7HtTaLwwFTRZxyG9X6Y=;
-	b=Lv8666Vr1mOH5nc/u/LKNi4o9/k6Y2bC6/+MdC4cNgMJjg0l5iNRJXQbpOpeKFfthhWV/I
-	YdYlVRVk2m3nB2BRXeU1qhtSBL6vpgssRJ7rOm2QVCKKNQhFgQnIpzrf7yAwac0BRRSlpw
-	aEwtMeuIEbPsHjKYdb92FgdaHEGzyeweDR9I9TTpSAwfA4+GmmxR9VMol/iahJ1SO/W29h
-	4KDy3nrSce/RUSsUGYmlFf/1KpyoeHwUQRzbYeaTFWXDRsjk6Ozi5XoxdNZxcAhnW92EUg
-	JxycSfDqoMV2Jn8v/HnFVIj4ml0FFdZryfWgY7Dp3xYOSWodLHCmKQBuHcVByA==
+	bh=q/YW4TAEbkHNdMQJNf3vKU+tlrN+ni5Dt6BVMdGfvoo=;
+	b=M0h6Z+Bq+6AgJdy8GQuenLJY+khUm5gt12Hhqgm3zZgFGrDtsmfVeYn7T/1U4Xm0lMsmyN
+	SMbudsZgzpnY4VdHffbLqc/AGcYMyIz5kt+OWeg5qe0DwtelTIUucYaxOtHW6Wx0pymNvv
+	GYIFLZq2/jVoqDdKWs3++KgCpxvhG6x+Yp+g4DjYIhFRyR4ek6uP1N6XVc8N2k+qKcTWve
+	S6UahzXTSAjvsh1cz+aeeGYUsMwOZkXVNUqDebs0PSSglw4QcIIVSsFCGWVc8nLMtgQPK8
+	x2/hLs1xifwuqAVaj7oZuGHPhcpMcspFsY6xuKyUCPU7PTUnYvazNwDvpBuTNA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722848162;
+	s=2020e; t=1722862280;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aYRnHbF7uXJvUBwRmwiJny8X7HtTaLwwFTRZxyG9X6Y=;
-	b=2/hJLDsqaWg3/AO8GEqw9fyyCk/zVcpC2TK5cUg+kac9wg4hviG8UorLCpwyOFgjBCxXE8
-	WcIpeKpGpwcgExBQ==
+	bh=q/YW4TAEbkHNdMQJNf3vKU+tlrN+ni5Dt6BVMdGfvoo=;
+	b=5SdBuif6C17pv8uXJaNIJH411I/2GLdbNOdzVeQS/uIp5y5s+sxer9XiGjIQ36Lr+fDBcw
+	8zyhpY58qbKD2VAA==
 To: Guenter Roeck <linux@roeck-us.net>, Greg Kroah-Hartman
  <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -62,96 +60,67 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com,
  sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
  conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org, "Rafael J.
- Wysocki" <rafael.j.wysocki@intel.com>, Helge Deller <deller@gmx.de>,
- Parisc List <linux-parisc@vger.kernel.org>
+ Wysocki" <rafael.j.wysocki@intel.com>, Helge Deller <deller@gmx.de>, Parisc
+ List <linux-parisc@vger.kernel.org>
 Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
-In-Reply-To: <a8a81b3d-b005-4b6f-991b-c31cdb5513e5@roeck-us.net>
+In-Reply-To: <87ikwf5owu.ffs@tglx>
 References: <20240731095022.970699670@linuxfoundation.org>
  <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
- <a8a81b3d-b005-4b6f-991b-c31cdb5513e5@roeck-us.net>
-Date: Mon, 05 Aug 2024 10:56:01 +0200
-Message-ID: <87ikwf5owu.ffs@tglx>
+ <a8a81b3d-b005-4b6f-991b-c31cdb5513e5@roeck-us.net> <87ikwf5owu.ffs@tglx>
+Date: Mon, 05 Aug 2024 14:51:19 +0200
+Message-ID: <87frrj5e0o.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Sun, Aug 04 2024 at 20:28, Guenter Roeck wrote:
-> On 8/4/24 11:36, Guenter Roeck wrote:
->>> Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->>> =C2=A0=C2=A0=C2=A0=C2=A0 genirq: Set IRQF_COND_ONESHOT in request_irq()
->>>
->>=20
->> With this patch in v6.10.3, all my parisc64 qemu tests get stuck with re=
-peated error messages
->>=20
->> [=C2=A0=C2=A0=C2=A0 0.000000] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> [=C2=A0=C2=A0=C2=A0 0.000000] BUG kmem_cache_node (Not tainted): objects=
- 21 > max 16
->> [=C2=A0=C2=A0=C2=A0 0.000000] ------------------------------------------=
------------------------------------
-
-Do you have a full boot log? It's unclear to me at which point of the boot
-process this happens. Is this before or after the secondary CPUs have
-been brought up?
-
->> This never stops until the emulation aborts.
-
-Do you have a recipe how to reproduce?
-
->> Reverting this patch fixes the problem for me.
->>=20
->> I noticed a similar problem in the mainline kernel but it is either spur=
-ious there
->> or the problem has been fixed.
->>=20
+On Mon, Aug 05 2024 at 10:56, Thomas Gleixner wrote:
+> If this is really a race then the following must be true:
 >
-> As a follow-up, the patch below (on top of v6.10.3) "fixes" the problem f=
-or me.
-> I guess that suggests some kind of race condition.
+> 1) no delay
 >
+>    CPU0                                 CPU1
+>    request_irq(IRQF_ONESHOT)
+>                                         request_irq(IRQF_COND_ONESHOT)
 >
-> @@ -2156,6 +2157,8 @@ int request_threaded_irq(unsigned int irq, irq_hand=
-ler_t handler,
->          struct irq_desc *desc;
->          int retval;
+> 2) delay
 >
-> +       udelay(1);
-> +
->          if (irq =3D=3D IRQ_NOTCONNECTED)
->                  return -ENOTCONN;
+>    CPU0                                 CPU1
+>                                         request_irq(IRQF_COND_ONESHOT)
+>    request_irq(IRQF_ONESHOT)
+>
+>    In this case the request on CPU 0 fails with -EBUSY ...
+>
+> Confused
 
-That all makes absolutely no sense to me.
+More confusing:
 
-IRQF_COND_ONESHOT has only an effect on shared interrupts, when the
-interrupt was already requested with IRQF_ONESHOT.
+Adding a printk() in setup_irq() - using the config, rootfs and the run.sh
+script from:
 
-If this is really a race then the following must be true:
+  http://server.roeck-us.net/qemu/parisc64-6.1.5/
 
-1) no delay
+results in:
 
-   CPU0                                 CPU1
-   request_irq(IRQF_ONESHOT)
-                                        request_irq(IRQF_COND_ONESHOT)
+[    0.000000] genirq: 64 flags: 00215600
+[    0.000000] genirq: 65 flags: 00200400
+[    8.110946] genirq: 66 flags: 00200080
 
-2) delay
+IRQF_ONESHOT is 0x2000 which is not set by any of the interrupt
+requests.
 
-   CPU0                                 CPU1
-                                        request_irq(IRQF_COND_ONESHOT)
-   request_irq(IRQF_ONESHOT)
+IRQF_COND_ONESHOT has only an effect when
 
-   In this case the request on CPU 0 fails with -EBUSY ...
+    1) Interrupt is shared
+    2) First interrupt request has IRQF_ONESHOT set
 
-Confused
+Neither #1 nor #2 are true, but maybe your current config enables some moar
+devices than the one on your website.
+
+Thanks,
 
         tglx
-
-
 
