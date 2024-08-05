@@ -1,314 +1,212 @@
-Return-Path: <linux-parisc+bounces-1925-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1926-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C679484B9
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Aug 2024 23:30:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170B3948501
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Aug 2024 23:49:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FCE41F220D7
-	for <lists+linux-parisc@lfdr.de>; Mon,  5 Aug 2024 21:30:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B5D81C20FD2
+	for <lists+linux-parisc@lfdr.de>; Mon,  5 Aug 2024 21:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F35E17B507;
-	Mon,  5 Aug 2024 21:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC36215CD7D;
+	Mon,  5 Aug 2024 21:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AHHJcXQc"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nFyuptt4";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8y7PwI4i"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8706C17A5A2
-	for <linux-parisc@vger.kernel.org>; Mon,  5 Aug 2024 21:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA2514B078;
+	Mon,  5 Aug 2024 21:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722893172; cv=none; b=RsoOwIbi80r1NuStTGMnv8jb5dZzAUDmOb0Dh/Ph/uDs8it+WapT78tTMSPKHPbCpp20/sUE6T+un9To3y5QOnXoH0ehRpirdlVyze5wqInlFUKsN03Z1pBqzSOd/DBP8kIdnB1o6iQUPtp06xfg8sz2QvWQFhJlKBlQqdv6Fjk=
+	t=1722894546; cv=none; b=NJFot+e2gJMGlqmzb6okAuk3pA48oTB9ZAJid0iCvKaQlKTAphhT8X1kTtxY6kYOZ+EtGPNvJpcU3JIAxvKskrq5z8CtO2cckpHyw0kjXYrvaY4cVH3MujqhAhmfP7A8I/dtZEhx+AnTj+fCfRDJOun8g7Lo5vVyHh+nrcJRs6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722893172; c=relaxed/simple;
-	bh=wF0fKAubblsstfScosCTiCqfX0FmE1CGehpsgu/r8P4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kzQuYvp+jfhUUJDYtq54vUTihZQxCRyAEo9Z/HvQLyoVmQZNyb1rM1OZKOPH8ZxAu+YLuKSQPE+WEkAvNPRupv505wkhLQ+gU1CE0a/QlhLezQaWKllz50hOQHJn1djC5PvScPeSPPgQNTh5wN6Afth0U0KRFY3xmaXCNtI46nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AHHJcXQc; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-65b985bb059so227481677b3.2
-        for <linux-parisc@vger.kernel.org>; Mon, 05 Aug 2024 14:26:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722893165; x=1723497965; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cxnbg2gRYn4LeOU4CWxMJeU8Zw6y6eLxEpOcLvaAmUQ=;
-        b=AHHJcXQcfzYRr84xfpL23YyO8y0aBq9VOM6rpm7OC60LGpAK5ojftsG7fJe//dTGIk
-         1NPtd8MLF0lrf74DFM8M9xIBX/v74C+7bOcYWjsNdNhd9VFvpAHex+oL+02WhBBx9mZl
-         K3/3Gw7rQoENakVqn2wIMct34acL6EtCAdK9ZgtaEne6jhltkHpiT/vAc4WHVxRPn14p
-         2t//0xtNyUlSjN/cBkDaA7NRA1x+4mZU3QTQK6aTq1zB4XMT1gboV/O29A5CRhly0CUi
-         VtjNdrHi4dh8vUAnVgOkGtlxaDE7DFWVt4BYreM5Atml6n4tBLWkWGZPHESUmNBuEHw6
-         kbhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722893165; x=1723497965;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cxnbg2gRYn4LeOU4CWxMJeU8Zw6y6eLxEpOcLvaAmUQ=;
-        b=RZ+tMQdmhns4QfdYbd30X4ZQGPJ6QVpubcWlsfJya4LxE8tCIXmBEo/549L7+sN6/+
-         pCXYJckAWYm1DiXkwbXb3mPuIZm2AM1tuqWLrRI5kmWd/77tn5e7mKRQQhw80mEaLlZ4
-         eAIZPsBBel3vmoK/MjcacyXd1tzQUKCcYq1d3fB408Nu3u0TktZ+cZCXvFdShvK+ZAp/
-         k95k8OW6oOTsWaubebryY5R5ZhRuJSyCDGQC3+Tss4WfTfk1UtydZ4cZE2Z9EFoMcZ5b
-         QVRcfpoiKK1EAIrhj2woT2z536cro0XExnVCRxNQOZ3zDCUC3KZ3BtYICbYrucmJI0qr
-         jEhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXthpYmINzQtb200GZG9AE1V+B7S4UIA3MoIKsqFvqjr1B6A3NuHXNmqFlBmHtmndjR+ZifAmRjgOeZ6yvZ/PvX1XaXE4NR3C9af21d
-X-Gm-Message-State: AOJu0YyIOEOHfTt9g4Udz/Vs9CMd7uEsdsFdN+1JN/yedp0zjumABslZ
-	xnnXEIuu0i0d0ZOInDHGpL06oDM+226L11IrQse58oamosvKqSl1nuzxpVVggIOMQzLWXzkW7CB
-	AZZY/qIj1J2GHCh+4boahPg==
-X-Google-Smtp-Source: AGHT+IEkV1ijZAyYSziEgd67bBu7N/m6t8dv5aDI4jnUJKJrhZLw43w9JbplBfPvmPwI4UYOjtdz9TFDbsSiP2Xw0w==
-X-Received: from almasrymina.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:4bc5])
- (user=almasrymina job=sendgmr) by 2002:a05:6902:2483:b0:e03:a0b2:f73 with
- SMTP id 3f1490d57ef6-e0bde2f3cdbmr108795276.6.1722893164768; Mon, 05 Aug 2024
- 14:26:04 -0700 (PDT)
-Date: Mon,  5 Aug 2024 21:25:27 +0000
-In-Reply-To: <20240805212536.2172174-1-almasrymina@google.com>
+	s=arc-20240116; t=1722894546; c=relaxed/simple;
+	bh=xcxzwdGW5hWsS/t+y+73kl2SCdcllt90pNWtXcSNnws=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BRMNiQnbe4Pi8GbTyj57t8TW98NlHsZiP/LVmuMO+9W+L18zlsVwjEppN/ho2r4VoQ/bQV4PpYz3zD/GsSuykbDjPo7ejKKnIu5gkMj/J3PqfLheyz2W7hICpiGl7Ks0SjtDueT3XA8LkGP4ZSrRhQFDT3wobFjQhjHOjPk7E7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nFyuptt4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8y7PwI4i; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1722894542;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4nUCiNvZjsfrPJmP/M2fcdGMiwDctJMbZkujjzDAnT8=;
+	b=nFyuptt44fmvmIprTFimEB1edQCV0ozC4gp9n6q/NtcFw5SbjHB8JGGF0GQlwMseMAX1gQ
+	8bhkXGeqRSuUCHIQP8XJEdd2UW5MwA7LS/tukt+1dv+UM3QtRGAQDX/l0q/XIoWKqgPAui
+	oazH1nSPLIOarxTAuNx4I0eOeCpj4axXlYVDEhdvjW2QSZHRr9K82MtTn8VQAOZKP/3f3q
+	exqY30MRNJKiHHikr8qvvuKXrPQNvVZ4Sqf1wORLcMsZSDWNs6VNQov6GUdgCECefMOAnb
+	L/QhuXAnuS6Ll0ksKTwddoSnG2He/SIQissibdnsE2aX486tQsWP+Bp1MphxXw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1722894542;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4nUCiNvZjsfrPJmP/M2fcdGMiwDctJMbZkujjzDAnT8=;
+	b=8y7PwI4iiZJM4fshA/HMLPzK+dlDs1poQ6jHY64n3TWBdsMX8ouSyZ0fmzNCjhZZzZU4oC
+	rO8C5sonUchWZsAQ==
+To: Guenter Roeck <linux@roeck-us.net>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org,
+ pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org, "Rafael J.
+ Wysocki" <rafael.j.wysocki@intel.com>, Helge Deller <deller@gmx.de>,
+ Parisc List <linux-parisc@vger.kernel.org>
+Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
+In-Reply-To: <8326f852-87fa-435a-9ca7-712bce534472@roeck-us.net>
+References: <20240731095022.970699670@linuxfoundation.org>
+ <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
+ <a8a81b3d-b005-4b6f-991b-c31cdb5513e5@roeck-us.net> <87ikwf5owu.ffs@tglx>
+ <87frrj5e0o.ffs@tglx> <8326f852-87fa-435a-9ca7-712bce534472@roeck-us.net>
+Date: Mon, 05 Aug 2024 23:49:02 +0200
+Message-ID: <87y15a4p4h.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240805212536.2172174-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
-Message-ID: <20240805212536.2172174-15-almasrymina@google.com>
-Subject: [PATCH net-next v18 14/14] netdev: add dmabuf introspection
-From: Mina Almasry <almasrymina@google.com>
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org
-Cc: Mina Almasry <almasrymina@google.com>, Donald Hunter <donald.hunter@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, 
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, 
-	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan <shuah@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, 
-	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>, Bagas Sanjaya <bagasdotme@gmail.com>, 
-	Christoph Hellwig <hch@infradead.org>, Nikolay Aleksandrov <razor@blackwall.org>, Taehee Yoo <ap420073@gmail.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Add dmabuf information to page_pool stats:
+On Mon, Aug 05 2024 at 08:02, Guenter Roeck wrote:
+> On 8/5/24 05:51, Thomas Gleixner wrote:
+>> IRQF_COND_ONESHOT has only an effect when
+>> 
+>>      1) Interrupt is shared
+>>      2) First interrupt request has IRQF_ONESHOT set
+>> 
+>> Neither #1 nor #2 are true, but maybe your current config enables some moar
+>> devices than the one on your website.
+>> 
+>
+> No, it is pretty much the same, except for a more recent C compiler, and it
+> requires qemu v9.0. See http://server.roeck-us.net/qemu/parisc64-6.10.3/.
+>
+> Debugging shows pretty much the same for me, and any log message added
+> to request_irq() makes the problem go away (or be different), and if the problem
+> is seen it doesn't even get to the third interrupt request. I copied a more complete
+> log to bad.log.gz in above page.
 
-$ ./cli.py --spec ../netlink/specs/netdev.yaml --dump page-pool-get
-...
- {'dmabuf': 10,
-  'id': 456,
-  'ifindex': 3,
-  'inflight': 1023,
-  'inflight-mem': 4190208},
- {'dmabuf': 10,
-  'id': 455,
-  'ifindex': 3,
-  'inflight': 1023,
-  'inflight-mem': 4190208},
- {'dmabuf': 10,
-  'id': 454,
-  'ifindex': 3,
-  'inflight': 1023,
-  'inflight-mem': 4190208},
- {'dmabuf': 10,
-  'id': 453,
-  'ifindex': 3,
-  'inflight': 1023,
-  'inflight-mem': 4190208},
- {'dmabuf': 10,
-  'id': 452,
-  'ifindex': 3,
-  'inflight': 1023,
-  'inflight-mem': 4190208},
- {'dmabuf': 10,
-  'id': 451,
-  'ifindex': 3,
-  'inflight': 1023,
-  'inflight-mem': 4190208},
- {'dmabuf': 10,
-  'id': 450,
-  'ifindex': 3,
-  'inflight': 1023,
-  'inflight-mem': 4190208},
- {'dmabuf': 10,
-  'id': 449,
-  'ifindex': 3,
-  'inflight': 1023,
-  'inflight-mem': 4190208},
+At the point where the problem happens is way before the first interrupt
+is requested, so that definitely excludes any side effect of
+COND_ONESHOT.
 
-And queue stats:
+It happens right after
 
-$ ./cli.py --spec ../netlink/specs/netdev.yaml --dump queue-get
-...
-{'dmabuf': 10, 'id': 8, 'ifindex': 3, 'type': 'rx'},
-{'dmabuf': 10, 'id': 9, 'ifindex': 3, 'type': 'rx'},
-{'dmabuf': 10, 'id': 10, 'ifindex': 3, 'type': 'rx'},
-{'dmabuf': 10, 'id': 11, 'ifindex': 3, 'type': 'rx'},
-{'dmabuf': 10, 'id': 12, 'ifindex': 3, 'type': 'rx'},
-{'dmabuf': 10, 'id': 13, 'ifindex': 3, 'type': 'rx'},
-{'dmabuf': 10, 'id': 14, 'ifindex': 3, 'type': 'rx'},
-{'dmabuf': 10, 'id': 15, 'ifindex': 3, 'type': 'rx'},
+[    0.000000] Memory: 991812K/1048576K available (16752K kernel code, 5220K rwdata, 3044K rodata, 760K init, 1424K bss, 56764K reserved, 0K cma-reserved)
+               SNIP
+[    0.000000] ** This system shows unhashed kernel memory addresses   **
+               SNIP
 
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Mina Almasry <almasrymina@google.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+I.e. the big fat warning about unhashed kernel addresses)
 
----
- Documentation/netlink/specs/netdev.yaml | 10 ++++++++++
- include/uapi/linux/netdev.h             |  2 ++
- net/core/netdev-genl.c                  | 10 ++++++++++
- net/core/page_pool_user.c               |  4 ++++
- tools/include/uapi/linux/netdev.h       |  2 ++
- 5 files changed, 28 insertions(+)
+In the good case the first interrupt is requested here:
 
-diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
-index 0c747530c275e..08412c279297b 100644
---- a/Documentation/netlink/specs/netdev.yaml
-+++ b/Documentation/netlink/specs/netdev.yaml
-@@ -167,6 +167,10 @@ attribute-sets:
-           "re-attached", they are just waiting to disappear.
-           Attribute is absent if Page Pool has not been detached, and
-           can still be used to allocate new memory.
-+      -
-+        name: dmabuf
-+        doc: ID of the dmabuf this page-pool is attached to.
-+        type: u32
-   -
-     name: page-pool-info
-     subset-of: page-pool
-@@ -268,6 +272,10 @@ attribute-sets:
-         name: napi-id
-         doc: ID of the NAPI instance which services this queue.
-         type: u32
-+      -
-+        name: dmabuf
-+        doc: ID of the dmabuf attached to this queue, if any.
-+        type: u32
+[    0.000000] Memory: 992804K/1048576K available (16532K kernel code, 5096K rwdata, 2984K rodata, 744K init, 1412K bss, 55772K reserved, 0K cma-reserved)
+               SNIP
+[    0.000000] ** This system shows unhashed kernel memory addresses   **
+               SNIP
+[    0.000000] SLUB: HWalign=16, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] ODEBUG: selftest passed
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu:     RCU event tracing is enabled.
+[    0.000000] rcu:     RCU callback double-/use-after-free debug is enabled.
+[    0.000000] rcu:     RCU debug extended QS entry/exit.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+
+[    0.000000] NR_IRQS: 128              <- This is where the interrupt
+                                            subsystem is initialized
+[    0.000000] genirq: 64: 00215600      <- This is probably the timer interrupt
+
+Looking at the backtrace the fail happens from within start_kernel(),
+i.e. mm_core_init():
+
+       slab_err+0x13c/0x190
+       check_slab+0xf4/0x140
+       alloc_debug_processing+0x58/0x248
+       ___slab_alloc+0x22c/0xa38
+       __slab_alloc.isra.0+0x60/0x88
+       kmem_cache_alloc_node_noprof+0x148/0x3c0
+       __kmem_cache_create+0x5d4/0x680
+       create_boot_cache+0xc4/0x128
+       new_kmalloc_cache+0x1ac/0x1d8
+       create_kmalloc_caches+0xac/0x108
+       kmem_cache_init+0x1cc/0x340
+       mm_core_init+0x458/0x560
+       start_kernel+0x9ac/0x11e0
+       start_parisc+0x188/0x1b0
+
+The interrupt subsystem is initialized way later and request_irq() only
+works after that point.
+
+I'm 100% sure by now that this commit has absolutely nothing to do with
+the underlying problem. All it does is changing the code size and
+placement of text, data and ....
+
+So I finally managed to reproduce with gcc-13.3.0 from the k.org cross
+tools (the debian 12.2.2 does not).
+
+If I add:
+
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -1513,6 +1513,8 @@ static int
+ 	unsigned long flags, thread_mask = 0;
+ 	int ret, nested, shared = 0;
  
-   -
-     name: qstats
-@@ -543,6 +551,7 @@ operations:
-             - inflight
-             - inflight-mem
-             - detach-time
-+            - dmabuf
-       dump:
-         reply: *pp-reply
-       config-cond: page-pool
-@@ -607,6 +616,7 @@ operations:
-             - type
-             - napi-id
-             - ifindex
-+            - dmabuf
-       dump:
-         request:
-           attributes:
-diff --git a/include/uapi/linux/netdev.h b/include/uapi/linux/netdev.h
-index 91bf3ecc5f1d9..7c308f04e7a06 100644
---- a/include/uapi/linux/netdev.h
-+++ b/include/uapi/linux/netdev.h
-@@ -93,6 +93,7 @@ enum {
- 	NETDEV_A_PAGE_POOL_INFLIGHT,
- 	NETDEV_A_PAGE_POOL_INFLIGHT_MEM,
- 	NETDEV_A_PAGE_POOL_DETACH_TIME,
-+	NETDEV_A_PAGE_POOL_DMABUF,
- 
- 	__NETDEV_A_PAGE_POOL_MAX,
- 	NETDEV_A_PAGE_POOL_MAX = (__NETDEV_A_PAGE_POOL_MAX - 1)
-@@ -131,6 +132,7 @@ enum {
- 	NETDEV_A_QUEUE_IFINDEX,
- 	NETDEV_A_QUEUE_TYPE,
- 	NETDEV_A_QUEUE_NAPI_ID,
-+	NETDEV_A_QUEUE_DMABUF,
- 
- 	__NETDEV_A_QUEUE_MAX,
- 	NETDEV_A_QUEUE_MAX = (__NETDEV_A_QUEUE_MAX - 1)
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index bd54cf50b658a..e944fd56c6b8e 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -293,6 +293,7 @@ static int
- netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 			 u32 q_idx, u32 q_type, const struct genl_info *info)
- {
-+	struct net_devmem_dmabuf_binding *binding;
- 	struct netdev_rx_queue *rxq;
- 	struct netdev_queue *txq;
- 	void *hdr;
-@@ -312,6 +313,15 @@ netdev_nl_queue_fill_one(struct sk_buff *rsp, struct net_device *netdev,
- 		if (rxq->napi && nla_put_u32(rsp, NETDEV_A_QUEUE_NAPI_ID,
- 					     rxq->napi->napi_id))
- 			goto nla_put_failure;
++	pr_info("%u: %08x\n", irq, new->flags);
 +
-+		binding = (struct net_devmem_dmabuf_binding *)
-+				  rxq->mp_params.mp_priv;
-+		if (binding) {
-+			if (nla_put_u32(rsp, NETDEV_A_QUEUE_DMABUF,
-+					binding->id))
-+				goto nla_put_failure;
-+		}
-+
- 		break;
- 	case NETDEV_QUEUE_TYPE_TX:
- 		txq = netdev_get_tx_queue(netdev, q_idx);
-diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-index 3a3277ba167b1..ca13363aea343 100644
---- a/net/core/page_pool_user.c
-+++ b/net/core/page_pool_user.c
-@@ -212,6 +212,7 @@ static int
- page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
- 		  const struct genl_info *info)
- {
-+	struct net_devmem_dmabuf_binding *binding = pool->mp_priv;
- 	size_t inflight, refsz;
- 	void *hdr;
+ 	if (!desc)
+ 		return -EINVAL;
  
-@@ -241,6 +242,9 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
- 			 pool->user.detach_time))
- 		goto err_cancel;
- 
-+	if (binding && nla_put_u32(rsp, NETDEV_A_PAGE_POOL_DMABUF, binding->id))
-+		goto err_cancel;
-+
- 	genlmsg_end(rsp, hdr);
- 
- 	return 0;
-diff --git a/tools/include/uapi/linux/netdev.h b/tools/include/uapi/linux/netdev.h
-index 91bf3ecc5f1d9..7c308f04e7a06 100644
---- a/tools/include/uapi/linux/netdev.h
-+++ b/tools/include/uapi/linux/netdev.h
-@@ -93,6 +93,7 @@ enum {
- 	NETDEV_A_PAGE_POOL_INFLIGHT,
- 	NETDEV_A_PAGE_POOL_INFLIGHT_MEM,
- 	NETDEV_A_PAGE_POOL_DETACH_TIME,
-+	NETDEV_A_PAGE_POOL_DMABUF,
- 
- 	__NETDEV_A_PAGE_POOL_MAX,
- 	NETDEV_A_PAGE_POOL_MAX = (__NETDEV_A_PAGE_POOL_MAX - 1)
-@@ -131,6 +132,7 @@ enum {
- 	NETDEV_A_QUEUE_IFINDEX,
- 	NETDEV_A_QUEUE_TYPE,
- 	NETDEV_A_QUEUE_NAPI_ID,
-+	NETDEV_A_QUEUE_DMABUF,
- 
- 	__NETDEV_A_QUEUE_MAX,
- 	NETDEV_A_QUEUE_MAX = (__NETDEV_A_QUEUE_MAX - 1)
--- 
-2.46.0.rc2.264.g509ed76dc8-goog
+it still reproduces. If I change that to:
 
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -1513,6 +1513,8 @@ static int
+ 	unsigned long flags, thread_mask = 0;
+ 	int ret, nested, shared = 0;
+ 
++	new->flags &= ~IRQF_COND_ONESHOT;
++
+ 	if (!desc)
+ 		return -EINVAL;
+ 
+that does neither cure it (unsurprisingly).
+
+Reverting the "offending" commit cures it. 
+
+So I tried your
+
+     +       pr_info_once("####### First timer interrupt\n");
+
+which cures it too.
+
+So now where is the difference between the printk() in __setup_irq(),
+the new->flag mangling, the revert and the printk() in timer interrupt?
+
+There is ZERO functional change. There is no race either because at that
+point everything is single threaded and interrupts are disabled.
+
+The only thing which changes is the code and data layout as I can
+observe when looking at System.map of the builds. I stared at the diffs
+for a bit, but nothing stood out.
+
+Maybe the PARISC people can shed some light on it.
+
+This reminds me of the x86 32-bit disaster we debugged a few days ago...
+
+Thanks,
+
+        tglx
 
