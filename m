@@ -1,179 +1,176 @@
-Return-Path: <linux-parisc+bounces-1949-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1950-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD21694C5D1
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 22:37:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29BB094C5FA
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 22:52:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E8A42826E5
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 20:36:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8223E2864FB
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 20:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2F115A87C;
-	Thu,  8 Aug 2024 20:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78020156887;
+	Thu,  8 Aug 2024 20:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x6SGk8qM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ha8o9Euu"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0627158DA3
-	for <linux-parisc@vger.kernel.org>; Thu,  8 Aug 2024 20:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFBA1465AE;
+	Thu,  8 Aug 2024 20:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723149400; cv=none; b=Ud521KeEcNfA/XSrEO8MRj6W+3uPPQd3b95tgjr69j1cLQmvtIGQMLguxZU6Sd3K/fhiPwx7xyZEMTGn3xtZB1laVGhXv036iIWjlt7GLEDiP3e1a4hrSSZofiMQtLsgvupKqdOFkKO5Y4k43/BRmXQ3+qxdNdCv/mprImbikZM=
+	t=1723150327; cv=none; b=ElmfGc3g8eBzlIe7mr2qrraCM/f394LJ1ZuNZND+fOw+i2jPEZM2jNWzbNmP/wYN8b2yRhELTjeyTuy5mYsGNrrA1EACiAKR+tgfR5x0MwemFp9aqKVNX7DyGmP34dsLqEGtCt+RJZVw3pdeRwKM/Cv+X1kxenCqEJRWHDjNDHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723149400; c=relaxed/simple;
-	bh=AQWn/xnnEHnNvSM4lorxKMv1lH4nZlJoO1CrXZ0ujvo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U0PAx6hVMAn1nSiwFOGs69OARrGuScKzM+L7ltAtNAoMj/xwS9Fnyafq1JW7sfb9qMUkvrUao8379nWU+DTzisJW9Sk+fQm0fD2Cm+m1ZLYSTQclvOnqRHfjTJQYjUIZExt0sazqxXDx6ORLZ2MgZ+SukJLUcKynDRIp1aEbTvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x6SGk8qM; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7a1d436c95fso89528285a.3
-        for <linux-parisc@vger.kernel.org>; Thu, 08 Aug 2024 13:36:37 -0700 (PDT)
+	s=arc-20240116; t=1723150327; c=relaxed/simple;
+	bh=2WqTfYgtqg/IrtYgirIFUWAJgGBTKyjVoxWvRqm4jJ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bT+MDtjckBJTQ0nTxjvR4qbAb+PWza7q/9/JXwBTuW5VNlgu3UYpWovwNuddvxF+nwxGZnTo/Ttay0ctfAH/L14k6gilUAPEU2INBBOJVbcytjjSwoU5gOs1QK51bdQOwqTRgi03YQ/9BzC2Nnsac4zM8PSY/wQVEOx3Qoe6KV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ha8o9Euu; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-70d2b921cd1so1254729b3a.1;
+        Thu, 08 Aug 2024 13:52:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723149396; x=1723754196; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vOI5LTLx9cXrWhuBdvZp6mpixN3oVmTyWbuUGECDTYI=;
-        b=x6SGk8qM4ol3KzlyM19lvutubfSozSymkojAosXvy2p7iEi/57f0fmxcY/V2rjJojd
-         8sjm146NzZgAZnrP3T4MViYjDkLXS6of4u+0sC9HI3Jb0KTyr2D0/pHWeIQjn7A8OUPY
-         8I5QJrvrQmL91A0MDm+K5tx/sep46NirIcHlLpp3rvmiDkBxsnj29LJkDErtCXuiEBs2
-         zVTDcCYAW/P68np5jn3+cU6G8YAWpIDWElfiZJKjj1iYwq+tCGJ/uDPFCZqLWXupMUxY
-         Hg/rYQ7JP6RwqNow96vW51hAXYdUjYzVRQdDgMGKiSDXlCllFOtshZNnQxD4y4rb+pvp
-         9UYQ==
+        d=gmail.com; s=20230601; t=1723150325; x=1723755125; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=02uNFwhuPgZjenk9oQkbg2yC/MXUO7mfxkpqubQaXFo=;
+        b=Ha8o9EuuJ0MPTjqjeLSp4zs+moONWgcp1HhnV2pVCaPsgcDQV1/J7W+usDLuJCyq5k
+         JvlRODGmkllBSMOkTHAfD3cxuxu5laUEMrJYq2ZNpWezK7ZtNUw9X0S27Dv6ELl1jcAg
+         oUythSBhX6aGezomhp9eyUVXH9AlRdzttHZaqy1Dp9ozA+5ACcQlb/Cczwb/nat81Xql
+         g9UNF63ymSEilS/EFH2mugWL3tYdCZ5m9xz7euCWPPp74J3uMyT+I5ynSfqrhyIqr479
+         oNa2ymffGbmrOrDtYV5il/O0RXvIghJSObQbPGhwMKLqmIXZQeVnRwf1k0rZ4xoJE//I
+         MXEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723149396; x=1723754196;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vOI5LTLx9cXrWhuBdvZp6mpixN3oVmTyWbuUGECDTYI=;
-        b=kK4u00w/FeBkekSuqjDuX0iQiS2f7M7X9ns0aqfqZ7KHerks7NojQHoJNaOsDMGO32
-         R+Ckn5Tq5yRrIi6pXvArPwZjZhNjn/0n0BfTTCYRDK97yfRyv4vZ3d27DAgEX9FDPUmk
-         jDBPZWqNb8BBhlvQg9ZQwXRegSvTgpXD/Wbus063ov8Yhuqbo5Ftl0csRUUGBNDyDr8V
-         uCJI+7TWTyrNJ5bCu23S/lGXZ3gkP78vQISjlag8iAtojtg0g3lJNmuhUvi/fjQ8cKWJ
-         DXcFytMzSmt+m2kfoNuf5y/2sMOd95Y1hNkINiSlx2Sg2GmSTPDFt6DN18TRparI0Vtq
-         DMhg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1shUXjma/GK7RlaTcCKlJty4D0k9LhJr0fjcGiGhSm5R/3iM4XTNb+MrUSM42si1tFZFWddduQ4utoUnZU6QVd01qDPvw8LRYgVPZ
-X-Gm-Message-State: AOJu0YxYCwVmwpLjQKUIh73SQJ96alGR5o4STOTB15yNZvjD9bvjKBvV
-	VYwcOoCkfLCAKLxPabuqv58hoHjClOrwdFoN2KxR6S+Sdoc5i480auiWDct4Cev/Ypisybj4IhZ
-	5VodaDToigwiFqKaYpg5vJ+9dyfZVTciDBW5u
-X-Google-Smtp-Source: AGHT+IGEd8MEPPIzKesyVrhvbUxEPsn7+b9jVtjwHdEDzmwadpVOXKjz66694N5xOc7FFo6QD61TV8emUgJPi2VIqag=
-X-Received: by 2002:a05:6214:498e:b0:6b7:b4b1:85ae with SMTP id
- 6a1803df08f44-6bd6bd7f455mr38124966d6.54.1723149396123; Thu, 08 Aug 2024
- 13:36:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723150325; x=1723755125;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=02uNFwhuPgZjenk9oQkbg2yC/MXUO7mfxkpqubQaXFo=;
+        b=kgEJzjNkznJkC2QaFH47JuCt75Vc68hGLXf4Xro6+KOFD+U7+tO3iZw+XTMKb0aHfa
+         N2TSZz4Gy/gfmKomHi6OCyJV2yvBhIoPbMlbiZbtHiTyIRHGKmCmoQneeaUMKGywized
+         Ye2Oed8jufLJU/g7/LjXQA5G+VondYAOiE5XxeQLKEJ2YggDI+zxu65+gfbR3LPQIn+O
+         hKyTJLBpWvJlQnU3KjkvVD99OkexKWeQjIXf8pyWHtM2WNC3LQd1hEwGuzKFNHVZ2NF1
+         voucRT/R8VpkeSF0EDsywQVoS2HT//DqFNgjJDWZLD/RtXtNQqs5CukLD2AF/WwmcUTJ
+         Z6Og==
+X-Forwarded-Encrypted: i=1; AJvYcCUScnjBjtxg9ChcspyLHIaxrsrARnJcpRHK2i3Oa03ANQDW0ImvOaDfNJNI73UJQVqStfnYkQx29npga3u2U8p5hvfZZBP3H3iOUiwO2PFuOQsTLJXNTVm7O11reZB63n07UsCdEGRBNm3z
+X-Gm-Message-State: AOJu0YzARbohnsqxFIZG5rtOImcUA5EanDfvE11w0VG/B6clCeAZCXpL
+	NyHnYPox4ohXFR1bMMdwxSfuQKx9yq1CIWlvO26H48lFdIYJnx58
+X-Google-Smtp-Source: AGHT+IG/0VNuFpmraY/pOyDfh18OU8OuvwF2rFuurj/loCB0zd7iTQ+DCuagwYh0KkhZBsuFja7/tw==
+X-Received: by 2002:a05:6a21:7883:b0:1be:c5d9:5a19 with SMTP id adf61e73a8af0-1c6fcf18b85mr3579706637.24.1723150325076;
+        Thu, 08 Aug 2024 13:52:05 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7b762e9f484sm10281019a12.5.2024.08.08.13.52.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Aug 2024 13:52:03 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <eba27c56-dc36-4410-bb6b-cbe8769b8a6d@roeck-us.net>
+Date: Thu, 8 Aug 2024 13:52:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240805212536.2172174-1-almasrymina@google.com>
- <20240805212536.2172174-8-almasrymina@google.com> <20240806135924.5bb65ec7@kernel.org>
-In-Reply-To: <20240806135924.5bb65ec7@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Thu, 8 Aug 2024 16:36:24 -0400
-Message-ID: <CAHS8izOA80dxpB9rzOwv7Oe_1w4A7vo5S3c3=uCES8TSnjyzpg@mail.gmail.com>
-Subject: Re: [PATCH net-next v18 07/14] memory-provider: dmabuf devmem memory provider
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
-	Matt Turner <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan <shuah@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Bagas Sanjaya <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Taehee Yoo <ap420073@gmail.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+ Linux-MM <linux-mm@kvack.org>, Helge Deller <deller@gmx.de>,
+ linux-parisc@vger.kernel.org,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20240731095022.970699670@linuxfoundation.org>
+ <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
+ <CAHk-=wiZ7WJQ1y=CwuMwqBxQYtaD8psq+Vxa3r1Z6_ftDZK+hA@mail.gmail.com>
+ <53b2e1f2-4291-48e5-a668-7cf57d900ecd@suse.cz> <87le194kuq.ffs@tglx>
+ <90e02d99-37a2-437e-ad42-44b80c4e94f6@suse.cz> <87frrh44mf.ffs@tglx>
+ <76c643ee-17d6-463b-8ee1-4e30b0133671@roeck-us.net> <87plqjz6aa.ffs@tglx>
+ <CAHk-=wi_YCS9y=0VJ+Rs9dcY-hbt_qFdiV_6AJnnHN4QaXsbLg@mail.gmail.com>
+ <87a5hnyox6.ffs@tglx>
+ <CAHk-=wh4rxXPpYatnuXpu98KswLzg+u7Z9vYWJCLNHC_yXZtWw@mail.gmail.com>
+ <8734nezz0g.ffs@tglx>
+ <CAHk-=wiZUidi6Gm_6XFArT621H7vAzhDA63zn2pSGJHdnjRCMA@mail.gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
+ RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
+ nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
+ 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
+ gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
+ IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
+ kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
+ VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
+ jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
+ BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
+ ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
+ CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
+ nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
+ hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
+ c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
+ 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
+ GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
+ sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
+ Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
+ HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
+ BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
+ l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
+ 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
+ pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
+ J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
+ pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
+ 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
+ ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
+ I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
+ nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
+ HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
+ JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
+ J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
+ cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
+ wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
+ hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
+ nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
+ QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
+ trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
+ WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
+ HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <CAHk-=wiZUidi6Gm_6XFArT621H7vAzhDA63zn2pSGJHdnjRCMA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 6, 2024 at 4:59=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-...
-> On Mon,  5 Aug 2024 21:25:20 +0000 Mina Almasry wrote:
-> > +     if (pool->p.queue) {
-> > +             /* We rely on rtnl_lock()ing to make sure netdev_rx_queue
-> > +              * configuration doesn't change while we're initializing =
-the
-> > +              * page_pool.
-> > +              */
-> > +             ASSERT_RTNL();
-> > +             pool->mp_priv =3D pool->p.queue->mp_params.mp_priv;
->
+On 8/8/24 11:19, Linus Torvalds wrote:
+> On Thu, 8 Aug 2024 at 10:48, Thomas Gleixner <tglx@linutronix.de> wrote:
+>>
+>> Here is the disassembly from my latest crashing debug kernel which
+>> shifts it up a couple of pages. Add 0x10 or sub 0x20 to make it work.
+> 
+> Looks like I was off by an instruction, it's the 28th divide-step (not
+> 29) that does the page crosser:
+> 
+>>      4121dffc:   0b 21 04 41     ds r1,r25,r1
+>>      4121e000:   0b bd 07 1d     add,c ret1,ret1,ret1
+> 
+> but my parisc knowledge is not good enough to even guess at what could go wrong.
+> 
+> And I have no actual reason to believe this has *anything* to do with
+> an itlb miss, except for that whole "exact placement seems to matter,
+> and it crosses a page boundary" detail.
+> 
+> None of this makes sense. I think we'll have to wait for Helge. It's
+> not like parisc is a huge concern, and for all we know this is all a
+> qemu bug to begin with.
+> 
 
-Hi Jakub,
+Copying Richard Henderson who recently made a number of changes to the
+parisc/hppa qemu implementation (which unfortunately didn't fix the problem).
 
-Sorry for the late reply, it took a bit of code reading to understand
-what you mean with the deactivation request on the other patch, but I
-think I got it down and have a patch on the way.
+Guenter
 
-> How do you know that the driver:
->  - supports net_iov at all (let's not make implicit assumptions based
->    on presence of queue API);
->  - supports net_iov in current configuration (eg header-data split is
->    enabled)
->  - supports net_iov for _this_ pool (all drivers must have separate
->    buffer pools for headers and data for this to work, some will use
->    page pool for both)
->
-> What comes to mind is adding an "I can gobble up net_iovs from this
-> pool" flag in page pool params (the struct that comes from the driver),
-
-This already sorta exists in the current iteration, although maybe in
-an implicit way. As written, drivers need to set params.queue,
-otherwise core will not attempt to grab the mp information from
-params.queue. A driver can set params.queue for its data pages pool
-and not set it for the headers pool. AFAICT that deals with all 3
-issues you present above.
-
-The awkward part is if params.queue starts getting used for other
-reasons rather than passing mp configuration, but as of today that's
-not the case so I didn't add the secondary flag. If you want a second
-flag to be added preemptively, I can do that, no problem. Can you
-confirm params.queue is not good enough?
-
-> and then on the installation path we can check if after queue reset
-> the refcount of the binding has increased. If it did - driver has
-> created a pool as we expected, otherwise - fail, something must be off.
-> Maybe that's a bit hacky?
-
-What's missing is for core to check at binding time that the driver
-supports net_iov. I had relied on the implicit presence of the
-queue-API.
-
-What you're proposing works, but AFAICT it's quite hacky, yes. I
-basically need to ASSERT_RTNL in net_devmem_binding_get() to ensure
-nothing can increment the refcount while the binding is happening so
-that the refcount check is valid.
-
-I think a less hacky approach is to add a function to the queue-API
-like ndo_queue_supported_features(), which lets the driver declare
-that it supports net_iov at a given rx queue. However I'm open to both
-approaches. What do you prefer?
-
---=20
-Thanks,
-Mina
 
