@@ -1,53 +1,74 @@
-Return-Path: <linux-parisc+bounces-1951-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1952-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95C294C6A8
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 00:02:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6360594C6E1
+	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 00:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F70FB20BD6
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 22:02:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 944251C21C96
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 22:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E08B3398E;
-	Thu,  8 Aug 2024 22:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A86D15D5BB;
+	Thu,  8 Aug 2024 22:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="nNe/YFCH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dGaWCErp"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-001.bell.net [209.71.208.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0FD2A1DF;
-	Thu,  8 Aug 2024 22:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE1D15746E
+	for <linux-parisc@vger.kernel.org>; Thu,  8 Aug 2024 22:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723154557; cv=none; b=WULgJi/PknaJASZp4zYE+Lb/HmzbsW5sHOiQTzAEQp/8yR5y9LsWScaBpEyuSam1ZfoidIgyQWqPdxSGbHg0fiXQRfrmgu9PkZyI5LnlMk+QeRE/uQT3zxfOv3/AtKbBGM8TztVP7gT7oabFueeNrd1PzTHvnV70taEGN5/kOuw=
+	t=1723155334; cv=none; b=adA2aSOAGTmxTwzs9Dfkw1tYfxfREGhzQiWNKXIYm/TErjiCkr/+E+k9qaqbOMJN/sQV4wyFILBFRrOyW4mR1hPIR/tvuoQ10CDYYt4gZqVPus/eGd5oAMJMTmLpEpZDRCk6YunC7XHrCCUc56P6NNaBz3RCews/tR610kqYeZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723154557; c=relaxed/simple;
-	bh=8QmCzgL6Wt+KOe0c/JQG4Zakocd7HCHqVkTspSEfQeI=;
+	s=arc-20240116; t=1723155334; c=relaxed/simple;
+	bh=9zyI8z68fzGopxERXuoou68ly0ANfcjbaOMAP0dK3KE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ojp5hF1v8igPrh7mWCUeSpQpa8xUrFEQL5Q4nQuzPf1ZgLC/aSUoMvBbBPp6XE61VR1dsU5Uj8zqL0PxGLYC54YwkvYssrIOoyYR1gTXhVg9vqou2xQM+UJCgn0limvVheMP7a89ZjLqPGRgmarCA0EvS9HMTCG7iw4eDijNmN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=nNe/YFCH; arc=none smtp.client-ip=209.71.208.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1723154555; 
-        bh=QbCuvy68bNg+jVzt6j9pL2SeLJl6b+IH/AG3RvaNcvM=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=nNe/YFCHuKYNXj+Io6q3sD6Dcgh7FJzF6/g4euQgLCYTcRusAyE+wRr+BhihTfxT+boegX/5t7GJjEk8dk3LkDBMfxcPZVnDXX5zcgCkmeG2ZfmWrPF99QQKEysz08XKo4YH1nwuxWQuhKuGjgz9dh0JHwQ+E4wUPsFNMrta9FwPX2L4V+0gvRz7+6jI1EgqcGZ657NvVJrZFlmeUT+KVJ6x99zIQzUzkRO1jmT6IK8+QHLqb/4sHbLjXPJ1xbX5wODmtLLkLbhp9mUNa2i/FSEgBmHK2N7iev5O87o+HhkVzHNKyITP/9ot/rqgkS/1GdwS6Bi+XRcNcP63az8/jg==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 6698E80E02163C9A
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeeftddrleefgddtvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejleffffejhefggfeuheelgeefgeeuieegtdekffegudeuteffgeffjedukefgueenucfkphepjeeirdejuddrudduhedrjeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepjeeirdejuddrudduhedrjeehpdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopedutddprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrhesghhmgidruggvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheplhhinhhugidqphgrrhhishgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovggt
-	khdquhhsrdhnvghtpdhrtghpthhtoheprhhitghhrghrugdrhhgvnhguvghrshhonheslhhinhgrrhhordhorhhgpdhrtghpthhtohepthhglhigsehlihhnuhhtrhhonhhigidruggv
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (76.71.115.75) by cmx-mtlrgo002.bell.net (authenticated as dave.anglin@bell.net)
-        id 6698E80E02163C9A; Thu, 8 Aug 2024 17:50:37 -0400
-Message-ID: <ac7284f9-ba29-4068-ab00-82ddc839afaf@bell.net>
-Date: Thu, 8 Aug 2024 17:50:37 -0400
+	 In-Reply-To:Content-Type; b=DBXZn1vVucKuKoHO7pwbZrq5F5a+s6C+8muOEN9HNDNrYQladSOYRk+0rdtq+SGiT8dwuYnPb7ZkdqhkqT8bwvFWKUv3sPKpoKrfWDGiZdAUiUKMrh8Off4mXsovVVgIt5mvSMCYUkGFwxqOxIs+patBve0l1TwRSPLbEEjejnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dGaWCErp; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7a1843b4cdbso1075693a12.2
+        for <linux-parisc@vger.kernel.org>; Thu, 08 Aug 2024 15:15:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723155332; x=1723760132; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8iBpvKT+iFysA9eWtnAKgSqQdT+LODIrwOig/KiWngE=;
+        b=dGaWCErpmRmpYzAKvBKKeqYT3BJNiQFPt4x3xybIXfMfU+8bzdXvQPOGm7SAYAbNuM
+         /ek3tEZv0za8sMflVtRwVL4JPyXoCFE6ZoxDC+aS9NDx4DGSc4qC7xctQzP7UgOS5Jyj
+         bAW00EscBOcYumhhfHwDhT2Vrv3cWMSHCXGps71OTTjzzIptC9clNe4bBzcc68k/yQvq
+         6HBTjpP6UzuXtBG1FwATlYamhfn+3tMCsnIOzQpD7r+ajnfkVBwxFDLrIzFoKxjrhy0n
+         4K19vsYXxNhmb3noxWJPFG1uOb4MGSyMIOC6n8ExXfh6Pt/crfMgEuG7elJ5JZSXWenM
+         lGkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723155332; x=1723760132;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8iBpvKT+iFysA9eWtnAKgSqQdT+LODIrwOig/KiWngE=;
+        b=JdBKNCzE0p+LKzLjWCcsLkx1LhKWSDhVHuOTre15krMMfi/8ZKv8KPtfpZO9MsgG5q
+         eXeSCY4/bQYWFcx5J0F4SpWNleqdU0lEgh3Z2i0AOtUHB+C15HHt0Nnv8ASI4SQa5/Kr
+         6PDj6MZRfcpURF2L9Iw39LqsfreXnebFkaMj5cDVi8C0cU0Qe+9Se4Y1/gMj9HYcEf/p
+         8jGqdDhq+IeQKa86gb6VEEEgTwuMhkZn6WLrW0ZHcw3HNBgbZ/wMo1YJovtMBzXQFhnq
+         Ngw6oCPuoT3Hq0LjqgMgBzgE5bEVm1fw7O3kW1FAwEcjqSlaS5eh/brxRoFW1V2tVRNA
+         u2Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCUcNi0kqQoUowpdxv+W2FjfOAm8eFZxV2Ga5PvnF4ITlp0XwmhIzXPCrAtkxXkieqeVV24WcQ3FH8r/wcENFLlkhW2zMoAE8sk6l14d
+X-Gm-Message-State: AOJu0YywsUYG+wXyhVjEn4vHU+sSAZ4avBOp7g1jkNP8nQOaGr8KPwn3
+	YtAFDD91wgoQhuddNyndQtw54FsSFKBkpbguP9k6QXiatQDV7bR5FcSZ8NzogS4=
+X-Google-Smtp-Source: AGHT+IHgMqHjegz55uVNn5igSOB+CNCSyR2o/Xgh4++y01uQn3EOrmtnuc4nV7d/X4ws8d9zYRhCWw==
+X-Received: by 2002:a05:6a20:7349:b0:1c6:ae03:670b with SMTP id adf61e73a8af0-1c6fce82c9bmr3926689637.9.1723155331645;
+        Thu, 08 Aug 2024 15:15:31 -0700 (PDT)
+Received: from [192.168.1.113] ([203.30.4.111])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d1c9ca796fsm1767276a91.30.2024.08.08.15.15.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Aug 2024 15:15:31 -0700 (PDT)
+Message-ID: <c2c2ab07-8f24-44c2-ab30-dbe6c2c5fde4@linaro.org>
+Date: Fri, 9 Aug 2024 08:15:22 +1000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -61,8 +82,7 @@ To: Guenter Roeck <linux@roeck-us.net>,
  Thomas Gleixner <tglx@linutronix.de>
 Cc: Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
  Linux-MM <linux-mm@kvack.org>, Helge Deller <deller@gmx.de>,
- linux-parisc@vger.kernel.org,
- Richard Henderson <richard.henderson@linaro.org>
+ linux-parisc@vger.kernel.org
 References: <20240731095022.970699670@linuxfoundation.org>
  <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
  <CAHk-=wiZ7WJQ1y=CwuMwqBxQYtaD8psq+Vxa3r1Z6_ftDZK+hA@mail.gmail.com>
@@ -76,55 +96,12 @@ References: <20240731095022.970699670@linuxfoundation.org>
  <CAHk-=wiZUidi6Gm_6XFArT621H7vAzhDA63zn2pSGJHdnjRCMA@mail.gmail.com>
  <eba27c56-dc36-4410-bb6b-cbe8769b8a6d@roeck-us.net>
 Content-Language: en-US
-From: John David Anglin <dave.anglin@bell.net>
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- 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
- T70V9SSrl2hiw38vRzsl
+From: Richard Henderson <richard.henderson@linaro.org>
 In-Reply-To: <eba27c56-dc36-4410-bb6b-cbe8769b8a6d@roeck-us.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2024-08-08 4:52 p.m., Guenter Roeck wrote:
+On 8/9/24 06:52, Guenter Roeck wrote:
 > On 8/8/24 11:19, Linus Torvalds wrote:
 >> On Thu, 8 Aug 2024 at 10:48, Thomas Gleixner <tglx@linutronix.de> wrote:
 >>>
@@ -136,47 +113,37 @@ On 2024-08-08 4:52 p.m., Guenter Roeck wrote:
 >>
 >>>      4121dffc:   0b 21 04 41     ds r1,r25,r1
 >>>      4121e000:   0b bd 07 1d     add,c ret1,ret1,ret1
-I think this macro might clobber the C/B bits on a ITLB missing:
+>>
+>> but my parisc knowledge is not good enough to even guess at what could go wrong.
+>>
+>> And I have no actual reason to believe this has *anything* to do with
+>> an itlb miss, except for that whole "exact placement seems to matter,
+>> and it crosses a page boundary" detail.
+>>
+>> None of this makes sense. I think we'll have to wait for Helge. It's
+>> not like parisc is a huge concern, and for all we know this is all a
+>> qemu bug to begin with.
+>>
+> 
+> Copying Richard Henderson who recently made a number of changes to the
+> parisc/hppa qemu implementation (which unfortunately didn't fix the problem).
 
-         /* This is for ILP32 PA2.0 only.  The TLB insertion needs
-          * to extend into I/O space if the address is 0xfXXXXXXX
-          * so we extend the f's into the top word of the pte in
-          * this case */
-         .macro          f_extend        pte,tmp
-         extrd,s         \pte,42,4,\tmp
-         addi,<>         1,\tmp,%r0
-         extrd,s         \pte,63,25,\pte
-         .endm
+Wow, that's quite the agile bug you've got there.
 
-The addi instruction affects the C/B bits.  However, it is only used for 32-bit PA 2.0 kernels.
-A second tmp register would be needed to change the addi to an add logical.
+You can eliminate one class of qemu bug by attempting to reproduce in qemu-linux-user: 
+arrange for the page crossing at the appropriate spot and see if the split between two 
+translation blocks causes carry flag weirdness.
 
-The mode likely problem is the shladd instruction in the following macro in entry.S:
+If that doesn't reproduce, then I'd be likely to blame something in the exception delivery 
+or return process.  Still could be a qemu problem, but it would be something in the system 
+emulation of the exception path.
 
-         .macro          L2_ptep pmd,pte,index,va,fault
-#if CONFIG_PGTABLE_LEVELS == 3
-         extru_safe      \va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
-#else
-         extru_safe \va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
-#endif
-         dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
-#if CONFIG_PGTABLE_LEVELS < 3
-         copy            %r0,\pte
-#endif
-         ldw,s           \index(\pmd),\pmd
-         bb,>=,n         \pmd,_PxD_PRESENT_BIT,\fault
-         dep             %r0,31,PxD_FLAG_SHIFT,\pmd /* clear flags */
-         SHLREG          \pmd,PxD_VALUE_SHIFT,\pmd
-         extru_safe      \va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
-         dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
-         shladd          \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
-         .endm
+It should be possible to write a small system mode test case for this hypothesis.  Ideally 
+the itlb miss handler would be as simple a possible, e.g. computing an identity mapping 
+rather than using real page tables.
 
-I believe the shladd instruction should be changed to shladd,l (shift left and add logical).
+Only after that would I start digging into the linux kernel's exception paths.
 
-Dave
 
--- 
-John David Anglin  dave.anglin@bell.net
-
+r~
 
