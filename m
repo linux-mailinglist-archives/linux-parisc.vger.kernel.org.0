@@ -1,174 +1,104 @@
-Return-Path: <linux-parisc+bounces-1942-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1943-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0360E94C06C
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 17:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BCE94C20C
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 17:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 843251F29EB8
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 15:00:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBE501F27DCA
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 15:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181DC18E778;
-	Thu,  8 Aug 2024 14:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006AC18E02D;
+	Thu,  8 Aug 2024 15:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WBXSPy6R"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GvhQz1hR"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C55D18C925;
-	Thu,  8 Aug 2024 14:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A710E1DA21
+	for <linux-parisc@vger.kernel.org>; Thu,  8 Aug 2024 15:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723129198; cv=none; b=XrVH1ba03bz6EbjkEuYAD+RXWP5p2+jXrjcyawS6pLUCPCQBu5Xoc65GdJuiuKRtj6aWEapVH+Ckv3DSz7f2iWx81GGl1tAbstlCJCFXVOKCpvEA6TcTzxf8KtHhWueXyacfZTHir+vLAvn/jyaP0XIqPusBLCJbDRO40ueZzpU=
+	t=1723132455; cv=none; b=kATPrONyoA3Fwj4rhIgUFCwMsIxb5BCjnZTUULUCmuwV+rcZD6nXDfmokjE0uiiunB0oqFfzJaxXBSo5sdQgshMv/Ew2JKNCR8wVllyVEHZFwMRdtcJW4XrBcCGAOHzcV2+i0JzUPI6WkhB8B8OuOmr5h9Plp/kK+6aFZEiKV6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723129198; c=relaxed/simple;
-	bh=1igJfdwsjCHDbyKySsYHDdYZcMmZsd28TOXC6bXDbzg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KFYP+lHaYycm11nq0711sQRNW/8RONNm2F/HXD3HBE4I7bnDSHGdAa0a0hrUxsJaySsir9TOPxbumeiC1RUwbAtimoi3jLFwnVmzplKh3YfqViRE3unLu+84nh9gtWOYmM1t6wg5RiwG5s1u9q1wqJeX9GxgKCOCcV8M0kVXbzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WBXSPy6R; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7a130ae7126so732946a12.0;
-        Thu, 08 Aug 2024 07:59:56 -0700 (PDT)
+	s=arc-20240116; t=1723132455; c=relaxed/simple;
+	bh=74ofta4tuVDtjmE3sMKxYesbYsKyDSwub6JiP0riGnU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sq3FX4eBJc/HPxzu0HX1NeuPNlDBUsSVndRHQNtUuS594tl6yFVtWcOLcrRiTd+w/m0u5sVnnapYdb93o/pQETHcKTcSJHiPQwkwAcctrqmogYuwRum57sY9NmsXw/1XOLedhi39hN//J48i1HMIZa/qItp6xqws7emuv+yLWRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GvhQz1hR; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-530e22878cfso1027259e87.2
+        for <linux-parisc@vger.kernel.org>; Thu, 08 Aug 2024 08:54:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723129195; x=1723733995; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=gh+JvkdvHNoI2rD3xS4hC7Rs6IiuVind2EuXNbZxt1o=;
-        b=WBXSPy6R8j77T3hfPzxzWwM/oQgasLVbEFmCd2AfJVVQvEGNsEXYCHfWik3qB4AO9j
-         CA7cIeM4v2vMYg5oT/1zGuTOk/f02C/zXgGJHrOOJ5pMeJGv9SDd0GEj3PDzDutmmdc2
-         cXqUc49QzfQHfiNwSoWuRI3Qvv6PFr8n0ErYJ4GJAME2Ah9G2Qi6fDehs7ne+5+GoJDV
-         2p6KrotgEDYWI2gqtjQgvIsx5UyijYjAK6cSdc294MnMXg/uwEaFDcjZqR/rM5u9u4Rr
-         OjOUj8SrLVR4yuwOOoosxMy4rnOQ6C0R1v6d6o3FbHPSfrq5I7z2y3rKVT4XGfLITq/q
-         y5SA==
+        d=linux-foundation.org; s=google; t=1723132451; x=1723737251; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=EX5+8aeSzFSKcA+0lbl8uR/ffra+3uio0EheWhiGtJ4=;
+        b=GvhQz1hR/ZFcFR7wDq9vTVAsY/AML7Kphkui7TBwoTPHEoxTMl5hNZUBaIFo8zo3iv
+         0YHran8uGE0kgFd4i99wH3zAR8TEauPpIPSMjVLhq0566FAFHfRLPo1IBQLx1Z/yUbCX
+         tf3MZkSBdRKB1ozLKqYf9s+n/xJIAebLmYPXc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723129195; x=1723733995;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gh+JvkdvHNoI2rD3xS4hC7Rs6IiuVind2EuXNbZxt1o=;
-        b=mVjpuhIqnn6fT1Lc0mp/fz9bnCwDDnUqDiuSm5TXygbD8GK1cVw98SBqm6vrUFZaNL
-         AwiTdGskezommf+FCPqfqZaD5lZAhJJ/0nM3xKQ2w2NAve0fZB7/aPzHpwgNHkvKDUoX
-         dETX/irwtxqoafiUGVoiy2yXIisUgG35zEBEZ0ts6E+mi1SMWy5UjdGh94/XDh8eM+h1
-         ykElkPugjM8l7BdjsB1qdiAjKUaDuqtbFzzfxE7S8Wzqxpy71NWTofkWosSDm/oaU3/1
-         dQg3G5aw8JvJEcsQXS0uKGnoQOZBbDtUGaGP2X1HKNH0Jg1LqR6TUoPIoSap5ZDlW7Se
-         ntCA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKjDGy7jI8MHj5kIoUfVxcapqQ1OryzItGsw65t6LVKCA+J2UJH2y4bhPV+C2KYSzoSS13N8xmJIpgacvupQOt9Il6ygs7mqoCT72Q
-X-Gm-Message-State: AOJu0YxIhfp7MRtavilSRO4ebZFhJhowEIZbrGZXvijVPcOlBFcxp3Q4
-	LYcehOSohLjBnH36xXP4zuIaTJQpYJvmTwpj6CGxfgPfX6KnBsNq
-X-Google-Smtp-Source: AGHT+IHPox+Jt1U8HZESTQB6s84+28+1zEFSBUEgm7SS88d68FTa0hgotmZP76stcdGTAAyeMODMag==
-X-Received: by 2002:a17:90b:4d8c:b0:2cf:eaec:d756 with SMTP id 98e67ed59e1d1-2d1c339ee96mr2525158a91.12.1723129195380;
-        Thu, 08 Aug 2024 07:59:55 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d1c9c5dbaesm1233034a91.10.2024.08.08.07.59.54
+        d=1e100.net; s=20230601; t=1723132451; x=1723737251;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EX5+8aeSzFSKcA+0lbl8uR/ffra+3uio0EheWhiGtJ4=;
+        b=vsvQS/bF+zBYBcyhWTwIUTD+BXQ8egFi9UDDcJO3ouiwBDnnAG3QaNwZQQ4k8Xk8yb
+         OcTGbz12I/30LnODLnx5Corak2QrLjpp37Pocjub79KjO/wyEM9Zj6CDYumZo4h7XsaS
+         E0KwJiLdlkfRlMHYa4gZoobm/iIQfYF8+q8phnqPjUQYABlUFMnlkZ85Yp5JqBxmzuA8
+         6sXTFkWxogdgCcPyqkskTR//oOaJ+X3N97436dVL8SagPKs4b9rBmTQWnGf6Gn6vyZxq
+         B2oaIX+Kl76kv69vHJ13YOLhZry9BoTZ+a5Qg+67MMMjFNsvCD8w4RbpnL9gW/b4PuEh
+         zwlg==
+X-Forwarded-Encrypted: i=1; AJvYcCVulBS+Ffi1Au7n/UHkeg0dj15SDT/qNAT1Pus5JI3etCOHhCthnzPDloyKMi/PsY9yiHW5K/kFc7YJXvw2TrBL6BhgTMeRDP21NDYz
+X-Gm-Message-State: AOJu0YxGJt9H2nBtzoOHEl0ODXbrH+2Rs0KxcgggKx+Ft6nbRBJR4aml
+	MOZbivh3qRRRf9TZC75yAUqqbGrMVN3MfAZcJcCsXZ1dgaO5MnqIoA95o+ZXmhBjJMl3lFNH2kC
+	qG9Lulw==
+X-Google-Smtp-Source: AGHT+IEiv7+raGZ2Fy+5nHaK1n5Wo3jb/EFGfUhsVqhw3rHRBU9gNhpxysnDntV10WL0wvPMU5ykDg==
+X-Received: by 2002:a05:6512:3e10:b0:52e:f99e:5dd1 with SMTP id 2adb3069b0e04-530e5891c4cmr1500248e87.47.1723132451397;
+        Thu, 08 Aug 2024 08:54:11 -0700 (PDT)
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9bc3cd0sm770442166b.11.2024.08.08.08.54.10
+        for <linux-parisc@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Aug 2024 07:59:54 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <cffe30ed-43a3-46ac-ad03-afb7633f17e5@roeck-us.net>
-Date: Thu, 8 Aug 2024 07:59:53 -0700
+        Thu, 08 Aug 2024 08:54:10 -0700 (PDT)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a7a9a7af0d0so141995866b.3
+        for <linux-parisc@vger.kernel.org>; Thu, 08 Aug 2024 08:54:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX6bQaP0bVrsfo0tMIxacfpjnedm3J0fcrS/mAZgpV2plxHr3fXkl/S4wBe0j0QoiTpArf4BPfD4kqpuU3wgISo5L9E8SdpuFdq0VuC
+X-Received: by 2002:a17:907:f716:b0:a77:cbe5:413f with SMTP id
+ a640c23a62f3a-a8090c2228bmr161289566b.4.1723132449801; Thu, 08 Aug 2024
+ 08:54:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
-To: Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
- Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-References: <20240731095022.970699670@linuxfoundation.org>
- <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
+References: <20240731095022.970699670@linuxfoundation.org> <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
  <CAHk-=wiZ7WJQ1y=CwuMwqBxQYtaD8psq+Vxa3r1Z6_ftDZK+hA@mail.gmail.com>
  <53b2e1f2-4291-48e5-a668-7cf57d900ecd@suse.cz> <87le194kuq.ffs@tglx>
  <90e02d99-37a2-437e-ad42-44b80c4e94f6@suse.cz> <87frrh44mf.ffs@tglx>
  <76c643ee-17d6-463b-8ee1-4e30b0133671@roeck-us.net> <87plqjz6aa.ffs@tglx>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
- RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
- nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
- 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
- gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
- IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
- kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
- VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
- jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
- BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
- ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
- CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
- nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
- hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
- c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
- 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
- GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
- sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
- Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
- HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
- BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
- l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
- 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
- pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
- J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
- pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
- 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
- ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
- I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
- nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
- HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
- JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
- J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
- cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
- wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
- hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
- nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
- QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
- trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
- WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
- HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
 In-Reply-To: <87plqjz6aa.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 8 Aug 2024 08:53:52 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wi_YCS9y=0VJ+Rs9dcY-hbt_qFdiV_6AJnnHN4QaXsbLg@mail.gmail.com>
+Message-ID: <CAHk-=wi_YCS9y=0VJ+Rs9dcY-hbt_qFdiV_6AJnnHN4QaXsbLg@mail.gmail.com>
+Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
+To: Thomas Gleixner <tglx@linutronix.de>
+Cc: Guenter Roeck <linux@roeck-us.net>, Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, 
+	Linux-MM <linux-mm@kvack.org>, Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/8/24 02:57, Thomas Gleixner wrote:
-> On Wed, Aug 07 2024 at 18:07, Guenter Roeck wrote:
->> On 8/6/24 16:24, Thomas Gleixner wrote:
->> diff --git a/mm/slub.c b/mm/slub.c
->> index 4927edec6a8c..b8a33966d858 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -1385,6 +1385,9 @@ static int check_slab(struct kmem_cache *s, struct slab *slab)
->>           }
->>
->>           maxobj = order_objects(slab_order(slab), s->size);
->> +
->> +       pr_info_once("##### slab->objects=%u maxobj=%u\n", slab->objects, maxobj);
->> +
->>           if (slab->objects > maxobj) {
->>                   slab_err(s, slab, "objects %u > max %u",
->>                           slab->objects, maxobj);
->>
->> results in:
->>
->> ##### slab->objects=21 maxobj=21
->> =============================================================================
->> BUG kmem_cache_node (Not tainted): objects 21 > max 16
-> 
+On Thu, 8 Aug 2024 at 02:57, Thomas Gleixner <tglx@linutronix.de> wrote:
+>
 > Careful vs. the pr_once(). It's not necessarily the first allocation
-
-Yes. Thanks for pointing that out. Rookie mistake :-(.
-
 > which trips up. I removed slab_err() in that condition and just printed
 > the data:
-> 
+>
 > [    0.000000] Order: 1 Size:  384 Nobj: 21 Maxobj: 16 21 Inuse: 14
 > [    0.000000] Order: 0 Size:  168 Nobj: 24 Maxobj: 16 24 Inuse:  1
 > [    0.000000] Order: 1 Size:  320 Nobj: 25 Maxobj: 16 25 Inuse: 18
@@ -179,18 +109,50 @@ Yes. Thanks for pointing that out. Rookie mistake :-(.
 > [    0.000000] Order: 3 Size: 1536 Nobj: 21 Maxobj: 16 21 Inuse:  1
 > [    0.000000] Order: 3 Size: 1536 Nobj: 21 Maxobj: 16 21 Inuse:  2
 > [    0.000000] Order: 3 Size: 1536 Nobj: 21 Maxobj: 16 21 Inuse: 10
-> 
+>
 > The maxobj column shows the failed result and the result from the second
 > invocation inside of the printk().
-> 
-> Let's wait for PARISC people to run it on actual hardware.
-> 
 
-Agreed. I suspect that there is a carry or upper 32 bit of a register not
-handled properly, but I have no idea where that might be or why that would
-only be seen if the div functions are located in a certain address range.
+Hmm. There's a few patterns there:
 
-Thanks,
-Guenter
+ - the incorrect Maxobj is always 16, with wildly different sizes.
 
+ - the correct value is always in that 21-25 range
+
+and neither of these are particularly common cases for slab objects
+(well, at least on x86-64).
+
+I actually went into the gcc sources to look at the libgcc routines
+for the hppa $$divU routine, but apart from checking for trivial
+powers-of-two and for divisions with small divisor values (<=17), all
+it is ends up being a series of "ds" (divide step) and "addc"
+instructions. I don't see how that could possibly mess up. It does end
+up with the final addc in the delay slot of the return, but that's
+normal parisc behavior (and here by "normal" I mean "it's a really
+messed up instruction set that did everything wrong, including branch
+delay slots")
+
+I do note that the $$divU function (which is what this all should use)
+oddly doesn't show up as defined in 'nm' for me when I look at
+Guenter's vmlinux file. So there's some odd linker thing going on, and
+it *only* affects the $$div* functions.
+
+Thomas' System.map shows some of the same effects, ie it shows $$divoI
+(signed integer divide with overflow checking), but doesn't show
+$$divU that is right after it. The reason I was looking was exactly
+because this should be using $$divU, and clearly code alignment is
+implicated somehow, but the exact alignment of $$divU wasn't obvious.
+
+But it looks like "$$divU" should be somewhere between $$divoI and
+$$divl_2, and in Guenter's bad case that's
+
+  0000000041218c70 T $$divoI
+  00000000412190d0 T $$divI_2
+
+so *maybe* $$divU is around a page boundary? 0000000041218xxx turning
+into 0000000041219000?
+
+Some ITLB fill issue together with that delayed branch and a qemu bug?
+
+                Linus
 
