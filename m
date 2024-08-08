@@ -1,121 +1,179 @@
-Return-Path: <linux-parisc+bounces-1948-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1949-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E398A94C42B
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 20:20:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD21694C5D1
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 22:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A047A286E37
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 18:20:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E8A42826E5
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 20:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B41978C98;
-	Thu,  8 Aug 2024 18:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2F115A87C;
+	Thu,  8 Aug 2024 20:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BBIrsMWM"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x6SGk8qM"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FE41422B8
-	for <linux-parisc@vger.kernel.org>; Thu,  8 Aug 2024 18:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0627158DA3
+	for <linux-parisc@vger.kernel.org>; Thu,  8 Aug 2024 20:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723141217; cv=none; b=Ha07fdS080X4SXLDDIYxUBdHw4soBIgKz+NoxqCLjZiPr/sHceOrggL1w2696Zpt26Stx+52xZBBmrA7nlPskEU8n0FSl3AhlpHEg6QeZOXOnNaWK7ql/lIu/NKbr7vMJLfuYL+mJp+KMFcYl7rrcqR/tGHfqVwiKyO1eZU8Jb4=
+	t=1723149400; cv=none; b=Ud521KeEcNfA/XSrEO8MRj6W+3uPPQd3b95tgjr69j1cLQmvtIGQMLguxZU6Sd3K/fhiPwx7xyZEMTGn3xtZB1laVGhXv036iIWjlt7GLEDiP3e1a4hrSSZofiMQtLsgvupKqdOFkKO5Y4k43/BRmXQ3+qxdNdCv/mprImbikZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723141217; c=relaxed/simple;
-	bh=wpwjiHoc7VgLtkIkF9IrlpNoofn0hUJ7BBPVJfy6oSg=;
+	s=arc-20240116; t=1723149400; c=relaxed/simple;
+	bh=AQWn/xnnEHnNvSM4lorxKMv1lH4nZlJoO1CrXZ0ujvo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HVPvesBhRXvSvML6RX26e/MdBxIaS+sDQqhoJNNyLgp5+QryPxWCEmDFZfbqh0hcshyM6tMeZXSXYYGChpRpt6i99T/46Zi1D/ulxR/B04ZZoUdBKcHn+v9Pk67x1KlQzabFXqHAgVZwCYrQqTjNYRJNhvj8gr7RXWgTf64JshE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BBIrsMWM; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5ba482282d3so1605611a12.2
-        for <linux-parisc@vger.kernel.org>; Thu, 08 Aug 2024 11:20:15 -0700 (PDT)
+	 To:Cc:Content-Type; b=U0PAx6hVMAn1nSiwFOGs69OARrGuScKzM+L7ltAtNAoMj/xwS9Fnyafq1JW7sfb9qMUkvrUao8379nWU+DTzisJW9Sk+fQm0fD2Cm+m1ZLYSTQclvOnqRHfjTJQYjUIZExt0sazqxXDx6ORLZ2MgZ+SukJLUcKynDRIp1aEbTvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x6SGk8qM; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7a1d436c95fso89528285a.3
+        for <linux-parisc@vger.kernel.org>; Thu, 08 Aug 2024 13:36:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1723141214; x=1723746014; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vs6dpRbqJripr2KpHyDnR1cQAk+xLDTiAQY8cHPi6fA=;
-        b=BBIrsMWMsHWdI16h+ljpxHZxKeYnnK+nm+iFyhyFMWz/RuSHxHkmMiJpKIoZ9m7Rbi
-         Ns/V/jjsnOK+75+liSmgh6yhpp/B0oDPaGdxPNsyL2fvbZ1CqSpd1Ov7U5bhxW6DOiyA
-         AUoSG2FgLTNqY1KySqLWzjjdeXjRisbXNuGG0=
+        d=google.com; s=20230601; t=1723149396; x=1723754196; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vOI5LTLx9cXrWhuBdvZp6mpixN3oVmTyWbuUGECDTYI=;
+        b=x6SGk8qM4ol3KzlyM19lvutubfSozSymkojAosXvy2p7iEi/57f0fmxcY/V2rjJojd
+         8sjm146NzZgAZnrP3T4MViYjDkLXS6of4u+0sC9HI3Jb0KTyr2D0/pHWeIQjn7A8OUPY
+         8I5QJrvrQmL91A0MDm+K5tx/sep46NirIcHlLpp3rvmiDkBxsnj29LJkDErtCXuiEBs2
+         zVTDcCYAW/P68np5jn3+cU6G8YAWpIDWElfiZJKjj1iYwq+tCGJ/uDPFCZqLWXupMUxY
+         Hg/rYQ7JP6RwqNow96vW51hAXYdUjYzVRQdDgMGKiSDXlCllFOtshZNnQxD4y4rb+pvp
+         9UYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723141214; x=1723746014;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vs6dpRbqJripr2KpHyDnR1cQAk+xLDTiAQY8cHPi6fA=;
-        b=PO3MW7V+gAuVjVyGYjN59NXvaDfrg7IFCX82gwWaYEDyM9BKiKanhXA5qWnYROiNNY
-         9JUOom/KdjaJHIf26elV9c4q5V9RMAyffukBPX5muERE/0PlJG0GFXzJxsIRiRjFalPH
-         NQOSDMYc68YP0360PUalNQPjON+kqoEuCLp/wYu99KmkfHnakugkoPPiOGir9shjN+mC
-         hApie1DwC90+VsYiQ1jWsgkfTVcge33RiCkWJ1KmtorRNMKDhFqYoyVQElWwMtmeQkdt
-         3jPnmhVZYp9T4VDqjuIB5YAklt2MDOb7rgwnWS5sLiE+Yip2vhPxoXqIyxPORdcIz09D
-         9dVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVNctnDsJMO3HfeutuSHr994d6iRfykpOnXJAM5uuNX6Xtp1EP209V4kmezcG7jJg/CE1wLmU1El87KDxoOOO2231L+NKVznQ5Lz/A8
-X-Gm-Message-State: AOJu0Yym0cPLZEI2PHgLL2lboNX5qW9tQS3tWyqQDlJ4wDh8omOYPDz0
-	Cy6UcKV1tbQdcW7SCX3XMz2YBiEfGj1Z3P4vdGvRpxXi5skR9Z9dmWC4Oqty3ZLOqafeixZJCXj
-	eCASxWw==
-X-Google-Smtp-Source: AGHT+IECdh2Us7/xaMSJ4F2z049FTpINFq58PrDjQoG1kkTI70U5loa5kVm3/1b2f+e8W3rSrUIvhA==
-X-Received: by 2002:a17:907:72c9:b0:a7a:d093:f843 with SMTP id a640c23a62f3a-a8090f04ab8mr201136466b.63.1723141213598;
-        Thu, 08 Aug 2024 11:20:13 -0700 (PDT)
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com. [209.85.208.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9ecb1c3sm765448966b.225.2024.08.08.11.20.12
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Aug 2024 11:20:12 -0700 (PDT)
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5ba482282d3so1605557a12.2
-        for <linux-parisc@vger.kernel.org>; Thu, 08 Aug 2024 11:20:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVLkLjsmEqslUvg1R8T/zfLJBoXUgGJy7wLeOWwKgSJsPgeipGvZnDbIGRF44u3+2k4yv/lILgE8c3srcTi7B0Jl/jEBKRnvdsZN1Iz
-X-Received: by 2002:a17:907:969e:b0:a7d:2c91:fb1b with SMTP id
- a640c23a62f3a-a8090f1a339mr207711166b.68.1723141212363; Thu, 08 Aug 2024
- 11:20:12 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723149396; x=1723754196;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vOI5LTLx9cXrWhuBdvZp6mpixN3oVmTyWbuUGECDTYI=;
+        b=kK4u00w/FeBkekSuqjDuX0iQiS2f7M7X9ns0aqfqZ7KHerks7NojQHoJNaOsDMGO32
+         R+Ckn5Tq5yRrIi6pXvArPwZjZhNjn/0n0BfTTCYRDK97yfRyv4vZ3d27DAgEX9FDPUmk
+         jDBPZWqNb8BBhlvQg9ZQwXRegSvTgpXD/Wbus063ov8Yhuqbo5Ftl0csRUUGBNDyDr8V
+         uCJI+7TWTyrNJ5bCu23S/lGXZ3gkP78vQISjlag8iAtojtg0g3lJNmuhUvi/fjQ8cKWJ
+         DXcFytMzSmt+m2kfoNuf5y/2sMOd95Y1hNkINiSlx2Sg2GmSTPDFt6DN18TRparI0Vtq
+         DMhg==
+X-Forwarded-Encrypted: i=1; AJvYcCX1shUXjma/GK7RlaTcCKlJty4D0k9LhJr0fjcGiGhSm5R/3iM4XTNb+MrUSM42si1tFZFWddduQ4utoUnZU6QVd01qDPvw8LRYgVPZ
+X-Gm-Message-State: AOJu0YxYCwVmwpLjQKUIh73SQJ96alGR5o4STOTB15yNZvjD9bvjKBvV
+	VYwcOoCkfLCAKLxPabuqv58hoHjClOrwdFoN2KxR6S+Sdoc5i480auiWDct4Cev/Ypisybj4IhZ
+	5VodaDToigwiFqKaYpg5vJ+9dyfZVTciDBW5u
+X-Google-Smtp-Source: AGHT+IGEd8MEPPIzKesyVrhvbUxEPsn7+b9jVtjwHdEDzmwadpVOXKjz66694N5xOc7FFo6QD61TV8emUgJPi2VIqag=
+X-Received: by 2002:a05:6214:498e:b0:6b7:b4b1:85ae with SMTP id
+ 6a1803df08f44-6bd6bd7f455mr38124966d6.54.1723149396123; Thu, 08 Aug 2024
+ 13:36:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240731095022.970699670@linuxfoundation.org> <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
- <CAHk-=wiZ7WJQ1y=CwuMwqBxQYtaD8psq+Vxa3r1Z6_ftDZK+hA@mail.gmail.com>
- <53b2e1f2-4291-48e5-a668-7cf57d900ecd@suse.cz> <87le194kuq.ffs@tglx>
- <90e02d99-37a2-437e-ad42-44b80c4e94f6@suse.cz> <87frrh44mf.ffs@tglx>
- <76c643ee-17d6-463b-8ee1-4e30b0133671@roeck-us.net> <87plqjz6aa.ffs@tglx>
- <CAHk-=wi_YCS9y=0VJ+Rs9dcY-hbt_qFdiV_6AJnnHN4QaXsbLg@mail.gmail.com>
- <87a5hnyox6.ffs@tglx> <CAHk-=wh4rxXPpYatnuXpu98KswLzg+u7Z9vYWJCLNHC_yXZtWw@mail.gmail.com>
- <8734nezz0g.ffs@tglx>
-In-Reply-To: <8734nezz0g.ffs@tglx>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 8 Aug 2024 11:19:51 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiZUidi6Gm_6XFArT621H7vAzhDA63zn2pSGJHdnjRCMA@mail.gmail.com>
-Message-ID: <CAHk-=wiZUidi6Gm_6XFArT621H7vAzhDA63zn2pSGJHdnjRCMA@mail.gmail.com>
-Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Guenter Roeck <linux@roeck-us.net>, Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, 
-	Linux-MM <linux-mm@kvack.org>, Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+References: <20240805212536.2172174-1-almasrymina@google.com>
+ <20240805212536.2172174-8-almasrymina@google.com> <20240806135924.5bb65ec7@kernel.org>
+In-Reply-To: <20240806135924.5bb65ec7@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Thu, 8 Aug 2024 16:36:24 -0400
+Message-ID: <CAHS8izOA80dxpB9rzOwv7Oe_1w4A7vo5S3c3=uCES8TSnjyzpg@mail.gmail.com>
+Subject: Re: [PATCH net-next v18 07/14] memory-provider: dmabuf devmem memory provider
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
+	Matt Turner <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Steffen Klassert <steffen.klassert@secunet.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan <shuah@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Bagas Sanjaya <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Taehee Yoo <ap420073@gmail.com>, 
+	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
+	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
+	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 8 Aug 2024 at 10:48, Thomas Gleixner <tglx@linutronix.de> wrote:
+On Tue, Aug 6, 2024 at 4:59=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
+te:
 >
-> Here is the disassembly from my latest crashing debug kernel which
-> shifts it up a couple of pages. Add 0x10 or sub 0x20 to make it work.
+...
+> On Mon,  5 Aug 2024 21:25:20 +0000 Mina Almasry wrote:
+> > +     if (pool->p.queue) {
+> > +             /* We rely on rtnl_lock()ing to make sure netdev_rx_queue
+> > +              * configuration doesn't change while we're initializing =
+the
+> > +              * page_pool.
+> > +              */
+> > +             ASSERT_RTNL();
+> > +             pool->mp_priv =3D pool->p.queue->mp_params.mp_priv;
+>
 
-Looks like I was off by an instruction, it's the 28th divide-step (not
-29) that does the page crosser:
+Hi Jakub,
 
->     4121dffc:   0b 21 04 41     ds r1,r25,r1
->     4121e000:   0b bd 07 1d     add,c ret1,ret1,ret1
+Sorry for the late reply, it took a bit of code reading to understand
+what you mean with the deactivation request on the other patch, but I
+think I got it down and have a patch on the way.
 
-but my parisc knowledge is not good enough to even guess at what could go wrong.
+> How do you know that the driver:
+>  - supports net_iov at all (let's not make implicit assumptions based
+>    on presence of queue API);
+>  - supports net_iov in current configuration (eg header-data split is
+>    enabled)
+>  - supports net_iov for _this_ pool (all drivers must have separate
+>    buffer pools for headers and data for this to work, some will use
+>    page pool for both)
+>
+> What comes to mind is adding an "I can gobble up net_iovs from this
+> pool" flag in page pool params (the struct that comes from the driver),
 
-And I have no actual reason to believe this has *anything* to do with
-an itlb miss, except for that whole "exact placement seems to matter,
-and it crosses a page boundary" detail.
+This already sorta exists in the current iteration, although maybe in
+an implicit way. As written, drivers need to set params.queue,
+otherwise core will not attempt to grab the mp information from
+params.queue. A driver can set params.queue for its data pages pool
+and not set it for the headers pool. AFAICT that deals with all 3
+issues you present above.
 
-None of this makes sense. I think we'll have to wait for Helge. It's
-not like parisc is a huge concern, and for all we know this is all a
-qemu bug to begin with.
+The awkward part is if params.queue starts getting used for other
+reasons rather than passing mp configuration, but as of today that's
+not the case so I didn't add the secondary flag. If you want a second
+flag to be added preemptively, I can do that, no problem. Can you
+confirm params.queue is not good enough?
 
-          Linus
+> and then on the installation path we can check if after queue reset
+> the refcount of the binding has increased. If it did - driver has
+> created a pool as we expected, otherwise - fail, something must be off.
+> Maybe that's a bit hacky?
+
+What's missing is for core to check at binding time that the driver
+supports net_iov. I had relied on the implicit presence of the
+queue-API.
+
+What you're proposing works, but AFAICT it's quite hacky, yes. I
+basically need to ASSERT_RTNL in net_devmem_binding_get() to ensure
+nothing can increment the refcount while the binding is happening so
+that the refcount check is valid.
+
+I think a less hacky approach is to add a function to the queue-API
+like ndo_queue_supported_features(), which lets the driver declare
+that it supports net_iov at a given rx queue. However I'm open to both
+approaches. What do you prefer?
+
+--=20
+Thanks,
+Mina
 
