@@ -1,76 +1,76 @@
-Return-Path: <linux-parisc+bounces-1941-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1942-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 532CA94C035
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 16:50:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0360E94C06C
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 17:00:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7278B26DCB
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 14:50:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 843251F29EB8
+	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 15:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F6D19149A;
-	Thu,  8 Aug 2024 14:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181DC18E778;
+	Thu,  8 Aug 2024 14:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WXJMQzPl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WBXSPy6R"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA55518F2C9;
-	Thu,  8 Aug 2024 14:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C55D18C925;
+	Thu,  8 Aug 2024 14:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723128379; cv=none; b=EV+NtsDzquQ5AahVC4eJCzb+vKRrugJo74FeD1bVtM3rbKvrRLyg2Ebf/H+F3GvQI5/W0oXWRyaxnOZacPJ9cx2ZFGDGIfo4O96pVJgPAnIPTTZVGzpZstLY7tUIBPnkZGzGSWsSynPshnU9jWb+/A2AseYM523ZLjKaurUIAEc=
+	t=1723129198; cv=none; b=XrVH1ba03bz6EbjkEuYAD+RXWP5p2+jXrjcyawS6pLUCPCQBu5Xoc65GdJuiuKRtj6aWEapVH+Ckv3DSz7f2iWx81GGl1tAbstlCJCFXVOKCpvEA6TcTzxf8KtHhWueXyacfZTHir+vLAvn/jyaP0XIqPusBLCJbDRO40ueZzpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723128379; c=relaxed/simple;
-	bh=miLeChk55LjsJpbZZR1Q09DkveT2oyE9WCPtgLrJpzU=;
+	s=arc-20240116; t=1723129198; c=relaxed/simple;
+	bh=1igJfdwsjCHDbyKySsYHDdYZcMmZsd28TOXC6bXDbzg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PFD/0hcavf8MosI6sLlf8q3J6mqze7bp0BPw7Z2l31J+MNDoZMB3PeYxnSHor8i7dYjmdVblGdR+bFcQomMe6GtK1SlOUG6SvWvdsIkN+v/bvtD0EL9oN2MUh4WBnfxe2uHpj4mJkSH4O/xVFI/H7rL/2bqpnzlvSqFNmgy/+/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WXJMQzPl; arc=none smtp.client-ip=209.85.210.175
+	 In-Reply-To:Content-Type; b=KFYP+lHaYycm11nq0711sQRNW/8RONNm2F/HXD3HBE4I7bnDSHGdAa0a0hrUxsJaySsir9TOPxbumeiC1RUwbAtimoi3jLFwnVmzplKh3YfqViRE3unLu+84nh9gtWOYmM1t6wg5RiwG5s1u9q1wqJeX9GxgKCOCcV8M0kVXbzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WBXSPy6R; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-70d25b5b6b0so830258b3a.2;
-        Thu, 08 Aug 2024 07:46:17 -0700 (PDT)
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7a130ae7126so732946a12.0;
+        Thu, 08 Aug 2024 07:59:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723128377; x=1723733177; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1723129195; x=1723733995; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=y7RqUvuk9RqXJ4ySubcxzx8gLOiFWfFavPmZHPWdUII=;
-        b=WXJMQzPliPlZddWlhAs1iN+TBr5ZrCntXmK5QLZvGC3sHy4aKV2FXE0+ylDDXuzwZH
-         SeRtXsyB7OsR5fv60y8erjED63FA5TjdVIZWYteyx9lH1ftxEgICYxdsSafSr+7IThkv
-         6bA+muGVnQgqHyoUcuC9DB+q8rRnGs8fRqjhSp17Hr8jzH6v0QN5n78ykMK2Z4bb1pHR
-         NQdCJ9bpvEVTutK81H3Rx12KV8w5wPcCoVEN1+iADVtf0vSgkaT0rDIvMxwwkGiaJxat
-         R5Jb4r7eOMT4R9tMOdsX15qPTvfkEuMlEkDQR/qI+zIhslSPAhZKuwE9nqSu/ZdrOvGu
-         Un7g==
+        bh=gh+JvkdvHNoI2rD3xS4hC7Rs6IiuVind2EuXNbZxt1o=;
+        b=WBXSPy6R8j77T3hfPzxzWwM/oQgasLVbEFmCd2AfJVVQvEGNsEXYCHfWik3qB4AO9j
+         CA7cIeM4v2vMYg5oT/1zGuTOk/f02C/zXgGJHrOOJ5pMeJGv9SDd0GEj3PDzDutmmdc2
+         cXqUc49QzfQHfiNwSoWuRI3Qvv6PFr8n0ErYJ4GJAME2Ah9G2Qi6fDehs7ne+5+GoJDV
+         2p6KrotgEDYWI2gqtjQgvIsx5UyijYjAK6cSdc294MnMXg/uwEaFDcjZqR/rM5u9u4Rr
+         OjOUj8SrLVR4yuwOOoosxMy4rnOQ6C0R1v6d6o3FbHPSfrq5I7z2y3rKVT4XGfLITq/q
+         y5SA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723128377; x=1723733177;
+        d=1e100.net; s=20230601; t=1723129195; x=1723733995;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=y7RqUvuk9RqXJ4ySubcxzx8gLOiFWfFavPmZHPWdUII=;
-        b=AeBs7jlEiE2853+kjrErc/mdOSOxJOqu1KBVUg1YckwZIRlEwHVB6C0QekwGm1OSki
-         8uKa8ygDqg6rxAj54LEoIHrf1iHFFfgVoNm8GtVVqD+S1B+yqjYdQUdmzkJESsdTVZ1A
-         m7sYdMcuSWWPg6WbdlB8m2/O06OGZ3He2tfH8LC5ejtx4B58zzJSnIpYMGp+iUVQ5PSj
-         nWhU0frpa7MsZlsUO5CAH/g5eNRN0F5aQrpjvjF9qlVlNu0umpzWGhhpJIH8qyCQgKzi
-         /ISSH/JT/6xII7UAfC44PoR4d/tRJYL+Cmxp5LlTfBiJ1cy8bjZCw6bXt67bp0HbsEfm
-         8HGg==
-X-Forwarded-Encrypted: i=1; AJvYcCVh+tZMmJ+zsDGwTLbz0u4q/3prsLqw5CSqUlqIXBFBLcg04mwtFQl5qfNYiMPeMFkBH/7mc6mqfBDsytLwIwgnsnpntIQZCVfGTwFN
-X-Gm-Message-State: AOJu0YzwH7RrM3NEd7Ch3pUjZmXIXFI9giBXRRYyilHnQuJQK4KxenA3
-	RIb6o3aDtb5QHvjaiTYWa3ZAlWGeZR0346hD8Rzm7gM4m5sJ+6d0
-X-Google-Smtp-Source: AGHT+IHTbQ0AQ4QERaIF9kwePuRWOJGoN7noQoLz9akudQdtRV4bGXNwJCQ0GOQ//yCxJLxyML0UYg==
-X-Received: by 2002:a05:6a00:240d:b0:70d:2368:d8b7 with SMTP id d2e1a72fcca58-710cadce833mr2746988b3a.13.1723128376855;
-        Thu, 08 Aug 2024 07:46:16 -0700 (PDT)
+        bh=gh+JvkdvHNoI2rD3xS4hC7Rs6IiuVind2EuXNbZxt1o=;
+        b=mVjpuhIqnn6fT1Lc0mp/fz9bnCwDDnUqDiuSm5TXygbD8GK1cVw98SBqm6vrUFZaNL
+         AwiTdGskezommf+FCPqfqZaD5lZAhJJ/0nM3xKQ2w2NAve0fZB7/aPzHpwgNHkvKDUoX
+         dETX/irwtxqoafiUGVoiy2yXIisUgG35zEBEZ0ts6E+mi1SMWy5UjdGh94/XDh8eM+h1
+         ykElkPugjM8l7BdjsB1qdiAjKUaDuqtbFzzfxE7S8Wzqxpy71NWTofkWosSDm/oaU3/1
+         dQg3G5aw8JvJEcsQXS0uKGnoQOZBbDtUGaGP2X1HKNH0Jg1LqR6TUoPIoSap5ZDlW7Se
+         ntCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUKjDGy7jI8MHj5kIoUfVxcapqQ1OryzItGsw65t6LVKCA+J2UJH2y4bhPV+C2KYSzoSS13N8xmJIpgacvupQOt9Il6ygs7mqoCT72Q
+X-Gm-Message-State: AOJu0YxIhfp7MRtavilSRO4ebZFhJhowEIZbrGZXvijVPcOlBFcxp3Q4
+	LYcehOSohLjBnH36xXP4zuIaTJQpYJvmTwpj6CGxfgPfX6KnBsNq
+X-Google-Smtp-Source: AGHT+IHPox+Jt1U8HZESTQB6s84+28+1zEFSBUEgm7SS88d68FTa0hgotmZP76stcdGTAAyeMODMag==
+X-Received: by 2002:a17:90b:4d8c:b0:2cf:eaec:d756 with SMTP id 98e67ed59e1d1-2d1c339ee96mr2525158a91.12.1723129195380;
+        Thu, 08 Aug 2024 07:59:55 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-710cb2fb034sm1204416b3a.198.2024.08.08.07.46.14
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d1c9c5dbaesm1233034a91.10.2024.08.08.07.59.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Aug 2024 07:46:15 -0700 (PDT)
+        Thu, 08 Aug 2024 07:59:54 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <1d6fc329-7f77-4949-9537-fe27d1bf621c@roeck-us.net>
-Date: Thu, 8 Aug 2024 07:46:13 -0700
+Message-ID: <cffe30ed-43a3-46ac-ad03-afb7633f17e5@roeck-us.net>
+Date: Thu, 8 Aug 2024 07:59:53 -0700
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
-To: Vlastimil Babka <vbabka@suse.cz>, Thomas Gleixner <tglx@linutronix.de>,
+To: Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
  Linus Torvalds <torvalds@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org, Linux-MM <linux-mm@kvack.org>,
  Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
@@ -88,8 +88,7 @@ References: <20240731095022.970699670@linuxfoundation.org>
  <CAHk-=wiZ7WJQ1y=CwuMwqBxQYtaD8psq+Vxa3r1Z6_ftDZK+hA@mail.gmail.com>
  <53b2e1f2-4291-48e5-a668-7cf57d900ecd@suse.cz> <87le194kuq.ffs@tglx>
  <90e02d99-37a2-437e-ad42-44b80c4e94f6@suse.cz> <87frrh44mf.ffs@tglx>
- <76c643ee-17d6-463b-8ee1-4e30b0133671@roeck-us.net>
- <7f75fc3e-dc8a-4d3f-b9b5-70f310a3d99c@suse.cz>
+ <76c643ee-17d6-463b-8ee1-4e30b0133671@roeck-us.net> <87plqjz6aa.ffs@tglx>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -135,50 +134,13 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <7f75fc3e-dc8a-4d3f-b9b5-70f310a3d99c@suse.cz>
+In-Reply-To: <87plqjz6aa.ffs@tglx>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 8/8/24 00:48, Vlastimil Babka wrote:
-> On 8/8/24 03:07, Guenter Roeck wrote:
+On 8/8/24 02:57, Thomas Gleixner wrote:
+> On Wed, Aug 07 2024 at 18:07, Guenter Roeck wrote:
 >> On 8/6/24 16:24, Thomas Gleixner wrote:
->>> Cc+: Helge, parisc ML
->>>
->>> We're chasing a weird failure which has been tracked down to the
->>> placement of the division library functions (I assume they are imported
->>> from libgcc).
->>>
->>> See the thread starting at:
->>>
->>>     https://lore.kernel.org/all/718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net
->>>
->>> On Tue, Aug 06 2024 at 21:25, Vlastimil Babka wrote:
->>>> On 8/6/24 19:33, Thomas Gleixner wrote:
->>>>>
->>>>> So this change adds 16 bytes to __softirq() which moves the division
->>>>> functions up by 16 bytes. That's all it takes to make the stupid go
->>>>> away....
->>>>
->>>> Heh I was actually wondering if the division is somhow messed up because
->>>> maxobj = order_objects() and order_objects() does a division. Now I suspect
->>>> it even more.
->>>
->>> check_slab() calls into that muck, but I checked the disassembly of a
->>> working and a broken kernel and the only difference there is the
->>> displacement offset when the code calculates the call address, but
->>> that's as expected a difference of 16 bytes.
->>>
->>> Now it becomes interesting.
->>>
->>> I added a unused function after __do_softirq() into the softirq text
->>> section and filled it with ASM nonsense so that it occupies exactly one
->>> page. That moves $$divoI, which is what check_slab() calls, exactly one
->>> page forward:
->>>
->>
->> With the above added to my tree, I can also play around with the code.
->> Here is the next weird one:
->>
 >> diff --git a/mm/slub.c b/mm/slub.c
 >> index 4927edec6a8c..b8a33966d858 100644
 >> --- a/mm/slub.c
@@ -200,26 +162,35 @@ On 8/8/24 00:48, Vlastimil Babka wrote:
 >> =============================================================================
 >> BUG kmem_cache_node (Not tainted): objects 21 > max 16
 > 
-> But is this printed from the same attempt? The pr_info_once() might have
-> printed earlier and then stopped (as it's _once) and the error case might
-> have happened only later, and there was nothing printed in between as the
-> kmalloc caches are created in a loop.
+> Careful vs. the pr_once(). It's not necessarily the first allocation
+
+Yes. Thanks for pointing that out. Rookie mistake :-(.
+
+> which trips up. I removed slab_err() in that condition and just printed
+> the data:
+> 
+> [    0.000000] Order: 1 Size:  384 Nobj: 21 Maxobj: 16 21 Inuse: 14
+> [    0.000000] Order: 0 Size:  168 Nobj: 24 Maxobj: 16 24 Inuse:  1
+> [    0.000000] Order: 1 Size:  320 Nobj: 25 Maxobj: 16 25 Inuse: 18
+> [    0.000000] Order: 1 Size:  320 Nobj: 25 Maxobj: 16 25 Inuse: 19
+> [    0.000000] Order: 1 Size:  320 Nobj: 25 Maxobj: 16 25 Inuse: 20
+> [    0.000000] Order: 0 Size:  160 Nobj: 25 Maxobj: 16 25 Inuse:  5
+> [    0.000000] Order: 2 Size:  672 Nobj: 24 Maxobj: 16 24 Inuse:  1
+> [    0.000000] Order: 3 Size: 1536 Nobj: 21 Maxobj: 16 21 Inuse:  1
+> [    0.000000] Order: 3 Size: 1536 Nobj: 21 Maxobj: 16 21 Inuse:  2
+> [    0.000000] Order: 3 Size: 1536 Nobj: 21 Maxobj: 16 21 Inuse: 10
+> 
+> The maxobj column shows the failed result and the result from the second
+> invocation inside of the printk().
+> 
+> Let's wait for PARISC people to run it on actual hardware.
 > 
 
-No, of course it isn't. Guess it was too late. Sorry for the noise.
-Here is the updated log, after dropping the _once:
+Agreed. I suspect that there is a carry or upper 32 bit of a register not
+handled properly, but I have no idea where that might be or why that would
+only be seen if the div functions are located in a certain address range.
 
-...
-[    0.000000] ##### slab->objects=21 maxobj=21
-[    0.000000] ##### slab->objects=25 maxobj=25
-[    0.000000] ##### slab->objects=21 maxobj=16
-[    0.000000] =============================================================================
-[    0.000000] BUG kmalloc-256 (Not tainted): objects 21 > max 16
-
-So this works many times and then suddenly fails. I thought it was
-the other way, that it failed the very first time. Ok, back to debugging.
-
-Thanks!
+Thanks,
 Guenter
 
 
