@@ -1,124 +1,151 @@
-Return-Path: <linux-parisc+bounces-1954-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1955-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FF394C762
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 01:33:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D53F94C7A1
+	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 02:34:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 227911C227DE
-	for <lists+linux-parisc@lfdr.de>; Thu,  8 Aug 2024 23:33:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2061C21985
+	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 00:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5E715A851;
-	Thu,  8 Aug 2024 23:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4782581;
+	Fri,  9 Aug 2024 00:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="b8dI0Nah"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="PUuLdkcQ"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cmx-mtlrgo002.bell.net (mta-mtl-001.bell.net [209.71.208.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0BD55769
-	for <linux-parisc@vger.kernel.org>; Thu,  8 Aug 2024 23:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1F98F49;
+	Fri,  9 Aug 2024 00:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723160009; cv=none; b=Z7fepwCprRDIKoTFtTS6zoGaLtdGjV4qQ5uZNFIjADU5oB7iE/1BhyTux29H1ezgx2YeUBoW9wfE/hiLyfl4kvcI0YHq41SXkTmN61JvlHdWUOd0CQxNEUNUCiz/CiXu9PvoHyQ5rro/6efaw9kaIa6VLf/s/fUkTkknlsT42GA=
+	t=1723163640; cv=none; b=WDCX4uLV4I77K3aig4PeiM6dRK3UHhIRgFgOZr3mV2l66e0x1E8bbiwQniaO36FxYAeUZYck+pgGowEGv0FYEuDPi9JP4Bb4DuAu2GGnwVZh7slH9G4oG4hgD5D45oZjWAACQKdRTG/rbdTeMfuZwf/GrAYbcUzTtTnv933noo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723160009; c=relaxed/simple;
-	bh=524bUS/jikPk0prhYgnLoimooCyCKUal6MFrC3vnAWw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mjqJ7P3kccn+2JzUuQLyEvhytA4Lubp5r/BP/Pnyq4zS+lkGhimRbY/aDO/LvsEPnmAu+LRkRjLvQyNRZg7UR2H9igtpqgcrGEr7xPUUvD66xizgfjmeTpo63EztNB6o9VMJCFT0h0Nujfj/Zp/d12yij3A4Ag7JO/zH1vvSCT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=b8dI0Nah; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5b8c2a61386so1959918a12.2
-        for <linux-parisc@vger.kernel.org>; Thu, 08 Aug 2024 16:33:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1723160005; x=1723764805; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rqlZbaQMZu+3GtlIS+SGt/2J89sdAOurpYSJPp/fzz4=;
-        b=b8dI0NahREq9dO3XYD1H0PSI3HAaq6kV2ddtiVdS03REaWNmJrL2HHO2rWJUz4o1RE
-         6gn3HHgRYwWOW6m70R5Cv4cwQWdrqagci797hZIliqeJgSkzqBdO42yEOC7lRBufY3t8
-         xQccrJb6ee+W/R7+N+XKpm4ckJ/OzhccX8Z7k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723160005; x=1723764805;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rqlZbaQMZu+3GtlIS+SGt/2J89sdAOurpYSJPp/fzz4=;
-        b=JbY5r6+Yze3utVF7Pdq2gJme72OxWjsel4rcYY20+aiDKUaHYUBlmBNY/R1g7uHNdy
-         VcjrT+ef/QxDvcALQ+YTtMC35ugLYLupz9idfkLkRWYsMwJdaEpGaKsVzgQJLkHy46Z1
-         FN8nY6MCBIJvlVp+0jciD8lSZU9i1AE1bmqAUqM25N97zl1eod6RPl0YPX/CQmX9Ch+x
-         JIXWg0TYikcp4nA1xlW1HtYi//RC9Go/84W1dtAyioFG6RKW3wcYj2O70aPpaqazmHqQ
-         i9MeUVmXevCsDud9QxC7GNoMytMzSYMZn0LuZUNXZIbUQwkNLhBCdGXeAaaZozFD1OH0
-         65Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCVAkvhWI5b0vP0bCGMDbjzGi6wiTSTURQT1zldH9awHSUPsLWgYF5foGJdzGYTyMT/s5Wdz3Sp8Ia6mrUQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw92JUC5BYQyJxB6m9grhZPpqAW8OnFh9cncGado5ISJBm+eglp
-	pbOD+dkr096xyJjqDia4tUUKWs6HgztUA6x7qXl4KtCePYasz2soUtPPL16+LsGzVr6XuZ/w8Tq
-	30i+sIg==
-X-Google-Smtp-Source: AGHT+IFivYujyWql6Fvse9ZU+R59AWeXxTPTH3dkODv5BZvaPA47kdfEJLw3veAlJiKmBJascBh+xQ==
-X-Received: by 2002:a05:6402:2108:b0:5a3:5218:5d80 with SMTP id 4fb4d7f45d1cf-5bbb233f281mr2696255a12.21.1723160005510;
-        Thu, 08 Aug 2024 16:33:25 -0700 (PDT)
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bbb2c6b836sm1049949a12.49.2024.08.08.16.33.24
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Aug 2024 16:33:24 -0700 (PDT)
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5af6a1afa63so1664124a12.0
-        for <linux-parisc@vger.kernel.org>; Thu, 08 Aug 2024 16:33:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXYFFtEM7Pdq5zGtLE5PGNaIZIkdorhf7vWklIh7Z8BIljKFCR3RB2Y5/6iEyA2r6zh+q1o2+aCqlmBkqA=@vger.kernel.org
-X-Received: by 2002:a17:906:bc02:b0:a77:db36:1ccf with SMTP id
- a640c23a62f3a-a8090e40894mr247283366b.42.1723160003998; Thu, 08 Aug 2024
- 16:33:23 -0700 (PDT)
+	s=arc-20240116; t=1723163640; c=relaxed/simple;
+	bh=OCxJAJfUvqBXDYuDP+R7KqSw5Ei8EhG6wBn+72/hVZc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Eqe0I2MuUvXzwQfXFquFQQPIldLhSRajNTxsX1bvAzMRU6mZ+MydW8MAZyHsUEZbEFTEf2JA12R+QwaX6/Xc9+g1O8hzwLttQoX4zcDxa60/gkJ6QYqJRjx5FXQeTVRSmT7e29IuF0tLw3qZn/Dgq+8tbb9ps87OVTMmC4p71s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=PUuLdkcQ; arc=none smtp.client-ip=209.71.208.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1723163637; 
+        bh=536p684sFrVWFSbPF+vFGjKWOv9fmZ5ATAOwMCLkRtI=;
+        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
+        b=PUuLdkcQ/ISFIFGXugulIjsgAaiSLoMlYuczPf5Ua8WBECyel6OEpImI03258u4iqd/8ifIPfnPHwEMV+upOnVF554VztB/gRZnfNecJsZwJ2sb4l5q95FRsm7c3bOuRg7Vsc1ba6fDkOLG+Y4K7juYVxFmtSwgTTC2XU42O8Bv5+N49IH3b9mvSMgsP8GiQlvpLQ4weYH1SCRr6KRCrA7pCDPMQurMZyzn+h12QfQPbSYytWyZPm2lW4C5voBOwiN05sDcKm0HBEV/4kAmAOx5rkN8ez5VbHi7rQwuCg6Qs1wDxfQZvFpuLUFUTkb6xo6tckzUVw1Suk4mXISmvbg==
+X-RG-SOPHOS: Clean
+X-RG-VADE-SC: 0
+X-RG-VADE: Clean
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 6698E80E02194C7A
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeeftddrleefgdefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejtdehteffvedtieettedtudegffetgfektdejkeduuddvuedtieegueeuheeuueenucffohhmrghinhepvghnthhrhidrshgsnecukfhppeejiedrjedurdduudehrdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpeejiedrjedurdduudehrdejhedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepuddtpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
+	rhgtphhtthhopehlihhnuhigsehrohgvtghkqdhushdrnhgvthdprhgtphhtthhopehrihgthhgrrhgurdhhvghnuggvrhhsohhnsehlihhnrghrohdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvg
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from [192.168.2.49] (76.71.115.75) by cmx-mtlrgo002.bell.net (authenticated as dave.anglin@bell.net)
+        id 6698E80E02194C7A; Thu, 8 Aug 2024 20:33:30 -0400
+Message-ID: <5018ea69-985f-417d-928e-be1ee9a80d88@bell.net>
+Date: Thu, 8 Aug 2024 20:33:30 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240731095022.970699670@linuxfoundation.org> <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+ Linux-MM <linux-mm@kvack.org>, Helge Deller <deller@gmx.de>,
+ linux-parisc@vger.kernel.org,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20240731095022.970699670@linuxfoundation.org>
+ <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
  <CAHk-=wiZ7WJQ1y=CwuMwqBxQYtaD8psq+Vxa3r1Z6_ftDZK+hA@mail.gmail.com>
  <53b2e1f2-4291-48e5-a668-7cf57d900ecd@suse.cz> <87le194kuq.ffs@tglx>
  <90e02d99-37a2-437e-ad42-44b80c4e94f6@suse.cz> <87frrh44mf.ffs@tglx>
  <76c643ee-17d6-463b-8ee1-4e30b0133671@roeck-us.net> <87plqjz6aa.ffs@tglx>
  <CAHk-=wi_YCS9y=0VJ+Rs9dcY-hbt_qFdiV_6AJnnHN4QaXsbLg@mail.gmail.com>
- <87a5hnyox6.ffs@tglx> <CAHk-=wh4rxXPpYatnuXpu98KswLzg+u7Z9vYWJCLNHC_yXZtWw@mail.gmail.com>
- <8734nezz0g.ffs@tglx> <CAHk-=wiZUidi6Gm_6XFArT621H7vAzhDA63zn2pSGJHdnjRCMA@mail.gmail.com>
- <eba27c56-dc36-4410-bb6b-cbe8769b8a6d@roeck-us.net> <ac7284f9-ba29-4068-ab00-82ddc839afaf@bell.net>
+ <87a5hnyox6.ffs@tglx>
+ <CAHk-=wh4rxXPpYatnuXpu98KswLzg+u7Z9vYWJCLNHC_yXZtWw@mail.gmail.com>
+ <8734nezz0g.ffs@tglx>
+ <CAHk-=wiZUidi6Gm_6XFArT621H7vAzhDA63zn2pSGJHdnjRCMA@mail.gmail.com>
+ <eba27c56-dc36-4410-bb6b-cbe8769b8a6d@roeck-us.net>
+ <ac7284f9-ba29-4068-ab00-82ddc839afaf@bell.net>
  <37f94771-4ebc-46d2-ad10-f145d139dd9d@bell.net>
-In-Reply-To: <37f94771-4ebc-46d2-ad10-f145d139dd9d@bell.net>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 8 Aug 2024 16:33:06 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wiwG4-5UZY9-ZvnhXuGXMsu+u8k5b2BBL-jRcyagW5oxg@mail.gmail.com>
-Message-ID: <CAHk-=wiwG4-5UZY9-ZvnhXuGXMsu+u8k5b2BBL-jRcyagW5oxg@mail.gmail.com>
-Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
-To: John David Anglin <dave.anglin@bell.net>
-Cc: Guenter Roeck <linux@roeck-us.net>, Thomas Gleixner <tglx@linutronix.de>, 
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org, 
-	Linux-MM <linux-mm@kvack.org>, Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
-	Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+ <CAHk-=wiwG4-5UZY9-ZvnhXuGXMsu+u8k5b2BBL-jRcyagW5oxg@mail.gmail.com>
+Content-Language: en-US
+From: John David Anglin <dave.anglin@bell.net>
+Autocrypt: addr=dave.anglin@bell.net; keydata=
+ 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
+ T70V9SSrl2hiw38vRzsl
+In-Reply-To: <CAHk-=wiwG4-5UZY9-ZvnhXuGXMsu+u8k5b2BBL-jRcyagW5oxg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 8 Aug 2024 at 15:30, John David Anglin <dave.anglin@bell.net> wrote:
+On 2024-08-08 7:33 p.m., Linus Torvalds wrote:
+> On Thu, 8 Aug 2024 at 15:30, John David Anglin <dave.anglin@bell.net> wrote:
+>>> I believe the shladd instruction should be changed to shladd,l (shift left and add logical).
+>> diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+>> index ab23e61a6f01..1ec60406f841 100644
+>> --- a/arch/parisc/kernel/entry.S
+>> +++ b/arch/parisc/kernel/entry.S
+>> @@ -399,7 +399,7 @@
+>> -    shladd        \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
+>> +    shladd,l    \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
+> This doesn't seem wrong, but doesn't RFIR already restore the status word?
+Yes.
 >
-> > I believe the shladd instruction should be changed to shladd,l (shift left and add logical).
->
-> diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-> index ab23e61a6f01..1ec60406f841 100644
-> --- a/arch/parisc/kernel/entry.S
-> +++ b/arch/parisc/kernel/entry.S
-> @@ -399,7 +399,7 @@
-> -    shladd        \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
-> +    shladd,l    \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
+> So even if the itlb fill modifies C/B, I don't see why that should
+> actually matter.
+Probably won't help unless there's a bug in qemu rfir emulation.
 
-This doesn't seem wrong, but doesn't RFIR already restore the status word?
+Dave
 
-So even if the itlb fill modifies C/B, I don't see why that should
-actually matter.
+-- 
+John David Anglin  dave.anglin@bell.net
 
-But again, parisc is very much not one of the architectures I've ever
-worked with, so..
-
-          Linus
 
