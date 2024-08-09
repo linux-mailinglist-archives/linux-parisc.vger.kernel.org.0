@@ -1,199 +1,152 @@
-Return-Path: <linux-parisc+bounces-1957-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1958-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDBE94C7D3
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 02:57:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EAB94C877
+	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 04:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 125602854D5
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 00:57:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18DA51C22149
+	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 02:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0973546B5;
-	Fri,  9 Aug 2024 00:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B4017597;
+	Fri,  9 Aug 2024 02:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XFxpE4Pb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vKaWvUP+"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B0D3234;
-	Fri,  9 Aug 2024 00:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBCC11CA0;
+	Fri,  9 Aug 2024 02:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723165023; cv=none; b=Vsvwkuj2kHlo6Tk+yH1L+kxJwNkkoP91UcRlBFXdctdvzIHc2/B1r3UrKBYUi8aGRRkVMyK64FWBl6/AM4xl/o/Vy+3PQKqonowvrZk9LVniZE3BSE1zAeYcIeEcG19hBY35lRbB8B1eXNpMYZTmVF2ymlcVA7HQoz2+cmCqGCw=
+	t=1723170254; cv=none; b=rcavAV/HxHaRlMZB/K9gN27K+y8C8qql+R6MjoMeNcrwRNOnvKpy5/F4WqhGCYe+uCWm3dGvAIesC9YkpZfXzA0p/LLdNTzJjD4VLtExNv4nr9kT0XoR8sgW9p8IcvIFRPq3nW3/SHNiNhTSRxSLiVHb0mpnYwb3jsa9N5UrPAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723165023; c=relaxed/simple;
-	bh=Ct+GAEbmVw8DHS8pkEG9e7/dPqGUNuVj6GVT8lA9arA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iF2xfoRHtVoBhoWpZ8cQCfdCJFEVbZciTG4qMYRcacq640BtXb4EqCUU7TdASJCCa9+4BpRe1evT/t7YPZLXYGKZkcnaMcDo6ulQsB/lgxp/tzWIoOIObR/nCDNVKGaMlDfS4YI0qoRckOKwRzE7uF7BLCnQaGWpYYvwXb18TLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XFxpE4Pb; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70d1a74a43bso1342296b3a.1;
-        Thu, 08 Aug 2024 17:57:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723165022; x=1723769822; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=/MtvB8mjyzu2IoB2Ws5JzlodQoFeEGwt1Z17iJ76PG0=;
-        b=XFxpE4Pb/zOBPmhXEBOXghNrA/y3amVsK86dC9S25aAOnN9MA9wpXwAMfSBjKiGa6M
-         GaXUfPdiFt576xIVqn/OYGErckvKdDwpf9U3IP/fbIL0xhYIYT+zmvunypYAS1elz8Vj
-         XMNOuelPD87JMj2yRXksa0WNrIemDWiqn9tTxSxqhIst3aAxJZxMIj6JwBRZAhHSeZLn
-         o0898SCuh2ZlWIeHAnYL6iUOPK+RRf9wWSKcWfes6Ih0cbF1bBYuKnjuMS4keDtc/9jt
-         2tY0O1Q0vlwk6S++/mrD4fKyMvcNb4YW/HI0ex1ptLML+8NUO0J1EZzryJUwm2Xx0qrp
-         fRuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723165022; x=1723769822;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/MtvB8mjyzu2IoB2Ws5JzlodQoFeEGwt1Z17iJ76PG0=;
-        b=qu4LxMtfBN0zmHfVxtNUeV1pWhReus2A5cjIt21HmbwCrSyoxw+XCHIkER4ypPdk8G
-         ubKpygwsWfGsQsSpdZ6CgQSTFt8/ngOizWS0r++osg1VWhnILwPFrqaLLinf2t838KTw
-         eT9gP3QV4iH8CuJiDu8A8tfsZM9CF269QAvq3c8mYLcUEm7i6Cy77A8+G0UPYa1u1tXl
-         kPbHSKTztdnv3eGQOUJrwR2gReBGPlvldRrO26BIBi6UNid7J+haFtkgNniQYW52acDv
-         UAmDK63dXBdJ/mBZ+zL8ti2eAugrz4IVSyanHb++Es+YRacf2vBOaGgmzl9qqtJITHSV
-         /sVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWFkmwb/fcM5s7+r5hSWiY3kWXYrL9sCZSfw/YipaFJHHKSlVlNwLU9s1Py5lMSSi0zroZJAD7gYYAb2W1vbnEqrabK7/8RXMe2YsEgQlJPXxVS/QJCW+0GuwPQs16UrfdWpxV1Ou8hWNks
-X-Gm-Message-State: AOJu0YwlKWMuSKF2YXtttgXU6yEay4CLNkA8tRmocHqZQxhKMbbm3NGt
-	AVH4K5wHuA2hV0Llrz3qqKlv4uGB6HuzcgNDv5ow8A6F5qblTbsB
-X-Google-Smtp-Source: AGHT+IFa9dMA8ylmc3SMI3EP4zQBbdjANMaHmDwgkP4r781TOsixfKKB97oJTKnj1Z4UkHWEmiFgew==
-X-Received: by 2002:a05:6a00:91e4:b0:70d:2ba1:2402 with SMTP id d2e1a72fcca58-710cae7a5bcmr4056210b3a.29.1723165021529;
-        Thu, 08 Aug 2024 17:57:01 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-710cb209fe9sm1686717b3a.42.2024.08.08.17.57.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Aug 2024 17:57:00 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <41080afd-86ab-4dc1-9c9f-eef4701692e0@roeck-us.net>
-Date: Thu, 8 Aug 2024 17:56:59 -0700
+	s=arc-20240116; t=1723170254; c=relaxed/simple;
+	bh=a4NH/DyOZYr+hQdPVdV/xn3d1kqB1GhzzrD+9MYKuho=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dAQReQjed2MaNUAAQRcVm6y66OwGRzyymcG6Qb9zr9ZZFX4kE1TT1jAN9SqZZ2+42YHNMH3uT6XJ8ukEJ/sVR7sXLpx1LJxo7hfVX5MpfCHhttjrDm8OyRoaK5loHbvs9vo3NrDSSo55k/zFpEsnHLaKL0ss45CzrxgVgX4e9vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vKaWvUP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C56DC32782;
+	Fri,  9 Aug 2024 02:24:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723170253;
+	bh=a4NH/DyOZYr+hQdPVdV/xn3d1kqB1GhzzrD+9MYKuho=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=vKaWvUP+gW8ZxGS17B65tL1nrDAvJqciL9lSUQksuPZ4Iy4KhEGJQGOpNkkXmO+kV
+	 pkdaDInHp2dgMHzollw10zS4gIySrBFG6IgrrwYHj8LsAscwBWBwWjLcNHYy5tTzNE
+	 KSKa+C7m9EwkOjuzA8zG5VWtu7bn8KHoTxxNt5UYMtqglx1DnjyChjgN286dWqm0WA
+	 rT4bNmb9sUeUr0tdrbHNHwMsbmKPhEiAz7/jK5pb3Y5hSQ728/DeRHxDA8I+BOaR8Y
+	 khTAMu7d9Hv788u9Zd01H6xUkCZfx7Afr0wMZbiiN0Z1P7b+nVi/ftr6us3vFG5KWz
+	 4W9X6eOb829Uw==
+Date: Thu, 8 Aug 2024 19:24:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ bpf@vger.kernel.org, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet
+ <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, Ivan
+ Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley"
+ <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>,
+ Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven
+ Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnd Bergmann
+ <arnd@arndb.de>, Steffen Klassert <steffen.klassert@secunet.com>, Herbert
+ Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, Willem
+ de Bruijn <willemdebruijn.kernel@gmail.com>, Shuah Khan <shuah@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Christoph
+ Hellwig <hch@infradead.org>, Nikolay Aleksandrov <razor@blackwall.org>,
+ Taehee Yoo <ap420073@gmail.com>, Pavel Begunkov <asml.silence@gmail.com>,
+ David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, Yunsheng Lin
+ <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, Harshitha
+ Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi
+ <pkaligineedi@google.com>, Willem de Bruijn <willemb@google.com>, Kaiyuan
+ Zhang <kaiyuanz@google.com>
+Subject: Re: [PATCH net-next v18 07/14] memory-provider: dmabuf devmem
+ memory provider
+Message-ID: <20240808192410.37a49724@kernel.org>
+In-Reply-To: <CAHS8izOA80dxpB9rzOwv7Oe_1w4A7vo5S3c3=uCES8TSnjyzpg@mail.gmail.com>
+References: <20240805212536.2172174-1-almasrymina@google.com>
+	<20240805212536.2172174-8-almasrymina@google.com>
+	<20240806135924.5bb65ec7@kernel.org>
+	<CAHS8izOA80dxpB9rzOwv7Oe_1w4A7vo5S3c3=uCES8TSnjyzpg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
-To: John David Anglin <dave.anglin@bell.net>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Thomas Gleixner <tglx@linutronix.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
- Linux-MM <linux-mm@kvack.org>, Helge Deller <deller@gmx.de>,
- linux-parisc@vger.kernel.org,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20240731095022.970699670@linuxfoundation.org>
- <718b8afe-222f-4b3a-96d3-93af0e4ceff1@roeck-us.net>
- <CAHk-=wiZ7WJQ1y=CwuMwqBxQYtaD8psq+Vxa3r1Z6_ftDZK+hA@mail.gmail.com>
- <53b2e1f2-4291-48e5-a668-7cf57d900ecd@suse.cz> <87le194kuq.ffs@tglx>
- <90e02d99-37a2-437e-ad42-44b80c4e94f6@suse.cz> <87frrh44mf.ffs@tglx>
- <76c643ee-17d6-463b-8ee1-4e30b0133671@roeck-us.net> <87plqjz6aa.ffs@tglx>
- <CAHk-=wi_YCS9y=0VJ+Rs9dcY-hbt_qFdiV_6AJnnHN4QaXsbLg@mail.gmail.com>
- <87a5hnyox6.ffs@tglx>
- <CAHk-=wh4rxXPpYatnuXpu98KswLzg+u7Z9vYWJCLNHC_yXZtWw@mail.gmail.com>
- <8734nezz0g.ffs@tglx>
- <CAHk-=wiZUidi6Gm_6XFArT621H7vAzhDA63zn2pSGJHdnjRCMA@mail.gmail.com>
- <eba27c56-dc36-4410-bb6b-cbe8769b8a6d@roeck-us.net>
- <ac7284f9-ba29-4068-ab00-82ddc839afaf@bell.net>
- <37f94771-4ebc-46d2-ad10-f145d139dd9d@bell.net>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <37f94771-4ebc-46d2-ad10-f145d139dd9d@bell.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 8/8/24 15:29, John David Anglin wrote:
-> On 2024-08-08 5:50 p.m., John David Anglin wrote:
->> The mode likely problem is the shladd instruction in the following macro in entry.S:
->>
->>         .macro          L2_ptep pmd,pte,index,va,fault
->> #if CONFIG_PGTABLE_LEVELS == 3
->>         extru_safe      \va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
->> #else
->>         extru_safe \va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
->> #endif
->>         dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
->> #if CONFIG_PGTABLE_LEVELS < 3
->>         copy            %r0,\pte
->> #endif
->>         ldw,s           \index(\pmd),\pmd
->>         bb,>=,n         \pmd,_PxD_PRESENT_BIT,\fault
->>         dep             %r0,31,PxD_FLAG_SHIFT,\pmd /* clear flags */
->>         SHLREG          \pmd,PxD_VALUE_SHIFT,\pmd
->>         extru_safe      \va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
->>         dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
->>         shladd          \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
->>         .endm
->>
->> I believe the shladd instruction should be changed to shladd,l (shift left and add logical).
-> diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-> index ab23e61a6f01..1ec60406f841 100644
-> --- a/arch/parisc/kernel/entry.S
-> +++ b/arch/parisc/kernel/entry.S
-> @@ -399,7 +399,7 @@
->       SHLREG        \pmd,PxD_VALUE_SHIFT,\pmd
->       extru_safe    \va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
->       dep        %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
-> -    shladd        \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
-> +    shladd,l    \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
->       .endm
+On Thu, 8 Aug 2024 16:36:24 -0400 Mina Almasry wrote:
+> > How do you know that the driver:
+> >  - supports net_iov at all (let's not make implicit assumptions based
+> >    on presence of queue API);
+> >  - supports net_iov in current configuration (eg header-data split is
+> >    enabled)
+> >  - supports net_iov for _this_ pool (all drivers must have separate
+> >    buffer pools for headers and data for this to work, some will use
+> >    page pool for both)
+> >
+> > What comes to mind is adding an "I can gobble up net_iovs from this
+> > pool" flag in page pool params (the struct that comes from the driver),  
 > 
->       /* Look up PTE in a 3-Level scheme. */
+> This already sorta exists in the current iteration, although maybe in
+> an implicit way. As written, drivers need to set params.queue,
+> otherwise core will not attempt to grab the mp information from
+> params.queue. A driver can set params.queue for its data pages pool
+> and not set it for the headers pool. AFAICT that deals with all 3
+> issues you present above.
 > 
-> Boots okay.  Fixing the addi instruction is harder and it would take some time to test.
+> The awkward part is if params.queue starts getting used for other
+> reasons rather than passing mp configuration, but as of today that's
+> not the case so I didn't add the secondary flag. If you want a second
+> flag to be added preemptively, I can do that, no problem. Can you
+> confirm params.queue is not good enough?
+
+I'd prefer a flag. The setting queue in a param struct is not a good
+API for conveying that the page pool is for netmem payloads only.
+
+> > and then on the installation path we can check if after queue reset
+> > the refcount of the binding has increased. If it did - driver has
+> > created a pool as we expected, otherwise - fail, something must be off.
+> > Maybe that's a bit hacky?  
 > 
+> What's missing is for core to check at binding time that the driver
+> supports net_iov. I had relied on the implicit presence of the
+> queue-API.
+> 
+> What you're proposing works, but AFAICT it's quite hacky, yes. I
+> basically need to ASSERT_RTNL in net_devmem_binding_get() to ensure
+> nothing can increment the refcount while the binding is happening so
+> that the refcount check is valid.
 
-Odd, it doesn't help for me. Does it crash for you without the above change ?
-Or, in other words, is divI at the objecting location ?
+True. Shooting from the hip, but we could walk the page pools of the
+netdev and find the one that has the right mp installed, and matches
+queue? The page pools are on a list hooked up to the netdev, trivial
+to walk.
 
-Guenter
+> I think a less hacky approach is to add a function to the queue-API
+> like ndo_queue_supported_features(), which lets the driver declare
+> that it supports net_iov at a given rx queue. However I'm open to both
+> approaches. What do you prefer?
 
+I kinda like trying to query the page pools more, because it's both
+fewer driver changes, and it actually validates that the driver did 
+the right thing based on outcomes. Driver callback may have bugs.
 
+If you prefer strongly - fine, but hm.
 
