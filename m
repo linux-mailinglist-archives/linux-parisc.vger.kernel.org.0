@@ -1,53 +1,76 @@
-Return-Path: <linux-parisc+bounces-1955-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1956-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D53F94C7A1
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 02:34:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3927694C7C6
+	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 02:50:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2061C21985
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 00:34:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93EC2B20377
+	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 00:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4782581;
-	Fri,  9 Aug 2024 00:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533542581;
+	Fri,  9 Aug 2024 00:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="PUuLdkcQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGBtPYe9"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-001.bell.net [209.71.208.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1F98F49;
-	Fri,  9 Aug 2024 00:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C0E38C;
+	Fri,  9 Aug 2024 00:50:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723163640; cv=none; b=WDCX4uLV4I77K3aig4PeiM6dRK3UHhIRgFgOZr3mV2l66e0x1E8bbiwQniaO36FxYAeUZYck+pgGowEGv0FYEuDPi9JP4Bb4DuAu2GGnwVZh7slH9G4oG4hgD5D45oZjWAACQKdRTG/rbdTeMfuZwf/GrAYbcUzTtTnv933noo0=
+	t=1723164638; cv=none; b=VOvtBS+tnz/jwc0QCtzojj9ehbZHgwwKvw5vwvFYdZU61gAGUSaAZN+BYFCSUIDqGLJe09N34zrcl1sJ5RWaGEOVjYL4Ma9NJdiMf9o9MpB3o1z4fqcxQDSx5g5nqkO+834aO8n32NeW76RbY4SbG94nB0zvC8ucBeY4mBJKsbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723163640; c=relaxed/simple;
-	bh=OCxJAJfUvqBXDYuDP+R7KqSw5Ei8EhG6wBn+72/hVZc=;
+	s=arc-20240116; t=1723164638; c=relaxed/simple;
+	bh=7r3kXadAWRrHvNlRq9eymn+F9m1ycAj5DGd1WGHHwng=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Eqe0I2MuUvXzwQfXFquFQQPIldLhSRajNTxsX1bvAzMRU6mZ+MydW8MAZyHsUEZbEFTEf2JA12R+QwaX6/Xc9+g1O8hzwLttQoX4zcDxa60/gkJ6QYqJRjx5FXQeTVRSmT7e29IuF0tLw3qZn/Dgq+8tbb9ps87OVTMmC4p71s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=PUuLdkcQ; arc=none smtp.client-ip=209.71.208.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1723163637; 
-        bh=536p684sFrVWFSbPF+vFGjKWOv9fmZ5ATAOwMCLkRtI=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=PUuLdkcQ/ISFIFGXugulIjsgAaiSLoMlYuczPf5Ua8WBECyel6OEpImI03258u4iqd/8ifIPfnPHwEMV+upOnVF554VztB/gRZnfNecJsZwJ2sb4l5q95FRsm7c3bOuRg7Vsc1ba6fDkOLG+Y4K7juYVxFmtSwgTTC2XU42O8Bv5+N49IH3b9mvSMgsP8GiQlvpLQ4weYH1SCRr6KRCrA7pCDPMQurMZyzn+h12QfQPbSYytWyZPm2lW4C5voBOwiN05sDcKm0HBEV/4kAmAOx5rkN8ez5VbHi7rQwuCg6Qs1wDxfQZvFpuLUFUTkb6xo6tckzUVw1Suk4mXISmvbg==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 6698E80E02194C7A
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeeftddrleefgdefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejtdehteffvedtieettedtudegffetgfektdejkeduuddvuedtieegueeuheeuueenucffohhmrghinhepvghnthhrhidrshgsnecukfhppeejiedrjedurdduudehrdejheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpeejiedrjedurdduudehrdejhedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepuddtpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
-	rhgtphhtthhopehlihhnuhigsehrohgvtghkqdhushdrnhgvthdprhgtphhtthhopehrihgthhgrrhgurdhhvghnuggvrhhsohhnsehlihhnrghrohdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvg
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (76.71.115.75) by cmx-mtlrgo002.bell.net (authenticated as dave.anglin@bell.net)
-        id 6698E80E02194C7A; Thu, 8 Aug 2024 20:33:30 -0400
-Message-ID: <5018ea69-985f-417d-928e-be1ee9a80d88@bell.net>
-Date: Thu, 8 Aug 2024 20:33:30 -0400
+	 In-Reply-To:Content-Type; b=sO9vUSKT1p6TRvWujIgTd7Bratdca5Y/mMQxvqejODwHnAeIWfr1FkbGHZ4zCpdkLLmUjmPgwgwyrLCJzsCGv3H9e9LFxa2juffkJtVt1lC57vtkkhI2+fOuIcRL/yMTqaU3toh+sdlLwF9B5T/h1PsJxQitmqjNHfLeEra+ghA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGBtPYe9; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-6bce380eb96so1000246a12.0;
+        Thu, 08 Aug 2024 17:50:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723164636; x=1723769436; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=XRmm2092B9I+czSGQLTLNg6rXkyYZ0X8PsIRu9Zj0hk=;
+        b=OGBtPYe9VAWuRJ01EP0VshxbGei7q8xhytNXZs7D1EhslJK/NuqJHRic+lGN36jyn2
+         4TLk94VhxTlB9/4l5l8AA3d+/bVUTog9Q0Y+WVwsyvYAcdmp6zzrkcx+Eirpw/q+QUQ9
+         AecgEfRd1d421o53SLvEOGjpxRE9HeKwuMVOl0rlTS8vc2dKPU8WjqydjI1xCISF3HwF
+         sJffLJV7cpmwtLVSRZHN+73YakIR0LBmch5F8JesMZR+nCc1Kaeyby/VnJ76RQjP979X
+         Ms0xZl1aSCQHlv94ZYe5k3qUXsU+bSPMQp8t6zaGkubQw+ddSZli0hF8xu4jQIhFkbUf
+         smtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723164636; x=1723769436;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XRmm2092B9I+czSGQLTLNg6rXkyYZ0X8PsIRu9Zj0hk=;
+        b=qkqxwi/hZPLyP6+ElfPh+xk260azQInO1af/RyKZA9Rbu4x1FDBdwvrTDlBrysx4Re
+         Dre+u1e/+vGoGz9j8KNMb+Q0dfAdIxX9N5ItOfA821xeEzySP2wenUYyEpe4KpLQMtSF
+         cNesxNfogkPh9QaaYSK4j/eizWFSh7PprK4CpoK0PC93SdC55fwRCm0HTj+yi4Z0qY1+
+         oKgpij4R7FjsQX6ixM0rga5BJg/j3amtnH9dVk448B8gzInF6y8iqi5Vy3zpNgVN66ab
+         xA5rHqWu2yZYXJ71mwGwFu2pMgoXV2dPYvu+6cx5i7vZhJk7ESr+KF2+XA+V7NbFTmJ/
+         70qw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3Tx3vo9wVP/XNJtkOGp8Z24LIeb8uRCy51cpRXKZwe+osKpKgAMfY/Us8gS0ZZu1WIAMe2o+Qf8/E29Q6eRhtUbTqLn/H8Owfb+8vWLLzk409a9eQWawlTEcKyKPjMQsG9c94eB6fp98y
+X-Gm-Message-State: AOJu0YxXXSwDtnu9gJCZ6SHiEyD9if36zxO68rf0ua0ZBH9Dyb9ig/C7
+	hk5EdSo5r/Kaead/rTPKurskFbrafUYgIwDNy0MVfQfL7m010awl
+X-Google-Smtp-Source: AGHT+IEWSyKVWUAv3lBEOIVOVeGZXhieT11SQEcNJhGufwvPMX8HuPyit9dqb1eDxDVkJMuTlkUOMA==
+X-Received: by 2002:a17:90b:390c:b0:2ca:8684:401a with SMTP id 98e67ed59e1d1-2d1c3461395mr4140870a91.32.1723164635674;
+        Thu, 08 Aug 2024 17:50:35 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d1c9c7ad06sm1775981a91.14.2024.08.08.17.50.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Aug 2024 17:50:34 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <314821a5-43e1-4c96-ad8d-188bca8ae0a1@roeck-us.net>
+Date: Thu, 8 Aug 2024 17:50:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -56,9 +79,10 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 6.10 000/809] 6.10.3-rc3 review
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Guenter Roeck <linux@roeck-us.net>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+To: John David Anglin <dave.anglin@bell.net>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
  Linux-MM <linux-mm@kvack.org>, Helge Deller <deller@gmx.de>,
  linux-parisc@vger.kernel.org,
  Richard Henderson <richard.henderson@linaro.org>
@@ -75,77 +99,109 @@ References: <20240731095022.970699670@linuxfoundation.org>
  <CAHk-=wiZUidi6Gm_6XFArT621H7vAzhDA63zn2pSGJHdnjRCMA@mail.gmail.com>
  <eba27c56-dc36-4410-bb6b-cbe8769b8a6d@roeck-us.net>
  <ac7284f9-ba29-4068-ab00-82ddc839afaf@bell.net>
- <37f94771-4ebc-46d2-ad10-f145d139dd9d@bell.net>
- <CAHk-=wiwG4-5UZY9-ZvnhXuGXMsu+u8k5b2BBL-jRcyagW5oxg@mail.gmail.com>
 Content-Language: en-US
-From: John David Anglin <dave.anglin@bell.net>
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- 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
- T70V9SSrl2hiw38vRzsl
-In-Reply-To: <CAHk-=wiwG4-5UZY9-ZvnhXuGXMsu+u8k5b2BBL-jRcyagW5oxg@mail.gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <ac7284f9-ba29-4068-ab00-82ddc839afaf@bell.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 2024-08-08 7:33 p.m., Linus Torvalds wrote:
-> On Thu, 8 Aug 2024 at 15:30, John David Anglin <dave.anglin@bell.net> wrote:
->>> I believe the shladd instruction should be changed to shladd,l (shift left and add logical).
->> diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
->> index ab23e61a6f01..1ec60406f841 100644
->> --- a/arch/parisc/kernel/entry.S
->> +++ b/arch/parisc/kernel/entry.S
->> @@ -399,7 +399,7 @@
->> -    shladd        \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
->> +    shladd,l    \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
-> This doesn't seem wrong, but doesn't RFIR already restore the status word?
-Yes.
->
-> So even if the itlb fill modifies C/B, I don't see why that should
-> actually matter.
-Probably won't help unless there's a bug in qemu rfir emulation.
+On 8/8/24 14:50, John David Anglin wrote:
+> On 2024-08-08 4:52 p.m., Guenter Roeck wrote:
+>> On 8/8/24 11:19, Linus Torvalds wrote:
+>>> On Thu, 8 Aug 2024 at 10:48, Thomas Gleixner <tglx@linutronix.de> wrote:
+>>>>
+>>>> Here is the disassembly from my latest crashing debug kernel which
+>>>> shifts it up a couple of pages. Add 0x10 or sub 0x20 to make it work.
+>>>
+>>> Looks like I was off by an instruction, it's the 28th divide-step (not
+>>> 29) that does the page crosser:
+>>>
+>>>>      4121dffc:   0b 21 04 41     ds r1,r25,r1
+>>>>      4121e000:   0b bd 07 1d     add,c ret1,ret1,ret1
+> I think this macro might clobber the C/B bits on a ITLB missing:
+> 
+>          /* This is for ILP32 PA2.0 only.  The TLB insertion needs
+>           * to extend into I/O space if the address is 0xfXXXXXXX
+>           * so we extend the f's into the top word of the pte in
+>           * this case */
+>          .macro          f_extend        pte,tmp
+>          extrd,s         \pte,42,4,\tmp
+>          addi,<>         1,\tmp,%r0
+>          extrd,s         \pte,63,25,\pte
+>          .endm
+> 
+> The addi instruction affects the C/B bits.  However, it is only used for 32-bit PA 2.0 kernels.
+> A second tmp register would be needed to change the addi to an add logical.
+> 
+> The mode likely problem is the shladd instruction in the following macro in entry.S:
+> 
+>          .macro          L2_ptep pmd,pte,index,va,fault
+> #if CONFIG_PGTABLE_LEVELS == 3
+>          extru_safe      \va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
+> #else
+>          extru_safe \va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
+> #endif
+>          dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
+> #if CONFIG_PGTABLE_LEVELS < 3
+>          copy            %r0,\pte
+> #endif
+>          ldw,s           \index(\pmd),\pmd
+>          bb,>=,n         \pmd,_PxD_PRESENT_BIT,\fault
+>          dep             %r0,31,PxD_FLAG_SHIFT,\pmd /* clear flags */
+>          SHLREG          \pmd,PxD_VALUE_SHIFT,\pmd
+>          extru_safe      \va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
+>          dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
+>          shladd          \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
+>          .endm
+> 
+> I believe the shladd instruction should be changed to shladd,l (shift left and add logical).
+> 
 
-Dave
+That doesn't help, at least not in qemu.
 
--- 
-John David Anglin  dave.anglin@bell.net
+Guenter
 
 
