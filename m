@@ -1,76 +1,76 @@
-Return-Path: <linux-parisc+bounces-1956-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1957-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3927694C7C6
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 02:50:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BDBE94C7D3
+	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 02:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93EC2B20377
-	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 00:50:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 125602854D5
+	for <lists+linux-parisc@lfdr.de>; Fri,  9 Aug 2024 00:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533542581;
-	Fri,  9 Aug 2024 00:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0973546B5;
+	Fri,  9 Aug 2024 00:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGBtPYe9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XFxpE4Pb"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C0E38C;
-	Fri,  9 Aug 2024 00:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B0D3234;
+	Fri,  9 Aug 2024 00:57:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723164638; cv=none; b=VOvtBS+tnz/jwc0QCtzojj9ehbZHgwwKvw5vwvFYdZU61gAGUSaAZN+BYFCSUIDqGLJe09N34zrcl1sJ5RWaGEOVjYL4Ma9NJdiMf9o9MpB3o1z4fqcxQDSx5g5nqkO+834aO8n32NeW76RbY4SbG94nB0zvC8ucBeY4mBJKsbU=
+	t=1723165023; cv=none; b=Vsvwkuj2kHlo6Tk+yH1L+kxJwNkkoP91UcRlBFXdctdvzIHc2/B1r3UrKBYUi8aGRRkVMyK64FWBl6/AM4xl/o/Vy+3PQKqonowvrZk9LVniZE3BSE1zAeYcIeEcG19hBY35lRbB8B1eXNpMYZTmVF2ymlcVA7HQoz2+cmCqGCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723164638; c=relaxed/simple;
-	bh=7r3kXadAWRrHvNlRq9eymn+F9m1ycAj5DGd1WGHHwng=;
+	s=arc-20240116; t=1723165023; c=relaxed/simple;
+	bh=Ct+GAEbmVw8DHS8pkEG9e7/dPqGUNuVj6GVT8lA9arA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sO9vUSKT1p6TRvWujIgTd7Bratdca5Y/mMQxvqejODwHnAeIWfr1FkbGHZ4zCpdkLLmUjmPgwgwyrLCJzsCGv3H9e9LFxa2juffkJtVt1lC57vtkkhI2+fOuIcRL/yMTqaU3toh+sdlLwF9B5T/h1PsJxQitmqjNHfLeEra+ghA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGBtPYe9; arc=none smtp.client-ip=209.85.215.170
+	 In-Reply-To:Content-Type; b=iF2xfoRHtVoBhoWpZ8cQCfdCJFEVbZciTG4qMYRcacq640BtXb4EqCUU7TdASJCCa9+4BpRe1evT/t7YPZLXYGKZkcnaMcDo6ulQsB/lgxp/tzWIoOIObR/nCDNVKGaMlDfS4YI0qoRckOKwRzE7uF7BLCnQaGWpYYvwXb18TLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XFxpE4Pb; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-6bce380eb96so1000246a12.0;
-        Thu, 08 Aug 2024 17:50:36 -0700 (PDT)
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70d1a74a43bso1342296b3a.1;
+        Thu, 08 Aug 2024 17:57:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723164636; x=1723769436; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1723165022; x=1723769822; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=XRmm2092B9I+czSGQLTLNg6rXkyYZ0X8PsIRu9Zj0hk=;
-        b=OGBtPYe9VAWuRJ01EP0VshxbGei7q8xhytNXZs7D1EhslJK/NuqJHRic+lGN36jyn2
-         4TLk94VhxTlB9/4l5l8AA3d+/bVUTog9Q0Y+WVwsyvYAcdmp6zzrkcx+Eirpw/q+QUQ9
-         AecgEfRd1d421o53SLvEOGjpxRE9HeKwuMVOl0rlTS8vc2dKPU8WjqydjI1xCISF3HwF
-         sJffLJV7cpmwtLVSRZHN+73YakIR0LBmch5F8JesMZR+nCc1Kaeyby/VnJ76RQjP979X
-         Ms0xZl1aSCQHlv94ZYe5k3qUXsU+bSPMQp8t6zaGkubQw+ddSZli0hF8xu4jQIhFkbUf
-         smtw==
+        bh=/MtvB8mjyzu2IoB2Ws5JzlodQoFeEGwt1Z17iJ76PG0=;
+        b=XFxpE4Pb/zOBPmhXEBOXghNrA/y3amVsK86dC9S25aAOnN9MA9wpXwAMfSBjKiGa6M
+         GaXUfPdiFt576xIVqn/OYGErckvKdDwpf9U3IP/fbIL0xhYIYT+zmvunypYAS1elz8Vj
+         XMNOuelPD87JMj2yRXksa0WNrIemDWiqn9tTxSxqhIst3aAxJZxMIj6JwBRZAhHSeZLn
+         o0898SCuh2ZlWIeHAnYL6iUOPK+RRf9wWSKcWfes6Ih0cbF1bBYuKnjuMS4keDtc/9jt
+         2tY0O1Q0vlwk6S++/mrD4fKyMvcNb4YW/HI0ex1ptLML+8NUO0J1EZzryJUwm2Xx0qrp
+         fRuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723164636; x=1723769436;
+        d=1e100.net; s=20230601; t=1723165022; x=1723769822;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XRmm2092B9I+czSGQLTLNg6rXkyYZ0X8PsIRu9Zj0hk=;
-        b=qkqxwi/hZPLyP6+ElfPh+xk260azQInO1af/RyKZA9Rbu4x1FDBdwvrTDlBrysx4Re
-         Dre+u1e/+vGoGz9j8KNMb+Q0dfAdIxX9N5ItOfA821xeEzySP2wenUYyEpe4KpLQMtSF
-         cNesxNfogkPh9QaaYSK4j/eizWFSh7PprK4CpoK0PC93SdC55fwRCm0HTj+yi4Z0qY1+
-         oKgpij4R7FjsQX6ixM0rga5BJg/j3amtnH9dVk448B8gzInF6y8iqi5Vy3zpNgVN66ab
-         xA5rHqWu2yZYXJ71mwGwFu2pMgoXV2dPYvu+6cx5i7vZhJk7ESr+KF2+XA+V7NbFTmJ/
-         70qw==
-X-Forwarded-Encrypted: i=1; AJvYcCW3Tx3vo9wVP/XNJtkOGp8Z24LIeb8uRCy51cpRXKZwe+osKpKgAMfY/Us8gS0ZZu1WIAMe2o+Qf8/E29Q6eRhtUbTqLn/H8Owfb+8vWLLzk409a9eQWawlTEcKyKPjMQsG9c94eB6fp98y
-X-Gm-Message-State: AOJu0YxXXSwDtnu9gJCZ6SHiEyD9if36zxO68rf0ua0ZBH9Dyb9ig/C7
-	hk5EdSo5r/Kaead/rTPKurskFbrafUYgIwDNy0MVfQfL7m010awl
-X-Google-Smtp-Source: AGHT+IEWSyKVWUAv3lBEOIVOVeGZXhieT11SQEcNJhGufwvPMX8HuPyit9dqb1eDxDVkJMuTlkUOMA==
-X-Received: by 2002:a17:90b:390c:b0:2ca:8684:401a with SMTP id 98e67ed59e1d1-2d1c3461395mr4140870a91.32.1723164635674;
-        Thu, 08 Aug 2024 17:50:35 -0700 (PDT)
+        bh=/MtvB8mjyzu2IoB2Ws5JzlodQoFeEGwt1Z17iJ76PG0=;
+        b=qu4LxMtfBN0zmHfVxtNUeV1pWhReus2A5cjIt21HmbwCrSyoxw+XCHIkER4ypPdk8G
+         ubKpygwsWfGsQsSpdZ6CgQSTFt8/ngOizWS0r++osg1VWhnILwPFrqaLLinf2t838KTw
+         eT9gP3QV4iH8CuJiDu8A8tfsZM9CF269QAvq3c8mYLcUEm7i6Cy77A8+G0UPYa1u1tXl
+         kPbHSKTztdnv3eGQOUJrwR2gReBGPlvldRrO26BIBi6UNid7J+haFtkgNniQYW52acDv
+         UAmDK63dXBdJ/mBZ+zL8ti2eAugrz4IVSyanHb++Es+YRacf2vBOaGgmzl9qqtJITHSV
+         /sVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFkmwb/fcM5s7+r5hSWiY3kWXYrL9sCZSfw/YipaFJHHKSlVlNwLU9s1Py5lMSSi0zroZJAD7gYYAb2W1vbnEqrabK7/8RXMe2YsEgQlJPXxVS/QJCW+0GuwPQs16UrfdWpxV1Ou8hWNks
+X-Gm-Message-State: AOJu0YwlKWMuSKF2YXtttgXU6yEay4CLNkA8tRmocHqZQxhKMbbm3NGt
+	AVH4K5wHuA2hV0Llrz3qqKlv4uGB6HuzcgNDv5ow8A6F5qblTbsB
+X-Google-Smtp-Source: AGHT+IFa9dMA8ylmc3SMI3EP4zQBbdjANMaHmDwgkP4r781TOsixfKKB97oJTKnj1Z4UkHWEmiFgew==
+X-Received: by 2002:a05:6a00:91e4:b0:70d:2ba1:2402 with SMTP id d2e1a72fcca58-710cae7a5bcmr4056210b3a.29.1723165021529;
+        Thu, 08 Aug 2024 17:57:01 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d1c9c7ad06sm1775981a91.14.2024.08.08.17.50.33
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-710cb209fe9sm1686717b3a.42.2024.08.08.17.57.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Aug 2024 17:50:34 -0700 (PDT)
+        Thu, 08 Aug 2024 17:57:00 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <314821a5-43e1-4c96-ad8d-188bca8ae0a1@roeck-us.net>
-Date: Thu, 8 Aug 2024 17:50:32 -0700
+Message-ID: <41080afd-86ab-4dc1-9c9f-eef4701692e0@roeck-us.net>
+Date: Thu, 8 Aug 2024 17:56:59 -0700
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -99,6 +99,7 @@ References: <20240731095022.970699670@linuxfoundation.org>
  <CAHk-=wiZUidi6Gm_6XFArT621H7vAzhDA63zn2pSGJHdnjRCMA@mail.gmail.com>
  <eba27c56-dc36-4410-bb6b-cbe8769b8a6d@roeck-us.net>
  <ac7284f9-ba29-4068-ab00-82ddc839afaf@bell.net>
+ <37f94771-4ebc-46d2-ad10-f145d139dd9d@bell.net>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -144,64 +145,55 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <ac7284f9-ba29-4068-ab00-82ddc839afaf@bell.net>
+In-Reply-To: <37f94771-4ebc-46d2-ad10-f145d139dd9d@bell.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 8/8/24 14:50, John David Anglin wrote:
-> On 2024-08-08 4:52 p.m., Guenter Roeck wrote:
->> On 8/8/24 11:19, Linus Torvalds wrote:
->>> On Thu, 8 Aug 2024 at 10:48, Thomas Gleixner <tglx@linutronix.de> wrote:
->>>>
->>>> Here is the disassembly from my latest crashing debug kernel which
->>>> shifts it up a couple of pages. Add 0x10 or sub 0x20 to make it work.
->>>
->>> Looks like I was off by an instruction, it's the 28th divide-step (not
->>> 29) that does the page crosser:
->>>
->>>>      4121dffc:   0b 21 04 41     ds r1,r25,r1
->>>>      4121e000:   0b bd 07 1d     add,c ret1,ret1,ret1
-> I think this macro might clobber the C/B bits on a ITLB missing:
+On 8/8/24 15:29, John David Anglin wrote:
+> On 2024-08-08 5:50 p.m., John David Anglin wrote:
+>> The mode likely problem is the shladd instruction in the following macro in entry.S:
+>>
+>>         .macro          L2_ptep pmd,pte,index,va,fault
+>> #if CONFIG_PGTABLE_LEVELS == 3
+>>         extru_safe      \va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
+>> #else
+>>         extru_safe \va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
+>> #endif
+>>         dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
+>> #if CONFIG_PGTABLE_LEVELS < 3
+>>         copy            %r0,\pte
+>> #endif
+>>         ldw,s           \index(\pmd),\pmd
+>>         bb,>=,n         \pmd,_PxD_PRESENT_BIT,\fault
+>>         dep             %r0,31,PxD_FLAG_SHIFT,\pmd /* clear flags */
+>>         SHLREG          \pmd,PxD_VALUE_SHIFT,\pmd
+>>         extru_safe      \va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
+>>         dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
+>>         shladd          \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
+>>         .endm
+>>
+>> I believe the shladd instruction should be changed to shladd,l (shift left and add logical).
+> diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
+> index ab23e61a6f01..1ec60406f841 100644
+> --- a/arch/parisc/kernel/entry.S
+> +++ b/arch/parisc/kernel/entry.S
+> @@ -399,7 +399,7 @@
+>       SHLREG        \pmd,PxD_VALUE_SHIFT,\pmd
+>       extru_safe    \va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
+>       dep        %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
+> -    shladd        \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
+> +    shladd,l    \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
+>       .endm
 > 
->          /* This is for ILP32 PA2.0 only.  The TLB insertion needs
->           * to extend into I/O space if the address is 0xfXXXXXXX
->           * so we extend the f's into the top word of the pte in
->           * this case */
->          .macro          f_extend        pte,tmp
->          extrd,s         \pte,42,4,\tmp
->          addi,<>         1,\tmp,%r0
->          extrd,s         \pte,63,25,\pte
->          .endm
+>       /* Look up PTE in a 3-Level scheme. */
 > 
-> The addi instruction affects the C/B bits.  However, it is only used for 32-bit PA 2.0 kernels.
-> A second tmp register would be needed to change the addi to an add logical.
-> 
-> The mode likely problem is the shladd instruction in the following macro in entry.S:
-> 
->          .macro          L2_ptep pmd,pte,index,va,fault
-> #if CONFIG_PGTABLE_LEVELS == 3
->          extru_safe      \va,31-ASM_PMD_SHIFT,ASM_BITS_PER_PMD,\index
-> #else
->          extru_safe \va,31-ASM_PGDIR_SHIFT,ASM_BITS_PER_PGD,\index
-> #endif
->          dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
-> #if CONFIG_PGTABLE_LEVELS < 3
->          copy            %r0,\pte
-> #endif
->          ldw,s           \index(\pmd),\pmd
->          bb,>=,n         \pmd,_PxD_PRESENT_BIT,\fault
->          dep             %r0,31,PxD_FLAG_SHIFT,\pmd /* clear flags */
->          SHLREG          \pmd,PxD_VALUE_SHIFT,\pmd
->          extru_safe      \va,31-PAGE_SHIFT,ASM_BITS_PER_PTE,\index
->          dep             %r0,31,PAGE_SHIFT,\pmd  /* clear offset */
->          shladd          \index,BITS_PER_PTE_ENTRY,\pmd,\pmd /* pmd is now pte */
->          .endm
-> 
-> I believe the shladd instruction should be changed to shladd,l (shift left and add logical).
+> Boots okay.  Fixing the addi instruction is harder and it would take some time to test.
 > 
 
-That doesn't help, at least not in qemu.
+Odd, it doesn't help for me. Does it crash for you without the above change ?
+Or, in other words, is divI at the objecting location ?
 
 Guenter
+
 
 
