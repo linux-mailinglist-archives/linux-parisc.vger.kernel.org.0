@@ -1,70 +1,70 @@
-Return-Path: <linux-parisc+bounces-1974-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-1975-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4A9950004
-	for <lists+linux-parisc@lfdr.de>; Tue, 13 Aug 2024 10:40:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB959500B5
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 Aug 2024 11:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92CE628663B
-	for <lists+linux-parisc@lfdr.de>; Tue, 13 Aug 2024 08:40:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C1DA1C20FEE
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 Aug 2024 09:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B0313C80E;
-	Tue, 13 Aug 2024 08:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDEB175D3D;
+	Tue, 13 Aug 2024 09:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZHsKWfs7"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uY3Czher"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94BB13B294
-	for <linux-parisc@vger.kernel.org>; Tue, 13 Aug 2024 08:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365C217C235
+	for <linux-parisc@vger.kernel.org>; Tue, 13 Aug 2024 09:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723538404; cv=none; b=DhjIe8e4O1yHO80du9a0KiHVz7zgHLltcYMSvtg/jVpqusLCPM0DkHK6KqpWKrtqcoRQ7HNdaSZmvZ1B/emwIv4sIJURRQTpA3WAJX1xnVvUuPxd4qm4vQZLtZvbFXT+k4wnT2UJryFFruv/OlsuVIuQ5TiAAZOhlcCp+Xv5ibE=
+	t=1723539828; cv=none; b=Lo8nOAPROit9XmsvHuf0oPB9zqdWUNPyp7VO1KANyofGnVgDvOfkQ4QCB2TWkpFQTR3gaa6QHOnb+sVBEtePqV19MdUSY/aoRPUn17/kwTKSVQdBnH4glIUqd7gNkY5Ljs9Q0LxPEJfxTf8bcqji4zrju17CVMoBGHWVA7+CPnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723538404; c=relaxed/simple;
-	bh=h+dDRWN8jV1nwMrGh+WAeD+/RlJnf+Y+F73/jQ+w7EY=;
+	s=arc-20240116; t=1723539828; c=relaxed/simple;
+	bh=OFLmnkChNt3TrBDQB3OchS9v9nydUBdhsCvm9Qr0paQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bzPUPP4v1PFOdYiNzr73oMjfpv0/2roPnmVlAHfnCeT4SrstiZBj72sbpvhvt/Ut7+UxkTvSH2PbuHcvzvCjyQl9F//jiIAUPS+4mDMq9AkkmjxJY5UZiAvH8Fut8A1M8rLzc6TpMOHuoyHmwdMoaQHdbd7DWKLm7II6lx4zN0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZHsKWfs7; arc=none smtp.client-ip=209.85.219.51
+	 To:Cc:Content-Type; b=dlFj7juiTT/6hHoCRVN7TkSV3ue5t3+9BOQyfS36ylRkhEkOEnp7bC0Rqq9eQKfYQ4B/638+W8kNc66gKWIKUs1AmHPXuEyUE+QXBsKrrwxHnDO74CuS2PQmdmYZzI1opiVGWn5aHmPhwHgixTY+v6O38FZz2B2r+iTWNuAJFIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uY3Czher; arc=none smtp.client-ip=209.85.222.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6b7a3e468a9so35720426d6.1
-        for <linux-parisc@vger.kernel.org>; Tue, 13 Aug 2024 01:40:02 -0700 (PDT)
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-821db15a930so1358737241.1
+        for <linux-parisc@vger.kernel.org>; Tue, 13 Aug 2024 02:03:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723538402; x=1724143202; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1723539825; x=1724144625; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tfIvxCWgLL4atIJlIA0PqbGSOJqgAf1LTciUfWWJUn8=;
-        b=ZHsKWfs7XtacxS/e4HWnhLfpJeF1dQI15r6Gs+SssFzW1ORp9CSZbLkX+hPNmtz1dI
-         V/lKHrB3TsgX8KaIlDbgXULOr+QMVyve7FGhCEdOpMzW50ZHiBDmeqtCdpCfKixVqWD5
-         5LWzxX4XqIisrqFfOshRHqnT26ZngO/8W9Ofc2CqNzF8YR2uslGYCV7JWJ13iJRSywjP
-         IxsvzFhdPlhFF/JnUoJzWVYzIdQVNb2KxpFfMSwvEFXT2sZ9przycdnLBZyTnjglCt4/
-         aAnWg8QyMuVtxMlIa3PyPKlJROi745DjcQvbz/HiBkixIKxV/AxIC7aBz/jcE0tM9gvZ
-         cwnA==
+        bh=MqfnVnhHsKTNIdZ3g99elQ8N0kSquMZj93pvaOSIp0U=;
+        b=uY3CzherVSUXaUL2L45nDDjUe851uSDwoUak+sWbM5SLZgqZu0RzWakWib6600bcM3
+         nkpN48NnEKFdKHNu45FDUJ+iB/gabNPMokNHB4mnqALGdAwZ3ybYGg6whRFoVc9NBxZW
+         U1SkhkP4aChDRMPRkgx8vXA+ZlnLtATO+602voSTI274QqM7RicCA6o3qPCI+mW0gOB9
+         y+K0HPR/eBxpYqeHyFh6JP/dbTfsAN//pojGBDgYuWYY8y4FA/tPQh+K1e2yh39e3RSp
+         NiRMGNuOEyiuVZmbB7CHeVf5LcFuLYiHjUtvhEDA4gf4pNEQxoUNr8DV9kVgMMw88MOS
+         ZbOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723538402; x=1724143202;
+        d=1e100.net; s=20230601; t=1723539825; x=1724144625;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tfIvxCWgLL4atIJlIA0PqbGSOJqgAf1LTciUfWWJUn8=;
-        b=LiXgvss1JIWvPgUdMe5vAOTcGk9l02DBLqqaUPuNGePnsJVQm/TDbPQgjbju0ffLyJ
-         T0k7gPTtZPODHUmLLEYWQdGykAKlZfR6WvOduC6wl6PxyeSOBjwfUeB75dVvZ7PX3mVD
-         xn6PoEcbmb8otQ6uMxZC3yshgKwIeinl1fLNddUJpF/MO5BTLjSsXf7o+h3fA9NGTLLM
-         gMTwwW1q2SMdLX34jrO1Z9G86f281C5gt8GQgqcxm0gKEPUUC6U2whuSVK+TN0/sZBEC
-         7b1tnMbUtm2/KU61cn59p5KhTLfhUaDC1WkDyvWiAoUeg924ALdHYBCKOEoBkvWnK4ha
-         YRBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUz9Q5fc6OrT2KCTe0oGEC1syZQGYhtMcINlcDrSdMTPQZzFuuzfzgUKX15jDsMFyGpIfCP+qx3XyGQA7iUadUwM0RkKJ9sFSyJ9aYy
-X-Gm-Message-State: AOJu0YwJ0cSAbIPfPZEK8WZWj42bfBMIABCX8k6w+3cN/oHF1XqY9j5y
-	x29JMJ3l2jtP4nvbINqT9BT4mC894h59VwnuspIgrjXkkh0ihgL6y6J+PCKxpISeeRo4v2HiaLC
-	W4DSoe89Ll6SdMcsx0+K9aiLhRLuSGkwBSbxn
-X-Google-Smtp-Source: AGHT+IF5vZpwMEwyKOsMjByGok50VQq9OHjXt2iZMdoR51xqc5PshbKjWlTOU09k9dSw6zDIWNspGRLkyEdh4LkEteM=
-X-Received: by 2002:a05:6214:4410:b0:6b5:e2da:8bec with SMTP id
- 6a1803df08f44-6bf4f89a375mr28560176d6.55.1723538401526; Tue, 13 Aug 2024
- 01:40:01 -0700 (PDT)
+        bh=MqfnVnhHsKTNIdZ3g99elQ8N0kSquMZj93pvaOSIp0U=;
+        b=cy1yqP5D+GLhsUzrCX0lDiipyUT/Ugb4ykwra5pzTj3EloImq8YCDIbuFFmRepNcHk
+         9sKPUiEJ1iqXnGAbUPOBEqmfBt+pE8nVjpat8Q7ALp7oQaceXzydcXrgSVFec0k6KuFw
+         hJrTy5iiE9FwOB1zEOfzmVBfyIEvx9ugREqRsiPgEQJMeL4bYXnX4bVNp55qVNqIaMgP
+         IWkEvTpIqeIW3zhIkj8u+FtC71oIgIkZHTzTDX249x4fW7X4tdD6vaDvVOjNZeaZ7F1o
+         Zp7C0kIzjQTVm2KDtW2f0UrLLzO/+U3dLRedT4w5E7/fmO9WRIOd7jB4Iaz4ctbPFeXZ
+         fH6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVkQ1BaKzuuCBZ2kD2CGoT5qAMJo+/1r4ifvqBO04HDq5bvqtfUOlvVcH1F/TQwkf34VDweWFu9kgRV01NGH7s9oAkAgWVmWWncH+t0
+X-Gm-Message-State: AOJu0YzbMCuPVmUmnZ/EgG/CIZqmaZEdNXPbUX1scuZfSOgZDoP2CcBG
+	4rmCWZEPAMOpgeiSJZY9bg7aDPQSHNP1f7gvA8CcNof5dnrzoJrSGch35qytD/hAovPT7hBk1qA
+	gk/wF4gX/woznSW7GNE3qSUQSrMS6AGmA2I9M
+X-Google-Smtp-Source: AGHT+IEDjVBWF1MtU621r7c9KTxxkpXecwmSkiD37eYz3ttGuDqjz8Aa65UHLyu0qffTTOccInI+PGwQjjCKHuK8rFw=
+X-Received: by 2002:a05:6102:3e94:b0:48f:a858:2b52 with SMTP id
+ ada2fe7eead31-49743b56abemr3993740137.29.1723539824928; Tue, 13 Aug 2024
+ 02:03:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -79,11 +79,11 @@ References: <20240805212536.2172174-1-almasrymina@google.com>
  <CAHS8izOXwZS-8sfvn3DuT1XWhjc--7-ZLjr8rMn1XHr5F+ckbA@mail.gmail.com>
  <48f3a61f-9e04-4755-b50c-8fae6e6112eb@gmail.com> <20240812105732.5d2845e4@kernel.org>
  <7e2ffe62-032a-4c5e-953b-b7117ab076be@gmail.com> <71260e3c-dee4-4bf0-b257-cdabd8cff3f1@gmail.com>
- <20240812171548.509ca539@kernel.org>
-In-Reply-To: <20240812171548.509ca539@kernel.org>
+ <20240812171548.509ca539@kernel.org> <CAHS8izPyGwe_i4eNemW+A+MgMVHqJ0fdp=+-ju2ynqgc0mb_Ow@mail.gmail.com>
+In-Reply-To: <CAHS8izPyGwe_i4eNemW+A+MgMVHqJ0fdp=+-ju2ynqgc0mb_Ow@mail.gmail.com>
 From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 13 Aug 2024 04:39:47 -0400
-Message-ID: <CAHS8izPyGwe_i4eNemW+A+MgMVHqJ0fdp=+-ju2ynqgc0mb_Ow@mail.gmail.com>
+Date: Tue, 13 Aug 2024 05:03:33 -0400
+Message-ID: <CAHS8izM=d9pe0V3BWAY_gguNGymdc4DSFAz0DWyCMoGX6QVhDw@mail.gmail.com>
 Subject: Re: [PATCH net-next v18 07/14] memory-provider: dmabuf devmem memory provider
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: Pavel Begunkov <asml.silence@gmail.com>, netdev@vger.kernel.org, 
@@ -116,31 +116,53 @@ Cc: Pavel Begunkov <asml.silence@gmail.com>, netdev@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 12, 2024 at 8:15=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
-> BTW, Mina, the core should probably also check that XDP isn't installed
-> before / while the netmem is bound to a queue.
+On Tue, Aug 13, 2024 at 4:39=E2=80=AFAM Mina Almasry <almasrymina@google.co=
+m> wrote:
+>
+> On Mon, Aug 12, 2024 at 8:15=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
+wrote:
+> > BTW, Mina, the core should probably also check that XDP isn't installed
+> > before / while the netmem is bound to a queue.
+>
+> Sorry if noob question, but what is the proper check for this? I tried
+> adding this to net_devmem_bind_dmabuf_to_queue():
+>
+> if (xdp_rxq_info_is_reg(&rxq->xdp_rxq))
+>                  return -EEXIST;
+>
+> But quickly found out that in  netif_alloc_rx_queues() we initialize
+> all the rxq->xdp_rxq to state REGISTERED regardless whether xdp is
+> installed or not, so this check actually fails.
+>
+> Worthy of note is that GVE holds an instance of xdp_rxq_info in
+> gve_rx_ring, and seems to use that for its xdp information, not the
+> one that hangs off of netdev_rx_queue in core.
+>
 
-Sorry if noob question, but what is the proper check for this? I tried
-adding this to net_devmem_bind_dmabuf_to_queue():
+To elaborate further, in order to disable binding dmabuf and XDP on
+the same rx queue for GVE, AFAIT the check would need to be inside of
+GVE. Inside of GVE I'd check if gve_priv->xdp_prog is installed, and
+check if the gve_rx_ring->xdp_info is registered. If so, then the rx
+queue is XDP enabled, and should not be bound to dmabuf. I think that
+would work.
 
-if (xdp_rxq_info_is_reg(&rxq->xdp_rxq))
-                 return -EEXIST;
+At the moment I can't think of a check inside of core that would be
+compatible with GVE, but above you clearly are specifically asking for
+a check in core. Any pointers to what you have in mind would be
+appreciated here, but I'll try to take a deeper look.
 
-But quickly found out that in  netif_alloc_rx_queues() we initialize
-all the rxq->xdp_rxq to state REGISTERED regardless whether xdp is
-installed or not, so this check actually fails.
+> Additionally, my understanding of XDP is limited, but why do we want
+> to disable it? My understanding is that XDP is a kernel bypass that
+> hands the data directly to userspace. In theory at least there should
+> be no issue binding dmabuf to a queue, then getting the data in the
+> queue via an XDP program instead of via TCP sockets or io uring. Is
+> there some fundamental reason why dmabuf and XDP are incompatible?
+>
+> --
+> Thanks,
+> Mina
 
-Worthy of note is that GVE holds an instance of xdp_rxq_info in
-gve_rx_ring, and seems to use that for its xdp information, not the
-one that hangs off of netdev_rx_queue in core.
 
-Additionally, my understanding of XDP is limited, but why do we want
-to disable it? My understanding is that XDP is a kernel bypass that
-hands the data directly to userspace. In theory at least there should
-be no issue binding dmabuf to a queue, then getting the data in the
-queue via an XDP program instead of via TCP sockets or io uring. Is
-there some fundamental reason why dmabuf and XDP are incompatible?
 
 --=20
 Thanks,
