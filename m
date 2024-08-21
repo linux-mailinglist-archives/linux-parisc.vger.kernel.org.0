@@ -1,71 +1,70 @@
-Return-Path: <linux-parisc+bounces-2045-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2046-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF12959892
-	for <lists+linux-parisc@lfdr.de>; Wed, 21 Aug 2024 12:54:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0408695A17C
+	for <lists+linux-parisc@lfdr.de>; Wed, 21 Aug 2024 17:37:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F4C11C2160C
-	for <lists+linux-parisc@lfdr.de>; Wed, 21 Aug 2024 10:54:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7493D1F22E24
+	for <lists+linux-parisc@lfdr.de>; Wed, 21 Aug 2024 15:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDBE1C943F;
-	Wed, 21 Aug 2024 09:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849E4149C42;
+	Wed, 21 Aug 2024 15:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lcX4fXY2"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VawqCO9A"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179301C9427;
-	Wed, 21 Aug 2024 09:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AB614D293
+	for <linux-parisc@vger.kernel.org>; Wed, 21 Aug 2024 15:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724231707; cv=none; b=B3KJ5qNa92kSPLF7snYRBcac4tJM9HWW+7t8O/9Ubt7i/UD3cjSefuQ7axfd0LGAm7fIw3ChG782oBcHSlAOon4yGzBYIea/9Qy+mjh31kuG2BT5NO9JjMH3SGrgsWJbmDOzQIdLX9PIawGXs0WjGN0SFwLrHtxUYZaPI3VKIsg=
+	t=1724254609; cv=none; b=gtCbilKwMobiSXM7OXIUy3xMO9q+p5NsRtA2X20HMgrij18WDzIsnW6PJjz/4bVb5Ws8JvM48NFd/ER5d7y7e+ZjRv7pKXDCB8oh/KY9ISmgLvJ+pmBBMiXbvQLikgMh9Y8mqyk/NN67jfZrSsF9+E++FhrXAHDIh/6prQBFIcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724231707; c=relaxed/simple;
-	bh=OUtYB2xd9RpqA6sX0X5lJPKnbZ+idsBu0nLIl8hmY9o=;
+	s=arc-20240116; t=1724254609; c=relaxed/simple;
+	bh=lRtlmbjL10N9pND329duqEBS2XO74LAzcfVhekR0HYk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b1WB+Yp7vynVFpJ9uDIsEgznIFkkds6AWD0mq+HS5kA99irk3RtWXKN27PIZASOklQDILznFgOFLsweDjSiUFIUiiCJ0I/jdCkiQxGiipBe3RBe79Ejte5j8KE0B4Mw4UB4m1zFz2Y0E5pCOlvQa7kxs2KteRc59MG6MWudyOQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lcX4fXY2; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2f3eabcd293so22267341fa.2;
-        Wed, 21 Aug 2024 02:15:04 -0700 (PDT)
+	 To:Cc:Content-Type; b=TOZYebgErHJ9fdu2BJt5QgxHkezN/yJOC+suibdx62KuE409AbisYapv5K6jYv0pvE+Shd1BvaPiSpuuwrMqUHZv10A7v8Tbb5P17dBLZGLMRWmRoFTPEtqNI9EAiqte8aiziVKzpl0SD1raWW5I3XywtE87gpES6qIE6oBibSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VawqCO9A; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-44fee2bfd28so325311cf.1
+        for <linux-parisc@vger.kernel.org>; Wed, 21 Aug 2024 08:36:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724231703; x=1724836503; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1724254605; x=1724859405; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g/AL1OeL8iYesAGF2KkaZ/rqFlEZKCDby71JmQLIyGU=;
-        b=lcX4fXY2dpb4CJMjztNS4v+DHkQeF80bKCENOg70xN5mnOZ9FeBrsHzAbdrI3bkiH6
-         cr+p4K5rZ0WKNAt4poVZZIx06DM4QWdaeu4JwmVnZo+BOEeQyef+yV5KL0uTZYufYOrx
-         68VUNxKwyizp1Yq2LNQUNRhvmMJI6Gn5ljSjj3rv2gNEBmeFpFezikHrwZK2gVWAxUgX
-         +6J6KImsq4O9DWOOn6NxZp4W+UPP7HBD9YTk5VfkdwZ5aY/tCseUS+acYwQb0mEc2weB
-         q6R8oGPzsulSmb3dVmOrxV3cKsMHxbeskqXcE/ucizQzAYySwKiWvRWgVPspYjBJZLiL
-         3+hA==
+        bh=XUZoeSiNO641pI3EuPxhZcOUo6QCsmcEaLeGMupG+Zk=;
+        b=VawqCO9Ap+dfG9m5J2m0lw/Kt22zqA+IUqPCZmZb15ns7NM1w7XhIHRfB0KFAyxY8W
+         vFYidURPYefAUs0AoQdCss4vjJs0hRhqr43gVHbsFiw1B9ldI0kIQS0dPYFs4nkxhRBO
+         VWr9iHG8WuLjsD5se9v2lReEV4/I+6inz0ZPbW5M9F4umNk5sbLVejBxxOMS+TUrfZEO
+         CONEh2i35AR7tfgTyzMzRYcMqBG/TbKMsxIKZneIW745qgGVc/CHc/VkwvNYZ3ELJxSH
+         Dr/c81HgwIJYlN3IKpB4dL58faG9ZHOBRQcc1OoHLmOX2F1tfDbzZOV877FLg9cCkcPw
+         8cPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724231703; x=1724836503;
+        d=1e100.net; s=20230601; t=1724254605; x=1724859405;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=g/AL1OeL8iYesAGF2KkaZ/rqFlEZKCDby71JmQLIyGU=;
-        b=kn3jR7mpCN7Uuh8jGoIR1x/xKvbeoxq2EM17NeyY+Pp9h55vm0QSBB4zwfU+O26FgS
-         mYnI9GBMNvCgwxZKxUg8VVgubBkqhGgH0KJZPemYZj6GTrdYaNKbqITMbzObHrtHfX1Z
-         D5xsH+BChs7JAbJy8gSygPQs214wFLBkyTJyzOOmYHTi0uUefeGYQsXG8ZDT1gXA4S0X
-         HNP4YX6LKVLBD5HpQbl8kH4MsiaLa/eyIq3EfpN1qJbqnaqG9lKC9uv/Mdx7iMnrkUNL
-         hD0lSHYcb1Dm3D/Hqw3OGwNhIapKmI9IgAI5UK7eNqnlsKtriQpT81txzkFYmlLU3TA9
-         pBug==
-X-Forwarded-Encrypted: i=1; AJvYcCUNdu0NS8GjuuOgc7yuulU9m+s3K2a2sSlU67C/UTli3I478FsGeo5wTPHacicI1uDr/Is5N7i6RMfid5w=@vger.kernel.org, AJvYcCUVg9e8mkl7G2Xzkr8ULMHpWUM+Cr/lCe/VdZIidl4ncnf16QyfC6E3agpobFdi0Xey7cPNL6RjnhLwvQU=@vger.kernel.org, AJvYcCUrwckdgYEPwrinxcKd0Ydq08fFkUfK06Gqib7HFRHIScLra6MVsk8d9dbnhLx7mAKMeLNSFgG6g7Zcbw==@vger.kernel.org, AJvYcCV+akLaGSXr5Ms64cPqjo3sWiqJMi+CvFR91nsmCM/XrvUUjynWXizaeJ82MY8oWIqusICISnvkf9wnSw==@vger.kernel.org, AJvYcCVTjL6EmzkzmA8NPGBu9dplSQvfK5isFjPUSf//4jgn0yvM58dEPF78rViZIc8bzdFeWliUkH20opVwL+0WPccW@vger.kernel.org, AJvYcCVV1XA0O+SDluYpL2kZChb2SUQd4/h17LBIrE8Lm6598uRM9awY+ywo6hQIACaP5lwrLZ40Ay4JZ3mm@vger.kernel.org, AJvYcCVW7tinhvb3G51XM4cuyUDlUnuWI+0Ly/CzZyVnnyzY7p62nHq0P67+xyiiexX2poD3rN8fflkq@vger.kernel.org, AJvYcCVkdwS/pLx5seY0ddYWyCxMdwKHi421qtL810+hy1moVBsXgme0w414RrrtEDgEo2wG334G7mW/cAT5SmZGPtTjuvtg@vger.kernel.org, AJvYcCWpoPejCrONPV4gYi0wujwxmtYsjQApe5fMQKX33TgOJgAzptTciVvOmaAHL/WF0/03vkM3nYxHduCgBA==@vger.kernel.org, AJvYcCXJCMCqmfcT
- BIU9ljsUHV1A4yn3JPcQpEzq0JsvJgS0qlgyYDJ6k120BPL1hefaKk2FWNjpdpeOb3hjzALL@vger.kernel.org, AJvYcCXNA8Z9LklYfZY6BhXACmP2+yqgjjB7p7Vnrjfp1HZhyaoXp6exQsNGmRqcSuZqfrROC7c=@vger.kernel.org, AJvYcCXx7Ng0houwH3QEYn33UK4dE4MQV5vxk7AHd/MrD7wJTrvrqbbAP9Yg5A67o0aa4+XiTEB71tPDzuisCjdU@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7u4AjcR+5o0GpEJ2rr1gT6f+Xppeec+QSz1XlG3SzGdLp9p4E
-	TualB3jGdnPkG/YTUi32Zb+PYGSbTJbneLnCOJM5SdQvTQiLHKKs5PgJGX9I6QRuDGEjsUvBMo+
-	uZYHeRxKqBx5Xu1AN7s/Wi7xyL34=
-X-Google-Smtp-Source: AGHT+IGLGfjw+Fjk2rSsSnYZ7V+bLHHFrxyDZsACc2hqiPsKgWXLHNd/EC/FWx9bAUeST6qbartz/G3Ry9JaBMthtOI=
-X-Received: by 2002:a2e:988a:0:b0:2ef:2f17:9ede with SMTP id
- 38308e7fff4ca-2f3f8b600a8mr8953001fa.49.1724231702724; Wed, 21 Aug 2024
- 02:15:02 -0700 (PDT)
+        bh=XUZoeSiNO641pI3EuPxhZcOUo6QCsmcEaLeGMupG+Zk=;
+        b=dPuVdIbtGnX1eyZdrxBzk+ldDBoTE3AWhyVXrHayACGK4+VDyto5yWEUoJ6knEllsA
+         qVB9eQI/OVe4zWdCKF4hndXKMzl65fDCM7STLHfMbPgL+KnDDictRS+dtLiucLLlrsCc
+         XXNgs+PinSjtvfhcNOcbRAJ0dUOqgZqZhh5TN6nvrg0UscTo3U2oW9uY58xiS+zzN04S
+         Fb64W7RhWsc0/oFfkGBTWTkcrX5OChf5xya9yc33UbLTX7HAIDoWMPpLDGNxcCOVkRiT
+         DInL3p2gkkLMNpkXqWPTEbbrwQw0bc303lnmEGtb54xzQyY5J23nJPQcPbF0TO05Xfkg
+         1bNg==
+X-Forwarded-Encrypted: i=1; AJvYcCWH52fb6FgyKyx9EbOYlCAW9PBZYI5Ro+JPsAkAklzI7vy1Pe+ufPkcpMkrSzgW7scN+Em4orGsQymWHbw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/OKJD6uqPJfVGd79s0PE0Wk8xg3Gg5fqSeL8JEbySGd+5qxqf
+	V2Tf89FfGBRjm10aHWGaAtQZUxxWv77UvIr32LsAAKkgADjuv/4LPSLHq/19U/gAmwLHzd3eNmZ
+	DBFUUXb4EcC1afQY+28wrAyh5R6oz2yoS+WxC
+X-Google-Smtp-Source: AGHT+IGfHATnjXtnGmfmB/4D15ItV4+y4fk90XQNkiarco8smx060mhOYYV6TW3lde4cXDjE7q2OcPZA07rGH+zC+AM=
+X-Received: by 2002:a05:622a:1816:b0:447:d555:7035 with SMTP id
+ d75a77b69052e-454e86e342amr6626771cf.13.1724254604541; Wed, 21 Aug 2024
+ 08:36:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -75,12 +74,13 @@ MIME-Version: 1.0
 References: <20240813211317.3381180-4-almasrymina@google.com>
  <CAMArcTWWxjsg_zwS6waWkLpyHhwdXDm_NJeVGm_dr+eT5QDZiA@mail.gmail.com>
  <20240819155257.1148e869@kernel.org> <CAHS8izPL4YdqFjkTpYavdxQn816=kkUv0xravQJF4Uno7Bn3ZQ@mail.gmail.com>
-In-Reply-To: <CAHS8izPL4YdqFjkTpYavdxQn816=kkUv0xravQJF4Uno7Bn3ZQ@mail.gmail.com>
-From: Taehee Yoo <ap420073@gmail.com>
-Date: Wed, 21 Aug 2024 18:14:50 +0900
-Message-ID: <CAMArcTXvccYBPZTEuW-z=uTK7W67utd9-xjPzfxEOvUWhPS7bg@mail.gmail.com>
+ <CAMArcTXvccYBPZTEuW-z=uTK7W67utd9-xjPzfxEOvUWhPS7bg@mail.gmail.com>
+In-Reply-To: <CAMArcTXvccYBPZTEuW-z=uTK7W67utd9-xjPzfxEOvUWhPS7bg@mail.gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Wed, 21 Aug 2024 11:36:31 -0400
+Message-ID: <CAHS8izPZ9Jiu9Gj+Kk3cQ_+t22M4n4-mbPLhx+fti_HiWzL57Q@mail.gmail.com>
 Subject: Re: [PATCH net-next v19 03/13] netdev: support binding dma-buf to netdevice
-To: Mina Almasry <almasrymina@google.com>
+To: Taehee Yoo <ap420073@gmail.com>
 Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
 	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
@@ -112,187 +112,134 @@ Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 20, 2024 at 1:01=E2=80=AFPM Mina Almasry <almasrymina@google.co=
-m> wrote:
+On Wed, Aug 21, 2024 at 5:15=E2=80=AFAM Taehee Yoo <ap420073@gmail.com> wro=
+te:
 >
-> On Mon, Aug 19, 2024 at 6:53=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
-wrote:
+> On Tue, Aug 20, 2024 at 1:01=E2=80=AFPM Mina Almasry <almasrymina@google.=
+com> wrote:
 > >
-> > On Mon, 19 Aug 2024 00:44:27 +0900 Taehee Yoo wrote:
-> > > > @@ -9537,6 +9540,10 @@ static int dev_xdp_attach(struct net_device =
-*dev, struct netlink_ext_ack *extack
-> > > >                         NL_SET_ERR_MSG(extack, "Native and generic =
-XDP can't be active at the same time");
-> > > >                         return -EEXIST;
-> > > >                 }
-> > > > +               if (dev_get_max_mp_channel(dev) !=3D -1) {
-> > > > +                       NL_SET_ERR_MSG(extack, "XDP can't be instal=
-led on a netdev using memory providers");
-> > > > +                       return -EINVAL;
-> > > > +               }
+> > On Mon, Aug 19, 2024 at 6:53=E2=80=AFPM Jakub Kicinski <kuba@kernel.org=
+> wrote:
 > > >
-> > > Should we consider virtual interfaces like bonding, bridge, etc?
-> > > Virtual interfaces as an upper interface of physical interfaces can
-> > > still install XDP prog.
+> > > On Mon, 19 Aug 2024 00:44:27 +0900 Taehee Yoo wrote:
+> > > > > @@ -9537,6 +9540,10 @@ static int dev_xdp_attach(struct net_devic=
+e *dev, struct netlink_ext_ack *extack
+> > > > >                         NL_SET_ERR_MSG(extack, "Native and generi=
+c XDP can't be active at the same time");
+> > > > >                         return -EEXIST;
+> > > > >                 }
+> > > > > +               if (dev_get_max_mp_channel(dev) !=3D -1) {
+> > > > > +                       NL_SET_ERR_MSG(extack, "XDP can't be inst=
+alled on a netdev using memory providers");
+> > > > > +                       return -EINVAL;
+> > > > > +               }
+> > > >
+> > > > Should we consider virtual interfaces like bonding, bridge, etc?
+> > > > Virtual interfaces as an upper interface of physical interfaces can
+> > > > still install XDP prog.
+> > > >
+> > > > # ip link add bond0 type bond
+> > > > # ip link set eth0 master bond0
+> > > > # ip link set bond0 xdp pin /sys/fs/bpf/x/y
+> > > > and
+> > > > # ip link set bond0 xdpgeneric pin /sys/fs/bpf/x/y
+> > > >
+> > > > All virtual interfaces can install generic XDP prog.
+> > > > The bonding interface can install native XDP prog.
 > > >
-> > > # ip link add bond0 type bond
-> > > # ip link set eth0 master bond0
-> > > # ip link set bond0 xdp pin /sys/fs/bpf/x/y
-> > > and
-> > > # ip link set bond0 xdpgeneric pin /sys/fs/bpf/x/y
-> > >
-> > > All virtual interfaces can install generic XDP prog.
-> > > The bonding interface can install native XDP prog.
+> > > Good point. We may need some common helpers to place the checks for X=
+DP.
+> > > They are spread all over the place now.
 > >
-> > Good point. We may need some common helpers to place the checks for XDP=
-.
-> > They are spread all over the place now.
+> > Took a bit of a look here. Forgive me, I'm not that familiar with XDP
+> > and virtual interfaces, so I'm a bit unsure what to do here.
+> >
+> > For veth, it seems, the device behind the veth is stored in
+> > veth_priv->peer, so it seems maybe a dev_get_max_mp_channel() check on
+> > veth_priv->peer is the way to go to disable this for veth? I think we
+> > need to do this check on creation of the veth and on the ndo_bpf of
+> > veth.
+> >
+> > For bonding, it seems we need to add mp channel check in bond_xdp_set,
+> > and bond_enslave?
+> >
+> > There are a few other drivers that define ndo_add_slave, seems a check
+> > in br_add_slave is needed as well.
+> >
+> > This seems like a potentially deep rabbit hole with a few checks to
+> > add all of the place. Is this blocking the series? AFAICT if XDP fails
+> > with mp-bound queues with a benign error, that seems fine to me; I
+> > don't have a use case for memory providers + xdp yet. This should only
+> > be blocking if someone can repro a very serious error (kernel crash)
+> > or something with this combination.
+> >
+> > I can try to add these checks locally and propose as a follow up
+> > series. Let me know if I'm on the right track with figuring out how to
+> > implement this, and, if you feel like it's blocking.
+> >
+> > --
+> > Thanks,
+> > Mina
 >
-> Took a bit of a look here. Forgive me, I'm not that familiar with XDP
-> and virtual interfaces, so I'm a bit unsure what to do here.
->
-> For veth, it seems, the device behind the veth is stored in
-> veth_priv->peer, so it seems maybe a dev_get_max_mp_channel() check on
-> veth_priv->peer is the way to go to disable this for veth? I think we
-> need to do this check on creation of the veth and on the ndo_bpf of
-> veth.
->
-> For bonding, it seems we need to add mp channel check in bond_xdp_set,
-> and bond_enslave?
->
-> There are a few other drivers that define ndo_add_slave, seems a check
-> in br_add_slave is needed as well.
->
-> This seems like a potentially deep rabbit hole with a few checks to
-> add all of the place. Is this blocking the series? AFAICT if XDP fails
-> with mp-bound queues with a benign error, that seems fine to me; I
-> don't have a use case for memory providers + xdp yet. This should only
-> be blocking if someone can repro a very serious error (kernel crash)
-> or something with this combination.
->
-> I can try to add these checks locally and propose as a follow up
-> series. Let me know if I'm on the right track with figuring out how to
-> implement this, and, if you feel like it's blocking.
->
-> --
-> Thanks,
-> Mina
+> I agree with the current approach, which uses the
+> dev_get_min_mp_channel_count() in the dev_xdp_attach().
+> The only problem that I am concerned about is the
+> dev_get_min_mp_channel_count() can't check lower interfaces.
+> So, how about just making the current code to be able to check lower
+> interfaces?
 
-I agree with the current approach, which uses the
-dev_get_min_mp_channel_count() in the dev_xdp_attach().
-The only problem that I am concerned about is the
-dev_get_min_mp_channel_count() can't check lower interfaces.
-So, how about just making the current code to be able to check lower
-interfaces?
-Here is a rough modification and I tested it. it works well.
-Please look into this code.
+Thank you for the code snippet! It's very useful! I have been
+wondering how to walk lower/upper devices!
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index f6f40c682b83..87c7985cb242 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -6989,6 +6989,27 @@ static __latent_entropy void
-net_rx_action(struct softirq_action *h)
-        bpf_net_ctx_clear(bpf_net_ctx);
- }
+To be honest, I think maybe Jakub's suggestion to refactor all the
+->ndo_bpf calls needs to happen anyway. The reason is that there are
+->ndo_bpf calls in the core net stack, like net/xdp/xsk_buff_pool.c
+and kernel/bpf/offload.c. AFAICT we need to add checks in these places
+as well, so refactoring them into one place is nice?
 
-+static int __dev_get_min_mp_channel_count(struct net_device *dev,
-+                                         struct netdev_nested_priv *priv)
-+{
-+       int i, max =3D 0;
-+
-+       ASSERT_RTNL();
-+
-+       for (i =3D 0; i < dev->real_num_rx_queues; i++)
-+               if (dev->_rx[i].mp_params.mp_priv)
-+                       /* The channel count is the idx plus 1. */
-+                       max =3D i + 1;
-+
-+       return max;
-+}
-+
-+u32 dev_get_min_mp_channel_count(const struct net_device *dev)
-+{
-+       return (u32)__dev_get_min_mp_channel_count((struct net_device *)dev=
-,
-+                                                  NULL);
-+}
-+
- struct netdev_adjacent {
-        struct net_device *dev;
-        netdevice_tracker dev_tracker;
-@@ -9538,7 +9559,10 @@ static int dev_xdp_attach(struct net_device
-*dev, struct netlink_ext_ack *extack
-                        NL_SET_ERR_MSG(extack, "Native and generic XDP
-can't be active at the same time");
-                        return -EEXIST;
-                }
--               if (dev_get_min_mp_channel_count(dev)) {
-+
-+               if (netdev_walk_all_lower_dev(dev,
-+                                             __dev_get_min_mp_channel_coun=
-t,
-+                                             NULL)) {
-                        NL_SET_ERR_MSG(extack, "XDP can't be installed
-on a netdev using memory providers");
-                        return -EINVAL;
-                }
-@@ -9826,20 +9850,6 @@ int dev_change_xdp_fd(struct net_device *dev,
-struct netlink_ext_ack *extack,
-        return err;
- }
+Note I sent the refactor for review. Sorry, I forgot to CC Taehee:
+https://patchwork.kernel.org/project/netdevbpf/patch/20240821045629.2856641=
+-1-almasrymina@google.com/
 
--u32 dev_get_min_mp_channel_count(const struct net_device *dev)
--{
--       u32 i, max =3D 0;
--
--       ASSERT_RTNL();
--
--       for (i =3D 0; i < dev->real_num_rx_queues; i++)
--               if (dev->_rx[i].mp_params.mp_priv)
--                       /* The channel count is the idx plus 1. */
--                       max =3D i + 1;
--
--       return max;
--}
--
- /**
-  * dev_index_reserve() - allocate an ifindex in a namespace
-  * @net: the applicable net namespace
+Additionally I'm wondering if we should disable adding mp-bound
+devices as slaves completely, regardless of xdp. My concern is that if
+the lower device is using unreadable memory, then the upper device may
+see unreadable memory in its code paths, and will not be expecting
+that, so it may break. From the look at the code, it looks like
+net/batman-adv calls ndo_add_slave, and a bunch of code that touches
+skb_frags:
 
-How to test:
-ip link add bond2 type bond
-ip link add bond1 master bond2 type bond
-ip link add bond0 master bond1 type bond
-ip link set eth0 master bond0
-ip link set eth0 up
-ip link set bond0 up
-ip link set bond1 up
-ip link set bond2 up
+$ ackc -i ndo_add_slave
+soft-interface.c
+889:    .ndo_add_slave =3D batadv_softif_slave_add,
 
-ip link set bond2 xdp pin /sys/fs/bpf/x/y
+$ ackc -i skb_frag
+fragmentation.c
+403:    struct sk_buff *skb_fragment;
+407:    skb_fragment =3D dev_alloc_skb(ll_reserved + mtu + tailroom);
+408:    if (!skb_fragment)
+411:    skb_fragment->priority =3D skb->priority;
+414:    skb_reserve(skb_fragment, ll_reserved + header_size);
+415:    skb_split(skb, skb_fragment, skb->len - fragment_size);
+418:    skb_push(skb_fragment, header_size);
+419:    memcpy(skb_fragment->data, frag_head, header_size);
+422:    return skb_fragment;
+441:    struct sk_buff *skb_fragment;
+513:            skb_fragment =3D batadv_frag_create(net_dev, skb, &frag_hea=
+der,
+515:            if (!skb_fragment) {
+522:                               skb_fragment->len + ETH_HLEN);
+523:            ret =3D batadv_send_unicast_skb(skb_fragment, neigh_node);
 
-./ncdevmem -s 192.168.1.4 -c 192.168.1.2 -f eth0 -l -p 5201 -v 7 -t 0 -q 1
+If we disable ndo_add_slave on mp devices, then we don't need to walk
+lower or upper devices. What do you think? If we don't disable mp
+lower devices entirely, then yes, we can make
+dev_get_min_mp_channel_count() do a recursive check.
 
-# bond2 <-- xdp should not be installed.
-#   |
-# bond1 <-- xdp should not be installed.
-#   |
-# bond0 <-- xdp should not be installed.
-#   |
-# eth0 <--memory provider is used.
+Note that we can add support for mp bound devices as slaves in the
+future if we have a use case for it, and it's well tested to be safe
+with selftests added.
 
-The netdev_walk_all_lower_dev() calls the callback function
-(__dev_get_min_mp_channel_count) while it walks its own all lower
-interfaces recursively.
-If we want to check more conditions, we can just add checks in
-__dev_get_min_mp_channel_count() or change the callback function.
-
-Note that currently dev_xdp_attach() checks upper interfaces with
-netdev_for_each_upper_dev_rcu() but it doesn't work recursively.
-I think It should be fixed to check upper interfaces recursively in a
-separate patch.
-
-Thanks a lot!
-Taehee Yoo
+If we disable adding mp devices as lower devices, then during the mp
+binding we should also check if the device has upper devices.
 
