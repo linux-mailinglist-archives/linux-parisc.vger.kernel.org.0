@@ -1,154 +1,207 @@
-Return-Path: <linux-parisc+bounces-2108-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2109-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE039620D2
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Aug 2024 09:23:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BD6962E81
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Aug 2024 19:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33AB71F25BA0
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Aug 2024 07:23:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F3A92823FB
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Aug 2024 17:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DE015B547;
-	Wed, 28 Aug 2024 07:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC1A1A76C0;
+	Wed, 28 Aug 2024 17:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iXiG2zT1"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="TpjlmABV"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB50D15B107
-	for <linux-parisc@vger.kernel.org>; Wed, 28 Aug 2024 07:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052951A76B2
+	for <linux-parisc@vger.kernel.org>; Wed, 28 Aug 2024 17:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724829639; cv=none; b=awpjlr5LtIRYxg+d2SCxfdPtWdpe1C8mUizT62jrTefxBbBL/Hq928l8c4yXYVmGaMZUinJMdozcApUkuHkwHoHvUhcGczROJLcKG9fMTfcxHdccYlN15i/P/3zTN8Ub6q+i6ZdBYQ2Qm2a5ln/2LfSqX34b7a6+MJFwbj3h3F8=
+	t=1724866204; cv=none; b=rRGSEsoEo3xEIkN4CunBD+ZqgMRFF2PpgFp0UFL/3URTOUFW2Bw4BrXXWWqpedhGiS84uZXE8uBkw5psMwVOCpU2pPDTyrYOlFWWvWT9vc0rFPtP2sXTLBrbYBlVjrNggVCU81Xhxq7PmavTVreQkT3K/yXK4US2OWK14yjwplA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724829639; c=relaxed/simple;
-	bh=hY0rdkFxlOJ73INaytL9GxG6uDuQeptdtje3tcWXF+U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=shf6UfP90EwevWqfSbV0emooRpmXbIpj0dghALbN7Jh/KGlvA7Sxoj9DRo/XjZn0Nb1aVuwZGjE2o+QKaCIPIh3fhhHRT/SXga7PcgLlHkeNxedEsMghbVmx6leJL+obfCXJ0UtfybxT/G19EvMCCyOvuFICI41xF2s/ogsfBKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iXiG2zT1; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4518d9fa2f4so190731cf.0
-        for <linux-parisc@vger.kernel.org>; Wed, 28 Aug 2024 00:20:37 -0700 (PDT)
+	s=arc-20240116; t=1724866204; c=relaxed/simple;
+	bh=OmO27VpmrhU31qsKclIqtL8TYK6eYIyOBD8Nc1b6/sY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bieRYiVBTV5bxO/xI55D+um5kTPFA/Oo12/uz7GJMRu1NUPGQ/o+sdTtbujkWDjraa5FZz9JAkYfvxe1OZWetNxl3y9X3+LJ/h2B7/1HexX59W5fJfBblBWop5Q+rhwkae58C/lPE2zK52HdrmxzfCXZOAYnwPgIe5kGLXLy5hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=TpjlmABV; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2021c03c13aso7645115ad.1
+        for <linux-parisc@vger.kernel.org>; Wed, 28 Aug 2024 10:30:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724829636; x=1725434436; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WaKkxTlZTeNsK8i9Bxn3PWY1aY/BLsT89GdUnPxSzCs=;
-        b=iXiG2zT1LZYmRlQ14gRZynyy8LwteaYwvbXkKGk5hnY0hWAZjMr8whQjsAqKYp6nIP
-         XLnbQMYBrYHBNu2sGcwa411HH/mMlVF0VBicIn18IOgiBOcMj7TzkZBN5rg7K/Yp9zac
-         R4aJXx9G57xEL9LbZaFy70W55jvCQSwc1bpuGqMWGM3uz93nKfBiK3V6jDEh2jPTaxEM
-         ohJQqGdPdB4R2lsc7JjJsg2tfPWD/feF/rI2J35mNcyrE53PQxNmaeKZ+1xv3hFDVUjb
-         cdTv7zi2Ctk8Iohq3E3vtTNIz1joqkAMQVGFaQBTDLqcJ+jeTne9UjwOa8Bge8CxHv3Z
-         0R5w==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724866201; x=1725471001; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=izEx2iGerEnX7WB/2Mpvv+y1MVG/tbs1FdX9CKEIcSg=;
+        b=TpjlmABVarE4pTP8IIaQW8r5WIQYE/q3k9AeSj0TQiS4s0FQFCY1jMUcUe0LRUfGFC
+         jPnXTIofU2ZBnLJmLBckW74bTp12Br6sNHp0gkyPrrwI4S61o3Ne15rtg6ZuFYDl2Uk5
+         6k3gPBu8aWLCcsgsVCmn79ZYsuAPuMa2RIRLfnIIV1vh1oWSTQA7Rsz+76jPoT1uIJoq
+         e0+vcl0p569SySs5UL5JHZVcWOX7iYAEc8V+KSYx+FbCIqS/gTcI4W6FleCgt85tNWEu
+         yvvd5LNLTtPOmPM8n8yH9nAENwfZSYvPp3p3mRAZcMK8Ggusd2479ddcaB2HMt330v/p
+         6Xgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724829636; x=1725434436;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WaKkxTlZTeNsK8i9Bxn3PWY1aY/BLsT89GdUnPxSzCs=;
-        b=CJkoj5LS7O/G+BTLTvvmIMob0528UTBrlbX8Lzq9UBY27Y7Ylvi75iIc+6HIIvfbn8
-         LT9YbpCkaFGSQl0u6d/EkstUhs0O+jU1RaDoBi7kPWoFT7knrJUf1QnF9PaGoF04o1Ht
-         XCiJvYRFmoJ7RLWD4FbfSJ2BarLvGEkpvDbCoyl+81mMh8rjT8r+VsjCRWeU3yCCbi8J
-         MlXvYNWMmFB8aInoGoSDYQYo8Zlylhq91Ovj6ZZbWY6QffswOCw84Vdnpx3uh2XjXXQb
-         LSsEie+h4qINJq6IsMufeqty/OxUCcNfFQ6qRKBclIXMH9WHmDXcA7eGxXUDVA2KTgKr
-         X+7A==
-X-Forwarded-Encrypted: i=1; AJvYcCV3V9xFXNw/DMp09yem2PY0bHfuNphpekGH561HTppB7Vt4TTBDzyAPzlKrFwIO8jy2ss68WD+DIgVMf4M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVKDpEGeFbcakrN5JqLIYtahSEzetNTLQq0itttcleuXVDobGx
-	1l3kQ6YI85JDzoUSKR/2s62CkDdnWlNj7eNRpU9nG8gwt2Ezq9MnCNqu5tF8GhUSuUCp6t4IdWV
-	sjeYWiE358OqlmmZ812EQPr6glahviTW4xSRV
-X-Google-Smtp-Source: AGHT+IHyMD+4xnusQLwuQ5h6kBQmR1VYMf6lXqEwBGB2U8vCgE7ervQyk/rNIf69lWKuYbdIUKJLj3Yofx+zROPan7c=
-X-Received: by 2002:a05:622a:1211:b0:451:cd18:84c3 with SMTP id
- d75a77b69052e-4566cb29dc2mr2435821cf.12.1724829636084; Wed, 28 Aug 2024
- 00:20:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724866201; x=1725471001;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=izEx2iGerEnX7WB/2Mpvv+y1MVG/tbs1FdX9CKEIcSg=;
+        b=vVEVhJ7xz/D4vbXRo2CVjEcJRWxeXYaJudD+YC6ULIn0bXVIpyAG1zuBovm2nQAe0S
+         RZsIMOBzqvrKCtgUnwswCQjC+yErFI1vdfFHkpD2d5QmgaPks/vSq4OpReNEClm80TZz
+         nOfYdcDjHOqCaOBCzabdi6JyhEafElp5rxC0hqrMP73XzYrtl6yQbw35UTiSHzUvo9pw
+         cy/13hNQerdcp7sdq/Idb6Q95N4z9YvSlxmwLHlZRPG/AtcAPGVY87mpIBe/d33d7eou
+         pXHFkG0aBuVYxGx2UP/DWGPfMe62UJWREuRELHZrYW98BwTkoZvRW5NBs7Y9oq0yNHDn
+         DLBA==
+X-Forwarded-Encrypted: i=1; AJvYcCXifROpcjB2p66jx+4r64wS5xNsyUnvZu2oI6y128fX7qTwvXn1qnibXsQQ2ylC4OWxDzZMXgG1MgB1+l4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTN7B1nURaPyvK6kZipS37R8xLaYw//zio7BHRvMRj3gFDIgfe
+	N/eLGgHM0q5Pn5quP1iXxiXFMvGY+VuBDX582dTuXz5PPULqD+cRAcgVxd3KRNnyHuWDdCoA8m+
+	z
+X-Google-Smtp-Source: AGHT+IHMsuvXLfTW+bLvG1ZAGccaibo4i2N0hBI/JcHNn1qd40DIOjpRRFBts/vAK3nn3l/ntjAfHA==
+X-Received: by 2002:a17:903:1210:b0:1fb:2ebc:d16b with SMTP id d9443c01a7336-204f9bb4194mr38041435ad.7.1724866201061;
+        Wed, 28 Aug 2024 10:30:01 -0700 (PDT)
+Received: from ghost ([50.145.13.30])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20385581393sm101427625ad.102.2024.08.28.10.29.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Aug 2024 10:30:00 -0700 (PDT)
+Date: Wed, 28 Aug 2024 10:29:55 -0700
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Arnd Bergmann <arnd@arndb.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Russell King <linux@armlinux.org.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-mm@kvack.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 07/16] powerpc: mm: Support MAP_BELOW_HINT
+Message-ID: <Zs9ek1Cr1SaQzSqg@ghost>
+References: <20240827-patches-below_hint_mmap-v1-0-46ff2eb9022d@rivosinc.com>
+ <20240827-patches-below_hint_mmap-v1-7-46ff2eb9022d@rivosinc.com>
+ <a43c52c6-c1ac-4ef3-b511-08f0459bddad@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240825041511.324452-1-almasrymina@google.com>
- <20240825041511.324452-5-almasrymina@google.com> <20240827191519.5464a0b2@kernel.org>
-In-Reply-To: <20240827191519.5464a0b2@kernel.org>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 28 Aug 2024 00:20:23 -0700
-Message-ID: <CAHS8izP8T5Xj97M7efecBmCrG9z8E0PYTxWCYZ0ym0hv13-DKg@mail.gmail.com>
-Subject: Re: [PATCH net-next v22 04/13] netdev: netdevice devmem allocator
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
-	Matt Turner <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Jonathan Lemon <jonathan.lemon@gmail.com>, 
-	Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Bagas Sanjaya <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Taehee Yoo <ap420073@gmail.com>, 
-	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a43c52c6-c1ac-4ef3-b511-08f0459bddad@csgroup.eu>
 
-On Tue, Aug 27, 2024 at 7:15=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Sun, 25 Aug 2024 04:15:02 +0000 Mina Almasry wrote:
-> > +void net_devmem_free_dmabuf(struct net_iov *niov)
-> > +{
-> > +     struct net_devmem_dmabuf_binding *binding =3D net_iov_binding(nio=
-v);
-> > +     unsigned long dma_addr =3D net_devmem_get_dma_addr(niov);
-> > +
-> > +     if (gen_pool_has_addr(binding->chunk_pool, dma_addr, PAGE_SIZE))
-> > +             gen_pool_free(binding->chunk_pool, dma_addr, PAGE_SIZE);
->
-> Is the check necessary for correctness? Should it perhaps be a WARN
-> under DEBUG_NET instead? The rest LGTM:
->
+On Wed, Aug 28, 2024 at 08:34:49AM +0200, Christophe Leroy wrote:
+> Hi Charlie,
+> 
+> Le 28/08/2024 à 07:49, Charlie Jenkins a écrit :
+> > Add support for MAP_BELOW_HINT to arch_get_mmap_base() and
+> > arch_get_mmap_end().
+> > 
+> > Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+> > ---
+> >   arch/powerpc/include/asm/task_size_64.h | 36 +++++++++++++++++++++++++++------
+> >   1 file changed, 30 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/include/asm/task_size_64.h b/arch/powerpc/include/asm/task_size_64.h
+> > index 239b363841aa..a37a5a81365d 100644
+> > --- a/arch/powerpc/include/asm/task_size_64.h
+> > +++ b/arch/powerpc/include/asm/task_size_64.h
+> > @@ -72,12 +72,36 @@
+> >   #define STACK_TOP_MAX TASK_SIZE_USER64
+> >   #define STACK_TOP (is_32bit_task() ? STACK_TOP_USER32 : STACK_TOP_USER64)
+> > -#define arch_get_mmap_base(addr, len, base, flags) \
+> > -	(((addr) > DEFAULT_MAP_WINDOW) ? (base) + TASK_SIZE - DEFAULT_MAP_WINDOW : (base))
+> > +#define arch_get_mmap_base(addr, len, base, flags)					\
+> 
+> This macro looks quite big for a macro, can it be a static inline function
+> instead ? Same for the other macro below.
+> 
 
-Not really necessary for correctness per se, but if we try to free a
-dma_addr that is not in a gen_pool (due to some other bug in the
-code), then gen_pool_free ends up BUG_ON, crashing the kernel.
+I had overlooked that possibility, I think that's a great solution, I
+will change that.
 
-Arguably gen_pool_free should not BUG_ON, but I think that's an old
-API, and existing call sites have worked around the BUG_ON by doing a
-gen_pool_has_addr check like I do here, for example kernel/dma/pool.c.
-So I did not seek to change this established behavior.
+> > +({											\
+> > +	unsigned long mmap_base;							\
+> > +	typeof(flags) _flags = (flags);							\
+> > +	typeof(addr) _addr = (addr);							\
+> > +	typeof(base) _base = (base);							\
+> > +	typeof(len) _len = (len);							\
+> > +	unsigned long rnd_gap = DEFAULT_MAP_WINDOW - (_base);				\
+> > +	if (_flags & MAP_BELOW_HINT && _addr != 0 && ((_addr + _len) > BIT(VA_BITS - 1)))\
+> > +		mmap_base = (_addr + _len) - rnd_gap;					\
+> > +	else										\
+> > +		mmap_end = ((_addr > DEFAULT_MAP_WINDOW) ?				\
+> > +				_base + TASK_SIZE - DEFAULT_MAP_WINDOW :		\
+> > +				_base);							\
+> > +	mmap_end;									\
+> 
+> mmap_end doesn't exist, did you mean mmap_base ?
 
-I think WARN seems fine to me, but maybe not under DEBUG_NET. I don't
-want production code crashing due to this error, if it's OK with you.
+Oh whoops, thank you!
 
-Unless I hear otherwise I'll add a WARN without debug here.
+- Charlie
 
-> Reviewed-by: Jakub Kicinski <kuba@kernel.org>
->
-
-Thanks!
-
---=20
-Thanks,
-Mina
+> 
+> > +})
+> > -#define arch_get_mmap_end(addr, len, flags) \
+> > -	(((addr) > DEFAULT_MAP_WINDOW) || \
+> > -	 (((flags) & MAP_FIXED) && ((addr) + (len) > DEFAULT_MAP_WINDOW)) ? TASK_SIZE : \
+> > -									    DEFAULT_MAP_WINDOW)
+> > +#define arch_get_mmap_end(addr, len, flags)							\
+> > +({												\
+> > +	unsigned long mmap_end;									\
+> > +	typeof(flags) _flags = (flags);								\
+> > +	typeof(addr) _addr = (addr);								\
+> > +	typeof(len) _len = (len);								\
+> > +	if (_flags & MAP_BELOW_HINT && _addr != 0 && ((_addr + _len) > BIT(VA_BITS - 1)))	\
+> > +		mmap_end = (_addr + _len);							\
+> > +	else											\
+> > +		mmap_end = (((_addr) > DEFAULT_MAP_WINDOW) ||					\
+> > +				(((_flags) & MAP_FIXED) && ((_addr) + (_len) > DEFAULT_MAP_WINDOW))\
+> > +				? TASK_SIZE : DEFAULT_MAP_WINDOW)				\
+> > +	mmap_end;										\
+> > +})
+> >   #endif /* _ASM_POWERPC_TASK_SIZE_64_H */
+> > 
 
