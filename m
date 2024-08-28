@@ -1,75 +1,75 @@
-Return-Path: <linux-parisc+bounces-2095-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2096-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21373961EAD
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Aug 2024 07:52:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC33A961EB4
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Aug 2024 07:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 957621F2505D
-	for <lists+linux-parisc@lfdr.de>; Wed, 28 Aug 2024 05:52:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A9F02856E4
+	for <lists+linux-parisc@lfdr.de>; Wed, 28 Aug 2024 05:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A908415A863;
-	Wed, 28 Aug 2024 05:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B6315B0EB;
+	Wed, 28 Aug 2024 05:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="Q3l9KkWx"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="TFXZvnQU"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073DF15A4B5
-	for <linux-parisc@vger.kernel.org>; Wed, 28 Aug 2024 05:49:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD8C15AD95
+	for <linux-parisc@vger.kernel.org>; Wed, 28 Aug 2024 05:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724824199; cv=none; b=XHLJiv6+skj3jvGAq9s8a8jFeM4gQK/OoEcjsxh2AsR8aeQQqbUmyUojgo46LK/PuwmQhF/YZ2XCbLzVaI4/ZZHRbBYcRv7WycpUktD0EEwrTeFvJQCvh9u8YBS0eQIcRU+0TUp1u6dx/V3awSv5pHN+EIteav7/uANgDFSP2oc=
+	t=1724824203; cv=none; b=hWXOmF+Or5+FV4S3lB5+AJu8hLUvyDwvrb7sDl6YI7sXd22l6Ai4U5ghRFen1MhttrwOVEtUTfX6qAlZPzMBOzx+F59IGCuiWleNc6XDxRl/i3hP5Tcdtn5zbshsMpwxrtpvYo9LjiVC/oY6xM689tPOi1vXDrBX8HsklbsXnp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724824199; c=relaxed/simple;
-	bh=mXZWgvc5d3nCYQqiz9PUCvFecQkJ9kp2ZooPsTsZSyA=;
+	s=arc-20240116; t=1724824203; c=relaxed/simple;
+	bh=1syBnrvTSOlOGGJG9VxttpQivuBkydj5+eNQ5N/relM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=t8mlkVGRkT63dLRRfbx52dht1PllU0amrT4GXf8vhCn4tsiXvGh7t1EJychA5SuFqrSqAx1ZgRrur5mlumNVgo25EQXdUvZnO6CXCgVTgSk7RarfjaxFSG1uWGNms2wQoSxFxDbBK5dfQBIaYEu8jscrd9OD8I/IIkDYTEMT1p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=Q3l9KkWx; arc=none smtp.client-ip=209.85.214.176
+	 In-Reply-To:To:Cc; b=dN2n4AfYxJr7H6Wm56GiftL9oLMG67p5xFCQw3MQdzas51maYrlx9QdmJ8Hx4PrI9IU13WROpGwRGByZb35Lhv4O8T3x7G1XtIYKugwklvNYIQrQI+gTXn/ds8z2qhvj2VunPTgmDmgcNUq/EXW51A7Fr0BHD2enkXgy0CNqd4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=TFXZvnQU; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2021c08b95cso2123775ad.0
-        for <linux-parisc@vger.kernel.org>; Tue, 27 Aug 2024 22:49:57 -0700 (PDT)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2020ac89cabso58352725ad.1
+        for <linux-parisc@vger.kernel.org>; Tue, 27 Aug 2024 22:50:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724824197; x=1725428997; darn=vger.kernel.org;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724824200; x=1725429000; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YNQglkp2lEnIf2YsbVUEYoAS4AW64pe58tBCUjsMipk=;
-        b=Q3l9KkWxuZ+ar/UVTjHJR1sYf6g/+SI1qVdDAdbnFWaZL11g4KozmPS++LP+AdhyPa
-         2kZ7DfKWgHSLaTUInrT6PHxWtu9VGwiYFMAVwqAhxBlhuU04lMqTAW2shPkAyWmQgZPH
-         0EwXK2sT7fwMKtnNm+eiX+hSekS1XCqxVyuaP4SDPucw6+s8ahCJO9HL/umkd5SQ7hDH
-         oA4Zhp9FODaWfW3EKoG7mdGA5HRe/lRnAg6s0lgoBdxS8cZUkdJmLeGNosby9wsW5ZkO
-         VK2a5mzDpi63qnY77INw10sSHD4qvCnDB6B1SwYvhQr72Gvlq1wPYYNv1x/D6051zO3X
-         Rokw==
+        bh=hfZJveM1parb4u035pYGD3zTISJbrOiZGzu54vNwlmI=;
+        b=TFXZvnQUgDl02oiQ5mF7Q3S825lbsLHSgkzwcydEgSKHpLPZx3K1yWltiXMWy39O76
+         c6q3t6kx5eIWJoGa6P7+LBx14cpWSecjhVesNs8hKXffMBrOigdyNJ2VOZy2Ijy5+iYX
+         xano9eHts8MGnLz24dxSb7FCx/wsgkdecg/NiYfd09vNRbfSuZl0qsOgVmfEod66R8AI
+         kJmbRB39eb9B6R+VoMfTSlF1RBu3i/M2odcu/i+clDQqTIKYTk2E3h7aBwkP35184Aqx
+         TlwEBliP+faz0+svr747LGI2UEMOUIgazuNcxUYqiIfrwk7A2uzrcmoj6FlFOz95vGw5
+         PvkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724824197; x=1725428997;
+        d=1e100.net; s=20230601; t=1724824200; x=1725429000;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YNQglkp2lEnIf2YsbVUEYoAS4AW64pe58tBCUjsMipk=;
-        b=iRq0mpqXhChCfqFInuVnioQOXDDg1v3+lKaXahF8WekjrFWQbln7fZGLrzg+c410kB
-         EABlCaOZQFnGssivATm6CKXfDOxe7kvnpd2RlWzAPC8dzDi7i1twAD0pQHrRM4APRMHj
-         Y4MqUgOpjpyViuQD8o3fQGCfRTD3hA9193/3fHyglNje84xV8BsI0thBvpoGC1eIGUY/
-         86uO4+wDvMqEnie8GKh2NWg6+cAj9HkyLtVIz0qxza8GOkmHAg3SdEK6X53I0bjdwxs9
-         mG6REjLYFd+mu4g5AANet0oEWQ/uUyehqg5ocYiVnd/BJ2oMgcdATtdm1SOe8CEsrXL3
-         vCvg==
-X-Forwarded-Encrypted: i=1; AJvYcCXZHlMNglwn1NwL0t8gl5CtJWL6jJknNAXH79KoDk+aMU1hzWmkolCgV4oju/uN41rtDuM4R6YvPrFmnHY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCZhjEv/aZ+5jKq/JhnNKN/LvzFwCXl9xvO2VGn7KeL2ljR3YQ
-	yCzOn5pEdKeHw5XdeyAzmWm8zB2VqhMva3Y5hzFotyFCuOFGloTeAMBH4NT/U4A=
-X-Google-Smtp-Source: AGHT+IFNvFc3w8ZqIqMUtm2tpVZkKTF+VkfsFh2Ia3nc64cPU9VogTthyuHsPbt4BWtQWf7nibqVyQ==
-X-Received: by 2002:a17:903:35d0:b0:1fc:41c0:7a82 with SMTP id d9443c01a7336-204f9912733mr19643175ad.0.1724824196945;
-        Tue, 27 Aug 2024 22:49:56 -0700 (PDT)
+        bh=hfZJveM1parb4u035pYGD3zTISJbrOiZGzu54vNwlmI=;
+        b=dJLs29dtFYsYFGxTBXaPE2zgB+niP/ydaQ3A1kXJU5sRmUmPQkx50aRoH2sXNhyjTk
+         jzl04PY87nJW6YdpdO8cvNgZI3uoeb03xfFHTUou7tC3Jt9OxP/8u/oYz6fyvrRwHy6J
+         tRlRgNGQjL8r0KDWAR5fYd9eU4b9TI5Rkl5KpDyX078+dAWd6d0KHRGgVnVF0nPaMI6o
+         uV2LRV547QbnWaIOBhXpVr82Ad1KZYs4wf9CI9MlFh68gReg89a2djMt+x+H/vfbKs3b
+         2Px7y8ISBirZa7F0DVQoTKeS0edTISKUb6DdvUlMWzfSwzJj1GJ+NIshK+Yo2Vrj+YPM
+         5wzA==
+X-Forwarded-Encrypted: i=1; AJvYcCV4HbdVOMidej8ekMQN4+VwoTmifV74H1a71ZGc9wDeJO6G5wOBQvcaWrAyQ4ZTyHhSujhWFFBsHG55eAM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1PmB6befkW4K9gBhutxVn5NUCD3H1/DixXyW1HWG0lRiWKg5V
+	Xuml2MfJES3I0/sOAfLhaDr7nGop38TNroQyZBqWz2VpBRX1AaumYp3mGarty0w=
+X-Google-Smtp-Source: AGHT+IF596NtgPi2otbs5poJBgAoGUDj9IXzCrdKWZMEp8cIFyXQZx8MxZQO71jW2zsopg6SUNTImQ==
+X-Received: by 2002:a17:903:2352:b0:201:f065:2b2c with SMTP id d9443c01a7336-2039e4fbbe2mr155506935ad.55.1724824200296;
+        Tue, 27 Aug 2024 22:50:00 -0700 (PDT)
 Received: from charlie.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-203855df0c4sm92092495ad.157.2024.08.27.22.49.53
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-203855df0c4sm92092495ad.157.2024.08.27.22.49.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Aug 2024 22:49:56 -0700 (PDT)
+        Tue, 27 Aug 2024 22:49:59 -0700 (PDT)
 From: Charlie Jenkins <charlie@rivosinc.com>
-Date: Tue, 27 Aug 2024 22:49:15 -0700
-Subject: [PATCH 09/16] loongarch: mm: Support MAP_BELOW_HINT
+Date: Tue, 27 Aug 2024 22:49:16 -0700
+Subject: [PATCH 10/16] arm: mm: Support MAP_BELOW_HINT
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240827-patches-below_hint_mmap-v1-9-46ff2eb9022d@rivosinc.com>
+Message-Id: <20240827-patches-below_hint_mmap-v1-10-46ff2eb9022d@rivosinc.com>
 References: <20240827-patches-below_hint_mmap-v1-0-46ff2eb9022d@rivosinc.com>
 In-Reply-To: <20240827-patches-below_hint_mmap-v1-0-46ff2eb9022d@rivosinc.com>
 To: Arnd Bergmann <arnd@arndb.de>, Paul Walmsley <paul.walmsley@sifive.com>, 
@@ -116,12 +116,12 @@ Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Charlie Jenkins <charlie@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1259; i=charlie@rivosinc.com;
- h=from:subject:message-id; bh=mXZWgvc5d3nCYQqiz9PUCvFecQkJ9kp2ZooPsTsZSyA=;
- b=owGbwMvMwCHWx5hUnlvL8Y3xtFoSQ9q5XfFl5t2npeO1W6ydtL9v1qitmfF53Tr5I+FmGy5eX
- hv8Y0JgRykLgxgHg6yYIgvPtQbm1jv6ZUdFyybAzGFlAhnCwMUpABeJZGTYs2fGyX1L7U5s/pDP
- 9zI7cOPnH9u8t8ZNYFCaqKg8I9+uk+F/YeihTo3z92Iv3r2a7r74pUGE/VYuj+S6OkvJ82tdPk5
- nAgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1701; i=charlie@rivosinc.com;
+ h=from:subject:message-id; bh=1syBnrvTSOlOGGJG9VxttpQivuBkydj5+eNQ5N/relM=;
+ b=owGbwMvMwCHWx5hUnlvL8Y3xtFoSQ9q5XfH7+5/NObdD1TC7as2nnrut80uYIpiTE6QKMsStV
+ jRo9UV3lLIwiHEwyIopsvBca2BuvaNfdlS0bALMHFYmkCEMXJwCMJH3iowMbzKLnvWynRbmDQrg
+ 3uNwlaGFp7De9nT0tCfZV9Zxzb2swMjwZeP9u8Jhqpz79ln+TNZVkXSd3DxD3/DEm3BhhnWsrp8
+ 4AQ==
 X-Developer-Key: i=charlie@rivosinc.com; a=openpgp;
  fpr=7D834FF11B1D8387E61C776FFB10D1F27D6B1354
 
@@ -130,38 +130,43 @@ when the flag is enabled.
 
 Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
 ---
- arch/loongarch/mm/mmap.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm/mm/mmap.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/loongarch/mm/mmap.c b/arch/loongarch/mm/mmap.c
-index 889030985135..66a5badf849b 100644
---- a/arch/loongarch/mm/mmap.c
-+++ b/arch/loongarch/mm/mmap.c
-@@ -70,6 +70,13 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
- 		info.flags = VM_UNMAPPED_AREA_TOPDOWN;
- 		info.low_limit = PAGE_SIZE;
- 		info.high_limit = mm->mmap_base;
-+		if (flags & MAP_BELOW_HINT)
-+			/*
-+			 * Subtract (STACK_TOP - mm->mmap_base) to get random
-+			 * offset defined in mmap_base() in mm/util.c
-+			 */
-+			info.high_limit = MIN(mm->mmap_base,
-+					      (addr + len) - (STACK_TOP - mm->mmap_base))
- 		addr = vm_unmapped_area(&info);
- 
- 		if (!(addr & ~PAGE_MASK))
-@@ -84,7 +91,11 @@ static unsigned long arch_get_unmapped_area_common(struct file *filp,
- 	}
- 
+diff --git a/arch/arm/mm/mmap.c b/arch/arm/mm/mmap.c
+index d65d0e6ed10a..fa0c79447b78 100644
+--- a/arch/arm/mm/mmap.c
++++ b/arch/arm/mm/mmap.c
+@@ -71,6 +71,8 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	info.length = len;
  	info.low_limit = mm->mmap_base;
-+
  	info.high_limit = TASK_SIZE;
 +	if (flags & MAP_BELOW_HINT)
 +		info.high_limit = MIN(info.high_limit, addr + len);
-+
+ 	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
  	return vm_unmapped_area(&info);
- }
+@@ -122,6 +124,12 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 	info.length = len;
+ 	info.low_limit = FIRST_USER_ADDRESS;
+ 	info.high_limit = mm->mmap_base;
++	if (flags & MAP_BELOW_HINT)
++		/*
++		 * Subtract (STACK_TOP - mm->mmap_base) to get random
++		 * offset defined in mmap_base() in mm/util.c
++		 */
++		info.high_limit = MIN(info.high_limit, (addr + len) - (STACK_TOP - mm->mmap_base));
+ 	info.align_mask = do_align ? (PAGE_MASK & (SHMLBA - 1)) : 0;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
+ 	addr = vm_unmapped_area(&info);
+@@ -137,6 +145,8 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 		info.flags = 0;
+ 		info.low_limit = mm->mmap_base;
+ 		info.high_limit = TASK_SIZE;
++		if (flags & MAP_BELOW_HINT)
++			info.high_limit = MIN(info.high_limit, addr + len);
+ 		addr = vm_unmapped_area(&info);
+ 	}
  
 
 -- 
