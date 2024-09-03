@@ -1,87 +1,180 @@
-Return-Path: <linux-parisc+bounces-2210-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2211-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8F896A4A8
-	for <lists+linux-parisc@lfdr.de>; Tue,  3 Sep 2024 18:41:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE16996A550
+	for <lists+linux-parisc@lfdr.de>; Tue,  3 Sep 2024 19:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EA971F21DEE
-	for <lists+linux-parisc@lfdr.de>; Tue,  3 Sep 2024 16:41:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ADB9B23905
+	for <lists+linux-parisc@lfdr.de>; Tue,  3 Sep 2024 17:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAED18BBA5;
-	Tue,  3 Sep 2024 16:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJ+nWiG2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BA918BC13;
+	Tue,  3 Sep 2024 17:18:33 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C811E492
-	for <linux-parisc@vger.kernel.org>; Tue,  3 Sep 2024 16:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D252F3C092;
+	Tue,  3 Sep 2024 17:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725381686; cv=none; b=s3RM7IKOZ6+cXqqka6tiNY3c9Ju9sQcJ1UrfdVlF+CaVzCPzDNUQ17jMos8DjxNU8xWzDAoF5iR5d9UToYU3p9ozuSmnFuLnCGuMy9siJC7Jt/sE7uIoXbibgxgP4OXlrogmbTuaU23+d6OrS4NNu9WawHw3UB1qie34FYKRwtU=
+	t=1725383913; cv=none; b=jnKldOXS7YQM9IDNUQ4a7Y/eIqrxC2xR+scejKFhfq4OSsh6xXWKtosWcvOgtYqw+W25vpV0mHXaTdZBXfX1niUWpRs7Budz2QaMZdETDWdZPhuuWKIx24CYTEoX5kw3cKN+zXAzbdLNamZWcwZrDzGyUGtPQhOSQe6VV8oxMO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725381686; c=relaxed/simple;
-	bh=N5itbBNwcKzNlXtLrNFjkDqkY6ASrGrYF8VbZ4aaX+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=DYopSkdw3QcbR2HfvabL1xGfJvXoWIbSnMR8UXPafeBg1vToqTEwQq7VkNPAIGJPt8+BsGAVWHDxrEEUlgG6tTXPpJPl/uIR+ICBHe0VBy11kpjFcdqv5Hq2NWn2jJgGBuFfzFchi6vKo60G99Ns8hxGGN1tPHDWgepiNvyUmGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJ+nWiG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7815EC4CEC4;
-	Tue,  3 Sep 2024 16:41:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725381685;
-	bh=N5itbBNwcKzNlXtLrNFjkDqkY6ASrGrYF8VbZ4aaX+4=;
-	h=Date:From:To:Cc:Subject:From;
-	b=dJ+nWiG2H4IzhJD3NfVHSEzPs9Vy0X/uOsB6OGBTo2NiIvw17ULialHLDWir17fpk
-	 vtD7xAbABIhX3QX4MAjtDRuAXSh1hUxQS07q7SYPGvohCzTAiZVITq2/k3RaljmMty
-	 04nsgl5qsvqCq5JoX0gwr8vtA8zcEBtI3jsCqifTHQk+T4+Uqza38TqtlyNA9fsvDZ
-	 GHfikp4zZcw6tynBRCN9YjawiRHmWpaURRPWGlAQzBxvtisZdLALfvyrm2YChmSrPQ
-	 icD8vZqNJeISRdilIuADlwngp8RdZpT514daRK4hi4s9l89eg6+ohB7f6bj+ThPkJd
-	 /79HPUjmGg8EA==
-Date: Tue, 3 Sep 2024 18:41:21 +0200
-From: Helge Deller <deller@kernel.org>
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
-	Philippe =?iso-8859-15?Q?Mathieu-Daud=E9?= <f4bug@amsat.org>
-Cc: linux-parisc@vger.kernel.org
-Subject: [PATCH] target/hppa: Fix random 32-bit linux-user crashes
-Message-ID: <Ztc8MaxI8SfD71mx@p100>
+	s=arc-20240116; t=1725383913; c=relaxed/simple;
+	bh=rAT/16lEXiR/FQGCf8mH61WrxLJvKpfnUCw3JXbOKlk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=avqldA+j2/KSk3b5d6kJVRCAJLdAaZGo8rcdSP33W6Kgusq6CW5wSXQjS9RaemA5+49C3z0IerOGdrTeypCfyWU0rhUYYekbpz/oRIcHoRHopgtuf9uVfX0CMIqqIQsCjfj2b8iZOiDEHuq3t02UCR6QuGtHp0yCkkmdbiz5yLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Wysln5hp8z9sSK;
+	Tue,  3 Sep 2024 19:18:29 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Es6jtyXV_O1v; Tue,  3 Sep 2024 19:18:29 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Wysln4Pwgz9sSC;
+	Tue,  3 Sep 2024 19:18:29 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7B7CC8B778;
+	Tue,  3 Sep 2024 19:18:29 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id roQ3ugp6WN-D; Tue,  3 Sep 2024 19:18:29 +0200 (CEST)
+Received: from [192.168.234.228] (unknown [192.168.234.228])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CEB98B774;
+	Tue,  3 Sep 2024 19:18:27 +0200 (CEST)
+Message-ID: <6b07c48d-656f-4e42-bfa7-0ecead72a7b8@csgroup.eu>
+Date: Tue, 3 Sep 2024 19:18:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 2/4] mm: Add hint and mmap_flags to struct
+ vm_unmapped_area_info
+To: Charlie Jenkins <charlie@rivosinc.com>, Arnd Bergmann <arnd@arndb.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
+ <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Shuah Khan <shuah@kernel.org>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
+ <20240829-patches-below_hint_mmap-v2-2-638a28d9eae0@rivosinc.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20240829-patches-below_hint_mmap-v2-2-638a28d9eae0@rivosinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-The linux-user hppa target crashes randomly for me since commit
-081a0ed188d8 ("target/hppa: Do not mask in copy_iaoq_entry").
+Hi Charlie,
 
-That commit dropped the masking of the IAOQ addresses while copying them
-from other registers and instead keeps them with all 64 bits up until
-the full gva is formed with the help of hppa_form_gva_psw().
+Le 29/08/2024 à 09:15, Charlie Jenkins a écrit :
+> The hint address and mmap_flags are necessary to determine if
+> MAP_BELOW_HINT requirements are satisfied.
+> 
+> Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+> ---
+>   arch/alpha/kernel/osf_sys.c      | 2 ++
+>   arch/arc/mm/mmap.c               | 3 +++
+>   arch/arm/mm/mmap.c               | 7 +++++++
+>   arch/csky/abiv1/mmap.c           | 3 +++
+>   arch/loongarch/mm/mmap.c         | 3 +++
+>   arch/mips/mm/mmap.c              | 3 +++
+>   arch/parisc/kernel/sys_parisc.c  | 3 +++
+>   arch/powerpc/mm/book3s64/slice.c | 7 +++++++
+>   arch/s390/mm/hugetlbpage.c       | 4 ++++
+>   arch/s390/mm/mmap.c              | 6 ++++++
+>   arch/sh/mm/mmap.c                | 6 ++++++
+>   arch/sparc/kernel/sys_sparc_32.c | 3 +++
+>   arch/sparc/kernel/sys_sparc_64.c | 6 ++++++
+>   arch/sparc/mm/hugetlbpage.c      | 4 ++++
+>   arch/x86/kernel/sys_x86_64.c     | 6 ++++++
+>   arch/x86/mm/hugetlbpage.c        | 4 ++++
+>   fs/hugetlbfs/inode.c             | 4 ++++
+>   include/linux/mm.h               | 2 ++
+>   mm/mmap.c                        | 6 ++++++
+>   19 files changed, 82 insertions(+)
+> 
 
-So, when running in linux-user mode on an emulated 64-bit CPU, we need
-to mask to a 32-bit address space at the very end in hppa_form_gva_psw()
-if the PSW-W flag isn't set (which is the case for linux-user on hppa).
+>   
+> diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
+> index ef3ce37f1bb3..f0e2550af6d0 100644
+> --- a/arch/powerpc/mm/book3s64/slice.c
+> +++ b/arch/powerpc/mm/book3s64/slice.c
+> @@ -286,6 +286,10 @@ static unsigned long slice_find_area_bottomup(struct mm_struct *mm,
+>   		.length = len,
+>   		.align_mask = PAGE_MASK & ((1ul << pshift) - 1),
+>   	};
+> +
+> +	info.hint = addr;
+> +	info.mmap_flags = flags;
+> +
+>   	/*
+>   	 * Check till the allow max value for this mmap request
+>   	 */
+> @@ -331,6 +335,9 @@ static unsigned long slice_find_area_topdown(struct mm_struct *mm,
+>   	};
+>   	unsigned long min_addr = max(PAGE_SIZE, mmap_min_addr);
+>   
+> +	info.hint = addr;
+> +	info.mmap_flags = flags;
+> +
+>   	/*
+>   	 * If we are trying to allocate above DEFAULT_MAP_WINDOW
+>   	 * Add the different to the mmap_base.
 
-Fixes: 081a0ed188d8 ("target/hppa: Do not mask in copy_iaoq_entry")
-Signed-off-by: Helge Deller <deller@gmx.de>
+ppc64_defconfig:
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 2bcb3b602b..56d9568d6c 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -319,7 +319,7 @@ static inline target_ulong hppa_form_gva_psw(target_ulong psw, uint64_t spc,
-                                              target_ulong off)
- {
- #ifdef CONFIG_USER_ONLY
--    return off;
-+    return off & gva_offset_mask(psw);
- #else
-     return spc | (off & gva_offset_mask(psw));
- #endif
+   CC      arch/powerpc/mm/book3s64/slice.o
+arch/powerpc/mm/book3s64/slice.c: In function 'slice_find_area_bottomup':
+arch/powerpc/mm/book3s64/slice.c:291:27: error: 'flags' undeclared 
+(first use in this function)
+   291 |         info.mmap_flags = flags;
+       |                           ^~~~~
+arch/powerpc/mm/book3s64/slice.c:291:27: note: each undeclared 
+identifier is reported only once for each function it appears in
+arch/powerpc/mm/book3s64/slice.c: In function 'slice_find_area_topdown':
+arch/powerpc/mm/book3s64/slice.c:339:27: error: 'flags' undeclared 
+(first use in this function)
+   339 |         info.mmap_flags = flags;
+       |                           ^~~~~
+make[5]: *** [scripts/Makefile.build:244: 
+arch/powerpc/mm/book3s64/slice.o] Error 1
 
