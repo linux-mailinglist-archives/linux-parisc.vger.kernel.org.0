@@ -1,161 +1,79 @@
-Return-Path: <linux-parisc+bounces-2237-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2238-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C000E96C266
-	for <lists+linux-parisc@lfdr.de>; Wed,  4 Sep 2024 17:30:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1410C96C415
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Sep 2024 18:25:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51A1E1F26011
-	for <lists+linux-parisc@lfdr.de>; Wed,  4 Sep 2024 15:30:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6CE9288580
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Sep 2024 16:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED811DEFF2;
-	Wed,  4 Sep 2024 15:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1CE1DCB2A;
+	Wed,  4 Sep 2024 16:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Nsn6UIaJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WBj6AlS1"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34111DEFF0
-	for <linux-parisc@vger.kernel.org>; Wed,  4 Sep 2024 15:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E961CEE89;
+	Wed,  4 Sep 2024 16:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725463803; cv=none; b=WiTsk9pEDoY8zGbrr+GwIkHpTjfmLTl65axuI0pL+Vslqn+14iRgkfDhmJOdGAxT1SWI+NaX0Lj57U8cT/VFERX89FILPKnb9YAkLlg+fEEzvk9UuhjRH+XEkdMPw3iXqCf/nmRDZK9mAbBiFYfWgwIPCZXwY29TtHij5LxX8SA=
+	t=1725467146; cv=none; b=bBCt9t2ZnaHQfuOVQmt7lpOxtmVufuOS0j48WCsfGyI06hBv3RPAnEp3krDWvLcY39C3wmPcbbVpBxtTp5p/kOoY3df5CPMTRJ1P08xxYHOobG67qsp1KY2lgOD7Xi7lMXfbI9NfuwIrfIskvE6+ixYgoC4JZe8eWtKRuVYshG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725463803; c=relaxed/simple;
-	bh=gYYY8FNVkypzbtVX8GFJXnTswLqhKBDH6rOvo639VDY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oUls4PKa5i3HWdH7QAj4WxyqpG0srdmriiYWCN54x6pIiIeAafuHspAVDNLWVZubsc4gv+xjV2Wg4D3+CkYoEgO6+He0b1AYmzn5/N8euh0QZOCBejcVKbOQ2g/KhfljdwMO99OFCe6AU/GJPeke6oSRN4mtEAF0O/0aY9HK5TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Nsn6UIaJ; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a8695cc91c8so697454766b.3
-        for <linux-parisc@vger.kernel.org>; Wed, 04 Sep 2024 08:30:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725463800; x=1726068600; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PLhhMPuctYpfIPSQyulh9sZF48oPEhyg3gJ/+naRY0c=;
-        b=Nsn6UIaJ8cBOere7dXrX7QJzr3PUi5gC8awflmfdEufX9Y4AUoY8PtXSAv2R8wLCOB
-         iSkFtxYqPfwj8WsRPkL3z7su36Pe72k6LXRjv9N/uHE2F9V/ltOs5BanUASmZ1ysBFaT
-         nkwJOYFsUhK6KT1/20UTVJFpAiuc0i2APmhHN39DeGes4vdGWusRrvpZNx04KI746RFI
-         3/rFGxrJA/3S6Y02/GQKxMQCQ6hjVyak8XzQf2ru9bvZbeCkSB7jwU5aMvHsio8XfyDi
-         wiRQ4Dxu7eGf1WD599L2lER/SPQh0Vbr6Ah8LRLMpM6yIuIzQkORktpyoJeDfjnQEUEf
-         ccTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725463800; x=1726068600;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PLhhMPuctYpfIPSQyulh9sZF48oPEhyg3gJ/+naRY0c=;
-        b=joRvlahvnAwQoDEJSVSMs9MEUzbsJGP+OqYmLCzDL2Y7ltElXcX2UwaP+no1r4iuec
-         bq3TzBxyGb6/gogJ/fML7hG6BG74nWMpNCImYMMmALG5YjhD8XOLzye/pefKcJAaON5Z
-         X5u6TFi3WG/HHE4KthpPkgOn7ifsvdQ9uk8ynPVIQZA+zYUISVtU8AgJf+WIvPDBq0lU
-         x+E5djxZ102WFsOIpL+nhw2bNyGr2dnCyCcXmZjYJUVT6DfuOkMyKMjQcSVSqKP/s6nS
-         wmWohkO53lESEAa7TulJ+T4g/3+LR+Rsl2YnykOAOKxkqByKSyJ8+26W7ZXItF5uHzOM
-         PdZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUBteBju0cVyjcUYrLKjWEJut0vFaBfx3bXjQ5FJlmxcl/eG31AtPJvmwnDiZaNY5hM/wKlUvfvxupFsNg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeFtKK7cOjACvjDqwW17mdi4ur7PM0sERGYan49UKue5Wp6FI/
-	8FYTw/uOVtuoSyByGp+AXNx+GN+QDc/M7KRrb0K0Uv04F1apl8e1WTW6C5XNJjyxyj2wC2yZOaH
-	pPs64mdarBm25P2i3Vlbc0tI131MWzdK/KY0d
-X-Google-Smtp-Source: AGHT+IFg6rOi18H1toa3LkpzEJnnBMcFXZAacqahmY1gZmTK9rv5lw/xaEow9UneXHrr7DZX8isa3vZhOIIu0S2ULN0=
-X-Received: by 2002:a17:906:8903:b0:a8a:43bd:a9e8 with SMTP id
- a640c23a62f3a-a8a43bdabe5mr117170866b.65.1725463799009; Wed, 04 Sep 2024
- 08:29:59 -0700 (PDT)
+	s=arc-20240116; t=1725467146; c=relaxed/simple;
+	bh=gIYjTNc7eswIUDU04rhveE8Ewd6vxACHegXfnPvoeYs=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=EBM5HykGOXM46Sg3pWc29LQvBPvNKdfObpPd7aGPyMZ413xVUtJ+djX41W4iED90D6/+5VBgi39b6aUOBWhC3Q89JtT8YPAFJPqC0xY8VqRssTrH2MaqgwnHldI6fll0a58QxEB4iHZ5WQbqS0cTCAo0ICNMw62yQXNLMSwIIYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WBj6AlS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E9B7C4CEC2;
+	Wed,  4 Sep 2024 16:25:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725467146;
+	bh=gIYjTNc7eswIUDU04rhveE8Ewd6vxACHegXfnPvoeYs=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=WBj6AlS1erIkbGm5nT9ZxaaOflWSm/VZXTZFFuhgEm+1ATs3wHVcT8+W5SiOfXI1V
+	 Lw0yGF6/GjIMpM38rjSN5zAYZi+YMuIW8Q6yWyNzFYY2U9eXAeKLTSlq8K3im7YiVU
+	 IBkiMxI4Wdn/TOl63r3dqNlzPD68dxUitQEClUsE9Qqbp5k9RCq3Y+Mqrj7j+W6G19
+	 GFU4HWkDIRjGv5vqmUUsqmD25o09HGmFaHpQolTwN2Y2u3fJoLgTaxeQLMOIODmNri
+	 Q52fP0Jygw/7EDWmepuXKtoEPWbTjPZN444sYH9CpXqY1txsIlDoYOxa2a5mk3hv7P
+	 +A7pj4Hg2ZnsA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33F1B3822D30;
+	Wed,  4 Sep 2024 16:25:48 +0000 (UTC)
+Subject: Re: [GIT PULL] parisc architecture fix for v6.11-rc7
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <ZtgkFznSCnkAREgA@p100>
+References: <ZtgkFznSCnkAREgA@p100>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <ZtgkFznSCnkAREgA@p100>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.11-rc7
+X-PR-Tracked-Commit-Id: 213aa670153ed675a007c1f35c5db544b0fefc94
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 962da4d1be82889af5b9cc0f718e5eccfd93cd2d
+Message-Id: <172546714675.1088236.5769185238439618869.pr-tracker-bot@kernel.org>
+Date: Wed, 04 Sep 2024 16:25:46 +0000
+To: Helge Deller <deller@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, John David Anglin <dave.anglin@bell.net>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240831004313.3713467-1-almasrymina@google.com>
- <20240831004313.3713467-9-almasrymina@google.com> <20240903144011.3e7135f9@kernel.org>
- <CAHS8izPN8cDVhAzdedr7zb9zmDaiOMqkaDqB07QwVKKEJ62HzQ@mail.gmail.com>
-In-Reply-To: <CAHS8izPN8cDVhAzdedr7zb9zmDaiOMqkaDqB07QwVKKEJ62HzQ@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 4 Sep 2024 17:29:44 +0200
-Message-ID: <CANn89i+iXXUjOJCOF1nodjVH4eX8P-B26Kg+Uu-iM2_Hc=5D5g@mail.gmail.com>
-Subject: Re: [PATCH net-next v24 08/13] net: add support for skbs with
- unreadable frags
-To: Mina Almasry <almasrymina@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, 
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Jonathan Lemon <jonathan.lemon@gmail.com>, 
-	Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
-	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Bagas Sanjaya <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Taehee Yoo <ap420073@gmail.com>, 
-	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 4, 2024 at 5:18=E2=80=AFPM Mina Almasry <almasrymina@google.com=
-> wrote:
->
-> On Tue, Sep 3, 2024 at 2:40=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
-rote:
-> >
-> > On Sat, 31 Aug 2024 00:43:08 +0000 Mina Almasry wrote:
-> > >  static inline bool tcp_skb_can_collapse_to(const struct sk_buff *skb=
-)
-> > >  {
-> > > -     return likely(!TCP_SKB_CB(skb)->eor);
-> > > +     return likely(!TCP_SKB_CB(skb)->eor && skb_frags_readable(skb))=
-;
-> >
-> > Do you remember why this is here?
->
-> Yeah, to be honest, when I first implemented some of these checks I
-> erred on the side of caution, and added checks around anything that
-> looked concerning, some of these unnecessary checks got removed, but
-> looks like this one didn't.
->
-> > Both for Rx and Tx what should matter
-> > is whether the "readability" matches, right? We can merge two unreadabl=
-e
-> > messages.
->
-> Yes, you're right, only 'readability matches' should be the criteria
-> here. `tcp_skb_can_collapse` already checks readability is matching
-> correctly, so no issue there. The `tcp_skb_can_collapse_to` check
-> you're commenting on here looks unnecessary. I will remove it and run
-> that through some testing.
->
-> As an aside, it looks to me like that tcp_skb_can_collapse_to
-> callsites don't seem to be doing any collapsing. Unless I misread the
-> code. It looks like tcp_skb_can_collapse_to is used as an eor check. I
-> can rename the function to tcp_skb_is_eor() or something if that makes
-> sense (in a separate patch). I think the name of the function confused
-> me slightly and made me think I need to do a readability check.
->
+The pull request you sent on Wed, 4 Sep 2024 11:10:47 +0200:
 
-Please do not use tcp_skb_is_eor()
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.11-rc7
 
-tcp_skb_can_collapse_to() could be renamed to tcp_skb_can_aggregate_to()
-or tcp_skb_can_append_to(), but EOR would not help at all.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/962da4d1be82889af5b9cc0f718e5eccfd93cd2d
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
