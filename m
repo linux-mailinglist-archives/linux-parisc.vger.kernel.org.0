@@ -1,126 +1,87 @@
-Return-Path: <linux-parisc+bounces-2230-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2231-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029C896AA9C
-	for <lists+linux-parisc@lfdr.de>; Tue,  3 Sep 2024 23:52:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5CF96AD9F
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Sep 2024 03:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4B202839FF
-	for <lists+linux-parisc@lfdr.de>; Tue,  3 Sep 2024 21:51:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AB11B2251F
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Sep 2024 01:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796891CB52A;
-	Tue,  3 Sep 2024 21:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pLZNXCj0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2372A63D;
+	Wed,  4 Sep 2024 01:08:14 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11150B647;
-	Tue,  3 Sep 2024 21:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B186AA7
+	for <linux-parisc@vger.kernel.org>; Wed,  4 Sep 2024 01:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725400314; cv=none; b=pGZQdNjxDtGE6dYWjNbpSE9ARcFQh/KwZGLDqZpK/l7o4EZ64MZjaMsFFyLGxqCkQKlT4wD3qkyWIZkQgGkslIFNinSv/CkCCfOtc4oY5I0Wq+yGiv1ZSJICS9UuoqlA0sbnjIEiEzG4UTZUv111oBqchwasFkQ7vEJz9wl2g5g=
+	t=1725412094; cv=none; b=uMuC65mrXtP0wXhSinJr2NpEWoMSR5Xv9WHXcvzMNOkNolwzLjy+HBaWKH1s/vXJLZioG4KPsTA9BZ5HLBIYCti/los134fYUxdLn/TsnuJ6fR3D6EdtYPrqQKapb5FEwDimpDbAvJaJnwsg6IEfFCmU0McQRBkYhJqN2QrT10M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725400314; c=relaxed/simple;
-	bh=tN5vqlCKPar7XP4sqfMn5SllXz0g+GvMXAGcorIVqYM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t6cxjg39/RKDfQYxxe+OFBE7/Xs5sUqg/aXRZIPveKrsdrsAVsX92+Yhs7ew5OmAQ8duHQp+NLZOzIanhAUL/BzkYDm5DwfEI0DPgF8qq6j7WorltBlA2F6FeTPhZg49v4FCqaDqnFshKlDLuG57VC/7wAbOxWbiSmVclEl5pD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pLZNXCj0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42686C4CEC4;
-	Tue,  3 Sep 2024 21:51:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725400313;
-	bh=tN5vqlCKPar7XP4sqfMn5SllXz0g+GvMXAGcorIVqYM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pLZNXCj0UEyKhvBJH5OnAGowSygKD8coz1erfWLAmf25HQz7h56PVHW0XMx2E/+w7
-	 xIjmR/ODgmkQ6EkT6qbdOkd5+85QO1VKRGcUIdp6j2mkLuyJOvw/tsogx2g6M2wzva
-	 plaXBbA4zNqKIrFF1xpYvfxDeNxXAy01Gmo8YJ+WZVfKF+cf6OJiYtW+gQBUW93FAy
-	 xIbMwFjMhxNIKZyJ57an/ZH5OFRWVdtyWrTv6ylNleOf2fa0XbMtEJRZe8/7ngefo1
-	 qikCcPNCOUF1XR5udOGdG6WVHyWR9fGyOzvTd3fowwLf6pKYqM5v5MJzgqDs6Hj2YM
-	 mtSUblomNCqHQ==
-Date: Tue, 3 Sep 2024 14:51:50 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, bpf@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jonathan Corbet
- <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, Ivan
- Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
- Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer
- <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven
- Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnd Bergmann
- <arnd@arndb.de>, Steffen Klassert <steffen.klassert@secunet.com>, Herbert
- Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, Willem
- de Bruijn <willemdebruijn.kernel@gmail.com>, "=?UTF-8?B?QmrDtnJuIFTDtnBl?=
- =?UTF-8?B?bA==?=" <bjorn@kernel.org>, Magnus Karlsson
- <magnus.karlsson@intel.com>, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>, Jonathan Lemon <jonathan.lemon@gmail.com>,
- Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, "Christian =?UTF-8?B?S8O2bmln?="
- <christian.koenig@amd.com>, Pavel Begunkov <asml.silence@gmail.com>, David
- Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, Yunsheng Lin
- <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, Harshitha
- Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi
- <pkaligineedi@google.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Christoph
- Hellwig <hch@infradead.org>, Nikolay Aleksandrov <razor@blackwall.org>,
- Taehee Yoo <ap420073@gmail.com>
-Subject: Re: [PATCH net-next v24 11/13] net: add devmem TCP documentation
-Message-ID: <20240903145150.4ffee51b@kernel.org>
-In-Reply-To: <20240831004313.3713467-12-almasrymina@google.com>
-References: <20240831004313.3713467-1-almasrymina@google.com>
-	<20240831004313.3713467-12-almasrymina@google.com>
+	s=arc-20240116; t=1725412094; c=relaxed/simple;
+	bh=h2siSvw5jOYLfZPp8y/y0Kbmv1tbRr8nVni4/N6MSjA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CzW7L6/BB/cIGVbz/MeQnEPn3ij7tL7ploPe02eptlqvIKBW4V6Lm1d9/1WP2NS6lDBaFDRKmk7wFPCR+aJAege5RJDiCr09xThHrp1rPICOCFNxbmEJpiQv+jsGDoUBMc8OWIjKPY8mjz3TQsZu2WL7lNxX3O3tJ6Ebk00azjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Wz45k6l79z1HJ8Z;
+	Wed,  4 Sep 2024 09:04:42 +0800 (CST)
+Received: from dggpeml500022.china.huawei.com (unknown [7.185.36.66])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0178C1A0190;
+	Wed,  4 Sep 2024 09:08:10 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by dggpeml500022.china.huawei.com
+ (7.185.36.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 4 Sep
+ 2024 09:08:09 +0800
+From: Hongbo Li <lihongbo22@huawei.com>
+To: <James.Bottomley@HansenPartnership.com>, <deller@gmx.de>
+CC: <linux-parisc@vger.kernel.org>, <lihongbo22@huawei.com>
+Subject: [PATCH -next] parisc: pdc_stable: Constify struct kobj_type
+Date: Wed, 4 Sep 2024 09:16:42 +0800
+Message-ID: <20240904011642.2010258-1-lihongbo22@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500022.china.huawei.com (7.185.36.66)
 
-On Sat, 31 Aug 2024 00:43:11 +0000 Mina Almasry wrote:
-> +The socket must be flow steered to the dmabuf bound RX queue::
-> +
-> +	ethtool -N eth1 flow-type tcp4 ... queue 15,
+This 'struct kobj_type' is not modified. It is only used in
+kobject_init_and_add() which takes a 'const struct kobj_type *ktype'
+parameter.
 
-nit: tailing comma here
+Constifying this structure and moving it to a read-only section,
+and can increase over all security.
 
-> +Devmem payloads are inaccessible to the kernel processing the packets. This
-> +results in a few quirks for payloads of devmem skbs:
-> +
-> +- Loopback is not functional. Loopback relies on copying the payload, which is
-> +  not possible with devmem skbs.
-> +
-> +- Software checksum calculation fails.
+Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
+---
+ drivers/parisc/pdc_stable.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Speaking of which, I think we need to add readability check to 
-skb_checksum_help(). Shouldn't the check in __skb_checksum() 
-have a WARN_ON_ONCE() around it? It's impossible to return 
-an error from there.
+diff --git a/drivers/parisc/pdc_stable.c b/drivers/parisc/pdc_stable.c
+index 633266447e2f..16f4496bca95 100644
+--- a/drivers/parisc/pdc_stable.c
++++ b/drivers/parisc/pdc_stable.c
+@@ -483,7 +483,7 @@ static struct attribute *paths_subsys_attrs[] = {
+ ATTRIBUTE_GROUPS(paths_subsys);
+ 
+ /* Specific kobject type for our PDC paths */
+-static struct kobj_type ktype_pdcspath = {
++static const struct kobj_type ktype_pdcspath = {
+ 	.sysfs_ops = &pdcspath_attr_ops,
+ 	.default_groups = paths_subsys_groups,
+ };
+-- 
+2.34.1
 
-> +- TCP Dump and bpf can't access devmem packet payloads.
-> +
-> +
-> +Testing
-> +=======
-> +
-> +More realistic example code can be found in the kernel source under
-> +tools/testing/selftests/net/ncdevmem.c
-
-looks like HTML output wraps the file path, maybe quote it as
-``tools/testing/selftests/net/ncdevmem.c`` ?
 
