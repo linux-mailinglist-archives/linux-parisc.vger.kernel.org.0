@@ -1,53 +1,51 @@
-Return-Path: <linux-parisc+bounces-2265-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2266-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E38B97036C
-	for <lists+linux-parisc@lfdr.de>; Sat,  7 Sep 2024 19:53:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B69970469
+	for <lists+linux-parisc@lfdr.de>; Sun,  8 Sep 2024 00:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD5821F220C3
-	for <lists+linux-parisc@lfdr.de>; Sat,  7 Sep 2024 17:53:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 887711C20F2B
+	for <lists+linux-parisc@lfdr.de>; Sat,  7 Sep 2024 22:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC6C15B547;
-	Sat,  7 Sep 2024 17:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B2125632;
+	Sat,  7 Sep 2024 22:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxTU3HZJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dUw7unlE"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660E717571;
-	Sat,  7 Sep 2024 17:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A2224B2F
+	for <linux-parisc@vger.kernel.org>; Sat,  7 Sep 2024 22:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725731602; cv=none; b=IIu3VEQCoY7dgmeLLMQdUtb820UGHi+msIQlCPIgiZ3YxQNFdyFvqO6oA5G0PUr9pxQWbifIqC4IDjr5iHE4YJNhOq0CSve2/ckOHXqSO6WWOJolvQAqVMx2emJXC6knTqW4HB6EKcZDqz+r0lMHvUcWExRw3b7oXM+Y4e/wRrE=
+	t=1725748842; cv=none; b=abqVvdg3luWRXVuhBmdl+iBZ1MjhAq+/0CGmMmgA5G/6484Lyvz2irADI7Zk2Sn9u8mEV73TL/lEOg1oieUFPHvvtcpRrPnuh4xFJOsSOjABSCu8NRPXccL0lJS4TlUawOdgzfx251UjVk9/SOaZiqBLTHw21zf8ss7zW/QjQj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725731602; c=relaxed/simple;
-	bh=xc49QaUyEGz04dknKL94FaZoL15AuSjqWvoXA7HwTZE=;
+	s=arc-20240116; t=1725748842; c=relaxed/simple;
+	bh=q/5406MbpCo5yY6XnGnV58LQCrwkz6rVjp+VYzkz/j8=;
 	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=dSvbZ5j6/QzxIN9jMmwJdF6I6kX0XDQ9Cmwopd/y+TuDHz9kKUq/ODznDVIJNWGTwZ+NzGDXMSv3a9fIhM8Fn5uVuhBnAtsRQ0oJya1c8lKgcGILJbB8aRCJOJGeLTKcixD/nq36DoGFEG9sX88ar2KOlk0G4njilxjAXdvScmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxTU3HZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43A0C4CEC2;
-	Sat,  7 Sep 2024 17:53:20 +0000 (UTC)
+	 Content-Disposition; b=JXeTp2q5uX8Ds+FfHHx2ijGJmKKXlMKR/OYEs85OzDrpvyv8OIP71oAi3QBGAObm60wRg2LsulM6Sy7uVLy8RxOZf3OYIGGzutGUqaoaqkiYAJN3l8bMQULCkL0F7ycVK44Tz/KK6jYO3/uZlaA/5IYlZlUy9b2PgW8WHptYzGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dUw7unlE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3892BC4CEC2;
+	Sat,  7 Sep 2024 22:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725731602;
-	bh=xc49QaUyEGz04dknKL94FaZoL15AuSjqWvoXA7HwTZE=;
+	s=k20201202; t=1725748841;
+	bh=q/5406MbpCo5yY6XnGnV58LQCrwkz6rVjp+VYzkz/j8=;
 	h=Date:From:To:Subject:From;
-	b=lxTU3HZJ0LZOWhdCqtWNRpnBZxtD3I3Dlus+jymMk2ltnvQvWOix2qZUmmCWypxWL
-	 pFvrHVdCw22D41mdtqH+2TnxZWU0jyF+kPFfYByOU9QQemAUqDzzaMBZuEvE4pTjan
-	 w+xE+qbw9H/ATGWcVNoOGvSA3QpOVrsdcnKbnVVpRqs4516UccLLZMZsWe0CKOSU7Q
-	 P9Y6AWae4UZP0Wgt3BISmG4H+8IeOGNbCL0ww3SFz6L3fosVh1LXQEU6XYR7mR0SF4
-	 IbWNiFS0TDVarcJGkrZIfpSsXmDg55yCKJdkyGKarWhPbr3RgrnXri8WmcMo/ORrUI
-	 cQTGLjKjkkExQ==
-Date: Sat, 7 Sep 2024 19:53:18 +0200
+	b=dUw7unlEUi9JwdBP6jSnN8VJaya326D0LDr5PhGlMXpkFenkXAYlghdisSxKO8u1K
+	 8zoghcKUZbbikwoJOJeGdS9zK7ODZzkNJ2avotV6KbMJp3C3qrQkcxmBwH2qzPd1/7
+	 eqBGGZeF+KDM/5Xt4Urz1LsfKuFYQBjMtN6M5D8cxbxPD6EKLE1KliwIqqR8Vqrm2s
+	 F4eDGNyqer0O0n7OshC8Lv7CzAA7qJUXDITFCGRgGue9K8J/r7kk0H0znEXaa9gVsq
+	 +8eWRNkL+4JAwl8JMYCIsR/4M6mV6nvLDVgwgiMA8M8acdMMYLWnmNBpzO153mEkin
+	 3zKAs7SmFWOzQ==
+Date: Sun, 8 Sep 2024 00:40:38 +0200
 From: Helge Deller <deller@kernel.org>
-To: linux-parisc@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Camm Maguire <camm@maguirefamily.org>
-Subject: [PATCH] exec: parisc: Fix stack start for ADDR_NO_RANDOMIZE
- personality
-Message-ID: <ZtyTDtcYhsqB-lrn@p100>
+To: linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc: Fix 64-bit userspace syscall path
+Message-ID: <ZtzWZnFpEMZK1cFc@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -57,65 +55,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Fix the stack start address calculation for the parisc architecture in
-setup_arg_pages() when address randomization is disabled. When the
-ADDR_NO_RANDOMIZE process personality is disabled there is no need to add
-additional space for the stack.
-Note that this patch touches code inside an #ifdef CONFIG_STACK_GROWSUP hunk,
-which is why only the parisc architecture is affected since it's the
-only Linux architecture where the stack grows upwards.
+Currently the glibc isn't yet ported to 64-bit for hppa, so
+there is no usable userspace available yet.
+But it's possible to manually build a static 64-bit binary
+and run that for testing. One such 64-bit test program is
+available at http://ftp.parisc-linux.org/src/64bit.tar.gz
+and it shows various issues with the existing 64-bit syscall
+path in the kernel.
+This patch fixes those issues.
 
-Without this patch you will find the stack in the middle of some
-mapped libaries and suddenly limited to 6MB instead of 8MB:
-
-root@parisc:~# setarch -R /bin/bash -c "cat /proc/self/maps"
-00010000-00019000 r-xp 00000000 08:05 1182034           /usr/bin/cat
-00019000-0001a000 rwxp 00009000 08:05 1182034           /usr/bin/cat
-0001a000-0003b000 rwxp 00000000 00:00 0                 [heap]
-f90c4000-f9283000 r-xp 00000000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
-f9283000-f9285000 r--p 001bf000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
-f9285000-f928a000 rwxp 001c1000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
-f928a000-f9294000 rwxp 00000000 00:00 0
-f9301000-f9323000 rwxp 00000000 00:00 0                 [stack]
-f98b4000-f98e4000 r-xp 00000000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
-f98e4000-f98e5000 r--p 00030000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
-f98e5000-f98e9000 rwxp 00031000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
-f9ad8000-f9b00000 rw-p 00000000 00:00 0
-f9b00000-f9b01000 r-xp 00000000 00:00 0                 [vdso]
-
-With the patch the stack gets correctly mapped at the end
-of the process memory map:
-
-root@panama:~# setarch -R /bin/bash -c "cat /proc/self/maps"
-00010000-00019000 r-xp 00000000 08:13 16385582          /usr/bin/cat
-00019000-0001a000 rwxp 00009000 08:13 16385582          /usr/bin/cat
-0001a000-0003b000 rwxp 00000000 00:00 0                 [heap]
-fef29000-ff0eb000 r-xp 00000000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
-ff0eb000-ff0ed000 r--p 001c2000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
-ff0ed000-ff0f2000 rwxp 001c4000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
-ff0f2000-ff0fc000 rwxp 00000000 00:00 0
-ff4b4000-ff4e4000 r-xp 00000000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
-ff4e4000-ff4e6000 r--p 00030000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
-ff4e6000-ff4ea000 rwxp 00032000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
-ff6d7000-ff6ff000 rw-p 00000000 00:00 0
-ff6ff000-ff700000 r-xp 00000000 00:00 0                 [vdso]
-ff700000-ff722000 rwxp 00000000 00:00 0                 [stack]
-
-Reported-by: Camm Maguire <camm@maguirefamily.org>
 Signed-off-by: Helge Deller <deller@gmx.de>
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 0c5f06d08c35..e5805108e940 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -782,7 +782,8 @@ int setup_arg_pages(struct linux_binprm *bprm,
- 	stack_base = calc_max_stack_size(stack_base);
+diff --git a/arch/parisc/kernel/syscall.S b/arch/parisc/kernel/syscall.S
+index 1f51aa9c8230..0fa81bf1466b 100644
+--- a/arch/parisc/kernel/syscall.S
++++ b/arch/parisc/kernel/syscall.S
+@@ -243,10 +243,10 @@ linux_gateway_entry:
  
- 	/* Add space for stack randomization. */
--	stack_base += (STACK_RND_MASK << PAGE_SHIFT);
-+	if (current->flags & PF_RANDOMIZE)
-+		stack_base += (STACK_RND_MASK << PAGE_SHIFT);
+ #ifdef CONFIG_64BIT
+ 	ldil	L%sys_call_table, %r1
+-	or,=	%r2,%r2,%r2
+-	addil	L%(sys_call_table64-sys_call_table), %r1
++	or,ev	%r2,%r2,%r2
++	ldil	L%sys_call_table64, %r1
+ 	ldo	R%sys_call_table(%r1), %r19
+-	or,=	%r2,%r2,%r2
++	or,ev	%r2,%r2,%r2
+ 	ldo	R%sys_call_table64(%r1), %r19
+ #else
+ 	load32	sys_call_table, %r19
+@@ -379,10 +379,10 @@ tracesys_next:
+ 	extrd,u	%r19,63,1,%r2			/* W hidden in bottom bit */
  
- 	/* Make sure we didn't let the argument array grow too large. */
- 	if (vma->vm_end - vma->vm_start > stack_base)
+ 	ldil	L%sys_call_table, %r1
+-	or,=	%r2,%r2,%r2
+-	addil	L%(sys_call_table64-sys_call_table), %r1
++	or,ev	%r2,%r2,%r2
++	ldil	L%sys_call_table64, %r1
+ 	ldo	R%sys_call_table(%r1), %r19
+-	or,=	%r2,%r2,%r2
++	or,ev	%r2,%r2,%r2
+ 	ldo	R%sys_call_table64(%r1), %r19
+ #else
+ 	load32	sys_call_table, %r19
+@@ -1327,6 +1327,8 @@ ENTRY(sys_call_table)
+ END(sys_call_table)
+ 
+ #ifdef CONFIG_64BIT
++#undef __SYSCALL_WITH_COMPAT
++#define __SYSCALL_WITH_COMPAT(nr, native, compat)	__SYSCALL(nr, native)
+ 	.align 8
+ ENTRY(sys_call_table64)
+ #include <asm/syscall_table_64.h>    /* 64-bit syscalls */
 
