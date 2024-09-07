@@ -1,135 +1,121 @@
-Return-Path: <linux-parisc+bounces-2264-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2265-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18BEC96F357
-	for <lists+linux-parisc@lfdr.de>; Fri,  6 Sep 2024 13:44:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E38B97036C
+	for <lists+linux-parisc@lfdr.de>; Sat,  7 Sep 2024 19:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC1812868A5
-	for <lists+linux-parisc@lfdr.de>; Fri,  6 Sep 2024 11:43:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD5821F220C3
+	for <lists+linux-parisc@lfdr.de>; Sat,  7 Sep 2024 17:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69561C9DF7;
-	Fri,  6 Sep 2024 11:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC6C15B547;
+	Sat,  7 Sep 2024 17:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lxTU3HZJ"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A041CB33E;
-	Fri,  6 Sep 2024 11:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660E717571;
+	Sat,  7 Sep 2024 17:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725623036; cv=none; b=BIV2S24x1CoKvzaDJ0Oi4QynN0eCgLgo5sqLBMB4lKol4rWM95bnwBI4IxUlKQQWrzUOg9r46CUerC/ZNoDgBXkXUBeIqB4SZhLj8Pmt9KVJOPagr5z5AFbEHt0Cq85cwEdePNwj0OtfxG+7m9Z8xMrUimIy/SK8gvgzSLN+fgg=
+	t=1725731602; cv=none; b=IIu3VEQCoY7dgmeLLMQdUtb820UGHi+msIQlCPIgiZ3YxQNFdyFvqO6oA5G0PUr9pxQWbifIqC4IDjr5iHE4YJNhOq0CSve2/ckOHXqSO6WWOJolvQAqVMx2emJXC6knTqW4HB6EKcZDqz+r0lMHvUcWExRw3b7oXM+Y4e/wRrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725623036; c=relaxed/simple;
-	bh=i5Vj6pTtqAFcekgqdft2a7YaCzfD36iQZL5KAInZPtA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e+CLoLxfdcUJacooRDfKkXx+HC3//KklOx+ovesDoCFmHXW9CnLcPHN5+n6fgzChtDbfaGKIUcEiR77IlVgKhsAw2iw5VFP5f63qyOyh8IVaf8lyQalQPUP4Rj51A1IaRTr3I9YTzZrQKF7eA+zvgJjHSHjGjVXWL9EM94P9bPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE75C4CEC4;
-	Fri,  6 Sep 2024 11:43:46 +0000 (UTC)
-Date: Fri, 6 Sep 2024 12:43:44 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: guoren <guoren@kernel.org>, Charlie Jenkins <charlie@rivosinc.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	shuah <shuah@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	"Kirill A. Shutemov" <kirill@shutemov.name>,
-	Chris Torek <chris.torek@gmail.com>,
-	Linux-Arch <linux-arch@vger.kernel.org>,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	"linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-abi-devel@lists.sourceforge.net
-Subject: Re: [PATCH RFC v3 1/2] mm: Add personality flag to limit address to
- 47 bits
-Message-ID: <Ztrq8PBLJ3QuFJz7@arm.com>
-References: <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
- <20240905-patches-below_hint_mmap-v3-1-3cd5564efbbb@rivosinc.com>
- <9fc4746b-8e9d-4a75-b966-e0906187e6b7@app.fastmail.com>
- <CAJF2gTTVX9CFM3oRZZP3hGExwVwA_=n1Lrq_0DQKWA+-ZbOekg@mail.gmail.com>
- <f23b18c6-1856-4b59-9ba3-59809b425c81@app.fastmail.com>
+	s=arc-20240116; t=1725731602; c=relaxed/simple;
+	bh=xc49QaUyEGz04dknKL94FaZoL15AuSjqWvoXA7HwTZE=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=dSvbZ5j6/QzxIN9jMmwJdF6I6kX0XDQ9Cmwopd/y+TuDHz9kKUq/ODznDVIJNWGTwZ+NzGDXMSv3a9fIhM8Fn5uVuhBnAtsRQ0oJya1c8lKgcGILJbB8aRCJOJGeLTKcixD/nq36DoGFEG9sX88ar2KOlk0G4njilxjAXdvScmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lxTU3HZJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43A0C4CEC2;
+	Sat,  7 Sep 2024 17:53:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725731602;
+	bh=xc49QaUyEGz04dknKL94FaZoL15AuSjqWvoXA7HwTZE=;
+	h=Date:From:To:Subject:From;
+	b=lxTU3HZJ0LZOWhdCqtWNRpnBZxtD3I3Dlus+jymMk2ltnvQvWOix2qZUmmCWypxWL
+	 pFvrHVdCw22D41mdtqH+2TnxZWU0jyF+kPFfYByOU9QQemAUqDzzaMBZuEvE4pTjan
+	 w+xE+qbw9H/ATGWcVNoOGvSA3QpOVrsdcnKbnVVpRqs4516UccLLZMZsWe0CKOSU7Q
+	 P9Y6AWae4UZP0Wgt3BISmG4H+8IeOGNbCL0ww3SFz6L3fosVh1LXQEU6XYR7mR0SF4
+	 IbWNiFS0TDVarcJGkrZIfpSsXmDg55yCKJdkyGKarWhPbr3RgrnXri8WmcMo/ORrUI
+	 cQTGLjKjkkExQ==
+Date: Sat, 7 Sep 2024 19:53:18 +0200
+From: Helge Deller <deller@kernel.org>
+To: linux-parisc@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Camm Maguire <camm@maguirefamily.org>
+Subject: [PATCH] exec: parisc: Fix stack start for ADDR_NO_RANDOMIZE
+ personality
+Message-ID: <ZtyTDtcYhsqB-lrn@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f23b18c6-1856-4b59-9ba3-59809b425c81@app.fastmail.com>
 
-On Fri, Sep 06, 2024 at 09:55:42AM +0000, Arnd Bergmann wrote:
-> On Fri, Sep 6, 2024, at 09:14, Guo Ren wrote:
-> > On Fri, Sep 6, 2024 at 3:18 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> >> It's also unclear to me how we want this flag to interact with
-> >> the existing logic in arch_get_mmap_end(), which attempts to
-> >> limit the default mapping to a 47-bit address space already.
-> >
-> > To optimize RISC-V progress, I recommend:
-> >
-> > Step 1: Approve the patch.
-> > Step 2: Update Go and OpenJDK's RISC-V backend to utilize it.
-> > Step 3: Wait approximately several iterations for Go & OpenJDK
-> > Step 4: Remove the 47-bit constraint in arch_get_mmap_end()
-> 
-> I really want to first see a plausible explanation about why
-> RISC-V can't just implement this using a 47-bit DEFAULT_MAP_WINDOW
-> like all the other major architectures (x86, arm64, powerpc64),
+Fix the stack start address calculation for the parisc architecture in
+setup_arg_pages() when address randomization is disabled. When the
+ADDR_NO_RANDOMIZE process personality is disabled there is no need to add
+additional space for the stack.
+Note that this patch touches code inside an #ifdef CONFIG_STACK_GROWSUP hunk,
+which is why only the parisc architecture is affected since it's the
+only Linux architecture where the stack grows upwards.
 
-FWIW arm64 actually limits DEFAULT_MAP_WINDOW to 48-bit in the default
-configuration. We end up with a 47-bit with 16K pages but for a
-different reason that has to do with LPA2 support (I doubt we need this
-for the user mapping but we need to untangle some of the macros there;
-that's for a separate discussion).
+Without this patch you will find the stack in the middle of some
+mapped libaries and suddenly limited to 6MB instead of 8MB:
 
-That said, we haven't encountered any user space problems with a 48-bit
-DEFAULT_MAP_WINDOW. So I also think RISC-V should follow a similar
-approach (47 or 48 bit default limit). Better to have some ABI
-consistency between architectures. One can still ask for addresses above
-this default limit via mmap().
+root@parisc:~# setarch -R /bin/bash -c "cat /proc/self/maps"
+00010000-00019000 r-xp 00000000 08:05 1182034           /usr/bin/cat
+00019000-0001a000 rwxp 00009000 08:05 1182034           /usr/bin/cat
+0001a000-0003b000 rwxp 00000000 00:00 0                 [heap]
+f90c4000-f9283000 r-xp 00000000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
+f9283000-f9285000 r--p 001bf000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
+f9285000-f928a000 rwxp 001c1000 08:05 1573004           /usr/lib/hppa-linux-gnu/libc.so.6
+f928a000-f9294000 rwxp 00000000 00:00 0
+f9301000-f9323000 rwxp 00000000 00:00 0                 [stack]
+f98b4000-f98e4000 r-xp 00000000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
+f98e4000-f98e5000 r--p 00030000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
+f98e5000-f98e9000 rwxp 00031000 08:05 1572869           /usr/lib/hppa-linux-gnu/ld.so.1
+f9ad8000-f9b00000 rw-p 00000000 00:00 0
+f9b00000-f9b01000 r-xp 00000000 00:00 0                 [vdso]
 
--- 
-Catalin
+With the patch the stack gets correctly mapped at the end
+of the process memory map:
+
+root@panama:~# setarch -R /bin/bash -c "cat /proc/self/maps"
+00010000-00019000 r-xp 00000000 08:13 16385582          /usr/bin/cat
+00019000-0001a000 rwxp 00009000 08:13 16385582          /usr/bin/cat
+0001a000-0003b000 rwxp 00000000 00:00 0                 [heap]
+fef29000-ff0eb000 r-xp 00000000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
+ff0eb000-ff0ed000 r--p 001c2000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
+ff0ed000-ff0f2000 rwxp 001c4000 08:13 16122400          /usr/lib/hppa-linux-gnu/libc.so.6
+ff0f2000-ff0fc000 rwxp 00000000 00:00 0
+ff4b4000-ff4e4000 r-xp 00000000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
+ff4e4000-ff4e6000 r--p 00030000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
+ff4e6000-ff4ea000 rwxp 00032000 08:13 16121913          /usr/lib/hppa-linux-gnu/ld.so.1
+ff6d7000-ff6ff000 rw-p 00000000 00:00 0
+ff6ff000-ff700000 r-xp 00000000 00:00 0                 [vdso]
+ff700000-ff722000 rwxp 00000000 00:00 0                 [stack]
+
+Reported-by: Camm Maguire <camm@maguirefamily.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/fs/exec.c b/fs/exec.c
+index 0c5f06d08c35..e5805108e940 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -782,7 +782,8 @@ int setup_arg_pages(struct linux_binprm *bprm,
+ 	stack_base = calc_max_stack_size(stack_base);
+ 
+ 	/* Add space for stack randomization. */
+-	stack_base += (STACK_RND_MASK << PAGE_SHIFT);
++	if (current->flags & PF_RANDOMIZE)
++		stack_base += (STACK_RND_MASK << PAGE_SHIFT);
+ 
+ 	/* Make sure we didn't let the argument array grow too large. */
+ 	if (vma->vm_end - vma->vm_start > stack_base)
 
