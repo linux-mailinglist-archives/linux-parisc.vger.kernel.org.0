@@ -1,166 +1,115 @@
-Return-Path: <linux-parisc+bounces-2335-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2336-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4773C975A41
-	for <lists+linux-parisc@lfdr.de>; Wed, 11 Sep 2024 20:21:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C964C975ACA
+	for <lists+linux-parisc@lfdr.de>; Wed, 11 Sep 2024 21:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11D65286E07
-	for <lists+linux-parisc@lfdr.de>; Wed, 11 Sep 2024 18:21:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 081421C22DE0
+	for <lists+linux-parisc@lfdr.de>; Wed, 11 Sep 2024 19:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94ADF1B5EA5;
-	Wed, 11 Sep 2024 18:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6611BA273;
+	Wed, 11 Sep 2024 19:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bS3ZVO0C"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEFE19EEC8;
-	Wed, 11 Sep 2024 18:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B8A1AAE1C;
+	Wed, 11 Sep 2024 19:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726078900; cv=none; b=ADxxuzWT9kup5+yhfqr9bgy7WdBQdJg57MMADQ11vdPc8Sst1N2lMRHpBJcsn0+JQq55oD6sKqHCdtig5ePBU92NQwMjHv4Lpg9STS+e0grMY25piFwuZCXZYAnJ6ITAmRPKbwOtzguP6lI/QWpqNj1B42kYks1MTlPX61hc/TU=
+	t=1726082420; cv=none; b=DCWCkCjAIEZ96F80wn/Uzerl3p+S1AAhmgIUlNrsNw4DADgMH0N1G7eSfkT/iQHF6OknKLC3j1c8Gg/EWeqx3K/gSePx6l09c49T9iw4249sdDSXTUjVJWQGkiljGQN54FzAW8+OBzUCDPVeF8XtTH0UgyHR5nOerpQMYmXo5yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726078900; c=relaxed/simple;
-	bh=2cZas4SimbOELK54ILhf2k9/V2LxmAALpH5ubeNMXEs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kP/hclgiLFbxRWj91GNSHxe6sYCCLMux96HnYWTDvZ9NcocJKq5MrCWckIlfIN0+rhF6hZS2dNmpTyqSvL0GYdB/cUnozR6jSj1UIKg5oqxS3nCZlLjqPEGY6+EDB0qqzgw+lUkRDPPDYV6pzJKLGTkQBD/HD3VtyscqUWQhlGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB7BC4CEC0;
-	Wed, 11 Sep 2024 18:21:30 +0000 (UTC)
-Date: Wed, 11 Sep 2024 19:21:27 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Charlie Jenkins <charlie@rivosinc.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Arnd Bergmann <arnd@arndb.de>, guoren <guoren@kernel.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	shuah <shuah@kernel.org>, Christoph Hellwig <hch@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	"Kirill A. Shutemov" <kirill@shutemov.name>,
-	Chris Torek <chris.torek@gmail.com>,
-	Linux-Arch <linux-arch@vger.kernel.org>,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	"linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-abi-devel@lists.sourceforge.net
-Subject: Re: [PATCH RFC v3 1/2] mm: Add personality flag to limit address to
- 47 bits
-Message-ID: <ZuHfp0_tAQhaymdy@arm.com>
-References: <20240905-patches-below_hint_mmap-v3-0-3cd5564efbbb@rivosinc.com>
- <20240905-patches-below_hint_mmap-v3-1-3cd5564efbbb@rivosinc.com>
- <9fc4746b-8e9d-4a75-b966-e0906187e6b7@app.fastmail.com>
- <CAJF2gTTVX9CFM3oRZZP3hGExwVwA_=n1Lrq_0DQKWA+-ZbOekg@mail.gmail.com>
- <f23b18c6-1856-4b59-9ba3-59809b425c81@app.fastmail.com>
- <Ztrq8PBLJ3QuFJz7@arm.com>
- <oshwto46wbbgneiayj63umllyozm3c4267rvpszqzaopwnt2l7@6mxl5vydtons>
- <ZuDoExckq21fePoe@ghost>
+	s=arc-20240116; t=1726082420; c=relaxed/simple;
+	bh=q607gZ7bOXAshnrnxWeCn9nyXjUqdJHM08X3Sq7cS80=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=k+KZ3vhEiKjFDTl7EDxjFcZgv8tQ7I8f8oX+ai3uxscMCq2ydWI3tHbd98RLuXY2MOjlue2fYBC3/GJCPrAwgKkmjNU7U15FuUtogvYjvSGih5NjWG4aVrbtuMjutUNfv3mrL1bZO63AA3/yHRaNUj10gPcLgBjIlni4Ipuir2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bS3ZVO0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590F4C4CEC0;
+	Wed, 11 Sep 2024 19:20:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726082419;
+	bh=q607gZ7bOXAshnrnxWeCn9nyXjUqdJHM08X3Sq7cS80=;
+	h=Date:From:To:Cc:Subject:From;
+	b=bS3ZVO0CiuxGRQoi9DLloyk/wC9ZLzvW/ysi9fA1TBYlCLMeGUlGpEprzWAauaSi4
+	 /q3zRqXdMBTgUXrSxR8IxXMNnLaIE60V/CQX/dR2gNaHs8KoOADowfYiaRzFmjaRJk
+	 G67oLBcLVtdMiWS2mmjfqGppyFwiKAfLqc103pBrMmmCipWtlQbs/voZjBiQl2hVgb
+	 rJT2pKgG6j/+GADO/UJSlRkzLhTcJmO5cwziPbDfrQEaSGNIkp5UwqLvyeNbAuX0dX
+	 KGlaSYDq2O4a3T6V6dZJK50oJE53tPoCQcS768i0Wb1Q8wdUgPqIbVjCraiwDBvTeT
+	 y26TN2UBCFkkw==
+Date: Wed, 11 Sep 2024 21:20:15 +0200
+From: Helge Deller <deller@kernel.org>
+To: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Cc: linux-parisc@vger.kernel.org
+Subject: [PATCH] [RFC] mm: mmap: Allow mmap(MAP_STACK) to map growable stack
+Message-ID: <ZuHtb43Ar21ZptNz@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZuDoExckq21fePoe@ghost>
 
-On Tue, Sep 10, 2024 at 05:45:07PM -0700, Charlie Jenkins wrote:
-> On Tue, Sep 10, 2024 at 03:08:14PM -0400, Liam R. Howlett wrote:
-> > * Catalin Marinas <catalin.marinas@arm.com> [240906 07:44]:
-> > > On Fri, Sep 06, 2024 at 09:55:42AM +0000, Arnd Bergmann wrote:
-> > > > On Fri, Sep 6, 2024, at 09:14, Guo Ren wrote:
-> > > > > On Fri, Sep 6, 2024 at 3:18 PM Arnd Bergmann <arnd@arndb.de> wrote:
-> > > > >> It's also unclear to me how we want this flag to interact with
-> > > > >> the existing logic in arch_get_mmap_end(), which attempts to
-> > > > >> limit the default mapping to a 47-bit address space already.
-> > > > >
-> > > > > To optimize RISC-V progress, I recommend:
-> > > > >
-> > > > > Step 1: Approve the patch.
-> > > > > Step 2: Update Go and OpenJDK's RISC-V backend to utilize it.
-> > > > > Step 3: Wait approximately several iterations for Go & OpenJDK
-> > > > > Step 4: Remove the 47-bit constraint in arch_get_mmap_end()
+This is a RFC to change the behaviour of mmap(MAP_STACK) to be
+sufficient to map memory for usage as stack on all architectures.
+Currently MAP_STACK is a no-op on Linux, and instead MAP_GROWSDOWN
+has to be used.
+To clarify, here is the relevant info from the mmap() man page:
 
-Point 4 is an ABI change. What guarantees that there isn't still
-software out there that relies on the old behaviour?
+MAP_GROWSDOWN
+   This flag is used for stacks. It indicates to the kernel virtual
+   memory system that the mapping should extend downward in memory.  The
+   return address is one page lower than the memory area that is
+   actually created in the process's virtual address space.  Touching an
+   address in the "guard" page below the mapping will cause the mapping
+   to grow by a page. This growth can be repeated until the mapping
+   grows to within a page of the high end of the next lower mapping,
+   at which point touching the "guard" page will result in a SIGSEGV
+   signal.
 
-> > > > I really want to first see a plausible explanation about why
-> > > > RISC-V can't just implement this using a 47-bit DEFAULT_MAP_WINDOW
-> > > > like all the other major architectures (x86, arm64, powerpc64),
-> > > 
-> > > FWIW arm64 actually limits DEFAULT_MAP_WINDOW to 48-bit in the default
-> > > configuration. We end up with a 47-bit with 16K pages but for a
-> > > different reason that has to do with LPA2 support (I doubt we need this
-> > > for the user mapping but we need to untangle some of the macros there;
-> > > that's for a separate discussion).
-> > > 
-> > > That said, we haven't encountered any user space problems with a 48-bit
-> > > DEFAULT_MAP_WINDOW. So I also think RISC-V should follow a similar
-> > > approach (47 or 48 bit default limit). Better to have some ABI
-> > > consistency between architectures. One can still ask for addresses above
-> > > this default limit via mmap().
-> > 
-> > I think that is best as well.
-> > 
-> > Can we please just do what x86 and arm64 does?
-> 
-> I responded to Arnd in the other thread, but I am still not convinced
-> that the solution that x86 and arm64 have selected is the best solution.
-> The solution of defaulting to 47 bits does allow applications the
-> ability to get addresses that are below 47 bits. However, due to
-> differences across architectures it doesn't seem possible to have all
-> architectures default to the same value. Additionally, this flag will be
-> able to help users avoid potential bugs where a hint address is passed
-> that causes upper bits of a VA to be used.
+MAP_STACK (since Linux 2.6.27)
+   Allocate the mapping at an address suitable for a process or thread
+   stack.
 
-The reason we added this limit on arm64 is that we noticed programs
-using the top 8 bits of a 64-bit pointer for additional information.
-IIRC, it wasn't even openJDK but some JavaScript JIT. We could have
-taught those programs of a new flag but since we couldn't tell how many
-are out there, it was the safest to default to a smaller limit and opt
-in to the higher one. Such opt-in is via mmap() but if you prefer a
-prctl() flag, that's fine by me as well (though I think this should be
-opt-in to higher addresses rather than opt-out of the higher addresses).
+   This flag is currently a no-op on Linux. However, by employing this
+   flag, applications can ensure that they transparently obtain support
+   if the flag is implemented in the future. Thus, it is used in the
+   glibc threading implementation to allow for the fact that
+   some architectures may (later) require special treatment for
+   stack allocations. A further reason to employ this flag is
+   portability: MAP_STACK exists (and has an effect) on some
+   other systems (e.g., some of the BSDs).
 
--- 
-Catalin
+The reason to suggest this change is, that on the parisc architecture the
+stack grows upwards. As such, using solely the MAP_GROWSDOWN flag will not
+work. Note that there exists no MAP_GROWSUP flag.
+By changing the behaviour of MAP_STACK to mark the memory area with the
+VM_STACK bit (which is VM_GROWSUP or VM_GROWSDOWN depending on the
+architecture) the MAP_STACK flag does exactly what people would expect on
+all platforms.
+
+This change should have no negative side-effect, as all code which
+used mmap(MAP_GROWSDOWN | MAP_STACK) still work as before.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/include/linux/mman.h b/include/linux/mman.h
+index bcb201ab7a41..66bc72a0cb19 100644
+--- a/include/linux/mman.h
++++ b/include/linux/mman.h
+@@ -156,6 +156,7 @@ calc_vm_flag_bits(unsigned long flags)
+ 	return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN ) |
+ 	       _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    ) |
+ 	       _calc_vm_trans(flags, MAP_SYNC,	     VM_SYNC      ) |
++	       _calc_vm_trans(flags, MAP_STACK,      VM_STACK     ) |
+ 	       _calc_vm_trans(flags, MAP_STACK,	     VM_NOHUGEPAGE) |
+ 	       arch_calc_vm_flag_bits(flags);
+ }
 
