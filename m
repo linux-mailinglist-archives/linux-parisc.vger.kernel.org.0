@@ -1,339 +1,260 @@
-Return-Path: <linux-parisc+bounces-2344-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2345-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EC1975E9A
-	for <lists+linux-parisc@lfdr.de>; Thu, 12 Sep 2024 03:43:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0908E975EA2
+	for <lists+linux-parisc@lfdr.de>; Thu, 12 Sep 2024 03:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46C63281056
-	for <lists+linux-parisc@lfdr.de>; Thu, 12 Sep 2024 01:43:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E4F21C22920
+	for <lists+linux-parisc@lfdr.de>; Thu, 12 Sep 2024 01:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86A2224DC;
-	Thu, 12 Sep 2024 01:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9974014293;
+	Thu, 12 Sep 2024 01:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="TEk9AIUA";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="jblhYmIP"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="qjO3GeyN"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0751326AFC;
-	Thu, 12 Sep 2024 01:42:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726105380; cv=fail; b=nNOwPuDL53ouxoOHrkNuBioDPvq/6VQ3pGOrYmwB7KHRYkCRt8UGPztI2YZdZkaFVCqcCDh1Pg47s+ZQht4iekc1pedwN1Oxc6s0xidG+vbvjLghA1K+pbc7cDlpfuiqbjXapwOgIjnoW6MplGcbyi/TcYsv729P77/i+iMle2Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726105380; c=relaxed/simple;
-	bh=KUVXaPkxiAErQw6bpnYP2Ld9jzvROr2j1PsB6DveZ1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=btrVAxOYV93ve0eMmPYalqNxg2CmE52lEbjCZ3GTUlW04DUfmBg9iNWpKIJsWQ8vSnpka1pzs+f8Z+QhYv1CxMoFTMcfoE+Zi8B2JjRg8QNyCRY/zcNavChqVEOPRyFskSlMt7MQJ3cTFl1O1zgbfhHGGp25KWpCqTnh+wrSsWw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=TEk9AIUA; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=jblhYmIP; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48BMfWuR024034;
-	Thu, 12 Sep 2024 01:42:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	date:from:to:cc:subject:message-id:references:content-type
-	:content-transfer-encoding:in-reply-to:mime-version; s=
-	corp-2023-11-20; bh=NbcgRKIq5/ZQz7KlbZ3Zz/qZZ46qum+XJn6AwlnWX/g=; b=
-	TEk9AIUA+K8PmlkkuqrKsG3YjfWHgK5Jfv6QrsgmX8TvdDONlui+19Bl7Id9k3wK
-	JsLkUADEZKGNqNmiC0Oh0f3bsXbPtM4UuHOKaRIzJZtj4oKDLFHEn+78FUNYEN1A
-	MtavraIuQyPzjnQG2mpngkeJx75PHlDlN6CfTpiXB6EPSqRwm99IvgDORhJ0UY9k
-	vZjIzcOC130T2qwXGD+wdyCbpEqdI/OkYGpeTURQl//C4koWNa/h3KKRYT4aMAsQ
-	9EDwGpo06ttIZZCpbJv0/Rd64hfPFZEaDo6ros2jI1qgpVPKdsg7+GmU3Mq8JYYC
-	yfPKA7Dkijbrjqu+uojizQ==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41gdm2sj2j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Sep 2024 01:42:47 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 48BMdbUw032402;
-	Thu, 12 Sep 2024 01:42:47 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2042.outbound.protection.outlook.com [104.47.56.42])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 41gd9h05q3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Sep 2024 01:42:47 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BHcPZ3pmb91mu2MZhwgLdZoZk5KcMS6GXoGtVnhJ1/25gupqiOb281D8xBbau4ThOZgyGeJ5tUP2Z2CmZ6u0YmNc6uCHpeNNO3P27vrrykvI6t8AREzavZxb5iyq6yDsHzoJSE0KhQw5CtOCCT9oepYDfuRbZ0O/1MCAHbfuTrkxOb7580MtnkaviE3uPR4Uww+XF22x5UMNAWGZUCj9+mhM3u82jc70GcTkv5zfMVJZ/ZdRzV2lJ3R2jtlabVh+ffLQjjyhqE31+EzaVxRlp4ifcYckV0c7YSiNj/eCcEEIxafWYxSXICp66orTppqgHRiIGsMI2IOPYJPkkCQ9og==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NbcgRKIq5/ZQz7KlbZ3Zz/qZZ46qum+XJn6AwlnWX/g=;
- b=tH9UoeTaHKkCpc8AgdKqYaPa5tNOjvZgo75+jndUT9nHJavNnn1C3elBVrh62vjjz0lvn+218Xt7/DOrUmB1yDBLU54Txh/rMSMTROKFKAAeDuvwIDhJpt/eNdLi9q5x32TMa71dqmAswFEHhVwlZxQXwKZCROv2AF5Q7QDVgIxa4FQGXMcBT1a++Hw3m/DPujSUfvQD9G9tH2tKVWwkMXe71Brc/uLFxA4cb7YvL20fFjQlqnTL/0FqPXYx83TeNrLquvmgjxC2EVzSJFgNve0lNZLh1mDQa46rLaPo/3bujq6U3GB+59lkVmdZTBVXtKMoyr7fhp6BjnAdI66APw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NbcgRKIq5/ZQz7KlbZ3Zz/qZZ46qum+XJn6AwlnWX/g=;
- b=jblhYmIPxUfsvmFGvuzdcbMT/EJ6646R+lkr9bxZXjv1+9r9inMQozZ88CpG8rw9Qm8hjqO0tFuqMVilXOX35UvOCixcfJj32KR/+ca4GYtnb15C0ajDN7l+Ycy13UMjN6aZhb9qtXMcSDBcRm3FNBIR+B+M90CexcabYbyqkXg=
-Received: from DS0PR10MB7933.namprd10.prod.outlook.com (2603:10b6:8:1b8::15)
- by CY8PR10MB6852.namprd10.prod.outlook.com (2603:10b6:930:84::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.14; Thu, 12 Sep
- 2024 01:42:44 +0000
-Received: from DS0PR10MB7933.namprd10.prod.outlook.com
- ([fe80::2561:85b0:ae8f:9490]) by DS0PR10MB7933.namprd10.prod.outlook.com
- ([fe80::2561:85b0:ae8f:9490%3]) with mapi id 15.20.7918.024; Thu, 12 Sep 2024
- 01:42:44 +0000
-Date: Wed, 11 Sep 2024 21:42:42 -0400
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: Yang Shi <shy828301@gmail.com>
-Cc: Helge Deller <deller@gmx.de>, Helge Deller <deller@kernel.org>,
-        linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-parisc@vger.kernel.org
-Subject: Re: [PATCH] [RFC] mm: mmap: Allow mmap(MAP_STACK) to map growable
- stack
-Message-ID: <75ihgmlcmou7yatoeva5sezbf6stow4gtdyurwzj5fxghjq7yw@o3u5wudjdnkk>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Yang Shi <shy828301@gmail.com>, Helge Deller <deller@gmx.de>, Helge Deller <deller@kernel.org>, 
-	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-parisc@vger.kernel.org
-References: <ZuHtb43Ar21ZptNz@p100>
- <focr7orndhsr7vhownfdhrpctwztloz54bfbg2wnd4xmqtcymu@26pn5wteugl6>
- <CAHbLzkqhc2yT=rh6ZkjaRJ8RF_NrZM6bXd-nau6jJjbow8vogw@mail.gmail.com>
- <tvllphck5fky6zqhkpcomjj5zuncgligdqapwkv5qwqamtjfc7@3geizoueze4d>
- <95c4efe9-e92a-46fe-bf41-9141e125332d@gmx.de>
- <CAHbLzkotBTOf0OrPSN4o=UEvRXjT=L=NSZn_=FBA6nG51ppjYg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAHbLzkotBTOf0OrPSN4o=UEvRXjT=L=NSZn_=FBA6nG51ppjYg@mail.gmail.com>
-User-Agent: NeoMutt/20240425
-X-ClientProxiedBy: YT4PR01CA0265.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:109::29) To DS0PR10MB7933.namprd10.prod.outlook.com
- (2603:10b6:8:1b8::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55B63A267;
+	Thu, 12 Sep 2024 01:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726105553; cv=none; b=E8bzpmB09C5t/5eW4oNTk8CippipSG9RRZ12DiXmoeENNxm2xHpl4A+ZJJeymU6NRHy6tY7I/CeogU/zatERWggQ1RBQ75P0u2EQmwN1ElskNdKa/v6A1XP7kIV4JPCIF7SNPRHVTfF+ORlizkNthhT5o7ku7uk7mhMRtGXITdc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726105553; c=relaxed/simple;
+	bh=2QSGq7Hd1MMLyuiC5BTYhqH45996ucGyyGvy2UiO6+I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C0+QaxMnJiU3p46kXR37pSKwNWSNfx87l1b0dLHFQqqEWTgzdHUdoBd75wWrIfHIxcrARrWEVesIBQUH2Iqif5+ni/SnPqkw/YNkO+VibY/DdQ0Q5/vyd4xfpLqy2Y3+Wnk0wvxHeiPo8WAhnwaZhUpHULPQLsKAIHK6So8C8ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=qjO3GeyN; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1726105535; x=1726710335; i=deller@gmx.de;
+	bh=9S8ZYir8xrchk1sw1I6nlFiM6OfsAfPDqkCmx/PX2JQ=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=qjO3GeyNRw8HljolMA/yl7sWFDBBbdDgSC3aUmelZJ+ZeiLXKfJuVejybrxmJGfF
+	 EvsOMnjB1brxT9/AQuey61bsWEvxd5Ey9HoikBnu3rNdc6M8Bp/LTbj7HK8RxGw1A
+	 1TaLE1zjl8TP4p1GP6tgtOlt6dWk58CbMpnutjaK8IAgxQPac9IqtOg7rXHGa6v8y
+	 R7MnSuw8Eks65CqqiLSRPJ2NONwUF6HvASfQ0MWBIaeEvikT9nltAF59DGVhbvdfD
+	 WgRjPY4PbLUGHRIQL5S1LDXfW+bWoyaD9X7QXdYI8VVFKXFnwzGVMdX/1o3MAuRQv
+	 KsppuEclNv6ak54G7Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MbRfv-1sHz2E16d7-00iCe3; Thu, 12
+ Sep 2024 03:45:35 +0200
+Message-ID: <c4d0805b-127b-436d-900b-4742ddbc1d15@gmx.de>
+Date: Thu, 12 Sep 2024 03:45:33 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR10MB7933:EE_|CY8PR10MB6852:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9da1366d-1dfb-4d6d-88e3-08dcd2cc327a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bC9mTlBWMmJCTGg0aVdnMHcrRkw1Lzh3T3lKWTdZWXVJVGxWUktQZ2p2L3Y4?=
- =?utf-8?B?cEdwSXhuMUZhWnhKNE1WWFFJb0xDSTJyU21KRVo1ZmVFN2FNcjliVUNsQnVm?=
- =?utf-8?B?QzUwY3pEbWEvdng2Vng0M1h1aDd2ZGh2d0RIUk1POHRFb3dPMHAzdXlGcXJy?=
- =?utf-8?B?akYyV2I1dDQrUzhZT2w1VG40NGJjMjFrUndjSXRLRG8rVGpaNFRKV2ZuR3Nx?=
- =?utf-8?B?WmtUbUNyQlNtWE1yakQvRjNGbE5mTm5qWDZNZHlIOCtVYmRaeU5FR1dsRUFB?=
- =?utf-8?B?SDk3MkdXckg1V0xKeEtuM09jbWpwS1YvNExHbndYSG5jQ3RZbHN5elFlY1dh?=
- =?utf-8?B?ei9sNGxTTmZDUEVwY3hLWk9qOVZuZTRiNnVYc0pIa0drU0MxbVZZcTF3SFZM?=
- =?utf-8?B?OFpxR0d2WlltRU43ZzFuWlFmRjJtVy96WDgrYzJKT1FEK3B3cGE3SldOQWQw?=
- =?utf-8?B?NnRlNUNaR1FUalBvVWtnU3RyQ01KNUxhVitGWjA1UVpYcDF5NmxwRmc3WUl0?=
- =?utf-8?B?MzVpWjh0SDQwdFVYckZnOTlRUEJtdDlicHBCY1lXa2VPYzdEWnJyRFJVVU0z?=
- =?utf-8?B?Mnp0TzRqcE1lSVdaaTZWUllpZUk4bzFSdFN3Z0FTUTUvYkhtaDViZnArdDNJ?=
- =?utf-8?B?Ym1uSVYrcDJOK1BuMXFLelVOTWhrVW9XLzhIZ2wzZVVCS2xoOHArb2JmSksv?=
- =?utf-8?B?dXZnUEZ4bFhLeDVmb2lwZlh2alpjOC9YRW1uMTJLT0lUSk9wMFFtTm1JUmlN?=
- =?utf-8?B?L05Vcng2ck9VamdQeFZ0RkpVa2ZobS9ROXVPZ05hTHFpZ0xvb3phMTFBbURp?=
- =?utf-8?B?RVUvdjVJWkxRUGtQWTF4elNONlY4aWVZZ1dNNXZ3ek5OYkp0eXIwV3NRQUF2?=
- =?utf-8?B?NUNoTTJFY0ZpeXZhMFJKazh0RlZ0ZERlVGR3RURBWmpLRG9DYVNEMDN0N1pO?=
- =?utf-8?B?R05EZEhmdGVvbktSN3hvNC8yUHpSRndJVWtQazREYTU2NldpejJaT3owYTJI?=
- =?utf-8?B?bmtFTm84WHlkTmtrV2lyZm5yZGlCWU1ybWJmSDZQL0liSFh1akZoNHd5L2RW?=
- =?utf-8?B?VUY5KzB2Yzd5amRsZzF1cUhEWHdob2FYS3BNdVljSVF3aDlZWGxKVDI5Tk41?=
- =?utf-8?B?cHZXMXluNW1paWM3VHdFTGRnNGl6VXNLbUx0KzlSSEswZFlLUFZWSzdyZFhQ?=
- =?utf-8?B?dE9zalZPQmNJZzlDZXRVYkUrbWdhWXJZSUJpMG9VWnlITTBPcEh4N1EvNVZt?=
- =?utf-8?B?ald0bklaWnpoYXAzeFdTakVsbHJ6L21wY0VVKzk0bWlkMFEyMjlIbEFtMFkx?=
- =?utf-8?B?N1hzS0ZLaUI3QmJlakViWW54MGc4bDMxYklLYlBWbXZuNlN6K1J6N0NUUE41?=
- =?utf-8?B?WEtrUTRlL1RJK3ViWndRN2ZzM1FTTUQreE04YlZKUFoyei9ZL25ENVdjQzFy?=
- =?utf-8?B?Ky9TM29ITzA2VW9qajRST2lEUFpJVUM2QlQ0WjFwTUFXUHdHbzdDc2ZMc1o1?=
- =?utf-8?B?Uk5WMFN5RHlscEFmQmJDV05EYTBKZjJTK1RiY2VMRDFFTFZBSW1Lc3VSc0tT?=
- =?utf-8?B?TGUzanNMQ0J0RERCQ0N2MGVOM0wra0svUzNudU1NdDdkTkhPbFdyamgvaXlr?=
- =?utf-8?B?R25CMDZyazkwbXA0V09temVYaGtuZXhjOW5qVHpVbm9ONVpNWlVGcis4NXUx?=
- =?utf-8?B?Q2pqcGVrK1ZyWFh0SThPUFpvajJBSGJ6c0xTT2NVR2gvZXhWamZHZ2Npdjkz?=
- =?utf-8?B?YkE1MVRXRWdsSWtrQ2FnSTQ5ZzVsK3RRY09aTkRjT0pjZHR0azYxTExaUzU0?=
- =?utf-8?B?TDl6aWpQTXRtbDdEVzZaZz09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7933.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OUFCVUcyeEtyYlpkOFk0OURtUG1SYll4YnJnNjZLeHN5WWVtZ2I2SkpUMXdm?=
- =?utf-8?B?ZGgxVExlbW4yMnA1Uy9CYm9zYWxxTUNobk5FNWtJQ2pmdEV6UDlsWlhaUFBh?=
- =?utf-8?B?SlpBaVJuSXRUL25OSW4rak1ST0txVlRNZnVHRnJla2xUNVJqbWpOczZoK08w?=
- =?utf-8?B?cHZEWml1ai95eHdkcWZjVkxJZXBGZVhZTFE4L0dDTUQ5aHhBM29KbFNzVTdY?=
- =?utf-8?B?dTdPTm9NWWhUb2k0ME5HTndUb2xXQmhkcVJvdThRNlM0K0cyOWlGVDJWVVl3?=
- =?utf-8?B?aEp4YUdaUy80cjFKZXlCN1JCaytrTWZ5RFJaT3dJeG5NaWlFcWRoWWFsT0pT?=
- =?utf-8?B?TVRURUhnQ1k0R1d3anZNVStOVVlPcmxyYjcxTllLZWJHU1BtUEhuRStjcWZl?=
- =?utf-8?B?eUlPb0xvSmErR1lVQzUzODhPWXYrWTdyejhpU1M3eHpCNFR5azgyaVU3M2Nz?=
- =?utf-8?B?aDdsb01oMDZac2lvblpIQ3ZNVU9wNUZhaUlMUjBvdDVGNzZCTWFCWWhWV3VO?=
- =?utf-8?B?RERPMVV5WFpvRzJ3UzdhS25SY1cyUmNHL290YmxwckNXYU1BUTlEZzRiNUhp?=
- =?utf-8?B?R2hlZlhHMHJPTlowUEVsb1Z0aXl2VGdYb3dqclQxWlZsUWZ6Zm5IaVNXZEpl?=
- =?utf-8?B?SHk4b2h4ZGdUenhkNmhOS0NRV1Yray9nM3FUN1A5bkMrOFh6SDJvOVBldU1I?=
- =?utf-8?B?djV5K1lLSDF5MGdDdERtemFRY2xmS1Fjb3A0WDdmK1cyWjBkejBWUGk4a2xE?=
- =?utf-8?B?bjhXRTlraGI3R2gvUE9ERjZHQ1haZlJZNjdUQTBTR0dRWDVtaGtLS1FJK1Nn?=
- =?utf-8?B?TEhUZSthUHJiMFJhOHRpMDMxd0M4cjFtVDBvZnlqNUdxSVJPcWlzVDgzWWh4?=
- =?utf-8?B?UDZxeUV1Sjdwbi9CUWRjeHFhQytTMEFUamh6THNKTnRBOWMwQW5RWklQRGRQ?=
- =?utf-8?B?TlpsNzU5NStKZXBXT3E2RzlmK1BrdFE3ZGFQRnBockF2Wm92Yk9Ka294VGRQ?=
- =?utf-8?B?VGtaNXROUkpJdGxoN0lEQjU2SmF3VVVTZlpSUy9KWVVndGxsdVNxc1BTSTQ1?=
- =?utf-8?B?WU5tSjlwdURZaVdJcXF2ZlNLQ3NoZ0M2OGF4K1MyZTl2Q3luWDk2VEpUdC96?=
- =?utf-8?B?UnU3Mk9SWXUrWTZsMnU0b2k5Tlh4TE4wV0Z6K2tOUHpjSW5MVzUyWFJyNnd3?=
- =?utf-8?B?WW9xdWpNWGxTODVWUTdzMWNnb1ZnKzY0N2lVNnNrVUNMQUdqTGIzRk1YYktS?=
- =?utf-8?B?VTYwbWtTYjNuejBNS1A2ZmpnUldrb3pCQm1IS2NWL1RZaStMR0FFZUp0QS9C?=
- =?utf-8?B?cHJ5NGdWUmMwdGUvWnJXSDZvNktscHdyOW5jNG81ZlZ0TWU0bXY1OW9hVTdS?=
- =?utf-8?B?OXpSYS9YcE1CU1l6RVA1c3QzN1c0UmtjQWNLMWtLS2RnbVZIcXBpeUxhZU4y?=
- =?utf-8?B?L1BKWHE5UlZTc1V0STU2UWw4UmZUQ0M0WWtRejZURjJKbG1WQURaWDlmZjVz?=
- =?utf-8?B?bks2ZkFkZ0ZHRHdaZUprTHEyaDJTemJ1L0NYTUx2T01vaUxaNkZrSHdxSTZ0?=
- =?utf-8?B?eVAyYkl1QmxuZ3kzSzNkVnFTRncrY1NnVlNwQ3JvT21ocllSVDBQaCtyZDVV?=
- =?utf-8?B?b3dZeHFEZ0hTd3ZnRVBOa3VvMHlsUGliUkpJcjJienZFWU9nOWl1Y3NUbk9n?=
- =?utf-8?B?NUhLQVlidzQyMlR4dXpqNzVYaGZtTUFWMVpJT2tOaFcraFl2djVWMlUrc0Jp?=
- =?utf-8?B?TWNGUCtOMWs2Q2p4T0lzRGQxUHpVTldOZm9PbnE1VHl0TUorQ2M3eENNRll4?=
- =?utf-8?B?bXdFd1FqRVRCaHkxSHpYcjFKNEVkbHdFVG1ZU0hENENmQ3U4Z2JzZFZ2QndK?=
- =?utf-8?B?NGhxLytpN0VEanBjdmdpZUlWZmVkRTlhMC82ZDhYUEpKbDQwWlA5TWZYVG9V?=
- =?utf-8?B?dThUQlpvQURCdGloMzVoZVZXVWN1SCtEOHRVRzhTaUhkMnRsQm9FNk50dmFl?=
- =?utf-8?B?ZGxQclZuMFlQWjBTQ3NzYXMrK3JyT2lGQ1dKRmxFdHdRSnl3SEg2czNkZ0lv?=
- =?utf-8?B?aWVzWk9pTWtRZ1gzNmx3bTNOZUw5ZTI4OTlPQUl4MTh0cjhqTWZwMy9YbCtQ?=
- =?utf-8?Q?/VcRy8TzNzY2tdJxFRCvm4LxD?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	e7d9YIYnNSSUYdZ4M/TSGv2akQuQ/uRX2Aa62JH8Q7aukJYfhY9hjleOOEYOSnkNRkjqEMVI02mICNMEvPE5fVxNmVh5aFPy40oxd/KJh+bEcpZVyvQvgWN7qdG+hsNlfO3F2YPRaPAniVi54x4DBtfp/ksnhWmZwd3U/uW+MGu/tyYNAQ0E+6x3mnlyEuR3KKbgIjlhz6MvIe4Fic3lWWFzkNAFOzXUXv+fLeboNGAikUesTM3JYsYvM+XfJBWaZixwNsV55Kr+2rOmPUrQn59ORlxzYwo5Xrl8NjJoMLZ9DqVVcsILcaRY1ynl3SC6wFZq0s9FTZLwHuoCOisthdiWUG1UI3jiVUgmQAEhf0jsHuOzxspF5LcoIPeG8aOb+hfp9YA4MD9MIweCKV6j0gH0+zuEFeiR93+vG3/UlsM4VAnzsd1zPjDfCBXf6SZmHwVj0qgj2S+d1X8cH+9vnFiM9xaX378xMahT20XgeSvTOsBCCNNKu1KPUn09P4ArruAj1+USa/Kx20ai8vuZ3hrA1CrTBOX7MaJ7OaK5u8owZmp0+YbUJ5PQDDVz558Ah4VZcfypTesgndcJ2SNpMkd+V9+cnhzS19X7E7AjHdE=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9da1366d-1dfb-4d6d-88e3-08dcd2cc327a
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7933.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2024 01:42:44.2834
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1KEldU1lcUWGNlXxsJUO3mshjCHTjieZrPaNqISoDItp/8sQ1fI1lvhYKnB3FmNSxU4LbzKbkOyMOKrwxnyCow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6852
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-11_02,2024-09-09_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0
- mlxlogscore=655 malwarescore=0 bulkscore=0 spamscore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2408220000 definitions=main-2409120011
-X-Proofpoint-GUID: OgYBw3n5H-4l2X_2BJsKsgo3DhGd2M1o
-X-Proofpoint-ORIG-GUID: OgYBw3n5H-4l2X_2BJsKsgo3DhGd2M1o
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] [RFC] mm: mmap: Allow mmap(MAP_STACK) to map growable
+ stack
+To: Yang Shi <shy828301@gmail.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Helge Deller <deller@kernel.org>, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-parisc@vger.kernel.org
+References: <ZuHtb43Ar21ZptNz@p100>
+ <focr7orndhsr7vhownfdhrpctwztloz54bfbg2wnd4xmqtcymu@26pn5wteugl6>
+ <CAHbLzkqhc2yT=rh6ZkjaRJ8RF_NrZM6bXd-nau6jJjbow8vogw@mail.gmail.com>
+ <tvllphck5fky6zqhkpcomjj5zuncgligdqapwkv5qwqamtjfc7@3geizoueze4d>
+ <95c4efe9-e92a-46fe-bf41-9141e125332d@gmx.de>
+ <CAHbLzkotBTOf0OrPSN4o=UEvRXjT=L=NSZn_=FBA6nG51ppjYg@mail.gmail.com>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
+ HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
+ r+8w6mkccOM9GhoPU0vMaD/UVJcJQzvrxVHO8EHS36aUkjKd6cOpdVbCt3qx8cEhCmaFEO6u
+ CL+k5AZQoABbFQEBocZE1/lSYzaHkcHrjn4cQjc3CffXnUVYwlo8EYOtAHgMDC39s9a7S90L
+ 69l6G73lYBD/Br5lnDPlG6dKfGFZZpQ1h8/x+Qz366Ojfq9MuuRJg7ZQpe6foiOtqwKym/zV
+ dVvSdOOc5sHSpfwu5+BVAAyBd6hw4NddlAQUjHSRs3zJ9OfrEx2d3mIfXZ7+pMhZ7qX0Axlq
+ Lq+B5cfLpzkPAgKn11tfXFxP+hcPHIts0bnDz4EEp+HraW+oRCH2m57Y9zhcJTOJaLw4YpTY
+ GRUlF076vZ2Hz/xMEvIJddRGId7UXZgH9a32NDf+BUjWEZvFt1wFSW1r7zb7oGCwZMy2LI/G
+ aHQv/N0NeFMd28z+deyxd0k1CGefHJuJcOJDVtcE1rGQ43aDhWSpXvXKDj42vFD2We6uIo9D
+ 1VNre2+uAxFzqqf026H6cH8hin9Vnx7p3uq3Dka/Y/qmRFnKVQARAQABzRxIZWxnZSBEZWxs
+ ZXIgPGRlbGxlckBnbXguZGU+wsGRBBMBCAA7AhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheA
+ FiEERUSCKCzZENvvPSX4Pl89BKeiRgMFAl3J1zsCGQEACgkQPl89BKeiRgNK7xAAg6kJTPje
+ uBm9PJTUxXaoaLJFXbYdSPfXhqX/BI9Xi2VzhwC2nSmizdFbeobQBTtRIz5LPhjk95t11q0s
+ uP5htzNISPpwxiYZGKrNnXfcPlziI2bUtlz4ke34cLK6MIl1kbS0/kJBxhiXyvyTWk2JmkMi
+ REjR84lCMAoJd1OM9XGFOg94BT5aLlEKFcld9qj7B4UFpma8RbRUpUWdo0omAEgrnhaKJwV8
+ qt0ULaF/kyP5qbI8iA2PAvIjq73dA4LNKdMFPG7Rw8yITQ1Vi0DlDgDT2RLvKxEQC0o3C6O4
+ iQq7qamsThLK0JSDRdLDnq6Phv+Yahd7sDMYuk3gIdoyczRkXzncWAYq7XTWl7nZYBVXG1D8
+ gkdclsnHzEKpTQIzn/rGyZshsjL4pxVUIpw/vdfx8oNRLKj7iduf11g2kFP71e9v2PP94ik3
+ Xi9oszP+fP770J0B8QM8w745BrcQm41SsILjArK+5mMHrYhM4ZFN7aipK3UXDNs3vjN+t0zi
+ qErzlrxXtsX4J6nqjs/mF9frVkpv7OTAzj7pjFHv0Bu8pRm4AyW6Y5/H6jOup6nkJdP/AFDu
+ 5ImdlA0jhr3iLk9s9WnjBUHyMYu+HD7qR3yhX6uWxg2oB2FWVMRLXbPEt2hRGq09rVQS7DBy
+ dbZgPwou7pD8MTfQhGmDJFKm2jvOwU0EXchrcwEQAOsDQjdtPeaRt8EP2pc8tG+g9eiiX9Sh
+ rX87SLSeKF6uHpEJ3VbhafIU6A7hy7RcIJnQz0hEUdXjH774B8YD3JKnAtfAyuIU2/rOGa/v
+ UN4BY6U6TVIOv9piVQByBthGQh4YHhePSKtPzK9Pv/6rd8H3IWnJK/dXiUDQllkedrENXrZp
+ eLUjhyp94ooo9XqRl44YqlsrSUh+BzW7wqwfmu26UjmAzIZYVCPCq5IjD96QrhLf6naY6En3
+ ++tqCAWPkqKvWfRdXPOz4GK08uhcBp3jZHTVkcbo5qahVpv8Y8mzOvSIAxnIjb+cklVxjyY9
+ dVlrhfKiK5L+zA2fWUreVBqLs1SjfHm5OGuQ2qqzVcMYJGH/uisJn22VXB1c48yYyGv2HUN5
+ lC1JHQUV9734I5cczA2Gfo27nTHy3zANj4hy+s/q1adzvn7hMokU7OehwKrNXafFfwWVK3OG
+ 1dSjWtgIv5KJi1XZk5TV6JlPZSqj4D8pUwIx3KSp0cD7xTEZATRfc47Yc+cyKcXG034tNEAc
+ xZNTR1kMi9njdxc1wzM9T6pspTtA0vuD3ee94Dg+nDrH1As24uwfFLguiILPzpl0kLaPYYgB
+ wumlL2nGcB6RVRRFMiAS5uOTEk+sJ/tRiQwO3K8vmaECaNJRfJC7weH+jww1Dzo0f1TP6rUa
+ fTBRABEBAAHCwXYEGAEIACAWIQRFRIIoLNkQ2+89Jfg+Xz0Ep6JGAwUCXchrcwIbDAAKCRA+
+ Xz0Ep6JGAxtdEAC54NQMBwjUNqBNCMsh6WrwQwbg9tkJw718QHPw43gKFSxFIYzdBzD/YMPH
+ l+2fFiefvmI4uNDjlyCITGSM+T6b8cA7YAKvZhzJyJSS7pRzsIKGjhk7zADL1+PJei9p9idy
+ RbmFKo0dAL+ac0t/EZULHGPuIiavWLgwYLVoUEBwz86ZtEtVmDmEsj8ryWw75ZIarNDhV74s
+ BdM2ffUJk3+vWe25BPcJiaZkTuFt+xt2CdbvpZv3IPrEkp9GAKof2hHdFCRKMtgxBo8Kao6p
+ Ws/Vv68FusAi94ySuZT3fp1xGWWf5+1jX4ylC//w0Rj85QihTpA2MylORUNFvH0MRJx4mlFk
+ XN6G+5jIIJhG46LUucQ28+VyEDNcGL3tarnkw8ngEhAbnvMJ2RTx8vGh7PssKaGzAUmNNZiG
+ MB4mPKqvDZ02j1wp7vthQcOEg08z1+XHXb8ZZKST7yTVa5P89JymGE8CBGdQaAXnqYK3/yWf
+ FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
+ 4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
+ ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
+In-Reply-To: <CAHbLzkotBTOf0OrPSN4o=UEvRXjT=L=NSZn_=FBA6nG51ppjYg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:B/Ce3BWOxRWAzlUCr6qoViDtODHFPqm9ZzOjouNnMpYvXYkqXlG
+ aQw4KdX//Y8/TobOETNoR7ZhJ42mCfJxUuS/RsTsjh1ISoLbC47LU0p5dDGcaz0XnztIh+G
+ emEVb08RRtPRS/YVFpBiliNd2q34aED3Q4wtjLYNvjGU8vVTtdvAfBAiZFdNmUk2zBIHY3x
+ GH5We/fXz3YNs0FTFxoxw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:6NRbv/9xRcM=;3n4A+SmKFN6NsO7EqZOWEj1Qv0F
+ QdbXBS5tDYsik2Lr5MXFIpcm1ZhGyypNu1U83bFOxmBDEpAklYFW6YLwJmkcXGv7skHaivLtl
+ l+NzJmgIhvSK+ZReX9ITRQ1Ty2taCwlS1YR3Q4qfAfhJe6ARWlVuntfpEZoIfhb+iKhPJVzxQ
+ rXyyt+gBsTuRPa3YlO5C3jMjBb34AtEv41rpT1DSIWiPgTIeDlxKPPX7cU8X0FoIr7IXYeDwj
+ 6LP3GPov/rknsmqj0IDqIlCw13YCbYASRWfGrFoQ06EBYUsqulZdTssZ0kHtk2jqB9YQznZsX
+ oI/3TkzNGvH5OXBRxqvBJEw6HtlOrCjUr7Py+9+9mUyUp7HTfy0vuE6PEbu5w/3PpZnxg6oan
+ VFzi2UOYIMkAuDL86jgTMR5SIVn3oR6EHsFrJo0KAubaASsDIrUR3iq9ho61Ijq/FfJu1WdyP
+ 4KBVDosNg0ZS9RtLdar08+5KWkB3bNkWJikSMa02LNmlB3eAEsHWQMvf0ZKj8igEi4L0DSZgi
+ plvQ09GHOMAwwffax7rf6qqJcwhCP9SqDbNnbkY16ywOqK8NtMEzJAUxP3c9KK3KRypakssPB
+ nkgjNcHaCPxMkLCmgqdX0IMbBBQqrooxkWOiw4yZgwofzu+Q6B++UP1uNFWy6r/9xJdPhtPKG
+ Q/M7aB6aTu4si6slQlMUFK4nMqtvv2jNNIDCwPIpaU//gDArsVr22oaErasIk4NDZwE77k1XV
+ C/jU6xLGTA0HFARQxhJAAOhsiwo4qbZjcy2VzA+68iCeHhzdSPbhcgGXrOcloaD6ZWaDycUqO
+ p+WhxhD5zIIbHJM0EO+1xw0Q==
 
-* Yang Shi <shy828301@gmail.com> [240911 21:08]:
-> On Wed, Sep 11, 2024 at 5:50=E2=80=AFPM Helge Deller <deller@gmx.de> wrot=
-e:
-> >
-> > On 9/12/24 01:05, Liam R. Howlett wrote:
-> > > * Yang Shi <shy828301@gmail.com> [240911 18:16]:
-> > >> On Wed, Sep 11, 2024 at 12:49=E2=80=AFPM Liam R. Howlett
-> > >> <Liam.Howlett@oracle.com> wrote:
-> > >>>
-> > >>> * Helge Deller <deller@kernel.org> [240911 15:20]:
-> > >>>> This is a RFC to change the behaviour of mmap(MAP_STACK) to be
-> > >>>> sufficient to map memory for usage as stack on all architectures.
-> > >>>> Currently MAP_STACK is a no-op on Linux, and instead MAP_GROWSDOWN
-> > >>>> has to be used.
-> > >>>> To clarify, here is the relevant info from the mmap() man page:
-> > >>>>
-> > >>>> MAP_GROWSDOWN
-> > >>>>     This flag is used for stacks. It indicates to the kernel virtu=
+On 9/12/24 03:08, Yang Shi wrote:
+> On Wed, Sep 11, 2024 at 5:50=E2=80=AFPM Helge Deller <deller@gmx.de> wro=
+te:
+>>
+>> On 9/12/24 01:05, Liam R. Howlett wrote:
+>>> * Yang Shi <shy828301@gmail.com> [240911 18:16]:
+>>>> On Wed, Sep 11, 2024 at 12:49=E2=80=AFPM Liam R. Howlett
+>>>> <Liam.Howlett@oracle.com> wrote:
+>>>>>
+>>>>> * Helge Deller <deller@kernel.org> [240911 15:20]:
+>>>>>> This is a RFC to change the behaviour of mmap(MAP_STACK) to be
+>>>>>> sufficient to map memory for usage as stack on all architectures.
+>>>>>> Currently MAP_STACK is a no-op on Linux, and instead MAP_GROWSDOWN
+>>>>>> has to be used.
+>>>>>> To clarify, here is the relevant info from the mmap() man page:
+>>>>>>
+>>>>>> MAP_GROWSDOWN
+>>>>>>      This flag is used for stacks. It indicates to the kernel virtu=
 al
-> > >>>>     memory system that the mapping should extend downward in memor=
+>>>>>>      memory system that the mapping should extend downward in memor=
 y.  The
-> > >>>>     return address is one page lower than the memory area that is
-> > >>>>     actually created in the process's virtual address space.  Touc=
+>>>>>>      return address is one page lower than the memory area that is
+>>>>>>      actually created in the process's virtual address space.  Touc=
 hing an
-> > >>>>     address in the "guard" page below the mapping will cause the m=
+>>>>>>      address in the "guard" page below the mapping will cause the m=
 apping
-> > >>>>     to grow by a page. This growth can be repeated until the mappi=
+>>>>>>      to grow by a page. This growth can be repeated until the mappi=
 ng
-> > >>>>     grows to within a page of the high end of the next lower mappi=
+>>>>>>      grows to within a page of the high end of the next lower mappi=
 ng,
-> > >>>>     at which point touching the "guard" page will result in a SIGS=
+>>>>>>      at which point touching the "guard" page will result in a SIGS=
 EGV
-> > >>>>     signal.
-> > >>>>
-> > >>>> MAP_STACK (since Linux 2.6.27)
-> > >>>>     Allocate the mapping at an address suitable for a process or t=
+>>>>>>      signal.
+>>>>>>
+>>>>>> MAP_STACK (since Linux 2.6.27)
+>>>>>>      Allocate the mapping at an address suitable for a process or t=
 hread
-> > >>>>     stack.
-> > >>>>
-> > >>>>     This flag is currently a no-op on Linux. However, by employing=
+>>>>>>      stack.
+>>>>>>
+>>>>>>      This flag is currently a no-op on Linux. However, by employing=
  this
-> > >>>>     flag, applications can ensure that they transparently obtain s=
+>>>>>>      flag, applications can ensure that they transparently obtain s=
 upport
-> > >>>>     if the flag is implemented in the future. Thus, it is used in =
+>>>>>>      if the flag is implemented in the future. Thus, it is used in =
 the
-> > >>>>     glibc threading implementation to allow for the fact that
-> > >>>>     some architectures may (later) require special treatment for
-> > >>>>     stack allocations. A further reason to employ this flag is
-> > >>>>     portability: MAP_STACK exists (and has an effect) on some
-> > >>>>     other systems (e.g., some of the BSDs).
-> > >>>>
-> > >>>> The reason to suggest this change is, that on the parisc architect=
-ure the
-> > >>>> stack grows upwards. As such, using solely the MAP_GROWSDOWN flag =
-will not
-> > >>>> work. Note that there exists no MAP_GROWSUP flag.
-> > >>>> By changing the behaviour of MAP_STACK to mark the memory area wit=
-h the
-> > >>>> VM_STACK bit (which is VM_GROWSUP or VM_GROWSDOWN depending on the
-> > >>>> architecture) the MAP_STACK flag does exactly what people would ex=
-pect on
-> > >>>> all platforms.
-> > >>>>
-> > >>>> This change should have no negative side-effect, as all code which
-> > >>>> used mmap(MAP_GROWSDOWN | MAP_STACK) still work as before.
-> > >>>>
-> > >>>> Signed-off-by: Helge Deller <deller@gmx.de>
-> > >>>>
-> > >>>> diff --git a/include/linux/mman.h b/include/linux/mman.h
-> > >>>> index bcb201ab7a41..66bc72a0cb19 100644
-> > >>>> --- a/include/linux/mman.h
-> > >>>> +++ b/include/linux/mman.h
-> > >>>> @@ -156,6 +156,7 @@ calc_vm_flag_bits(unsigned long flags)
-> > >>>>        return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN )=
+>>>>>>      glibc threading implementation to allow for the fact that
+>>>>>>      some architectures may (later) require special treatment for
+>>>>>>      stack allocations. A further reason to employ this flag is
+>>>>>>      portability: MAP_STACK exists (and has an effect) on some
+>>>>>>      other systems (e.g., some of the BSDs).
+>>>>>>
+>>>>>> The reason to suggest this change is, that on the parisc architectu=
+re the
+>>>>>> stack grows upwards. As such, using solely the MAP_GROWSDOWN flag w=
+ill not
+>>>>>> work. Note that there exists no MAP_GROWSUP flag.
+>>>>>> By changing the behaviour of MAP_STACK to mark the memory area with=
+ the
+>>>>>> VM_STACK bit (which is VM_GROWSUP or VM_GROWSDOWN depending on the
+>>>>>> architecture) the MAP_STACK flag does exactly what people would exp=
+ect on
+>>>>>> all platforms.
+>>>>>>
+>>>>>> This change should have no negative side-effect, as all code which
+>>>>>> used mmap(MAP_GROWSDOWN | MAP_STACK) still work as before.
+>>>>>>
+>>>>>> Signed-off-by: Helge Deller <deller@gmx.de>
+>>>>>>
+>>>>>> diff --git a/include/linux/mman.h b/include/linux/mman.h
+>>>>>> index bcb201ab7a41..66bc72a0cb19 100644
+>>>>>> --- a/include/linux/mman.h
+>>>>>> +++ b/include/linux/mman.h
+>>>>>> @@ -156,6 +156,7 @@ calc_vm_flag_bits(unsigned long flags)
+>>>>>>         return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN )=
  |
-> > >>>>               _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    )=
+>>>>>>                _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    )=
  |
-> > >>>>               _calc_vm_trans(flags, MAP_SYNC,       VM_SYNC      )=
+>>>>>>                _calc_vm_trans(flags, MAP_SYNC,       VM_SYNC      )=
  |
-> > >>>> +            _calc_vm_trans(flags, MAP_STACK,      VM_STACK     ) =
-|
-> > >>>
-> > >>> Right now MAP_STACK can be used to set VM_NOHUGEPAGE, but this will
-> > >>> change the user interface to create a vma that will grow.  I'm not
-> > >>> entirely sure this is okay?
-> > >>
-> > >> AFAICT, I don't see this is a problem. Currently huge page also skip=
-s
-> > >> the VMAs with VM_GROWS* flags set. See vma_is_temporary_stack().
-> > >> __thp_vma_allowable_orders() returns 0 if the vma is a temporary
-> > >> stack.
-> > >
-> > > If someone is using MAP_STACK to avoid having a huge page, they will
-> > > also get a mapping that grows - which is different than what happens
-> > > today.
-> > >
-> > > I'm not saying that's right, but someone could be abusing the existin=
-g
-> > > flag and this will change the behaviour.
-> >
-> > Wouldn't a plain mmap() followed by madvise(MADV_NOHUGEPAGE) do exactly=
+>>>>>> +            _calc_vm_trans(flags, MAP_STACK,      VM_STACK     ) |
+>>>>>
+>>>>> Right now MAP_STACK can be used to set VM_NOHUGEPAGE, but this will
+>>>>> change the user interface to create a vma that will grow.  I'm not
+>>>>> entirely sure this is okay?
+>>>>
+>>>> AFAICT, I don't see this is a problem. Currently huge page also skips
+>>>> the VMAs with VM_GROWS* flags set. See vma_is_temporary_stack().
+>>>> __thp_vma_allowable_orders() returns 0 if the vma is a temporary
+>>>> stack.
+>>>
+>>> If someone is using MAP_STACK to avoid having a huge page, they will
+>>> also get a mapping that grows - which is different than what happens
+>>> today.
+>>>
+>>> I'm not saying that's right, but someone could be abusing the existing
+>>> flag and this will change the behaviour.
+>>
+>> Wouldn't a plain mmap() followed by madvise(MADV_NOHUGEPAGE) do exactly=
  that?
-> > Why abusing MAP_STACK for that?
->=20
+>> Why abusing MAP_STACK for that?
+>
 > Different sources and reports showed having huge pages for stack
 > mapping hurts performance. A lot of applications, for example, pthread
 > lib, allocate stack with MAP_STACK and they don't call MADV_NOHUGEPAGE
 > on stack mapping.
->=20
 
-It makes sense to have a stack with NOHUGEPAGE, but does anyone use
-MAP_STACK to avoid the extra syscall to madv to set it on mappings that
-are NOT stacks which would now become stack-like with this change?
+That's true, and my patch does not change the behaviour wrt huge pages.
+Using MAP_STACK still tags the area VM_NOHUGEPAGE. See below...
 
-...
-> > >>>>               _calc_vm_trans(flags, MAP_STACK,      VM_NOHUGEPAGE)=
+
+>>>>> That is mmap(MAP_STACK) would set VM_NOHUGEPAGE right now, with this
+>>>>> change you'd get VM_NOHUGEPAGE | VM_GROWS<something>
+>>>>>
+>>>>>>                _calc_vm_trans(flags, MAP_STACK,      VM_NOHUGEPAGE)=
  |
-> > >>>>               arch_calc_vm_flag_bits(flags);
-> > >>>>   }
-> >
+>>>>>>                arch_calc_vm_flag_bits(flags);
+>>>>>>    }
+>>
+
 
