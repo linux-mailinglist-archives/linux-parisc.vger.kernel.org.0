@@ -1,341 +1,223 @@
-Return-Path: <linux-parisc+bounces-2388-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2389-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D409E986863
-	for <lists+linux-parisc@lfdr.de>; Wed, 25 Sep 2024 23:38:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2A6986F2C
+	for <lists+linux-parisc@lfdr.de>; Thu, 26 Sep 2024 10:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9169E2847B9
-	for <lists+linux-parisc@lfdr.de>; Wed, 25 Sep 2024 21:38:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C1F4B2080B
+	for <lists+linux-parisc@lfdr.de>; Thu, 26 Sep 2024 08:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D2A155742;
-	Wed, 25 Sep 2024 21:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCCB192586;
+	Thu, 26 Sep 2024 08:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eHZoRsLY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b2R010Cd"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5381465A0
-	for <linux-parisc@vger.kernel.org>; Wed, 25 Sep 2024 21:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8EA22318
+	for <linux-parisc@vger.kernel.org>; Thu, 26 Sep 2024 08:46:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727300280; cv=none; b=hQ93Nkg2WLbM4+ewTMOdZLLE9UzHhYSiJGh967AqSvaLfNMUWT0f64bSwl9SMpwuVJFEcTJQfU5a66cg06IGJFVdzw8PZ/aT/wi5bJxUkGLLlw0aDXoFVKpqCpWEhtlr+bYI3u9EAJeKzWD8nn060bSylPuOb4RNKnljasWfEW4=
+	t=1727340420; cv=none; b=nIY2h4xCrSqSbFxpWKm+8VziIPT7CUm+CBCmTHz9q06QWDg1T7ZcohqIUVGFE9317ijSkKSi1BIsR9+g0Wbu4w6Yg1gQpIioVu2l7dg1Ll0PK+8oDJN8+59+7OCj9igdKuKarpEBzygjI7L6l02Su1S2bMBVxDMDbZa6YM1Xn5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727300280; c=relaxed/simple;
-	bh=CO/eU2hD795b9QWU0mtQl5VrZOVUPYm+LBZ35J8pZ/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W6Bi8Mpi1Be+LGvKtvbIHG9lz49h9slEvsy0CU4RZMAdiBceeDjdnW1Pg5Oy80k5vcCwgLCCBuiVs8W6oTW4u1+iO6oIpwx0GB0qO/F8EkorSKRxP8GumxdrLP2/iSacFSGqgRghR56W7j49FeuCpAFYqJcGnJqN4PeXrB/VMg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eHZoRsLY; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 25 Sep 2024 14:37:47 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1727300275;
+	s=arc-20240116; t=1727340420; c=relaxed/simple;
+	bh=nRwl+eY0EgaqedKxTmOknSbhk/ns0RAjZ8bitL8CuQY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h4bW3CIkN/HV1/FOD2gwIfTsqQF98+reJMFe5KFwyp4cymr3BZOqulzOxHa1maF2DhBLDJiEfuzNCSU+zsofIfzjAmaoMlI/CliX6SqcityZKziS6Dl1Oeyw0QPewV4Ou4zlZf6wZuvdeAOP4zcN7qxviAmwo4dcvx0v7qmXj2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b2R010Cd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727340417;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fOvzqT8+7CG6UzKIvJwwqSBHD7U085Cpv7Sq+LvFass=;
-	b=eHZoRsLY9aGVOBtQgeRwsi5E2S83uC44p11HDsxpfWeUHFEPhxhZca1ivER/VEYo7GKFWl
-	HTqO+QxUVmBIccct49/rIpGBDKM6ifCjIstIOneHn6jT/y0f7yQp5+7iRs5MYPvWBxdTKd
-	Ivds9V7o9NJAVZjAJtrHgmgZslp3xd8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, linux-api@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Minchan Kim <minchan@kernel.org>, 
-	Richard Henderson <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, 
-	Matt Turner <mattst88@gmail.com>, linux-alpha@vger.kernel.org, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, christian@brauner.io
-Subject: Re: [PATCH v2 1/2] mm/madvise: introduce PR_MADV_SELF flag to
- process_madvise()
-Message-ID: <oipehrflhjejorzb5xzog3ijr7h4l5znjkzycvegsnzmtsmh2k@uy2cbfskvocq>
-References: <cover.1727176176.git.lorenzo.stoakes@oracle.com>
- <1ecf2692b3bcdd693ad61d510ce0437abb43a1bd.1727176176.git.lorenzo.stoakes@oracle.com>
- <u64scsk52b3ek4b7fh72tdylkf3qh537txcqhvozmaasrlug3r@eqsmstvs324c>
- <4740dfc7-71da-4eb4-b071-35116288571f@lucifer.local>
- <xilfrvlstq4fqr46jlrzvq2vlr22nizdrwlcdizp774nlt6pfj@jukzlcwc7bed>
- <7f40a8f6-c2f1-45f2-b9ff-88e169a33906@lucifer.local>
- <wvk5y3m47qmox4by6u3zpxtwartjmoaqaaqswbgui626zkjajq@22wjmqo36hes>
- <6b449c32-0954-4db1-9df5-23b766dc2d9a@lucifer.local>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dcdT+Y+JTqgEdFx8AuCpVRjLlJoZMsxN/9BPx+44vCo=;
+	b=b2R010CdmuI448+ZEeEbtzcxWGrIw1lWsFPsOdz2KRHY+Pq6vosutUC9lPCfh2Wkot5/vW
+	rTBX4Z2fgaPhTKhyDQtOMbwJcieNvQ3c8nyvkqAmWSo1+xtsDzkJcQNpt2vZ7HzCC4wrda
+	EEjDF7mg7SMfiRwXGdlpmIhKE/OIjeU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-594-xmpE6IMYMbKjXPVup39HxQ-1; Thu, 26 Sep 2024 04:46:55 -0400
+X-MC-Unique: xmpE6IMYMbKjXPVup39HxQ-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-374beb23f35so290757f8f.0
+        for <linux-parisc@vger.kernel.org>; Thu, 26 Sep 2024 01:46:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727340415; x=1727945215;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dcdT+Y+JTqgEdFx8AuCpVRjLlJoZMsxN/9BPx+44vCo=;
+        b=L2NPXezonTsdA4csbJPBTLiGcWnqd9BPG1zOd17aBbBjZQmbzffe+0AR3+OorFISOI
+         4ywHK1+VxFUpAZgunn3mghIZ7CuU4zSiCxW5A0xzRhtjE+uP3n5mpmYoqhKFHY+CtNkp
+         gkQ0o/vPWSf9FPD3qlerHRzqmV8MhvHTSz7ZsTSvMWx6K+5kVoVEM1xTb2nFDtgCeLJR
+         u/bHtsC45+Z4piKIz32KEsf1bLnTFB142vRYHq8i2dV4u0XgUzZg/a/poIoLDZNgp9ID
+         U4WI89ZfN3lnhNV1cKstWLlQfbHsQ60L2YdYr5YuoSfQVlWwMgabh3eIbTMQnj3Xi53A
+         SDCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXyJ50nsVANhLi85lHJji7HhDexg8PvEoc+aeR+vSImRwK/Eco7e7b19hqyS8aKbn2B2Vd0DY/MHYEZFrU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdaYb8qVJaKLW5zLUa0QG3mqtaS/rNoV1WK/0RJEbb6bXqmEGG
+	jPEpG1tsE0/V9+7PgtreUFAK8N+ygJClWYlVM11dCDLfvZ8n5poY6hf/QickEeouzT6i8eWJJ/h
+	+MKVO7tC7GgJU+pMjEeSjxQ8U0jLmQNQKgiXF/lPGHi7stFJ2h9kHXztxAYc4Gw==
+X-Received: by 2002:a5d:4642:0:b0:374:c07c:a49 with SMTP id ffacd0b85a97d-37cc248b745mr3395749f8f.28.1727340414657;
+        Thu, 26 Sep 2024 01:46:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF8YDSVOdNq1/t7E3SyZWe5lFPiCsLTZcolGEYAEKQa215yfM+Vw1+QC4KOFxSiwJu3877rJg==
+X-Received: by 2002:a5d:4642:0:b0:374:c07c:a49 with SMTP id ffacd0b85a97d-37cc248b745mr3395735f8f.28.1727340414264;
+        Thu, 26 Sep 2024 01:46:54 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c744:ac00:ef5c:b66d:1075:254a? (p200300cbc744ac00ef5cb66d1075254a.dip0.t-ipconnect.de. [2003:cb:c744:ac00:ef5c:b66d:1075:254a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e969ffa22sm40374455e9.25.2024.09.26.01.46.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Sep 2024 01:46:53 -0700 (PDT)
+Message-ID: <b7f7f849-00d1-49e5-8455-94eb9b45e273@redhat.com>
+Date: Thu, 26 Sep 2024 10:46:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6b449c32-0954-4db1-9df5-23b766dc2d9a@lucifer.local>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] [RFC] mm: Remove MAP_UNINITIALIZED support
+To: Arnd Bergmann <arnd@kernel.org>, linux-mm@kvack.org
+Cc: Arnd Bergmann <arnd@arndb.de>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Damien Le Moal <dlemoal@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
+ Helge Deller <deller@gmx.de>, Kees Cook <kees@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Vladimir Murzin <vladimir.murzin@arm.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arch@vger.kernel.org
+References: <20240925210615.2572360-1-arnd@kernel.org>
+ <20240925210615.2572360-6-arnd@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240925210615.2572360-6-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 25, 2024 at 06:04:59PM GMT, Lorenzo Stoakes wrote:
-> On Wed, Sep 25, 2024 at 09:19:17AM GMT, Shakeel Butt wrote:
-> > I have no idea what makes you think I am blocking the feature that you
-> > repond in a weird tone but let me be upfront what I am asking: Let's
-> > collectively decide which is the better option (in terms of
-> > maintainability and extensibility) and move forward.
+On 25.09.24 23:06, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> I'm not sure what you mean by 'weird tone'... perhaps a miscommunication?
+> MAP_UNINITIALIZED was added back in 2009 for NOMMU kernels, specifically
+> for blackfin, which is long gone. MAP_HUGE_SHIFT/MAP_HUGE_MASK were
+> added in 2012 for architectures supporting hugepages, which at the time
+> did not overlap with the ones supporting NOMMU.
 > 
-> To summarise in my view - a suggestion was made to, rather than provide the
-> proposed flag - a pidfd sentinel should be introduced.
+> Adding the macro under an #ifdef was obviously a mistake, which
+> Christoph Hellwig tried to address by making it unconditionally defined
+> to 0x4000000 as part of the series to support RISC-V NOMMU kernels. At
+> this point linux/mman.h contained two conflicting definitions for bit 26,
+> though the two are still mutually exclusive at runtime in all supported
+> configurations.
 > 
-> Simply introducing a sentinel that represents 'the current process' without
-> changing interfaces that accept a pidfd would be broken - so implementing
-> this implies that _all_ pidfd interfaces are updated, as well as tests.
+> According to the commit 854e9ed09ded ("mm: support madvise(MADV_FREE)")
+> description, it was previously used internally by facebook, which
+> would have resulted in MAP_HUGE_1MB turning into MAP_HUGE_2MB
+> with MAP_UNINITIALIZED enabled, and every other page size implying
+> MAP_UNINITIALIZED. I assume there are no remaining out of tree users
+> on MMU-enabled kernels today.
 > 
-> I suggest doing so is, of course, entirely out of the scope of this
-> change. Therefore if we were to require that here - it would block the
-> feature while I go work on that.
+> I do not see any sensible way to redefine the macros for the ABI in
+> a way avoids breaking something. The only ideas so far are:
 > 
-> I think this is pretty clear right? And I also suggest that doing so is
-> likely to take quite some time, and may not even have a positive outcome.
+>   - do nothing, try to document the bug, hope for the best
+> 
+>   - remove the kernel implementation and redefine MAP_UNINITIALIZED to
+>     zero in the header to silently turn it off for everyone. There are
+>     few NOMMU users left, and the ones that do use NOMMU usually turn
+>     off MMAP_ALLOW_UNINITIALIZED, as it still has the potential to cause
+>     bugs and even security issues on systems with a memory protection
+>     unit.
+> 
+>   - remove both the implementation and the macro to force a build
+>     failure for anyone trying to use the feature. This way we can
+>     see who complains and whether we need to put it back in some
+>     form or change the userspace sources to no longer pass the flag.
+> 
 
-If you have some concrete example on how this may not have a positive
-outcome then it will make your case much stronger.
+The first, uncontroversial step could indeed be to make 
+MAP_UNINITIALIZED a nop, but still leave the definitions in mman.h etc 
+around.
 
-> 
-> So it's not a case of 'shall we take approach A or approach B?' but rather
-> 'should we take approach A or entirely implement a new feature B, then once
-> that is done, use it'.
+This is the same we did with MAP_DENYWRITE. There might be some weird 
+user out there, and carelessly reusing the bit could result in trouble. 
+(people might argue that they are not using it with MAP_HUGETLB, so it 
+would work)
 
-The "entire new feature" is a bit too strong IMHO. (though no pushback
-from me).
+Going forward and removing MAP_UNINITIALIZED is a bit more 
+controversial, but maybe there really isn't any other user around. 
+Software that is not getting recompiled cannot be really identified by 
+letting it rest in -next only.
 
-> 
-> So as to your 'collectively decide what is the better option' - in my
-> previous response I argued that the best approach between 'use an
-> unimplemented suggested entirely new feature of pidfd' vs. 'implement a
-> flag that would in no way block the prior approach' - a flag works better.
-> 
-> If you can provide specific arguments as to why I'm wrong then by all means
-> I'm happy to hear them.
-> 
-> >
-> > On Wed, Sep 25, 2024 at 03:48:07PM GMT, Lorenzo Stoakes wrote:
-> > > On Wed, Sep 25, 2024 at 07:02:59AM GMT, Shakeel Butt wrote:
-> > > > Cced Christian
-> > > >
-> > > > On Tue, Sep 24, 2024 at 02:12:49PM GMT, Lorenzo Stoakes wrote:
-> > > > > On Tue, Sep 24, 2024 at 01:51:11PM GMT, Pedro Falcato wrote:
-> > > > > > On Tue, Sep 24, 2024 at 12:16:27PM GMT, Lorenzo Stoakes wrote:
-> > > > > > > process_madvise() was conceived as a useful means for performing a vector
-> > > > > > > of madvise() operations on a remote process's address space.
-> > > > > > >
-> > > > > > > However it's useful to be able to do so on the current process also. It is
-> > > > > > > currently rather clunky to do this (requiring a pidfd to be opened for the
-> > > > > > > current process) and introduces unnecessary overhead in incrementing
-> > > > > > > reference counts for the task and mm.
-> > > > > > >
-> > > > > > > Avoid all of this by providing a PR_MADV_SELF flag, which causes
-> > > > > > > process_madvise() to simply ignore the pidfd parameter and instead apply
-> > > > > > > the operation to the current process.
-> > > > > > >
-> > > > > >
-> > > > > > How about simply defining a pseudo-fd PIDFD_SELF in the negative int space?
-> > > > > > There's precedent for it in the fs space (AT_FDCWD). I think it's more ergonomic
-> > > > > > and if you take out the errno space we have around 2^31 - 4096 available sentinel
-> > > > > > values.
-> > > > > >
-> > > > > > e.g:
-> > > > > >
-> > > > > > /* AT_FDCWD = -10, -1 is dangerous, pick a different value */
-> > > > > > #define PIDFD_SELF   -11
-> > > > > >
-> > > > > > int pidfd = target_pid == getpid() ? PIDFD_SELF : pidfd_open(...);
-> > > > > > process_madvise(pidfd, ...);
-> > > > > >
-> > > > > >
-> > > > > > What do you think?
-> > > > >
-> > > > > I like the way you're thinking, but I don't think this is something we can
-> > > > > do in the context of this series.
-> > > > >
-> > > > > I mean, I totally accept using a flag here and ignoring the pidfd field is
-> > > > > _ugly_, no question. But I'm trying to find the smallest change that
-> > > > > achieves what we want.
-> > > >
-> > > > I don't think "smallest change" should be the target. We are changing
-> > > > user API and we should aim to make it as robust as possible against
-> > > > possible misuse or making uninteded assumptions.
-> > >
-> > > I think introducing a new pidfd sentinel that isn't used anywhere else is
-> > > far more liable to mistakes than adding an explicit flag.
-> > >
-> > > Could you provide examples of possible misuse of this flag or unintended
-> > > assumptions it confers (other than the -1 thing addressed below).
-> > >
-> > > The flag is explicitly 'target this process, ignore pidfd'. We can document
-> > > it as such (I will patch manpages too).
-> > >
-> > > >
-> > > > The proposed implementation opened the door for the applications to
-> > > > provide dummy pidfd if PR_MADV_SELF is used. You definitely need to
-> > > > restrict it to some known value like -1 used by mmap() syscall.
-> > >
-> > > Why?
-> > >
-> > > mmap() is special in that you have a 'dual' situation with shmem that is
-> > > both file-backed and private and of course you can do MAP_SHARED |
-> > > MAP_PRIVATE and have mmap() transparently assign something to you, etc.
-> > >
-> > > Here we explicitly have a flag whose semantics are 'ignore pidfd, target
-> > > self'.
-> > >
-> > > If you choose to use a brand new flag that explicitly states this and
-> > > provide a 'dummy' pidfd which then has nothing done to it - what exactly is
-> > > the problem?
-> >
-> > IMHO having a fixed dummy would allow the kernel more flexibility in
-> > future for evolving the API.
-> 
-> OK. I agree with having a fixed dummy value as stated.
-> 
-> >
-> > >
-> > > I mean if you feel strongly, we can enforce this, but I'm not sure -1
-> > > implying a special case for pidfd is a thing either.
-> > >
-> > > On the other hand it would be _weird_ and broken for the user to provide a
-> > > valid pidfd so maybe we should as it is easy to do and the user has clearly
-> > > done something wrong.
-> > >
-> > > So fine, agreed, I'll add that.
-> > >
-> >
-> > No, don't just agree. The response like "-1 is not good for so and so
-> > reasons" is totally fine and my request would be add that reasoning in
-> > the commit message. My only request is that we have thought through
-> > alternatives and document the reasonsing behind the decided approach.
-> 
-> I didn't just agree, as I said, my reasoning is:
-> 
-> 	On the other hand it would be _weird_ and broken for the user to
-> 	provide a valid pidfd so maybe we should as it is easy to do and
-> 	the user has clearly done something wrong.
-> 
-> If we're in alignment with that then all good!
-> 
-> >
-> > > >
-> > > > >
-> > > > > To add such a sentinel would be a change to the pidfd mechanism as a whole,
-> > > > > and we'd be left in the awkward situation that no other user of the pidfd
-> > > > > mechanism would be implementing this, but we'd have to expose this as a
-> > > > > general sentinel value for all pidfd users.
-> > > >
-> > > > There might be future users which can take advantage of this. I can even
-> > > > imagine pidfd_send_signal() can use PIDFD_SELF as well.
-> > >
-> > > I'm confused by this comment - I mean absolutely, as I said I like the
-> > > idea, but this just proves the point that you'd have to go around and
-> > > implement this everywhere that uses a pidfd?
-> > >
-> > > That is a big undertaking, and not blocked by this change. Nor is
-> > > maintaining the flag proposed here egregious.
-> >
-> > By big undertaking, do you mean other syscalls that take pidfd
-> > (pidfd_getfd, pidfd_send_signal & process_mrelease) to handle PIDFD_SELF
-> > or something else?
-> 
-> I mean if you add a pidfd sentinel that represents 'the current process' it
-> may get passed to any interface that accepts a pidfd, so all of them have
-> to handle it _somehow_.
-> 
-> Also you'll want to update tests accordingly and clearly need to get
-> community buy-in for that feature.
-> 
-> You may want to just add a bunch of:
-> 
-> if (pidfd == SENTINEL)
-> 	return -EINVAL;
-> 
-> So it's not impossible my instincts are off and we can get away with simply
-> doing that.
-> 
-> On the other hand, would that be confusing? Wouldn't we need to update
-> documentation, manpages, etc. to say explicitly 'hey this sentinel is just
-> not supported'?
-> 
-> Again totally fine with the idea, like it actually, just my instincts are
-> it will involve some work. I may be wrong.
-> 
-> >
-> > >
-> > > Blocking a useful feature because we may in future possibly add a new means
-> > > of doing the same thing seems a little silly to me.
-> > >
-> >
-> > Hah!!
-> 
-> See top of mail.
-> 
-> >
-> > > > >
-> > > > > One nice thing with doing this as a flag is that, later, if somebody is
-> > > > > willing to do the larger task of having a special sentinel pidfd value to
-> > > > > mean 'the current process', we could use this in process_madvise() and
-> > > > > deprecate this flag :)
-> > > > >
-> > > >
-> > > > Once something is added to an API, particularly syscalls, the removal
-> > > > is almost impossible.
-> > >
-> > > And why would it be such a problem to have this flag remain? I said
-> > > deprecate not remove. And only in the sense that 'you may as well use the
-> > > sentinel'.
-> > >
-> >
-> > My point was to aim for the solution where we can avoid such scenario
-> > but it is totally understandable and acceptable that we still have to go
-> > through deprecation process in future.
-> >
-> > > The flag is very clear in its meaning, and confers no special problem in
-> > > remaining supported. It is a private flag that overlaps no others.
-> > >
-> > > I mean it'd in effect being a change to a single line 'if pidfd is sentinel
-> > > or flag is used'. If we can't support that going forward, then we should
-> > > give up this kernel stuff and frolick in the fields joyously instead...
-> > >
-> > > Again, if you can tell me why it'd be such a problem then fine we can
-> > > address that.
-> > >
-> > > But blocking a series and demanding a change to an entire other feature
-> > > just to support something I'd say requires some pretty specific reasons as
-> > > to why you have a problem with the change.
-> > >
-> > > >
-> > > > Anyways, I don't have very strong opinion one way or other but whatever
-> > > > we decide, let's make it robust.
-> > >
-> > > I mean... err... it sounds like you do kinda have pretty strong opinions ;)
-> >
-> > I am not sure how more explicit I have to be to but I am hoping now it
-> > is more clear than before.
-> 
-> I mean perhaps I misinterpreted you as strongly advocating for the sentinel
-> and your intent was rather to provide argument on that side also so the
-> community can decide as you say - sure.
-> 
-> But with you indifferent as you say as to which way to go, and my having
-> provided arguments for the flags (again happy to hear push-back of course)
-> - I suggest we go forward with the series as-is, other than a fixpatch I'll
-> send for the -1 thing.
->
+My take would be to leave MAP_UNINITIALIZED in the headers in some form 
+for documentation purposes.
 
-My only request would be to add all these points in the commit message
-i.e. why we took this approach rather than the alternative.
+-- 
+Cheers,
 
-> >
-> > Shakeel
-> 
-> Thanks for your review!
+David / dhildenb
+
 
