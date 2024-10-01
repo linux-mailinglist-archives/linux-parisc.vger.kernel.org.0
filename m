@@ -1,51 +1,51 @@
-Return-Path: <linux-parisc+bounces-2423-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2424-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EF5998C23D
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 18:06:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 382D598C4C0
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 19:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA59BB219BC
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 16:05:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F405B281E43
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 17:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C351CBEA4;
-	Tue,  1 Oct 2024 16:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9331CC8AB;
+	Tue,  1 Oct 2024 17:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qzypTkbM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TNm/rGGW"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481D11CBE88;
-	Tue,  1 Oct 2024 16:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B0C1CC8A3;
+	Tue,  1 Oct 2024 17:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727798707; cv=none; b=Xv9DV8EWk6V6L2DDXaTkszSmzQfv2EcoGsxna5jfBpiFzqqbDh8/WlAZ8TLuneZi/1H9OMhl04v1GEKZWYNZaf//zrkKXezH2d960kql9Akr4soPV92zU+UcBFvtH9hAfF5mIpTA1v1NqdwB63x2wUXZGuvP5KL8N4mfcY8psEQ=
+	t=1727804705; cv=none; b=L/FFvN/y168AQ05AZdJ1tRB14S+yeYpPi1D1V48/Kv8GA8wIMa96FOEBXzGkBq1oDh08u7tfvUBrB1GvU/7FVSe9QjSwk/trqA1eKTSspWtlmk+rj+Ks94bZfECQrH9lAf7oYr7VqQTdA2evpUSSRkREHGREw3HmzgcTRpMTROk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727798707; c=relaxed/simple;
-	bh=q8AWGhR5TRgJQrxCSCenmHtqjWoiXajsw3lB9UjWwzs=;
+	s=arc-20240116; t=1727804705; c=relaxed/simple;
+	bh=cGmlGzyEVG67x2K50IvHyi/Tx0saPFW7DN8+mkLx76c=;
 	h=From:Date:MIME-Version:Content-Type:To:Message-ID:In-Reply-To:
-	 References:Subject; b=Rp6aZRvFBu/ftSTx5B4U7yny5g5hh4GpAeLfAKxOTfx4yIVHtnoaiCnHHNE48S37aGMooxUEjBogxEMelMfF9VETVmW0CEzPrjYkq2A4waajAStemZKdrC67xDOmtpGxtH+ltuRVx7jhaJUrammm/KUlkBcnADxtXLpeXRjEMaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qzypTkbM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3897C4CEC6;
-	Tue,  1 Oct 2024 16:05:06 +0000 (UTC)
+	 References:Subject; b=eKA49/ZlBDnE3zq5kH7nfPpjGAbMsIq5IQn2IdZoL3YQVOqjhadpZLgDcUaavRobZ9+ISApXSj7cLfcmvB4HrkZs8hO5XzETTl4OeBK1qgDcRSVVJIAlVLb5LdmkImXnIUwfdfJmOWJF8xUDBZhDqErw+W/g2ZONjZSco6aoEi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TNm/rGGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42028C4CEC6;
+	Tue,  1 Oct 2024 17:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727798706;
-	bh=q8AWGhR5TRgJQrxCSCenmHtqjWoiXajsw3lB9UjWwzs=;
+	s=k20201202; t=1727804705;
+	bh=cGmlGzyEVG67x2K50IvHyi/Tx0saPFW7DN8+mkLx76c=;
 	h=From:Date:To:In-Reply-To:References:Subject:From;
-	b=qzypTkbMVbdRx1J0ekJe7AMX9QKy598/BJh6y2wToANyzroatKxtCLoP4YYHJmxhe
-	 6aMRtr+3l1VUxgBE/8lbkbakAnQciMSz/fTWOEaYYjTP9jSEEQiURDv0pEnszRK80J
-	 KcJC2o+oaZ07c2ZW6nBLA0eelgCoZkm85NA0c1WUAZLD4VtYz6WgaqwtZIS6PwK5OI
-	 /pFLZrkj6sX06Vngk8ZW6ycJDwsCj/0Abip+y6JYM9NJHkT5JgQt+PUYAfrEw9uGSw
-	 v5KkkJN4DVXCeFbWtDRyHzrTOJ3udfkA9UHZTSegOpzX269PR4I4iixLGeJ+XiGJG7
-	 Wy4o8Nob3oaeQ==
+	b=TNm/rGGWZT3CreG/BTSEWpbxklniFKAQ7z2ot8FWwmHNqbgjJ0ta7cDl9E4dvAD90
+	 XrBFwHkOv6RBA/Xk5z4MM1xUZlzEQrLSRbMH0Qx4kVpJpU/N6Q5XV+yjCw03rC5UHz
+	 kXceY9txJI4kUveLSKJO+mQ4S0P9xajpjhJiAXakvbwtyocLjm2y46ThR5V1WsQN57
+	 KCUHrl9TYxlm/qtvuxWYE4aE80tiewbCf+cJVPO3VYidmdNl4iahWE7tGtIuiuyrD3
+	 l1N9FubWI8yqrwHjpEFdLlIFyYkrfl8VnXhT6v5B1OwxCEX89FEVuYvrUm4Nf2EwQY
+	 MjUeafkneA1QQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 14612380DBF7;
-	Tue,  1 Oct 2024 16:05:11 +0000 (UTC)
-From: Helge Deller via Bugspray Bot <bugbot@kernel.org>
-Date: Tue, 01 Oct 2024 16:05:07 +0000
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 79B27380DBF7;
+	Tue,  1 Oct 2024 17:45:09 +0000 (UTC)
+From: Colin Ian King via Bugspray Bot <bugbot@kernel.org>
+Date: Tue, 01 Oct 2024 17:45:06 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -54,9 +54,9 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-To: deller@gmx.de, linux-parisc@vger.kernel.org, 
- James.Bottomley@HansenPartnership.com, bugs@lists.linux.dev
-Message-ID: <20241001-b219339c2-998d00851129@bugzilla.kernel.org>
+To: linux-parisc@vger.kernel.org, bugs@lists.linux.dev, 
+ James.Bottomley@HansenPartnership.com, deller@gmx.de
+Message-ID: <20241001-b219339c3-a45bf793c6b7@bugzilla.kernel.org>
 In-Reply-To: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
 References: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
 Subject: Re: calling getcpu with misaligned address causes kernel panic
@@ -64,28 +64,28 @@ X-Bugzilla-Product: Linux
 X-Bugzilla-Component: Kernel
 X-Mailer: bugspray 0.1-dev
 
-Helge Deller writes via Kernel.org Bugzilla:
+Colin Ian King writes via Kernel.org Bugzilla:
 
-This *is* a bug in qemu.
-When running on a physical box, strace shows that the kernel behaves correctly:
+arm64 and riscv returns EFAULT too, whereas x86 segfault with my tests:
 
-mmap2(NULL, 4096, PROT_READ, MAP_SHARED|MAP_ANONYMOUS, -1, 0) = 0xf9000000
-getcpu(0xf9000000, 0xf9000001, NULL)    = -1 EFAULT (Bad address)
-exit_group(-1)                          = ?
-+++ exited with 255 +++
+Linux debian-11-all-h3-cc-h5 6.10.6-arm64 #1 SMP Debian 6.10.6-1 (2024-08-19) aarch64 GNU/Linux:
+mmap(NULL, 4096, PROT_READ, MAP_SHARED|MAP_ANONYMOUS, -1, 0) = 0xffffac174000
+getcpu(0xffffac174000, 0xffffac174001, NULL) = -1 EFAULT (Bad address)
 
-On an AMD64 box I get a segfault (which seems strange?):
 
-mmap(NULL, 4096, PROT_READ, MAP_SHARED|MAP_ANONYMOUS, -1, 0) = 0x7f2b62c73000
---- SIGSEGV {si_signo=SIGSEGV, si_code=SEGV_ACCERR, si_addr=0x7f2b62c73000} ---
+Linux starfive 5.15.0-starfive #1 SMP Fri Nov 11 06:58:52 EST 2022 riscv64 GNU/Linux:
+mmap(NULL, 4096, PROT_READ, MAP_SHARED|MAP_ANONYMOUS, -1, 0) = 0x3fb20df000
+getcpu(0x3fb20df000, 0x3fb20df001, NULL) = -1 EFAULT (Bad address)
+
+
+Linux t480 6.1.0-25-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.106-3 (2024-08-26) x86_64 GNU/Linux:
+mmap(NULL, 4096, PROT_READ, MAP_SHARED|MAP_ANONYMOUS, -1, 0) = 0x7ff780a24000
+--- SIGSEGV {si_signo=SIGSEGV, si_code=SEGV_ACCERR, si_addr=0x7ff780a24000} ---
 +++ killed by SIGSEGV +++
-Segmentation fault
 
-qemu-user works OK.
+so x86-64 does behave differently with the access.
 
-will try qemu-system soon.
-
-View: https://bugzilla.kernel.org/show_bug.cgi?id=219339#c2
+View: https://bugzilla.kernel.org/show_bug.cgi?id=219339#c3
 You can reply to this message to join the discussion.
 -- 
 Deet-doot-dot, I am a bot.
