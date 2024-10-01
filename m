@@ -1,107 +1,136 @@
-Return-Path: <linux-parisc+bounces-2420-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2421-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9891998BCD4
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 14:54:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B1D98C0F2
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 17:00:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D2A9280E76
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 12:54:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5DEA1F20FDE
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 15:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B551C32FB;
-	Tue,  1 Oct 2024 12:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC141C5782;
+	Tue,  1 Oct 2024 15:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ntJCOUuK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UpOrLp27"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9C719D88D;
-	Tue,  1 Oct 2024 12:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D1C1C2453;
+	Tue,  1 Oct 2024 15:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727787234; cv=none; b=N6xVzAm8DmmhzwTPdjyJGV/C61stmSY0Aa4AWy8TK9fVqConscwGF5V6FojrOcnG4Wi+G0wprLxgUtyeDQrrA+I+h0v/7Gww+8GKxnjwBzrDKeMiqr/p9QrhOqFYlCbpqtyakJexmNFlEhJ0pOWBE1BhZjDMUEIiQ9HfF9V8rzQ=
+	t=1727794812; cv=none; b=CgItjam/gcqJ5yOR9Gwh13igstRYsE0uYk+KtvD2TAGBjzJKPEyL13qw3mFMHD2ZvQpC/1CJAgiGCtGRhhTi1RddEApwcSslgvfLXX7eJYGBBc81ETN2XmESM/chDO1xwljMNvD5CAKQwpwUix00cXGZjL9j0f/4RrNmoEpt8Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727787234; c=relaxed/simple;
-	bh=wVmIzLHrlB9vbqZZ4IHk4yXT9OkBR1Nuo7JXvIjOmAQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fZiYatGgHUFBgktib31jQFARudtbm4DgqL7jyDS0YUqpF5U2jKm9Hh5l2mmp4o4cRYeWO4wQYHxBC2zGTMVNCpJOmLA5LZ+CCBqmipClU3nKIZWdA3d5VuOOnrhTIRwyWgsBmi3JGpIHDkSLn9FkK/nbrtSLh+7cCD2S+BxqM6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ntJCOUuK; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=wVmIzLHrlB9vbqZZ4IHk4yXT9OkBR1Nuo7JXvIjOmAQ=;
-	t=1727787232; x=1728996832; b=ntJCOUuK3sDdtk53DJ4WarNW5pHlX5uKG+pdjf+EajFeF9I
-	u2W/S4tYfNcwDYrV5sd5BTB9Y1CswC/V4PTq2aChKbJZGgoqVHvsdfzj453Ri7vD5zXsDSy5DBP2h
-	Mb432pJleTOxhScrcvMc6sXwq+oqbsw3VdOBtO0o7aLA82FDip44DrHAoTJukCGRJP873el8drwB1
-	292xlW/jyd66G2/xq7piPEXnPYv3h2/HnLreNuez8SUuY8JPke2Q5W/9lCcJz08QXJ+uDEcNzQCwA
-	BkgIfWdJdaC4BC3/GTRjBcxuDWKNSvPMV/D1Y9ZHOXqiB5cRS0hweGU0kf6M6TUw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1svcNg-0000000Elbd-23z1;
-	Tue, 01 Oct 2024 14:53:32 +0200
-Message-ID: <168acf1cc03e2a7f4a918210ab2a05ee845ce247.camel@sipsolutions.net>
-Subject: Re: [PATCH v7 09/10] um: Add dummy implementation for IO
- memcpy/memset
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Julian Vetter <jvetter@kalrayinc.com>, Arnd Bergmann <arnd@arndb.de>, 
- Russell King <linux@armlinux.org.uk>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,  Guo Ren
- <guoren@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
- <kernel@xen0n.name>,  Andrew Morton <akpm@linux-foundation.org>, Geert
- Uytterhoeven <geert@linux-m68k.org>, Richard Henderson
- <richard.henderson@linaro.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-  Matt Turner <mattst88@gmail.com>, "James E . J . Bottomley"
- <James.Bottomley@hansenpartnership.com>,  Helge Deller <deller@gmx.de>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,  Richard
- Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, Yann Sionneau
-	 <ysionneau@kalrayinc.com>
-Date: Tue, 01 Oct 2024 14:53:31 +0200
-In-Reply-To: <20240930132321.2785718-10-jvetter@kalrayinc.com>
-References: <20240930132321.2785718-1-jvetter@kalrayinc.com>
-	 <20240930132321.2785718-10-jvetter@kalrayinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1727794812; c=relaxed/simple;
+	bh=jCeTvVB478eHvduQKVpCmoBAzUjIYnlhAvFp6YOusr0=;
+	h=From:Date:MIME-Version:Content-Type:To:Message-ID:Subject; b=orx/doHmjiHvIXh28Iz3pER77CuRtLoXEd58cZDlGLXuEVdulkVw+pr1H8/oDJEQvOWx40D6vTNnf9+DUbK1bsK02m/w0TrcVFSAIF0tFOwBMbUHV6VkWfksk6WRECIkxXg3nHwQ3DL1jljiK1F8mFNZgiydNScDGQ/aTw0lf0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UpOrLp27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41EA0C4CEC7;
+	Tue,  1 Oct 2024 15:00:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727794812;
+	bh=jCeTvVB478eHvduQKVpCmoBAzUjIYnlhAvFp6YOusr0=;
+	h=From:Date:To:Subject:From;
+	b=UpOrLp27hA1Zx9cr8tqCIVXB0gDYO8UfMEpJSvAwmnhJZvYQ3mbpL2vodlkrEdJ7y
+	 LqVNQn0kGRtoBOUcZsFWKhAYyMN0KLkeumeidISTWoWZT5E4IVEk7EoEpGgjpP5OUi
+	 1ZdijC+jacyuOLMGSEq3Afcjv8dxFMj51BAmyQ9nnuSHHUd3Qhlf1y5zFdV7aP8LJE
+	 +onBcR2r7aWo6h15hnMLTyW7XRYu/g/xKxedkBO2c61Fx6Sc3QlHdRPNbDYw9wF8nN
+	 di+dRqlu0JrOiAicAWSejSSs33NYRSrkxRNsX7PtUnZs+Xqlc5PmFaEBAGsHTeA/Av
+	 MF3kzRY/ePrcg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7704E380DBF7;
+	Tue,  1 Oct 2024 15:00:16 +0000 (UTC)
+From: Colin Ian King via Bugspray Bot <bugbot@kernel.org>
+Date: Tue, 01 Oct 2024 15:00:12 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+To: deller@gmx.de, bugs@lists.linux.dev, linux-parisc@vger.kernel.org, 
+ James.Bottomley@HansenPartnership.com
+Message-ID: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
+Subject: calling getcpu with misaligned address causes kernel panic
+X-Bugzilla-Product: Linux
+X-Bugzilla-Component: Kernel
+X-Mailer: bugspray 0.1-dev
 
-On Mon, 2024-09-30 at 15:23 +0200, Julian Vetter wrote:
-> The um arch is the only architecture that sets the config 'NO_IOMEM',
-> yet drivers that use IO memory can be selected. In order to make these
-> drivers happy we add a dummy implementation for memcpy_{from,to}io and
-> memset_io functions.
+Colin Ian King writes via Kernel.org Bugzilla:
 
-Maybe I'm just not understanding this series, but how does this work
-with lib/logic_iomem.c?
+Passing a read-only incorrectly aligned address into getcpu() causes a kernel panic.  I originally found this issue when testing stress-ng using stress-ng --sysbadaddr 1, I've managed to make a short reproducer that can panic the kernel on every invocation of the program.
 
-You're adding these inlines unconditionally, so if this included
-logic_io.h, you should get symbol conflicts?
+I can reproduce this on mainline kernels (in Debian), tested and reproduced on kernels 6.6.15, 6.9.7 and 6.10.6, so it's been around a while and it's still reproducible on recent kernels.
 
-Also not sure these functions should/need to do anything at all, there's
-no IO memory on ARCH=3Dum in case of not having logic_io.h. Maybe even
-BUG_ON() or something? It can't be reachable (under correct drivers)
-since ioremap() always returns NULL (without logic_iomem).
+This only occurs on PA-RISC (hppa) kernels and only tested in a QEMU VM since I don't have access to real H/W.
 
-I think Arnd also said that other architectures might want to use
-logic_iomem, though I don't see any now.
+cking@hppa:~$ cat crash.c
 
-johannes
+#define _GNU_SOURCE
+#include <sched.h>
+#include <sys/mman.h>
+#include <sys/syscall.h>
+#include <unistd.h>
+
+void main(void)
+{
+	char *addr;
+	
+	addr = mmap(NULL, 4096, PROT_READ, MAP_ANONYMOUS | MAP_SHARED, -1, 0);
+	if (addr != MAP_FAILED)
+		getcpu((int *)addr, (int *)(1 + addr));
+}
+
+cking@hppa:~$ gcc crash.c -o crash
+cking@hppa:~$ ./crash 
+
+[  361.158650] Backtrace:
+[  361.159621]  [<10413c78>] handle_unaligned+0x590/0x710
+[  361.159621]  [<10409354>] handle_interruption+0x1dc/0x7b8
+[  361.159621]  [<104545d8>] sys_getcpu+0x30/0x74
+[  361.159621] 
+[  361.159621] 
+[  361.159621] Page fault: bad address: Code=26 (Data memory access rights trap) at addr f9000000
+[  361.159621] CPU: 2 PID: 749 Comm: crash Not tainted 6.6.15-parisc #1  Debian 6.6.15-2
+[  361.159621] Hardware name: 9000/778/B160L
+[  361.159621] 
+[  361.159621]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+[  361.159621] PSW: 00000000000001000000000000001111 Not tainted
+[  361.159621] r00-03  0004000f 00000000 10413c78 142903c0
+[  361.159621] r04-07  14290080 12a08000 fc000000 f9000001
+[  361.159621] r08-11  00000000 0f3dd280 f9099c20 f9096e58
+[  361.159621] r12-15  00011008 0119c228 00000000 00000001
+[  361.159621] r16-19  14290080 00138428 011b4e00 ff000000
+[  361.159621] r20-23  00000000 00000000 00000000 00000011
+[  361.159621] r24-27  00000000 00000000 14290080 110dd848
+[  361.159621] r28-31  f9000000 00000000 14290400 000003c3
+[  361.159621] sr00-03  000003c3 000003c3 00000000 000003c3
+[  361.159621] sr04-07  00000000 00000000 00000000 00000000
+[  361.159621] 
+[  361.159621] IASQ: 00000000 00000000 IAOQ: 104135ac 104135b0
+[  361.170517]  IIR: 0f945280    ISR: 000003c3  IOR: f9000000
+[  361.170517]  CPU:        2   CR30: 12a08000 CR31: 00000000
+[  361.170517]  ORIG_R28: 12a08000
+[  361.170517]  IAOQ[0]: emulate_stw+0x5c/0x94
+[  361.170517]  IAOQ[1]: emulate_stw+0x60/0x94
+[  361.170517]  RP(r2): handle_unaligned+0x590/0x710
+[  361.170517] Backtrace:
+[  361.170517]  [<10413c78>] handle_unaligned+0x590/0x710
+[  361.170517]  [<10409354>] handle_interruption+0x1dc/0x7b8
+[  361.170517]  [<104545d8>] sys_getcpu+0x30/0x74
+[  361.170517] 
+[  361.170517] Kernel panic - not syncing: Page fault: bad address
+[  361.170517] ---[ end Kernel panic - not syncing: Page fault: bad address ]---
+
+View: https://bugzilla.kernel.org/show_bug.cgi?id=219339#c0
+You can reply to this message to join the discussion.
+-- 
+Deet-doot-dot, I am a bot.
+Kernel.org Bugzilla (bugspray 0.1-dev)
+
 
