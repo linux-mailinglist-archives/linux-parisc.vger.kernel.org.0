@@ -1,89 +1,87 @@
-Return-Path: <linux-parisc+bounces-2429-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2430-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A475E98C6E3
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 22:35:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C3D98C806
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 00:20:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D77E61C23526
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 20:34:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E98BB20EAC
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 22:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5CF198A16;
-	Tue,  1 Oct 2024 20:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12881BFE0E;
+	Tue,  1 Oct 2024 22:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="q+UUro4t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="psUvfrjL"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EE51CCEE5;
-	Tue,  1 Oct 2024 20:34:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F8719F48D;
+	Tue,  1 Oct 2024 22:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727814894; cv=none; b=Xo0HPYFIFHLJly37GR7SI+xnicXf5fZtYkTgIQXgl8gnCMh7pnY6XU8HbLTdgAu5K/unVOdE3JtmFUtsxB1BRa3TT0fYFIYFcJUFBn/HOTqzBjAdhjD9KjXlaiyuwCXyHFV4d5B8rdnxaBMwX21wn2Wif2lstgZT8u2rqy7epOI=
+	t=1727821205; cv=none; b=ks62ht7BCaz4X9eykynOQTRLEO19Hje3557uRVr/p7zW+7fSHpOWfO4vBy7Oh7zHak7hFDjCrpuS8f9DdbzwM8GUia5NGubj6GoC1tm6L1FWKkKK5nJxepCe3JFDJIHo/JIv3i1vXC0UrWJRxYP9ledpUK8C5irGnMaQYxPyCjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727814894; c=relaxed/simple;
-	bh=S3G2/qIRuRgX6DIlMRbUN7olB2mXOUsAohWQYBWaRRY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oAwnUn79V/hvSVanJX5B4AlezMxLUNzWkc4imwVWxL5SUTxUWtTbDg1KaODDYzSIsmaF4CTWfz0b5xRfQn+4JsUdSRdTry3jBtqNB+85CKppBK7jrrFtZIedX4ezWq269ZErpXzbJgBfFTIRDOUcufLsAta9tpskrTIETwXBXJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=q+UUro4t; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=40hpZxJza5B+fK0jnCX+5kmThmw2I4ieWXbZTZp5u1I=; b=q+UUro4tZUBkGINt2b+FFw9hoW
-	EE0xlV4PckF4hIvITQ2ldEOiKbCWy8AYBZuO+FqqCPSOZEuHptMatQQvZLEkt2tbN6q010GKO14bu
-	s4Z/G4YpfWtB2CyMdaUdSYl0VrkdcYde4HS0/MMTz5rcaiCE3ZattYjspt8IhZBhDASJ07FyFITEo
-	uygqoDFbWub6oP024lPugvo4qHFgXHDFp9VnYRD7Erv4KvexCveUJFH+yUeiRbFprcPNL1h6H3j3y
-	1q1rIE46yez85BJlwFiTh1Sf/alIZy8SDyPyP4uxmrLtj0MtpsbWaF/RTCmpWdlYRp5n3rAxleqmW
-	VmuEvD0w==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1svja5-0000000HN23-31Gf;
-	Tue, 01 Oct 2024 20:34:49 +0000
-Date: Tue, 1 Oct 2024 21:34:49 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-arch@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-parisc@vger.kernel.org, Vineet Gupta <vgupta@kernel.org>
-Subject: Re: [RFC][PATCHES] asm/unaligned.h removal
-Message-ID: <20241001203449.GA4138323@ZenIV>
-References: <20241001195107.GA4017910@ZenIV>
+	s=arc-20240116; t=1727821205; c=relaxed/simple;
+	bh=F9MnbCpcl9X9Zy5tZMWP0oiPv4qmvaGJ8tFMLmxiqQo=;
+	h=From:Date:MIME-Version:Content-Type:To:Message-ID:In-Reply-To:
+	 References:Subject; b=rcybehsQuQ1QpHHj22rM4aZ/9pOWue2cwmYLViAv1vyRJokPdnraMvWX5BShm1VYGVs9Rlndb+PTNnD6Voh1h3l2ENSgzOD4QlWjWiQuLgFzjWcqDHqXzjCmAtJmFIA+halyIr4D7Hz840POnWy1J/PjNWJxrGn7UeNShDYdhno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=psUvfrjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42427C4CEC6;
+	Tue,  1 Oct 2024 22:20:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727821205;
+	bh=F9MnbCpcl9X9Zy5tZMWP0oiPv4qmvaGJ8tFMLmxiqQo=;
+	h=From:Date:To:In-Reply-To:References:Subject:From;
+	b=psUvfrjLvHSsGz0oqWltPxp5/IzluSny8Q/q5nS1MDJwd7FWN1PmbtIT6KnN6OY8X
+	 nnKmsjaVywAIbSiDh5VcTu8Shw8u5zHqET0MpJrgnh4mq8+kgEW2PEtgrVEBAR6zHM
+	 NRgS3jzQ8pYOcYnkECbBJh8W8pe4ivzPDxQi+ZBrt7pNapu2dW+nJ6z/8YDnaGApkD
+	 sgE7i1LS7WDZXGfqDoScAdgOddrBlgiwc/GeWBPy4oXva4H1j8Qw5Yv8D7Up/+Fl2d
+	 bltR5X4mYyCE6bKNqqSYJ+h8qjI3S1CfmplAFMCi5JHeqFDhPm5iGynBEcI5ZRUJET
+	 XYVIw31lhnvnA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7746D380DBF7;
+	Tue,  1 Oct 2024 22:20:09 +0000 (UTC)
+From: Helge Deller via Bugspray Bot <bugbot@kernel.org>
+Date: Tue, 01 Oct 2024 22:20:08 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241001195107.GA4017910@ZenIV>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+To: deller@gmx.de, bugs@lists.linux.dev, linux-parisc@vger.kernel.org, 
+ James.Bottomley@HansenPartnership.com
+Message-ID: <20241001-b219339c4-74b73b8edee4@bugzilla.kernel.org>
+In-Reply-To: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
+References: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
+Subject: Re: calling getcpu with misaligned address causes kernel panic
+X-Bugzilla-Product: Linux
+X-Bugzilla-Component: Kernel
+X-Mailer: bugspray 0.1-dev
 
-On Tue, Oct 01, 2024 at 08:51:07PM +0100, Al Viro wrote:
-> 	There are only two instances of asm/unaligned.h in the tree -
-> arc and parisc.  Everything else picks it from asm-generic/unaligned.h
-> and if not these two, we could just move asm-generic/unaligned.h into
-> include/linux/unaligned.h and do a tree-wide search-and-replace that
-> would kill the largest class of asm/*.h includes in the entire kernel.
+Helge Deller writes via Kernel.org Bugzilla:
 
-Second largest, actually - asm/io.h has more users (1035 vs. 825).
-Top twelve by number of includes:
-	1035 asm/io.h
-	825 asm/unaligned.h   
-	767 asm/page.h
-	490 asm/processor.h
-	482 asm/irq.h
-	475 asm/cacheflush.h
-	423 asm/ptrace.h
-	402 asm/setup.h
-	287 asm/tlbflush.h
-	284 asm/sections.h
-	237 asm/mmu_context.h
-	205 asm/smp.h
+I'd assume the segfault on x86 is because of the vDSO implementation
+of getcpu() on x86, which executes vdso_read_cpunode() from
+arch/x86/include/asm/segment.h:
 
-Still, asm/io.h has a lot more reasons to be heavily arch-dependent...
+static inline void vdso_read_cpunode(unsigned *cpu, unsigned *node)
+{
+...
+        if (cpu)
+                *cpu = (p & VDSO_CPUNODE_MASK);
+        if (node)
+                *node = (p >> VDSO_CPUNODE_BITS);
+
+View: https://bugzilla.kernel.org/show_bug.cgi?id=219339#c4
+You can reply to this message to join the discussion.
+-- 
+Deet-doot-dot, I am a bot.
+Kernel.org Bugzilla (bugspray 0.1-dev)
+
 
