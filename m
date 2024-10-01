@@ -1,50 +1,51 @@
-Return-Path: <linux-parisc+bounces-2421-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2422-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B1D98C0F2
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 17:00:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ACAA98C0F3
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 17:00:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5DEA1F20FDE
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E36C9284EAC
 	for <lists+linux-parisc@lfdr.de>; Tue,  1 Oct 2024 15:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC141C5782;
-	Tue,  1 Oct 2024 15:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA2C84047;
+	Tue,  1 Oct 2024 15:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UpOrLp27"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dyvmtWN2"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D1C1C2453;
-	Tue,  1 Oct 2024 15:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C7727448;
+	Tue,  1 Oct 2024 15:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727794812; cv=none; b=CgItjam/gcqJ5yOR9Gwh13igstRYsE0uYk+KtvD2TAGBjzJKPEyL13qw3mFMHD2ZvQpC/1CJAgiGCtGRhhTi1RddEApwcSslgvfLXX7eJYGBBc81ETN2XmESM/chDO1xwljMNvD5CAKQwpwUix00cXGZjL9j0f/4RrNmoEpt8Ug=
+	t=1727794813; cv=none; b=h5VxyiD1f4gwrZOTUqunI/3JOhk6HpWjWrRHbkYDNNhFbv65w6A9Vo/OuIE+TNS3cAYxdhju7MEoWGu7HW0mxW5Ww6j8m5IdGY8kbmk6LWhGp3dp+JGhuqCC/rTrAVUzaptTzGOtfzdUY8hRYSLdTqiY4/t1DDTlapOLCQHeKtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727794812; c=relaxed/simple;
-	bh=jCeTvVB478eHvduQKVpCmoBAzUjIYnlhAvFp6YOusr0=;
-	h=From:Date:MIME-Version:Content-Type:To:Message-ID:Subject; b=orx/doHmjiHvIXh28Iz3pER77CuRtLoXEd58cZDlGLXuEVdulkVw+pr1H8/oDJEQvOWx40D6vTNnf9+DUbK1bsK02m/w0TrcVFSAIF0tFOwBMbUHV6VkWfksk6WRECIkxXg3nHwQ3DL1jljiK1F8mFNZgiydNScDGQ/aTw0lf0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UpOrLp27; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41EA0C4CEC7;
-	Tue,  1 Oct 2024 15:00:12 +0000 (UTC)
+	s=arc-20240116; t=1727794813; c=relaxed/simple;
+	bh=ucTxQkm6GTSeAwhdciRrwf80M8IIH/CgVEPI7Sp36Ck=;
+	h=From:Date:MIME-Version:Content-Type:To:Message-ID:In-Reply-To:
+	 References:Subject; b=soZ0t9X/ojRtYXQWaNMiaUYlk63fKhncLJXByRlvTbjSJHNLG41GzXZu3rVIOygJ2Is/QDqSO1fXid02EVjKa2WTF1VZm5kC7RqEUvMUqiO4lYgKnD/gP5DBfJ9wkXVy+MgyHyd+lr6run3P4+8mARHgP0pc4bBKoSRJFpyV6qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dyvmtWN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862AFC4CECD;
+	Tue,  1 Oct 2024 15:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727794812;
-	bh=jCeTvVB478eHvduQKVpCmoBAzUjIYnlhAvFp6YOusr0=;
-	h=From:Date:To:Subject:From;
-	b=UpOrLp27hA1Zx9cr8tqCIVXB0gDYO8UfMEpJSvAwmnhJZvYQ3mbpL2vodlkrEdJ7y
-	 LqVNQn0kGRtoBOUcZsFWKhAYyMN0KLkeumeidISTWoWZT5E4IVEk7EoEpGgjpP5OUi
-	 1ZdijC+jacyuOLMGSEq3Afcjv8dxFMj51BAmyQ9nnuSHHUd3Qhlf1y5zFdV7aP8LJE
-	 +onBcR2r7aWo6h15hnMLTyW7XRYu/g/xKxedkBO2c61Fx6Sc3QlHdRPNbDYw9wF8nN
-	 di+dRqlu0JrOiAicAWSejSSs33NYRSrkxRNsX7PtUnZs+Xqlc5PmFaEBAGsHTeA/Av
-	 MF3kzRY/ePrcg==
+	s=k20201202; t=1727794813;
+	bh=ucTxQkm6GTSeAwhdciRrwf80M8IIH/CgVEPI7Sp36Ck=;
+	h=From:Date:To:In-Reply-To:References:Subject:From;
+	b=dyvmtWN2cU4doivM1bfNqGnN6Dhs9n1zNY9awUlAPS3DIW4gb1KoyuWHpmBq7LFLv
+	 NeC1WV57ItIsYYbr5eYryOcfeL198dXSoquVF1Qpbmc/jmO0FWprOcxnFiwQA5Cxng
+	 huRmX0IymYY7x+NnerFK3Omcq1yXKShnq4E2HvxBQLsEEEj2R4uDuZft0D/Wj03/NI
+	 uJrmWPTQ2q1TzI+YpnCRHty1kPOLTw2jeRGrekhdBO2nct8Mnf34dJ9RhvyaOuD+aT
+	 ojyE6+Au4H+y1///zd8RsSeoDHeKDvmROb04QNV1yAoCab6dOdmHUSnR/XSKYYFtk5
+	 QDxt6qIwN8Ggg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7704E380DBF7;
-	Tue,  1 Oct 2024 15:00:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id E27FD380DBF7;
+	Tue,  1 Oct 2024 15:00:17 +0000 (UTC)
 From: Colin Ian King via Bugspray Bot <bugbot@kernel.org>
-Date: Tue, 01 Oct 2024 15:00:12 +0000
+Date: Tue, 01 Oct 2024 15:00:13 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -55,79 +56,59 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 To: deller@gmx.de, bugs@lists.linux.dev, linux-parisc@vger.kernel.org, 
  James.Bottomley@HansenPartnership.com
-Message-ID: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
-Subject: calling getcpu with misaligned address causes kernel panic
+Message-ID: <20241001-b219339c1-77ccff4939f9@bugzilla.kernel.org>
+In-Reply-To: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
+References: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
+Subject: Re: calling getcpu with misaligned address causes kernel panic
 X-Bugzilla-Product: Linux
 X-Bugzilla-Component: Kernel
 X-Mailer: bugspray 0.1-dev
 
 Colin Ian King writes via Kernel.org Bugzilla:
 
-Passing a read-only incorrectly aligned address into getcpu() causes a kernel panic.  I originally found this issue when testing stress-ng using stress-ng --sysbadaddr 1, I've managed to make a short reproducer that can panic the kernel on every invocation of the program.
-
-I can reproduce this on mainline kernels (in Debian), tested and reproduced on kernels 6.6.15, 6.9.7 and 6.10.6, so it's been around a while and it's still reproducible on recent kernels.
-
-This only occurs on PA-RISC (hppa) kernels and only tested in a QEMU VM since I don't have access to real H/W.
-
-cking@hppa:~$ cat crash.c
-
-#define _GNU_SOURCE
-#include <sched.h>
-#include <sys/mman.h>
-#include <sys/syscall.h>
-#include <unistd.h>
-
-void main(void)
-{
-	char *addr;
-	
-	addr = mmap(NULL, 4096, PROT_READ, MAP_ANONYMOUS | MAP_SHARED, -1, 0);
-	if (addr != MAP_FAILED)
-		getcpu((int *)addr, (int *)(1 + addr));
-}
-
-cking@hppa:~$ gcc crash.c -o crash
+uname -a
+./Linux hppa 6.10.6-parisc #1 SMP Debian 6.10.6-1 (2024-08-19) parisc GNU/Linux
 cking@hppa:~$ ./crash 
+[  991.661268] handle_unaligned: 190 callbacks suppressed
+[  991.661901] Kernel: unaligned access to 0xf8c00001 in sys_getcpu+0x30/0x6c (iir 0xf3cd280)
+[  991.677270] Backtrace:
+[  991.679232]  [<10413c60>] handle_unaligned+0x598/0x758
+[  991.679232]  [<10409854>] handle_interruption+0x1dc/0x7b8
+[  991.679232]  [<10454dec>] sys_getcpu+0x30/0x6c
+[  991.679232] 
+[  991.679232] 
+[  991.679232] Page fault: bad address: Code=26 (Data memory access rights trap) at addr f8c00000
+[  991.679232] CPU: 2 PID: 725 Comm: crash Not tainted 6.10.6-parisc #1  Debian 6.10.6-1
+[  991.679232] Hardware name: 9000/778/B160L
+[  991.679232] 
+[  991.679232]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+[  991.679232] PSW: 00000000000001101111111100001111 Not tainted
+[  991.679232] r00-03  0006ff0f 00000000 10413c60 12de83c0
+[  991.679232] r04-07  12de8080 17220940 fc000000 f8c00001
+[  991.679232] r08-11  00000000 0f3cd280 f8fd5c20 f8fd2e58
+[  991.679232] r12-15  00011008 00bdd7d8 00000000 00000001
+[  991.679232] r16-19  12de8080 00138428 00bd5730 ff000000
+[  991.679232] r20-23  00000000 00000000 00000000 12de86d8
+[  991.679232] r24-27  00000000 00000000 12de8080 11148ae8
+[  991.679232] r28-31  00000000 000003c0 12de8400 f8c00000
+[  991.679232] sr00-03  00000000 000003c0 00000000 000003c0
+[  991.679232] sr04-07  00000000 00000000 00000000 00000000
+[  991.679232] 
+[  991.679232] IASQ: 00000000 00000000 IAOQ: 10413598 1041359c
+[  991.679232]  IIR: 0ff45280    ISR: 000003c0  IOR: f8c00000
+[  991.679232]  CPU:        2   CR30: 17220940 CR31: 00000000
+[  991.679232]  ORIG_R28: 00000000
+[  991.679232]  IAOQ[0]: emulate_stw+0x5c/0x90
+[  991.679232]  IAOQ[1]: emulate_stw+0x60/0x90
+[  991.679232]  RP(r2): handle_unaligned+0x598/0x758
+[  991.679232] Backtrace:
+[  991.679232]  [<10413c60>] handle_unaligned+0x598/0x758
+[  991.679232]  [<10409854>] handle_interruption+0x1dc/0x7b8
+[  991.679232]  [<10454dec>] sys_getcpu+0x30/0x6c
+[  991.679232] 
+[  991.679232] Kernel panic - not syncing: Page fault: bad address
 
-[  361.158650] Backtrace:
-[  361.159621]  [<10413c78>] handle_unaligned+0x590/0x710
-[  361.159621]  [<10409354>] handle_interruption+0x1dc/0x7b8
-[  361.159621]  [<104545d8>] sys_getcpu+0x30/0x74
-[  361.159621] 
-[  361.159621] 
-[  361.159621] Page fault: bad address: Code=26 (Data memory access rights trap) at addr f9000000
-[  361.159621] CPU: 2 PID: 749 Comm: crash Not tainted 6.6.15-parisc #1  Debian 6.6.15-2
-[  361.159621] Hardware name: 9000/778/B160L
-[  361.159621] 
-[  361.159621]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-[  361.159621] PSW: 00000000000001000000000000001111 Not tainted
-[  361.159621] r00-03  0004000f 00000000 10413c78 142903c0
-[  361.159621] r04-07  14290080 12a08000 fc000000 f9000001
-[  361.159621] r08-11  00000000 0f3dd280 f9099c20 f9096e58
-[  361.159621] r12-15  00011008 0119c228 00000000 00000001
-[  361.159621] r16-19  14290080 00138428 011b4e00 ff000000
-[  361.159621] r20-23  00000000 00000000 00000000 00000011
-[  361.159621] r24-27  00000000 00000000 14290080 110dd848
-[  361.159621] r28-31  f9000000 00000000 14290400 000003c3
-[  361.159621] sr00-03  000003c3 000003c3 00000000 000003c3
-[  361.159621] sr04-07  00000000 00000000 00000000 00000000
-[  361.159621] 
-[  361.159621] IASQ: 00000000 00000000 IAOQ: 104135ac 104135b0
-[  361.170517]  IIR: 0f945280    ISR: 000003c3  IOR: f9000000
-[  361.170517]  CPU:        2   CR30: 12a08000 CR31: 00000000
-[  361.170517]  ORIG_R28: 12a08000
-[  361.170517]  IAOQ[0]: emulate_stw+0x5c/0x94
-[  361.170517]  IAOQ[1]: emulate_stw+0x60/0x94
-[  361.170517]  RP(r2): handle_unaligned+0x590/0x710
-[  361.170517] Backtrace:
-[  361.170517]  [<10413c78>] handle_unaligned+0x590/0x710
-[  361.170517]  [<10409354>] handle_interruption+0x1dc/0x7b8
-[  361.170517]  [<104545d8>] sys_getcpu+0x30/0x74
-[  361.170517] 
-[  361.170517] Kernel panic - not syncing: Page fault: bad address
-[  361.170517] ---[ end Kernel panic - not syncing: Page fault: bad address ]---
-
-View: https://bugzilla.kernel.org/show_bug.cgi?id=219339#c0
+View: https://bugzilla.kernel.org/show_bug.cgi?id=219339#c1
 You can reply to this message to join the discussion.
 -- 
 Deet-doot-dot, I am a bot.
