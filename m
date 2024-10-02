@@ -1,96 +1,95 @@
-Return-Path: <linux-parisc+bounces-2444-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2445-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999A098E550
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 23:34:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263A898E604
+	for <lists+linux-parisc@lfdr.de>; Thu,  3 Oct 2024 00:18:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5E201C22568
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 21:34:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0FAC1F21DB7
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 22:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CFB3195F17;
-	Wed,  2 Oct 2024 21:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC6B194A6C;
+	Wed,  2 Oct 2024 22:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7WbtM6V"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="PQN2UE1T"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E601BC8FE;
-	Wed,  2 Oct 2024 21:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BC12F22;
+	Wed,  2 Oct 2024 22:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727904744; cv=none; b=JiCCuTC9QUirhd1ssu7fb3cQkZO7Xkd4eRCfpHL9dd2ME7E7J5bz216DLmY9J+wMg/XLHYrYK8ykGP8rnzQM+i99w5ZUOX90LKqSSsB90hlHQn3R1rYqG7Eynd7vHhI4kAr1dRXfD+BYF10ksIcUpArVThwLjDPoekTVuD2LJCY=
+	t=1727907474; cv=none; b=R4btILSgevxPnQ2EU0ftDR7RaI0STs33JVNOEvqwoZAqVKv3MJLCRbnoLEZFVrOi/y3Owk2fTW8QWE16TafVcZjvgR26cTgA+s36kn5knZFme+vdQKJVRGahhmPnxR/SL+fiS4r9b2ekTzXDvkiIPK9SsR7sus8B2f92CFdicJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727904744; c=relaxed/simple;
-	bh=JFyO5QBBFZtIWWWibmX5p/OlJSVIM41iQwEIvpv80a8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j4VEOh0u1uS+H1nkAJir/oLAY5Jc7ft7ZXoZALm9Omub56c1tgxo4EZXexKSCUK3IaZn7Iwp378NDgz6g4nrcaaC0ZD3RDf4vskmxDKnIC6pXq5n/QTCa2iVqIIB69svdXn5MXIAGBIM795RwvDoMqCaS6oxlrCsIygx2N1m6Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7WbtM6V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23221C4CEC2;
-	Wed,  2 Oct 2024 21:32:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727904743;
-	bh=JFyO5QBBFZtIWWWibmX5p/OlJSVIM41iQwEIvpv80a8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=b7WbtM6V6dz97d0L2oyO0w0x4IglDQGYiWpCjC19LN5AGCgB3m+X0D9Epjhvz21Kg
-	 tabGGNGW0fKs/mdM5a+oA1U+koeob0RiU3jUmMr8dgDUEYOveTun4VTTrMb6Fh5JVi
-	 oyKyh3f7QHPRzVShN6ivEbmA/FSC1AZQYzKwR8zS0/ZHTanqxsJsyLgdcutgH/kdAb
-	 +eZbMqu/u9I0Vb/xap7ODonGe54Z8XE2R8UU+YbUE1NRuJ+qQfNMg+J7Z0E8wZKjsG
-	 OIeZVDRV+c95LxXSf0H9gw9mZIjizLawyNYmrfMTZ8LSmnXYZyIcF0B8aWAB/QmazD
-	 Z/eAKDXbTTD7A==
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>
-Cc: linux-kernel@vger.kernel.org,
-	Sven Schnelle <svens@stackframe.org>,
-	linux-trace-kernel@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH] parisc/ftrace: Fix function graph tracing disablement
-Date: Wed,  2 Oct 2024 14:32:04 -0700
-Message-ID: <5962b9e161b2b9296509c3d65c7f16c11b07bd16.1727904678.git.jpoimboe@kernel.org>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1727907474; c=relaxed/simple;
+	bh=bYCBCkT4PJzCuW+fDiNi8g0Gg+6zsF+SMWzGKuWhqjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ER5IU+ow4EpMAWQM2LDq6W59hBYlb62ukqChiBgajfUuZYdBykntr79OkL+U2h2Cwbv8jkxbn3D+YZOCK3+ibZyhql78MPnvJSj1y/LoVeQiZwkG89CL9OETUkBKz4ER8cZr7G9NyYDEqN8xOR09IbN4kl5WWCgyCKSgyjGkWs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=PQN2UE1T; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Tsf7yJh/hDC2wPxb5Vt52AhhkS56Hjy9G/gnj7UOuWs=; b=PQN2UE1TtJTdfVhI+34vXd+sgT
+	YZ5JVIJIbThqQ3d8KW17/etcV63Gffw4BzIrGdWhx+iJlwTh5cfnaycK4vg2tXYCrFbiz2GxI7rOG
+	RyPCe0sfABee+ZXER1SK+sbsthreXAVk1/FucdCFZviz+LIlV1qSXbthYTb5m4jrJrAtUP/nx+X84
+	yBMdBIug2dZyJxp8weWWIvImkpkn/9tJHcuL1YFi5YdaKRo5M1UJaV5HnMMJTwBam1tLk98H40v1k
+	aXsZ3GkBtN3JYvFcLQoMaZnQCNL5sNYks6RUFDdDSP7Y6J+Lvawy/GXpy2ueNNM7Wi3EAbmZmwaI1
+	+CRUDaKg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1sw7fJ-00000000KWw-3iJn;
+	Wed, 02 Oct 2024 22:17:49 +0000
+Date: Wed, 2 Oct 2024 23:17:49 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-arch@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Vineet Gupta <vgupta@kernel.org>
+Subject: Re: [RFC][PATCHES] asm/unaligned.h removal
+Message-ID: <20241002221749.GI4017910@ZenIV>
+References: <20241001195107.GA4017910@ZenIV>
+ <CAHk-=wj7f32w8p1OrN4fahaF+44zWfTAD+3ucd=XETM_Pt-=6A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wj7f32w8p1OrN4fahaF+44zWfTAD+3ucd=XETM_Pt-=6A@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Due to an apparent copy-paste bug, the parisc implementation of
-ftrace_disable_ftrace_graph_caller() doesn't actually do anything.  It
-enables the (already-enabled) static key rather than disabling it.
+On Wed, Oct 02, 2024 at 11:33:23AM -0700, Linus Torvalds wrote:
+> On Tue, 1 Oct 2024 at 12:51, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> >
+> >         Please, review.  I don't really care which tree(s) does that stuff
+> > go through; I can put the first two in my #for-next, as long as nobody
+> > has objections to the patches themselves.
+> 
+> Please just add the whole series to your tree. I see you already got
+> the ack for the parisc side, the arc side looks fine too.
 
-The result is that after function graph tracing has been "disabled", any
-subsequent (non-graph) function tracing will inadvertently also enable
-the slow fgraph return address hijacking.
+Both parisc and arc are already in my tree; do you really want the
+autogenerated patch to be there as well?  Would be a recurring headache
+through the cycle - anyone adding an include of that sucker in their
+branch would have to do an explicit merge from that branch first, or
+deal with the silent conflicts on merge to -next (well, silent as in
+"git doesn't warn you"; build breakage will be there).
 
-Fixes: 98f2926171ae ("parisc/ftrace: use static key to enable/disable function graph tracer")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
----
- arch/parisc/kernel/ftrace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I suppose I could do that autogenerated commit + replacement of
+asm-generic/unaligned.h with #include <linux/unaligned.h>,
+then take the newly added includes of <asm{,-generic}/unaligned.h> after -rc1,
+with asm-generic/unaligned.h taken out once all strays are gone, but that
+feels too convoluted...
 
-diff --git a/arch/parisc/kernel/ftrace.c b/arch/parisc/kernel/ftrace.c
-index c91f9c2e61ed..f8d08eab7db8 100644
---- a/arch/parisc/kernel/ftrace.c
-+++ b/arch/parisc/kernel/ftrace.c
-@@ -87,7 +87,7 @@ int ftrace_enable_ftrace_graph_caller(void)
- 
- int ftrace_disable_ftrace_graph_caller(void)
- {
--	static_key_enable(&ftrace_graph_enable.key);
-+	static_key_disable(&ftrace_graph_enable.key);
- 	return 0;
- }
- #endif
--- 
-2.46.0
+Or am I misparsing you?
 
+> And even if there is some further fixup required, I'd rather just have
+> this done and do any possible fixups later than have some kind of
+> "wait for everybody to ack it".
 
