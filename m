@@ -1,78 +1,88 @@
-Return-Path: <linux-parisc+bounces-2433-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2434-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE01898CB52
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 04:45:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A6298CB83
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 05:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DAEE1F24EED
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 02:45:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B64128255C
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 03:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5043209;
-	Wed,  2 Oct 2024 02:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EDF10A1F;
+	Wed,  2 Oct 2024 03:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzZSq1bw"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="D75FSPtC"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B7123AD;
-	Wed,  2 Oct 2024 02:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9F2DF59;
+	Wed,  2 Oct 2024 03:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727837106; cv=none; b=njC9urOF2lpLPz3PeRtyxyY0UGirbQhVeS7G/2SxW19rBmUm5zp3VvVfGmw5EFETgiYDD5WaqUzxbOL6nZjhjQCFKmjHlE/tBOFEDpkUpZLvy7iioP40s5nKVNei/DI0x47AEOmgPKXJRNuq5HK7quhnuQtrHB5136IyWhTUQCM=
+	t=1727839427; cv=none; b=FX3/9jxOAvmz4j2GNh7E96iozJxmaQzKsQe0eYY+iR9Lm4KOAOqkGdFaX4Y1E20Q4MuTgyEr81hPPHFdfpOA3whGOBrIuj2dVync+akdMM5XFtIjNtVh2M3a+tt8ytYLwLl0MJlXPDERTkd7c7K/brsPi0/wIqxXcbcbO4v6rE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727837106; c=relaxed/simple;
-	bh=ddh9qlrDrucQy9lLTbOD/9mCbmekVbRFJ/r27ykIZ84=;
-	h=From:Date:MIME-Version:Content-Type:To:Message-ID:In-Reply-To:
-	 References:Subject; b=JvdlgH9qCNAodl96iHOAWQ0vRXOQaDLp3Z7MhVhu6TvnRMibP+itczfxmC00NP1CrxFdcdWsh2EL7MgLR7z6CbPtPsqQxZRSxWdwEPLAVcD655m3vFcuP8ji5k/bURZ/B5l2GcDwLF3njfTNQVYh6Ix7/XcCDMJqB68dGXLXCqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzZSq1bw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0443FC4CEC6;
-	Wed,  2 Oct 2024 02:45:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727837106;
-	bh=ddh9qlrDrucQy9lLTbOD/9mCbmekVbRFJ/r27ykIZ84=;
-	h=From:Date:To:In-Reply-To:References:Subject:From;
-	b=hzZSq1bwCIg591+7KZddak9uQe5cJPxrJgDz/K3MH3koB0JMJSwNDSHn9Wc0pcnJI
-	 ufGsyVjzBlUhYgSWJTt1uT3jzcRdwmgAdMRrEa4MjIL2olQA7j2IgvW3iZq6MLb2Ap
-	 XuXWXsCjKXFG/eKrCyiaqgHmeytBTkNbPHW03WV9YQ/G5Y/lR44MxqKf1LJcv6B1rU
-	 D5tUOTC1DBM+6/D6+a8OGkFtTdPqvqYeoGs5EK8Zv9ARlKLP99HCXuxmHs0YyOSCAy
-	 1h4/YZZr8whAU3u0bE8OjwepnPdEKM/8m349yrYdMM6ylIfkvA3VcPPrxIqnLKZhcu
-	 BZv+9Mfkugn8g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 40E17380DBF7;
-	Wed,  2 Oct 2024 02:45:10 +0000 (UTC)
-From: Helge Deller via Bugspray Bot <bugbot@kernel.org>
-Date: Wed, 02 Oct 2024 02:45:09 +0000
+	s=arc-20240116; t=1727839427; c=relaxed/simple;
+	bh=rxd0x/69N9j1RO08S9L0U0LL0WsLv4aEHYIOTfnjuyk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m0g2wtnt3BippRGp6mgTQpUB+JfjmVAUL/iGsE8JhnH/zxd3AmmXydo7kgMpXc1ZkTlLmmpFScwfY4b1zRi3iKGdKKv0jKuj3Rlop35+CtAl+yw/GwiiLNkfh1xh6CswF0VALnrNM97QePle5nsbl/IO+Tv/QJPULuGccUobMYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=D75FSPtC; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=v22S1wy+8+mstC2IdfqvhGcg9lttAnvty2xj+9m6TX0=; b=D75FSPtC/pmXkEbzPPpGfhjCCW
+	vtIR4awwndzdAAwihfjNKxsWKuXrkjoGCPtSDKPHDkk1cFiRlnMsCR2KvW6P2In9FgM6zk5G1+Ag2
+	6pxn9w6zay5ve0GeE2xtpgsMezcV3/aH6E+Jl2MF+MjfMNYXXvrclgMQpoxy9vNyXkjYhKtyb+KvV
+	y4CaB27TD9Ng45Dx6BYIzZhNvL8Q7jlO9IVS2POR0zfOW5rK/F3UTH03Yjr5ujYMDkedIRmVWs2Sk
+	h9mtQeFxrXULGJT0dn1QjrLolm4otTS2Urz0iK5b0UqxVnGidxj5A78JfxnePHN6LYr3TFtrAvqw+
+	jXmn7WOg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1svpxm-0000000HZ4M-0WPg;
+	Wed, 02 Oct 2024 03:23:42 +0000
+Date: Wed, 2 Oct 2024 04:23:42 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Helge Deller <deller@gmx.de>
+Cc: linux-arch@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-parisc@vger.kernel.org, Vineet Gupta <vgupta@kernel.org>
+Subject: Re: [PATCH 1/3] parisc: get rid of private asm/unaligned.h
+Message-ID: <20241002032342.GD4017910@ZenIV>
+References: <20241001195107.GA4017910@ZenIV>
+ <20241001195158.GA4135693@ZenIV>
+ <9e7fa2c6-ae0b-458a-a4ae-a216a3b11a77@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-To: James.Bottomley@HansenPartnership.com, bugs@lists.linux.dev, 
- deller@gmx.de, linux-parisc@vger.kernel.org
-Message-ID: <20241002-b219339c5-8775d7b15b4b@bugzilla.kernel.org>
-In-Reply-To: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
-References: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
-Subject: Re: calling getcpu with misaligned address causes kernel panic
-X-Bugzilla-Product: Linux
-X-Bugzilla-Component: Kernel
-X-Mailer: bugspray 0.1-dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9e7fa2c6-ae0b-458a-a4ae-a216a3b11a77@gmx.de>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-Helge Deller writes via Kernel.org Bugzilla:
+On Wed, Oct 02, 2024 at 02:57:48AM +0200, Helge Deller wrote:
+> On 10/1/24 21:51, Al Viro wrote:
+> > Declarations local to arch/*/kernel/*.c are better off *not* in a public
+> > header - arch/parisc/kernel/unaligned.h is just fine for those
+> > bits.
+> > 
+> > With that done parisc asm/unaligned.h is reduced to include
+> > of asm-generic/unaligned.h and can be removed - unaligned.h is in
+> > mandatory-y in include/asm-generic/Kbuild.
+> > 
+> > Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+> 
+> Acked-by: Helge Deller <deller@gmx.de>
+> 
+> Al, I prefer if you could take it through your "for-next"
+> tree, as you offered in your header mail.
 
-Initial patch to fix qemu emulation for parisc posted:
-https://lore.kernel.org/linux-parisc/Zvyx1kM4JljbzxQW@p100/T/#u
-
-View: https://bugzilla.kernel.org/show_bug.cgi?id=219339#c5
-You can reply to this message to join the discussion.
--- 
-Deet-doot-dot, I am a bot.
-Kernel.org Bugzilla (bugspray 0.1-dev)
-
+Done; that commit (with your Acked-by) is in #for-next (via #next-unaligned).
+If Vineet is OK with the arc one, it'll also go there...
 
