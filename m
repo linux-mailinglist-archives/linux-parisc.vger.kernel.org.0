@@ -1,88 +1,82 @@
-Return-Path: <linux-parisc+bounces-2434-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2435-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A6298CB83
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 05:24:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A08D98CE9D
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 10:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B64128255C
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 03:24:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94A2F1C20D8E
+	for <lists+linux-parisc@lfdr.de>; Wed,  2 Oct 2024 08:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EDF10A1F;
-	Wed,  2 Oct 2024 03:23:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="D75FSPtC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE57C194A40;
+	Wed,  2 Oct 2024 08:19:40 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9F2DF59;
-	Wed,  2 Oct 2024 03:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+Received: from mail.sf-mail.de (mail.sf-mail.de [116.202.16.50])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 2110A1946B8
+	for <linux-parisc@vger.kernel.org>; Wed,  2 Oct 2024 08:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.16.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727839427; cv=none; b=FX3/9jxOAvmz4j2GNh7E96iozJxmaQzKsQe0eYY+iR9Lm4KOAOqkGdFaX4Y1E20Q4MuTgyEr81hPPHFdfpOA3whGOBrIuj2dVync+akdMM5XFtIjNtVh2M3a+tt8ytYLwLl0MJlXPDERTkd7c7K/brsPi0/wIqxXcbcbO4v6rE4=
+	t=1727857180; cv=none; b=GHevl1mL9dwIJ+0fyel/kICbD/blkkaS6gasDQfMNiTseOW24dCAQDLpooS1Ez1/WncJ7xMyihtq67fzMoolnRworIBbNTvzICE+ETmulG4p6tXh+vCgApz33Uy0xWJVgPbdLV3NsNIQM6TxHQvYLP+GvHJerZTtGd1ASETDV0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727839427; c=relaxed/simple;
-	bh=rxd0x/69N9j1RO08S9L0U0LL0WsLv4aEHYIOTfnjuyk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m0g2wtnt3BippRGp6mgTQpUB+JfjmVAUL/iGsE8JhnH/zxd3AmmXydo7kgMpXc1ZkTlLmmpFScwfY4b1zRi3iKGdKKv0jKuj3Rlop35+CtAl+yw/GwiiLNkfh1xh6CswF0VALnrNM97QePle5nsbl/IO+Tv/QJPULuGccUobMYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=D75FSPtC; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=v22S1wy+8+mstC2IdfqvhGcg9lttAnvty2xj+9m6TX0=; b=D75FSPtC/pmXkEbzPPpGfhjCCW
-	vtIR4awwndzdAAwihfjNKxsWKuXrkjoGCPtSDKPHDkk1cFiRlnMsCR2KvW6P2In9FgM6zk5G1+Ag2
-	6pxn9w6zay5ve0GeE2xtpgsMezcV3/aH6E+Jl2MF+MjfMNYXXvrclgMQpoxy9vNyXkjYhKtyb+KvV
-	y4CaB27TD9Ng45Dx6BYIzZhNvL8Q7jlO9IVS2POR0zfOW5rK/F3UTH03Yjr5ujYMDkedIRmVWs2Sk
-	h9mtQeFxrXULGJT0dn1QjrLolm4otTS2Urz0iK5b0UqxVnGidxj5A78JfxnePHN6LYr3TFtrAvqw+
-	jXmn7WOg==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1svpxm-0000000HZ4M-0WPg;
-	Wed, 02 Oct 2024 03:23:42 +0000
-Date: Wed, 2 Oct 2024 04:23:42 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Helge Deller <deller@gmx.de>
-Cc: linux-arch@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-parisc@vger.kernel.org, Vineet Gupta <vgupta@kernel.org>
-Subject: Re: [PATCH 1/3] parisc: get rid of private asm/unaligned.h
-Message-ID: <20241002032342.GD4017910@ZenIV>
-References: <20241001195107.GA4017910@ZenIV>
- <20241001195158.GA4135693@ZenIV>
- <9e7fa2c6-ae0b-458a-a4ae-a216a3b11a77@gmx.de>
+	s=arc-20240116; t=1727857180; c=relaxed/simple;
+	bh=0tnyLiGKdZgUtnOedy7AXIt04SViF9h3qZpsw9H22tQ=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=fHh2UZhC8XeLI99dxbhpI/SWWB7p07Lu/aaS1rZfiP3CKQhmFT8LDz2E/+Gk2u1Dk3qkZ4l1la1Jk4DLyQauoC/SxxkrZLVFW88xGu7M81AbIn/RW7YkWW5VRby7+YvszKOLnsB+SFXY6K6vTblryatiJB5uus4xSQDVblATq5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sf-tec.de; spf=pass smtp.mailfrom=sf-tec.de; arc=none smtp.client-ip=116.202.16.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sf-tec.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sf-tec.de
+Received: (qmail 642 invoked from network); 2 Oct 2024 08:10:52 -0000
+Received: from mail.sf-mail.de ([2a01:4f8:1c17:6fae:616d:6c69:616d:6c69]:54934 HELO webmail.sf-mail.de) (auth=eike@sf-mail.de)
+	by mail.sf-mail.de (Qsmtpd 0.39dev) with (TLS_AES_256_GCM_SHA384 encrypted) ESMTPSA
+	for <viro@zeniv.linux.org.uk>; Wed, 02 Oct 2024 10:10:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9e7fa2c6-ae0b-458a-a4ae-a216a3b11a77@gmx.de>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Date: Wed, 02 Oct 2024 10:10:51 +0200
+From: Rolf Eike Beer <eike-kernel@sf-tec.de>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-arch@vger.kernel.org, Linus Torvalds
+ <torvalds@linux-foundation.org>, linux-parisc@vger.kernel.org, Vineet Gupta
+ <vgupta@kernel.org>
+Subject: Re: [PATCH 1/3] parisc: get rid of private asm/unaligned.h
+In-Reply-To: <20241001195158.GA4135693@ZenIV>
+References: <20241001195107.GA4017910@ZenIV>
+ <20241001195158.GA4135693@ZenIV>
+Message-ID: <30ee897e390061ac0211b5f99d9b311b@sf-tec.de>
+X-Sender: eike-kernel@sf-tec.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 02, 2024 at 02:57:48AM +0200, Helge Deller wrote:
-> On 10/1/24 21:51, Al Viro wrote:
-> > Declarations local to arch/*/kernel/*.c are better off *not* in a public
-> > header - arch/parisc/kernel/unaligned.h is just fine for those
-> > bits.
-> > 
-> > With that done parisc asm/unaligned.h is reduced to include
-> > of asm-generic/unaligned.h and can be removed - unaligned.h is in
-> > mandatory-y in include/asm-generic/Kbuild.
-> > 
-> > Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Am 2024-10-01 21:51, schrieb Al Viro:
+> Declarations local to arch/*/kernel/*.c are better off *not* in a 
+> public
+> header - arch/parisc/kernel/unaligned.h is just fine for those
+> bits.
 > 
-> Acked-by: Helge Deller <deller@gmx.de>
-> 
-> Al, I prefer if you could take it through your "for-next"
-> tree, as you offered in your header mail.
+> With that done parisc asm/unaligned.h is reduced to include
+> of asm-generic/unaligned.h and can be removed - unaligned.h is in
+> mandatory-y in include/asm-generic/Kbuild.
 
-Done; that commit (with your Acked-by) is in #for-next (via #next-unaligned).
-If Vineet is OK with the arc one, it'll also go there...
+> diff --git a/arch/parisc/kernel/unaligned.h 
+> b/arch/parisc/kernel/unaligned.h
+> new file mode 100644
+> index 000000000000..c1aa4b12e284
+> --- /dev/null
+> +++ b/arch/parisc/kernel/unaligned.h
+> @@ -0,0 +1,3 @@
+> +struct pt_regs;
+> +void handle_unaligned(struct pt_regs *regs);
+> +int check_unaligned(struct pt_regs *regs);
+
+Doesn't that need an include guard?
+
+Regards,
+
+Eike
 
