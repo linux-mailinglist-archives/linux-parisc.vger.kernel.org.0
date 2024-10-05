@@ -1,72 +1,73 @@
-Return-Path: <linux-parisc+bounces-2487-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2488-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DED3991A71
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1537991A72
 	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 22:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC8AC1F22325
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D55B11C214B2
 	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 20:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788C0130AC8;
-	Sat,  5 Oct 2024 20:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445131552E0;
+	Sat,  5 Oct 2024 20:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CBvBxve3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r7+m/l2y"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB65D15884D
-	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 20:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06A8157E6B
+	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 20:06:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728158770; cv=none; b=Sn8GOoCo5cTPEGwrJjUPx/TuPpnanTxos8aW6tK5o4quM05AeVfLc8XPtGmmpinP5IwNkTi0evAO1HbQx8RgMA0GkVacvBWTPr7EpPtDPJ2EcwvS+FJL937VtuSsGWU/lnLKnsJqGjv8dScdSbfY+QNrY2BOBt7lPd6bQ0TGy5I=
+	t=1728158771; cv=none; b=j78VjGeWhnzoxGRBEBTLhbQC9cqOxemLgKg9fYC/T+6x8DDoCfEjGlznfwuzhQaUhJhfrpXqXwiNokPtZLfoJzR0WqbGJrm4hiHz2Pt8BbrPQk7lHHEdd3GiRPJVPOhwAiJh6D/pZp3CWbLznQMg4COL753Yt6zf/Iv/oquBLKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728158770; c=relaxed/simple;
-	bh=4NVUV6YGGVu0dfDzUFRQNyxQmIfvN5ZZlTdwZgCxg+I=;
+	s=arc-20240116; t=1728158771; c=relaxed/simple;
+	bh=lMqTSWOZj1IlCEf4v6pbIf89Bz3BR40fXSPmPVcNUi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnsOszN9O5v0kR0gPoKP56/Q9VdIl7L23DqT2VDsBGwo/9m60FBmkLDoQg76uuXiuMjR3K8E9mIOsK8twhpkF3NRbkPJIKM7ZxSpkLfhuwF70N+6zH8H3psUV4QPSgBwA1vSbROYvK9XSn7vNlOx3VZQiYqB6kBR99HPk8YLlb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CBvBxve3; arc=none smtp.client-ip=209.85.215.179
+	 MIME-Version; b=th1MRn6jLpaIiz95zmO1lbcDWRZbf8I7lAJzCy0dX4Uu39CasamCIDadBWDKemgl6Qm4HtNJeUX5oKhLOsn2aRBC94p1wxaQPKpAt2tA7GLSxctDMayaqHPLHNYbeha++pQqQys+CnK2JsNJd0zmoibvwSlvyXs66A5PO5gIjn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r7+m/l2y; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7e6cbf6cd1dso2137937a12.3
-        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 13:06:08 -0700 (PDT)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20b0b5cdb57so31578975ad.1
+        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 13:06:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728158768; x=1728763568; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1728158769; x=1728763569; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aSpIks7wgvzrdGiSzq/HYW4dr1jFM7gjMRozlRGemJM=;
-        b=CBvBxve3AOd605pmn6pu7RU/ddkplixEz8+Hhd3gsbHgouPCysEAV/pJa2nVUGP6Q/
-         4L2JJM2wW02k2KGFLnK14QXdlIrK6C7eGyaoTuQUjAS/EaJHjwVAFmB2+u3LTMoeqCLw
-         hn+50hYDjFKEfvsGf/WR7NEaJlrWzoTNVrxOqfFHjWT4ziK1ITPydXMM4kreSFEFfP6z
-         sJP6pIhCzt+CQi1SEEQz7H2GRO/ZaVKjlILkSUHa64yAyp60xQWWx3dPltFzkJBmKJI9
-         LFbGAFh1BzTz8cGULpxJDsKR8hvjMlC4dInQdlHxkaOFtyAzCSvlMv2t9JQDyXcZARlm
-         uaPw==
+        bh=MP+WvwE/XecW9wPOVCpjk+gA5jxWiH/v3HQ4ejXK7hQ=;
+        b=r7+m/l2y9IjIBKWQK9an4EO+J+OP12yrnQPww6L5OhJkfT7h6OUMrVa0ev83dL8UYV
+         H2o73UzIsZNEVDxfU0BVLhcDqYNeA1LktRMwO1Xvy3EBdjwZ9EsD7MpRTlDkX3Ybp4js
+         lC7JMW0OUAhNF262MVtTq5OA7XjPRma18Vu+YlFD3cHU2KxGTg8Cg+3pTt4A/5DNMvL0
+         K7CRENTk/DlPPU9/LOffDIrNfrEbuIel71cf6dq9cK/WAjw23ytW28c0arQNrEAaaOQ4
+         QPQ6g4vd2m2mtkRZlUJlXq8ofDswTzbSwyAilAaZdqs3d1FXb0uE5uOdEaARWtd+sXSo
+         /Rog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728158768; x=1728763568;
+        d=1e100.net; s=20230601; t=1728158769; x=1728763569;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aSpIks7wgvzrdGiSzq/HYW4dr1jFM7gjMRozlRGemJM=;
-        b=rmzTa0IgleT4i1se04WCDVhvd4YkiG/Ua4TBR7uL/vZlzRjR7ogsit2fKAU3CcD2rJ
-         Nao7VFAJ3YEX5YibOn6dyUvdjojsv9wx42kbVDbEH0Z0Si7ern8zK7MYvUFqGYTHLCPk
-         InNRSNgDFlEWF1sfDXLJOHLhT9PZJl56BlA5NEz0sHlx0mqzBlypOFUHAvU3A5PZl+jl
-         AaUP7G1flstHWnc39RukUYdrEvoyIqBGNcafukZBUvj2npZgwS2jF3cr7wbFtq4y97HG
-         E5HYvAVjUHxllHPDdz8I/U7mA6HHkqLigG2P7Vhi0BZm+qvO50fxAr4Pjp4WkISPxMfq
-         z3Uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVN1dq/4956PWpjNyR5mSoNw/xDRjRAkp3Yywjhu6q9uTLe6Ji5Kzk8RKdJfMaNst7h/rbnsUaMkRtskAk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygDdRNk1UZ2GnArSXhPIE45fNwRqr+fMlkSEKS6A7lp1QlS3fr
-	/l8EWl3MH2Iqx1E1LaYQ6otpwAv211Lm5oNw6n5APwjTHKKFCI+bfMl3nU1W3Og=
-X-Google-Smtp-Source: AGHT+IEaeCLxh/V4FYDHhcizmCqrbA2X6RtS9JLzATD1GoweD02dQoKPmQSlloLgWaenfDYRsJ7amg==
-X-Received: by 2002:a17:90a:a107:b0:2e0:7560:9334 with SMTP id 98e67ed59e1d1-2e1e636f75bmr8187622a91.36.1728158768046;
-        Sat, 05 Oct 2024 13:06:08 -0700 (PDT)
+        bh=MP+WvwE/XecW9wPOVCpjk+gA5jxWiH/v3HQ4ejXK7hQ=;
+        b=q6KktonmYHeAJinEqZ6Geen4qy8YVMuMTTRrFSkHfToefI17PyGZ+qGEEYucfor5At
+         X+0BJqGoh1p+sayQluwRoKsaoM7QSEajg4Y+JZJap47iwngQFwPBQQT4DGBHSg/peDUI
+         cwv86KkEJj+xStKBXOY+W939lmayAoQxH+fhAH9hsRhLRlFN2hTIxHfJh0AND82XpqyQ
+         XgAFe8tY85Gx7B0KtoHQCB4mUKORTMaSm2nnINfr4B8m+9SmR9FVuFwGlRPe5B9zCVmZ
+         sFYnUfKiTWAzmGq5TH3n4tiEGfn71ugYn7Oh8lSxpzcHibmWHbneJ+OBd6/40QiOFXEz
+         zvrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVsj7v1EHOl+5HQ0YiSxsIK/dCPVxFHr6/v7nbgQKHIm0PqGG1g1y+hipbdRfYwvJ/3ziXQpLFzAy4PRlw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVFR5hOjT+cF5RKxIgtupL3wJOUIyWyX5Za8iOtrqtWQFIx7Vk
+	LQ9/yfgXj5xkSDGuT+PtwrtX8I5fOoFeNfqDBdgkJQqE1nSN8k0OOGbIvpy9OeOxAB8Mga2LnPd
+	c
+X-Google-Smtp-Source: AGHT+IG4o7j/ZFzlHdwrYk17l+PK6a847Ql8/KK14Pm1cpqL+sGkT/q0+Vhje7Ma/G1N+w5P6iDU7A==
+X-Received: by 2002:a17:902:d2cc:b0:20b:7902:3456 with SMTP id d9443c01a7336-20bff37ac46mr105992105ad.1.1728158769036;
+        Sat, 05 Oct 2024 13:06:09 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.07
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Oct 2024 13:06:07 -0700 (PDT)
+        Sat, 05 Oct 2024 13:06:08 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org,
@@ -74,9 +75,9 @@ Cc: deller@kernel.org,
 	alex.bennee@linaro.org,
 	linux-parisc@vger.kernel.org,
 	qemu-arm@nongnu.org
-Subject: [PATCH v2 07/21] accel/tcg: Use the tlb_fill_align hook
-Date: Sat,  5 Oct 2024 13:05:46 -0700
-Message-ID: <20241005200600.493604-8-richard.henderson@linaro.org>
+Subject: [PATCH v2 08/21] target/hppa: Add MemOp argument to hppa_get_physical_address
+Date: Sat,  5 Oct 2024 13:05:47 -0700
+Message-ID: <20241005200600.493604-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005200600.493604-1-richard.henderson@linaro.org>
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
@@ -88,217 +89,97 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When we have a tlb miss, defer the alignment check to
-the new tlb_fill_align hook.  Move the existing alignment
-check so that we only perform it with a tlb hit.
+Just add the argument, unused at this point.
+Zero is the safe do-nothing value for all callers.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 89 +++++++++++++++++++++++++---------------------
- 1 file changed, 49 insertions(+), 40 deletions(-)
+ target/hppa/cpu.h        | 2 +-
+ target/hppa/int_helper.c | 2 +-
+ target/hppa/mem_helper.c | 9 +++++----
+ target/hppa/op_helper.c  | 2 +-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 4bc34c8a37..0e6ae65a39 100644
---- a/accel/tcg/cputlb.c
-+++ b/accel/tcg/cputlb.c
-@@ -1616,14 +1616,14 @@ typedef struct MMULookupLocals {
-  * tlb_fill will longjmp out.  Return true if the softmmu tlb for
-  * @mmu_idx may have resized.
-  */
--static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
-+static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data, MemOp memop,
-                         int mmu_idx, MMUAccessType access_type, uintptr_t ra)
- {
-     vaddr addr = data->addr;
-     uintptr_t index = tlb_index(cpu, mmu_idx, addr);
-     CPUTLBEntry *entry = tlb_entry(cpu, mmu_idx, addr);
-     uint64_t tlb_addr = tlb_read_idx(entry, access_type);
--    bool maybe_resized = false;
-+    bool did_tlb_fill = false;
-     CPUTLBEntryFull *full;
-     int flags;
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index f4e051f176..526855f982 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -369,7 +369,7 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+ void hppa_cpu_do_interrupt(CPUState *cpu);
+ bool hppa_cpu_exec_interrupt(CPUState *cpu, int int_req);
+ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+-                              int type, hwaddr *pphys, int *pprot);
++                              int type, MemOp mop, hwaddr *pphys, int *pprot);
+ void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
+                                      vaddr addr, unsigned size,
+                                      MMUAccessType access_type,
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index 391f32f27d..58695def82 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -167,7 +167,7 @@ void hppa_cpu_do_interrupt(CPUState *cs)
  
-@@ -1631,17 +1631,26 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
-     if (!tlb_hit(tlb_addr, addr)) {
-         if (!victim_tlb_hit(cpu, mmu_idx, index, access_type,
-                             addr & TARGET_PAGE_MASK)) {
--            bool ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, data->size,
--                                                 access_type, mmu_idx,
--                                                 false, ra);
-+            bool ok = cpu->cc->tcg_ops->tlb_fill_align(cpu, addr, memop,
-+                                                       data->size, access_type,
-+                                                       mmu_idx, false, ra);
-             assert(ok);
--            maybe_resized = true;
-+            did_tlb_fill = true;
-             index = tlb_index(cpu, mmu_idx, addr);
-             entry = tlb_entry(cpu, mmu_idx, addr);
-         }
-         tlb_addr = tlb_read_idx(entry, access_type) & ~TLB_INVALID_MASK;
-     }
- 
-+    if (!did_tlb_fill) {
-+        /* We didn't use tlb_fill_align, so alignment not yet checked. */
-+        unsigned a_bits = memop_alignment_bits(memop);
-+
-+        if (unlikely(addr & ((1 << a_bits) - 1))) {
-+            cpu_unaligned_access(cpu, addr, access_type, mmu_idx, ra);
-+        }
-+    }
-+
-     full = &cpu->neg.tlb.d[mmu_idx].fulltlb[index];
-     flags = tlb_addr & (TLB_FLAGS_MASK & ~TLB_FORCE_SLOW);
-     flags |= full->slow_flags[access_type];
-@@ -1651,7 +1660,7 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
-     /* Compute haddr speculatively; depending on flags it might be invalid. */
-     data->haddr = (void *)((uintptr_t)addr + entry->addend);
- 
--    return maybe_resized;
-+    return did_tlb_fill;
+                     vaddr = hppa_form_gva_psw(old_psw, env->iasq_f, vaddr);
+                     t = hppa_get_physical_address(env, vaddr, MMU_KERNEL_IDX,
+-                                                  0, &paddr, &prot);
++                                                  0, 0, &paddr, &prot);
+                     if (t >= 0) {
+                         /* We can't re-load the instruction.  */
+                         env->cr[CR_IIR] = 0;
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index b984f730aa..a386c80fa4 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -197,7 +197,7 @@ static int match_prot_id64(CPUHPPAState *env, uint32_t access_id)
  }
  
- /**
-@@ -1702,7 +1711,6 @@ static void mmu_watch_or_dirty(CPUState *cpu, MMULookupPageData *data,
- static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-                        uintptr_t ra, MMUAccessType type, MMULookupLocals *l)
+ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+-                              int type, hwaddr *pphys, int *pprot)
++                              int type, MemOp mop, hwaddr *pphys, int *pprot)
  {
--    unsigned a_bits;
-     bool crosspage;
-     int flags;
+     hwaddr phys;
+     int prot, r_prot, w_prot, x_prot, priv;
+@@ -340,7 +340,7 @@ hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+     mmu_idx = (cpu->env.psw & PSW_D ? MMU_KERNEL_IDX :
+                cpu->env.psw & PSW_W ? MMU_ABS_W_IDX : MMU_ABS_IDX);
  
-@@ -1711,12 +1719,6 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+-    excp = hppa_get_physical_address(&cpu->env, addr, mmu_idx, 0,
++    excp = hppa_get_physical_address(&cpu->env, addr, mmu_idx, 0, 0,
+                                      &phys, &prot);
  
-     tcg_debug_assert(l->mmu_idx < NB_MMU_MODES);
- 
--    /* Handle CPU specific unaligned behaviour */
--    a_bits = memop_alignment_bits(l->memop);
--    if (addr & ((1 << a_bits) - 1)) {
--        cpu_unaligned_access(cpu, addr, type, l->mmu_idx, ra);
--    }
--
-     l->page[0].addr = addr;
-     l->page[0].size = memop_size(l->memop);
-     l->page[1].addr = (addr + l->page[0].size - 1) & TARGET_PAGE_MASK;
-@@ -1724,7 +1726,7 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     crosspage = (addr ^ l->page[1].addr) & TARGET_PAGE_MASK;
- 
-     if (likely(!crosspage)) {
--        mmu_lookup1(cpu, &l->page[0], l->mmu_idx, type, ra);
-+        mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
- 
-         flags = l->page[0].flags;
-         if (unlikely(flags & (TLB_WATCHPOINT | TLB_NOTDIRTY))) {
-@@ -1743,8 +1745,8 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-          * Lookup both pages, recognizing exceptions from either.  If the
-          * second lookup potentially resized, refresh first CPUTLBEntryFull.
-          */
--        mmu_lookup1(cpu, &l->page[0], l->mmu_idx, type, ra);
--        if (mmu_lookup1(cpu, &l->page[1], l->mmu_idx, type, ra)) {
-+        mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
-+        if (mmu_lookup1(cpu, &l->page[1], 0, l->mmu_idx, type, ra)) {
-             uintptr_t index = tlb_index(cpu, l->mmu_idx, addr);
-             l->page[0].full = &cpu->neg.tlb.d[l->mmu_idx].fulltlb[index];
-         }
-@@ -1770,7 +1772,7 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-      * Device memory type require alignment.
-      */
-     if (unlikely(flags & TLB_CHECK_ALIGNED)) {
--        a_bits = memop_atomicity_bits(l->memop);
-+        unsigned a_bits = memop_atomicity_bits(l->memop);
-         if (addr & ((1 << a_bits) - 1)) {
-             cpu_unaligned_access(cpu, addr, type, l->mmu_idx, ra);
-         }
-@@ -1788,34 +1790,18 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
- {
-     uintptr_t mmu_idx = get_mmuidx(oi);
-     MemOp mop = get_memop(oi);
--    int a_bits = memop_alignment_bits(mop);
-     uintptr_t index;
-     CPUTLBEntry *tlbe;
-     vaddr tlb_addr;
-     void *hostaddr;
-     CPUTLBEntryFull *full;
-+    bool did_tlb_fill = false;
- 
-     tcg_debug_assert(mmu_idx < NB_MMU_MODES);
- 
-     /* Adjust the given return address.  */
-     retaddr -= GETPC_ADJ;
- 
--    /* Enforce guest required alignment.  */
--    if (unlikely(a_bits > 0 && (addr & ((1 << a_bits) - 1)))) {
--        /* ??? Maybe indicate atomic op to cpu_unaligned_access */
--        cpu_unaligned_access(cpu, addr, MMU_DATA_STORE,
--                             mmu_idx, retaddr);
--    }
--
--    /* Enforce qemu required alignment.  */
--    if (unlikely(addr & (size - 1))) {
--        /* We get here if guest alignment was not requested,
--           or was not enforced by cpu_unaligned_access above.
--           We might widen the access and emulate, but for now
--           mark an exception and exit the cpu loop.  */
--        goto stop_the_world;
--    }
--
-     index = tlb_index(cpu, mmu_idx, addr);
-     tlbe = tlb_entry(cpu, mmu_idx, addr);
- 
-@@ -1824,10 +1810,11 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-     if (!tlb_hit(tlb_addr, addr)) {
-         if (!victim_tlb_hit(cpu, mmu_idx, index, MMU_DATA_STORE,
-                             addr & TARGET_PAGE_MASK)) {
--            bool ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, size,
--                                                 MMU_DATA_STORE, mmu_idx,
--                                                 false, retaddr);
-+            bool ok = cpu->cc->tcg_ops->tlb_fill_align(cpu, addr, mop, size,
-+                                                       MMU_DATA_STORE, mmu_idx,
-+                                                       false, retaddr);
-             assert(ok);
-+            did_tlb_fill = true;
-             index = tlb_index(cpu, mmu_idx, addr);
-             tlbe = tlb_entry(cpu, mmu_idx, addr);
-         }
-@@ -1841,8 +1828,8 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-      * but addr_read will only be -1 if PAGE_READ was unset.
-      */
-     if (unlikely(tlbe->addr_read == -1)) {
--        cpu->cc->tcg_ops->tlb_fill(cpu, addr, size, MMU_DATA_LOAD,
--                                   mmu_idx, false, retaddr);
-+        cpu->cc->tcg_ops->tlb_fill_align(cpu, addr, mop, size, MMU_DATA_LOAD,
-+                                         mmu_idx, false, retaddr);
-         /*
-          * Since we don't support reads and writes to different
-          * addresses, and we do have the proper page loaded for
-@@ -1850,6 +1837,28 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
-          */
-         g_assert_not_reached();
+     /* Since we're translating for debugging, the only error that is a
+@@ -438,7 +438,8 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
+         break;
      }
-+
-+    /* Enforce guest required alignment, if not handled by tlb_fill_align. */
-+    if (!did_tlb_fill) {
-+        int a_bits = memop_alignment_bits(mop);
-+        if (unlikely(a_bits > 0 && (addr & ((1 << a_bits) - 1)))) {
-+            /* ??? Maybe indicate atomic op to cpu_unaligned_access */
-+            cpu_unaligned_access(cpu, addr, MMU_DATA_STORE,
-+                                 mmu_idx, retaddr);
-+        }
-+    }
-+
-+    /* Enforce qemu required alignment.  */
-+    if (unlikely(addr & (size - 1))) {
-+        /*
-+         * We get here if guest alignment was not requested,
-+         * or was not enforced by cpu_unaligned_access above.
-+         * We might widen the access and emulate, but for now
-+         * mark an exception and exit the cpu loop.
-+         */
-+        goto stop_the_world;
-+    }
-+
-     /* Collect tlb flags for read. */
-     tlb_addr |= tlbe->addr_read;
  
+-    excp = hppa_get_physical_address(env, addr, mmu_idx, a_prot, &phys, &prot);
++    excp = hppa_get_physical_address(env, addr, mmu_idx, a_prot, 0,
++                                     &phys, &prot);
+     if (unlikely(excp >= 0)) {
+         if (probe) {
+             return false;
+@@ -678,7 +679,7 @@ target_ulong HELPER(lpa)(CPUHPPAState *env, target_ulong addr)
+     hwaddr phys;
+     int prot, excp;
+ 
+-    excp = hppa_get_physical_address(env, addr, MMU_KERNEL_IDX, 0,
++    excp = hppa_get_physical_address(env, addr, MMU_KERNEL_IDX, 0, 0,
+                                      &phys, &prot);
+     if (excp >= 0) {
+         if (excp == EXCP_DTLB_MISS) {
+diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
+index 7f79196fff..744325969f 100644
+--- a/target/hppa/op_helper.c
++++ b/target/hppa/op_helper.c
+@@ -334,7 +334,7 @@ target_ulong HELPER(probe)(CPUHPPAState *env, target_ulong addr,
+     }
+ 
+     mmu_idx = PRIV_P_TO_MMU_IDX(level, env->psw & PSW_P);
+-    excp = hppa_get_physical_address(env, addr, mmu_idx, 0, &phys, &prot);
++    excp = hppa_get_physical_address(env, addr, mmu_idx, 0, 0, &phys, &prot);
+     if (excp >= 0) {
+         cpu_restore_state(env_cpu(env), GETPC());
+         hppa_set_ior_and_isr(env, addr, MMU_IDX_MMU_DISABLED(mmu_idx));
 -- 
 2.43.0
 
