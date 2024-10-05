@@ -1,72 +1,72 @@
-Return-Path: <linux-parisc+bounces-2457-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2458-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6FA9917B0
-	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 17:25:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9FF9917B2
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 17:25:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F18601C212B5
-	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 15:25:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FC851F22C49
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 15:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08DB3153BFC;
-	Sat,  5 Oct 2024 15:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BE4154423;
+	Sat,  5 Oct 2024 15:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wVcoYtKq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Gqbw9Xsg"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6FA1EB36
-	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 15:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745891C6A3
+	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 15:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728141955; cv=none; b=o3ZLDf6SDLL36Lr6N1/qIrUtfPzpjr2DU8PTilKlh2VSLer+M0sv/33maqczmMD1ccLVudLCBnB43ifQRgAffDisaHlzp+/rAi8uXDwCXEWjwAatcF5DeqKESo6IwyiGpYual0sG5VhGGbrABPpzGYJU689YDSuMPauArk3dmvE=
+	t=1728141957; cv=none; b=o7Qs0ExRO9B2fx+fM9xNmeU7bbSx3dY6Lq9KJhzVEbZdR1YEfSm1ytc0WElX60kRqz+7DTRL3mWnwcu9tiAfCsosEXVWAPYaLivBIwoCoInj10lQiXmpKK3ydptJ6p9IIVNTifCNf7g1/EYl2cLomX/l9xk1LB1af85n9HZiIhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728141955; c=relaxed/simple;
-	bh=+dpu25dlok+GjgsLvrO8ITZP/Q4KUk6jRMPM9e4O+S4=;
+	s=arc-20240116; t=1728141957; c=relaxed/simple;
+	bh=CsqbOG3MqlbMWcSFdA2BCSBmA0dzoz8OyW/OJILfreQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHMnT7fiiFs6fHj1tifqxopuUIZqW/vijLo9soLc0sF9bg6En16XzEoII7iwgUdWRMo9beXWrKG2GkW9GdiSPHyIA25BfenfTFvPHpJy/QS9yHAE+qhIPkQTE4dDpDU67O3fx0/f5aexj78nudWWWnR61uULiJxjTz8qaGywFeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wVcoYtKq; arc=none smtp.client-ip=209.85.214.169
+	 MIME-Version; b=ekLJgoaA/m3BgssxpAXsDXG8BO0L0gWCzdV2WVebdTZ9eTE/JUAatkVEKah0kMBk1Xs2fKG8dqeot1gw1mKmZnB+73b/+DVXgelJEcuc2AGsmicrujO2TljIiJEmWrwCUZdSKMqYNG4aK7iNAoQVAThOBv/7dB9yUW6f7FhH27U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Gqbw9Xsg; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20b90ab6c19so33844305ad.0
-        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 08:25:54 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20b7eb9e81eso37012765ad.2
+        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 08:25:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728141954; x=1728746754; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1728141955; x=1728746755; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Qpc+gtvz4QF2D7U7hwk6I/PwDTmOhNNc5A8A2G2CqV8=;
-        b=wVcoYtKqZhGBLs2DDdD4i0+9MbvlaPnP7NdXl+QxxpoSdo+Nt+RlsoMMOzY6J8wSNc
-         tbfDIfAca0tFkfhmT3ovql0ezzVAcRrYxJTLyVFaOdOtNkXebF4AbUsKEKLRTCpSQsbu
-         P/Nvbxg+CG8yOx834EDBJ58h3O8QZ2yED2McHBnFNUrqDMfLqNSDvOQL4KXtoBVd8DE7
-         8AW5r1JDuUHvZQ41W9LzA3ulMOZ6IqI2Z8Vx2jisOP1Yg5ujuNb4nHegl2mTewLDcRdz
-         QXozZ3etpzSH1XgH4p4d4ZprpsTRxX+QhboX5nfx76VgErTf2v8b8M+qSXehYBrs++Tu
-         soIA==
+        bh=wBthGFf8BfR2i4dob959bB47CFsEJX0Mf+aRMHd0jM4=;
+        b=Gqbw9Xsgxt/IDnhr3mAWkB4+i1mDauZ8W9x6oYTxMekAI5hbNPmRqriGHPIk78dV8b
+         hCXKm6p7gFOh0q+IHpls9uEbKhRMsb8L9QP+Qna957WTE6iwKz6ewlSAYcwC9UBCAtS/
+         9JAVJjkjtMB05v4rSfZjygDps3F0gjzxBDU1sg8ddNmyea7bNYyVolaKpDmWY4XmWwl+
+         wjbbZAygpRotVRSpM51QhFkn4NSMrDqZoLj25EG2HNLXL6gGmWJ+VcMWVWUT/Hg3DfdD
+         0r8+Je8PZCstY1aLNPvxU02OXhYFmOfUcy3HOqn/s7/6fov3De0a1ELgyzsEHLm7+PKN
+         txdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728141954; x=1728746754;
+        d=1e100.net; s=20230601; t=1728141955; x=1728746755;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Qpc+gtvz4QF2D7U7hwk6I/PwDTmOhNNc5A8A2G2CqV8=;
-        b=mT7bAK00RDdYpcD8V2zY0fL3N3Qt51oMPR3l+4MupZ8JHJdDiftdoYO0l/FcoxQ2IZ
-         nX4Juj233Cxo5T2+n91vjC8BGBHLKCcSwonFXSIM4IbOSifvjtzvfr5QqiXf+DdlYwXw
-         FQzM5RQq5ITxSlk9qbCRkeYW3ggTI90EvRQIfgPcPHMJzO0/BaK67o7ys0CxtbGfq0If
-         ZjaS0eD54vX/yA9q/7vvMBoB37CJ7hliyIHZURIJQsyCJ9KQvqg5MSdFYsJy4VqfWJJy
-         +LeFua8NxJj7Dm+wrlauoDHVK+D72hvssjRG9XZCwaX57SxE5OdbRCVzn1CsTM7aVTXB
-         H6qg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4WO/WiH0HG/QqeIHLtYG65+Oc7TkkZ/46eZDD70W4LzQx/81e1e8SGsgK92tfdmupw/tIfOs5dZDYJK8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfEcoy9foIYdcFNmPfA7l0nacRxxg6j+3vtpSCJKQ+kayhnSwY
-	ye828CkFr3Pn5OgINHn2BPPwlgNfTTqFoiUpaud8kHFCeNjYBh9sRc9ThSl/rJk=
-X-Google-Smtp-Source: AGHT+IELKa52UOR7Ytz4WC8NdW2qQ7qz0VWYMH9P15Fb5pfsJzTN9y4328hD9lJpQGFW7j/3iwlUjQ==
-X-Received: by 2002:a17:902:f68f:b0:20b:54cc:b34e with SMTP id d9443c01a7336-20bfee34d54mr84315875ad.51.1728141953851;
-        Sat, 05 Oct 2024 08:25:53 -0700 (PDT)
+        bh=wBthGFf8BfR2i4dob959bB47CFsEJX0Mf+aRMHd0jM4=;
+        b=A4/dWMsQMbU9dRlvc/fGbmPSK22M96toK8UnUMtO3tp2mQkzr5CfHLgJnvhf6Y/lL2
+         6lkA83A4eeQ/dyBaGIBwZM1IMD02R5c1lI/NBZ/d/6lMcmjcCMEte3hx3ralZ9gG2cdw
+         G5i6RgYI9UqQQDnwaKustxGCPKjYOJZLuETMHX9hFjOo1O/GOlaBnY8afNzNAjAYUXao
+         kEQ8gZtM/YWijEx/1IRZZzaOQE4N/HgV/2ZdzTh7X+4bcANasP5N+6g798VNnl7J8bIE
+         xTUXK+7YhY9eKO9iCLvs+wdimoWy+j8X6FyfTemnw6WWdMetTQd+wtfhiM84SnGA5Ti5
+         bSsg==
+X-Forwarded-Encrypted: i=1; AJvYcCUKGE8WXOIWLIeDISLeF5PphHQs/I7LVpplO+qMAiNkYtTMBsRH1Ckp4kK6LfiGCuHzjPDr/v5nM0eo1tk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyxup/TVb69kJrO2fDpHg8UQEJi7pm27rFHu36mrSEDLZ708P8s
+	+pbU+AJAPoYf1SKx0ffVabwSw5lgr+zcB21lsHF7MC3w+262tv/sp1WlpCHeg1U=
+X-Google-Smtp-Source: AGHT+IH7Xmy/UoZFDozrpGZR2JXAjehjcUEjjy3Gt9EAYcog/cZlmR6Wqao6wjaMYAvpmgnjtSqiEQ==
+X-Received: by 2002:a17:902:d581:b0:20b:419e:9f15 with SMTP id d9443c01a7336-20bfea570admr86092045ad.46.1728141954795;
+        Sat, 05 Oct 2024 08:25:54 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.25.53
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.25.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Oct 2024 08:25:53 -0700 (PDT)
+        Sat, 05 Oct 2024 08:25:54 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org,
@@ -74,9 +74,9 @@ Cc: deller@kernel.org,
 	alex.bennee@linaro.org,
 	linux-parisc@vger.kernel.org,
 	qemu-arm@nongnu.org
-Subject: [PATCH 01/20] accel/tcg: Assert noreturn from write-only page for atomics
-Date: Sat,  5 Oct 2024 08:25:32 -0700
-Message-ID: <20241005152551.307923-2-richard.henderson@linaro.org>
+Subject: [PATCH 02/20] accel/tcg: Expand tlb_fill for 3 callers
+Date: Sat,  5 Oct 2024 08:25:33 -0700
+Message-ID: <20241005152551.307923-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005152551.307923-1-richard.henderson@linaro.org>
 References: <20241005152551.307923-1-richard.henderson@linaro.org>
@@ -88,31 +88,76 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There should be no "just in case"; the page is already
-in the tlb, and known to be not readable.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/cputlb.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ accel/tcg/cputlb.c | 33 ++++++++++-----------------------
+ 1 file changed, 10 insertions(+), 23 deletions(-)
 
 diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-index 117b516739..fd6459b695 100644
+index fd6459b695..58960969f4 100644
 --- a/accel/tcg/cputlb.c
 +++ b/accel/tcg/cputlb.c
-@@ -1852,10 +1852,9 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+@@ -1220,25 +1220,6 @@ void tlb_set_page(CPUState *cpu, vaddr addr,
+                             prot, mmu_idx, size);
+ }
+ 
+-/*
+- * Note: tlb_fill() can trigger a resize of the TLB. This means that all of the
+- * caller's prior references to the TLB table (e.g. CPUTLBEntry pointers) must
+- * be discarded and looked up again (e.g. via tlb_entry()).
+- */
+-static void tlb_fill(CPUState *cpu, vaddr addr, int size,
+-                     MMUAccessType access_type, int mmu_idx, uintptr_t retaddr)
+-{
+-    bool ok;
+-
+-    /*
+-     * This is not a probe, so only valid return is success; failure
+-     * should result in exception + longjmp to the cpu loop.
+-     */
+-    ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, size,
+-                                    access_type, mmu_idx, false, retaddr);
+-    assert(ok);
+-}
+-
+ static inline void cpu_unaligned_access(CPUState *cpu, vaddr addr,
+                                         MMUAccessType access_type,
+                                         int mmu_idx, uintptr_t retaddr)
+@@ -1631,7 +1612,10 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupPageData *data,
+     if (!tlb_hit(tlb_addr, addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, access_type,
+                             addr & TARGET_PAGE_MASK)) {
+-            tlb_fill(cpu, addr, data->size, access_type, mmu_idx, ra);
++            bool ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, data->size,
++                                                 access_type, mmu_idx,
++                                                 false, ra);
++            assert(ok);
+             maybe_resized = true;
+             index = tlb_index(cpu, mmu_idx, addr);
+             entry = tlb_entry(cpu, mmu_idx, addr);
+@@ -1833,8 +1817,10 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+     if (!tlb_hit(tlb_addr, addr)) {
+         if (!victim_tlb_hit(cpu, mmu_idx, index, MMU_DATA_STORE,
+                             addr & TARGET_PAGE_MASK)) {
+-            tlb_fill(cpu, addr, size,
+-                     MMU_DATA_STORE, mmu_idx, retaddr);
++            bool ok = cpu->cc->tcg_ops->tlb_fill(cpu, addr, size,
++                                                 MMU_DATA_STORE, mmu_idx,
++                                                 false, retaddr);
++            assert(ok);
+             index = tlb_index(cpu, mmu_idx, addr);
+             tlbe = tlb_entry(cpu, mmu_idx, addr);
+         }
+@@ -1848,7 +1834,8 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+      * but addr_read will only be -1 if PAGE_READ was unset.
+      */
+     if (unlikely(tlbe->addr_read == -1)) {
+-        tlb_fill(cpu, addr, size, MMU_DATA_LOAD, mmu_idx, retaddr);
++        cpu->cc->tcg_ops->tlb_fill(cpu, addr, size, MMU_DATA_LOAD,
++                                   mmu_idx, false, retaddr);
          /*
           * Since we don't support reads and writes to different
           * addresses, and we do have the proper page loaded for
--         * write, this shouldn't ever return.  But just in case,
--         * handle via stop-the-world.
-+         * write, this shouldn't ever return.
-          */
--        goto stop_the_world;
-+        g_assert_not_reached();
-     }
-     /* Collect tlb flags for read. */
-     tlb_addr |= tlbe->addr_read;
 -- 
 2.43.0
 
