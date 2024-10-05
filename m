@@ -1,72 +1,73 @@
-Return-Path: <linux-parisc+bounces-2475-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2476-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7589917C5
-	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 17:26:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6191C9917C6
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 17:26:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C185B221F5
-	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 15:26:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4392283392
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 15:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A1D156676;
-	Sat,  5 Oct 2024 15:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E105156887;
+	Sat,  5 Oct 2024 15:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NffT4kpz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MgwlxTE/"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE78C1553AB
-	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 15:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75F6156230
+	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 15:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728141973; cv=none; b=TiykGOM661lXNi3XQ/yVHBQrJxDsX5CHfVgrtOHV2NZ73WiYIs72aEFk3R47+C1hbsN4svs11+uTrz3IG/XkZhOgWSGUWjZi6ceERkujSbyrW/v2rGXsqtBQNUQPH4+5G91TDnsT8gkskJHb8e9nN1Or5DnWpQ5MJfit+FOqAwk=
+	t=1728141974; cv=none; b=JNfjNNDVs8wJI9cwARdH+/wyv3M51514DpVbEzv0WdBiLaf3JODy8zx/SouWecTJIPPz6dTg835fw0tY0PCwbtMyimZEd62jN7irGkAdl7q+PJpzzxX0Eyj7kLQ274lukziijqlpZYUfb1TkAIHuDzjW9nLDZfBUM8TUC6Mt/1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728141973; c=relaxed/simple;
-	bh=GfbgeWhvJZEkGvmTmmQeIHTRaV4I16CMz8q34Fkno2E=;
+	s=arc-20240116; t=1728141974; c=relaxed/simple;
+	bh=huD5NidbYXV5yWa6IFJz9jG5pO7wgoHT97Pb6ytfppc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+/TZIzedPnT98Zptb3lAP0puLgxnC6prgR1v/AXjNvxa/mYXAMLDMpGRQcyR0FM+SG3fyTS47Ev41/xCk+wFAghXaK5IyGL8y2gm+i4/lsGuCiABOePrSYRuItg2vts1HPvZio7AXgTz+ipkq67iRnfQolbtqQY1NJLoAhPllg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NffT4kpz; arc=none smtp.client-ip=209.85.214.175
+	 MIME-Version; b=EWlSzER6/ekTd6iWfMfLpqwmuT626HINPcMBu40n1kW8L+FDiZV+dkC26DBgRuP3SrDydwS+/o7CXhO9ZqPhD1A1TuvxhIRoAO88ahv5VKjuJ4lBhivqRMOdwAYxhclCoGHeAtbUKlH9cNN1W7YPVjYgZRxgrwDnP7Jo61kZpXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MgwlxTE/; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-20b9b35c7c7so21873735ad.1
-        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 08:26:11 -0700 (PDT)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20b78ee6298so19961215ad.2
+        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 08:26:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728141971; x=1728746771; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1728141972; x=1728746772; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/ZHU/9Bj/Yhl/fLIAf9ED9KKjqQvRkGT+c+Pl2SvUJY=;
-        b=NffT4kpzzxd6DQd5jJdUKa8hGZ3qNwM3+lu7URzErJuu1vROFh0YQLEMC8YDDA8T4F
-         JtpjCXgnhJhjosXzPjQK2TRVWR9Y+Vl1n2itjsuxeb/Y3IV8nAS5MwgMntaSYlea2z/r
-         4s6sK4KAUyZQgMOiXlDzRXxOCdL4fVgL7+D79RvroyJwLrl2rJ8ns6YmIizTQMVLmeI2
-         WMk4WvODr6B6cYrVMlLzAv1YdFZYoLTqvLiQO2fkeCNaq7js9TnLDJRFvBAIhAe2COBI
-         CKMTQJ5A+pKHrDJQc5r4TN5q3qjDwFw4SuVP1xhfN7hYuQn9ZxJeMFtDDZPPUgE5A+ia
-         uv6w==
+        bh=qIlBHpyIHO+kiCFyGgZVBXgacr4yw5gCrMn63zUSz3U=;
+        b=MgwlxTE/Xkd267sv+4nV0HXsWBMGQfHQvmCx0PvRVBJqZ2pU1PCdEzlYHmD6PDEcW6
+         uzMdOPpcxjKmf2R2oOk8RtDUIfQayLG9Aw5yJBee1KkdnA6C5JUvoEZaYvp9QfbVqkzr
+         n4bp7kJiOpvW+h3LIVvtwY5jBOlUnLgZjlUk9GRpuRz7lzfRK88i60APLzsK/wRsaqPP
+         dS32fZiW64sdjRcbgok4dP1EsEJnkaLpUVw+fqnM+7EV8Lcp0B2xmDpGv6PKmQGpx0gX
+         buHXA6Nj1GnLX7tOQfJkKw8/+3UolnXUxFvG7vjc6WkZxf81r/KQ334CCN+9de1MgHmD
+         sE1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728141971; x=1728746771;
+        d=1e100.net; s=20230601; t=1728141972; x=1728746772;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/ZHU/9Bj/Yhl/fLIAf9ED9KKjqQvRkGT+c+Pl2SvUJY=;
-        b=fCIBuXH0UlzatibNqjYEAmf4Y7/380khgmXipIyP5hF6LU7cnaKO9PrRVfQQStuRP7
-         Z4tAfjJ7M/RkQTPwm76a9cZZHF/IhRZdnjqglB1HbATHoLNxAubIcIb/E+Po2XBip0b8
-         DC7VGsPEJ7ibk4EuFQwJ7glpRS3JdFeoF8zjTs1UAWKSZuQvpJnLNEx4A60q9fA7lnvt
-         KRNT+fQDN+LQa13hAc0eeilujWm6ixwL67ubBzW7A6S9V6UePLEnFe97J7FE1Q3dhG0r
-         P8NLn1nca6Z1Bww222/rV3Kwv73Ch/wW5ANm+AMZzqSBOKOivIayOgBraG/byiXnzJK3
-         fB8g==
-X-Forwarded-Encrypted: i=1; AJvYcCXEe6S4bVzQjUQ/XuqKGkyv/XTj550fhCbggosomnl3EAmZGJ2u8VlRzd5IcZFC0oXsqZzY4mzzF3AZz7w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBIpo8a1MjTxM8aYFvst34R2MQHP4PJd3pUsIkr3q3XRvVJVM3
-	2+8UHZQUp460/duVisYOmXL1OF/bKDnF71HTgWpsHypl8+UdpZEuly2Eb0SQT9E=
-X-Google-Smtp-Source: AGHT+IH4Lr64SQZfzlOO2MyBkQGMuSWCJxA1Uid5flyT3IfspQk+qHg9k3FYTQCTF9/9yq+5XQ2JSg==
-X-Received: by 2002:a17:903:2b07:b0:20b:8e18:a395 with SMTP id d9443c01a7336-20bfe291f03mr89154495ad.44.1728141971365;
-        Sat, 05 Oct 2024 08:26:11 -0700 (PDT)
+        bh=qIlBHpyIHO+kiCFyGgZVBXgacr4yw5gCrMn63zUSz3U=;
+        b=Ot9sl3TS9zPvV1rS8IGHMc3gImnaYA/R54Gr9M/bCByUuSLpcEO5rnIr14XraNsoOL
+         Q26tREcrxaUANAKNYV9E2KeCZGJ+aD25W6MzS0eSw6BZtoPc82bjkDnXP5k1CTWjVH3I
+         XCsbS3txgO+P5YAcEn/gj9KA2ftz/OMcO9pJWgM6WN6xDv4hQZhxSZJAg6ZqqHtwNO7W
+         LWU8+Yge8XsYFThE4WDLaMHW5TphIuRj1xoGubA/v2RvSExz6U7tAAR6KyZlddDmssHO
+         NBYVoJS+i64q7mPiV2rDDqratU39L2R8l0pwX7zogXA4RbDYAxE7qGP9tvHwJzpnMuFa
+         C0HQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWlGV+ryBFci8/fWKUw9gJAQxrFizTH76OUvXhFaKB7oQgELg60T5U+MlenP3tyfKIxOGHkA04qxti+gnM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLN9wbrhnVl15Yl98KKCnGPjbq+jhA+DB5ghMcMIE5cQYYd3X1
+	DlB84cic4wlNqrmv+2n7hhqFfWfrywwbFKVTvwrJ7g+/5cOqsu1Xusbv2vt+lHDGDNqgDOGaN0a
+	C
+X-Google-Smtp-Source: AGHT+IGWHKPtHA2twxKvGB6E/ujF3z3IoFDGiLN3geSfu/MXfka4dtEv6hp0P2DmLjyD/i9iV2pkew==
+X-Received: by 2002:a17:902:d2d1:b0:20b:9547:9b2d with SMTP id d9443c01a7336-20bfde55510mr91868295ad.2.1728141972285;
+        Sat, 05 Oct 2024 08:26:12 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.26.10
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.26.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Oct 2024 08:26:10 -0700 (PDT)
+        Sat, 05 Oct 2024 08:26:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org,
@@ -74,9 +75,9 @@ Cc: deller@kernel.org,
 	alex.bennee@linaro.org,
 	linux-parisc@vger.kernel.org,
 	qemu-arm@nongnu.org
-Subject: [PATCH 19/20] target/arm: Move device detection earlier in get_phys_addr_lpae
-Date: Sat,  5 Oct 2024 08:25:50 -0700
-Message-ID: <20241005152551.307923-20-richard.henderson@linaro.org>
+Subject: [PATCH 20/20] target/arm: Fix alignment fault priority in get_phys_addr_lpae
+Date: Sat,  5 Oct 2024 08:25:51 -0700
+Message-ID: <20241005152551.307923-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005152551.307923-1-richard.henderson@linaro.org>
 References: <20241005152551.307923-1-richard.henderson@linaro.org>
@@ -88,91 +89,86 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Determine cache attributes, and thence Device vs Normal memory,
-earlier in the function.  We have an existing regime_is_stage2
-if block into which this can be slotted.
+Now that we have the MemOp for the access, we can order
+the alignment fault caused by memory type before the
+permission fault for the page.
+
+For subsequent page hits, permission and stage 2 checks
+are known to pass, and so the TLB_CHECK_ALIGNED fault
+raised in generic code is not mis-ordered.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/ptw.c | 49 ++++++++++++++++++++++++------------------------
- 1 file changed, 25 insertions(+), 24 deletions(-)
+ target/arm/ptw.c | 49 +++++++++++++++++++++++++++---------------------
+ 1 file changed, 28 insertions(+), 21 deletions(-)
 
 diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 238b2c92a9..0a1a820362 100644
+index 0a1a820362..50aa5e338c 100644
 --- a/target/arm/ptw.c
 +++ b/target/arm/ptw.c
-@@ -2029,8 +2029,20 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-             xn = extract64(attrs, 53, 2);
-             result->f.prot = get_S2prot(env, ap, xn, ptw->in_s1_is_el0);
-         }
-+
-+        result->cacheattrs.is_s2_format = true;
-+        result->cacheattrs.attrs = extract32(attrs, 2, 4);
-+        /*
-+         * Security state does not really affect HCR_EL2.FWB;
-+         * we only need to filter FWB for aa32 or other FEAT.
-+         */
-+        device = S2_attrs_are_device(arm_hcr_el2_eff(env),
-+                                     result->cacheattrs.attrs);
-     } else {
-         int nse, ns = extract32(attrs, 5, 1);
-+        uint8_t attrindx;
-+        uint64_t mair;
-+
-         switch (out_space) {
-         case ARMSS_Root:
-             /*
-@@ -2102,6 +2114,19 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-          */
-         result->f.prot = get_S1prot(env, mmu_idx, aarch64, ap, xn, pxn,
-                                     result->f.attrs.space, out_space);
-+
-+        /* Index into MAIR registers for cache attributes */
-+        attrindx = extract32(attrs, 2, 3);
-+        mair = env->cp15.mair_el[regime_el(env, mmu_idx)];
-+        assert(attrindx <= 7);
-+        result->cacheattrs.is_s2_format = false;
-+        result->cacheattrs.attrs = extract64(mair, attrindx * 8, 8);
-+
-+        /* When in aarch64 mode, and BTI is enabled, remember GP in the TLB. */
-+        if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
-+            result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
-+        }
-+        device = S1_attrs_are_device(result->cacheattrs.attrs);
+@@ -2129,6 +2129,34 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+         device = S1_attrs_are_device(result->cacheattrs.attrs);
      }
  
++    /*
++     * Enable alignment checks on Device memory.
++     *
++     * Per R_XCHFJ, the correct ordering for alignment, permission,
++     * and stage 2 faults is:
++     *    - Alignment fault caused by the memory type
++     *    - Permission fault
++     *    - A stage 2 fault on the memory access
++     * Perform the alignment check now, so that we recognize it in
++     * the correct order.  Set TLB_CHECK_ALIGNED so that any subsequent
++     * softmmu tlb hit will also check the alignment.
++     *
++     * In v7, for a CPU without the Virtualization Extensions this
++     * access is UNPREDICTABLE; we choose to make it take the alignment
++     * fault as is required for a v7VE CPU. (QEMU doesn't emulate any
++     * CPUs with ARM_FEATURE_LPAE but not ARM_FEATURE_V7VE anyway.)
++     */
++    if (device) {
++        unsigned a_bits = memop_atomicity_bits(memop);
++        if (address & ((1 << a_bits) - 1)) {
++            fi->type = ARMFault_Alignment;
++            goto do_fault;
++        }
++        result->f.tlb_fill_flags = TLB_CHECK_ALIGNED;
++    } else {
++        result->f.tlb_fill_flags = 0;
++    }
++
      if (!(result->f.prot & (1 << access_type))) {
-@@ -2131,30 +2156,6 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
+         fi->type = ARMFault_Permission;
+         goto do_fault;
+@@ -2156,27 +2184,6 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
      result->f.attrs.space = out_space;
      result->f.attrs.secure = arm_space_is_secure(out_space);
  
--    if (regime_is_stage2(mmu_idx)) {
--        result->cacheattrs.is_s2_format = true;
--        result->cacheattrs.attrs = extract32(attrs, 2, 4);
--        /*
--         * Security state does not really affect HCR_EL2.FWB;
--         * we only need to filter FWB for aa32 or other FEAT.
--         */
--        device = S2_attrs_are_device(arm_hcr_el2_eff(env),
--                                     result->cacheattrs.attrs);
--    } else {
--        /* Index into MAIR registers for cache attributes */
--        uint8_t attrindx = extract32(attrs, 2, 3);
--        uint64_t mair = env->cp15.mair_el[regime_el(env, mmu_idx)];
--        assert(attrindx <= 7);
--        result->cacheattrs.is_s2_format = false;
--        result->cacheattrs.attrs = extract64(mair, attrindx * 8, 8);
--
--        /* When in aarch64 mode, and BTI is enabled, remember GP in the TLB. */
--        if (aarch64 && cpu_isar_feature(aa64_bti, cpu)) {
--            result->f.extra.arm.guarded = extract64(attrs, 50, 1); /* GP */
--        }
--        device = S1_attrs_are_device(result->cacheattrs.attrs);
+-    /*
+-     * Enable alignment checks on Device memory.
+-     *
+-     * Per R_XCHFJ, this check is mis-ordered. The correct ordering
+-     * for alignment, permission, and stage 2 faults should be:
+-     *    - Alignment fault caused by the memory type
+-     *    - Permission fault
+-     *    - A stage 2 fault on the memory access
+-     * but due to the way the TCG softmmu TLB operates, we will have
+-     * implicitly done the permission check and the stage2 lookup in
+-     * finding the TLB entry, so the alignment check cannot be done sooner.
+-     *
+-     * In v7, for a CPU without the Virtualization Extensions this
+-     * access is UNPREDICTABLE; we choose to make it take the alignment
+-     * fault as is required for a v7VE CPU. (QEMU doesn't emulate any
+-     * CPUs with ARM_FEATURE_LPAE but not ARM_FEATURE_V7VE anyway.)
+-     */
+-    if (device) {
+-        result->f.tlb_fill_flags |= TLB_CHECK_ALIGNED;
 -    }
 -
      /*
-      * Enable alignment checks on Device memory.
-      *
+      * For FEAT_LPA2 and effective DS, the SH field in the attributes
+      * was re-purposed for output address bits.  The SH attribute in
 -- 
 2.43.0
 
