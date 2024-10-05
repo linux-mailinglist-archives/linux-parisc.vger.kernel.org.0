@@ -1,72 +1,72 @@
-Return-Path: <linux-parisc+bounces-2465-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2466-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019B49917B7
-	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 17:26:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 779E89917B9
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 17:26:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3362D1C212BD
-	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 15:26:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 294031F22C39
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 15:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A97154423;
-	Sat,  5 Oct 2024 15:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15C81EB36;
+	Sat,  5 Oct 2024 15:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FX4XwuA9"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y/SMSfzs"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2986B1EB36
-	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 15:26:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC4415383C
+	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 15:26:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728141963; cv=none; b=SeG8mWKP7l3zkotrME/zIt147k3D4285/gnbEjRCijK+jFqYU2de/eUgz6aSQTq++3WQmE5l3jESDmDUqdRw4+GReRPLN+B0712WcNxoi0pxnRuLYODel5dMEbbDUQnF48cGnXa9a0pnrxJaxDrPef1guhYi4eVuierfSrZMCAU=
+	t=1728141964; cv=none; b=X7KUb/LjYU00rj1CdBhrTpbwzHvwFvoItTKfxuQhGzFGNKjBCzZAh03onUECswaRYqDvQiHdix+exla7NrXUKJYCp3JR4SWx6o4+FFdJ4SSPdOXzXHQ323LxbIaBcwYVEakXB63YNOFOZjaQJLORs/zmLYWABlJPPFGmicZGC+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728141963; c=relaxed/simple;
-	bh=tZoCwtIK/p1jJzOfgZpJrtMvDCOC/SNFglCoA1ddJgs=;
+	s=arc-20240116; t=1728141964; c=relaxed/simple;
+	bh=sTfOjnd7WOnuX+x1S4o3BYX1tyPFXVNWkYKKV6kIQa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VIK6oJ4YArRji+1ExL6u5U394aSCYop7ismNOe6GcO35Mmo9kmEq5KYq2CFFrTCOTqz1r6wyLo+uSwQxnpIqX3EmKZEZmGnYZEn4z9HJJc9i0JzJ/CYVhEHCvq8NLDFXZ7m9VYjc/p43r0WKLbhmKXgD3MO9c6kYBW97/MyJA3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FX4XwuA9; arc=none smtp.client-ip=209.85.214.174
+	 MIME-Version; b=VTIaO+9aw+UKAGiQ4ec+gqjTal045++mD/iRVptfUXtbp6var2pHY8mecxGnXS+y779TVQdgYTSMrkJhkLONgSCXvpaUh5dL7m86WLSQ6+JV7re9Mkxf+zQeV7d7tQZgPMxIqpiA2zrl7ovY5ZPX9mJQdE4T2WOsXmJn+DTLya8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y/SMSfzs; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20bb39d97d1so27185145ad.2
-        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 08:26:02 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-20b9b35c7c7so21873195ad.1
+        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 08:26:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728141961; x=1728746761; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1728141963; x=1728746763; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/wa2JC5GTiuZOa9FUt+c/E5R/4D7wBSs90VoPwelenc=;
-        b=FX4XwuA9aQxSKoFeeWCruGBoej3riyg39adjGhg065F4JxCwZgpES/l3FZ69Z48+fQ
-         u8dngJQD16ZwlIuztCJWNe0fng4LZ+oVEfbvhCY6vwA5kj1gbEsvrjeZVlh/8iuDv5RM
-         3GsNbb3YcmHzqKU80RyUz+RKEy02A9Vzg9geu2wd1+MkC7reyChkLcp5dX+1ErGU6gw5
-         /Wy8Vebs+PYqUuiYQOOIP2z7E68TJ5jvJZebQ9HjJ4fwRWCNQLFA0MSXCeeJuulYJmWL
-         GN87qIDYV4I5PrszC7wYYdh6hp6xgt2rIErT/aukuWDX7mYvSBHyYcNGn1l1zDKyPoEv
-         lstA==
+        bh=posPbKSzdb+ffX+WhfgYFaW0pAyKjx4IZlbzVQLaTuc=;
+        b=Y/SMSfzsEtThObkqK0j+EJt8kpjKHFc4OYufX1y9NDqlMPMut5/d7NbIrp89fCzF4Y
+         LpoOOMiGU9T9N8/jxSh44UNBGKhOIBCpCdy+qRNU1ZfzUFpK+E4jDefD+Cv8YsUrmbOR
+         vUfdY5pvIVXu3d0w47ZYJSMYoUNsIS7ptYBHW1G4yVeM+Zv+nhSUe4Mzja4b3AGG9W7V
+         f0bsiUB8dcl4q/MdKVqftDC+sL1IF3E9Xpyc4QvxiNIk9GKrF4DQn86DX/SaS54aPK6d
+         P+pBa91fqm7ghnk017ciK21EzUZOF3uGKQXpRZUKcnwTqzYAIko84PNfMwncoNULkG2Q
+         YB6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728141961; x=1728746761;
+        d=1e100.net; s=20230601; t=1728141963; x=1728746763;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/wa2JC5GTiuZOa9FUt+c/E5R/4D7wBSs90VoPwelenc=;
-        b=Hh6q+PKWF4YStkEfqLn0C//3PVsDqUyQj7kLkZomKPk5BGjejIFtEhDPBRtpCGyAVq
-         /WjUbYTaxT1JIT4ofhbxFIl7NonyUH1PwMaewpSgFV9k9/vEKXRKfl/CYYZ0Y2b/qiqT
-         /+GZmeb/yGcLmYuuwGOtMJX1vykNqEa5+zFEnv8J1VyDhjOckRduvcAvRrMSTfXKlL2q
-         u4lfLz03mR328huLfNJJERbo5YqLPZYCBGJhobw4xBTVlRTlUgKLnmuQ2fU3OLSYQu5T
-         jRelvRHJtgNQfawNJXuTsqhcqurB+aZ12kHU9srbhTOiBuBZnL4AgolOGs9ipTKXzRgU
-         4KGw==
-X-Forwarded-Encrypted: i=1; AJvYcCVwrj0pPCDw10Gi8bYLV6cXkAD+YctG/1UGaKfXD8eWSsgrfb15drcsU8ZnLEa/GwkYQhOMzzvxrTR5YfU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywx9Yb/rq1TOWIBrV/dLTakJcX9MFMvK93mysbysYEVaYYdwhSj
-	6pM6K3HCefke9HL6tjwi6mv1h6mc4TwMuud1QnBbqeVpYB2puEFyghExw+1AG5M=
-X-Google-Smtp-Source: AGHT+IG91WPfsC5D7LXHeMJAPorkuse9kNn6CykSYZIeBAI70lXeJDkn5eW9lfVj7aitw+VRpPphGg==
-X-Received: by 2002:a17:902:e887:b0:20b:8036:f77f with SMTP id d9443c01a7336-20bff1a9178mr88727005ad.46.1728141961604;
-        Sat, 05 Oct 2024 08:26:01 -0700 (PDT)
+        bh=posPbKSzdb+ffX+WhfgYFaW0pAyKjx4IZlbzVQLaTuc=;
+        b=vhGPSCupzLtRj8H9F9oI8X33qDz0zdAqo/BwT4sHrGPj5Yi/u8BAwYHBWsBAns4Bdu
+         DHRffrRP1lBEkZoKQp2WDynkyQ+YZzGVCH8JRkCpNKEgpb0hV8ExUwWXQhJujWVTa1tZ
+         /aUupvxMe4XVJzQaDFWn9Uvct6rI3yLR931X7JPj65FgcCTpU0r6M+AQBuXpzgdJYOyX
+         rIOLZwwMmx7z7iRMgVE3ttT6vVa8i2SGA0duPrAPTEHuesCVDUW1AwYBCxqfknm22bIy
+         b/r3ZmyCrQpXwO3ENrCaC823pegiTSkqDDms4rG/+QlZQZp5r3U8IucgA/oDkJ4pNkmN
+         X45w==
+X-Forwarded-Encrypted: i=1; AJvYcCVFaCkbyYPyVodRY4/Ta+Lqdbt6rZPlh2wBIY/vSG6MjjoEnwx5MBiCkwt2mtwPwSXSFaONMoW+TR4NJLQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLMutfS5XOAdlQeA3WS72bq0wK4WtEJehl4KIeqOauhSQ+FP49
+	GtjwJSh71hzF+0JqWTiKm9xI4+ia48fw7TNxtTOaS8FoHOQED9XEsscjAwAIAXw=
+X-Google-Smtp-Source: AGHT+IHBX41nPwo6covULM+vMbiWEGGIhbj1kTBPJ81VMsZIIlt+W/XQXaPT0SdsNmz4Xr77GlztTw==
+X-Received: by 2002:a17:902:d2cf:b0:20b:502f:8c2e with SMTP id d9443c01a7336-20bfee333acmr92469555ad.51.1728141962599;
+        Sat, 05 Oct 2024 08:26:02 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.26.00
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.26.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Oct 2024 08:26:01 -0700 (PDT)
+        Sat, 05 Oct 2024 08:26:02 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org,
@@ -74,9 +74,9 @@ Cc: deller@kernel.org,
 	alex.bennee@linaro.org,
 	linux-parisc@vger.kernel.org,
 	qemu-arm@nongnu.org
-Subject: [PATCH 09/20] target/hppa: Perform access rights before protection id check
-Date: Sat,  5 Oct 2024 08:25:40 -0700
-Message-ID: <20241005152551.307923-10-richard.henderson@linaro.org>
+Subject: [PATCH 10/20] target/hppa: Fix priority of T, D, and B page faults
+Date: Sat,  5 Oct 2024 08:25:41 -0700
+Message-ID: <20241005152551.307923-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241005152551.307923-1-richard.henderson@linaro.org>
 References: <20241005152551.307923-1-richard.henderson@linaro.org>
@@ -88,47 +88,45 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In Chapter 5, Interruptions, the group 3 exceptions lists
-"Data memory access rights trap" in priority order ahead of
-"Data memory protection ID trap".
-
-Swap these checks in hppa_get_physical_address.
+Drop the 'else' so that ret is overridden with the
+highest priority fault.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/mem_helper.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ target/hppa/mem_helper.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index a386c80fa4..f027c494e2 100644
+index f027c494e2..f71cedd7a9 100644
 --- a/target/hppa/mem_helper.c
 +++ b/target/hppa/mem_helper.c
-@@ -267,6 +267,12 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-         goto egress;
+@@ -288,7 +288,7 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
      }
  
-+    if (unlikely(!(prot & type))) {
-+        /* Not allowed -- Inst/Data Memory Access Rights Fault. */
-+        ret = (type & PAGE_EXEC) ? EXCP_IMP : EXCP_DMAR;
-+        goto egress;
-+    }
-+
-     /* access_id == 0 means public page and no check is performed */
-     if (ent->access_id && MMU_IDX_TO_P(mmu_idx)) {
-         int access_prot = (hppa_is_pa20(env)
-@@ -281,12 +287,6 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-         prot &= access_prot;
-     }
- 
--    if (unlikely(!(prot & type))) {
--        /* Not allowed -- Inst/Data Memory Access Rights Fault. */
--        ret = (type & PAGE_EXEC) ? EXCP_IMP : EXCP_DMAR;
--        goto egress;
--    }
--
      /*
-      * In priority order, check for conditions which raise faults.
+-     * In priority order, check for conditions which raise faults.
++     * In reverse priority order, check for conditions which raise faults.
       * Remove PROT bits that cover the condition we want to check,
+      * so that the resulting PROT will force a re-check of the
+      * architectural TLB entry for the next access.
+@@ -299,13 +299,15 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+             /* The T bit is set -- Page Reference Fault.  */
+             ret = EXCP_PAGE_REF;
+         }
+-    } else if (!ent->d) {
++    }
++    if (unlikely(!ent->d)) {
+         prot &= PAGE_READ | PAGE_EXEC;
+         if (type & PAGE_WRITE) {
+             /* The D bit is not set -- TLB Dirty Bit Fault.  */
+             ret = EXCP_TLB_DIRTY;
+         }
+-    } else if (unlikely(ent->b)) {
++    }
++    if (unlikely(ent->b)) {
+         prot &= PAGE_READ | PAGE_EXEC;
+         if (type & PAGE_WRITE) {
+             /*
 -- 
 2.43.0
 
