@@ -1,175 +1,103 @@
-Return-Path: <linux-parisc+bounces-2476-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2477-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6191C9917C6
-	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 17:26:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0883E991886
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 18:55:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4392283392
-	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 15:26:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A94E71F21CF4
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 16:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E105156887;
-	Sat,  5 Oct 2024 15:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD26D14A0BC;
+	Sat,  5 Oct 2024 16:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MgwlxTE/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hjmW7uOw"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75F6156230
-	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 15:26:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4402F5B
+	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 16:55:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728141974; cv=none; b=JNfjNNDVs8wJI9cwARdH+/wyv3M51514DpVbEzv0WdBiLaf3JODy8zx/SouWecTJIPPz6dTg835fw0tY0PCwbtMyimZEd62jN7irGkAdl7q+PJpzzxX0Eyj7kLQ274lukziijqlpZYUfb1TkAIHuDzjW9nLDZfBUM8TUC6Mt/1k=
+	t=1728147351; cv=none; b=Zs5N6DcFjbiGW18PcPut7fsW1VJDNU0pi7qgYwFBSDZWEueuqcmOLaPfPWRizhRiWgh8pkV5OEhEBJV89qSkt2KdJu4TwMIPfWIpozhmaBKYKyvs+JINh9q8+VcQdDhG1jQLR8OSLjXnFH2lUD0roQgaQLgvT+PnjuoHNBWr/8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728141974; c=relaxed/simple;
-	bh=huD5NidbYXV5yWa6IFJz9jG5pO7wgoHT97Pb6ytfppc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EWlSzER6/ekTd6iWfMfLpqwmuT626HINPcMBu40n1kW8L+FDiZV+dkC26DBgRuP3SrDydwS+/o7CXhO9ZqPhD1A1TuvxhIRoAO88ahv5VKjuJ4lBhivqRMOdwAYxhclCoGHeAtbUKlH9cNN1W7YPVjYgZRxgrwDnP7Jo61kZpXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MgwlxTE/; arc=none smtp.client-ip=209.85.214.179
+	s=arc-20240116; t=1728147351; c=relaxed/simple;
+	bh=IKELM8Ybxmfb9UUZ946oZOxLiNUuDZPPXTc695oWRYE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=GpK1soETMx9g6p0Db9xWlej49xdMweeWRsfb+IkwXzrFyXFKtt4l1WkBpWCReIndSKh/BwnnUhYhGBTU8f0DCw8lO9kfA7r6XfHX/xi5rCc6+oEH+Sfl+06nbUrOT3Eot6lOI6EakOdoodVTtsZzU7ausqLyfTH6OZngWGoqXiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hjmW7uOw; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20b78ee6298so19961215ad.2
-        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 08:26:12 -0700 (PDT)
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7e9ff6fb4c6so464947a12.3
+        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 09:55:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728141972; x=1728746772; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qIlBHpyIHO+kiCFyGgZVBXgacr4yw5gCrMn63zUSz3U=;
-        b=MgwlxTE/Xkd267sv+4nV0HXsWBMGQfHQvmCx0PvRVBJqZ2pU1PCdEzlYHmD6PDEcW6
-         uzMdOPpcxjKmf2R2oOk8RtDUIfQayLG9Aw5yJBee1KkdnA6C5JUvoEZaYvp9QfbVqkzr
-         n4bp7kJiOpvW+h3LIVvtwY5jBOlUnLgZjlUk9GRpuRz7lzfRK88i60APLzsK/wRsaqPP
-         dS32fZiW64sdjRcbgok4dP1EsEJnkaLpUVw+fqnM+7EV8Lcp0B2xmDpGv6PKmQGpx0gX
-         buHXA6Nj1GnLX7tOQfJkKw8/+3UolnXUxFvG7vjc6WkZxf81r/KQ334CCN+9de1MgHmD
-         sE1w==
+        d=linaro.org; s=google; t=1728147349; x=1728752149; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=XbpekZFMDuJM/kqKd3t1NOuoXoBPdvnQzAvZj3UcJpc=;
+        b=hjmW7uOwa2nhMf3MD4Bnpb19KHX9o64BQt3vproz8zBg1gxXmNxQ0a3oy06BusYu4f
+         5Yb1j/HhMVIA7Md4FksoPF87gb+158yCu0g/w4q/vTiRldzuZUmj7vCshSBRT6yQORF1
+         K2swUwl52IVWGvQ0YMny52wYHJevW84w95aJZqEyNfaJniNupZvtiz683LPm6d3b/I44
+         +wBkXia1oQtwo35w/d/BUrfFHOKWwZai/9i4QRwbcz0c7BPo/5UkDq6jyDdxJJxb56lF
+         fWGxOrh+H3tjAthpUh6YNq3BwCFJXbPudqn8zgVbH8G1b2aQbXdXiq7c9cH39oN/1mU2
+         HADg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728141972; x=1728746772;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qIlBHpyIHO+kiCFyGgZVBXgacr4yw5gCrMn63zUSz3U=;
-        b=Ot9sl3TS9zPvV1rS8IGHMc3gImnaYA/R54Gr9M/bCByUuSLpcEO5rnIr14XraNsoOL
-         Q26tREcrxaUANAKNYV9E2KeCZGJ+aD25W6MzS0eSw6BZtoPc82bjkDnXP5k1CTWjVH3I
-         XCsbS3txgO+P5YAcEn/gj9KA2ftz/OMcO9pJWgM6WN6xDv4hQZhxSZJAg6ZqqHtwNO7W
-         LWU8+Yge8XsYFThE4WDLaMHW5TphIuRj1xoGubA/v2RvSExz6U7tAAR6KyZlddDmssHO
-         NBYVoJS+i64q7mPiV2rDDqratU39L2R8l0pwX7zogXA4RbDYAxE7qGP9tvHwJzpnMuFa
-         C0HQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWlGV+ryBFci8/fWKUw9gJAQxrFizTH76OUvXhFaKB7oQgELg60T5U+MlenP3tyfKIxOGHkA04qxti+gnM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLN9wbrhnVl15Yl98KKCnGPjbq+jhA+DB5ghMcMIE5cQYYd3X1
-	DlB84cic4wlNqrmv+2n7hhqFfWfrywwbFKVTvwrJ7g+/5cOqsu1Xusbv2vt+lHDGDNqgDOGaN0a
-	C
-X-Google-Smtp-Source: AGHT+IGWHKPtHA2twxKvGB6E/ujF3z3IoFDGiLN3geSfu/MXfka4dtEv6hp0P2DmLjyD/i9iV2pkew==
-X-Received: by 2002:a17:902:d2d1:b0:20b:9547:9b2d with SMTP id d9443c01a7336-20bfde55510mr91868295ad.2.1728141972285;
-        Sat, 05 Oct 2024 08:26:12 -0700 (PDT)
-Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c1396948dsm14351765ad.225.2024.10.05.08.26.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Oct 2024 08:26:11 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: deller@kernel.org,
-	peter.maydell@linaro.org,
-	alex.bennee@linaro.org,
-	linux-parisc@vger.kernel.org,
-	qemu-arm@nongnu.org
-Subject: [PATCH 20/20] target/arm: Fix alignment fault priority in get_phys_addr_lpae
-Date: Sat,  5 Oct 2024 08:25:51 -0700
-Message-ID: <20241005152551.307923-21-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241005152551.307923-1-richard.henderson@linaro.org>
-References: <20241005152551.307923-1-richard.henderson@linaro.org>
+        d=1e100.net; s=20230601; t=1728147349; x=1728752149;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XbpekZFMDuJM/kqKd3t1NOuoXoBPdvnQzAvZj3UcJpc=;
+        b=JzKYlRBXel8fwIzEIkhABdnsKsqu31tUVAL2jGIMM1mgK/AfL2BBx4QLC4SePvUjhE
+         FSH1eAh41ScTfAFXzFzwFO43KgzMv/yAP8/6ifMtP2kcKFgxAYTVEb4BUDPJJrMu2z0e
+         8INVMuUAh1oE6Aw/7Zy7E/xBNLI/u1SiTKxqj5TwROWz/b4X3Ic6vaFsdDWpYoZa8naD
+         iV6YnbNE9CMkW1QZmfrEu7zNLuV4UaGuJRzxdXTwYwezLTcXcg4rYmFht21sntafMbuh
+         rcGCH35bEKFq7oaiBOy6KDwuO7VCnHpZDGfeshc3h0NHOna2Q44+Hng2yavmJNplhK4w
+         /ENw==
+X-Forwarded-Encrypted: i=1; AJvYcCXUJppA3vn7k8He8yPJ4R8ytqWOSzxvZ1NFNIRBUMrHPy23Zype+r92x/VxYJFUYDVQVLx9xBvuBU+EHNI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLvGHdyInI1GJBQUZjNKS4NSUmq/IrOqhEfO6DWNKBCi0W+BxR
+	k7Ve58kRpOpwDCm2aNMZg9/p6cUwlSC08WsTLT1Dzx+XRzkNgiJv6Hv429qj20Q=
+X-Google-Smtp-Source: AGHT+IGyO1IYVhPdhi55RlYsq9gxduEAvQgnIY5+p+NDqB9y/Y7uxg71YFcMhS7N7OB6zYo1UURzpA==
+X-Received: by 2002:a05:6a20:c886:b0:1cf:6d20:4d6 with SMTP id adf61e73a8af0-1d6dfa34c23mr10867889637.16.1728147349331;
+        Sat, 05 Oct 2024 09:55:49 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-81-121.tukw.qwest.net. [174.21.81.121])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71df0ccc4b2sm1680505b3a.45.2024.10.05.09.55.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 05 Oct 2024 09:55:48 -0700 (PDT)
+Message-ID: <9bfbfa32-9e23-48c6-8386-a611898ef306@linaro.org>
+Date: Sat, 5 Oct 2024 09:55:47 -0700
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: {PATCH] accel/tcg: Fix CPU specific unaligned behaviour
+From: Richard Henderson <richard.henderson@linaro.org>
+To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Helge Deller <deller@kernel.org>
+Cc: qemu-devel@nongnu.org, linux-parisc@vger.kernel.org
+References: <Zvyx1kM4JljbzxQW@p100> <87cykimsb9.fsf@draig.linaro.org>
+ <c05823ff-47dd-40b1-a363-0c4b9cb47713@linaro.org>
+Content-Language: en-US
+In-Reply-To: <c05823ff-47dd-40b1-a363-0c4b9cb47713@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Now that we have the MemOp for the access, we can order
-the alignment fault caused by memory type before the
-permission fault for the page.
+On 10/4/24 07:24, Richard Henderson wrote:
+> I was hoping for a reorg of the target hooks that could allow the target to see 
+> misalignment and permission check simultaneously, then the target chooses the order in 
+> which the two faults are presented.  Given how complicated tlb_fill is though, I don't see 
+> that being an easy job.
+> 
+> I'll play around with something and report back.
+Careful review of exception priorities shows that this cannot be done without expanding 
+tlb_fill, because of how the alignment fault must be prioritized in between other faults.
 
-For subsequent page hits, permission and stage 2 checks
-are known to pass, and so the TLB_CHECK_ALIGNED fault
-raised in generic code is not mis-ordered.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/arm/ptw.c | 49 +++++++++++++++++++++++++++---------------------
- 1 file changed, 28 insertions(+), 21 deletions(-)
-
-diff --git a/target/arm/ptw.c b/target/arm/ptw.c
-index 0a1a820362..50aa5e338c 100644
---- a/target/arm/ptw.c
-+++ b/target/arm/ptw.c
-@@ -2129,6 +2129,34 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-         device = S1_attrs_are_device(result->cacheattrs.attrs);
-     }
- 
-+    /*
-+     * Enable alignment checks on Device memory.
-+     *
-+     * Per R_XCHFJ, the correct ordering for alignment, permission,
-+     * and stage 2 faults is:
-+     *    - Alignment fault caused by the memory type
-+     *    - Permission fault
-+     *    - A stage 2 fault on the memory access
-+     * Perform the alignment check now, so that we recognize it in
-+     * the correct order.  Set TLB_CHECK_ALIGNED so that any subsequent
-+     * softmmu tlb hit will also check the alignment.
-+     *
-+     * In v7, for a CPU without the Virtualization Extensions this
-+     * access is UNPREDICTABLE; we choose to make it take the alignment
-+     * fault as is required for a v7VE CPU. (QEMU doesn't emulate any
-+     * CPUs with ARM_FEATURE_LPAE but not ARM_FEATURE_V7VE anyway.)
-+     */
-+    if (device) {
-+        unsigned a_bits = memop_atomicity_bits(memop);
-+        if (address & ((1 << a_bits) - 1)) {
-+            fi->type = ARMFault_Alignment;
-+            goto do_fault;
-+        }
-+        result->f.tlb_fill_flags = TLB_CHECK_ALIGNED;
-+    } else {
-+        result->f.tlb_fill_flags = 0;
-+    }
-+
-     if (!(result->f.prot & (1 << access_type))) {
-         fi->type = ARMFault_Permission;
-         goto do_fault;
-@@ -2156,27 +2184,6 @@ static bool get_phys_addr_lpae(CPUARMState *env, S1Translate *ptw,
-     result->f.attrs.space = out_space;
-     result->f.attrs.secure = arm_space_is_secure(out_space);
- 
--    /*
--     * Enable alignment checks on Device memory.
--     *
--     * Per R_XCHFJ, this check is mis-ordered. The correct ordering
--     * for alignment, permission, and stage 2 faults should be:
--     *    - Alignment fault caused by the memory type
--     *    - Permission fault
--     *    - A stage 2 fault on the memory access
--     * but due to the way the TCG softmmu TLB operates, we will have
--     * implicitly done the permission check and the stage2 lookup in
--     * finding the TLB entry, so the alignment check cannot be done sooner.
--     *
--     * In v7, for a CPU without the Virtualization Extensions this
--     * access is UNPREDICTABLE; we choose to make it take the alignment
--     * fault as is required for a v7VE CPU. (QEMU doesn't emulate any
--     * CPUs with ARM_FEATURE_LPAE but not ARM_FEATURE_V7VE anyway.)
--     */
--    if (device) {
--        result->f.tlb_fill_flags |= TLB_CHECK_ALIGNED;
--    }
--
-     /*
-      * For FEAT_LPA2 and effective DS, the SH field in the attributes
-      * was re-purposed for output address bits.  The SH attribute in
--- 
-2.43.0
-
+r~
 
