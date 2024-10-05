@@ -1,70 +1,73 @@
-Return-Path: <linux-parisc+bounces-2480-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2481-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0900F991A6C
-	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 22:06:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735ED991A6D
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 22:06:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F494281016
-	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 20:06:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E8371F221F9
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Oct 2024 20:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8547F157E6B;
-	Sat,  5 Oct 2024 20:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D66130AC8;
+	Sat,  5 Oct 2024 20:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dx0YiCvv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wMU8zMeM"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7BA130AC8
-	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 20:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69189153838
+	for <linux-parisc@vger.kernel.org>; Sat,  5 Oct 2024 20:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728158764; cv=none; b=YcRtL6BFb3NG+/+pmxcS24nQ4vcaz/soPBcDlsv4451INT+jMClqYoaCVJJnjk1ZjSgD4hfyE96WCOqx8RNAB/K7hCyK3guU5qlrIGctAwLbZEwldHs7l/cspahvi5dgF8x9RNMFACbpRm3kCVw33VE0hYch2MqGE6Fz6aIN18c=
+	t=1728158764; cv=none; b=UPM8IR4ux6TgLbBgCzjsSowjWkh43clHcfhpiFUBrSpEEOGits7cfafWO4Afqwa3yMC2RdwxuPMj12NMZ/jBE03rbhz6Yu0RvWescGEplGfHKw9iMHxMISfJZha6rrS1cuazYdotVIngNMrr6lQo5dx47GzSaSDQScP+thzZo/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728158764; c=relaxed/simple;
-	bh=UKExh3WpfYTBgVVaStgdjl+UrQo04hCRqd2RRrGmZjA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KyqwkhYcS55xYWQeO0BJybMoHXiw4ldrcnYMR8AwvrEy4bjqdvsGTrzudmQQRQ3KaIvB/KcXHheL6r+PLgd6Q7MyOfGraX6+obhQfkajpjwLJIsylIfHRKpB/MjFwcP4j3hdz/JkJEMkWR5tauJBULR0TLTUNo/Oeoey53QwBiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dx0YiCvv; arc=none smtp.client-ip=209.85.214.175
+	bh=+dpu25dlok+GjgsLvrO8ITZP/Q4KUk6jRMPM9e4O+S4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=X9XINpD4sjRf8XTRQDRc1d5ljwUr2hVqXoOnLgAQkA0nrVgqXvFlrrmyNCRTEHqNj+zsPPkx0xFXTVrWJb0KLL8l0jI9HTk2XUVuEx8cMIC2ZVuRwiBY3R6KLqFO8tBUUW9MqmJBnuCF2Zc6SKm7lsAyDQMw8Zol1uf+DTHJ/os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wMU8zMeM; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-20b0b5cdb57so31578515ad.1
-        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 13:06:02 -0700 (PDT)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20b93887decso26368315ad.3
+        for <linux-parisc@vger.kernel.org>; Sat, 05 Oct 2024 13:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728158762; x=1728763562; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=irfgPGGIAUHZVTJOmBvNpfB+bdbCcTVofkC/LEnkZY0=;
-        b=Dx0YiCvv7aNDrogCd70ZVTwGEhDrlpAd0u/Cfx9FCvn1hTJr0234ANKjVMja0h0urb
-         C6JEt+cMd2JeJO08r2ICdy2czZnoEaQmKLPmCL9xhc2q+dK1O8LQpH9fS0BLlpnxfrFT
-         g8+IUbzJWecbwCgANp49w8pggd9cSURE3Zgs5m26592COl1SOatvWCynq6zUge0vOvWd
-         DHV2f6PUCf1kxEb/ZihjTutNDLuYz1Va0LVhoox6GeB7Bwxtt7YSvGMaV4B/2idORi+9
-         Pe91l5806B1Xg8xtLvNtCPxEOZfK7bfjNhMMnXB72IhoTk0UDqk8FspbbzvsccnhXWEK
-         gJog==
+        d=linaro.org; s=google; t=1728158763; x=1728763563; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qpc+gtvz4QF2D7U7hwk6I/PwDTmOhNNc5A8A2G2CqV8=;
+        b=wMU8zMeMq0XYzHQt9G1xz0iUYqQYIFr44xNi8+PlCdLanpDJXK6yu018qM3zRrcli+
+         YnokOtl5ECR9CScaRxQ/86KKvAMDT2dL2kwZxMq0xuTmRsBwn+KbIt+6ln2ZEVxdtc61
+         qJm5O4HvFJfY88/CTyttyJiyfk5X1N4Sb0LzzQS0ZVf8lwD9E2q4eziTem4L42JQrWi3
+         TpZGVCqlGTstrl2OogszwIM9F39PhO6NCmBI3KZdOc8qeFQxJq6BkHWwtv2bIJPfWSZi
+         afLuiB+ss35eAkPYSiwa8RiV8M2+lWGwt6KyMftJBmTSQnan5Eb0R7kPa672MOoXrRpE
+         2shQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728158762; x=1728763562;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=irfgPGGIAUHZVTJOmBvNpfB+bdbCcTVofkC/LEnkZY0=;
-        b=l+06YKqBJTWItVnjdVKo1SMIq0zy5yQNJHoSwBM4N51d0U/rhECXOP8pXNHB7yAyfS
-         dvvGYrg/HZfpehEZEeJ1AJjFFM3uFiPCV7qnR35RRoKlBQ+6357v+QMw/Uvl40EfRvTG
-         JR4/53GNKweoJAzeSox4LHruSKiNB8A4VVjutxid0P9AeMaAP18A0ILbTfoehF0QfCJh
-         uZgeP1RXz6ieHocQsZFtxxnsFBtaNOvriVkuqqwvBqwGOVKxSvOLC/+go7PlIvwIaEjX
-         F2HjNOW5HIUIx0XWbrMZlq4EmH2wCp3j/5QnRH1oJAxuV735bvyLogTqecmtnVK/DeST
-         aZjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVheTjLY/g843vkufdJT9RjXfblit4d6T9URM8PXQ/qr5zOxp/cryvsn2V6sHa0eY/psRGqDwVjxgi998s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlZtoYpWlRKifEYosvOGIfLp2/g4+NzlVCugM+1Wc+mrqwLEW2
-	p2s0b8rO3h66CATDwrdvI2YIrzVCT+SdxSqjyHeBlZHHsX5aX4ncMIQ2j+HwuZo=
-X-Google-Smtp-Source: AGHT+IGlIkcvQfqVVvHm809F9YqIElrzZKmax9yY2qA+GJ4yr0P9fW+0xTJH3k0gj6+vRVcrDX719A==
-X-Received: by 2002:a17:903:2349:b0:20b:a9b2:b558 with SMTP id d9443c01a7336-20be199e341mr163370935ad.28.1728158761815;
-        Sat, 05 Oct 2024 13:06:01 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1728158763; x=1728763563;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Qpc+gtvz4QF2D7U7hwk6I/PwDTmOhNNc5A8A2G2CqV8=;
+        b=m6cUv+Vc+IcOEWthWq6dGSU2VLTEBQ336bKQBiyPzNooB+IXym5ky9nkj6j7MoejAT
+         HhCSf/BcnO0J8tAjhjazjA8jgvpGpBXej6LG+difJV8cZjNw33QGRYxhL8FQD4woNIho
+         XgFgQkFZnejSIcnYq6gEA/GJhr/XjBNvzpZnFlVnNKyLa+TOulZFsL2rrlZrqTagb520
+         J3NQZqeG1TKEMCiBmOXXB/MMQLbMtGs3zsZp1drBdLoRGqB4M+lUvdRgnBtNgjow62SV
+         3VPZXXboGX8zRbkjdruBpCwZbabensYXhETm3f1R9BImXGhsC++fbkOq4UzQjFpFQQzh
+         SvhA==
+X-Forwarded-Encrypted: i=1; AJvYcCXICcDKUB62r7/bvU99nUAqjJh6vB/G0AtLi79AzPWt3IlHztw9T6aSDd5RhcfrdgIa3ioAx5VXrrwwrJM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5PtMy8uoOaq4bqCI3keJucLcEFu5MlV/wM1APW9Pv+U6QtV8x
+	TQte3zruht02gwP+W6/x7xJlG0Ernt4jlUMiY3Ln2Muth5orvw6oG1tLxuOXsnsmPwLgXoVrNIT
+	/
+X-Google-Smtp-Source: AGHT+IFmM8Oxp421B76h4UpAzO5VbLx+wqOrR4XfQnLhl5uTco5sEvRm26Oyl1URtBb3k58uPkW8Hg==
+X-Received: by 2002:a17:902:f545:b0:20b:a576:1896 with SMTP id d9443c01a7336-20bff190668mr89398765ad.43.1728158762695;
+        Sat, 05 Oct 2024 13:06:02 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.01
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c13931055sm16493405ad.139.2024.10.05.13.06.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Oct 2024 13:06:01 -0700 (PDT)
+        Sat, 05 Oct 2024 13:06:02 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org,
@@ -72,10 +75,12 @@ Cc: deller@kernel.org,
 	alex.bennee@linaro.org,
 	linux-parisc@vger.kernel.org,
 	qemu-arm@nongnu.org
-Subject: [PATCH v2 00/21] accel/tcg: Introduce tlb_fill_align hook
-Date: Sat,  5 Oct 2024 13:05:39 -0700
-Message-ID: <20241005200600.493604-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 01/21] accel/tcg: Assert noreturn from write-only page for atomics
+Date: Sat,  5 Oct 2024 13:05:40 -0700
+Message-ID: <20241005200600.493604-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241005200600.493604-1-richard.henderson@linaro.org>
+References: <20241005200600.493604-1-richard.henderson@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -84,97 +89,31 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This new hook will allow targets to recognize an alignment
-fault with the correct priority with respect to other faults
-that can be raised by paging.
+There should be no "just in case"; the page is already
+in the tlb, and known to be not readable.
 
-This should fix several hppa fault priority issues, most
-importantly that access permissions come before alignment.
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ accel/tcg/cputlb.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-[ Helge, I find that my old hppa system images would not boot,
-  and a scratch re-install of debian 12 failed (networking error?).
-  Would you please test?  It would be nice to have a self-contained
-  regression test for this, using a port of the multiarch/system
-  minilib, but that's a larger job.]
-
-This should fix the documented error in the Arm alignment
-fault due to memory type.
-
-[ Also untested.  I should be possible to leverate aarch64/system/boot.S
-  to manage this, but it's still tricky. ]
-
-Changes for v2:
-  - Include the arm_cpu_tlb_fill_align patch.  Oops!
-  - Improve some commentary in target/arm/ptw.c.
-
-
-r~
-
-
-Richard Henderson (21):
-  accel/tcg: Assert noreturn from write-only page for atomics
-  accel/tcg: Expand tlb_fill for 3 callers
-  include/exec/memop: Move get_alignment_bits from tcg.h
-  include/exec/memop: Rename get_alignment_bits
-  include/exec/memop: Introduce memop_atomicity_bits
-  hw/core/tcg-cpu-ops: Introduce tlb_fill_align hook
-  accel/tcg: Use the tlb_fill_align hook
-  target/hppa: Add MemOp argument to hppa_get_physical_address
-  target/hppa: Perform access rights before protection id check
-  target/hppa: Fix priority of T, D, and B page faults
-  target/hppa: Handle alignment faults in hppa_get_physical_address
-  target/hppa: Add hppa_cpu_tlb_fill_align
-  target/arm: Pass MemOp to get_phys_addr
-  target/arm: Pass MemOp to get_phys_addr_with_space_nogpc
-  target/arm: Pass MemOp to get_phys_addr_gpc
-  target/arm: Pass MemOp to get_phys_addr_nogpc
-  target/arm: Pass MemOp through get_phys_addr_twostage
-  target/arm: Pass MemOp to get_phys_addr_lpae
-  target/arm: Move device detection earlier in get_phys_addr_lpae
-  target/arm: Add arm_cpu_tlb_fill_align
-  target/arm: Fix alignment fault priority in get_phys_addr_lpae
-
- include/exec/memop.h           |  47 +++++++++++
- include/hw/core/tcg-cpu-ops.h  |  25 ++++++
- include/tcg/tcg.h              |  23 ------
- target/arm/internals.h         |   9 ++-
- target/hppa/cpu.h              |   5 +-
- accel/tcg/cputlb.c             | 142 +++++++++++++++++----------------
- accel/tcg/user-exec.c          |   4 +-
- target/alpha/cpu.c             |   1 +
- target/arm/cpu.c               |   1 +
- target/arm/helper.c            |   4 +-
- target/arm/ptw.c               | 141 ++++++++++++++++++--------------
- target/arm/tcg/cpu-v7m.c       |   1 +
- target/arm/tcg/m_helper.c      |   8 +-
- target/arm/tcg/tlb_helper.c    |  27 ++++++-
- target/arm/tcg/translate-a64.c |   4 +-
- target/avr/cpu.c               |   1 +
- target/hppa/cpu.c              |   1 +
- target/hppa/int_helper.c       |   2 +-
- target/hppa/mem_helper.c       |  50 ++++++++----
- target/hppa/op_helper.c        |   2 +-
- target/i386/tcg/tcg-cpu.c      |   1 +
- target/loongarch/cpu.c         |   1 +
- target/m68k/cpu.c              |   1 +
- target/microblaze/cpu.c        |   1 +
- target/mips/cpu.c              |   1 +
- target/openrisc/cpu.c          |   1 +
- target/ppc/cpu_init.c          |   1 +
- target/riscv/tcg/tcg-cpu.c     |   1 +
- target/rx/cpu.c                |   1 +
- target/s390x/cpu.c             |   1 +
- target/sh4/cpu.c               |   1 +
- target/sparc/cpu.c             |   1 +
- target/tricore/cpu.c           |   1 +
- target/xtensa/cpu.c            |   1 +
- target/xtensa/translate.c      |   2 +-
- tcg/tcg-op-ldst.c              |   6 +-
- tcg/tcg.c                      |   2 +-
- tcg/arm/tcg-target.c.inc       |   4 +-
- tcg/sparc64/tcg-target.c.inc   |   2 +-
- 39 files changed, 329 insertions(+), 199 deletions(-)
-
+diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+index 117b516739..fd6459b695 100644
+--- a/accel/tcg/cputlb.c
++++ b/accel/tcg/cputlb.c
+@@ -1852,10 +1852,9 @@ static void *atomic_mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+         /*
+          * Since we don't support reads and writes to different
+          * addresses, and we do have the proper page loaded for
+-         * write, this shouldn't ever return.  But just in case,
+-         * handle via stop-the-world.
++         * write, this shouldn't ever return.
+          */
+-        goto stop_the_world;
++        g_assert_not_reached();
+     }
+     /* Collect tlb flags for read. */
+     tlb_addr |= tlbe->addr_read;
 -- 
 2.43.0
 
