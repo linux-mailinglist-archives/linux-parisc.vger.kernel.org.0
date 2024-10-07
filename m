@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-2518-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2519-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9529938A8
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 22:59:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C0A9938B3
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 23:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43726B22997
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 20:59:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01D3E1C23B7A
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 21:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EDE1DD86A;
-	Mon,  7 Oct 2024 20:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3F518B482;
+	Mon,  7 Oct 2024 21:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="fb0oyfjr"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="uZsHQ5va"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666DF1D31A0
-	for <linux-parisc@vger.kernel.org>; Mon,  7 Oct 2024 20:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E663189BBD
+	for <linux-parisc@vger.kernel.org>; Mon,  7 Oct 2024 21:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728334740; cv=none; b=NzrKP5hiSMQKxC3WAvc5+c/G16NGV15i4RUxyCGnB7JhxNk6Axunmd6fwjywdI5LIco0qTCJbvFt511wX4OL7N40SqnJPPg+IYdXUooZu44G5lPZ5Hwjm/6qvGasCR5jCvQx3awzpJYpRt5hheFs1Qxy1P0qMb0gzA3IRmk6e8I=
+	t=1728334898; cv=none; b=Rr/5sFym1AckNdwImLAX7ED11B1PGl/Hp2bRSA8BJibLUM58YdX3sah2ALT2EtmEOEHa9xm+K6/hOZDd/hGuLhVeq85hBWb8dj8Aav1EpOYYpQR4sqQfucDK0N0Qux/IHVZlLi+IqWQzOH1JzhvquZw9t9PrhIji3jpKZBQBV7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728334740; c=relaxed/simple;
-	bh=mZD0lzN+7vtu8rftQyMDLIz1VzJ/9ixLfXPASbj4+MU=;
+	s=arc-20240116; t=1728334898; c=relaxed/simple;
+	bh=xrFgv0zP9G5hGRYoC1Q9V8IsCZNczHyAX0hdpcvL1BE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nzXp/LlZNrPJzlRyTcvGTHAIM2niBQSzkMlIi9XrmbOLfxRUxOdkM6HTaJSbII8ZcTXznplkxjw1JDF3Rjwy/o/upbd3Gk5lDE0z9Z7n7vpJE6Zc37mPcCePRNxk2SvXcqJC1Y7Bf4Th7SL1sDBkLrbmrVkxEtLP0U3/Q5E5s6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=fb0oyfjr; arc=none smtp.client-ip=212.227.17.22
+	 In-Reply-To:Content-Type; b=iI4owHgA4LKYdofX1oZCO44hGskX+muhbXs3kpXRzWLocyeIh3ctAn7GUrEtyoikgH2OActmArpZ10Oj9Jt+mwJw6rjB88SqIzV/s2OvLVd0SGH3gpVkc8cs1WqT84XE6OwkivR6VKKe33C50u3WGaQyZe5gpZoLa23i5Cb5aDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=uZsHQ5va; arc=none smtp.client-ip=212.227.17.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1728334725; x=1728939525; i=deller@gmx.de;
-	bh=GAlosL+TJZgdrXiaGQlTc+iVwvN76V4OIg09yn92x8Y=;
+	s=s31663417; t=1728334885; x=1728939685; i=deller@gmx.de;
+	bh=gbXUcqECTYm5JGx/YDix/NjPhsYJDm4Zi1/kMrB6RKo=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=fb0oyfjr/SmnrrbefP12a0rmMJTI/XILeZspDRcMCYwOq7QK/mBG9a+SxImM4V9v
-	 FDlmyn3tepyPI9OaFpMZtVTNHr2WpXAGIPTPPhvYT0ePqR7oJxvqTGA17lrErpbkt
-	 4gkNAYu8SSRtpFVFMbCDfH112N9lhLr89++8VgJ69wW6+p7llxh8d2PNrv0Kcvabb
-	 eE81K/9uGBCxD/hHJUMxp/g/30D2mfsUKPPmYj75c25WTqxBIz/qTYbcRh9GHTKFz
-	 xFBSvAweGztGFnBBGS6B1HVYZqLd7xWh//sgCj/S5LjPP3cPnzD+JgW/akftv5+Uu
-	 3c1iX7BYRuh7qjCuqQ==
+	b=uZsHQ5vaa5X/+3+2tBA61/UEYqG6ZtO/Xmr55dX3vbBZsqYqhDwaPoTzFFk7VIG4
+	 GJNkDyZbNljc7US10qvCoDYsv2WQRsWnOef9Scs3rfm7ah6WBEW+f3Dvwl8GcaIm/
+	 HxVnjspcb6B6DDic5y+xXVoSgK4T8LxTtEmmE7cJaI8mE9c0scrCRChFoK9SmFPEZ
+	 XhgnBkZLkTtjErnfE1sZ5+dkkB01zjXWbWzEMiiQtVl2riCLQjYxaoNdw9Ho5sTbE
+	 X1ggj9l29A1UdUbP3+fcVO4zZFCS3iVnsKsx4HWWxK6pG2KidPhECOhRdCwvLm85i
+	 ekHxSXFdn98nJwkzSA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQ5vc-1tJrYD1Mrg-00JY4m; Mon, 07
- Oct 2024 22:58:45 +0200
-Message-ID: <90c11001-d395-480b-931c-f61c399562d9@gmx.de>
-Date: Mon, 7 Oct 2024 22:58:44 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1McY8T-1tYcBd3N9R-00gYvN; Mon, 07
+ Oct 2024 23:01:24 +0200
+Message-ID: <c9bf746f-d4db-43f4-a7ad-628ffd9669f6@gmx.de>
+Date: Mon, 7 Oct 2024 23:01:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,13 +58,12 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/21] accel/tcg: Assert noreturn from write-only page
- for atomics
+Subject: Re: [PATCH v2 02/21] accel/tcg: Expand tlb_fill for 3 callers
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
- <20241005200600.493604-2-richard.henderson@linaro.org>
+ <20241005200600.493604-3-richard.henderson@linaro.org>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -110,57 +109,112 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20241005200600.493604-2-richard.henderson@linaro.org>
+In-Reply-To: <20241005200600.493604-3-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mvgWx4FlFZRRT4DudOSzVM0Q2kNOMrbekljjhnk+yUCLvmz2mOt
- 6g29UnZFQQfRJZyPhbgtbdbctOMxANHvUs5nJ2cyZkNYaq3TfqxpJbMb/lge4NFFAI3566h
- nANFg1OINY6Dzpud/f788ZcmC0pg4pumuxhGkwqQIdbyI/4CokD8h2BpfIEQa6XpqWUIWsJ
- CQbvPDIFmnKuc67doybVg==
+X-Provags-ID: V03:K1:vKbC5LAECUGMqJYj4QMon4AgKT61oeyNhmHaMGxAH+o2IuMC5of
+ XNekivMRP8fTlKGXb2ZuvLgrF7pkczrV5rtDHKWQBIDYl2EheijpmTNqArL8Tqasp7OVgbw
+ D/GKqrzHjK7VWDNgz6QmIyVXc2Lmg4ONA4k3Cwd1St05eSUifxG32mnEf2NnoF7jV4E8Nd1
+ s93HNAF991YWBKQufevRw==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:wUmcV8HOFF0=;jx3xsDnzCqnEXKep66YVugo+4h5
- HxVFGV2X7oF3r8j5gHXGndFzFejH7vTvfuCqV9msNXl/z1VJZuEWXAFvs/KHenMvssPFfoy+5
- MzEeBGDCumR0DQiV0ktSX85y7gRgjwpfroeGsDD6blLrJ7kYjjfi4m08c1voBUAh91VKFC2ny
- LsoV1xaNoVvQoh86MpIIMAE5VS8IiDkxLd1uCzXpkTYOCW6jTIYb/4G9NpHDvKPcXDPLoO7hx
- wPy8OZCzUcTOFrdcCAS4qaJgMZ7M1ketk6+US8sLKwdhvCqfLV8Of7OHozx0P8OULEPN2P+k6
- X8ZnM/6R1eCgh/89tFY/aLU8itY//NLcnlb8hYkh5ZvBKJU5EnjfHdhhHIPJN3qLqeGMjoYK/
- fIAtq0kmvvAMUkYQ0RIt0HFENNQjo6iMyhlv8oRjqdjqp58sm14E5HNpZc2Ocy0fUP9zCTFUH
- IRQK60TCRwJhl/NPRAqP2SqhxW+iPWtbD8uib3E6MLpa+akcjLd0Bfrm+u6Q6JB1SDHPMVvy3
- 2zHLCprPrC5xhdiHzh0DyVO55y8tAc7RiL+6xl3XGFVY18PXI01iFPj/HGM19iiZbHG2mq26b
- 4wd4mAbi6EqRbrndfO97HXzJpaRXn5BzbaPvbdrZhQPLVlZf+By5LWuKigJ+zgtiD7GKeC3sT
- Kg+extPKU1jXPPu6CGEdTnEsrUEBrH18ScPNGkVfDaW3nHAsIaGxwRE0tnfA+ERNeMqY++dXs
- uPseZxTs266OMZAadfmjz8dZNlEyb1TQfssLJKgCymRi6GV5OEkM7J8CRarJrjV5ixFLWV9jt
- AdQldML8bto4pN2gck4uZauw==
+UI-OutboundReport: notjunk:1;M01:P0:muAlPIwNScU=;uEARVxfZKLW/cnaDVIB9m95DdN7
+ yNcN0sUP4AHSZC8eTmdX/9HzBLtJWPoL6lvRtuUCColXZrtMfBAkVEyjPYsJyB+Uqc+DwniC1
+ /XUE8jrkSw/h6K11u0ERWfUI5RgKjRjiX/zg/7mlG2289VHtlEeG+1wIWx5qo55PIarjs6D5p
+ M2vPWG2NTz/BVKP3mcmnAiHE9iBnfrYgeeadMfWoHSW0pFFTxLfz5bSbgMytau/KlEXqz+2H8
+ 2mzo4t47oUBcO7IEkCymGm+g3MKIuGSlgM51sfCZYAAFgadLujeOZbbVHgVmeiIMZPgPjsw1v
+ sDR/RYjSTIFyh8lT3fBQ4Ub5gKPJjpne4Y3b2NxaTpzXk1qRJP7Dy8j2XecDoGwxTQG12VVER
+ Sd1q1IAlWeT2C5ZPt3WCfgfuOtOkrePY0iyMbl0eD++JX3N173icscFyJpkVFsv+isIxO4DjE
+ da0lR0g6f916AIpcGW1/vlrbXQuJDGpHKho1W4YujWNgCYSc74tudplJVyBPFw3QsLUg5d0AV
+ ZuEcPg8KKeDe6//N/m4MZ3yFU9lVhgZTUmxTSL8KsrV4MHRDggR0cOzu8/xOQnior5+olZaKx
+ KweGTPJwzYwuvcgFQC2v4TpSqoUtbxHjECSU1eRrSFk8s8budnXn6MnYI7XxOauSIMRiGHJsp
+ G/RgoT1u+JJ7fbDM2LSHPqPLPvXVF/538P+gG1G/4we+amtUqmQJ43/9oKwmypJNLsTiY2O8M
+ rAyUcz3pkcAWMg+b3H8AkAI0nwB/SQFVWkk0h9WY9ComqKJBIq235gH5ntZkECGir4pAhdaIj
+ 4eH7TEXgeESZONkGCkL1qIpg==
 
 On 10/5/24 22:05, Richard Henderson wrote:
-> There should be no "just in case"; the page is already
-> in the tlb, and known to be not readable.
->
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+
 
 Reviewed-by: Helge Deller <deller@gmx.de>
 
 > ---
->   accel/tcg/cputlb.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
+>   accel/tcg/cputlb.c | 33 ++++++++++-----------------------
+>   1 file changed, 10 insertions(+), 23 deletions(-)
 >
 > diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
-> index 117b516739..fd6459b695 100644
+> index fd6459b695..58960969f4 100644
 > --- a/accel/tcg/cputlb.c
 > +++ b/accel/tcg/cputlb.c
-> @@ -1852,10 +1852,9 @@ static void *atomic_mmu_lookup(CPUState *cpu, vad=
+> @@ -1220,25 +1220,6 @@ void tlb_set_page(CPUState *cpu, vaddr addr,
+>                               prot, mmu_idx, size);
+>   }
+>
+> -/*
+> - * Note: tlb_fill() can trigger a resize of the TLB. This means that al=
+l of the
+> - * caller's prior references to the TLB table (e.g. CPUTLBEntry pointer=
+s) must
+> - * be discarded and looked up again (e.g. via tlb_entry()).
+> - */
+> -static void tlb_fill(CPUState *cpu, vaddr addr, int size,
+> -                     MMUAccessType access_type, int mmu_idx, uintptr_t =
+retaddr)
+> -{
+> -    bool ok;
+> -
+> -    /*
+> -     * This is not a probe, so only valid return is success; failure
+> -     * should result in exception + longjmp to the cpu loop.
+> -     */
+> -    ok =3D cpu->cc->tcg_ops->tlb_fill(cpu, addr, size,
+> -                                    access_type, mmu_idx, false, retadd=
+r);
+> -    assert(ok);
+> -}
+> -
+>   static inline void cpu_unaligned_access(CPUState *cpu, vaddr addr,
+>                                           MMUAccessType access_type,
+>                                           int mmu_idx, uintptr_t retaddr=
+)
+> @@ -1631,7 +1612,10 @@ static bool mmu_lookup1(CPUState *cpu, MMULookupP=
+ageData *data,
+>       if (!tlb_hit(tlb_addr, addr)) {
+>           if (!victim_tlb_hit(cpu, mmu_idx, index, access_type,
+>                               addr & TARGET_PAGE_MASK)) {
+> -            tlb_fill(cpu, addr, data->size, access_type, mmu_idx, ra);
+> +            bool ok =3D cpu->cc->tcg_ops->tlb_fill(cpu, addr, data->siz=
+e,
+> +                                                 access_type, mmu_idx,
+> +                                                 false, ra);
+> +            assert(ok);
+>               maybe_resized =3D true;
+>               index =3D tlb_index(cpu, mmu_idx, addr);
+>               entry =3D tlb_entry(cpu, mmu_idx, addr);
+> @@ -1833,8 +1817,10 @@ static void *atomic_mmu_lookup(CPUState *cpu, vad=
 dr addr, MemOpIdx oi,
+>       if (!tlb_hit(tlb_addr, addr)) {
+>           if (!victim_tlb_hit(cpu, mmu_idx, index, MMU_DATA_STORE,
+>                               addr & TARGET_PAGE_MASK)) {
+> -            tlb_fill(cpu, addr, size,
+> -                     MMU_DATA_STORE, mmu_idx, retaddr);
+> +            bool ok =3D cpu->cc->tcg_ops->tlb_fill(cpu, addr, size,
+> +                                                 MMU_DATA_STORE, mmu_id=
+x,
+> +                                                 false, retaddr);
+> +            assert(ok);
+>               index =3D tlb_index(cpu, mmu_idx, addr);
+>               tlbe =3D tlb_entry(cpu, mmu_idx, addr);
+>           }
+> @@ -1848,7 +1834,8 @@ static void *atomic_mmu_lookup(CPUState *cpu, vadd=
+r addr, MemOpIdx oi,
+>        * but addr_read will only be -1 if PAGE_READ was unset.
+>        */
+>       if (unlikely(tlbe->addr_read =3D=3D -1)) {
+> -        tlb_fill(cpu, addr, size, MMU_DATA_LOAD, mmu_idx, retaddr);
+> +        cpu->cc->tcg_ops->tlb_fill(cpu, addr, size, MMU_DATA_LOAD,
+> +                                   mmu_idx, false, retaddr);
 >           /*
 >            * Since we don't support reads and writes to different
 >            * addresses, and we do have the proper page loaded for
-> -         * write, this shouldn't ever return.  But just in case,
-> -         * handle via stop-the-world.
-> +         * write, this shouldn't ever return.
->            */
-> -        goto stop_the_world;
-> +        g_assert_not_reached();
->       }
->       /* Collect tlb flags for read. */
->       tlb_addr |=3D tlbe->addr_read;
 
 
