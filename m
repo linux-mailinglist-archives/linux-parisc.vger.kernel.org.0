@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-2526-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2527-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF28C9938D7
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 23:16:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE519938DA
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 23:16:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 320A61F246CB
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 21:16:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DDBD1C21191
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 21:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDBF0175D44;
-	Mon,  7 Oct 2024 21:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263AF184551;
+	Mon,  7 Oct 2024 21:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="C6B73FGo"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="NCpKrgZ1"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF04184551
-	for <linux-parisc@vger.kernel.org>; Mon,  7 Oct 2024 21:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E861A175D44
+	for <linux-parisc@vger.kernel.org>; Mon,  7 Oct 2024 21:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728335757; cv=none; b=OcdzXT/p1CSzO2EjvwVndcci29+aPaa4GLhadiXFIT77d82RglTGN+HPlrExvhY+q6Y8hKXe460trK3KN86MHdMrzj9F3AyypBrMwTNebNXPQ4ysbRjLPNXQa9a259b+5fSSmmruy1UMsNB/mZcW26EznQWu8j77aHHushGDvI4=
+	t=1728335784; cv=none; b=BQHSdQTN/dHqemKwuD3oaPW1a92kzdqqdmF8mcLcB/U6m3Nm+r5CY9Y4QTGIiRQNIepvt3Xog6z4/456FbdUTZJHvcXUaZTF9XHbHhn27aX6FsU6QD5Y87Gs5d1d3ZWDRKUyb+HKx3Qiqf5h3E/IGiMmD5eM9sTjNv687UdBz2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728335757; c=relaxed/simple;
-	bh=FpBBQipXsRarM0ekUpVT4cLqy4vl8SwdE5Jb3JwLNZQ=;
+	s=arc-20240116; t=1728335784; c=relaxed/simple;
+	bh=T85YfBemxJdK0/e5PLZXGMIDjqZnzI9+8Eee9nJwQ8A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bfxolijx46PyayON7P67d6DC7K31qWW7uTxhSuJX0AZ0tF4wgXe9wlfjk/EfVLfhHZLm+F6l/f/ROnS5nvx8tC1fyrK1dEFgIneiIY/D8sZ3xh3pfzLfc88vvNS5jZRMRNs7Zc/jqVIox1d4a6MP2/Ux/xfBilfITqXf/ZjhfM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=C6B73FGo; arc=none smtp.client-ip=212.227.17.20
+	 In-Reply-To:Content-Type; b=SBwUSUbMabeSR4kvlO+VnBgfjLy4d4AHgz4L6TvDETl5gkQoErEVM1deg9/0Kiq9IdsSJDc46Qk6yVYRjj1NAoVz6HE8rRgL89xR3kolBbgSF7X55vToQCH2/lhnZE0vYxAycVMnSKN6WLHFsvwi0vgebL64uKPH0IemiuVGupQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=NCpKrgZ1; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1728335740; x=1728940540; i=deller@gmx.de;
-	bh=N/IuYQ6OdLCzl3pWE8NPI5PGV7fJcLaN3Ul1Rcd6Qqw=;
+	s=s31663417; t=1728335772; x=1728940572; i=deller@gmx.de;
+	bh=y7YOKmsDd2Sw+bnZNnqv9bTpXJJSuIu8qmMnvJ+HE10=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=C6B73FGoO8T6QLKBW53WlEwp5q0uSIrwHOWkFYFen/K3lcFu6Rfk/sQcACsnW5Mn
-	 3R16wgUJWctQLvqpBQbbLpHKDVwsQUwSGk2jENK4NijxMSI5MxVrP5npVezi4xB+c
-	 DGaTwVJZS2t11jKqon4xiR11rZY/TM/w6EftVIyyH4ammbugftx8BtdA/wxXEgreH
-	 pxhXVFguHISH/l7m4i81D1iOsLVRE4fC4AZZk+z3fwpoZocFPD/AInexSWT5v+gwr
-	 onzFP3luqMy8NsVId4YTPGEYELJmpqOkHnC3PXJwq5kjV6ct/07Wl1PHzy5zZQJjJ
-	 bMuVBgJwvBc625Ke+w==
+	b=NCpKrgZ1hMZlIx8RiFTWozCUXTftmc6F8L0nz/v+xdJa3ruWLNgXnw0xBqB8fgV4
+	 Xfexjr+3gSlD7JU7wdiviYec/uDI5wOd1Sqia4RkBvkI5DM75HH+OpnwBB/e/i6/G
+	 LoVJhi0ppvq1ogk6UoShEjgxn5hErg10akVlIuU2nNmXlgUIeNoU07N1ApPP/wIVM
+	 WLeiT22LKVj+fWsBbONwa6gvurv9c6vAL+MzNNZsfuLk1OwkbyOZ0efzo9pu+uhb/
+	 /GUiytCPiIRZ46dn2fdIwoA8d3Pe5k0NglrQSC2pV/U4ylLhWTYlmy/NTR4hMhVjH
+	 CKsZjnvcDvaakqaZ4A==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N6sn1-1u3wcV1V6N-012zOc; Mon, 07
- Oct 2024 23:15:40 +0200
-Message-ID: <c4ab226b-b8f3-4a28-b4cf-d630acada5e3@gmx.de>
-Date: Mon, 7 Oct 2024 23:15:39 +0200
+Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1McY8T-1tYcDJ20J3-00gZGZ; Mon, 07
+ Oct 2024 23:16:12 +0200
+Message-ID: <05f3367d-1dd4-4b44-a804-7951665d93a6@gmx.de>
+Date: Mon, 7 Oct 2024 23:16:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,13 +58,13 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 09/21] target/hppa: Perform access rights before
- protection id check
+Subject: Re: [PATCH v2 10/21] target/hppa: Fix priority of T, D, and B page
+ faults
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
- <20241005200600.493604-10-richard.henderson@linaro.org>
+ <20241005200600.493604-11-richard.henderson@linaro.org>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -110,34 +110,31 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20241005200600.493604-10-richard.henderson@linaro.org>
+In-Reply-To: <20241005200600.493604-11-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:CSycCyFWk0lfJ/gjDV44mLQjyvDU/lgQ7u8UlMqt/5MIBW0yc11
- v60YvtOHCtMofCGpZweGh8BQElw1IseAA24q+mgbNIMJoBxnNnDgteInwM/tJcq8CAsOxrl
- e9I9s1sbosXSR5eN5M95N7rjQQcMmQ/zvsSXyU5La+h8fX8oCLqyb3xPOQa1eL9XU6/4O54
- 8HjEBFu60Rlp/RHBKpZsg==
+X-Provags-ID: V03:K1:DLDA+Fd56ZzGQFtc5i+Js8hT/eAkUNWLho0gh3A9iixw8FIUXIy
+ j1abqNTug7msrjYYy3U0ZjUQ64czsQO+N2N9zQH/jFwB5ZPZZsOtj4UqAScQZf1/99FPmNz
+ a6y8u4vIx/hZuvsSYcHxHFvBDT43SYwlzJS95VsZ1ZXSFYVgoLAZVGN1EIg87Y8yGTkLydn
+ 2/AVj6eYeiH6D//kxCAJQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:FABvcphQqcE=;LV/6mo2FmHezyMpq1NjZmlKK2jj
- Q9QKV7UGl6jKDJt/vDteqwF3KUKpxrquBBB3SD0etztNiG069KtvGXCyDo9/LXtzfgKDGkCu4
- OuC5VXB3qxW1dU+1t3nB4THRqIf7RTCNoAUApaNbVhgaoMS7pmuxcv4+5aNOn6da6sESZi7h0
- seOu+mlLetrLouHe5Zs7q30EdGy0y4CkvbgzgsVzCBUSgHXgl9QnKC10duMYqOE1vYMapXhlH
- 6bNc7w5lLgCdqNo8OyAWgY5fZpd39psqxH3wYm+RGeAqy5sCKxlgoHTu34I3OKOz5c8nXT+17
- NmkQnq/m3bu3RcVbTnFFyIulXNgHi2l6OnnLyGj0277rOd/Rp5IrWyqD55BXcoMEA5WB2l/UO
- /UbNPo5L+mE88eCgM8fCWM7ZufFfhzcEkRzOeLcX1woLGpJXKc7ChWiiSFVFCApZYiW+bnLqF
- j1FhS0FkX2BvHoeFnrZw/e9Jh2sVHBGRamckyJFK8FooTCxbaQ6SYu04XfGx4PUBq6kq+v6tP
- ccgj+eELL5+yAn2Z/jAXQvHlcZqiu9+j4sIOTXOL5ijoYYp7Y65bc7GhnMvZQvHTPVyZY834n
- r4VZfubbG6++6ZfWt8TJlnvGaWWfAMTGNm3fuIdmc09VCE+61w+nrfSN9euPD+ZXgbonMCfle
- 5ck6mpiGYYEUGbxZwGaFg0Gw+abJIlCYNi/dVkuRKRxyjFpPNlyozMWj9GAGeuC2RmlL2lxyb
- dFsBIvKL4LKgHroO8ws+CckGFcY4kLAYvhgWXhdQJTI8qFbppuJSgMIHrLsW7QYvGwPIO6pOC
- t8WLlSGSJ3ABj/pLue7sv57g==
+UI-OutboundReport: notjunk:1;M01:P0:1aQxiWF0D2E=;NWKq02qCJghaPaqqWqdIHhZc0OT
+ udabMPYtdonRHgHW3MZR2RjevvFEQFMc0lz0JuKSPTqJtir/2zveTMqt0hm1lMVYrxWn1xire
+ KCy9AM4XAR/nCwrMOEL+VdeTpBSOAXteQuCiTw50PAMXH5MFVolePRPxb7TSeamrStsuCpLjS
+ /LpxH1T6XCt5Q9yhXHB7RbrJpmNmXuXTEPo0UTV+L9xhyB5sYAngQx0DbF0w53qFw7+cWlLK4
+ f9zNQfdTfQr2RYSDNUusFcoTBK77edRD2HTGwrjuhuXzV832zNnzD7owzZN2rmgr+zFUlTKWQ
+ j+T5prL5wlUpKSbavTk7wHi+OT4Pzq9PXGqRZaXqEr0PF1ibMLjdPXR4w+9ZARvaHEmgz3lkr
+ N+XV4slh5uhDrEbGPrtfnmGS1TDkFGE9WTUlaiF6dENyAKZBqKTluSb+Reunt6xphhCVSoHOS
+ mH92HSZPELdWm6NR6GuKN1KXq0XHUaMNtGunlLPaqNcfsbGjZ2h94RWL3QwSxJdqHMFqBcXam
+ MHTn5anDuLVtdmiRBXQlBGQC6ZxPNMC65G5FeqwoUaxW+MkyW01ZWrv5O+hprRJOf9WiX6HLA
+ cNuyeffMYPea25toVNzCJoe1f2BOkt2TK03weVQaHeG//g2f9z7KUQWbTu6x8yZDT6wYuyODO
+ PxpN46ZOZU+GrOKCdWVaAzZ8Eb19qKWzY5iVGmJWJ7bIjL/n1hms9/mqk2vIhpTmEA8XpO6st
+ rsXHU9qxEeXnSv39OCRdwZol18VZ1MZSdbbucRnO39/CRF+grvelbxRIQ4bz4mehHchl+7Jo4
+ FQdqp2EppiBdUuIKMw9Jcwbw==
 
 On 10/5/24 22:05, Richard Henderson wrote:
-> In Chapter 5, Interruptions, the group 3 exceptions lists
-> "Data memory access rights trap" in priority order ahead of
-> "Data memory protection ID trap".
->
-> Swap these checks in hppa_get_physical_address.
+> Drop the 'else' so that ret is overridden with the
+> highest priority fault.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
@@ -145,7 +142,7 @@ On 10/5/24 22:05, Richard Henderson wrote:
 Reviewed-by: Helge Deller <deller@gmx.de>
 
 > ---
->   target/hppa/mem_helper.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
+>   target/hppa/mem_helper.c | 8 +++++---
+>   1 file changed, 5 insertions(+), 3 deletions(-)
 
 
