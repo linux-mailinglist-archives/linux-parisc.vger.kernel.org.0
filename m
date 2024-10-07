@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-2523-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2524-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83179938C7
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 23:09:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2639938CD
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 23:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 084EE1C23A29
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 21:09:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF7E31F20C71
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 21:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4711DE3BB;
-	Mon,  7 Oct 2024 21:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FD31DE4CB;
+	Mon,  7 Oct 2024 21:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="qMKfh0nn"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="AHtyEj5z"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7631DCB06
-	for <linux-parisc@vger.kernel.org>; Mon,  7 Oct 2024 21:09:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED3513698F
+	for <linux-parisc@vger.kernel.org>; Mon,  7 Oct 2024 21:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728335376; cv=none; b=C+B1a/3JLeEIVDKsQP+dIHvP54m8XHfeQcwzL1/pb+BsC068cimZSV/oTFIrdp4j5NxOvsN6Ghi1+XXSDqNJTyPsDDFdC9M6Af8OUyLCiWeeSaC8JcQ2huKhbPfkzDNs7aCNM2AGA6UDi9vOeWQidP25lFqAE1kC7SSh/z4vidQ=
+	t=1728335635; cv=none; b=WoXOmQog2a5Ao3KuTnqYwMFJwyKlGDwV20mHy7JrpfMkNCTUMzYyj2bcNsbYNww4EU0dP/a8myg91eVpGanMfHAJFaPsokVUBcMchuEJQLo6WJZk6FhFWjX2cMV20VXXSVx79hY1PnqJ6gs7Oo9OpHXeLkheH8B6g2eNk7xHf2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728335376; c=relaxed/simple;
-	bh=LNKuwMRwpr5N1IH7pYFynxs42kX5A0MD+M7uMpPnzgM=;
+	s=arc-20240116; t=1728335635; c=relaxed/simple;
+	bh=dngar7wPpGayadXHG9hP2bPdwOESE+E7KjwBmcENg8U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L32knTaVu/8JqsklOR9CXoEbkvDVScC+UOwmvGJnBIQwOZkSswqulY8cCST1M0CghVA/uMPeTdc9BzQf53tn7lwshPrWK+A/elp6cMBzepX1T+SbtVsIdGXDKroCrP0JtPb+jlvwBGu4mmGVc3TYfkQh6tmQgqVY0PTctEqWMC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=qMKfh0nn; arc=none smtp.client-ip=212.227.17.20
+	 In-Reply-To:Content-Type; b=RumR+Ob8jYJVnavvJlnkks1g2vntKcy+dS6cgwgu84NJiz2ymV9E2yoiDqJPDUjVpyOHAajPUEg7SklGd/TjtF+2CelEkfcs1bB/xeuxlAy2rG9KDvW5uslrFw5HfZF9yPQrk2k6gndIJpycG8Q46qiFI0zouuFmJhzf+jUAe28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=AHtyEj5z; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1728335361; x=1728940161; i=deller@gmx.de;
-	bh=TyKCRNHmeyFgjDaIevWefebvU9noqHM5gZ0NJ7NBUOE=;
+	s=s31663417; t=1728335620; x=1728940420; i=deller@gmx.de;
+	bh=Pz5aP8rM2IkjmDqGJVSZO6hFnDGmCcDZPRR0Xl8N/Lg=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=qMKfh0nndex7u3T8M5LTv33MshgNYUUAAfXELrnT9v30ITAliY5p8umvEInJ3Jj/
-	 ZsvvK3pdGtgzDy6kWIXB8bKWclWDuPBB4CB7wWIEqYnvPZQ19o3563laglmxxkFye
-	 uXLz7+CfetpOIqRc1PZ6DMUpQkNmyIJnfqeobtk7fc3Kh5oqcCOW3NXBF1AGmL3xJ
-	 To15kWbaWNXYmEPbD3LbycjGet2/QCx/WE3RWNzN7Gg7NhmZ9ZpWWTLrLGJaDtW76
-	 dUIs1g5fcDON9vpxEHDvj6V+MQcB0OGOdMEOnuj1rMj0KP6+DWtez5Q2aYhAevLMd
-	 iY9i11crY0Kjmic6wg==
+	b=AHtyEj5znbElMcpcboPDdC/Aucx1e95B5esfZ9BT7HY8OFNpqzkC1S4tT8n0IUtf
+	 EJjIzc3RRNXMg+MlxfSP/6D5r8UzdmDdEouQ/nTWxlReEjgUbnQy8vMHDpbk8LbFC
+	 AF1K7elP4x0COQZqBy53PgN9fcghMiQNx9nFV5AgxBpYzjjzgbADS7XTMAR20NNL4
+	 aRavC5j2A2sV8rlOBLt2udwW8Jw5ZFXLHTX9THUhy4kVqHQFkNN7j87lTcYWxiwmo
+	 BKjNteszchQF2BqoYzZehba2eqEyjuw+FHR8FEye5OrEsmlNcq5klAu1T5L0x6dYP
+	 6Oupa1WWDDFiq61qnQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MO9z7-1tMKgy2wtl-00LSxQ; Mon, 07
- Oct 2024 23:09:21 +0200
-Message-ID: <1e416170-a14c-4d78-8141-412c32b3dc0f@gmx.de>
-Date: Mon, 7 Oct 2024 23:09:20 +0200
+Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mlf0U-1tgdXC2afq-00mfrJ; Mon, 07
+ Oct 2024 23:13:40 +0200
+Message-ID: <6df44ac0-72cd-4623-a810-66f8d781ed0c@gmx.de>
+Date: Mon, 7 Oct 2024 23:13:39 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,13 +58,12 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/21] hw/core/tcg-cpu-ops: Introduce tlb_fill_align
- hook
+Subject: Re: [PATCH v2 07/21] accel/tcg: Use the tlb_fill_align hook
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
- <20241005200600.493604-7-richard.henderson@linaro.org>
+ <20241005200600.493604-8-richard.henderson@linaro.org>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -110,61 +109,39 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20241005200600.493604-7-richard.henderson@linaro.org>
+In-Reply-To: <20241005200600.493604-8-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:CP1aOEoy66qdltkCQpaCnXfu567xmDWznClWUj5yuvS2uB/x74i
- AdvnpUnRivYyrYrKZJABlfH73B0HXA47nJFZyjanL2+BvpN8zTfYwFCICfS+SU58WQTlMRA
- GC1YTYfm1e9IphCdAbOuhRPRp9m4UyXU2ATX76/q62qyjaugdbrL/qqQiCV2jL+PWV1rc2m
- r6qJTO9k6hQohTpsAlfjQ==
+X-Provags-ID: V03:K1:w34hSYqPDYn4tdrjdLnz7tfaS71dn/GNVaP/T6ox3AQ4CsFkyiv
+ wfRQCdLSjJn4c5bQJpQax9y3Hg33fkxXQ+8gxIkXVteNRxzFm2w9dcJIOY3juF2OsWPuEGT
+ MKOZzFjuRpWuxBL2PlFQ+pH3LbS2I7mPgVzSZvkQuYSS6BmvKfHJC90iT7FHGbByEx80n+M
+ RR9o3Im1aSG94TkU0KYyQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:o6721oMgQFQ=;aztqfcqVxCBSH1bP6/4kwyEUxXk
- kQgEyMOYrGGjmnIaJAzpoQYGK2a9irBFMTASaHmkyBn5sKWgQz08LKi++c6GUyxTjKeUCJ+Zw
- YUL39hYCoRuI+ir+OMdYcYKPJ97jcYQoDB17lmcXVUvt3DCitFUb5EJ7dcV7Z9SNKnhghKQGk
- 4A/qsqKbPijZkiQJnoVg7ldupNzENx4RBYvxVNYwQkE4Gqet78B0ikKJo6owTbrzN9THO7f7T
- ufr4U0flUr8cg78q5pjX80belOhc7oIdxJcUDldevgi747kbN1K1OuvBcJNxVnFLpryvIwDtU
- jv9EnBPI2hQzJ0utgKoWzaOApC5NERJ/5TxU59bwYRbddDJQyQT1R63NjtDHRfNjnA897wYtq
- eQTqhrZsFRoCInrItf1UrkjolYxldb8DAtLek9uAhtoeFCSI08AT7in7ZWpBqmh2W1kNW+fpr
- dFMvMq+YcWnFal2JRDl9BK7X2ZUtcdewVIx3H0Jg5Fo4BH2/e71R/VVB4gIfAH777Gnv9iGw/
- 34r7O2q91fIOLsfVHj4iZ8Wc5IJ/tgvB0PjxOpYHtUUEIkgKf9YEqmnAjYNaWK98r9M+11Q/l
- dtfobh6IQgyWpn+65xwRzXYR+a1Z1VE0gAwa+2tUcX5zJjxDirwKxtWCYPQUfED4I53I/CBo6
- dq/dlGIDb7SF9opnXC7HQYXcNHvUoWPuiiPt4ERV3v9/OSiaOw0sMI5iWx2bJ5XZsRQLO40jk
- dtZ6I7nrHHcBHj/wbSvjxS0VmekgCzh6+kFd8b1sEGnp0DiXKnEhDnUN1DO2y09pFU4RFNqzk
- fZVZBwr/0YJO4OyoMq1yhaCQ==
+UI-OutboundReport: notjunk:1;M01:P0:hpXcjcPchdE=;yx8cwG4AtgnbjShREQbolJnZ/Qq
+ SotXILWpAHNi1EmjHoVs3+wIfOTRErswxv2CWvu7GSULt1Z0y4w2cqy2aFkZgY86Zrep+mOUn
+ u4y2uuhdPjpZAvxeDVdeE7a5VQ3oE5eo5AuZClYYhHPrJRVxStUY02Y0vAj/rcd7qRutXBN6v
+ e4PO+B/hwCFbuhm98U5L8jocApqsqhJwFbCvCwZErZU2dKvVIo1Uh+AklO5tBK1tQNa3gn+5Y
+ hcHnDjxxkuam+7Ek1YFZ8oNHBLZEZHuTRgdcUNiW0fPLyoNWlD5m34rv1XTx5aJdtq62LfvHh
+ VkFt4rvAtnle7tMM8m4euOfNDcWV68yck6wvf0wZgBj+kw1EEkfyxi45q6K4TL+tIrggXrt/o
+ FdEeGB+89fXOS5X79hsH2mIAyk7AHSNcbFAs3ApDygsVrwU5p3B4hTnqBcKO61p67dfu75qiZ
+ +ptECvKVMGwVJF9f78rlyQwlQ8+xcW0KZVsjMyYuE/GZzeYW69nmy3pAwf6eZsFY8/zLxjQGQ
+ 8JNCQ28ncKIFcDD03xLtZUf3vqP6JYmj5/ELI69i8b8pGBPZmW9CxPrRS5MD7h9DHBChWxigW
+ Psv8dV4ozG5L3RWwX3ABJMV/LhdZ36dypzsFQwZioA+bJmL4qaHCUAg9F+cS5KPCdS31vRGAr
+ 4newGJIa1+rSK9Ufe8uJIouM2OM7C4hyrFkGrW9AVjooKY700gGf8fMxlHICe8XSNA13kBGWF
+ 2qDUrBygxvsQ2jS378VlLna/wffRPzoMLwxCRlJj6IUf9dZN5QD8lSzEy7SQIjsU8ZXCWaPLI
+ j+w2K6ZpojY7Cp+JDtyY0dfg==
 
 On 10/5/24 22:05, Richard Henderson wrote:
-> Add the hook to struct TCGCPUOps.  Add a default implementation
-> that recognizes alignment faults before page faults.  Populate
-> all TCGCPUOps structures with the default implementation.
+> When we have a tlb miss, defer the alignment check to
+> the new tlb_fill_align hook.  Move the existing alignment
+> check so that we only perform it with a tlb hit.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-
 Reviewed-by: Helge Deller <deller@gmx.de>
 
-
 > ---
->   include/hw/core/tcg-cpu-ops.h | 25 +++++++++++++++++++++++++
->   accel/tcg/cputlb.c            | 19 +++++++++++++++++++
->   target/alpha/cpu.c            |  1 +
->   target/arm/cpu.c              |  1 +
->   target/arm/tcg/cpu-v7m.c      |  1 +
->   target/avr/cpu.c              |  1 +
->   target/hppa/cpu.c             |  1 +
->   target/i386/tcg/tcg-cpu.c     |  1 +
->   target/loongarch/cpu.c        |  1 +
->   target/m68k/cpu.c             |  1 +
->   target/microblaze/cpu.c       |  1 +
->   target/mips/cpu.c             |  1 +
->   target/openrisc/cpu.c         |  1 +
->   target/ppc/cpu_init.c         |  1 +
->   target/riscv/tcg/tcg-cpu.c    |  1 +
->   target/rx/cpu.c               |  1 +
->   target/s390x/cpu.c            |  1 +
->   target/sh4/cpu.c              |  1 +
->   target/sparc/cpu.c            |  1 +
->   target/tricore/cpu.c          |  1 +
->   target/xtensa/cpu.c           |  1 +
->   21 files changed, 63 insertions(+)
+>   accel/tcg/cputlb.c | 89 +++++++++++++++++++++++++---------------------
+>   1 file changed, 49 insertions(+), 40 deletions(-)
 
 
