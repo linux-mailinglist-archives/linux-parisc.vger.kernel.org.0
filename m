@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-2517-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2518-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEBD99389B
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 22:55:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9529938A8
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 22:59:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 429C51F2118D
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 20:55:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43726B22997
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 20:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81C218B491;
-	Mon,  7 Oct 2024 20:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EDE1DD86A;
+	Mon,  7 Oct 2024 20:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="KpDT3Vjb"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="fb0oyfjr"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467A481727
-	for <linux-parisc@vger.kernel.org>; Mon,  7 Oct 2024 20:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666DF1D31A0
+	for <linux-parisc@vger.kernel.org>; Mon,  7 Oct 2024 20:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728334547; cv=none; b=h+lI6Gh4JpZxkw/0CW8ta/sTkM9WH3k2yMm2ApJr1PUW/uFML61IgcacK/ojKZvJDE1Thn/9P6P6yhgHSsZ0iiE+4pO/ZAvtpVVun2/0+Yrrga8E5NBWkI5g3bROIR2NGZ15MteJ1sRpJZgx3E7KjaOO2l7P5DVEW3OZK3HuECo=
+	t=1728334740; cv=none; b=NzrKP5hiSMQKxC3WAvc5+c/G16NGV15i4RUxyCGnB7JhxNk6Axunmd6fwjywdI5LIco0qTCJbvFt511wX4OL7N40SqnJPPg+IYdXUooZu44G5lPZ5Hwjm/6qvGasCR5jCvQx3awzpJYpRt5hheFs1Qxy1P0qMb0gzA3IRmk6e8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728334547; c=relaxed/simple;
-	bh=iAWdG79J6P6A5dDXv6URSxExY8VLkos6MvA6FcdMZko=;
+	s=arc-20240116; t=1728334740; c=relaxed/simple;
+	bh=mZD0lzN+7vtu8rftQyMDLIz1VzJ/9ixLfXPASbj4+MU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sg//Uff3T4IvT/bI/41+G9x5SOoNFCKWPZ/A+4TSegEbOP3Hm4/owSANNXxLWoucWJHZtXpDs829q3kIzTzbsWBq0MQ9ydwK+Zbu/xGLX95EV7EhXtQV5Goe2YVUzowbayzCWVpqbTyF2mElnRJvMjuhtObvv16urQkUuCSUMZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=KpDT3Vjb; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=nzXp/LlZNrPJzlRyTcvGTHAIM2niBQSzkMlIi9XrmbOLfxRUxOdkM6HTaJSbII8ZcTXznplkxjw1JDF3Rjwy/o/upbd3Gk5lDE0z9Z7n7vpJE6Zc37mPcCePRNxk2SvXcqJC1Y7Bf4Th7SL1sDBkLrbmrVkxEtLP0U3/Q5E5s6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=fb0oyfjr; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1728334526; x=1728939326; i=deller@gmx.de;
-	bh=g0KOZIJsJykpeXExGEg0GSylxBxBQk9/H5KSTg0I4hE=;
+	s=s31663417; t=1728334725; x=1728939525; i=deller@gmx.de;
+	bh=GAlosL+TJZgdrXiaGQlTc+iVwvN76V4OIg09yn92x8Y=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=KpDT3VjbD3ETVvqUqgH59W8HD04iAPhjN87gE7xhR5LpS9yx9ELvRhtFEVrr1hVi
-	 /o6HUrObrojxxoc/P2rkOfvbVyWLuIeH5/cnzgdyGDH6FcBjjocL9ew9y4R9Qyz7X
-	 yLGtMGtJEfbyXh7D3QKhZqQzOoWAhyCE+OCcX5I7Y76IACqYv235LJV9xdQEvqUbc
-	 h1EslO7SC8pEqBw/sLLMjVqGficFTRgZPBz6vCfO6HnOB/WxWazrGpnvURg2JQQJ2
-	 vGloX1z3VBznlffUUbRSOVukK+72BUGsjkn4H+Rn5+3ZSZSBh/OJtlaQMCE3E2Xdw
-	 kpb/SQS/eA1qBRUcHg==
+	b=fb0oyfjr/SmnrrbefP12a0rmMJTI/XILeZspDRcMCYwOq7QK/mBG9a+SxImM4V9v
+	 FDlmyn3tepyPI9OaFpMZtVTNHr2WpXAGIPTPPhvYT0ePqR7oJxvqTGA17lrErpbkt
+	 4gkNAYu8SSRtpFVFMbCDfH112N9lhLr89++8VgJ69wW6+p7llxh8d2PNrv0Kcvabb
+	 eE81K/9uGBCxD/hHJUMxp/g/30D2mfsUKPPmYj75c25WTqxBIz/qTYbcRh9GHTKFz
+	 xFBSvAweGztGFnBBGS6B1HVYZqLd7xWh//sgCj/S5LjPP3cPnzD+JgW/akftv5+Uu
+	 3c1iX7BYRuh7qjCuqQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MAfYm-1t8wJ34Bs8-00HQZX; Mon, 07
- Oct 2024 22:55:26 +0200
-Message-ID: <7ea84509-eac2-40c4-be85-21a44120a87f@gmx.de>
-Date: Mon, 7 Oct 2024 22:55:22 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MQ5vc-1tJrYD1Mrg-00JY4m; Mon, 07
+ Oct 2024 22:58:45 +0200
+Message-ID: <90c11001-d395-480b-931c-f61c399562d9@gmx.de>
+Date: Mon, 7 Oct 2024 22:58:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,11 +58,13 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/21] accel/tcg: Introduce tlb_fill_align hook
+Subject: Re: [PATCH v2 01/21] accel/tcg: Assert noreturn from write-only page
+ for atomics
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
+ <20241005200600.493604-2-richard.henderson@linaro.org>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -108,134 +110,57 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20241005200600.493604-1-richard.henderson@linaro.org>
+In-Reply-To: <20241005200600.493604-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:7blf9h0PM7lWW4hRXyEDKyW1/vvsNIRsYpEZ1edcjWv+yLDMf4t
- 7ErkDnscV62pdqbNghHoBra2hAEXXim2hdq+OGqbQjvm9rOQpSCT+dN4s4+zO3LG9U9CCdU
- V3CWN/vI+3f+TFy3cZ8lxskjgoD3yH1NUp35z8nqiN7J1eiO1dKLBRYZdMk9FIsJNAP/WMV
- 0cCHWsmtDAP1IcThlrsqA==
+X-Provags-ID: V03:K1:mvgWx4FlFZRRT4DudOSzVM0Q2kNOMrbekljjhnk+yUCLvmz2mOt
+ 6g29UnZFQQfRJZyPhbgtbdbctOMxANHvUs5nJ2cyZkNYaq3TfqxpJbMb/lge4NFFAI3566h
+ nANFg1OINY6Dzpud/f788ZcmC0pg4pumuxhGkwqQIdbyI/4CokD8h2BpfIEQa6XpqWUIWsJ
+ CQbvPDIFmnKuc67doybVg==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:7gVvFJdG+dY=;Ji+ea0CkhZ8u4ACMZXSApmpV0IK
- HeE+8qlGqLey2gyo9Z1parww9LIIX7jb681s3eXqJaCaeKLyBh7OOLaB/uHoziaaUCL2NTV0Q
- w1Ao+UTTMP2iBdrm8hLaYt0Ig50gC/hS06J0jEza2FqTzpkbX2IHpG2GFSRltFeVFkhFQwnPt
- 50dKtJJf7raFzopDKFVUKIkykBhIl86sqjzGp9ej9qZkTwV4+yqXw3N5u3CRfffqsSEwmcA/k
- a+JdHxFjjZ3kljDwL1b3uhWXOHAinxN3s2HPFUYwamOUMVLNObuHxzA+YvQ7n+VK5dzT1NBfP
- URSmy40FNUC1hRbFcGH92rG36ZZrtzxqizZqT1r1cFik4IpZ2Uvf3hC8THR+e/5RQYurDzlXz
- JOYdqIVHliSqjSw5J0mmysfVzRso2hLH5NGXNpNPA6nkCZDxMJzTkB4ZS/yK3ovnVJBehJQW9
- LY/dr7Ub6+05fXBInjGFSKOyOg+/9KmRg0CAqLQ+Z4KsBZeYIes832rn8xzhUCDqoM7UykT73
- G3kaTZMjT6NG9QbHMCiWC+zCViJUCP5BjE/jnWaThFVJkET+ZUkUXe3BQMhS4/lm2lhx2ICZq
- vh4MfMEiUyR24lKEHAh78ty7x0HfPjVxT9JxWA40iNVrisuPeZZ64WHSDMGTPfsRIguNhlLKe
- BGFWw2cagOJPASTVn/N9RCqkMtLGs97mhg5pqBddzdTSXgS9yxkeRbYJ2FODKqME8lNBIRBr3
- TyGTnQxdpWitKGVnwaqZym7h9xfKiRewVkv8dpJrJ3LkuZz5owSgLVsCorkYjLnLBEZweq5jK
- 9mbOQOb6LM0HnonZaw1DjjuQ==
+UI-OutboundReport: notjunk:1;M01:P0:wUmcV8HOFF0=;jx3xsDnzCqnEXKep66YVugo+4h5
+ HxVFGV2X7oF3r8j5gHXGndFzFejH7vTvfuCqV9msNXl/z1VJZuEWXAFvs/KHenMvssPFfoy+5
+ MzEeBGDCumR0DQiV0ktSX85y7gRgjwpfroeGsDD6blLrJ7kYjjfi4m08c1voBUAh91VKFC2ny
+ LsoV1xaNoVvQoh86MpIIMAE5VS8IiDkxLd1uCzXpkTYOCW6jTIYb/4G9NpHDvKPcXDPLoO7hx
+ wPy8OZCzUcTOFrdcCAS4qaJgMZ7M1ketk6+US8sLKwdhvCqfLV8Of7OHozx0P8OULEPN2P+k6
+ X8ZnM/6R1eCgh/89tFY/aLU8itY//NLcnlb8hYkh5ZvBKJU5EnjfHdhhHIPJN3qLqeGMjoYK/
+ fIAtq0kmvvAMUkYQ0RIt0HFENNQjo6iMyhlv8oRjqdjqp58sm14E5HNpZc2Ocy0fUP9zCTFUH
+ IRQK60TCRwJhl/NPRAqP2SqhxW+iPWtbD8uib3E6MLpa+akcjLd0Bfrm+u6Q6JB1SDHPMVvy3
+ 2zHLCprPrC5xhdiHzh0DyVO55y8tAc7RiL+6xl3XGFVY18PXI01iFPj/HGM19iiZbHG2mq26b
+ 4wd4mAbi6EqRbrndfO97HXzJpaRXn5BzbaPvbdrZhQPLVlZf+By5LWuKigJ+zgtiD7GKeC3sT
+ Kg+extPKU1jXPPu6CGEdTnEsrUEBrH18ScPNGkVfDaW3nHAsIaGxwRE0tnfA+ERNeMqY++dXs
+ uPseZxTs266OMZAadfmjz8dZNlEyb1TQfssLJKgCymRi6GV5OEkM7J8CRarJrjV5ixFLWV9jt
+ AdQldML8bto4pN2gck4uZauw==
 
 On 10/5/24 22:05, Richard Henderson wrote:
-> This new hook will allow targets to recognize an alignment
-> fault with the correct priority with respect to other faults
-> that can be raised by paging.
+> There should be no "just in case"; the page is already
+> in the tlb, and known to be not readable.
 >
-> This should fix several hppa fault priority issues, most
-> importantly that access permissions come before alignment.
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-I can confirm that this patchset fixes the access permissions
-before the alignment checks on hppa.
-I used the testcase from the description of this bug report:
-https://bugzilla.kernel.org/show_bug.cgi?id=3D219339#c0
-Maybe you could add a reference to this BZ in your commit message?
+Reviewed-by: Helge Deller <deller@gmx.de>
 
-> [ Helge, I find that my old hppa system images would not boot,
->    and a scratch re-install of debian 12 failed (networking error?).
-
-A new debian-sid qemu image is here:
-http://www.dellerweb.de/qemu/debian-sid-hdd-2024.img.bz2
-
->    Would you please test?  It would be nice to have a self-contained
->    regression test for this, using a port of the multiarch/system
->    minilib, but that's a larger job.]
-
-I think the C example from the BZ might help for such a testcase.
-
-Helge
-
-
-> This should fix the documented error in the Arm alignment
-> fault due to memory type.
+> ---
+>   accel/tcg/cputlb.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
 >
-> [ Also untested.  I should be possible to leverate aarch64/system/boot.S
->    to manage this, but it's still tricky. ]
->
-> Changes for v2:
->    - Include the arm_cpu_tlb_fill_align patch.  Oops!
->    - Improve some commentary in target/arm/ptw.c.
->
->
-> r~
->
->
-> Richard Henderson (21):
->    accel/tcg: Assert noreturn from write-only page for atomics
->    accel/tcg: Expand tlb_fill for 3 callers
->    include/exec/memop: Move get_alignment_bits from tcg.h
->    include/exec/memop: Rename get_alignment_bits
->    include/exec/memop: Introduce memop_atomicity_bits
->    hw/core/tcg-cpu-ops: Introduce tlb_fill_align hook
->    accel/tcg: Use the tlb_fill_align hook
->    target/hppa: Add MemOp argument to hppa_get_physical_address
->    target/hppa: Perform access rights before protection id check
->    target/hppa: Fix priority of T, D, and B page faults
->    target/hppa: Handle alignment faults in hppa_get_physical_address
->    target/hppa: Add hppa_cpu_tlb_fill_align
->    target/arm: Pass MemOp to get_phys_addr
->    target/arm: Pass MemOp to get_phys_addr_with_space_nogpc
->    target/arm: Pass MemOp to get_phys_addr_gpc
->    target/arm: Pass MemOp to get_phys_addr_nogpc
->    target/arm: Pass MemOp through get_phys_addr_twostage
->    target/arm: Pass MemOp to get_phys_addr_lpae
->    target/arm: Move device detection earlier in get_phys_addr_lpae
->    target/arm: Add arm_cpu_tlb_fill_align
->    target/arm: Fix alignment fault priority in get_phys_addr_lpae
->
->   include/exec/memop.h           |  47 +++++++++++
->   include/hw/core/tcg-cpu-ops.h  |  25 ++++++
->   include/tcg/tcg.h              |  23 ------
->   target/arm/internals.h         |   9 ++-
->   target/hppa/cpu.h              |   5 +-
->   accel/tcg/cputlb.c             | 142 +++++++++++++++++----------------
->   accel/tcg/user-exec.c          |   4 +-
->   target/alpha/cpu.c             |   1 +
->   target/arm/cpu.c               |   1 +
->   target/arm/helper.c            |   4 +-
->   target/arm/ptw.c               | 141 ++++++++++++++++++--------------
->   target/arm/tcg/cpu-v7m.c       |   1 +
->   target/arm/tcg/m_helper.c      |   8 +-
->   target/arm/tcg/tlb_helper.c    |  27 ++++++-
->   target/arm/tcg/translate-a64.c |   4 +-
->   target/avr/cpu.c               |   1 +
->   target/hppa/cpu.c              |   1 +
->   target/hppa/int_helper.c       |   2 +-
->   target/hppa/mem_helper.c       |  50 ++++++++----
->   target/hppa/op_helper.c        |   2 +-
->   target/i386/tcg/tcg-cpu.c      |   1 +
->   target/loongarch/cpu.c         |   1 +
->   target/m68k/cpu.c              |   1 +
->   target/microblaze/cpu.c        |   1 +
->   target/mips/cpu.c              |   1 +
->   target/openrisc/cpu.c          |   1 +
->   target/ppc/cpu_init.c          |   1 +
->   target/riscv/tcg/tcg-cpu.c     |   1 +
->   target/rx/cpu.c                |   1 +
->   target/s390x/cpu.c             |   1 +
->   target/sh4/cpu.c               |   1 +
->   target/sparc/cpu.c             |   1 +
->   target/tricore/cpu.c           |   1 +
->   target/xtensa/cpu.c            |   1 +
->   target/xtensa/translate.c      |   2 +-
->   tcg/tcg-op-ldst.c              |   6 +-
->   tcg/tcg.c                      |   2 +-
->   tcg/arm/tcg-target.c.inc       |   4 +-
->   tcg/sparc64/tcg-target.c.inc   |   2 +-
->   39 files changed, 329 insertions(+), 199 deletions(-)
->
+> diff --git a/accel/tcg/cputlb.c b/accel/tcg/cputlb.c
+> index 117b516739..fd6459b695 100644
+> --- a/accel/tcg/cputlb.c
+> +++ b/accel/tcg/cputlb.c
+> @@ -1852,10 +1852,9 @@ static void *atomic_mmu_lookup(CPUState *cpu, vad=
+dr addr, MemOpIdx oi,
+>           /*
+>            * Since we don't support reads and writes to different
+>            * addresses, and we do have the proper page loaded for
+> -         * write, this shouldn't ever return.  But just in case,
+> -         * handle via stop-the-world.
+> +         * write, this shouldn't ever return.
+>            */
+> -        goto stop_the_world;
+> +        g_assert_not_reached();
+>       }
+>       /* Collect tlb flags for read. */
+>       tlb_addr |=3D tlbe->addr_read;
 
 
