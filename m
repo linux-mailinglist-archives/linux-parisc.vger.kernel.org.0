@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-2532-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2533-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE9C9938F5
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 23:20:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054729938FA
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 23:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E982815B1
-	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 21:20:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292EC1C21358
+	for <lists+linux-parisc@lfdr.de>; Mon,  7 Oct 2024 21:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95971DE4EE;
-	Mon,  7 Oct 2024 21:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F521DE88C;
+	Mon,  7 Oct 2024 21:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="Y76qgj6h"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="ABBJK6dx"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617161DE4D8
-	for <linux-parisc@vger.kernel.org>; Mon,  7 Oct 2024 21:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269081DDA15
+	for <linux-parisc@vger.kernel.org>; Mon,  7 Oct 2024 21:21:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728336000; cv=none; b=AM+0PiQK3+NScTZ8+cEyXoG4k9MRY4208kKKHTtv0bRYQIvZPGqcX/FhsTp7CowLpZobbg66oZAc0gkDao5oSZ4j/mqtrcYHukgLRLSfZDzN1J6w+iioXN+5JQmZW+qiKLKvBnjXN7AZGLuepCQ7V1k/rKUdaAapOThUaUK7LRA=
+	t=1728336064; cv=none; b=ZTFCVwAVlFYkFn9xRBbUxPu+UNGlQ1K1gXlcuwQC6uRiyTzZpZqFevMmnMUWiDItGBBwhvsPrGygN9YsfpwMgZ7nRSrbnHA9CTgRf+4xZJU+zZnlYHgvowcNf4EvbkdqPtiElPGvFDHhVq5hdupkopX+tdYmK3dIER4Au0IiR9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728336000; c=relaxed/simple;
-	bh=LFMqFRC/XEt4Ll/fLVrrEPq6tdFDC/LVs60KcRu6I8Y=;
+	s=arc-20240116; t=1728336064; c=relaxed/simple;
+	bh=4eKZj2H14YER18Jag1K2jdoIcSLz7b7l72RsgvJm2Is=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DJ/jjwkli/802GSrkmOhIwAL9gdGzihJnpdcKz+oPvXUtDo9gBY2W0Ux3TBBGCnh93fMCmsfB/fzRp/wjHScXHc+8p6RK6AWCYvMqEbQ0F9xjHMYzeHUeA16nDMJO8vIGn4HB9uW9Xp/yyM/x8jmpkBeIqirErTXuTTOPdaVU4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=Y76qgj6h; arc=none smtp.client-ip=212.227.17.21
+	 In-Reply-To:Content-Type; b=FPXo+QutJF2ByhMpVjm8Rl89kOQHfnP0BkrqlZQqm9ay3KRnwolvAkTyNzV6hIW75oKGacM8VnriPbJiAo3jqN0UUMCBIjLI75whXerDXYPAdmboWULyS5G4D80q3kgvF00FffGmeL/8iTZuahJdTgITYIkUhslhDpMwM/W3+ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=ABBJK6dx; arc=none smtp.client-ip=212.227.17.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1728335988; x=1728940788; i=deller@gmx.de;
-	bh=LWO2T/Pb8/YNscpa9TTq1B/pI/psKixxkneHfn/6zxU=;
+	s=s31663417; t=1728336052; x=1728940852; i=deller@gmx.de;
+	bh=mpYWNGgYZJ7ZaAXbQ1ANOYIQG1fDEEXDTpaLybT4prA=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=Y76qgj6h/LJAJVAMEQ/yaY2tdtD8Z0X50fOC8foqBB3PSuqn5G5bboX+ff4+hg2z
-	 is4vJerjfn+dhenDoeKkqCatkOOTtSt7WE9n8eIzEHlN38VzqGRO20/NeaV5Dy3Me
-	 PD3XdBr974o+Tl9an6g/XSIYmOeoCFSL8p83GdluSJtDPofSZTZCCWL58QuE1cNkP
-	 xBu8q2ag1+85oKoKPA+BY1etOhPCYyvZMlgMI+BBut+uyGHyrZ7W85c/FreXRXpZW
-	 uwg8s4vukyrP4aS0RM2WkZt24FFbkp5ls4WAeuoBjn2qFy3G6Edk6UfH/pViq3/iR
-	 ZmEKWcmc/BD8314MbQ==
+	b=ABBJK6dxowzgL6sumx0BNCLrPljC+4HkfYlkIBvlrELvGQjJxitz6CV4U0TaQFHg
+	 yXMRKLNN1zbCUBVlkqLf1rAUMzVtEGOUEFW8b8QSQAURK2Z9IW7T57vLzG2PG62RB
+	 TociYUs15cARBVZIHALISzr+kOD8cTWcivhYMmHPl9/nRJYOSwcPWIEu5TxU+h4na
+	 IajDy74sptPst/0YuFBIVUDkxCol6eFVXucWwp/3rBcUAlFFSB+JRShok3ZxDfCYh
+	 SOGYvkmpYzeTRJ+BBJ5i7eErxCWlBh1xMSHbDgeHR7VijEclUinUtakNu8da849vw
+	 RI18rvceyI9m77kTZg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MFsUp-1tD4t11buZ-00B7v7; Mon, 07
- Oct 2024 23:19:48 +0200
-Message-ID: <2878d217-0471-4834-92e2-59dd1ffaddd1@gmx.de>
-Date: Mon, 7 Oct 2024 23:19:47 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MKsj7-1tGq9m40E9-00Ol86; Mon, 07
+ Oct 2024 23:20:52 +0200
+Message-ID: <eafe88ea-585b-4770-a538-93d192fa64c8@gmx.de>
+Date: Mon, 7 Oct 2024 23:20:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,12 +58,12 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/21] target/hppa: Add hppa_cpu_tlb_fill_align
+Subject: Re: [PATCH v2 13/21] target/arm: Pass MemOp to get_phys_addr
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
 References: <20241005200600.493604-1-richard.henderson@linaro.org>
- <20241005200600.493604-13-richard.henderson@linaro.org>
+ <20241005200600.493604-14-richard.henderson@linaro.org>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -109,31 +109,30 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20241005200600.493604-13-richard.henderson@linaro.org>
+In-Reply-To: <20241005200600.493604-14-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:3arFgz8tyZpMG+f/IJy02SmN8P/6cnxgbXYTVLQf5W38tEyTjpF
- 0wDpi4EjD25KKzKXQHzniyIbgt8yeYTN2tnUYD2vf13bxtMHG33vueMUJy/DB70Ddak7lEA
- mLFtcBUH8n7C9u2cxXOqj1gNH6olMCxXGDqYQZD6NeDdH5PNjtJWrJSK70Nt8HIB2j7e3IR
- aGKysCGeJLSVxr/lblTow==
+X-Provags-ID: V03:K1:kZFzDC6V/IjQj7aFwqPEdkpM1xoLLpNdMqLnkFQs2dA4APpnBBd
+ 89QIcMGDpLYCpjWFtNx5JjoS485CWjY9WA3jtitzx3/dfRokDoL9kl0Gw8RV4rq+bwlMHO3
+ gcHrax58edAskOIAZ8w1htU2ob4dxn/JsJk8KEILOgCR76R/qRcbx+KWYeBi//NxrxAcLdr
+ DE6z0BAbX2Rpr952G7bIg==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:EDk+wYjsWKM=;oPuZbntgOLU6ULHuC4WqDY/QNLQ
- NyEBopRsETAyiqDU0KJPbecL2HaS9HG4pXm4S6QP2JODaiJy3t5y9DovQ1rq4+WMZJ6ybexeU
- +dXEUT1hmMoeDI/byaNYTBRsPeOx3EoGnhCZzj056UM7ZIl1iLW2NMIxAPZwFj7YumdCdQHNZ
- vp+nIvzaCEuI9LTZbt9+ye5cixghmh+LLlFtGxUWwREU8yO+frTguY+ULHTFXQurYG6xTQ7cE
- Vnn1x0hvFvKZdQy33HWhkqncFtbZtKRmaV6ZYYhRFcVX6Mn1l777mZ2HpjGHG+mIYFbdHybp+
- 44/iHeVF1l2JIQkM+0ShsWselSKlK+WSirlE+Kw65smwyfPaWTAnQ9INcI6nZOTGEaz/TD0JZ
- 3FyhPi6BrjcIDr3uvCZv9UrTjbk2jBw00wBZDEdzzIO9Io2Hf1nbCEsmu4s0wj2tT1Q9TbJmR
- hsMLA9KrzUdPaQFfcWu/ZfmSPz7kdpjAQAfBnk1p7nFKF5o0zDc3BhHjaHp6d9U9Qp0rcUjO9
- a8tWY2qDj3avg5abXPLZF2lvNsGsMnmODAsjfw2syQSodeQoLdIu0DCeAeKLRFaprGWA3TpDs
- j886oEYSB0IVudh3I36YnmSJnnJ2neahlHB7tgDyL4/tKLaxMIY/fn/XWhBG8aGi3SjJ7iiEW
- Bqc28sIa41uqrHJXYwjVIVt6rm9G+G8q+cZbzeVz63235++ipvk0HWgYj8r9tc7IC7LpZaM6p
- dCHGov0QKXOF08q5KSLHbfWAIA6vlzWD8L0Lve+B/EuqsKunZYCbiqZw18iBUmgyCM0sL0b7P
- wNleQ+JBpt2rvk+KrZSqeyvQ==
+UI-OutboundReport: notjunk:1;M01:P0:5eTQe7G+nUY=;wmYtcm8/52tzcG/9dJGzWfgsDvK
+ YCXb1/SPBMVLy/Kk9x4OOJ0RmJc+Ba/qgjUgalwF3EcpW3ORxXXGz+sPRqmKYomXzS/EqZNTs
+ 7fdi/p8wA7ckj+7dXQdlsMjFr6Pp/Gw+iKOe/PVaJZKwIH5FpdM3eV5ePxQnrBEz7IL+s3dsC
+ 34waHB2gXgQz797RwFyKisC6dtBbeKlDYOSReDRSRP30Z1mug01rDxyRniMlYAJq+9G69hr1v
+ LBpXdNd9mHwN56iduLjrr3YR31Y/vxZ1oXP5NIPXLfbksfhkNNUneQ5bAotKoK0uR2rxB3vdS
+ TCzmMZwKh3DqnxbYXBxj3CPY1d8I3rjSZRwH6AJCYJQXihMQNsnobAXIYGNjyyhgXBboA12uu
+ 80GNxaufLGLNCIdvQMMT4RcUySsMC1fTi2wIp5QRdYC52Lh1XTlA5pPkfwlSX1tuYbpB0YJvB
+ BcJw1cWj3A+YwALnoJ+7ta4zRP3OAtupfCU64pK9nrm7NF7FTebKszmcsQ7ywO7QZotpLnc+z
+ 4/KN+I3FJSilvhyetN3PuBhVNLyL4yvZb6viUQGlxsdqzBt22wy0mIYkVs8sS2hVw5YOtnc2W
+ 4aTIAbIvqY+IuNX05LI2BMbbTW00tsJA+NUxMCStWB6WoFDN7gANGWbkzBy36bFlaWYILB2bn
+ QYmAFWK1GIVdHrQ8xR1ELq++BDeSdhY6SDWxSP6eNMJSiKHzauJ2gtbsl9GFuPZZu4uWjgp7g
+ 32uLnrSj+T1ryjCPH4NJ4YG1U0Ayhya3p9zMCL9/u7qQJpqSonwIozlQgcYP1P3L/0pueQ41H
+ 3hZFkTcZ+5gVJDo4VxZleb8A==
 
 On 10/5/24 22:05, Richard Henderson wrote:
-> Fill in the tlb_fill_align hook, so that we can recognize
-> alignment exceptions in the correct priority order.
+> Zero is the safe do-nothing value for callers to use.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
@@ -141,9 +140,10 @@ On 10/5/24 22:05, Richard Henderson wrote:
 Reviewed-by: Helge Deller <deller@gmx.de>
 
 > ---
->   target/hppa/cpu.h        |  3 +++
->   target/hppa/cpu.c        |  2 +-
->   target/hppa/mem_helper.c | 16 ++++++++++++----
->   3 files changed, 16 insertions(+), 5 deletions(-)
+>   target/arm/internals.h      | 3 ++-
+>   target/arm/ptw.c            | 2 +-
+>   target/arm/tcg/m_helper.c   | 8 ++++----
+>   target/arm/tcg/tlb_helper.c | 2 +-
+>   4 files changed, 8 insertions(+), 7 deletions(-)
 
 
