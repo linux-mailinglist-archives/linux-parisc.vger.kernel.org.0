@@ -1,81 +1,81 @@
-Return-Path: <linux-parisc+bounces-2585-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2586-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCA89951AC
-	for <lists+linux-parisc@lfdr.de>; Tue,  8 Oct 2024 16:30:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FEB9951B2
+	for <lists+linux-parisc@lfdr.de>; Tue,  8 Oct 2024 16:31:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7675B1F225E4
-	for <lists+linux-parisc@lfdr.de>; Tue,  8 Oct 2024 14:30:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC6B31C2564F
+	for <lists+linux-parisc@lfdr.de>; Tue,  8 Oct 2024 14:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0EB1E049E;
-	Tue,  8 Oct 2024 14:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C3B1DF997;
+	Tue,  8 Oct 2024 14:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SAwG0bBe"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NHzmLKl/"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C914F1DFE1C
-	for <linux-parisc@vger.kernel.org>; Tue,  8 Oct 2024 14:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670E21E04A4
+	for <linux-parisc@vger.kernel.org>; Tue,  8 Oct 2024 14:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728397538; cv=none; b=SrCNmeXin79/BH4F5eW7maSQDF21jS99FgdeWGjW/rrZoHUCzvo0YqAeCamKXGhfCCyUdPjvuDylIGPUif0jspDccNXYh6Uk9wxBUU74JtsMrmM9kj/dXjzC9CswnwzXRJHlbGw/7sH/ZCOPqWiW3Z+dZkVCVvpVrdc5tEZ7VtA=
+	t=1728397617; cv=none; b=eYl28OFv0FXNj03+85tU1rlUsUl8IpOWT0d/iwiHRm81yjsl2fHO93W9x7rOcOsz6RpFySVr4+hoG/eMv676F4HSZv0xiK7Dq6sRvmKkZTv0/PbNx2ebLVKI0HeVQS1hAy1Mo4Hb8vxGXihMSLa8POyeeoe2ZhO1jokMK0bnPnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728397538; c=relaxed/simple;
-	bh=KFyOI4kR/oCoxSqEZ5bt7UtRlDCHr0O31AoUd84Ktk4=;
+	s=arc-20240116; t=1728397617; c=relaxed/simple;
+	bh=RQozRerSiRfKC4vBeczSbk4ogjlVq89iod84xYTjpH8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ia14jOe0Uy0zvHgNURxLMazvr3pQ9lSKT3KOKafFn4aoCOrMtAEizZGPU0DDRzcglYjm+rqBUSZnp6FbDVS/vEzqAjiYa+qgcB27AdSfrqDnm+VwIsT+0XvdCoFAaxyGEFmhavQs7OEbSUxnCV9poGet0qU9j9ur67IkuT6Q7I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SAwG0bBe; arc=none smtp.client-ip=209.85.208.51
+	 To:Cc:Content-Type; b=jnlEFEiLa31JRSDTBnNw6QbtrOc4L6z/YkyLYc2Gt+Q1+WBsYTc1b649pcxVfSGCorHYUFchIwmtG3DKxtdAezY2MS5Og/ikddOpFba8tI5OxR1Lsa0SwEQKIYSWDJXf3fH+avsY+9ghpS0q1SLS96KqRuvkUzImYLP4z/h2xNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NHzmLKl/; arc=none smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5c40aea5c40so241026a12.0
-        for <linux-parisc@vger.kernel.org>; Tue, 08 Oct 2024 07:25:36 -0700 (PDT)
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2facf40737eso62906201fa.0
+        for <linux-parisc@vger.kernel.org>; Tue, 08 Oct 2024 07:26:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728397535; x=1729002335; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1728397613; x=1729002413; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KFyOI4kR/oCoxSqEZ5bt7UtRlDCHr0O31AoUd84Ktk4=;
-        b=SAwG0bBe2yEW8VmsW+fIR6St5zcux+fJQSFJGlHI9SENrqJwOxcx3tWEV5r83yKaJD
-         TzHabYTjKa4lYWf16tvZEd1XcNRhlMfdDLKVQITLQUSChBsi9YVkQyzx7eV30SNt186j
-         vw5ioO/yahiN6JAbnlSr4/CZ2yd+4+uwBI3VsEKpFqMdoYcXkizOefKkdT35yc1Y6wg6
-         QUjtrr+7VpnIRJmsjbpQjAZo0O+8TkbQfJZ+CtR+krOI53Hd6GhiVKwXzyAD/GAo2B+d
-         6hfWiaVgaveRRZ3Cof0MZBtdpJCkFtlrC5MeuYMB7VpMZZlmx4ajE12ZnqR6vYY7qwyy
-         JizQ==
+        bh=RQozRerSiRfKC4vBeczSbk4ogjlVq89iod84xYTjpH8=;
+        b=NHzmLKl/TwP7PW2pJXtuGHIzNi7tnbLnrhaq1Kr1VRNAFdhNj8FP6jPEIBlW73pu0a
+         tcTsUznUmLleAS/I+sLNhtPkVb6ddCWNxjnZZnxNVc/T5yk4u6TFgJ8tQbNZIXLPWsqh
+         8w3oNiGwBhzpXIU0HMoQwcyI1y3vr49xduwrubGvWNw8Wz04cWQa1zSoVQaZCBYiXpk8
+         SHyPzCoyd1FeOCf7w5ZdthfxDf4VFfSqVJeFsh3tyVK912DnMeQQ0fdSXdOWrzPY6chM
+         5xZpLCk7hcjbiuuCJ1QlBFWcQOxu+4LA5I8LISXPacEPCZq6s4L3iSE133q6ix88TuRN
+         E4Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728397535; x=1729002335;
+        d=1e100.net; s=20230601; t=1728397613; x=1729002413;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KFyOI4kR/oCoxSqEZ5bt7UtRlDCHr0O31AoUd84Ktk4=;
-        b=CJ8hREuIL3RWz+ffo0kaVNCZ5xIIbKENe6kkAcUYFrDNXHkdVkSRPz9SQpZiuSq93n
-         cnnKEpwq0vUCrlPKWe3yPrksjDKcCerVTCSFlVFhzE6d5l5DLvqW4bIRYfGDM3/yckkK
-         ZvtHdrdgVzaDndhTat2NrgyIxruSUxF+HdXiMqMPT85qSllhxQCbYfGfUuhJu96MMDo6
-         C9qdxVzp/vNR6/m60qB5bqIC8y8JIElGOqnsmBnzCSli1gVt3T3DMpV5FI04w2hSf9oh
-         g7vVli9mkuAt1sef/VIo1m4Gyo3eye/ms0OE6crTXwO36jUtWhY3ToltpAToMpIEcVut
-         cnoA==
-X-Forwarded-Encrypted: i=1; AJvYcCWpVbkEkRcsBXZP1ldrQy634PRmFzJqBSIWYJ37Vi5XMk3okYP4f+3H9exUwQ04nFB4bwdzu2zg/ehgc/I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCpqezr0zPi49kInt+9F1/eJwbEhsbDtjZ6UnNqO+VR4AGvBXE
-	hHY9G7n2t8iBf7/Rjga2RLvPCr25N/Y9rfeFignW6DjMhVxYkc0K3W18vZvNJoqQycnZRXLRG0b
-	//+JW6QUoLDM1r+zsY38DQXcsQN30JObyhdgL7Q==
-X-Google-Smtp-Source: AGHT+IH6vDRkL8posdyuwttmhFmsw/CjaMeEXHedCAmJUQDyqmuFFuzqUW413BB7Q7kpg2ghdilkoR5TzKy13fwkI/0=
-X-Received: by 2002:a05:6402:5187:b0:5c5:cb7f:e56a with SMTP id
- 4fb4d7f45d1cf-5c905cfc19emr3762017a12.1.1728397535021; Tue, 08 Oct 2024
- 07:25:35 -0700 (PDT)
+        bh=RQozRerSiRfKC4vBeczSbk4ogjlVq89iod84xYTjpH8=;
+        b=Nvkuw1I7LEK2V8l+vpfjqg0pppGHDmMlF4fJrrP4r5I03XVJJ8jGEh3hw1TB2FWtzy
+         Rl/1LXdoR6NSwTyVvnFGgDuFwAozFjCJyTne08jAL9MxBBWloevD9xZucS9Fr33+Afuu
+         WQmfIrF7LSU0BFRCIBxvP1rESscpTggcq/E1/RL+ik7d06YjN6v0Nhy5XV6WEZobSg8H
+         L4+Ml68mLcD3jyaGXNa6UwFgWFmQXUO2o/sFSEHYsSkWKhehpoF5ZrBJw3IGjiD/uBAl
+         XuI/+EM7Z72lKYBaZlaziWqQQ7ef0plUTl7axefEjs7tBcCRATvbjwaO/M2sZkRMMgIk
+         ObOw==
+X-Forwarded-Encrypted: i=1; AJvYcCW/OyPEUDuX45eWwD/mSUDSLrCwPD9BvIw4IcnD0mEPONSZzLmLv15S7Rl+nJEZ5sQgck2RPhxt8CV+47g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzS8hgY/+cb7mNzgJnao/4KdJP4ZweSnF7/SD1fqKP1xxy/Eesu
+	Cu79W8cq+lPVI+IaDecWqUIwYyLh83Ptt0pmosyeesqwbRKtUc+DmvdYh1okDmI3fJu+ZieNVCP
+	FAhdAck0+mLTQjDyWT67eaUhhPjdmEP4PHqjOig==
+X-Google-Smtp-Source: AGHT+IEK40RZGPZt5Ym42R8l1+Af5CABSgiP3N8qQETkX12gAxA9awW14sA1GNRaKGIg0p+kd3F0YmluVLQN8uT/C+o=
+X-Received: by 2002:a2e:be90:0:b0:2f7:9d20:3882 with SMTP id
+ 38308e7fff4ca-2faf3c63ec9mr87028611fa.22.1728397613383; Tue, 08 Oct 2024
+ 07:26:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241005200600.493604-1-richard.henderson@linaro.org> <20241005200600.493604-17-richard.henderson@linaro.org>
-In-Reply-To: <20241005200600.493604-17-richard.henderson@linaro.org>
+References: <20241005200600.493604-1-richard.henderson@linaro.org> <20241005200600.493604-16-richard.henderson@linaro.org>
+In-Reply-To: <20241005200600.493604-16-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 8 Oct 2024 15:25:24 +0100
-Message-ID: <CAFEAcA8aKThqSWLwCAEb3ec3QPtBowMfvgRn8TxN1C-kGcrdgA@mail.gmail.com>
-Subject: Re: [PATCH v2 16/21] target/arm: Pass MemOp to get_phys_addr_nogpc
+Date: Tue, 8 Oct 2024 15:26:42 +0100
+Message-ID: <CAFEAcA-d3MHj=_Ma6MHLGLT-nW0iKA9fV7C7gmK9pnG-9NXZcA@mail.gmail.com>
+Subject: Re: [PATCH v2 15/21] target/arm: Pass MemOp to get_phys_addr_gpc
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, deller@kernel.org, alex.bennee@linaro.org, 
 	linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
@@ -85,11 +85,9 @@ On Sat, 5 Oct 2024 at 21:06, Richard Henderson
 <richard.henderson@linaro.org> wrote:
 >
 > Zero is the safe do-nothing value for callers to use.
-> Pass the value through from get_phys_addr_gpc and
-> get_phys_addr_with_space_nogpc.
+> Pass the value through from get_phys_addr.
 >
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
