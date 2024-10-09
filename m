@@ -1,105 +1,143 @@
-Return-Path: <linux-parisc+bounces-2637-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2638-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24F2C997660
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 22:24:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC96E99777C
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 23:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 375781C22207
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 20:24:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ABAB1F21971
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 21:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEE71E1C16;
-	Wed,  9 Oct 2024 20:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F8A1E2319;
+	Wed,  9 Oct 2024 21:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2qzkbhuA"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="uaCPkVVj"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFFD537FF;
-	Wed,  9 Oct 2024 20:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BAC1E1C30
+	for <linux-parisc@vger.kernel.org>; Wed,  9 Oct 2024 21:29:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728505472; cv=none; b=WcE3JInD5H2u8Xi/fn6nAUvemJX9HnWCn/tuhzPMr8/QZOkq64WIj/hByn9x/exfgk3RRDcXMlJINHldOhA9LmjTEGyPNCQpLKyYHn6UbeCJV7FEZq57JSVEoRwhXKdKR5UQ5BG+Pg+EaG2lqxDrBqBqejfv5GrV8KriSRWr7DQ=
+	t=1728509397; cv=none; b=tBOduYWySfJC5Q4bA7NYl6FWY4m3V4zR6JHESJYUu0DU61Kq1P/hSOHP0edzDfLa3p9eXtdn4nbXc1XJljtpNgIE4n+VSHFV6/gx4ABk9QDojedwTmd+dmvliRSPwuXqTZ1CFE5/kqhzWwexhC1GJOvpa6Q3inDsQ/wEvOfolr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728505472; c=relaxed/simple;
-	bh=Eajpzm9cUrzs//zMnCTfeMFhUIL/3eN5uDlR9BWdmqo=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=lho2JHfQ4A9pxxtrR41iBO9Z+JUYfiff3C9GU+7gzqZhCz6D+sOYWJnTw80+TGmddRfR7WEACPWORuS9h2BrzOjon+8qrH4T12eZYpjY/vVGsS0nA+lBsB9ZEdTzC2YBsOoNodUzyHbkv5yFSfUfupBhZzN6Pd4eXZfZwXeU7aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2qzkbhuA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D537EC4CECC;
-	Wed,  9 Oct 2024 20:24:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1728505469;
-	bh=Eajpzm9cUrzs//zMnCTfeMFhUIL/3eN5uDlR9BWdmqo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=2qzkbhuAMgino0DZ1hZZqBEMfexCBWtSiEWzzjILyq+cbaAjGfaWTcyToRrfMFDWm
-	 Pjg8qjtjvKxkLVmq5KcKfEzMazZd7B9b+cvi3EOmzQaV9Z6xen8oKafvJ4u9r6ZkXt
-	 owPHlRmA15/hxoqOKllm//ythdYQC4jZ89tWfNZw=
-Date: Wed, 9 Oct 2024 13:24:27 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski
- <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann
- <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Brian Cain
- <bcain@quicinc.com>, Catalin Marinas <catalin.marinas@arm.com>, Christoph
- Hellwig <hch@infradead.org>, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>,
- Dinh Nguyen <dinguyen@kernel.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, Helge Deller
- <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Kent Overstreet
- <kent.overstreet@linux.dev>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Matt Turner <mattst88@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>, Palmer
- Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>,
- Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
- Song Liu <song@kernel.org>, Stafford Horne <shorne@gmail.com>, Steven
- Rostedt <rostedt@goodmis.org>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>,
- Uladzislau Rezki <urezki@gmail.com>, Vineet Gupta <vgupta@kernel.org>, Will
- Deacon <will@kernel.org>, bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
- sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v5 7/8] execmem: add support for cache of large ROX
- pages
-Message-Id: <20241009132427.5c94fb5942bae3832446bca5@linux-foundation.org>
-In-Reply-To: <20241009180816.83591-8-rppt@kernel.org>
-References: <20241009180816.83591-1-rppt@kernel.org>
-	<20241009180816.83591-8-rppt@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1728509397; c=relaxed/simple;
+	bh=DrAHhEVgdHZ5vQXjJwReIDDDMcpga88E94I2zP8UUzM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ltJuATFzgfxHytDs8rC8I8cN4b/qLtICXkE/YlVG0SewgR/AwBOIDwvNiYeEs7s+UPEfFCptj9OU4OHSDI28hXC7kdGsHCHcdnjhZ4pIhFrBfRZu87oWEV976H2vRe2y54aVTbP9f8elmhmvS39slGWtScIDLIEkXG71tzJyVvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=uaCPkVVj; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1728509377; x=1729114177; i=deller@gmx.de;
+	bh=Cktov7IgpjoLwvQgMG36+aq60qnsQb9DIXdfD6cis7M=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=uaCPkVVjKUqAFu0S2y0lgbP7mezjrk7WatUBeRRS5PZLRPI+3CLNBAHnmd/8ALTO
+	 o6X0wO0V83LlEGG8ETHg+bW6d4cRfJgq57GZCx+RbBAXloOsyZODjIpKOTiKkiqtP
+	 H0kjaMSapm/W2QBfxOIfDZIKm5eYk2lgOf6z1WAn9eCMhdsAPhBZUAErzzPxI2N83
+	 DZj83iiPjR5lnqC4/zYH9kEJRUSF1DQzRZbmhgpmUGNXIpBk/uDI14iw2diuGzzy+
+	 PRV5Kwmt57+S6NeS9/wMI3XiCGKIiXLgZNwD3l1KCQS0FmIRI/MhKuMWM++vHwxIC
+	 9OrQl4+/lHqXcQo6QA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N4Qwg-1twLot0xSo-014RWq; Wed, 09
+ Oct 2024 23:29:37 +0200
+Message-ID: <703527ad-6594-455f-95a5-bb50e95b4f1a@gmx.de>
+Date: Wed, 9 Oct 2024 23:29:36 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/20] accel/tcg: Use the alignment test in
+ tlb_fill_align
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
+ linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
+References: <20241009000453.315652-1-richard.henderson@linaro.org>
+ <20241009000453.315652-7-richard.henderson@linaro.org>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20241009000453.315652-7-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Os1oFUYwRxSEqQHoe4APk+cVwrfkdQHvCr24H/OfUXb5AlEfvea
+ Im3Z6XEZHZcZ3x6hXyQNmWHUfODCIjiToXr7/aJ6Ui5BlvtDexBha9/+hsJAIW5SREPxE57
+ QU0Rlt9bbgZcQ2x1qmAEcRQ4ToSOCngh65KTlzKpKnB+scTYzbkrnsAZX7qw6fkC3IOiYRk
+ HQBeJBhyRJ69bDpXlEYyQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:cU4ODWKw8sc=;ua+X+RenXvdgtik7I1AQJfq4bA9
+ j5PEInPPL9lUDR9fcaF8Ni/YyKwnS+RkTt5/kBQL1ZLABL51bwbzwm8izJ/MVZegdwdN5oIOb
+ Ixroak+jNK/7ksJTewe/CTI9YjtaiA52KTI9n2DHBDPy1f+MgGgPgoW/Erzfx6MEquA4Gcq77
+ PxYL7gUv6a77lCeh/AZGg+j0DUbI9fETTHuj2dGg4GOb1o0ymrCWvJOi5XNnIfvnUOyDDyqaw
+ BVNg0eBGGi7oKLFoFWrh5jUMSW9ChQ6+tOPLnDmT4R3E0Pd8AzsRVAHNqHhqctdoyPvBuG0Rh
+ bBjFvXxChnoj4FNPtXAKwydqB0gBBC3FKNAQupMVQ2EUc4w9ey7XSsSDXU9KFx1jzZJUNADJU
+ ihrL6XKrNIID4YT9V1AFHcpUOqq78zWIjMIS9GKyG7FP+SzRB8yANmnh7a/K8ImKxzc6ebqIn
+ OTXvYXC2yA34yA8EkSMsXjgxs7GTt/r/qSsMwWLkmHBUDaG8r1tjVei91RlO+c3DzMu4mfJyh
+ m8v+Jyny4BIppxGJ9z0cBBvrU/ETYk+mAMWgyTktbIgNJ9kgdvazlGZu2wPtahDwEap5y6L+/
+ 8ArthFdEuGR5U1lVVuwTWtsfvcAI7dR0UkLR1SFomfMVHP4hRU32Qj7t2c+AAqM13KMMi8Kv2
+ hLXJn7v00L/mGxZNDWMMEcttTdeiNREuJ0s+YvIXa3hFY6H2IwplNJgajxX39y8tBYPPsEfsM
+ ej5duaxKDPrJ2RyM4Xkes4CkXuh3gf5ldd07VyeWjkWICn3YaXBP3eVVi8XBc6RRWMp2uvUlL
+ 5vG13LHOQWtrhf8mctBmCFDA==
 
-On Wed,  9 Oct 2024 21:08:15 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+On 10/9/24 02:04, Richard Henderson wrote:
+> When we have a tlb miss, defer the alignment check to
+> the new tlb_fill_align hook.  Move the existing alignment
+> check so that we only perform it with a tlb hit.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-> Using large pages to map text areas reduces iTLB pressure and improves
-> performance.
-
-Are there any measurable performance improvements?
-
-What are the effects of this series upon overall memory consumption?
-
-The lack of acks is a bit surprising for a v5 patch, but I'll add all
-this to mm.git for some testing, thanks.
-
+Reviewed-by: Helge Deller <deller@gmx.de>
 
