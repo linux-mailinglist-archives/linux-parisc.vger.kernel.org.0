@@ -1,53 +1,73 @@
-Return-Path: <linux-parisc+bounces-2615-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2616-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435A4995DE8
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 04:49:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B7C99690F
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 13:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E84F22843CD
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 02:49:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69733B21F77
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 11:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3A329429;
-	Wed,  9 Oct 2024 02:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EFF1922F2;
+	Wed,  9 Oct 2024 11:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="2+yJsVy9"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46F420B0F;
-	Wed,  9 Oct 2024 02:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.135
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A618718FC83;
+	Wed,  9 Oct 2024 11:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728442143; cv=none; b=TNmj6K9ISAweXHhCgt45iaAElO76khxg8Q80GDGRa4JiDdf5PdrAPheDvn6Qtv20upf5tMaOVgltsaQysCE6aIJoxgMDcLjjs543xjKz+yJ3C3ELOOg0okCAc+AarXr85H87Hh9q1FnAfuaci9n+scROjt5DHxEElvFksxR3oLU=
+	t=1728474220; cv=none; b=idoJnBWB/L1mswfrSjdaNA32vmTmlpB9o/9tZTyQ2XWKIXc1xgMgY8cSLPSv2kyZKTOMU+8hU7xem5H+zY5qPSFW57vlX2G+FhZwpyRszPiGpQapyu0IN1kHxxKEqqVNp14lh3w0TTembtAPu011j1pvoWjZU/bFj+A1uke6F2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728442143; c=relaxed/simple;
-	bh=bmyx8pS27sYQTK0+N2ige/SQhQWrej1KLvIlKMjI2S8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gD9WzcoDiEr35CoxT6X5VdrqYly4RczpWKgvqKeCL/g+l5V1kYl2IjwURQmD/GoVl6NhGRVJc7jfBOXEcqmXsCY6/+Bk7AG5kFnKT/nVIl6Ey5KQFwOUOsVSMhiLBA42vP7Q4YARFAkUsIL7jHO11Z4Wp9Gihe6lZ9e84WtzmMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; arc=none smtp.client-ip=111.22.67.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cmss.chinamobile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app07-12007 (RichMail) with SMTP id 2ee76705ef1899d-e89b0;
-	Wed, 09 Oct 2024 10:48:56 +0800 (CST)
-X-RM-TRANSID:2ee76705ef1899d-e89b0
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from localhost.localdomain (unknown[223.108.79.103])
-	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee16705ef098ff-ce6d2;
-	Wed, 09 Oct 2024 10:48:56 +0800 (CST)
-X-RM-TRANSID:2ee16705ef098ff-ce6d2
-From: Ba Jing <bajing@cmss.chinamobile.com>
-To: James.Bottomley@HansenPartnership.com
-Cc: deller@gmx.de,
-	linux-parisc@vger.kernel.org,
+	s=arc-20240116; t=1728474220; c=relaxed/simple;
+	bh=GiKm2C7tdhc3dZ/L+F0NUN76VQ7J4IRQ3C3VO5kmDzg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qe4hbJnfY1RMtCcxTu6RrrAL0r87YNNhAJzop+wgqxbKugRzzyAdn7a0fcRCy0NBmfcEsObOKiwb3Fk/eS76bj6R2Ve8pw9C552FsqKrk/EoBI3HkYN4Dz/Fqv2EVvybE4+gCyMDZm1uzPD9UJD4Ecpv7eAzLf5RxfS9F/U3iJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=2+yJsVy9; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=kWHm4EzhmcRIg2+TkegJgMDV+hPGEBlUxndw3Jlx9rs=; b=2+yJsVy9LAMPiwBw1DaQUCVfFe
+	QyJY3aXFefdtcO1fkvZGljTkLYposSgsM7AZReMFMa5vMMuXMOgGVdcU9zQdIJwBYrbb16tnCmCtE
+	vNOARAY2QdRbLhLzwCmJJITCkzHE+z2s4LxbFJLnQnz72E/EgOytYrBCmqGlXUueTH43Zvn3iwPd5
+	vtEkG0pez/ZHGQMmeP+HFbbWklO8Hx4jhRbB8X2oYTSaDFCiFaZqmXPSiknGB7DisHeJxUIdziTnh
+	aK+QEe9gB1/Npt1KOI0PymNgFjaI09mZBm6jnkU8fF5L/BXNREkq5Tt9t1WB+iiUWzLTi/2D6PVUw
+	TOOwM4Jg==;
+Received: from 2a02-8389-2341-5b80-164d-fdb4-bac5-9f5e.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:164d:fdb4:bac5:9f5e] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1syV6O-000000095ov-1DQp;
+	Wed, 09 Oct 2024 11:43:36 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-alpha@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Ba Jing <bajing@cmss.chinamobile.com>
-Subject: [PATCH] parisc: lasi: remove unused macro
-Date: Tue,  8 Oct 2024 15:43:42 +0800
-Message-Id: <20241008074342.38891-1-bajing@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.33.0
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-arch@vger.kernel.org
+Subject: provide generic page_to_phys and phys_to_page implementations
+Date: Wed,  9 Oct 2024 13:43:21 +0200
+Message-ID: <20241009114334.558004-1-hch@lst.de>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -55,30 +75,39 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-By reading the code, I found the macro LASI_IO_CONF2 is 
-never referenced in the code. Just remove it.
+page_to_phys is duplicated by all architectures, and from some strange
+reason placed in <asm/io.h> where it doesn't fit at all.  
 
-Signed-off-by: Ba Jing <bajing@cmss.chinamobile.com>
----
- drivers/parisc/lasi.c | 1 -
- 1 file changed, 1 deletion(-)
+phys_to_page is only provided by a few architectures despite having a lot 
+of open coded users.
 
-diff --git a/drivers/parisc/lasi.c b/drivers/parisc/lasi.c
-index 73c93e9cfa51..b387ea7f1c28 100644
---- a/drivers/parisc/lasi.c
-+++ b/drivers/parisc/lasi.c
-@@ -29,7 +29,6 @@
- #define LASI_VER	0xC008	/* LASI Version */
- 
- #define LASI_IO_CONF	0x7FFFE	/* LASI primary configuration register */
--#define LASI_IO_CONF2	0x7FFFF	/* LASI secondary configuration register */
- 
- static void lasi_choose_irq(struct parisc_device *dev, void *ctrl)
- {
--- 
-2.33.0
+Provide generic versions in <asm-generic/memory_model.h> to make these
+helpers more easily usable.
 
-
-
+Diffstat:
+ arch/alpha/include/asm/io.h         |    1 -
+ arch/arc/include/asm/io.h           |    3 ---
+ arch/arm/include/asm/memory.h       |    6 ------
+ arch/arm64/include/asm/memory.h     |    6 ------
+ arch/csky/include/asm/page.h        |    3 ---
+ arch/hexagon/include/asm/page.h     |    6 ------
+ arch/loongarch/include/asm/page.h   |    3 ---
+ arch/m68k/include/asm/virtconvert.h |    3 ---
+ arch/microblaze/include/asm/page.h  |    1 -
+ arch/mips/include/asm/io.h          |    5 -----
+ arch/nios2/include/asm/io.h         |    3 ---
+ arch/openrisc/include/asm/page.h    |    2 --
+ arch/parisc/include/asm/page.h      |    1 -
+ arch/powerpc/include/asm/io.h       |   12 ------------
+ arch/riscv/include/asm/page.h       |    3 ---
+ arch/s390/include/asm/page.h        |    2 --
+ arch/sh/include/asm/page.h          |    1 -
+ arch/sparc/include/asm/page.h       |    2 --
+ arch/um/include/asm/pgtable.h       |    2 --
+ arch/x86/include/asm/io.h           |    5 -----
+ arch/xtensa/include/asm/page.h      |    1 -
+ include/asm-generic/memory_model.h  |    3 +++
+ 22 files changed, 3 insertions(+), 71 deletions(-)
 
