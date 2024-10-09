@@ -1,82 +1,84 @@
-Return-Path: <linux-parisc+bounces-2604-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2605-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690CD995C00
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 02:05:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3F6995BFE
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 02:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3592B23978
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEEE91C21CC0
 	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 00:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D6964D;
-	Wed,  9 Oct 2024 00:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663F6163;
+	Wed,  9 Oct 2024 00:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ov1Hd0GR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SUVN2drM"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8583370
-	for <linux-parisc@vger.kernel.org>; Wed,  9 Oct 2024 00:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28C0383
+	for <linux-parisc@vger.kernel.org>; Wed,  9 Oct 2024 00:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728432308; cv=none; b=GIXgCJIZX7MHcQoNMuUO6++2f2LdA6uF6KoiiI0H7dpKx1m8aquO/tDYeWHDgdGV97abdqKyX0JZ8k/LeRTzJw12sHJ6HNJtEX5G39GrfnkuR64/KeMB+pOYRDA48/OJWHiexJKjRFYcccw9dNsWYSAkJpeMMgNzEfAgTXfMCfQ=
+	t=1728432309; cv=none; b=Bdjf3oaCwADnK09ExguQ0P41ToFmJbA8tLcQ/2fH3Sz2mp4buXpYP1FnOnWf8c1fmZM5WWfLIR0rR0o86uRXdiULNiO1is0EFGUF5VGlguDgWLN5ghzdx/fARXmCIVgkht0S085heUrI7YOwDIe+1r1BrDuzuHq+XUkVfV2eQ/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728432308; c=relaxed/simple;
-	bh=XNSUPs2wawHWMkJmFOseTF/e5uRuHZbQc3DlNbkB4Vw=;
+	s=arc-20240116; t=1728432309; c=relaxed/simple;
+	bh=FzDI4v0VT9EkG9GKZr83dPch/xwgRQbjlipFQebC3gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PekN2TzUf+8XDPQPeValcVh7ZXNl+6IDCQXaBGJ4lbdV8b+I65xEkgq7XgVg3EheH6rMyGuJGn5WWZNwtyZrMtajeer2NtBYuPjzXingnt7kjFN0WjrxPpo5yeFEgVDlE5BEXoppbadSRpunZTod/4wO7vllyMSarzl/1F1haSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ov1Hd0GR; arc=none smtp.client-ip=209.85.214.172
+	 MIME-Version:Content-Type; b=ja6MDSwkElkSDlBdealysEmvmJ2DaPAZpBfy9Ho3heje7+fkOyoaM3sUKehNbEiTJzBUNethBEjs8a17yb1fMGN7zy/BqmeX5ACewlOsIBTSG9cdZ/H7yTbJkDSJmjVkGJA/mexcs2GBbInsfQpB9BMg8NP3UoRJxrW76eNuN6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SUVN2drM; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20c544d34bcso12092875ad.1
-        for <linux-parisc@vger.kernel.org>; Tue, 08 Oct 2024 17:05:06 -0700 (PDT)
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-20b95359440so53727325ad.0
+        for <linux-parisc@vger.kernel.org>; Tue, 08 Oct 2024 17:05:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728432306; x=1729037106; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1728432307; x=1729037107; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iV2KSUuCTdEDpKpG+VIBV8pupsJQOA9ecDi8J+rVd34=;
-        b=Ov1Hd0GR5dciY3n5CcPQ7NZiZZwGDMEd5+UZD4RJwZe74VBRlcJnXpa9aPP3CmZibZ
-         vCb9lbKF+Yn7OtFVkRCS2puuR12bM41/8TzitrcqTyg7N0mFtw2A9L2foJEuTfTdWKbT
-         Tg4sQXRrgIWSdfmLO9qvOn/h4Y0PJVZaBcvG3a0BewS/ifO1po7Q/cpqtmrBm1LBLUPA
-         8waYJ39OFqOZLPhBODS7bqztFJncNGx9MGsdguLs4hsoCuRQYNHIL/l1Klbz6+KuTWXN
-         yQvrV1pMsgP87VUPkk23Gz5NsF4MxWWtGEv00tPIRmfAnNP0QoPExSSytTYFeaNv0MSc
-         Jheg==
+        bh=RUID/VOY3Ga2ZN/DeZx4JrZs9/xknXUyzF7dZ/9YQNo=;
+        b=SUVN2drM7+g7mATbOOr7JozFbyVQXC4lBf4m1g8eykebsSXA9g2Fj70+HzNTc2f3zB
+         /3cRXwcnaOxrE4ui2gfT9Rf6FPsyNIHPjdy0OsdDX0eTnG4oDhq4yISJKinfYIGQWIuv
+         KalJNb9N/O6XWBFpg+yNl0g2s6eMFDBQQ0OoRUzjljK3WQm/R2o4VzpJffhZ1DAa09Ut
+         fp3sIH0HNvectIEthMwh2cBNd3JGK5UruqPyhAUI7O4JqvQD03Q/yrc1bQJW7bIllTFR
+         unn+agWWTVLjR6zDZZxlMwvbducPBQq9ZfLKWUVrkSkfUVXps1AMxrIZtAwCBR8y7MBF
+         uVzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728432306; x=1729037106;
+        d=1e100.net; s=20230601; t=1728432307; x=1729037107;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iV2KSUuCTdEDpKpG+VIBV8pupsJQOA9ecDi8J+rVd34=;
-        b=GPf+i+gJTjFRUVVbd1ZaNf2C1Wrj9S8uxWxGi6eUbIiqLogCnfUmFZ8ZIgcyaNRrAU
-         g0PEJatFxtyWJc5mdKunvSaSrZBrUh+8u4tuJkgeifN+VyAi6m/+iYS8owyFQ+N/Cd4c
-         /fLFxOXig57cLMQkKlOkTLrVL2xpTWpLSiOdlBDiR/Ju2sqGkwfMEGBge65MMoWi6mXc
-         aiII+THGs+c8Jb7pUm70hY4evZbCD8kWl3LrKoYdlPvssZp9qxFtvc5wOFlSCmTgxdDd
-         gKSchr6XzNRMylzP57Tg0AuYK/Hrb4uOHVHH4oFbfVOMiz9ZtkJKnUdGu3cC2PVMxhvq
-         vOFw==
-X-Forwarded-Encrypted: i=1; AJvYcCWWSQqgLy8LVUX9eCH8UwD2G3dpgKd+RSehlbOVM85JNIewl9nHSM8BHbuUHJCjxJJIoh6v/8P6HOIlw3M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR6V7NLYESWnLxsISGFL8QP5Kwh5HGNqdHfdogyhgkst1aSdP4
-	lBHa1Nif2gZZnjO29NgAEFqkg68+7cDyrWOkAgMeoiz0vcAJfxRoJI0Ws0e4svw=
-X-Google-Smtp-Source: AGHT+IEKU+69FGHaarUOvElg72DCHkm1xPG7wfOM2NLThus+mTJDQJLk8D0LtS7DglEQU4MbeYyvAA==
-X-Received: by 2002:a17:903:110c:b0:20c:5698:75cd with SMTP id d9443c01a7336-20c636eb2a7mr13032315ad.2.1728432306088;
-        Tue, 08 Oct 2024 17:05:06 -0700 (PDT)
+        bh=RUID/VOY3Ga2ZN/DeZx4JrZs9/xknXUyzF7dZ/9YQNo=;
+        b=Kmb36/+QDtqGooLsToCaR6YyaWkAkYWxxowl9qw/o8RPQKX+CRmWklccgZzV5OjmC9
+         5VQxtYCP65RaTX71jBD17SAIkY6nUyzeijuQduhH85NSOk0NjLNa6xs6zAzdzA23p5yx
+         hOU9XYPOhgIiIAsmrFeCQqaZ0yLaM7ZarJgvnH0Z4ACUb/oaUKDS6vchT+QKMMAO+jLz
+         XUNby+C8674M8+X/a+7+f232fF9lt98LQOc3nFvaV4sxVJ7iAfeEcoqXGUa8xWim/Y9q
+         PXuFP3uV5YF0SBDHu7GBB0KsHbSV1hzLpTYVObM5H7HljH1gUSZXi2DdYOv9b1Aiv/Cm
+         cNUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUT5IvylqytyNeo/JQo1hTj18nwllcIJ+exsWeMHQzMdAxvjbemKeCnb8uQ6Y3MlJiWIuwqafBOMSus8o4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwICBYYwk4a/gR2yNQRDLXVWqJ6bCZjsPbTQmVGoCMcdNvFrUci
+	HB6wi0Iqp606eWsI+wDNM3MzZwHAtSSllBoVTzJ8/AL3JTbjhhhCstnMNgX3Mic=
+X-Google-Smtp-Source: AGHT+IEOzR02cuGQIAfO5rhioXqq6+S1yUdY62tdcjtmeVq0WQ3OZwwN00IC+X3KAkSW8TC6DwnsKg==
+X-Received: by 2002:a17:902:e88f:b0:207:2093:99bb with SMTP id d9443c01a7336-20c63743a92mr10917825ad.31.1728432307098;
+        Tue, 08 Oct 2024 17:05:07 -0700 (PDT)
 Received: from stoup.. (174-21-81-121.tukw.qwest.net. [174.21.81.121])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c138cecf2sm60705105ad.104.2024.10.08.17.05.05
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20c138cecf2sm60705105ad.104.2024.10.08.17.05.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Oct 2024 17:05:05 -0700 (PDT)
+        Tue, 08 Oct 2024 17:05:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@kernel.org,
 	peter.maydell@linaro.org,
 	alex.bennee@linaro.org,
 	linux-parisc@vger.kernel.org,
-	qemu-arm@nongnu.org
-Subject: [PATCH v3 11/20] target/hppa: Implement TCGCPUOps.tlb_fill_align
-Date: Tue,  8 Oct 2024 17:04:44 -0700
-Message-ID: <20241009000453.315652-12-richard.henderson@linaro.org>
+	qemu-arm@nongnu.org,
+	Helge Deller <deller@gmx.de>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 12/20] target/arm: Pass MemOp to get_phys_addr
+Date: Tue,  8 Oct 2024 17:04:45 -0700
+Message-ID: <20241009000453.315652-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241009000453.315652-1-richard.henderson@linaro.org>
 References: <20241009000453.315652-1-richard.henderson@linaro.org>
@@ -86,103 +88,108 @@ List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Convert hppa_cpu_tlb_fill to hppa_cpu_tlb_fill_align so that we
-can recognize alignment exceptions in the correct priority order.
+Zero is the safe do-nothing value for callers to use.
 
-Resolves: https://bugzilla.kernel.org/show_bug.cgi?id=219339
+Reviewed-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h        |  6 +++---
- target/hppa/cpu.c        |  2 +-
- target/hppa/mem_helper.c | 21 ++++++++++++---------
- 3 files changed, 16 insertions(+), 13 deletions(-)
+ target/arm/internals.h      | 3 ++-
+ target/arm/ptw.c            | 2 +-
+ target/arm/tcg/m_helper.c   | 8 ++++----
+ target/arm/tcg/tlb_helper.c | 2 +-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index 526855f982..e45ba50a59 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -363,9 +363,9 @@ void hppa_cpu_dump_state(CPUState *cs, FILE *f, int);
- void hppa_ptlbe(CPUHPPAState *env);
- hwaddr hppa_cpu_get_phys_page_debug(CPUState *cs, vaddr addr);
- void hppa_set_ior_and_isr(CPUHPPAState *env, vaddr addr, bool mmu_disabled);
--bool hppa_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
--                       MMUAccessType access_type, int mmu_idx,
--                       bool probe, uintptr_t retaddr);
-+bool hppa_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out, vaddr addr,
-+                             MMUAccessType access_type, int mmu_idx,
-+                             MemOp memop, int size, bool probe, uintptr_t ra);
- void hppa_cpu_do_interrupt(CPUState *cpu);
- bool hppa_cpu_exec_interrupt(CPUState *cpu, int int_req);
- int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 7cf2e2f266..c38439c180 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -226,7 +226,7 @@ static const TCGCPUOps hppa_tcg_ops = {
-     .restore_state_to_opc = hppa_restore_state_to_opc,
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 1e5da81ce9..2b16579fa5 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1432,6 +1432,7 @@ typedef struct GetPhysAddrResult {
+  * @env: CPUARMState
+  * @address: virtual address to get physical address for
+  * @access_type: 0 for read, 1 for write, 2 for execute
++ * @memop: memory operation feeding this access, or 0 for none
+  * @mmu_idx: MMU index indicating required translation regime
+  * @result: set on translation success.
+  * @fi: set to fault info if the translation fails
+@@ -1450,7 +1451,7 @@ typedef struct GetPhysAddrResult {
+  *    value.
+  */
+ bool get_phys_addr(CPUARMState *env, vaddr address,
+-                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
++                   MMUAccessType access_type, MemOp memop, ARMMMUIdx mmu_idx,
+                    GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
+     __attribute__((nonnull));
  
- #ifndef CONFIG_USER_ONLY
--    .tlb_fill = hppa_cpu_tlb_fill,
-+    .tlb_fill_align = hppa_cpu_tlb_fill_align,
-     .cpu_exec_interrupt = hppa_cpu_exec_interrupt,
-     .cpu_exec_halt = hppa_cpu_has_work,
-     .do_interrupt = hppa_cpu_do_interrupt,
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index d38054da8a..b8c3e55170 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -424,12 +424,11 @@ void hppa_cpu_do_transaction_failed(CPUState *cs, hwaddr physaddr,
-     }
+diff --git a/target/arm/ptw.c b/target/arm/ptw.c
+index 659855133c..373095a339 100644
+--- a/target/arm/ptw.c
++++ b/target/arm/ptw.c
+@@ -3572,7 +3572,7 @@ bool get_phys_addr_with_space_nogpc(CPUARMState *env, vaddr address,
  }
  
--bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
--                       MMUAccessType type, int mmu_idx,
--                       bool probe, uintptr_t retaddr)
-+bool hppa_cpu_tlb_fill_align(CPUState *cs, CPUTLBEntryFull *out, vaddr addr,
-+                             MMUAccessType type, int mmu_idx,
-+                             MemOp memop, int size, bool probe, uintptr_t ra)
+ bool get_phys_addr(CPUARMState *env, vaddr address,
+-                   MMUAccessType access_type, ARMMMUIdx mmu_idx,
++                   MMUAccessType access_type, MemOp memop, ARMMMUIdx mmu_idx,
+                    GetPhysAddrResult *result, ARMMMUFaultInfo *fi)
  {
--    HPPACPU *cpu = HPPA_CPU(cs);
--    CPUHPPAState *env = &cpu->env;
-+    CPUHPPAState *env = cpu_env(cs);
-     int prot, excp, a_prot;
-     hwaddr phys;
+     S1Translate ptw = {
+diff --git a/target/arm/tcg/m_helper.c b/target/arm/tcg/m_helper.c
+index 23d7f73035..f7354f3c6e 100644
+--- a/target/arm/tcg/m_helper.c
++++ b/target/arm/tcg/m_helper.c
+@@ -222,7 +222,7 @@ static bool v7m_stack_write(ARMCPU *cpu, uint32_t addr, uint32_t value,
+     int exc;
+     bool exc_secure;
  
-@@ -445,7 +444,7 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
-         break;
+-    if (get_phys_addr(env, addr, MMU_DATA_STORE, mmu_idx, &res, &fi)) {
++    if (get_phys_addr(env, addr, MMU_DATA_STORE, 0, mmu_idx, &res, &fi)) {
+         /* MPU/SAU lookup failed */
+         if (fi.type == ARMFault_QEMU_SFault) {
+             if (mode == STACK_LAZYFP) {
+@@ -311,7 +311,7 @@ static bool v7m_stack_read(ARMCPU *cpu, uint32_t *dest, uint32_t addr,
+     bool exc_secure;
+     uint32_t value;
+ 
+-    if (get_phys_addr(env, addr, MMU_DATA_LOAD, mmu_idx, &res, &fi)) {
++    if (get_phys_addr(env, addr, MMU_DATA_LOAD, 0, mmu_idx, &res, &fi)) {
+         /* MPU/SAU lookup failed */
+         if (fi.type == ARMFault_QEMU_SFault) {
+             qemu_log_mask(CPU_LOG_INT,
+@@ -2009,7 +2009,7 @@ static bool v7m_read_half_insn(ARMCPU *cpu, ARMMMUIdx mmu_idx, bool secure,
+                       "...really SecureFault with SFSR.INVEP\n");
+         return false;
      }
+-    if (get_phys_addr(env, addr, MMU_INST_FETCH, mmu_idx, &res, &fi)) {
++    if (get_phys_addr(env, addr, MMU_INST_FETCH, 0, mmu_idx, &res, &fi)) {
+         /* the MPU lookup failed */
+         env->v7m.cfsr[env->v7m.secure] |= R_V7M_CFSR_IACCVIOL_MASK;
+         armv7m_nvic_set_pending(env->nvic, ARMV7M_EXCP_MEM, env->v7m.secure);
+@@ -2045,7 +2045,7 @@ static bool v7m_read_sg_stack_word(ARMCPU *cpu, ARMMMUIdx mmu_idx,
+     ARMMMUFaultInfo fi = {};
+     uint32_t value;
  
--    excp = hppa_get_physical_address(env, addr, mmu_idx, a_prot, 0,
-+    excp = hppa_get_physical_address(env, addr, mmu_idx, a_prot, memop,
-                                      &phys, &prot);
-     if (unlikely(excp >= 0)) {
-         if (probe) {
-@@ -454,7 +453,7 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
-         trace_hppa_tlb_fill_excp(env, addr, size, type, mmu_idx);
- 
-         /* Failure.  Raise the indicated exception.  */
--        raise_exception_with_ior(env, excp, retaddr, addr,
-+        raise_exception_with_ior(env, excp, ra, addr,
-                                  MMU_IDX_MMU_DISABLED(mmu_idx));
-     }
- 
-@@ -468,8 +467,12 @@ bool hppa_cpu_tlb_fill(CPUState *cs, vaddr addr, int size,
-      * the large page protection mask.  We do not require this,
-      * because we record the large page here in the hppa tlb.
+-    if (get_phys_addr(env, addr, MMU_DATA_LOAD, mmu_idx, &res, &fi)) {
++    if (get_phys_addr(env, addr, MMU_DATA_LOAD, 0, mmu_idx, &res, &fi)) {
+         /* MPU/SAU lookup failed */
+         if (fi.type == ARMFault_QEMU_SFault) {
+             qemu_log_mask(CPU_LOG_INT,
+diff --git a/target/arm/tcg/tlb_helper.c b/target/arm/tcg/tlb_helper.c
+index 885bf4ec14..1d8b7bcaa2 100644
+--- a/target/arm/tcg/tlb_helper.c
++++ b/target/arm/tcg/tlb_helper.c
+@@ -344,7 +344,7 @@ bool arm_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+      * return false.  Otherwise populate fsr with ARM DFSR/IFSR fault
+      * register format, and signal the fault.
       */
--    tlb_set_page(cs, addr & TARGET_PAGE_MASK, phys & TARGET_PAGE_MASK,
--                 prot, mmu_idx, TARGET_PAGE_SIZE);
-+    memset(out, 0, sizeof(*out));
-+    out->phys_addr = phys;
-+    out->prot = prot;
-+    out->attrs = MEMTXATTRS_UNSPECIFIED;
-+    out->lg_page_size = TARGET_PAGE_BITS;
-+
-     return true;
- }
- 
+-    ret = get_phys_addr(&cpu->env, address, access_type,
++    ret = get_phys_addr(&cpu->env, address, access_type, 0,
+                         core_to_arm_mmu_idx(&cpu->env, mmu_idx),
+                         &res, fi);
+     if (likely(!ret)) {
 -- 
 2.43.0
 
