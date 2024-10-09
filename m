@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-2638-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2639-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC96E99777C
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 23:30:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2185C99778E
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 23:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ABAB1F21971
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 21:30:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70553B2142F
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Oct 2024 21:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F8A1E2319;
-	Wed,  9 Oct 2024 21:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F4C1E1311;
+	Wed,  9 Oct 2024 21:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="uaCPkVVj"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="UZkFAHfy"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BAC1E1C30
-	for <linux-parisc@vger.kernel.org>; Wed,  9 Oct 2024 21:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2761E2305
+	for <linux-parisc@vger.kernel.org>; Wed,  9 Oct 2024 21:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728509397; cv=none; b=tBOduYWySfJC5Q4bA7NYl6FWY4m3V4zR6JHESJYUu0DU61Kq1P/hSOHP0edzDfLa3p9eXtdn4nbXc1XJljtpNgIE4n+VSHFV6/gx4ABk9QDojedwTmd+dmvliRSPwuXqTZ1CFE5/kqhzWwexhC1GJOvpa6Q3inDsQ/wEvOfolr8=
+	t=1728509598; cv=none; b=XubqFcwBjDtsl/a6gijAtOGypuhiqgrVCH/tNU8IUMjBNSnJJGzQ59dOoTZp3aAoxtg+jl9ULme/ExEA3OB+ujM+XrX+C5sljfwOfk866iFgMfHCaSz9wfKkxOitfFrn0tx0Qejac1FmFUDDTZSzGzV/wwz/0ZRDq0iI/faDM18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728509397; c=relaxed/simple;
-	bh=DrAHhEVgdHZ5vQXjJwReIDDDMcpga88E94I2zP8UUzM=;
+	s=arc-20240116; t=1728509598; c=relaxed/simple;
+	bh=FiNrHSyL+uyz4x2J8z6qhvW+38NqOKn5eu8zS+G7+cw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ltJuATFzgfxHytDs8rC8I8cN4b/qLtICXkE/YlVG0SewgR/AwBOIDwvNiYeEs7s+UPEfFCptj9OU4OHSDI28hXC7kdGsHCHcdnjhZ4pIhFrBfRZu87oWEV976H2vRe2y54aVTbP9f8elmhmvS39slGWtScIDLIEkXG71tzJyVvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=uaCPkVVj; arc=none smtp.client-ip=212.227.17.22
+	 In-Reply-To:Content-Type; b=n0cW+1mPIxmW5+xRBRPOdWMN8eUzFIRzAxPB79mUkjWvd5llOM7eQx3bg2zfwf56wLPgAWIiFDEPNvGbPhYXuvm2lk2jxz8d4U8osvKgNkkSVqG6klWlXhxi0Hw94OU51Mcka5Klg+4lqfklYFBHXiKL3Q+KwrGTKugQOFnfTeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=UZkFAHfy; arc=none smtp.client-ip=212.227.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1728509377; x=1729114177; i=deller@gmx.de;
-	bh=Cktov7IgpjoLwvQgMG36+aq60qnsQb9DIXdfD6cis7M=;
+	s=s31663417; t=1728509583; x=1729114383; i=deller@gmx.de;
+	bh=rkDvT9+2mExNwBaDhV8t5TZC64P4RCKtBdbeRNAEl30=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=uaCPkVVjKUqAFu0S2y0lgbP7mezjrk7WatUBeRRS5PZLRPI+3CLNBAHnmd/8ALTO
-	 o6X0wO0V83LlEGG8ETHg+bW6d4cRfJgq57GZCx+RbBAXloOsyZODjIpKOTiKkiqtP
-	 H0kjaMSapm/W2QBfxOIfDZIKm5eYk2lgOf6z1WAn9eCMhdsAPhBZUAErzzPxI2N83
-	 DZj83iiPjR5lnqC4/zYH9kEJRUSF1DQzRZbmhgpmUGNXIpBk/uDI14iw2diuGzzy+
-	 PRV5Kwmt57+S6NeS9/wMI3XiCGKIiXLgZNwD3l1KCQS0FmIRI/MhKuMWM++vHwxIC
-	 9OrQl4+/lHqXcQo6QA==
+	b=UZkFAHfyNpJvgmUVMhxwqzYt4RqNPwEuA34avq7QfZO8R09tIk8LCdntGT8xerWZ
+	 YyPJRzLq/TH+rS22gm6+n7+I8fmqAMSR4STt2FK5K8hRWYlxSSdXx0X+4qU8b7gSF
+	 X77I5KYL7BXZYylqsyAtrlSSKsuiaqNkpCAmXbZu6LKG+AT/KrF+ZYsGl6/Vf52qG
+	 UaIROZZtLZWsJUuu6BTWcHrDj8fOtxZIteGLDAgVSCkv4x3LKy/Xh28LwbU7LdzHC
+	 Nu7bVnNv8D+WVffYLxqunZQoCtwiVKiUA7r3PUNRTgQY4xY8jA9uBmd3x9Ot9KegQ
+	 sAP0ykuOSwMTDq8yvQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N4Qwg-1twLot0xSo-014RWq; Wed, 09
- Oct 2024 23:29:37 +0200
-Message-ID: <703527ad-6594-455f-95a5-bb50e95b4f1a@gmx.de>
-Date: Wed, 9 Oct 2024 23:29:36 +0200
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1ML9yc-1tFcxJ2v5u-00NNAS; Wed, 09
+ Oct 2024 23:33:03 +0200
+Message-ID: <a361e907-596c-43c4-a4fe-575f88f40bea@gmx.de>
+Date: Wed, 9 Oct 2024 23:33:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,13 +58,12 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/20] accel/tcg: Use the alignment test in
- tlb_fill_align
+Subject: Re: [PATCH v3 11/20] target/hppa: Implement TCGCPUOps.tlb_fill_align
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: deller@kernel.org, peter.maydell@linaro.org, alex.bennee@linaro.org,
  linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
 References: <20241009000453.315652-1-richard.henderson@linaro.org>
- <20241009000453.315652-7-richard.henderson@linaro.org>
+ <20241009000453.315652-12-richard.henderson@linaro.org>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -110,34 +109,42 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20241009000453.315652-7-richard.henderson@linaro.org>
+In-Reply-To: <20241009000453.315652-12-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Os1oFUYwRxSEqQHoe4APk+cVwrfkdQHvCr24H/OfUXb5AlEfvea
- Im3Z6XEZHZcZ3x6hXyQNmWHUfODCIjiToXr7/aJ6Ui5BlvtDexBha9/+hsJAIW5SREPxE57
- QU0Rlt9bbgZcQ2x1qmAEcRQ4ToSOCngh65KTlzKpKnB+scTYzbkrnsAZX7qw6fkC3IOiYRk
- HQBeJBhyRJ69bDpXlEYyQ==
+X-Provags-ID: V03:K1:bD7oFH1vU3EXPpnn1BLwkmNvyJnjjoCpYJ+btSFH5G+EeEuk7Jt
+ 9HumUJeBMC5OaqfDW6zV8ZPxf5Ck6V1V6RQxE30mQhur5aC7+tPHI89zd7Jtdu0+r6APj+X
+ 264FrJFtouqvcm5wzY3i3R4nRA6HQdHQIuZDERtCQlTJtsx4QDZxm28DMphL4zaG5AMhcsL
+ bcy68JcX7Mqob7+cRqvKA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:cU4ODWKw8sc=;ua+X+RenXvdgtik7I1AQJfq4bA9
- j5PEInPPL9lUDR9fcaF8Ni/YyKwnS+RkTt5/kBQL1ZLABL51bwbzwm8izJ/MVZegdwdN5oIOb
- Ixroak+jNK/7ksJTewe/CTI9YjtaiA52KTI9n2DHBDPy1f+MgGgPgoW/Erzfx6MEquA4Gcq77
- PxYL7gUv6a77lCeh/AZGg+j0DUbI9fETTHuj2dGg4GOb1o0ymrCWvJOi5XNnIfvnUOyDDyqaw
- BVNg0eBGGi7oKLFoFWrh5jUMSW9ChQ6+tOPLnDmT4R3E0Pd8AzsRVAHNqHhqctdoyPvBuG0Rh
- bBjFvXxChnoj4FNPtXAKwydqB0gBBC3FKNAQupMVQ2EUc4w9ey7XSsSDXU9KFx1jzZJUNADJU
- ihrL6XKrNIID4YT9V1AFHcpUOqq78zWIjMIS9GKyG7FP+SzRB8yANmnh7a/K8ImKxzc6ebqIn
- OTXvYXC2yA34yA8EkSMsXjgxs7GTt/r/qSsMwWLkmHBUDaG8r1tjVei91RlO+c3DzMu4mfJyh
- m8v+Jyny4BIppxGJ9z0cBBvrU/ETYk+mAMWgyTktbIgNJ9kgdvazlGZu2wPtahDwEap5y6L+/
- 8ArthFdEuGR5U1lVVuwTWtsfvcAI7dR0UkLR1SFomfMVHP4hRU32Qj7t2c+AAqM13KMMi8Kv2
- hLXJn7v00L/mGxZNDWMMEcttTdeiNREuJ0s+YvIXa3hFY6H2IwplNJgajxX39y8tBYPPsEfsM
- ej5duaxKDPrJ2RyM4Xkes4CkXuh3gf5ldd07VyeWjkWICn3YaXBP3eVVi8XBc6RRWMp2uvUlL
- 5vG13LHOQWtrhf8mctBmCFDA==
+UI-OutboundReport: notjunk:1;M01:P0:UGpnr7cjCNc=;2nOC3CXvrFvA8Esk+oFjJbdLhyH
+ wzE8Z6RyJw0xtzKoqJLuDLvdqsgXQrCiSXjNO6r+7jKNufzH/hFhYh1nrBiFKXFSVv3F9Zf09
+ w2q7BTmRXOIiDI7iyAxxm54iTGO00Vz4PErR5Jj1FDO+jlY7LdWttW+WF8sLl56WQ/b+g5x7l
+ HRjJrXUShT0k42UEMj6K4wUZOZgbN2u+OqkxHu823vFtLjZffOa8tqIKCUfqfp7pqJTpQPMA+
+ F3ODl4Z5Dxd8vZYGhrqIrJm7XyDPUOsieUFJ3HwQoE7nfiTzyjlla6GCfJmIICKf8LOPAGnEu
+ /37gXag9S2F7DdWSKMMlge0g20BZTAY4/pt7Lrh5FDvKEL8/pdH4cjATqD6eAvbTBTJfTECmH
+ jF1eRvztf/fev4YPnGNztvZDcStpoEaFqy8S/WN+4d63PmIxu6Job3n4mBMH+vmschxTn93YM
+ LA2HaTWiKAEUHQoUR3pUHTQ/9MjNicltfwJiGyL8N5oB5+e3lWZ+REk1AYuO/BvKpKDgcYKhi
+ UGKK2O/+YL1KdOmsKbVlbw8ruMMVZfdlxs8wSrxXJnox4/y/MWaAQIHdtcjNT/aiYuPWI7TQS
+ L+47wCvTFLAdmiOgUE9MEtpHP3K/nidFwSeLT+VK726Ns2h3F1jZrg6O588i2wKClxlAyeKdc
+ unSoBBlWSL/c4TH3+8LzAldSobWRGNZlLSyCKLXGcIl36hAkiWqcxqnOoQd377nWl2Vkb3N/n
+ FlTKguBAi62pxDEMHs+Og+Q5Qss8iTQHtSlDMbARZeLRL3I3ki0Jvd8P0vprdZqwSz0YnopWC
+ BMrxWZY4VYft7DLOxr7uYFdA==
 
 On 10/9/24 02:04, Richard Henderson wrote:
-> When we have a tlb miss, defer the alignment check to
-> the new tlb_fill_align hook.  Move the existing alignment
-> check so that we only perform it with a tlb hit.
+> Convert hppa_cpu_tlb_fill to hppa_cpu_tlb_fill_align so that we
+> can recognize alignment exceptions in the correct priority order.
 >
+> Resolves: https://bugzilla.kernel.org/show_bug.cgi?id=3D219339
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
 Reviewed-by: Helge Deller <deller@gmx.de>
+Tested-by: Helge Deller <deller@gmx.de>
+
+> ---
+>   target/hppa/cpu.h        |  6 +++---
+>   target/hppa/cpu.c        |  2 +-
+>   target/hppa/mem_helper.c | 21 ++++++++++++---------
+>   3 files changed, 16 insertions(+), 13 deletions(-)
+
 
