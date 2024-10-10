@@ -1,176 +1,371 @@
-Return-Path: <linux-parisc+bounces-2662-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2663-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1E299919B
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Oct 2024 21:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC6D9991E1
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Oct 2024 21:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBCE21F23D4C
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Oct 2024 19:04:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E0C41F27DB8
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Oct 2024 19:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D751CDFC2;
-	Thu, 10 Oct 2024 18:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D671CF7B8;
+	Thu, 10 Oct 2024 19:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="hQTKgnTL"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rO6X22gY"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DEC1CCEF0;
-	Thu, 10 Oct 2024 18:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618FF1CF5DB
+	for <linux-parisc@vger.kernel.org>; Thu, 10 Oct 2024 19:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728586235; cv=none; b=joEykIkDpLc9hgbF+W0AyYAz2pfxvJLl8nH84R5lQaSdPMtfnDC8qs9DgNB1lY7vI9tXzkD21PML3yl8ROUSRUy4PsCBV9w84W3KLWhWSDR6V0Zs1ChPHvUqiisM5JEthYHahJjZh0V/Bb1Xy2R2+frwsGwuOPDk7seh9dghg6c=
+	t=1728587156; cv=none; b=B2xDAESZbgrqwpdB9qMGBi+WD0oPPkjrPJlwlGMPN4SDft7FpwrDU2E0L9DdTN7abv5CRpcfjM6fV3UTtmMZ9v3yLUshxS40P5HHamxhuMO/cnn8ANuYeEeZHfFlYK4wgaKInwu8ON2yuS4ufVQgWPHDFvY05/YhpfFGrUcXfIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728586235; c=relaxed/simple;
-	bh=cFgwN1Zqbv065Ue+yTv/+K2fBC6AtCPgR/dTOKr92SM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D3UN+j2gIWAcpl5ebDriHuJN7AwBHRfFVsGrApMB9JMQq87wSx6ac5Yzl3a7xjWASRPe5L/oFVPy/mHmrZrJ38jl8r16H3eeDINfA1A6BOXOlNU1UQIXmVWKcJ83kfGX73LkSAgTH8IZyXW4pO9Bj+H6ooYTwg0RQl4XvwCOdhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=hQTKgnTL; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1728586224; x=1729191024; i=deller@gmx.de;
-	bh=viXXY+/S91oFXXgAqWA9R8jZvbFYmx2wdv/2VfuZ5mo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=hQTKgnTLY24THrvghsU4qTo/99g7O+nXgNgPM/3aZNqpcY1eZtMiLEGKvVGH0grX
-	 MxSysILh8ocDOqjZnEWsHBig4A7gxC0eJcnex8R1lW84JB9O7DOh8THDUvC+z5CeF
-	 39d9AViZpnMYVd0Jz/8RJHvzS9kmaGlzmlYPi/WS1j8abPut+lTEuilzawfE7C/1a
-	 IjEvwZDxqYzBOgiU2T3oKIXWc3EPz1iBBa7Ps5FP0i6n4ZArqNGWN5KIrcxPJZ8Hp
-	 UYv70REkEQhqzbYqlvkMRS16eJsFqKC/THXI7+QQS4e8JbyJ2pRBLSXhiyhSPH4B1
-	 drpS/qS1dfzhf/6/RA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MOA3F-1tJ8ac3dFp-00Kcc3; Thu, 10
- Oct 2024 20:50:23 +0200
-Message-ID: <b7d176a1-9a12-4e6a-894d-7b71087a5560@gmx.de>
-Date: Thu, 10 Oct 2024 20:50:22 +0200
+	s=arc-20240116; t=1728587156; c=relaxed/simple;
+	bh=5HPzgAdFormJXXqK8h/l25xPeBcHWohJ3hWfo3eavJc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e4bq2eWME6RpQXFuE/zZkX9PYHzWC7G44NXhL8HoPKLuzoP/z3FwK5KW1GGkTPRizu4UocL+44b2+xd3cWCRsZbCJUlFQfyqo6LxsBF5P2B0N1Gpk38vmoMTNPhegTV5N+41r9uP0Jme11melxSaOypeCY2qb+erY0U0ZTEm9SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rO6X22gY; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4601a471aecso45611cf.1
+        for <linux-parisc@vger.kernel.org>; Thu, 10 Oct 2024 12:05:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1728587153; x=1729191953; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/SQIULv3PuhYrubi1b4Lzr/jGOZjc/yeQb9Fnkxqp1k=;
+        b=rO6X22gYTxAMr2wmMn8kkKQwEpbmuQB9QIm95VKvMJwjIIzb4XpPgtJLXU2ZLU9EgH
+         w4j+iglDLGhietiKkyeCmokb7UJjWOdftKSN4IT4cA03gdHcGSPpbVN6e9p/n/PvTRip
+         V50jXZGYJJFmbygq0FtHXxbE6jQCjfkOknbnBvccVZc3FF9fqqKJAH436ndS2GxA5ckv
+         kmqLddiMuOqeaAhhn7zmaWuHpKTilOVkxs10iamn607JDG0XCg3xVBsZ93yUvfKsOpR2
+         dulNVEokzfjKFkEG/6qOrh09E6wwGymvpUPEDzLCusfWL6bdziWKD1qvdkq9rBb11/Qt
+         nt/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728587153; x=1729191953;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/SQIULv3PuhYrubi1b4Lzr/jGOZjc/yeQb9Fnkxqp1k=;
+        b=kRsO75bdSl4CxehvNQdsjEJfO3PK9OSmwfn2JU0lu0yHT53dFOcnh9GkgWoAsY1+Es
+         ryo2pAegNWDhJ3ZkhvbHl7d9axWHAvLA0y4SI8rmL+mhH0SiGzILnTv+OvcHCz8JsQEC
+         Ia1ZUWb8AiEYwEyh9potuZuWRnz8aEEWYXSDxRC4S2azb3yotx8hklURV7VdcUx5lk1Q
+         b2DH/Kl5Z3E6yM/R6N9QEsZ/YGYbWOGzabQ77F+Q0xVQkGqJ9bLQlH/XuOO/AwiVuIgd
+         Id3atCftNn+KVkOozlprMPMt7B6+1N4zTRGN1G2CoqkdGDSUpOVA2FserX8veiYyaTPV
+         dcEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWoPDr5u0qta1bWYK6Ku3Pr1MNP5u/5PNSPD/fvY4NshQPbjunU8cYzc18Tox00hbNLOPJiAMr8Q8q6sDI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywzp42Prk01m8LOxaY1NrX3Fzw7IcZUzmKTkv9nt/TRMf8Xrtdv
+	vJp0MBCcEuFwbsYs4nPL3u0OCyQ+VagiIpC60WhFhLPzwVkMoRfqL+CoMmpI5RI9j2isB2rzWOj
+	8UEvPYxv41UqP603IGX93AbDVU8eMzCQBwkkz
+X-Google-Smtp-Source: AGHT+IFXW31rsZ9kFmf+FJMtckOgDblc8qAc7+JIkHyyX3UPQEOm0e8exkrBalRYLEuVTVB8uGfh8R0/wFj2yt5Uk7U=
+X-Received: by 2002:a05:622a:4f8c:b0:45f:5cd:a617 with SMTP id
+ d75a77b69052e-4604b127c4cmr368761cf.9.1728587152864; Thu, 10 Oct 2024
+ 12:05:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: lba_pci: remove unused macro
-To: Ba Jing <bajing@cmss.chinamobile.com>,
- James.Bottomley@HansenPartnership.com
-Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241008072620.38663-1-bajing@cmss.chinamobile.com>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20241008072620.38663-1-bajing@cmss.chinamobile.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20240909054318.1809580-1-almasrymina@google.com>
+ <20240909054318.1809580-11-almasrymina@google.com> <Zwe3lWTN36IUaIdd@ly-workstation>
+In-Reply-To: <Zwe3lWTN36IUaIdd@ly-workstation>
+From: Mina Almasry <almasrymina@google.com>
+Date: Thu, 10 Oct 2024 12:05:38 -0700
+Message-ID: <CAHS8izPuEUA20BDXvwq2vW-24ez36YFJFMQok-oBDbgk6bajSA@mail.gmail.com>
+Subject: Re: [PATCH net-next v25 10/13] net: add SO_DEVMEM_DONTNEED setsockopt
+ to release RX frags
+To: "Lai, Yi" <yi1.lai@linux.intel.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, Donald Hunter <donald.hunter@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, 
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Steffen Klassert <steffen.klassert@secunet.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Magnus Karlsson <magnus.karlsson@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Jonathan Lemon <jonathan.lemon@gmail.com>, 
+	Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
+	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
+	Bagas Sanjaya <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Taehee Yoo <ap420073@gmail.com>, 
+	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>, yi1.lai@intel.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:cm0pGSajlpGC0fkhgAviBS7P39tqmUZAkSpr8PWGdVU19dDN4hN
- DiJ3018Vv5w6Sz8EDJNUameXUxKFS+a+5rHd1byptFF1wMHYGb5Fupek8j63H4Yh5C62vB1
- suYF5YOenDCkQkpJwiZ1D4LEcCJFWNg+yGhkwqm4m7LcDL5rGTnRRqxkUKR56E4O2PVuadX
- AIl/IeD3WaFptSF2Mwn8w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:dn6moj5KnQk=;1BaeYEJCI7zLiV7ncrSCdu59Izg
- 8p3+Sa6MPYXjvpZY+KirmWpcuipmTJthwNy9wVs93zHqyoRkWPt4IWZ7sqQ0bk5KAESFvYhtV
- kvt6slDr01M8AQ1wyIJ7rp0lguzeFYcgUcbgrfQvY1jt5irUbDfHlVPMxGg8jUuPuv0h+xUPt
- 4OXyF6j82iNxfGyD2Vo8HH9ANabdjhyf4jb8XBYFSGA5gyEwGv2rFsSOAhtGegjfFS8M7bd+i
- Oao46po33wBVLuEznZRNWPa+l0LC7SaIMU2DlSRYSPe9YIbAhVSAiPZfv/Ao6O+WVjqkJy1KP
- VuA+PFrejmQWaYSDf/EcUZeN4TqcMlALYgvkRM1BspJkse2tSYUsR0tEgps2blg2rEU+5P8F0
- AaBtonDR7tYddlIR1yAKb+93/5nvV89MI3GjqLBvNBjtPC6+P1hUj5mUzeJvyeg8Mpw8pugMe
- 0x6gyU4YXUD4fad/1ZylLYGgvzaHt/4BRzLj0kjDBCDpjFKJO2BKhlfevE9AiZbBLRv2/HJJC
- l7jN1Hcqps0P/H+JQn5edcAlKysvQWxMHf6BAfaQCMLdVm3I6VyvBDI31oOvhxGqzs9HCS6Fb
- CZ+Sz5ANFdJL+GGYGBgza/ox8cuZVrcE5PJiyFf0vZWoh9i0XyAkOo7XH6yoj1HLjYlwMnlP1
- 09MZUQRSV0ukjvY5tEB59CCEdp5jVbiZlLU+dT9Fi9LmF0PpKEG+qXo2KUTn9M9QkO1GjqIGm
- V48EWeIkpOJ1oz68QstR3w6yI8oABqpDuTMrhcI0iSlilfnVwbM9amOIxhW2kHurwKQIKAF2U
- f8+/VPYa9NGETSxpz8lu1wNQ==
 
-Hello Ba Jing,
-
-On 10/8/24 09:26, Ba Jing wrote:
-> By reading the code, I found the macro LBA_MASTER_ABORT_ERROR
-> is never referenced in the code. Just remove it.
-
-Thanks for your patch!
-
-Of course you are right and this macro/constant is currently
-unused, but it may become very useful when trying to debug this
-code. In that case it's good to know that value without need to
-look everything up again.
-
-So, as there is not much gain in dropping this constant I plan
-to keep it here and will not apply your patch.
-
-Similar for the other patch you sent.
-
-Anyway, thanks for spotting this. Maybe you find other more
-useful possible code optimizations.
-
-Helge
-
-
-> Signed-off-by: Ba Jing <bajing@cmss.chinamobile.com>
-> ---
->   drivers/parisc/lba_pci.c | 1 -
->   1 file changed, 1 deletion(-)
+On Thu, Oct 10, 2024 at 4:17=E2=80=AFAM Lai, Yi <yi1.lai@linux.intel.com> w=
+rote:
 >
-> diff --git a/drivers/parisc/lba_pci.c b/drivers/parisc/lba_pci.c
-> index 3fc3765fddaa..5990766b6561 100644
-> --- a/drivers/parisc/lba_pci.c
-> +++ b/drivers/parisc/lba_pci.c
-> @@ -277,7 +277,6 @@ static int lba_device_present(u8 bus, u8 dfn, struct=
- lba_device *d)
->    *		smart mode as well.
->    */
+> Hi Mina Almasry,
 >
-> -#define LBA_MASTER_ABORT_ERROR 0xc
->   #define LBA_FATAL_ERROR 0x10
+> Greetings!
 >
->   #define LBA_CFG_MASTER_ABORT_CHECK(d, base, tok, error) {		\
+> I used Syzkaller and found that there is BUG: soft lockup inqt in linux-n=
+ext tree next-20241008
+>
+> After bisection and the first bad commit is:
+> "
+> 678f6e28b5f6 net: add SO_DEVMEM_DONTNEED setsockopt to release RX frags
+> "
+>
+> All detailed into can be found at:
+> https://github.com/laifryiee/syzkaller_logs/tree/main/241009_103423_do_so=
+ck_setsockopt
+> Syzkaller repro code:
+> https://github.com/laifryiee/syzkaller_logs/tree/main/241009_103423_do_so=
+ck_setsockopt/repro.c
+> Syzkaller repro syscall steps:
+> https://github.com/laifryiee/syzkaller_logs/tree/main/241009_103423_do_so=
+ck_setsockopt/repro.prog
+> Syzkaller report:
+> https://github.com/laifryiee/syzkaller_logs/tree/main/241009_103423_do_so=
+ck_setsockopt/repro.report
+> Kconfig(make olddefconfig):
+> https://github.com/laifryiee/syzkaller_logs/tree/main/241009_103423_do_so=
+ck_setsockopt/kconfig_origin
+> Bisect info:
+> https://github.com/laifryiee/syzkaller_logs/tree/main/241009_103423_do_so=
+ck_setsockopt/bisect_info.log
+> bzImage:
+> https://github.com/laifryiee/syzkaller_logs/raw/refs/heads/main/241009_10=
+3423_do_sock_setsockopt/bzImage_8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b
+> Issue dmesg:
+> https://github.com/laifryiee/syzkaller_logs/blob/main/241009_103423_do_so=
+ck_setsockopt/8cf0b93919e13d1e8d4466eb4080a4c4d9d66d7b_dmesg.log
+>
+> "
+> [   48.825073]  ? __lock_acquire+0x1b0f/0x5c90
+> [   48.825419]  ? __pfx___lock_acquire+0x10/0x10
+> [   48.825774]  sock_setsockopt+0x68/0x90
+> [   48.826117]  do_sock_setsockopt+0x3fb/0x480
+> [   48.826455]  ? __pfx_do_sock_setsockopt+0x10/0x10
+> [   48.826829]  ? lock_release+0x441/0x870
+> [   48.827140]  ? __sanitizer_cov_trace_const_cmp4+0x1a/0x20
+> [   48.827558]  ? fdget+0x188/0x230
+> [   48.827846]  __sys_setsockopt+0x131/0x200
+> [   48.828184]  ? __pfx___sys_setsockopt+0x10/0x10
+> [   48.828551]  ? seqcount_lockdep_reader_access.constprop.0+0xc0/0xd0
+> [   48.829042]  ? __sanitizer_cov_trace_cmp4+0x1a/0x20
+> [   48.829425]  ? ktime_get_coarse_real_ts64+0xbf/0xf0
+> [   48.829817]  __x64_sys_setsockopt+0xc6/0x160
+> [   48.830160]  ? syscall_trace_enter+0x14a/0x230
+> [   48.830520]  x64_sys_call+0x6cf/0x20d0
+> [   48.830825]  do_syscall_64+0x6d/0x140
+> [   48.831124]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   48.831517] RIP: 0033:0x7f26cdc3ee5d
+> [   48.831804] Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 4=
+8 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <=
+48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 93 af 1b 00 f7 d8 64 89 01 48
+> [   48.833180] RSP: 002b:00007fff33f36278 EFLAGS: 00000213 ORIG_RAX: 0000=
+000000000036
+> [   48.833756] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f26c=
+dc3ee5d
+> [   48.834294] RDX: 0000000000000050 RSI: 0000000000000001 RDI: 000000000=
+0000003
+> [   48.834830] RBP: 00007fff33f36290 R08: 0000000000000010 R09: 00007fff3=
+3f36290
+> [   48.835368] R10: 0000000020000080 R11: 0000000000000213 R12: 00007fff3=
+3f363e8
+> [   48.835906] R13: 000000000040178f R14: 0000000000403e08 R15: 00007f26c=
+de51000
+> [   48.836466]  </TASK>
+> [   48.836648] Kernel panic - not syncing: softlockup: hung tasks
+> [   48.837096] CPU: 1 UID: 0 PID: 729 Comm: repro Tainted: G             =
+L     6.12.0-rc2-8cf0b93919e1 #1
+> [   48.837796] Tainted: [L]=3DSOFTLOCKUP
+> [   48.838071] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIO=
+S rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+> [   48.838916] Call Trace:
+> [   48.839113]  <IRQ>
+> [   48.839282]  dump_stack_lvl+0x42/0x150
+> [   48.839584]  dump_stack+0x19/0x20
+> [   48.839846]  panic+0x703/0x790
+> [   48.840100]  ? __pfx_panic+0x10/0x10
+> [   48.840394]  ? watchdog_timer_fn+0x599/0x6b0
+> [   48.840727]  ? watchdog_timer_fn+0x58c/0x6b0
+> [   48.841065]  watchdog_timer_fn+0x5aa/0x6b0
+> [   48.841382]  ? __pfx_watchdog_timer_fn+0x10/0x10
+> [   48.841743]  __hrtimer_run_queues+0x5d6/0xc30
+> [   48.842091]  ? __pfx___hrtimer_run_queues+0x10/0x10
+> [   48.842473]  hrtimer_interrupt+0x324/0x7a0
+> [   48.842802]  __sysvec_apic_timer_interrupt+0x10b/0x410
+> [   48.843198]  ? debug_smp_processor_id+0x20/0x30
+> [   48.843551]  sysvec_apic_timer_interrupt+0xaf/0xd0
+> [   48.843922]  </IRQ>
+> [   48.844101]  <TASK>
+> [   48.844275]  asm_sysvec_apic_timer_interrupt+0x1f/0x30
+> [   48.844711] RIP: 0010:__sanitizer_cov_trace_pc+0x45/0x70
+> [   48.845130] Code: a9 00 01 ff 00 74 1d f6 c4 01 74 43 a9 00 00 0f 00 7=
+5 3c a9 00 00 f0 00 75 35 8b 82 04 1e 00 00 85 c0 74 2b 8b 82 e0 1d 00 00 <=
+83> f8 02 75 20 48 8b 8a e8 1d 00 00 8b 92 e4 1d 00 00 48 8b 01 48
+> [   48.846480] RSP: 0018:ffff8880239cf790 EFLAGS: 00000246
+> [   48.846876] RAX: 0000000000000000 RBX: ffff8880239cf900 RCX: ffffffff8=
+581c19f
+> [   48.847407] RDX: ffff88801a818000 RSI: ffffffff8581c1d5 RDI: 000000000=
+0000007
+> [   48.847933] RBP: ffff8880239cf790 R08: 0000000000000001 R09: ffffed100=
+4739f23
+> [   48.848472] R10: 0000000077cc006e R11: 0000000000000001 R12: 000000000=
+0000000
+> [   48.849002] R13: 0000000077cc006e R14: ffff8880239cf918 R15: 000000000=
+0000000
+> [   48.849536]  ? xas_start+0x11f/0x730
+> [   48.849818]  ? xas_start+0x155/0x730
+> [   48.850101]  xas_start+0x155/0x730
+> [   48.850372]  xas_load+0x2f/0x520
+> [   48.850629]  ? irqentry_exit+0x3e/0xa0
+> [   48.850922]  ? sysvec_apic_timer_interrupt+0x6a/0xd0
+> [   48.851304]  xas_store+0x1165/0x1ad0
+> [   48.851588]  ? __this_cpu_preempt_check+0x21/0x30
+> [   48.851950]  ? irqentry_exit+0x3e/0xa0
+> [   48.852254]  __xa_erase+0xc6/0x180
+> [   48.852524]  ? __pfx___xa_erase+0x10/0x10
+> [   48.852842]  ? __xa_erase+0xf1/0x180
+> [   48.853123]  ? sock_devmem_dontneed+0x42c/0x6d0
+> [   48.853480]  sock_devmem_dontneed+0x3a8/0x6d0
+> [   48.853829]  ? __pfx_sock_devmem_dontneed+0x10/0x10
+> [   48.854205]  ? trace_lock_acquire+0x139/0x1b0
+> [   48.854548]  ? lock_acquire+0x80/0xb0
+> [   48.854833]  ? __might_fault+0xf1/0x1b0
+> [   48.855133]  ? __might_fault+0xf1/0x1b0
+> [   48.855437]  ? __sanitizer_cov_trace_const_cmp8+0x1c/0x30
+> [   48.855849]  sk_setsockopt+0x480/0x3c60
+> [   48.856158]  ? __pfx_sk_setsockopt+0x10/0x10
+> [   48.856491]  ? __kasan_check_read+0x15/0x20
+> [   48.856814]  ? __lock_acquire+0x1b0f/0x5c90
+> [   48.857144]  ? __pfx___lock_acquire+0x10/0x10
+> [   48.857488]  sock_setsockopt+0x68/0x90
+> [   48.857785]  do_sock_setsockopt+0x3fb/0x480
+> [   48.858110]  ? __pfx_do_sock_setsockopt+0x10/0x10
+> [   48.858474]  ? lock_release+0x441/0x870
+> [   48.858776]  ? __sanitizer_cov_trace_const_cmp4+0x1a/0x20
+> [   48.859184]  ? fdget+0x188/0x230
+> [   48.859448]  __sys_setsockopt+0x131/0x200
+> [   48.859764]  ? __pfx___sys_setsockopt+0x10/0x10
+> [   48.860123]  ? seqcount_lockdep_reader_access.constprop.0+0xc0/0xd0
+> [   48.860598]  ? __sanitizer_cov_trace_cmp4+0x1a/0x20
+> [   48.860982]  ? ktime_get_coarse_real_ts64+0xbf/0xf0
+> [   48.861370]  __x64_sys_setsockopt+0xc6/0x160
+> [   48.861710]  ? syscall_trace_enter+0x14a/0x230
+> [   48.862057]  x64_sys_call+0x6cf/0x20d0
+> [   48.862350]  do_syscall_64+0x6d/0x140
+> [   48.862639]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   48.863023] RIP: 0033:0x7f26cdc3ee5d
+> [   48.863301] Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 4=
+8 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <=
+48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 93 af 1b 00 f7 d8 64 89 01 48
+> [   48.864659] RSP: 002b:00007fff33f36278 EFLAGS: 00000213 ORIG_RAX: 0000=
+000000000036
+> [   48.865223] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f26c=
+dc3ee5d
+> "
+>
+> I hope you find it useful.
 
+Thank you for the report. I think I see the issue and I commented on
+the fix in the code below.
+
+Only issue is that this is unlucky timing for me. I have a flight
+tomorrow for a vacation where I think I may have internet access and
+may not. I will try to follow up here, but in case I can't, what's the
+urgency for this issue? Can this wait 2 weeks when I get back?
+
+> > +     if (optlen % sizeof(struct dmabuf_token) ||
+> > +         optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
+> > +             return -EINVAL;
+> > +
+> > +     tokens =3D kvmalloc_array(optlen, sizeof(*tokens), GFP_KERNEL);
+> > +     if (!tokens)
+> > +             return -ENOMEM;
+> > +
+
+There is an unrelated bug here. The first argument for kvmalloc_array
+is the number of elements, I think, not the number of bytes. So this
+should be:
+
+num_tokens =3D optlen / sizeof(struct dmabuf_token);
+tokens =3D kvmalloc_array(num_tokens, sizeof(*tokens), GFP_KERNEL);
+if (!tokens)
+   return -ENOMEM;
+
+> > +
+> > +     if (copy_from_sockptr(tokens, optval, optlen)) {
+> > +             kvfree(tokens);
+> > +             return -EFAULT;
+> > +     }
+> > +
+> > +     xa_lock_bh(&sk->sk_user_frags);
+> > +     for (i =3D 0; i < num_tokens; i++) {
+> > +             for (j =3D 0; j < tokens[i].token_count; j++) {
+
+The bug should be here. tokens[i].token_count is a u32 provided by the
+user. The user can specify U32_MAX here, which will make the loop
+below spin for a very long time with the lock held, which should be
+the cause of the soft lockup.
+
+We should add a check that token_count is < MAX_DONTNEED_TOKENS or
+something like that, above this line.
+
+Please let me know of urgency. If this can't wait I'll try very hard
+to repro the issue/fix while I'm out. Untested fix I'm going to try
+out:
+
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 083d438d8b6f..cb3d8b19de14 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1071,11 +1071,11 @@ sock_devmem_dontneed(struct sock *sk,
+sockptr_t optval, unsigned int optlen)
+            optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
+                return -EINVAL;
+
+-       tokens =3D kvmalloc_array(optlen, sizeof(*tokens), GFP_KERNEL);
++       num_tokens =3D optlen / sizeof(struct dmabuf_token);
++       tokens =3D kvmalloc_array(num_tokens, sizeof(*tokens), GFP_KERNEL);
+        if (!tokens)
+                return -ENOMEM;
+
+-       num_tokens =3D optlen / sizeof(struct dmabuf_token);
+        if (copy_from_sockptr(tokens, optval, optlen)) {
+                kvfree(tokens);
+                return -EFAULT;
+@@ -1083,6 +1083,10 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t
+optval, unsigned int optlen)
+
+        xa_lock_bh(&sk->sk_user_frags);
+        for (i =3D 0; i < num_tokens; i++) {
++
++               if (tokens[i].token_count > MAX_DONTNEED_TOKENS)
++                       continue;
++
+                for (j =3D 0; j < tokens[i].token_count; j++) {
+                        netmem_ref netmem =3D (__force netmem_ref)__xa_eras=
+e(
+                                &sk->sk_user_frags, tokens[i].token_start +=
+ j);
+
+--=20
+Thanks,
+Mina
 
