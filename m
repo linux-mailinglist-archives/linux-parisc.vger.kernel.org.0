@@ -1,104 +1,128 @@
-Return-Path: <linux-parisc+bounces-2657-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2658-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A6399855F
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Oct 2024 13:54:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB74B9986F7
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Oct 2024 15:01:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 314E41F21794
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Oct 2024 11:54:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4726B28836F
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Oct 2024 13:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEF61C245C;
-	Thu, 10 Oct 2024 11:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D81D1C8FD9;
+	Thu, 10 Oct 2024 13:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EWqPkI8I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i15xpEq/"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C861BE23D
-	for <linux-parisc@vger.kernel.org>; Thu, 10 Oct 2024 11:54:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E410F1C7B8F;
+	Thu, 10 Oct 2024 13:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728561281; cv=none; b=slkJLMxqaHMRAdAAjmm9yku/ttzwV7wB3VQLIqlxxR0UcR4qx0oKMDXZ0oJrCIHSmiN7tWLwHuKGwTz2gg2hjibLNoG5GdbuLZ/Y41DHG4gmfdsWhCfTv84WaWFoqLd3BIM1k+/2lNs6aUmgcVpNWKRk/luLlBEziLmBsfsAC9s=
+	t=1728565284; cv=none; b=DcyQ2lBwhdjZpkOtJ0PVBCmjCGD1FVEdtBoY+Vt9YOPmefsw6xtUGEpcUQcKlY/F1m1LCJ42gQTfWMLWkVo3ylensI4c5KES77YOTlZs/JBfFqhWp+FaARZRjeerXjRxiyenDdvjG8bSTRX6jYFCdXBg/b9QZ2geR0losu8w+RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728561281; c=relaxed/simple;
-	bh=AWSNiWMTsEs1ptZq/ehphP9FugqDgLn15xp2ZJmE22Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LJImdU69feVtNcnQdsvgK5aA22YGV6p3YAHzbOmiWSl1fzAXls7/7XQPHUm+WaaCZavMNG6wjSbT3Q/JXWjGiCkJfIPURnCspq2tzvKjwnJluUyLwFvIai8+d7ES9e4A+cOKj1hYIBgR8lK1pOW/2OOpIAXsm0EcO3eKuVjcrWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EWqPkI8I; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5c89f3f28b6so1076308a12.2
-        for <linux-parisc@vger.kernel.org>; Thu, 10 Oct 2024 04:54:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728561278; x=1729166078; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Sns7xsmeqPOQZ2N1m+ivw76fAsG/Ttx25YK//ondvE=;
-        b=EWqPkI8InjJuhC0h2qWlSXxJ0bn2IdMofIPQDKGaNZhACbI4q7MYx64eLjQLpD1ktv
-         u7Wca2hVMPqW5YZ0UGpoKwoZK+In9s1r5P7u4Cesbx5R7VgOlBZBOc9Im3u/5zpxy0EI
-         /WWweH49zc7TdiA+LIaytpFwtPe7783FtUNP7fLyTQYy2CiFKoLb18SvE8Wi0H7vrmHi
-         yW4qa+X4PbOth08v7Vo/w+auiMahA8ZmVqhf53SOhk2+iGz0AvrjOhp7QTeJNsjyvkA/
-         M3p9cKNxeFTKsMIC/+GjaD9sdjrpF5QZgbJ47VZc2LIvpC2X9PZAv8zbvQJiGJo56E1I
-         WBWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728561278; x=1729166078;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8Sns7xsmeqPOQZ2N1m+ivw76fAsG/Ttx25YK//ondvE=;
-        b=LczvUx3QFvw+KcSu6rumPECtow4RgnNmYrjiV7GmEfkRLlM786WJ1naBXCx+HsOvhk
-         BmA7wlo7vrcCLndMvbRFok7wG5JfciRJWTU4BggW/Nh+sfLVPVuckS57OMAxzD/dtf0u
-         DzFoCwxQY0pa+BjcQFlNRpNagVLfyhhD0mI6nBjTBfwDCKtwbRJgDi5lXoGV0gugB3/z
-         wONS/Ka/AvkNaXZ6AQ7W7I8jIt1YiAM11qAbMkIy6nFeYTB4ot42XgIADAwY0wtbkw/5
-         sJGbqZpazrSZEl71rsb7XNZLN5GtYrH3q87sfAPfsgAX1/4BxCVDUTGL82K3vzsU3Ww8
-         t2Fw==
-X-Forwarded-Encrypted: i=1; AJvYcCUppIzlkm3VOT0eGYc+bISI+zBwIOCeEN/TxAA8HNqNeEzSQzBVwsYPHFXCsjxeNGFDwbSZINADvVWCH/k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNQEo4BPbSINPhoDDiXDmxaaWRdUNGWXgYzQzCKiIEAHUpahgZ
-	9tL8uxt0eb43haLURl09BFP+aiX8OfQ66p6izrkXyL8G/TkIrnGWFYZhsqfgXEBm48bcyvz1NYu
-	35cAd4awxw5BzksY3h1wqg+l8vomf6AOqp1d4nQ==
-X-Google-Smtp-Source: AGHT+IHlzPdpIM+xZafDveyx5hFZBh1GFLt91YGTshVGwJuewegfJ0kE6/lX8niCegw6R1ub6TjBDm7VFgL5A3dgYr4=
-X-Received: by 2002:a05:6402:3513:b0:5c8:79fa:2e3e with SMTP id
- 4fb4d7f45d1cf-5c91d6fc258mr5034904a12.28.1728561278443; Thu, 10 Oct 2024
- 04:54:38 -0700 (PDT)
+	s=arc-20240116; t=1728565284; c=relaxed/simple;
+	bh=0gFND+MAHX6q3fPU9Dm7aa3AX+VkNdk2ZdK9663ePGM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rPeAz5Ni8C8daLh6FKYFhAMiYN0TD/1HqsU8wbKvJe0Z96mlV4S/cQ4aA9JGIWhDCQX+fFSmqLW1kHLjy1Cmhn4zUraIWN9+Brw1aE5Qxw1vW6bJpPnhVMnzUg/0rvwT+mhs8pNzO7S5K0Em/Lmvh+wR4pwb5oeMN9aCafu4rkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i15xpEq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F0EC4CEC5;
+	Thu, 10 Oct 2024 13:01:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728565283;
+	bh=0gFND+MAHX6q3fPU9Dm7aa3AX+VkNdk2ZdK9663ePGM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i15xpEq/kuFAv6DlXG15A1e80Zkeyfpm7KcH2z/4b7LHy0huNtJIfhTPl8l4m2Thz
+	 DrC+EerzAtj77QkSwvdLuoM9HsdVcSXAYblfY52ni7z3rWCwNvYecLnzzamyv05TxQ
+	 MvyRQw4iBhqZGVncP0l5I4u44ZK9GkUbVv2NjZJ1KmbX6KkRkPzCVKd/P5aEdD5W04
+	 r/juMpxct8TYbYtPQygo8mwFvlF95PkeOYNJV8aiyjpOL0HlbI0t0P6KYVnwxFYXRs
+	 bP4FdthxlHe3zfpEHTln3UXCWui5XHPdWaBkcJjwrkqkqBVwNb4EXbX5FI3Wx8W6oT
+	 ueyyZehAwF8+A==
+Date: Thu, 10 Oct 2024 15:57:33 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
+	Stafford Horne <shorne@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v5 7/8] execmem: add support for cache of large ROX pages
+Message-ID: <ZwfPPZrxHzQgYfx7@kernel.org>
+References: <20241009180816.83591-1-rppt@kernel.org>
+ <20241009180816.83591-8-rppt@kernel.org>
+ <Zwd7GRyBtCwiAv1v@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241009000453.315652-1-richard.henderson@linaro.org> <20241009000453.315652-20-richard.henderson@linaro.org>
-In-Reply-To: <20241009000453.315652-20-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 10 Oct 2024 12:54:27 +0100
-Message-ID: <CAFEAcA-azLR3SdjR6_+aJ0EkWW97mQukacHABHxWj+b7mQ0OxQ@mail.gmail.com>
-Subject: Re: [PATCH v3 19/20] target/arm: Implement TCGCPUOps.tlb_fill_align
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org, deller@kernel.org, alex.bennee@linaro.org, 
-	linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zwd7GRyBtCwiAv1v@infradead.org>
 
-On Wed, 9 Oct 2024 at 01:05, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> Fill in the tlb_fill_align hook.  Handle alignment not due to
-> memory type, since that's no longer handled by generic code.
-> Pass memop to get_phys_addr.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  target/arm/internals.h      |  6 ++---
->  target/arm/cpu.c            |  2 +-
->  target/arm/tcg/cpu-v7m.c    |  2 +-
->  target/arm/tcg/tlb_helper.c | 49 ++++++++++++++-----------------------
->  4 files changed, 24 insertions(+), 35 deletions(-)
->
+On Wed, Oct 09, 2024 at 11:58:33PM -0700, Christoph Hellwig wrote:
+> On Wed, Oct 09, 2024 at 09:08:15PM +0300, Mike Rapoport wrote:
+> >  /**
+> >   * struct execmem_info - architecture parameters for code allocations
+> > + * @fill_trapping_insns: set memory to contain instructions that will trap
+> >   * @ranges: array of parameter sets defining architecture specific
+> >   * parameters for executable memory allocations. The ranges that are not
+> >   * explicitly initialized by an architecture use parameters defined for
+> >   * @EXECMEM_DEFAULT.
+> >   */
+> >  struct execmem_info {
+> > +	void (*fill_trapping_insns)(void *ptr, size_t size, bool writable);
+> >  	struct execmem_range	ranges[EXECMEM_TYPE_MAX];
+> 
+> Why is the filler an indirect function call and not an architecture
+> hook?
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+The idea is to keep everything together and have execmem_info describe all
+that architecture needs. 
 
-thanks
--- PMM
+-- 
+Sincerely yours,
+Mike.
 
