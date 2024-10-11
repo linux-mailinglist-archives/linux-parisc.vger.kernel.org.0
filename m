@@ -1,134 +1,145 @@
-Return-Path: <linux-parisc+bounces-2674-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2675-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8D999A78D
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2024 17:27:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D05399A7E8
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2024 17:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 407E71F24FE7
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2024 15:27:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B222A283A80
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2024 15:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16776194AD7;
-	Fri, 11 Oct 2024 15:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400B95381E;
+	Fri, 11 Oct 2024 15:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I8L75zVt"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zmBV5uED"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32CF178372;
-	Fri, 11 Oct 2024 15:27:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA46C194C69
+	for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2024 15:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728660432; cv=none; b=PjIrseXp/GEemARWjszBYmEXkyHh2uKyTwJBBE8gVmAFP54qrRNfDG5mxsHu2nvNEiRu5zq7b9+czPjiQPXsfgluKd/o6tAdBD42ZEDN4qX0BbubHHtFzFP9h3KE+pki8EI/pk9/OjTd9l8VVguRDSnR1muLmli7wmg92ZN/rxs=
+	t=1728660992; cv=none; b=bf52vwbKFktdrPDeez6JphKgIHO7HqtIT1KZAssSkipd3nRaD8OOuRkpkWrsbCN49LvpSD9qgNVE1zqhrJ0LsZkQiCtrGNH+tzEFgsNuIj8bJPEobUYeMjJbdZeXMyzVzq+SGn10y0K43ya1Ii2vqI9lgm3fn6Eh1TGq1OTbD70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728660432; c=relaxed/simple;
-	bh=sGWntrz3wIyVB8alp9rpncuZ1V1KDuURy3H+JpEcM7M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CAa0u1VNwrXu4AWZKa13D8IITkTYNjEqaH/NVcKmmUp4I8fo5VYBtH0NIRHn8EulJiUcpFARmVHXVfHwDHiDR88PG4O+8ffdm77bO6mNkpm0Mvg3O88kRLeQp+F1jx60uFQgATfnAX4GBglRAvAZhLwNq+p6eV29V/43Jrk2lDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I8L75zVt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E81C4CEC7;
-	Fri, 11 Oct 2024 15:27:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728660431;
-	bh=sGWntrz3wIyVB8alp9rpncuZ1V1KDuURy3H+JpEcM7M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I8L75zVtrZx7w5SpRULZ/piL2MAHcg+XRpGLvOSuuaq79SJWN4Fma1eeimZ3TTbVB
-	 s3Tj07SktC4NyMlxdWrHxkP9B09QxKjTACbn46Lcb7EZmhdJiFuU6u5LM0LB+VOnwB
-	 ipxmM/V1tJE/lNo+oR0h67Z16lt34GSW47dbcRsA2Rcnm7hvFzitsQaVu0tDTBL7I1
-	 XrWK27pP7SdJ/JUMi4LEQxyVwYXTQYUn1hmQM2ozZex/gG6pI4W/jWyE7zsMYDHYlF
-	 b7b0dB6+vFHNuxfWZal17srhcGgebXOevLR69yA//3wjEvgTu0P9zbH1pTrGNR4W9m
-	 VsL6bpzNsWhgg==
-Date: Fri, 11 Oct 2024 08:27:07 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mina Almasry <almasrymina@google.com>
-Cc: "Lai, Yi" <yi1.lai@linux.intel.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, Donald Hunter
- <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jonathan
- Corbet <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
- <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge
- Deller <deller@gmx.de>, Andreas Larsson <andreas@gaisler.com>, Jesper
- Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, Masami
- Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Arnd Bergmann <arnd@arndb.de>, Steffen
- Klassert <steffen.klassert@secunet.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, Willem de
- Bruijn <willemdebruijn.kernel@gmail.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Magnus Karlsson <magnus.karlsson@intel.com>, Maciej
- Fijalkowski <maciej.fijalkowski@intel.com>, Jonathan Lemon
- <jonathan.lemon@gmail.com>, Shuah Khan <shuah@kernel.org>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, John
- Fastabend <john.fastabend@gmail.com>, Sumit Semwal
- <sumit.semwal@linaro.org>, Christian =?UTF-8?B?S8O2bmln?=
- <christian.koenig@amd.com>, Pavel Begunkov <asml.silence@gmail.com>, David
- Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, Yunsheng Lin
- <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, Harshitha
- Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi
- <pkaligineedi@google.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Christoph
- Hellwig <hch@infradead.org>, Nikolay Aleksandrov <razor@blackwall.org>,
- Taehee Yoo <ap420073@gmail.com>, Willem de Bruijn <willemb@google.com>,
- Kaiyuan Zhang <kaiyuanz@google.com>, yi1.lai@intel.com
-Subject: Re: [PATCH net-next v25 10/13] net: add SO_DEVMEM_DONTNEED
- setsockopt to release RX frags
-Message-ID: <20241011082707.5de66f15@kernel.org>
-In-Reply-To: <CAHS8izPuEUA20BDXvwq2vW-24ez36YFJFMQok-oBDbgk6bajSA@mail.gmail.com>
-References: <20240909054318.1809580-1-almasrymina@google.com>
-	<20240909054318.1809580-11-almasrymina@google.com>
-	<Zwe3lWTN36IUaIdd@ly-workstation>
-	<CAHS8izPuEUA20BDXvwq2vW-24ez36YFJFMQok-oBDbgk6bajSA@mail.gmail.com>
+	s=arc-20240116; t=1728660992; c=relaxed/simple;
+	bh=knpWUuMpnKtJFXqHlS4rZ8Sy20b2ERBRAcm2eAsnCZs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C19A/hEViygzCB0/2xV89DrBVylR8+b7HjA2OgRU3/O/Fe0UAEmwxXUNnC9UrDclhLLKwqbs0CEcpXcYU+eymGRwBUWGz+ecXOCcPaNqMfJs8t0gfA8MTt2FsGp7wJMc9HHgMqsQ6L7CGyjpRS52kldBJA4q4Vam3qop/r9Zdfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zmBV5uED; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5c94c4ad9d8so913450a12.2
+        for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2024 08:36:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1728660988; x=1729265788; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ooVvsEyGOT7aTjiUJiE2ewcH9FMS1o9c1z/caxuq/gc=;
+        b=zmBV5uEDKbfQBn2JQfLTUqPfXDJbuLFcXdTqeKr7rCbdJqroJPYloKl1uF98i61nBE
+         AsA0GbSPWyidUYzKj6PzI7DTkg/HK/y8CS0TdhFCUg+Hsv1eSHiXBNrO7kE8puws0Vbq
+         wNR/TBPw2TPaLCaU2gXIZuXd43WxOPGczPb78l7GJFJeEfuSpg57ksj39+/FqT2jsVKK
+         gATJ5zkxAyhhUtjcGepYBJnkWrY7/w1WCWKk1uk6p6YJepjSjDZs6aUlGHBktfaB877A
+         pdEHzIuF/kxxewezOSxD+p+c1iFce3bOVB+NTIO1JEBQuBgYGg0dv2ngPhWUuDaVSJls
+         EDAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728660988; x=1729265788;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ooVvsEyGOT7aTjiUJiE2ewcH9FMS1o9c1z/caxuq/gc=;
+        b=sPhaqVg8+jmggx/Q1fZtP7sgOIWBK+tKdRa28mdqXulbznZ2DxtDtXVDXKt5h29KGX
+         0emaiaNNyPdMXv/LXugFj42WeWZvBFwqVMbx6dph3sqgNaMGzYqzbFoit9h+WhfQSbO7
+         /58BoqJgZu/dVGD8ynFr4msih2gzCq2u00DTPIUV1lFiOkTxMqXZofHujjKAM6s64h6E
+         txJKvB8IWt8mOZx5AoFsEBczdmfwlwZtD37DQSxrPRM0QNndcZkC0XMY7qm2zAO+XcAK
+         8O5k998np7bsG50aWwTsbJ0ukpZ9KAc3pbi7wAHaSOLa7O6Ale3kIhYs1ZL4RwbeuZJJ
+         n5Ig==
+X-Forwarded-Encrypted: i=1; AJvYcCWbdQdkiPzis2AUWCzxQCXydL4plA35YHBDYujsXfTHYZGy0bRHSDHFz7+lhpdJ26RFFCM1og+ZkaAj2cE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRgTPPSg24nt1jt3GTX6+XrcB+Oq/zOmKu9AXMvjiZwMPgaJlA
+	hkvnybmvbm7404oYafc9cTWsFLSOyLAUa0mxDK32/c4f+kSI52CA8oRE6b01yhscavfrd5inRcY
+	KTHVV3Dqj4mdkivFxC3Jx7ce04Z1J5Uh6rkikHg==
+X-Google-Smtp-Source: AGHT+IEjAHVyDzsxyfA+hUYjmXreiKyNYIRlBTXDRhSDjaO8yGQi8i2TD7NUA9+tfGUqyCOuYQb/F3LOjlf9b49Eimc=
+X-Received: by 2002:a05:6402:2786:b0:5be:ee30:9948 with SMTP id
+ 4fb4d7f45d1cf-5c948ca2342mr2251965a12.8.1728660988058; Fri, 11 Oct 2024
+ 08:36:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20241009000453.315652-1-richard.henderson@linaro.org>
+ <20241009000453.315652-7-richard.henderson@linaro.org> <CAFEAcA-mSsFgjoBWi13dXqZUbys2N81YVXLD_ZfuuGo+Xfy-gQ@mail.gmail.com>
+ <b5bf5d17-2451-4d6e-9a4e-6fb4e94ad308@linaro.org>
+In-Reply-To: <b5bf5d17-2451-4d6e-9a4e-6fb4e94ad308@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 11 Oct 2024 16:36:16 +0100
+Message-ID: <CAFEAcA9brYu2trekf3=ztRkHOc2Lw24_L+eSpTJzaf=orVFv8g@mail.gmail.com>
+Subject: Re: [PATCH v3 06/20] accel/tcg: Use the alignment test in tlb_fill_align
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, deller@kernel.org, alex.bennee@linaro.org, 
+	linux-parisc@vger.kernel.org, qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 10 Oct 2024 12:05:38 -0700 Mina Almasry wrote:
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index 083d438d8b6f..cb3d8b19de14 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -1071,11 +1071,11 @@ sock_devmem_dontneed(struct sock *sk,
-> sockptr_t optval, unsigned int optlen)
->             optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
->                 return -EINVAL;
-> 
-> -       tokens = kvmalloc_array(optlen, sizeof(*tokens), GFP_KERNEL);
-> +       num_tokens = optlen / sizeof(struct dmabuf_token);
-> +       tokens = kvmalloc_array(num_tokens, sizeof(*tokens), GFP_KERNEL);
->         if (!tokens)
->                 return -ENOMEM;
-> 
-> -       num_tokens = optlen / sizeof(struct dmabuf_token);
->         if (copy_from_sockptr(tokens, optval, optlen)) {
->                 kvfree(tokens);
->                 return -EFAULT;
-> @@ -1083,6 +1083,10 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t
-> optval, unsigned int optlen)
-> 
->         xa_lock_bh(&sk->sk_user_frags);
->         for (i = 0; i < num_tokens; i++) {
-> +
-> +               if (tokens[i].token_count > MAX_DONTNEED_TOKENS)
-> +                       continue;
+On Fri, 11 Oct 2024 at 16:22, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> On 10/10/24 03:44, Peter Maydell wrote:
+> > On Wed, 9 Oct 2024 at 01:05, Richard Henderson
+> > <richard.henderson@linaro.org> wrote:
+> >>
+> >> When we have a tlb miss, defer the alignment check to
+> >> the new tlb_fill_align hook.  Move the existing alignment
+> >> check so that we only perform it with a tlb hit.
+> >>
+> >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> >
+> >
+> >> @@ -1754,8 +1767,8 @@ static bool mmu_lookup(CPUState *cpu, vaddr addr, MemOpIdx oi,
+> >>            * Lookup both pages, recognizing exceptions from either.  If the
+> >>            * second lookup potentially resized, refresh first CPUTLBEntryFull.
+> >>            */
+> >> -        mmu_lookup1(cpu, &l->page[0], l->mmu_idx, type, ra);
+> >> -        if (mmu_lookup1(cpu, &l->page[1], l->mmu_idx, type, ra)) {
+> >> +        mmu_lookup1(cpu, &l->page[0], l->memop, l->mmu_idx, type, ra);
+> >> +        if (mmu_lookup1(cpu, &l->page[1], 0, l->mmu_idx, type, ra)) {
+> >
+> > Is 0 the right thing here ? Given that alignment-requirements can
+> > differ per-page, what happens for the case of an unaligned access
+> > that crosses a page boundary where the first page is "memory that
+> > doesn't care about alignment" and the second page is "memory that
+> > does enforce alignment" ?
+>
+> I can't think of anything else that makes sense.  The access to the second page is
+> "aligned" in the sense that it begins at offset 0.
 
-For the real fix let's scan the tokens before we take the xa lock
-and return an error rather than silently skipping?
+Ah, yes, you don't get to see how unaligned the access
+is in the second mmu lookup.
 
->                 for (j = 0; j < tokens[i].token_count; j++) {
+> Anyway, alignment as a page property is unique to Arm and...
+>
+>
+> > For Arm this is moot, because an access that crosses a page
+> > boundary into something with different memory attributes is
+> > CONSTRAINED UNPREDICTABLE (per Arm ARM rev K.a B2.15.3), but
+> > maybe other architectures are less flexible.
+>
+> ... as you say.
+>
+> > Also, the comment does say "recognizing exceptions from either",
+> > and we aren't going to do that for alignment issues in page 2,
+> > so if we're OK with ignoring this we should update the comment.
+>
+> The second page can still raise page faults.  How would you re-word this?
 
+Mmm, so there's also the case of an unaligned access across the
+page boundary where page 1 is present and page 2 is not -- do
+we prioritize the alignment fault or the page fault? This
+patch will always prioritize the alignment fault. For Arm
+that's fine, as we architecturally should do the checks in
+that order.
+
+-- PMM
 
