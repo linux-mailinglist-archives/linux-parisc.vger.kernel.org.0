@@ -1,261 +1,166 @@
-Return-Path: <linux-parisc+bounces-2678-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2679-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDD599AADC
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2024 20:12:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2571A99ACD4
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2024 21:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3BE2B2416D
-	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2024 18:12:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A37FF281982
+	for <lists+linux-parisc@lfdr.de>; Fri, 11 Oct 2024 19:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B016D1C6F4D;
-	Fri, 11 Oct 2024 18:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9461D0795;
+	Fri, 11 Oct 2024 19:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="db04udrj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XjkjknEt"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99A21CB32E
-	for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2024 18:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCF61D048C
+	for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2024 19:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728670336; cv=none; b=tNZijG0ejLGfDU0uWOHw6A7kaVFOvakD+mPnppvoT4n0C5AVCtJSDQD0rsPbymeihVvRtoUKtyUvlWnGt4oaawvVMOq1E3fvhEcFPGkyW8bpMANZZfKU8/GT8sza84IEXwpSQAIqSIra8VNIvR+3vik8Yq1SpXYTUgaUlPvheNs=
+	t=1728675510; cv=none; b=i+21QWlW88rKmGHnubVVeFCPA7mm4652/MolV73Ne58APsfCbcKDLOY2eFPIM/1w0D3jbfXqU1FaBchIL27JTypx6HOFq/2DjUkMGTOZ5YofWP89SZw4r8P80dW6dJFEjNDBJzOLiYqFtDjUtgDuZ66ZAhqJbCaL1vSu94aPDWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728670336; c=relaxed/simple;
-	bh=r95hHR2I319NNh4LBWo+gWmOZQHDCJgPNbLKzRADYd4=;
+	s=arc-20240116; t=1728675510; c=relaxed/simple;
+	bh=lIT4MF3P08EUQ/ItxiJCyTg8JaALptzUPgWCabDCkKc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jf6VMXpcOuG1ae8Z4CFX4SQnh6AM1WqJh4nwO8YDdk4CRMhNuIlsfvX8Pc8ke1cjnlEnrrtKeVt36oqKxWtFIzFi7w121tYDZjbv7Z6B35fyz2vGyFv8MUUqN87pjvACOOmOf1E5G5mmn/rtFGlAORHPd+V7LcPjGy2h9g+lyDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=db04udrj; arc=none smtp.client-ip=209.85.167.42
+	 To:Cc:Content-Type; b=sEsjNUTjRY1OwRSfCd7W2VUKWu1ohhu506OBuAFyqOD2SuBd75aR3AYVSeiJ4NwwjJSU8QKalEFqpMxQu0Oh0mhfPRH0FVD9BW3w6/l3DlTeBiSkSq4YNxxOAhfDvrWi9R1l478b+PN25JmmajbXS0FhUoV+kCCeNg1x9x0elxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XjkjknEt; arc=none smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-539e19d8c41so2826e87.0
-        for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2024 11:12:14 -0700 (PDT)
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4601a471aecso35411cf.1
+        for <linux-parisc@vger.kernel.org>; Fri, 11 Oct 2024 12:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1728670333; x=1729275133; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1728675507; x=1729280307; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UUuCTwGEAieQUuHz9Si/8fQwhBeTxrZR6ij+65t6Jm8=;
-        b=db04udrjpQmgDQiyivjyJEAepsiIB951idjv00I5B55zlLVCcytCnYDuSY+5MFI6+G
-         jWzeh0QQbehoerjomKIJPa7Oo7oVqNL+XblI1IODEQzY/Ku8U5yYgB4QSG33uTr9V2Kj
-         VWzJHTABI5iF/FUyF3PbHQI68gA4soJgV9pc+yZGImt+cMR12X9pDyP9wlsW2GsaLkpX
-         NtNg+GsDIRYiu6mcDiG1bdYqvujafeQLj4lfVgZ7DIo9KFuOKsb7dKS18IvBLpekZnor
-         cVSNn0x4trxgL3quErNxMb17WTIntKONnUpFFP9txBVYU4plfGmBOcfV9AFBOcuZkAAD
-         gW3A==
+        bh=f4/PPqatSk2BAD8kUIT/38Gyd1BY7fTrP7ap/2S9Mqk=;
+        b=XjkjknEt5tftq70KCGlTHLD1Bh2BPjVE2PxpnBWMyyvy0Sp3gh+Ou2AGHu9p3dWutG
+         Ly3++jhiM30xrysorDSmgJ1/CrEZtf6ayIU3Zmwx3Vb8IUgL3FRRSfyF9Uq+Uzbj3vUN
+         u/bUYraAbm5jodAmY4pqow/Khq+dr2J2OnWFkAw+h8J7APJ1G+1llNpGccZsVYLd3rvD
+         +QBQRdyuhuBJG6aMG9ikacbC88xyvg5Opx9d5h6aw4PuP1rE87zMIrrAmpxqP3AFOGuK
+         ExS8+5YeQleDH4F25vvvICWGh0gbjOcW75+6kisVvnRm7+3uDYn2SyaicjpmO643m7Cu
+         Y50g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728670333; x=1729275133;
+        d=1e100.net; s=20230601; t=1728675507; x=1729280307;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UUuCTwGEAieQUuHz9Si/8fQwhBeTxrZR6ij+65t6Jm8=;
-        b=C8B9rZG3Za75JOv3AKvZduntdF9hRQlhQk9W+0EHXx8ZybsRSCqhobFH7dEbnuzJ6A
-         ojM7yymmDB3AYb8Ep+2pHE0h69aGPnMB6vfhmbiMV5eqG5O2y9V21dSZojFkiszmYcxL
-         hH3DNSHjH4gPUbBJumJCZys97+FzutFNzulVv+wrRP9W3oa0nsKS+iFy+bvrGuFeY8X5
-         ZYw3TBhQO/RVwAcMxM07s3OIty7I50niN7Ous78pmlkwXwAf4POh0d1l03c1PexP2rqD
-         fmEDYksrL86r17ECSN/CvNRm9CBtbY8+hBEDVmWyFPkcpxnRJ4inBbUZ4flMb6nIdHeQ
-         Xjhg==
-X-Forwarded-Encrypted: i=1; AJvYcCW10Xam94a1pXHgu0ehgD2G6LSvd5lyat0PVcfHfHKUuQErbSqbcaDYZso446xaDHTBfQLH0x7h+3lYwII=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynZigZ6XxVPSXS2HzP6WWtwacN6qBoQVzQIgg+M95tXxY1RpKc
-	09Um7w09r+jb+vFsnbWOCDDEh8+MNRxf7+6RMhoAo5F/i2sB8XX+zhfKNxv3szoYJHEbRu8ashK
-	RZbQ5nT463QXGn3LYbco/xXw4HkpdluIZI0s2
-X-Google-Smtp-Source: AGHT+IGfIw5en7nMNwXR8WTMmoC6i/mmCdwod1VBWf2nU/vOj3kNQZOC5eep3RZM27n5ERgdi0RUSIce8GRDKg8cVxc=
-X-Received: by 2002:a05:6512:1154:b0:533:4620:ebe6 with SMTP id
- 2adb3069b0e04-539e5f9e005mr23838e87.4.1728670332348; Fri, 11 Oct 2024
- 11:12:12 -0700 (PDT)
+        bh=f4/PPqatSk2BAD8kUIT/38Gyd1BY7fTrP7ap/2S9Mqk=;
+        b=KWfFXQYH/RWw7+Pk2XVVNEw6n7sx1jG0Q/cAozxzuRx4jZR/HvUVIKBsaxWLLFiADA
+         Wm8CI9rQuAgqfhDX5pojDQI8mk4qpMGNFMqOYUbT80mENg3e6HhAdAlYK5WMBefcuZa8
+         7zbtKB26cSD37d9V0K1dhrWCDw4Vf5763GkacFAKj6RxrIteNCyyLrkWChmRcCk+hUBy
+         wIDVYfkI0PfIRAIBBKTKCDPwoIs1CsnMgoEb0exW90ZamnuUBkd3uPM6jqWgOt89Idok
+         UqhILry2voVML/VaTcfHRIACikRXFHt1oKL9JsaBSvMnKKZZ1WO2Shwai1wGd1E8m0UP
+         zAOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVBXTQtqmlttUi46H0uAKWRllBZCMyfc80ojgkz5qkbq6VphTYMdfh3DEeEYH0Y/sqO2iE7TmtCSn4/Yok=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzl916wWhMPZee28CbScVKP0WetXzHvpyKhnErg7wuOhTA0nEUI
+	qT8CSMvPb9rU6S68ekTz5M5KgmpyuUY6/jbHainXTpMv4StcHkJJpVc9bbC2HLfjHVHrC4rPcLa
+	ZKcjvT8iSfbOXXi/BZNvUoip4rwt/uPOB1FbB
+X-Google-Smtp-Source: AGHT+IEJvq2uzdDh3W2Sfu5aWaK5xhLaKiCn2xWH/iIRkxgpB4FklAs+UX9kaTQ1TkS7P0dLyhTRAOjn/li4z+5WdqQ=
+X-Received: by 2002:a05:622a:468c:b0:45c:9eab:cce0 with SMTP id
+ d75a77b69052e-46059046571mr529141cf.15.1728675507274; Fri, 11 Oct 2024
+ 12:38:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1727440966.git.lorenzo.stoakes@oracle.com> <a578ee9bb656234d3a19bf9e97c3012378d31a19.1727440966.git.lorenzo.stoakes@oracle.com>
-In-Reply-To: <a578ee9bb656234d3a19bf9e97c3012378d31a19.1727440966.git.lorenzo.stoakes@oracle.com>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 11 Oct 2024 20:11:36 +0200
-Message-ID: <CAG48ez3ursoL-f=mYpV79Do18XPPt+MPPHNUBv6uFE1GhpOwSA@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/4] mm: madvise: implement lightweight guard page mechanism
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Matthew Wilcox <willy@infradead.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Paul E . McKenney" <paulmck@kernel.org>, 
-	David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Muchun Song <muchun.song@linux.dev>, Richard Henderson <richard.henderson@linaro.org>, 
+References: <20240909054318.1809580-1-almasrymina@google.com>
+ <20240909054318.1809580-11-almasrymina@google.com> <Zwe3lWTN36IUaIdd@ly-workstation>
+ <CAHS8izPuEUA20BDXvwq2vW-24ez36YFJFMQok-oBDbgk6bajSA@mail.gmail.com> <20241011082707.5de66f15@kernel.org>
+In-Reply-To: <20241011082707.5de66f15@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 11 Oct 2024 12:38:14 -0700
+Message-ID: <CAHS8izMVjfrYopPpmg4dN33VL7bF-icS=HFDPOhmW96rgthErg@mail.gmail.com>
+Subject: Re: [PATCH net-next v25 10/13] net: add SO_DEVMEM_DONTNEED setsockopt
+ to release RX frags
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "Lai, Yi" <yi1.lai@linux.intel.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	Donald Hunter <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Richard Henderson <richard.henderson@linaro.org>, 
 	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linux-arch@vger.kernel.org, 
-	Shuah Khan <shuah@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kselftest@vger.kernel.org, 
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>, Vlastimil Babka <vbabka@suze.cz>
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Andreas Larsson <andreas@gaisler.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Steffen Klassert <steffen.klassert@secunet.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, David Ahern <dsahern@kernel.org>, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Magnus Karlsson <magnus.karlsson@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Jonathan Lemon <jonathan.lemon@gmail.com>, 
+	Shuah Khan <shuah@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Yunsheng Lin <linyunsheng@huawei.com>, Shailend Chand <shailend@google.com>, 
+	Harshitha Ramamurthy <hramamurthy@google.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
+	Bagas Sanjaya <bagasdotme@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Taehee Yoo <ap420073@gmail.com>, 
+	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>, yi1.lai@intel.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 27, 2024 at 2:51=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
-> Implement a new lightweight guard page feature, that is regions of userla=
-nd
-> virtual memory that, when accessed, cause a fatal signal to arise.
-[...]
-> ---
->  arch/alpha/include/uapi/asm/mman.h     |   3 +
->  arch/mips/include/uapi/asm/mman.h      |   3 +
->  arch/parisc/include/uapi/asm/mman.h    |   3 +
->  arch/xtensa/include/uapi/asm/mman.h    |   3 +
->  include/uapi/asm-generic/mman-common.h |   3 +
+On Fri, Oct 11, 2024 at 8:27=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Thu, 10 Oct 2024 12:05:38 -0700 Mina Almasry wrote:
+> > diff --git a/net/core/sock.c b/net/core/sock.c
+> > index 083d438d8b6f..cb3d8b19de14 100644
+> > --- a/net/core/sock.c
+> > +++ b/net/core/sock.c
+> > @@ -1071,11 +1071,11 @@ sock_devmem_dontneed(struct sock *sk,
+> > sockptr_t optval, unsigned int optlen)
+> >             optlen > sizeof(*tokens) * MAX_DONTNEED_TOKENS)
+> >                 return -EINVAL;
+> >
+> > -       tokens =3D kvmalloc_array(optlen, sizeof(*tokens), GFP_KERNEL);
+> > +       num_tokens =3D optlen / sizeof(struct dmabuf_token);
+> > +       tokens =3D kvmalloc_array(num_tokens, sizeof(*tokens), GFP_KERN=
+EL);
+> >         if (!tokens)
+> >                 return -ENOMEM;
+> >
+> > -       num_tokens =3D optlen / sizeof(struct dmabuf_token);
+> >         if (copy_from_sockptr(tokens, optval, optlen)) {
+> >                 kvfree(tokens);
+> >                 return -EFAULT;
+> > @@ -1083,6 +1083,10 @@ sock_devmem_dontneed(struct sock *sk, sockptr_t
+> > optval, unsigned int optlen)
+> >
+> >         xa_lock_bh(&sk->sk_user_frags);
+> >         for (i =3D 0; i < num_tokens; i++) {
+> > +
+> > +               if (tokens[i].token_count > MAX_DONTNEED_TOKENS)
+> > +                       continue;
+>
+> For the real fix let's scan the tokens before we take the xa lock
+> and return an error rather than silently skipping?
+>
+> >                 for (j =3D 0; j < tokens[i].token_count; j++) {
+>
 
-I kinda wonder if we could start moving the parts of those headers
-that are the same for all architectures to include/uapi/linux/mman.h
-instead... but that's maybe out of scope for this series.
+Yes, sorry, I called the diff above an 'untested fix' but it was more
+of a hack to see if I got the root cause right. For a proper fix, we
+should do exactly that. Scan and see how many tokens the user is
+asking us to free ahead of time, then exit early if it's too much
+before we acquire locks and loop. Will do!
 
-[...]
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index e871a72a6c32..7216e10723ae 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -60,6 +60,7 @@ static int madvise_need_mmap_write(int behavior)
->         case MADV_POPULATE_READ:
->         case MADV_POPULATE_WRITE:
->         case MADV_COLLAPSE:
-> +       case MADV_GUARD_UNPOISON: /* Only poisoning needs a write lock. *=
-/
-
-What does poisoning need a write lock for? anon_vma_prepare() doesn't
-need it (it only needs mmap_lock held for reading),
-zap_page_range_single() doesn't need it, and pagewalk also doesn't
-need it as long as the range being walked is covered by a VMA, which
-it is...
-
-I see you set PGWALK_WRLOCK in guard_poison_walk_ops with a comment
-saying "We might need to install an anon_vma" - is that referring to
-an older version of the patch where the anon_vma_prepare() call was
-inside the pagewalk callback or something like that? Either way,
-anon_vma_prepare() doesn't need write locks (it can't, it has to work
-from the page fault handling path).
-
->                 return 0;
->         default:
->                 /* be safe, default to 1. list exceptions explicitly */
-[...]
-> +static long madvise_guard_poison(struct vm_area_struct *vma,
-> +                                struct vm_area_struct **prev,
-> +                                unsigned long start, unsigned long end)
-> +{
-> +       long err;
-> +       bool retried =3D false;
-> +
-> +       *prev =3D vma;
-> +       if (!is_valid_guard_vma(vma, /* allow_locked =3D */false))
-> +               return -EINVAL;
-> +
-> +       /*
-> +        * Optimistically try to install the guard poison pages first. If=
- any
-> +        * non-guard pages are encountered, give up and zap the range bef=
-ore
-> +        * trying again.
-> +        */
-> +       while (true) {
-> +               unsigned long num_installed =3D 0;
-> +
-> +               /* Returns < 0 on error, =3D=3D 0 if success, > 0 if zap =
-needed. */
-> +               err =3D walk_page_range_mm(vma->vm_mm, start, end,
-> +                                        &guard_poison_walk_ops,
-> +                                        &num_installed);
-> +               /*
-> +                * If we install poison markers, then the range is no lon=
-ger
-> +                * empty from a page table perspective and therefore it's
-> +                * appropriate to have an anon_vma.
-> +                *
-> +                * This ensures that on fork, we copy page tables correct=
-ly.
-> +                */
-> +               if (err >=3D 0 && num_installed > 0) {
-> +                       int err_anon =3D anon_vma_prepare(vma);
-
-I'd move this up, to before we create poison PTEs. There's no harm in
-attaching an anon_vma to the VMA even if the rest of the operation
-fails; and I think it would be weird to have error paths that don't
-attach an anon_vma even though they .
-
-> +                       if (err_anon)
-> +                               err =3D err_anon;
-> +               }
-> +
-> +               if (err <=3D 0)
-> +                       return err;
-> +
-> +               if (!retried)
-> +                       /*
-> +                        * OK some of the range have non-guard pages mapp=
-ed, zap
-> +                        * them. This leaves existing guard pages in plac=
-e.
-> +                        */
-> +                       zap_page_range_single(vma, start, end - start, NU=
-LL);
-> +               else
-> +                       /*
-> +                        * If we reach here, then there is a racing fault=
- that
-> +                        * has populated the PTE after we zapped. Give up=
- and
-> +                        * let the user know to try again.
-> +                        */
-> +                       return -EAGAIN;
-
-Hmm, yeah, it would be nice if we could avoid telling userspace to
-loop on -EAGAIN but I guess we don't have any particularly good
-options here? Well, we could bail out with -EINTR if a (fatal?) signal
-is pending and otherwise keep looping... if we'd tell userspace "try
-again on -EAGAIN", we might as well do that in the kernel...
-
-(Personally I would put curly braces around these branches because
-they occupy multiple lines, though the coding style doesn't explicitly
-say that, so I guess maybe it's a matter of personal preference...
-adding curly braces here would match what is done, for example, in
-relocate_vma_down().)
-
-> +               retried =3D true;
-> +       }
-> +}
-> +
-> +static int guard_unpoison_pte_entry(pte_t *pte, unsigned long addr,
-> +                                   unsigned long next, struct mm_walk *w=
-alk)
-> +{
-> +       pte_t ptent =3D ptep_get(pte);
-> +
-> +       if (is_guard_pte_marker(ptent)) {
-> +               /* Simply clear the PTE marker. */
-> +               pte_clear_not_present_full(walk->mm, addr, pte, true);
-
-I think that last parameter probably should be "false"? The sparc code
-calls it "fullmm", which is a term the MM code uses when talking about
-operations that remove all mappings in the entire mm_struct because
-the process has died, which allows using some faster special-case
-version of TLB shootdown or something along those lines.
-
-> +               update_mmu_cache(walk->vma, addr, pte);
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static const struct mm_walk_ops guard_unpoison_walk_ops =3D {
-> +       .pte_entry              =3D guard_unpoison_pte_entry,
-> +       .walk_lock              =3D PGWALK_RDLOCK,
-> +};
-
-It is a _little_ weird that unpoisoning creates page tables when they
-don't already exist, which will also prevent creating THP entries on
-fault in such areas afterwards... but I guess it doesn't really matter
-given that poisoning has that effect, too, and you probably usually
-won't call MADV_GUARD_UNPOISON on an area that hasn't been poisoned
-before... so I guess this is not an actionable comment.
+--=20
+Thanks,
+Mina
 
