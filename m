@@ -1,78 +1,136 @@
-Return-Path: <linux-parisc+bounces-2699-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2700-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7747D99D6E6
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Oct 2024 21:00:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8732299D721
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Oct 2024 21:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25FC5283FB1
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Oct 2024 19:00:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF3761F239F8
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Oct 2024 19:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE171CACE9;
-	Mon, 14 Oct 2024 19:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908EB1CB53A;
+	Mon, 14 Oct 2024 19:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TRi4lSTp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EjG/5WZA"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24A81C876F;
-	Mon, 14 Oct 2024 19:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6202F34;
+	Mon, 14 Oct 2024 19:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728932404; cv=none; b=dKNZa07E66INaxn9S+Y717gWN20N9jV7DBv/G5KI/BggyxJHQygm+1PuR6oGQVN36OyesrwXn+Tt5LG8IM1eWDded9+Cd0vdjXAfAwN+Y3iEDgFrgMDG/RJzHD4KyvwjOt0M9HfXBa4BvBoiDLYPZI/7/ddNFrbGaVAdBxAXPCs=
+	t=1728933384; cv=none; b=cegl1BPXxppRW+41dCHi4URIL/7h7UWCtx3dEusPGgu0lK5uOtYsd0vXEv3SYq196pZc5UYYUX35xTCZqi1loe6+uq5C973RpUhkwpidnsd7NpT+22gAbmg+NeWHv9SA81S+W3TJukmRz1uOwnJ3pEjJ00CgH+KEyX2H8hRQ7wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728932404; c=relaxed/simple;
-	bh=8hvrdxu8RGfaKAbqDPtekYUWxLzhBHuc4+/i36zmOjQ=;
-	h=From:Date:MIME-Version:Content-Type:To:Message-ID:In-Reply-To:
-	 References:Subject; b=G+D0VZW6Nv0PA7rYpNHXXEn6trYIISrlQPMP9xyMS38YcXNVi/Ex2B2OwSEOC2hy/MKR+SKMQI2WNV24iaclkY5P7OEVI1dctMU4SbNeMn4aVSmZjeQ+ciGSt4ohGcdhrnU05UphfV7qmRrlV9pIBfuSuKcQFvbtO+1u03Ee3WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TRi4lSTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4D0C4CEC3;
-	Mon, 14 Oct 2024 19:00:04 +0000 (UTC)
+	s=arc-20240116; t=1728933384; c=relaxed/simple;
+	bh=UuppSLaM0kOzMrDSh2RloHR9IgCcKKb57FBSLEkEUWY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FFCOuTgz8sD7Ed/Kud9QCetDjIUNalCJp7fx5uHw1Lmy9rz4nHQDEuyQ/Js8mUYGIu7NDMob76aKmnNJiOi2L4O9SXpk56EaNsy0we+WKWwieq1Sco/q44kKRl8QMxa9zBx62PKRSDUFlxYPAUQCHyOzRrL463Nm1OvZadSbpoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EjG/5WZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC60C4CEC3;
+	Mon, 14 Oct 2024 19:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728932404;
-	bh=8hvrdxu8RGfaKAbqDPtekYUWxLzhBHuc4+/i36zmOjQ=;
-	h=From:Date:To:In-Reply-To:References:Subject:From;
-	b=TRi4lSTpxe4wvFUIbJTBM/61Jdj5z7J1AyNLhUHduQKHTcFLSSM8NvweVP+19eUGw
-	 Xg18arKbQrtIqzQRVHMepaxpLjkGjSRYyQK+cQ4x8XKCptt5Kjyf5QgIcDpY8sslIs
-	 6EKsNpa/7WxpeC8Kozoq+abZ5sQJ/kUeMU+5au9r8G1TfSEl80ETK3mbfa2ncmvlEa
-	 HHzBgJW/LlX342YQzqOXb1oE/Qyo6YMYWhwNj1mYXPoUP1/5Ower7EEkP5qBMsiwWu
-	 sUpfZQkzT56LbvTbeS7Hd0JsxO6j75LRJDcpb0y9lOCFoGXEOFwXvE0gbTV0UmMuML
-	 m2D1sBDQiHULQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7A9653822E4C;
-	Mon, 14 Oct 2024 19:00:10 +0000 (UTC)
-From: Helge Deller via Bugspray Bot <bugbot@kernel.org>
-Date: Mon, 14 Oct 2024 19:00:11 +0000
+	s=k20201202; t=1728933383;
+	bh=UuppSLaM0kOzMrDSh2RloHR9IgCcKKb57FBSLEkEUWY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EjG/5WZADaXhvwARHnqKg67eiuXX7gTWxPoitBNELLTxxDNviuMSsmlu/en6P6ED8
+	 zpJ52uHjqiz/g2IcIGwuziTngHnAXDzicRERzVAAIDP4l2L6y33KAuyIagMcpMXzl4
+	 9dBRK2tjgLlrX3Ons9R5vBST3i3yiewblKFLfAI64WB5+23Fn5KkJljDLeTWRKDZ84
+	 jnexNcW9vYFK3px9crwCiVYgH/8ctiyb/DdHjxU96pqWdOL1lwHrwqpz6qzLtvvsU8
+	 7pmIeyrMmskmV1mcXKss65BVVX6VBxafQdYx2gdNsA2KwzhcBEiTj2VcG0YSmjPMmN
+	 oCmkdGtrERExg==
+Date: Mon, 14 Oct 2024 12:16:20 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Christoph Hellwig <hch@infradead.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
+	Stafford Horne <shorne@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v5 7/8] execmem: add support for cache of large ROX pages
+Message-ID: <Zw1uBBcG-jAgxF_t@bombadil.infradead.org>
+References: <20241009180816.83591-1-rppt@kernel.org>
+ <20241009180816.83591-8-rppt@kernel.org>
+ <Zwd7GRyBtCwiAv1v@infradead.org>
+ <ZwfPPZrxHzQgYfx7@kernel.org>
+ <ZwjXz0dz-RldVNx0@infradead.org>
+ <ZwuIPZkjX0CfzhjS@kernel.org>
+ <20241013202626.81f430a16750af0d2f40d683@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-To: linux-parisc@vger.kernel.org, bugs@lists.linux.dev, deller@gmx.de, 
- James.Bottomley@HansenPartnership.com
-Message-ID: <20241014-b219339c7-43930f42ff48@bugzilla.kernel.org>
-In-Reply-To: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
-References: <20241001-b219339c0-15109b153aef@bugzilla.kernel.org>
-Subject: Re: calling getcpu with misaligned address causes kernel panic
-X-Bugzilla-Product: Linux
-X-Bugzilla-Component: Kernel
-X-Mailer: bugspray 0.1-dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241013202626.81f430a16750af0d2f40d683@linux-foundation.org>
 
-Helge Deller writes via Kernel.org Bugzilla:
+On Sun, Oct 13, 2024 at 08:26:26PM -0700, Andrew Morton wrote:
+> On Sun, 13 Oct 2024 11:43:41 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+> 
+> > > > The idea is to keep everything together and have execmem_info describe all
+> > > > that architecture needs. 
+> > > 
+> > > But why?  That's pretty different from our normal style of arch hooks,
+> > > and introduces an indirect call in a security sensitive area.
+> > 
+> > Will change to __weak hook. 
+> > 
+> 
+> Thanks, I'll drop the v1 series;
+> 
+> The todos which I collected are:
+> 
+> https://lkml.kernel.org/r/CAPhsuW66etfdU3Fvk0KsELXcgWD6_TkBFjJ-BTHQu5OejDsP2w@mail.gmail.com
+> https://lkml.kernel.org/r/Zwd6vH0rz0PVedLI@infradead.org
+> https://lkml.kernel.org/r/ZwjXz0dz-RldVNx0@infradead.org
+> https://lkml.kernel.org/r/202410111408.8fe6f604-lkp@intel.com
 
-This is now fixed in git head of qemu and can be closed:
-https://gitlab.com/qemu-project/qemu/-/commit/99746de61262fd5cf80eacfdb513e8d40e9107e8
+BTW Andrew I'd like to pick this up through the modules tree, and while
+at it, also beat it up with some more testing as we're expanding also
+with the modversions stuff for Rust modules.
 
-View: https://bugzilla.kernel.org/show_bug.cgi?id=219339#c7
-You can reply to this message to join the discussion.
--- 
-Deet-doot-dot, I am a bot.
-Kernel.org Bugzilla (bugspray 0.1-dev)
-
+  Luis
 
