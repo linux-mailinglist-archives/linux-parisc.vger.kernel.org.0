@@ -1,221 +1,249 @@
-Return-Path: <linux-parisc+bounces-2704-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2705-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BED99D8AD
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Oct 2024 22:57:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7B799DC8C
+	for <lists+linux-parisc@lfdr.de>; Tue, 15 Oct 2024 05:04:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56270282833
-	for <lists+linux-parisc@lfdr.de>; Mon, 14 Oct 2024 20:57:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B36C1F23574
+	for <lists+linux-parisc@lfdr.de>; Tue, 15 Oct 2024 03:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272944C7C;
-	Mon, 14 Oct 2024 20:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CDF16F0EC;
+	Tue, 15 Oct 2024 03:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="VzgGzGq7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Him/c0js"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C196231C92
-	for <linux-parisc@vger.kernel.org>; Mon, 14 Oct 2024 20:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A95916E86F
+	for <linux-parisc@vger.kernel.org>; Tue, 15 Oct 2024 03:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728939428; cv=none; b=Y+EIQbTMzgBv5ypZs+aco7PClUt/afgjIisBimnqucG7wXvH2WkvnKKoNSfC1eKkbTlqAPgFtcXH9QSw/bvBB3TxpeR8BqoF269tGYTKdnEnm6UXF5R5+eJQgLzIEBmZjCsSrCv65KAHfsPkaXd5FkMul56zf4Y0qwbwNeExW2k=
+	t=1728961477; cv=none; b=CecZBlEadvftkaku9pJH22VUzbuW8a1+F7778rxHc8Gdp3vX3RX6mADGNmZuOBH+rVWrVWDw3GKzwsGGikwJNgZ4hKi2V8lZU9+/mJC35WhAMi735b0G+yXsn4rAcXn/bxO6YsmmEAFe0ffXpOVklc0umpE2QfKHkOeYXPlD0PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728939428; c=relaxed/simple;
-	bh=1IS5WStXW+9ROWK4ZahAAXaNIotvoGgkJGCrFbwyngw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=X1z1P2RGbnbqk7PV4QaYoif9oWWtQE1dU7VBxmIyh66O3banZbtMESlSYap3vItP5hvXLOZVSi773rj9099CRu2WK6UpCoDXFRKkBC7jQgU1jJUYN95/gKMBIb7cP+RLCYF8WwoLfBXNuut6koBaRzSFQeJjGFs7uULpGchbuYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=VzgGzGq7; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1728939422; x=1729544222; i=deller@gmx.de;
-	bh=nLwf34ncuCr3Pej42xokltkxCmuQxmVfKLSMKqTbc1M=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=VzgGzGq75mKlbyBzC6uhiv9ohspknJOlCUqjEDiKO6NJN/VO6Q5T+LX5dx8NVa9l
-	 /FrBTp5cscgiGZF5IUIUqzRwSvWmbmFpUTrTFU3nkgsFVToK+zTvcsCjEmIvBHoxB
-	 ALfWZtfxD8RncaE9FJJNJULl50f9JfWilAmVDcCsmuUqJDhW7otoQOWqqdur/icTg
-	 JWAAigrg5aVysEmYhwijfGfoXorHyDLLgqFa4uFWmuh4AQazCUFZWZ68iFkn6ySes
-	 Xh9YV729KoNICtezw06D/xwf1L/mCMR5cIvCx6Kjz5fPfYgab0DdChxFt2AwwfYaT
-	 1ePNIMCY9QmcGWczEg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M9Fnj-1t42cT2xTr-001IAn; Mon, 14
- Oct 2024 22:57:02 +0200
-Message-ID: <cb65fcea-3a45-4b96-a96c-e4480a12d6b4@gmx.de>
-Date: Mon, 14 Oct 2024 22:57:02 +0200
+	s=arc-20240116; t=1728961477; c=relaxed/simple;
+	bh=J9AXBLqUsBJ/yA85UVfPqaFq4TQ2jxzhw2ers6Fj2jQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F5Y1kebrvF5OPabztoL7qSz3A2aiOKctTWoSJTBhfzQM0pYIGldi+zmXjvITL7626K40ypZmqPaqhwwLbWxGNbrWo0CJk3L81wYMKBUPl8HWusIRpemmtZfVtEDWBuH/gCfOywqtXDzuy6pm9SnGpc8TQ/3D7wmFRCIiMKkdxNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Him/c0js; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728961474;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2LILJl12FRTprkZPDsnRty3i0K05AFLZzsWu9wwpXxI=;
+	b=Him/c0jsL8CUmV1MJxP6pba9WywmnC17cRbgZob/DKRUjJLioRs1rzGByjes37SgyCEBo4
+	yHLjTcTjjVq0SoPOEdlK+EpG+DPEt5Za1V3BgUvO6szv3I6TmA1BUyqukJROjRlUrqgH3C
+	X+NCdBRjxhPecXkXpzf5y3T3Keq8LAY=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-58-oNn60b5uP2elDWn0tmrY-w-1; Mon, 14 Oct 2024 23:04:33 -0400
+X-MC-Unique: oNn60b5uP2elDWn0tmrY-w-1
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-7b12015932cso641185285a.2
+        for <linux-parisc@vger.kernel.org>; Mon, 14 Oct 2024 20:04:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728961472; x=1729566272;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2LILJl12FRTprkZPDsnRty3i0K05AFLZzsWu9wwpXxI=;
+        b=hH28zRDFqt1bXjsAC5TlqfNUk+xQJPfvdVJMDjSdgHbGfpCb4ldICBsoRotV2CtnqP
+         Ohf0vFyBeIaVLUePvZAtsrrLZRp/lsLFKV/b9ffCD5vVv2uH898aQLZ4NPQ8bSyKzduN
+         30LJIurVZ8MJHCnecQMNZJC1p9eASLXmP60tT0xbzayOeqYpJVesLL7/M10ezLR+hE7R
+         LUI2wKq4eCwnvmTP6CUM7okbI5K7Z02yDc3fKBQyUJilfVKr8XIlvTmbZfTtGUdZAo78
+         e2DF9JgVUeD0qk+hETsGH2IXis1mdhVSUIqATR9SRbhWDspDyHodPeYz2HJOZoCoyxL2
+         T0pw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJPIpIF4aDX9hPbVUbAT6FgffApvJkd2VKI/OLKMVVAT2E8lhrN1W910RB3rsFQD3XE8Hyd09rR4hsSe8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjaqWLAjHhuHyf1flBlmDWIXks3jZEmqD5uS7pKHSS27z7s+6g
+	bzuUomkd2yWC+LSGXKEd8kE3NKD67Yk+NfMj/x5aQhS0szneofXBSX9Z8zrtZBs5yFmEQEtPLqu
+	XR4zak8HIHmXkMe+Cn1DtvqtayVY7/dyhc65Nuoc5Be6xLl4PGdYHUAx+nz+ZbbJ/GS7d9yyXCM
+	9uRS3aUi9iqQh50/YiGfScTX0c0TPlZ0VViel2
+X-Received: by 2002:a05:6214:5347:b0:6cb:e9eb:1b24 with SMTP id 6a1803df08f44-6cbeff63948mr208010456d6.24.1728961472402;
+        Mon, 14 Oct 2024 20:04:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGp3T4Yepy5h5DQueUeaIl2hWfHF7EpApBAxl9jBnWIq5Z+upYe1XYSqd8+UMzLGOwXgyDg2kobb+ggSdFvo7w=
+X-Received: by 2002:a05:6214:5347:b0:6cb:e9eb:1b24 with SMTP id
+ 6a1803df08f44-6cbeff63948mr208010076d6.24.1728961472016; Mon, 14 Oct 2024
+ 20:04:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Migrating parisc.wiki.kernel.org to RTD
-To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
- linux-parisc@vger.kernel.org
-References: <20241011-fine-bold-quail-2d60be@lemur>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20241011-fine-bold-quail-2d60be@lemur>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20241014105514.3206191-1-ryan.roberts@arm.com>
+ <20241014105912.3207374-1-ryan.roberts@arm.com> <Zw0iegwMp5ZVGypy@fedora> <9b7e4f65-a171-4574-bd53-580e79527fbc@arm.com>
+In-Reply-To: <9b7e4f65-a171-4574-bd53-580e79527fbc@arm.com>
+From: Pingfan Liu <piliu@redhat.com>
+Date: Tue, 15 Oct 2024 11:04:21 +0800
+Message-ID: <CAF+s44QbdPBN-8EcPiWiZgYgZY4v8RK-wA0VEaVXbfnc9_HQ9Q@mail.gmail.com>
+Subject: Re: [RFC PATCH v1 01/57] mm: Add macros ahead of supporting boot-time
+ page size selection
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Andreas Larsson <andreas@gaisler.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Chris Zankel <chris@zankel.net>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Greg Marsden <greg.marsden@oracle.com>, Helge Deller <deller@gmx.de>, 
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Ivan Ivanov <ivan.ivanov@suse.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Jonas Bonn <jonas@southpole.se>, 
+	Kalesh Singh <kaleshsingh@google.com>, Marc Zyngier <maz@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Miroslav Benes <mbenes@suse.cz>, Rich Felker <dalias@libc.org>, 
+	Richard Weinberger <richard@nod.at>, Stafford Horne <shorne@gmail.com>, 
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
+	Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org, 
+	linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-mm@kvack.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
+	sparclinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rpUHSV7mBJ/d3FJKLmWViGpTapKcpZNqHWPbd1eCz2THRmAYmE3
- U7nBckw5X18nPLp6B74ynVElcUiN/j+2IEBsGSh7ssolRNY8oir+H2hMdS0ACr85at2bXVu
- gAmPRjSa2Y6duPXJvG9s7YtmARwnoskdnfFGbfjyk/hzcJpqim3ubB6GkurZEch0YYrNkKa
- lrqxZokgHORaBBwXP/tcQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:0+7ggWi+RHM=;fDxUGxJNZ/+29G7LSyXEzXno/ZW
- KFADLah3RyR84gsAYrAcErZeeOVh09C7ZYtgC5E1HAqq4YYCoa9OwLjfgGVEekyRqsPsJuBbJ
- MbEe2jwIzvoK7jVfwvt5P9BNEjl3FcaINzaj1gxwf8E03FhwPb76V3b9rOzJhgou117tysPyo
- hrFEZdzR3Y3qTHR22Ui076erCg3P7pEYr73C9OP+IPZWsa2LdeCdUnqfI98Sh42GuM9160bRQ
- 4L4qyP0gEyfg+UVE4JXE1xu8E3nAMiRGTDv0rB/KG4ySnjBXct/2TWkBahBeIS95jl7V8WjCG
- A+QhYfMrjJrErIwaxhY0AunJTTHCpCRf9/YhcdnmiULGlquvGIjm/DfLL6jPGmh8Inb9hChnv
- d9V5svpGwDyjaqfFHe/uWqfiUkHVoZKtXCrn9tub0wgr/kGZzu1ORnX6TDNQ3cyrLJ5vnL0eR
- kqQgySed0LlPMfORS5gUhscl5+sGxejW3j6YJ+0dowRWtXCSizD6Ib8W7m2wbfofcwKyZsTDK
- hzar7T5+mZRv2LgzSmRnyQOm8KUDWf6kBKkzUm3/ugsQ7Q8R9bI7FOn11WxRZJ4Z6Yp64nhCE
- YTVOynhWuZnHuRzNIxhSkBURDjNTNVIZurmXFbOKcZ/dxtoXg/1WzP5IdpGuY8VqVvQPSBfxz
- 4T6nyzlyywlTLXw74RQ1bGMse1zmXJFr7C5J/Q7pMkEBJPrPWBopHXKL0XNiqneg6TubsXPBD
- oqYZXS9YxqQ3iicfgJKGUNRjGB4Lk78VILoLt0AWQ4UdinixqwnYatbBzXoePM/7xtpeOz52L
- 7S2yeem4kBhQGEnqI71DAl2g==
 
-Hi Konstantin,
+On Mon, Oct 14, 2024 at 10:07=E2=80=AFPM Ryan Roberts <ryan.roberts@arm.com=
+> wrote:
+>
+> On 14/10/2024 14:54, Pingfan Liu wrote:
+> > Hello Ryan,
+> >
+> > On Mon, Oct 14, 2024 at 11:58:08AM +0100, Ryan Roberts wrote:
+> >> arm64 can support multiple base page sizes. Instead of selecting a pag=
+e
+> >> size at compile time, as is done today, we will make it possible to
+> >> select the desired page size on the command line.
+> >>
+> >> In this case PAGE_SHIFT and it's derivatives, PAGE_SIZE and PAGE_MASK
+> >> (as well as a number of other macros related to or derived from
+> >> PAGE_SHIFT, but I'm not worrying about those yet), are no longer
+> >> compile-time constants. So the code base needs to cope with that.
+> >>
+> >> As a first step, introduce MIN and MAX variants of these macros, which
+> >> express the range of possible page sizes. These are always compile-tim=
+e
+> >> constants and can be used in many places where PAGE_[SHIFT|SIZE|MASK]
+> >> were previously used where a compile-time constant is required.
+> >> (Subsequent patches will do that conversion work). When the arch/build
+> >> doesn't support boot-time page size selection, the MIN and MAX variant=
+s
+> >> are equal and everything resolves as it did previously.
+> >>
+> >
+> > MIN and MAX appear to construct a boundary, but it may be not enough.
+> > Please see the following comment inline.
+> >
+> >> Additionally, introduce DEFINE_GLOBAL_PAGE_SIZE_VAR[_CONST]() which wr=
+ap
+> >> global variable defintions so that for boot-time page size selection
+> >> builds, the variable being wrapped is initialized at boot-time, instea=
+d
+> >> of compile-time. This is done by defining a function to do the
+> >> assignment, which has the "constructor" attribute. Constructor is
+> >> preferred over initcall, because when compiling a module, the module i=
+s
+> >> limited to a single initcall but constructors are unlimited. For
+> >> built-in code, constructors are now called earlier to guarrantee that
+> >> the variables are initialized by the time they are used. Any arch that
+> >> wants to enable boot-time page size selection will need to select
+> >> CONFIG_CONSTRUCTORS.
+> >>
+> >> These new macros need to be available anywhere PAGE_SHIFT and friends
+> >> are available. Those are defined via asm/page.h (although some arches
+> >> have a sub-include that defines them). Unfortunately there is no
+> >> reliable asm-generic header we can easily piggy-back on, so let's defi=
+ne
+> >> a new one, pgtable-geometry.h, which we include near where each arch
+> >> defines PAGE_SHIFT. Ugh.
+> >>
+> >> -------
+> >>
+> >> Most of the problems that need to be solved over the next few patches
+> >> fall into these broad categories, which are all solved with the help o=
+f
+> >> these new macros:
+> >>
+> >> 1. Assignment of values derived from PAGE_SIZE in global variables
+> >>
+> >>   For boot-time page size builds, we must defer the initialization of
+> >>   these variables until boot-time, when the page size is known. See
+> >>   DEFINE_GLOBAL_PAGE_SIZE_VAR[_CONST]() as described above.
+> >>
+> >> 2. Define static storage in units related to PAGE_SIZE
+> >>
+> >>   This static storage will be defined according to PAGE_SIZE_MAX.
+> >>
+> >> 3. Define size of struct so that it is related to PAGE_SIZE
+> >>
+> >>   The struct often contains an array that is sized to fill the page. I=
+n
+> >>   this case, use a flexible array with dynamic allocation. In other
+> >>   cases, the struct fits exactly over a page, which is a header (e.g.
+> >>   swap file header). In this case, remove the padding, and manually
+> >>   determine the struct pointer within the page.
+> >>
+> >
+> > About two years ago, I tried to do similar thing in your series, but ra=
+n
+> > into problem at this point, or maybe not exactly as the point you list
+> > here. I consider this as the most challenged part.
+> >
+> > The scenario is
+> > struct X {
+> >       a[size_a];
+> >       b[size_b];
+> >       c;
+> > };
+> >
+> > Where size_a =3D f(PAGE_SHIFT), size_b=3Dg(PAGE_SHIFT). One of f() and =
+g()
+> > is proportional to PAGE_SHIFT, the other is inversely proportional.
+> >
+> > How can you fix the reference of X.a and X.b?
+>
+> If you need to allocate static memory, then in this scenario, assuming f(=
+) is
+> proportional and g() is inversely-proportional, then I guess you need
+> size_a=3Df(PAGE_SIZE_MAX) and size_b=3Dg(PAGE_SIZE_MIN). Or if you can al=
+locate the
 
-On 10/11/24 16:31, Konstantin Ryabitsev wrote:
-> We are trying to sunset the last few wikis that we are hosting and conve=
-rt
-> them all to git-backed sphinx documentation. The PARISC wiki is one of t=
-he
-> last MediaWikis that we have, and I have prepared a migration path for y=
-ou
-> that I hope you will find suitable.
->
-> # Preliminary build
->
-> I have the preliminary conversion build available here:
->
-> https://www.kernel.org/doc/projects/parisc/index.html
->
-> The underlying repository for it can be found here:
->
-> https://git.kernel.org/pub/scm/docs/docsko/parisc.git/
->
-> The git repository includes the entire mediawiki history (excluding medi=
-a),
-> plus the new source tree with the conversion results.
+My point is that such stuff can not be handled by scripts
+automatically and needs manual intervention.
 
-You've have done a good job in converting it.
-Thanks!
+> memory dynamically, then make a and b pointers to dynamically allocated b=
+uffers.
+>
 
-> # Multiple RTD hosting options
->
-> If you would like to switch to the new sphinx-backed site, there are mul=
-tiple
-> ways to host it:
->
-> 1. You can clone that git repository and host it on github. This would a=
-llow
->     for a quick readthedocs.org integration and allow you to edit the fi=
-les
->     directly via the github interface. This is a very wiki-like workflow=
- and
->     would allow you to grant access to the repository to anyone with a g=
-ithub
->     account, plus accept pull requests with modifications. Once you have
->     readthedocs.org integration working, we can configure it to be under=
- the
->     docs.kernel.org domain, which will allow you to remove the ads from =
-the
->     site.
->
-> 2. Continue to host it in the current location and edit it with your
->     kernel.org account credentials, plus accept edits via patches sent t=
-o this
->     mailing list.
->
-> # Staying with mediawiki
->
-> I believe switching to sphinx-style documentation is the right way forwa=
-rd,
-> because wikis are increasingly problematic to host due to spam and hosti=
-le
-> scraper bots. By switching to RTD you also gain a lot more independence =
-in
-> your hosting options, as the statically generated site can be put anywhe=
-re
-> capable of serving files.
->
-> However, if you're absolutely sure you want to stay with MediaWiki, we c=
-an
-> arrange hosting with OSUOSL, but it would need to be under a non-kernel-=
-org
-> domain.
+This seems a better way out.
 
-It's really sad.
-I was quite happy with mediawiki and the output was quite nice, at
-least nicer than what RTD currently generates.
-I have not used RTD yet, so maybe someone here on the mailing list
-has some knowledge and want to help?
-
-> # What next?
+> Is there a specific place in the source where this pattern is used today?=
+ It
+> might be easier to discuss in the context of the code if so.
 >
-> Please let me know which way you would like to proceed in the next few d=
-ays,
-> as I am hoping to sunset our last wikis by the end of October.
 
-Unless someone else steps up and want to work on the
-website, I think I will go with RTD and choose either option 1 or 2.
-Do you have some more docs what steps have to be done then?
+No such code at hand. Just throw out the potential issue and be
+curious about it which frustrates me.
+I hope people can reach an agreement on it and turn this useful series
+into reality.
 
-Helge
+Thanks,
+
+Pingfan
+
 
