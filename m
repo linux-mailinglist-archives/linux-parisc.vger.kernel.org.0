@@ -1,260 +1,181 @@
-Return-Path: <linux-parisc+bounces-2727-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2728-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B709C9A0CF4
-	for <lists+linux-parisc@lfdr.de>; Wed, 16 Oct 2024 16:41:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F355E9A0D88
+	for <lists+linux-parisc@lfdr.de>; Wed, 16 Oct 2024 17:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D614284185
-	for <lists+linux-parisc@lfdr.de>; Wed, 16 Oct 2024 14:41:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D7461F23981
+	for <lists+linux-parisc@lfdr.de>; Wed, 16 Oct 2024 15:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B5720C03B;
-	Wed, 16 Oct 2024 14:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F3282D98;
+	Wed, 16 Oct 2024 15:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q1ZtLk0o"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="E0AnlBma"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EA220C017;
-	Wed, 16 Oct 2024 14:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E941EB27
+	for <linux-parisc@vger.kernel.org>; Wed, 16 Oct 2024 15:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729089674; cv=none; b=Y5i4baapvky7507OzbV7S/ZGoY6pFI2qX4Y9vtvqU66Q8+GSU0MsxaqnD/pZljBNkr/DQub+6G74al1wCkMXwfxKTqmTrvSQk2RUcVTskWBrOGEELjlA90zIdgHT99urYtN613vqK5xCqyqW0KTbLV71GsiP3lctn8EUlVNNos8=
+	t=1729090858; cv=none; b=rTh6nGZP4n/OmO1qrJZFRYyzoJHHWsSjgy5mvq7xxrlXura3XK7iUvUMZMQWhSHjxMIm3C3OJkVYC1dXxOGmr93fin9hEniDPHGcQzrIJ1QbwxLxRu0Wu5O4ZWsIk1un3cmmh7ujAnYvY4JglWO+LmkPjgPpMGRnD2cyXds+yp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729089674; c=relaxed/simple;
-	bh=cFm6C9yHF4d5EJsvTt2L486kzgO4ydnk8peQ4k2qH0U=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TY6UrDtyeS62HjTASn+ZxnQkmJcYqzFRcIrZsejRpLek75v5hd/TWwxrQlssvh0/ABHHdjLE4d8dr++/UAV/Mv7tl/byyNXrxnQ1iP3dVI0Jc7txVdFDigD2627LiV4kA77qTeIrwzrnf2pjLxWsW4aKvcsTlV09RmQyhg2WQF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q1ZtLk0o; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fb50e84ec7so24767651fa.1;
-        Wed, 16 Oct 2024 07:41:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729089669; x=1729694469; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xNOEBHIW89c1j/jhsHn9BJm63iz+XQaKnsI8oRx93vU=;
-        b=Q1ZtLk0oeCSMYe6D5RRe1+xn3EdzrFZmrLdWKuP4jwtn3Rn2ZHAZGh4qFtBtI4vFnB
-         2Fr/5Z+DlsiEjb/Gn0w55+QZf5UHLEB2xyky4dvL37GEluYSP31Sv62+g/LJENbZQ7H4
-         m2fU5+dqgC4gmkz3pCF8dJKOH6vVB8zTB8/zQh0IAK0E05ZP/szOUVhqXForzaElQvz5
-         2pP9wiNOycLjNkx0fyhA1s0cS9atS5Z1qZRIv9I8l3oWJB5bsuh3rRjwTsB7gcRSbAfd
-         6A7qaAUgXcUjOtTtJRg+p9Nzp3MbgNtMpbSl4+MXIJZByttBRKAWUgfBEKSNN7dJUa35
-         SYBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729089669; x=1729694469;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xNOEBHIW89c1j/jhsHn9BJm63iz+XQaKnsI8oRx93vU=;
-        b=JY6DVHFslzP/AkNIB38FBSEwG4wS4Z/EZ5ScbJ+RJyeoH7ePZo9xfqx2/PwM3Mp6CF
-         8MadJYm2Xyx+bk96PvLXvtB8YqJ/KwzEUdpnMhkaOZ/gspC26k7Xn/C0V5FYUGQIzRk8
-         c9y2I4COo8RMapmrQxd7Kr9VgRO7jBM5zcDmyAJDtBQjPToQnLILczCG25RoU2pb+4iv
-         8oDZpysP2ZabDwQ4zCsWqpYvNANsLe3dZy9bkkHKF757Hm08mtrpVTUeH/Na+ZDSKh+6
-         t12PgS6T7kJM8M1UTDdFe/ySdVsoiGy9gP3tD9KmWqlI9x0knHQoXJN9bdUs2Y+uRPR/
-         TFNw==
-X-Forwarded-Encrypted: i=1; AJvYcCUCIChCbnfViWEF8DQOTPLY3Hsx+h53h+E1XBpbo3jgT4GkjK144pvSMSxCjS8qmWvM7CXREdb+jEAlLw==@vger.kernel.org, AJvYcCUSEQoioM8/+qJLlEmLtYI/wZev5lpLIjUhUMOZFJUpAYI+4bLNBxZyScoubsMZlr8xaB1/BRnPByo+rg==@vger.kernel.org, AJvYcCUkZofM2BZFrmPAZLgrk4Iw1oo40u44zsYokk9ZDV5nOvWe5EiKP7l3ZzFDixyJErYQWpXDCHoPQJXUacJ1@vger.kernel.org, AJvYcCV+AhRbtyI3l3GPDJpWot+1le1fBEhIPOylobahwCDhbJrz56XPs4ArOo4a7VwLg5w9y2R4JtCqbvw5ux5ekzY=@vger.kernel.org, AJvYcCV+sdj0cB/Ouidqe+xg+V8oDkGwlfPXIgK+CAWnu9VduksFyPX8D3XrJaR7HKnFumelQXaKv2nIZF4d4Q==@vger.kernel.org, AJvYcCVgAMxwaaVa3C5n2A0WCk6CTDV92zV5r+jp+7HawkSsvD+wPZ3Sl2+F8wWRedB+eB4l3JnpqT306gS+RQ0KFtQ4YnNx@vger.kernel.org, AJvYcCVsOtt1B+pFndOuyF8b85QpPRXrrBOG+HrPdZSWm+PtYYW6VVwBUlc2r0agRactLlf25uyU4ptrOhxa2Y+b@vger.kernel.org, AJvYcCVyYggDQub9YXbBdbWbX2B5uWhqDpJm683IqYbEEWAFnP/2uBjitvDZKUeo5xsGoiv19Fn+vfpcAtV9/yEzig==@vger.kernel.org, AJvYcCWNYvx0pXeyHgZ1FPjZVsURvyqLoXcFIUpzBnnoCeugpXvME6QrNSIjDJP7tO3NJLSxz4di9Q4D24fHPCb4Cg==@vger.kernel.o
- rg, AJvYcCXNOd7Z9J6sg043BHAx6NRvz2DstqoP64RRKkL+WcInVyTHzL4dVg/shQy+zTlsQBK5mlw=@vger.kernel.org, AJvYcCXV8W2xqRZFTGwhDm8RuXKoS9fePuPGBpE64EYcfMDnyjaLtGxtQGKt2UIZTm7axjpkoVDjWf7vDU4=@vger.kernel.org, AJvYcCXgO0LRIbXjHSbT3A1/2QZxhI0pAAkPU42r3EnLvdAauFuxbR3RTqCvCr8OSZQOuqEIR4nX9jGjXeZfaA==@vger.kernel.org, AJvYcCXmywYtcfGWUPHEr0DCGb6h1b9sXLNTrLIx+HQ2mL/6lWcY/CvaopGnn4YebzDXBDpFZD+jp9zQmaFIOAY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyxaoxOA/wjAqa7C9mRQ2R91bUQlTztDFQhgAKp+oN0jzxAgOG
-	EwZ7wWGCKSPs51GdBMxkQBYGj7KRPIocIJHbGj73qYka67E9Geul
-X-Google-Smtp-Source: AGHT+IEQ2b77do+Ei5H+uRLYrEtNQq0NK3oK0wCc+2cFtuWRuK/aQBOOdJJvL1LeKTNOBzUMcJr/yQ==
-X-Received: by 2002:a05:651c:1989:b0:2fb:6181:8ca1 with SMTP id 38308e7fff4ca-2fb61b37a76mr33036831fa.6.1729089669341;
-        Wed, 16 Oct 2024 07:41:09 -0700 (PDT)
-Received: from pc636 (host-95-203-1-67.mobileonline.telia.com. [95.203.1.67])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2fb5d1d0244sm4327361fa.139.2024.10.16.07.41.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Oct 2024 07:41:08 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Wed, 16 Oct 2024 16:41:03 +0200
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-	Brian Cain <bcain@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
-	Stafford Horne <shorne@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
-	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org,
-	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org, x86@kernel.org,
-	Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH v6 1/8] mm: vmalloc: group declarations depending on
- CONFIG_MMU together
-Message-ID: <Zw_QfzopOv7pCZc_@pc636>
-References: <20241016122424.1655560-1-rppt@kernel.org>
- <20241016122424.1655560-2-rppt@kernel.org>
+	s=arc-20240116; t=1729090858; c=relaxed/simple;
+	bh=wabeuKjPlHtpvesIZ1r1UvjQlSgC+6u3KamrrKPyUbg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=truKcDAArfbKegVW4WNfcGDUEzeGSPVqhNFE+GYDV21QwZrlPjUVuz7+O3csT5jg7o3LbhUmEZfl7PgJgYxf3wEMNZVMzcLRQDaa7kf/q8EYrRMw/ppzFjAk6T3yUSuChLU6asyI56KZuH09RIJZhs/LZknFTYcEb3GzOA6xnww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=E0AnlBma; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1729090852; x=1729695652; i=deller@gmx.de;
+	bh=wabeuKjPlHtpvesIZ1r1UvjQlSgC+6u3KamrrKPyUbg=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=E0AnlBmabKb7ZvD3MMGKfn5CZocEIbXm5tjzDewAUC+O7dBpKPnVfJnV764G0moa
+	 P8wswNxSPfV0wMDyGvGCvCku1HkrPvWtS1lDuQ8YfefP5bScPEkbj38GuTSqxKUXq
+	 j5n1aeOfzd5EEQWQo3ZvYNCBQyuwmbiNu+tQcWurIoFHmd+TxKTItlchHASkT+s3X
+	 e0G5dCGyzNBOTQQ5/fAur/tOOnu1O8wXKEkAuo2pj+/sAl8j/0AFqvMaHzLSjtulo
+	 PVUXVGCBO8InZETDX0X+ZCuldFRJ+dHWRr46DUdwxBPwXRTJQAur+g96q8mKs+eAQ
+	 ncXj2UPz+xoxMa0ZaA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MNbkp-1tJzBf2OOx-00P6DO; Wed, 16
+ Oct 2024 17:00:52 +0200
+Message-ID: <333db349-e721-4093-9918-7a6b7e62dfb3@gmx.de>
+Date: Wed, 16 Oct 2024 17:00:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241016122424.1655560-2-rppt@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Migrating parisc.wiki.kernel.org to RTD
+To: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Cc: linux-parisc@vger.kernel.org
+References: <20241011-fine-bold-quail-2d60be@lemur>
+ <cb65fcea-3a45-4b96-a96c-e4480a12d6b4@gmx.de>
+ <20241015-shrewd-mayfly-of-coffee-3802f0@lemur>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20241015-shrewd-mayfly-of-coffee-3802f0@lemur>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:YWK5jBQy3UE0pJHNjAkvS73vO7zt7lPxLkEYVaQEeE1F6yUUa5h
+ v9dY2t0welSG6HgSl/mn9PW08+anrli3EiUApOhdHJHbTUd5P5KyDksdg2kwRY8opUOlY8C
+ bZD5BhAT6HqGocj1c4DUg7xmt99mS1iVzJ0tPU/bC0PFIAbjwU2cJUWzxsvaM4GEizkYbXb
+ lGFxVMatikcPUM5zoRjhw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:JqXRg4LwV28=;OYdirsjoyDHv1tml0NOcZcAoeA9
+ 1ehZu9Qzw8ziKjTuxGLosekKLj6C/EGgroS1BylNYSGENyVwwe/NoTlFcSNPd6By7IwpT4MNQ
+ QC4KqzsjE6kKb8mmxPQBASHYYe1hWPlpCoM+Yy6WqtYW1oKQO42e8BVZZuWeYUMWPU+ate8Q2
+ Uv4Cr3uhqJw5DxQ0snPt4WHy+qaiO0on8VB1rTViB62qPu27GshYqwMC9kZsYFeDjdsOS66Sb
+ jj/kAFjFAOcQZXTSfiFM73Ls6b/pu3UKH9dy6rUFIp6zHOAykenjn4URTg+yiWw5MwtxWJugQ
+ bLuxCx+tKYnvWG79sSS1DjWPP9tPYVWzU0YHsEOe6i9YvdTXdVLV9SbtjR6NGSPP1k1pM6OFI
+ G/wBfxkQiqmHxFrucQeFC1HRjcXcPTcfV5uY5IcELIflFDA7DGLJpZUfoZWeXL0fm6R50CG2D
+ xfheh0LgrqlG3m9NAX5OD4OlDZZAWCLUh5q1YNNp6tlSjlaRPDXFRUCoO7TbA0eW1xVkiY2y9
+ /EUfoXAtzDswgFjDFdRsBh8PAZjYLAOguzNbnxemqzvXQXQjCwd9x0qexOzEa1W60LIQLuILu
+ /YWYkwTJGOS4uaBpDnDnAY+ZruCohgPDDfLKbv1bWsLXsDMR2KK39IBlsOH3vHZ9ckF1dTofy
+ D70hcFVMQxl8Q8Us9JwyAcGpbwxYPO0qrzQ9re2YFuIVqV0Ceolho8wh/5/SgYCYV1s3Cv+wK
+ ntgKo/wx8AQek85P08TiuO+ImmIvsxtZ3m70l0dWzf21J+z4zcKKIdQzu/D4w3DtguyLmlc9Y
+ TUQLZvlmN4nsHNqPQkWmGLWw==
 
-On Wed, Oct 16, 2024 at 03:24:17PM +0300, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> There are a couple of declarations that depend on CONFIG_MMU in
-> include/linux/vmalloc.h spread all over the file.
-> 
-> Group them all together to improve code readability.
-> 
-> No functional changes.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> ---
->  include/linux/vmalloc.h | 60 +++++++++++++++++------------------------
->  1 file changed, 24 insertions(+), 36 deletions(-)
-> 
-> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-> index ad2ce7a6ab7a..27408f21e501 100644
-> --- a/include/linux/vmalloc.h
-> +++ b/include/linux/vmalloc.h
-> @@ -134,12 +134,6 @@ extern void vm_unmap_ram(const void *mem, unsigned int count);
->  extern void *vm_map_ram(struct page **pages, unsigned int count, int node);
->  extern void vm_unmap_aliases(void);
->  
-> -#ifdef CONFIG_MMU
-> -extern unsigned long vmalloc_nr_pages(void);
-> -#else
-> -static inline unsigned long vmalloc_nr_pages(void) { return 0; }
-> -#endif
-> -
->  extern void *vmalloc_noprof(unsigned long size) __alloc_size(1);
->  #define vmalloc(...)		alloc_hooks(vmalloc_noprof(__VA_ARGS__))
->  
-> @@ -266,12 +260,29 @@ static inline bool is_vm_area_hugepages(const void *addr)
->  #endif
->  }
->  
-> +/* for /proc/kcore */
-> +long vread_iter(struct iov_iter *iter, const char *addr, size_t count);
-> +
-> +/*
-> + *	Internals.  Don't use..
-> + */
-> +__init void vm_area_add_early(struct vm_struct *vm);
-> +__init void vm_area_register_early(struct vm_struct *vm, size_t align);
-> +
-> +int register_vmap_purge_notifier(struct notifier_block *nb);
-> +int unregister_vmap_purge_notifier(struct notifier_block *nb);
-> +
->  #ifdef CONFIG_MMU
-> +#define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
-> +
-> +unsigned long vmalloc_nr_pages(void);
-> +
->  int vm_area_map_pages(struct vm_struct *area, unsigned long start,
->  		      unsigned long end, struct page **pages);
->  void vm_area_unmap_pages(struct vm_struct *area, unsigned long start,
->  			 unsigned long end);
->  void vunmap_range(unsigned long addr, unsigned long end);
-> +
->  static inline void set_vm_flush_reset_perms(void *addr)
->  {
->  	struct vm_struct *vm = find_vm_area(addr);
-> @@ -279,24 +290,14 @@ static inline void set_vm_flush_reset_perms(void *addr)
->  	if (vm)
->  		vm->flags |= VM_FLUSH_RESET_PERMS;
->  }
-> +#else  /* !CONFIG_MMU */
-> +#define VMALLOC_TOTAL 0UL
->  
-> -#else
-> -static inline void set_vm_flush_reset_perms(void *addr)
-> -{
-> -}
-> -#endif
-> -
-> -/* for /proc/kcore */
-> -extern long vread_iter(struct iov_iter *iter, const char *addr, size_t count);
-> -
-> -/*
-> - *	Internals.  Don't use..
-> - */
-> -extern __init void vm_area_add_early(struct vm_struct *vm);
-> -extern __init void vm_area_register_early(struct vm_struct *vm, size_t align);
-> +static inline unsigned long vmalloc_nr_pages(void) { return 0; }
-> +static inline void set_vm_flush_reset_perms(void *addr) {}
-> +#endif /* CONFIG_MMU */
->  
-> -#ifdef CONFIG_SMP
-> -# ifdef CONFIG_MMU
-> +#if defined(CONFIG_MMU) && defined(CONFIG_SMP)
->  struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
->  				     const size_t *sizes, int nr_vms,
->  				     size_t align);
-> @@ -311,22 +312,9 @@ pcpu_get_vm_areas(const unsigned long *offsets,
->  	return NULL;
->  }
->  
-> -static inline void
-> -pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
-> -{
-> -}
-> -# endif
-> -#endif
-> -
-> -#ifdef CONFIG_MMU
-> -#define VMALLOC_TOTAL (VMALLOC_END - VMALLOC_START)
-> -#else
-> -#define VMALLOC_TOTAL 0UL
-> +static inline void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms) {}
->  #endif
->  
-> -int register_vmap_purge_notifier(struct notifier_block *nb);
-> -int unregister_vmap_purge_notifier(struct notifier_block *nb);
-> -
->  #if defined(CONFIG_MMU) && defined(CONFIG_PRINTK)
->  bool vmalloc_dump_obj(void *object);
->  #else
-> -- 
-> 2.43.0
-> 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Hi Konstantin,
 
---
-Uladzislau Rezki
+On 10/15/24 18:32, Konstantin Ryabitsev wrote:
+>> I have not used RTD yet, so maybe someone here on the mailing list
+>> has some knowledge and want to help?
+>
+> I'm happy to guide you along. I've added a readthedocs.yml and
+> requirements.txt files to the repo:
+>
+> https://git.kernel.org/pub/scm/docs/docsko/parisc.git
+>
+> You can clone it and then push to your github or gitlab repo. After that=
+,
+> generating a readthedocs build is very easy:
+>
+> https://docs.readthedocs.io/en/stable/tutorial/index.html
+>
+> If you follow that, you should be able to get a build of the repository =
+in
+> 20-30 minutes. After that, you can even edit the documents directly on g=
+ithub
+> and have them automatically rendered.
+
+> Once you have it working on the readthedocs site, I can help you configu=
+re a
+> docs.kernel.org domain
+
+Ok so far.
+https://readthedocs.org/projects/parisc/
+https://parisc.readthedocs.io/en/latest/
+source from here:
+https://github.com/hdeller/parisc-website.git
+
+> and set the redirects from the old wiki.
+
+Before setting up redirects, can you help me with this error:
+
+deller@carbonx1:/home/cvs/LINUX/parisc-website$ make html
+Running Sphinx v8.1.3
+loading translations [en]... done
+Extension error:
+Could not import extension sphinxcontrib.applehelp (exception: cannot impo=
+rt name 'SkipProgressMessage' from 'sphinx.util' (/home/deller/.local/lib/=
+python3.12/site-packages/sphinx/util/__init__.py))
+make: *** [Makefile:20: html] Error 2
+
+Helge
 
