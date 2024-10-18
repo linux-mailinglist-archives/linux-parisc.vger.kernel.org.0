@@ -1,52 +1,71 @@
-Return-Path: <linux-parisc+bounces-2744-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2745-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874879A4186
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Oct 2024 16:47:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940729A426B
+	for <lists+linux-parisc@lfdr.de>; Fri, 18 Oct 2024 17:32:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0737B23B96
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Oct 2024 14:47:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1452F1F21F50
+	for <lists+linux-parisc@lfdr.de>; Fri, 18 Oct 2024 15:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C016B1FCF76;
-	Fri, 18 Oct 2024 14:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81ACB2022D3;
+	Fri, 18 Oct 2024 15:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="oTeUkg5m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpDs95IU"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-torrgo001.bell.net (mta-tor-003.bell.net [209.71.212.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B0D10E4
-	for <linux-parisc@vger.kernel.org>; Fri, 18 Oct 2024 14:47:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE382022D6
+	for <linux-parisc@vger.kernel.org>; Fri, 18 Oct 2024 15:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729262842; cv=none; b=WpeBMPQwv8ZzbES1XfBUwQ7UrJRGe4ZD7wc7/AQK6Ha5FcDPa/ueRmZukwo5SWScbt7ZThquVJzj9G7SA2Zwm2uu5N3oBi9O5YX9sjKRdy3KMZfAxUN4XxsSLScbzJgteaJf3LE8TtAedHc7A0qtr0bvFm2i9TFK/B/QWVYtPyk=
+	t=1729265543; cv=none; b=pw4DArBaI4cYSjad0dIHBAbbPFeNm/JPR2gLNyLz5y0yivxSk49VYPEEhW5ahjU5hogRB5CtvB/UpV5kwPmV9A4Pld6Q6jxC1PPKTeONvg9KkrnEUK1SaOV1P3jhCUrzgKzOabrWimlEbwEMV7+m9b0SfkepBBzS7s8/zriGXug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729262842; c=relaxed/simple;
-	bh=bg+OyI2GjR2NvhyfD8fVXCgydOONq2r9kNWbP69u29k=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=ZgBGdT47wwd7BxHE7gLmCEfcmjNNnCV0JFoV7D4EOBHHHHPCoD3YCbtIMYOkQucvHE8XGaakgBig+JKxt2/p81xvA++joeKiByKNV+Wfwbia+vbXEWXT7MR8IVooUvJyO2wfW29rm9Yam63/DhvV0COlRO/NQJmcjxNZYVkovxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=oTeUkg5m; arc=none smtp.client-ip=209.71.212.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1729262840; 
-        bh=9UiseO9HC/YM0m76vLzXwBksEF4mzM5p9zLne1Guvek=;
-        h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type;
-        b=oTeUkg5mNwAR3QaoyjbqiE4HT/dJfSvDCRurdDpq6sxC/3gRQwSl2M66EMC7XhMmuuyIhwjY2EMqSNlg2mRtai37jnMTXFtQdCJpVWczPFXW0lTuEwU8M5ISprcTQkjeMi4qEzEGjtypZsk5ItTO3CS07g6sCLCl49y2sSLVrB/5/u3SzGg/fBEaZBhcrlo4Kg3kuKBthEGTRIMQhOsjksTP8gAWhCaOGS5jKiFd1M0WDbiXaIymY0B2HMSUQ3IRElc2lfzJpINC4kF3oDn1B2JMeZMUluRQI1bA5MeBfv3PdH4DNRLXV7U259KAGBgVHj3ns/Nwmh8AmLw9VYVfwA==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 671136720023FEBF
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeeftddrvdehfedgjeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuuefgnffnpdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhepkfffgggfvffhufgtgfesthekredttddvjeenucfhrhhomheplfhohhhnucffrghvihguucetnhhglhhinhcuoegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvtheqnecuggftrfgrthhtvghrnhepgfeugfehjeeggffhjeeffeeiheffjeevveejhfdvtdeggfevkeetudejueegjedvnecukfhppedugedvrdduvdeirddugeejrddvtdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepudegvddruddviedrudegjedrvddtfedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepvddprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgvvhfkrfepsghrrghsqdgsrghsvgdqohhtfigrohhntdeltdeifidqghhrtgdquddtqddugedvqdduvdeiqddugeejqddvtdefrdgushhlrdgsvghllhdrtggrpdgruhhthhgpuhhsvghrpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpghgvohfkrfepveetpdfovfetjfhoshhtpegtmhigqdht
-	ohhrrhhgohdttddu
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.126.147.203) by cmx-torrgo001.bell.net (authenticated as dave.anglin@bell.net)
-        id 671136720023FEBF; Fri, 18 Oct 2024 10:45:55 -0400
-Message-ID: <36c46aef-a4bb-4782-ab87-5f52a6ce54b3@bell.net>
-Date: Fri, 18 Oct 2024 10:45:55 -0400
+	s=arc-20240116; t=1729265543; c=relaxed/simple;
+	bh=BmVpdD0jRxsiIbfsqjgxnbZ7lslKne0rx0q7CxIOU5Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=go+jygNmJImrpryDxBZX1nmtCJ5KuSVje2n5Oj7R9yPgVDagJuwWe0xxUHhX8ssXc8z9RPG/G0YYyxLGfu05YNIK9pkQikN8R1a7IUeZSFqkgjBchvV7dQPH4Lt96G7X+nlH98Wp70vhcz35S8l3VDF6AUQ+SeEWh62OdZuiPGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpDs95IU; arc=none smtp.client-ip=209.85.160.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-2883e3f5419so981090fac.1
+        for <linux-parisc@vger.kernel.org>; Fri, 18 Oct 2024 08:32:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1729265540; x=1729870340; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZC7IXrCg0YuAvn8GUXeJqu+LI8owpl5cfwS2jfkhEf0=;
+        b=SpDs95IU6ADOtqD4JdP5p1dTyQTopYQLVNRnWlt2kjYro2JEnufBTR7CTwP0ifGDJ9
+         YkYRuuqaZ2ZPbpIxOq96OM36svuSmbQCnAxqMXqd/jgR5Lg12HZlouRwOeFLz5/P+h2r
+         6ElHdsE/A28f7aB0ika9tOiqmUlbafPLz3AxY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729265540; x=1729870340;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZC7IXrCg0YuAvn8GUXeJqu+LI8owpl5cfwS2jfkhEf0=;
+        b=hXIr9w7wj2GbHklEFu2vrQ07M2gu1C/FUYlgqffBmXgZ9B04lAou/WwqL4R+Xf7cOu
+         dboMM/7gZj9h5D6yGzcqLouqkBuRvn1i0I1UbjtlvvcvARrE43qeZJdkz7hZqtVnfkCJ
+         VSFrt3nGbtpZ8vE3WUgpGBiVnobMTx2GL27HtknNyf2GTMfADYFFnWk7fe0eYhwVYsWY
+         fqB2qrZxamUYi8yGjvc5SvssLdNTHQAlGOwSOwW00L4RUD0uZDxKtK17PApPPuRG3bT1
+         ruGbx8/NXMpbYjailMLl6sTIliIuMjKp0xvLpQeoZc6iUKqRAqNj6ERXeVIIvfz/mTzH
+         Qjkw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxzNhnJC2Rbr/lPOve2mUxYCDh+JfL40DWQgpGYMwfxl4xHsDi/HoCmknRHnvWg7qkOqZ9mHpLvYT0tEo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFBZw7dB08+tF1lqzsI5Hx9zr0mT6iqqdI660CzEaXgVBqqFWc
+	Fmbr6RUwdan21UFeDnHmBzP6BzWlZJWBHSuLS5A8VdjMX0xJ7gtMsnY+eBq9Z+c=
+X-Google-Smtp-Source: AGHT+IFVILzQC3xLfv6R4AbCBfFL0IO4Vwr3Q+ju2/Ycfjj5wO6b5XNWyVkiIkvrRdK6DAeUYrsI+g==
+X-Received: by 2002:a05:6870:89a9:b0:277:f5d8:b77b with SMTP id 586e51a60fabf-2892c4a62edmr2658526fac.32.1729265539765;
+        Fri, 18 Oct 2024 08:32:19 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2892ad9f036sm493443fac.34.2024.10.18.08.32.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Oct 2024 08:32:19 -0700 (PDT)
+Message-ID: <22d386cd-e62f-43f9-905e-2d0881781abe@linuxfoundation.org>
+Date: Fri, 18 Oct 2024 09:32:17 -0600
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -54,162 +73,223 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] selftests/mm: add self tests for guard page feature
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+ "Paul E . McKenney" <paulmck@kernel.org>, Jann Horn <jannh@google.com>,
+ David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
+ <mattst88@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
+ Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-arch@vger.kernel.org,
+ Shuah Khan <shuah@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ linux-kselftest@vger.kernel.org, Sidhartha Kumar
+ <sidhartha.kumar@oracle.com>, Jeff Xu <jeffxu@chromium.org>,
+ Christoph Hellwig <hch@infradead.org>, Shuah Khan <skhan@linuxfoundation.org>
+References: <cover.1729196871.git.lorenzo.stoakes@oracle.com>
+ <8b1add3c511effb62d68183cae8a954d8339286c.1729196871.git.lorenzo.stoakes@oracle.com>
+ <1d0bbc60-fda7-4c14-bf02-948bdbf8f029@linuxfoundation.org>
+ <dfbf9ccb-6834-4181-a382-35c9c9af8064@lucifer.local>
 Content-Language: en-US
-To: linux-parisc <linux-parisc@vger.kernel.org>
-From: John David Anglin <dave.anglin@bell.net>
-Subject: WARNING: CPU: 0 PID: 1 at drivers/pci/devres.c:602
- pcim_add_mapping_to_legacy_table+0x74/0x90
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- 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
- T70V9SSrl2hiw38vRzsl
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <dfbf9ccb-6834-4181-a382-35c9c9af8064@lucifer.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Just booted 6.11.4 on rp3440 and saw the following warnings:
+On 10/18/24 01:12, Lorenzo Stoakes wrote:
+> On Thu, Oct 17, 2024 at 03:24:49PM -0600, Shuah Khan wrote:
+>> On 10/17/24 14:42, Lorenzo Stoakes wrote:
+>>> Utilise the kselftest harmness to implement tests for the guard page
+>>
+>> Splleing NIT - harmness -> harness
+>>
+>>> implementation.
+>>>
+>>> We start by implement basic tests asserting that guard pages can be
+>>
+>> implmenting? By the way checkpatch will catch spelling stuuf.
+>> Please see comments about warnings below.
+> 
+> Thanks. The majority of the checkpatch warnings are invalid so I missed
+> this. Will fix on respin.
+> 
+>>
+>>> established (poisoned), cleared (remedied) and that touching poisoned pages
+>>> result in SIGSEGV. We also assert that, in remedying a range, non-poison
+>>> pages remain intact.
+>>>
+>>> We then examine different operations on regions containing poison markers
+>>> behave to ensure correct behaviour:
+>>>
+>>> * Operations over multiple VMAs operate as expected.
+>>> * Invoking MADV_GUARD_POISION / MADV_GUARD_REMEDY via process_madvise() in
+>>>     batches works correctly.
+>>> * Ensuring that munmap() correctly tears down poison markers.
+>>> * Using mprotect() to adjust protection bits does not in any way override
+>>>     or cause issues with poison markers.
+>>> * Ensuring that splitting and merging VMAs around poison markers causes no
+>>>     issue - i.e. that a marker which 'belongs' to one VMA can function just
+>>>     as well 'belonging' to another.
+>>> * Ensuring that madvise(..., MADV_DONTNEED) does not remove poison markers.
+>>> * Ensuring that mlock()'ing a range containing poison markers does not
+>>>     cause issues.
+>>> * Ensuring that mremap() can move a poisoned range and retain poison
+>>>     markers.
+>>> * Ensuring that mremap() can expand a poisoned range and retain poison
+>>>     markers (perhaps moving the range).
+>>> * Ensuring that mremap() can shrink a poisoned range and retain poison
+>>>     markers.
+>>> * Ensuring that forking a process correctly retains poison markers.
+>>> * Ensuring that forking a VMA with VM_WIPEONFORK set behaves sanely.
+>>> * Ensuring that lazyfree simply clears poison markers.
+>>> * Ensuring that userfaultfd can co-exist with guard pages.
+>>> * Ensuring that madvise(..., MADV_POPULATE_READ) and
+>>>     madvise(..., MADV_POPULATE_WRITE) error out when encountering
+>>>     poison markers.
+>>> * Ensuring that madvise(..., MADV_COLD) and madvise(..., MADV_PAGEOUT) do
+>>>     not remove poison markers.
+>>
+>> Good summary of test. Does the test require root access?
+>> If so does it check and skip appropriately?
+> 
+> Thanks and some do, in those cases we skip.
+> 
+>>
+>>>
+>>> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>>> ---
+>>>    tools/testing/selftests/mm/.gitignore    |    1 +
+>>>    tools/testing/selftests/mm/Makefile      |    1 +
+>>>    tools/testing/selftests/mm/guard-pages.c | 1168 ++++++++++++++++++++++
+>>>    3 files changed, 1170 insertions(+)
+>>>    create mode 100644 tools/testing/selftests/mm/guard-pages.c
+>>>
+>>> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+>>> index 689bbd520296..8f01f4da1c0d 100644
+>>> --- a/tools/testing/selftests/mm/.gitignore
+>>> +++ b/tools/testing/selftests/mm/.gitignore
+>>> @@ -54,3 +54,4 @@ droppable
+>>>    hugetlb_dio
+>>>    pkey_sighandler_tests_32
+>>>    pkey_sighandler_tests_64
+>>> +guard-pages
+>>> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+>>> index 02e1204971b0..15c734d6cfec 100644
+>>> --- a/tools/testing/selftests/mm/Makefile
+>>> +++ b/tools/testing/selftests/mm/Makefile
+>>> @@ -79,6 +79,7 @@ TEST_GEN_FILES += hugetlb_fault_after_madv
+>>>    TEST_GEN_FILES += hugetlb_madv_vs_map
+>>>    TEST_GEN_FILES += hugetlb_dio
+>>>    TEST_GEN_FILES += droppable
+>>> +TEST_GEN_FILES += guard-pages
+>>>    ifneq ($(ARCH),arm64)
+>>>    TEST_GEN_FILES += soft-dirty
+>>> diff --git a/tools/testing/selftests/mm/guard-pages.c b/tools/testing/selftests/mm/guard-pages.c
+>>> new file mode 100644
+>>> index 000000000000..2ab0ff3ba5a0
+>>> --- /dev/null
+>>> +++ b/tools/testing/selftests/mm/guard-pages.c
+>>> @@ -0,0 +1,1168 @@
+>>> +// SPDX-License-Identifier: GPL-2.0-or-later
+>>> +
+>>> +#define _GNU_SOURCE
+>>> +#include "../kselftest_harness.h"
+>>> +#include <assert.h>
+>>> +#include <fcntl.h>
+>>> +#include <setjmp.h>
+>>> +#include <errno.h>
+>>> +#include <linux/userfaultfd.h>
+>>> +#include <signal.h>
+>>> +#include <stdbool.h>
+>>> +#include <stdio.h>
+>>> +#include <stdlib.h>
+>>> +#include <string.h>
+>>> +#include <sys/ioctl.h>
+>>> +#include <sys/mman.h>
+>>> +#include <sys/syscall.h>
+>>> +#include <sys/uio.h>
+>>> +#include <unistd.h>
+>>> +
+>>> +/* These may not yet be available in the uAPI so define if not. */
+>>> +
+>>> +#ifndef MADV_GUARD_POISON
+>>> +#define MADV_GUARD_POISON	102
+>>> +#endif
+>>> +
+>>> +#ifndef MADV_GUARD_UNPOISON
+>>> +#define MADV_GUARD_UNPOISON	103
+>>> +#endif
+>>> +
+>>> +volatile bool signal_jump_set;
+>>
+>> Can you add a comment about why volatile is needed.
+> 
+> I'm not sure it's really necessary, it's completely standard to do this
+> with signal handling and is one of the exceptions to the 'volatile
+> considered harmful' rule.
+> 
+>> By the way did you happen to run checkpatck on this. There are
+>> several instances where single statement blocks with braces {}
+>>
+>> I noticed a few and ran checkpatch on your patch. There are
+>> 45 warnings regarding codeing style.
+>>
+>> Please run checkpatch and clean them up so we can avoid followup
+>> checkpatch cleanup patches.
+> 
+> No sorry I won't, checkpatch isn't infallible and series trying to 'clean
+> up' things that aren't issues will be a waste of everybody's time.
+> 
 
-WARNING: CPU: 0 PID: 1 at drivers/pci/devres.c:602 pcim_add_mapping_to_legacy_table+0x74/0x90
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.4-dirty #1
-Hardware name: 9000/800/rp3440
-      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-PSW: 00001000000001101111100100001111 Not tainted
-r00-03  000000ff0806f90f 000000004b9a94c0 0000000040880db0 000000004b9a9390
-r04-07  0000000040d66600 0000000000063000 0000000000000000 000000004baf5800
-r08-11  0000000000000000 0000000000000010 0000000000000000 0000000000000003
-r12-15  000000004117e850 000000004baf58a8 0000000040dea600 000000004015f080
-r16-19  000000004017a620 0000000040d84600 00000000f938e64c 0000000000001a46
-r20-23  0000000000001a46 000000000000001a 0000000000008000 0000000000000000
-r24-27  0000000000000000 000000000800000f 000000004baf5a40 0000000040d66600
-Begin: Will now check root file system ... fsck from util-linux 2.40.2
-[/sbin/fsck.ext4 (1) -- /dev/sdb5] fsck.ext4 -a -C0 /dev/sdb5
-r28-31  0000000000061000 000000004b9a9560 000000004b9a9420 000000004e1d8980
-sr00-03  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-IASQ: 0000000000000000 0000000000000000 IAOQ: 0000000040880de4 0000000040880de8
-  IIR: 03ffe01f    ISR: 0000000010240000  IOR: 0000002e62188008
-  CPU:        0   CR30: 000000004b988000 CR31: ffffffffffffefff
-  ORIG_R28: 00000000000003a3
-  IAOQ[0]: pcim_add_mapping_to_legacy_table+0x74/0x90
-  IAOQ[1]: pcim_add_mapping_to_legacy_table+0x78/0x90
-  RP(r2): pcim_add_mapping_to_legacy_table+0x40/0x90
-Backtrace:
-  [<0000000040881ba8>] pcim_iomap+0x120/0x1c8
-  [<000000004090f7e0>] serial8250_pci_setup_port+0xd8/0x168
-  [<0000000040913458>] pci_hp_diva_setup+0x98/0xe0
-  [<0000000040915094>] pciserial_init_ports+0x1c4/0x3d8
-  [<00000000409154e0>] pciserial_init_one+0x1a8/0x328
-  [<000000004087433c>] pci_device_probe+0x14c/0x2b8
-  [<0000000040936964>] really_probe+0x12c/0x590
-  [<0000000040936e4c>] __driver_probe_device+0x84/0x1a0
-  [<0000000040937058>] driver_probe_device+0xf0/0x2d8
-  [<000000004093753c>] __driver_attach+0x114/0x320
-  [<0000000040932240>] bus_for_each_dev+0xf0/0x180
-  [<0000000040935d48>] driver_attach+0x48/0x60
-  [<0000000040934c4c>] bus_add_driver+0x314/0x4c0
-  [<00000000409391b0>] driver_register+0xe0/0x290
-  [<0000000040873628>] __pci_register_driver+0x88/0xa0
-  [<0000000040146428>] serial_pci_driver_init+0x48/0x60
-  [<00000000402053e4>] do_one_initcall+0x7c/0x320
-  [<0000000040102a74>] kernel_init_freeable+0x5a4/0x6c0
-  [<0000000040ca96f0>] kernel_init+0x60/0x340
-  [<0000000040202020>] ret_from_kernel_thread+0x20/0x28
----[ end trace 0000000000000000 ]---
-0000:e0:01.1: ttyS1 at MMIO 0xfffffffff4050010 (irq = 74, base_baud = 115200) is a 16550A
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 1 at drivers/pci/devres.c:602 pcim_add_mapping_to_legacy_table+0x74/0x90
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W 6.11.4-dirty #1
-Tainted: [W]=WARN
-Hardware name: 9000/800/rp3440
-      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
-PSW: 00001000000001101111100100001111 Tainted: G        W
-bd2 alternatives: applied 0 out of 21 patches
-1;31mr00-03  000000ff0806f90f 000000004b9a94c0 0000000040880db0 000000004b9a9390
-r04-07  0000000040d66600 0000000000065000 0000000000000000 000000004baf5800
-r08-11  0000000000000000 0000000000000038 0000000000000000 0000000000000003
-r12-15  000000004117e850 000000004baf58a8 0000000040dea600 000000004015f080
-r16-19  000000004017a620 0000000040d84600 00000000f938e64c 0000000000001a46
-r20-23  0000000000001a46 000000000000001a 0000000000008000 0000000000000000
-r24-27  0000000000000000 000000000800000f 000000004baf5a40 0000000040d66600
-r28-31  0000000000063000 000000004b9a9560 000000004b9a9420 000000004e1d8980
-sr00-03  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
-ROOT: clean, 263787/17629184 files, 4280669/70507776 blocks
-done.
-IASQ: 0000000000000000 0000000000000000 IAOQ: 0000000040880de4 0000000040880de8
-  IIR: 03ffe01f    ISR: 0000000010240000  IOR: 0000002e62188008
-  CPU:        0   CR30: 000000004b988000 CR31: ffffffffffffefff
-  ORIG_R28: 00000000000003a3
-  IAOQ[0]: pcim_add_mapping_to_legacy_table+0x74/0x90
-  IAOQ[1]: pcim_add_mapping_to_legacy_table+0x78/0x90
-  RP(r2): pcim_add_mapping_to_legacy_table+0x40/0x90
-Backtrace:
-  [<0000000040881ba8>] pcim_iomap+0x120/0x1c8
-  [<000000004090f7e0>] serial8250_pci_setup_port+0xd8/0x168
-  [<0000000040913458>] pci_hp_diva_setup+0x98/0xe0
-  [<0000000040915094>] pciserial_init_ports+0x1c4/0x3d8
-  [<00000000409154e0>] pciserial_init_one+0x1a8/0x328
-  [<000000004087433c>] pci_device_probe+0x14c/0x2b8
-  [<0000000040936964>] really_probe+0x12c/0x590
-  [<0000000040936e4c>] __driver_probe_device+0x84/0x1a0
-  [<0000000040937058>] driver_probe_device+0xf0/0x2d8
-  [<000000004093753c>] __driver_attach+0x114/0x320
-  [<0000000040932240>] bus_for_each_dev+0xf0/0x180
-  [<0000000040935d48>] driver_attach+0x48/0x60
-  [<0000000040934c4c>] bus_add_driver+0x314/0x4c0
-  [<00000000409391b0>] driver_register+0xe0/0x290
-  [<0000000040873628>] __pci_register_driver+0x88/0xa0
-  [<0000000040146428>] serial_pci_driver_init+0x48/0x60
-  [<00000000402053e4>] do_one_initcall+0x7c/0x320
-  [<0000000040102a74>] kernel_init_freeable+0x5a4/0x6c0
-  [<0000000040ca96f0>] kernel_init+0x60/0x340
-  [<0000000040202020>] ret_from_kernel_thread+0x20/0x28
----[ end trace 0000000000000000 ]---
-0000:e0:01.1: ttyS2 at MMIO 0xfffffffff4050038 (irq = 74, base_baud = 115200) is a 16550A
+Sorry - this violates the coding styles and makes it hard to read.
 
-Dave
+See process/coding-style.rst:
 
--- 
-John David Anglin  dave.anglin@bell.net
+Do not unnecessarily use braces where a single statement will do.
 
+.. code-block:: c
+
+         if (condition)
+                 action();
+
+and
+
+.. code-block:: c
+
+         if (condition)
+                 do_this();
+         else
+                 do_that();
+
+This does not apply if only one branch of a conditional statement is a single
+statement; in the latter case use braces in both branches:
+
+.. code-block:: c
+
+         if (condition) {
+                 do_this();
+                 do_that();
+         } else {
+                 otherwise();
+         }
+
+Also, use braces when a loop contains more than a single simple statement:
+
+.. code-block:: c
+
+         while (condition) {
+                 if (test)
+                         do_something();
+         }
+
+thanks,
+-- Shuah
 
