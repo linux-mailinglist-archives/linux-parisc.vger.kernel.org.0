@@ -1,71 +1,71 @@
-Return-Path: <linux-parisc+bounces-2750-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2751-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA0C9A43BE
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Oct 2024 18:24:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0D79A43CE
+	for <lists+linux-parisc@lfdr.de>; Fri, 18 Oct 2024 18:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C42D1C237B8
-	for <lists+linux-parisc@lfdr.de>; Fri, 18 Oct 2024 16:24:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBF3928195A
+	for <lists+linux-parisc@lfdr.de>; Fri, 18 Oct 2024 16:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B942038B4;
-	Fri, 18 Oct 2024 16:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED08820371E;
+	Fri, 18 Oct 2024 16:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEHd19DV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+/zmRRV"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C0E202656
-	for <linux-parisc@vger.kernel.org>; Fri, 18 Oct 2024 16:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D50F202F69
+	for <linux-parisc@vger.kernel.org>; Fri, 18 Oct 2024 16:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729268671; cv=none; b=HkAffND657HWq0ioDhXynWCqdz88OY5k3Om9QmGWTMtojVvO0TKAB+1/Q1Jx9AXf/CBffXxEnXW0UF+6081lEqtrOGxzYDlIt1kn9IroIIeEG/GraCsH/RbCrlly44vIfa3IjOSMrSKTav4c11zezci6aA27/SfSKPrk0hLAGvE=
+	t=1729268762; cv=none; b=hGy6R7ShuHO07fXF0W0mnTpHpMsCP5Aa0fojuAVIhb+JBkNi8bgDs/5Fpu/UmIUP28R4G//nNLCeo0tM0xG31yDYIwCBDTyVagq2m6bt+kmF3B57keHo3c0iO/XFxlDQ1mRBsCUBFZa+v9cKfLjvJrPc/U8p41PKakN8czud/bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729268671; c=relaxed/simple;
-	bh=iWxiwdG2p0Ia/g/Q7KCJatv1Xb46S2nFuXqxm0WqkKI=;
+	s=arc-20240116; t=1729268762; c=relaxed/simple;
+	bh=5jbP6qgUgoq1McrR3RLDeRE04owyYxOG4RL62eRi/S0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JohGuB8xGIuu4Rpge8hJ8iL8ISmBhNQ4TR5PTxrVfQmNy8LX7qulM5L6cRJjU+JuKCUZ1VJqx+KwewRNX2eT3KTEEwIJy5cCSiGxWzVGFq/LuR454SO7e36LgY0+K9pksJdU0AoeaabRFm14GOJ+pAESH1eQLNgcDxQJZghWbuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEHd19DV; arc=none smtp.client-ip=209.85.210.46
+	 In-Reply-To:Content-Type; b=N0qNe5sDVMMnw14gnfhpwJt81MdmSjSgLpKqLloCXrjDII64LJfNsG37HvqBbl5MMJCRKssNN/B2nxjcojkPqULM4z4wMasrf4Ugv/wJUKlSavtUV9LVTNFMTUln55UdTZPu+0AyqBtEJrcIsiQnsDLr5pHFh++Ada/RxDRtx8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H+/zmRRV; arc=none smtp.client-ip=209.85.161.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7092dd03223so513434a34.1
-        for <linux-parisc@vger.kernel.org>; Fri, 18 Oct 2024 09:24:28 -0700 (PDT)
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5eb8aec5d3bso506449eaf.0
+        for <linux-parisc@vger.kernel.org>; Fri, 18 Oct 2024 09:25:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1729268668; x=1729873468; darn=vger.kernel.org;
+        d=linuxfoundation.org; s=google; t=1729268758; x=1729873558; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=F3v+T7PjpPKYcorK84vLoRIziLno8dgMRinbwlPayfE=;
-        b=NEHd19DVCC+91om/KDc6/DtsOHXxxhSn2fZUUeH4mtp4BCX4WlrGa0fdoKvmR0gUW7
-         aSLR0TIFOqdRGcylJv0/qr3YYxWNil/j8sG1rVxH+H9vynocQoQDJxeF+gK1hrxCmFzC
-         S9t3h3q0Z9gdBcYw4A2xEzyQdVgMx9ea8+WBk=
+        bh=P4qNWvLVpxYbIRtwTadaIjM03ETyiiYE+F1EJeQJjHY=;
+        b=H+/zmRRV8q4r4+UlnQN+A0sP2z3gWgJIB1zMRgg6lSVwQDwtf4E85CCQQQpAg5ByQZ
+         syk1Lhzseqd9xZSU4/I/HS2vk/XrXimgUu6t+n555D68Yz7svJcvHY1nTQOyg+tYj36k
+         YsPJaR6eYmdifwgngf3DaWrxI6vYfn+aABy5o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729268668; x=1729873468;
+        d=1e100.net; s=20230601; t=1729268758; x=1729873558;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F3v+T7PjpPKYcorK84vLoRIziLno8dgMRinbwlPayfE=;
-        b=v7S34TPbd/20cGnSjGCwNuBWwIJj06ToSJkfHRR8kntovk9udI1vJbErBEUmCeLynL
-         op+fr3OGNXGwM66eqkpzTcvq14l4JLze4tDVKBuzf/C293jgUG5w8jX7htaZj3viRMHj
-         IIjCDZtG1q/dD14b0c2WTF3hf82HN9QfvAqJ1ttJGcg1N9zTTX+qJ0oJrzESZOWeKYKl
-         NcPqw1GhLQCeWfOUOCjhiiVVt42gR5awC/4OFVEla3GItHnZ9JVKKUkiZX+IyWTBdy9/
-         nJ1VyseZTXgiLja+Im7H6K9L7a0+pkBj71s7hxXSShLeK5wI3irBpUtacrYQ4Nj7/RdS
-         y8Hg==
-X-Forwarded-Encrypted: i=1; AJvYcCWpyp1kat1SKbp0HJncUr6oixBeIJmZd/7f0shKlhlvDVdMCkt9qlkuuIBTkoPwX4lfF7XuGIRKpuQdMT0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywym6X/HttzwwhbTzRwbDjrYipsGcFMpyKNF+LhkLapc89A4/pr
-	VnxnlMko/zfdbA8aO2s43ADezNgXj23tpTjrEguTU9OGoQAPQYXRCtQAYAlCME8=
-X-Google-Smtp-Source: AGHT+IFIMl2GQFcOD4CAePzrCdIz3Ij+s6w3yxltIlvjQyisZktPRrklsesyLhvGbRcpIU0+2bu3ig==
-X-Received: by 2002:a05:6830:348a:b0:717:fb12:2c2 with SMTP id 46e09a7af769-7181a5c6046mr2826059a34.3.1729268667921;
-        Fri, 18 Oct 2024 09:24:27 -0700 (PDT)
+        bh=P4qNWvLVpxYbIRtwTadaIjM03ETyiiYE+F1EJeQJjHY=;
+        b=EzbCeAcH6mYVXCBRQWiamQTBSazmjiL8OzI8mv+ODaQ6wMKrYsnhqfru/jUjLUsikf
+         Jbwc/kmFF4NGL0yYV0+uf7QcxeQlEL192A/JjdW1LxX8uYgv8jd4wRVwab0bRG/2QMTW
+         YhTscKeRCQGtZVV3xtKmffL8rLAnmPCYdlfVCNkvOFYm+sYD5BjydBoaurq+yOU5MqrW
+         zophZir6E4FSVM4NuLu4lICEwAT7XicUILSr+GwMy3vUpGMi2Oxvclr/IbQtHPR6A2LG
+         l/aoe61zwNJRhrEeSqtHlsGJGP+agAqpFhJmrsf+ET00S2x5jFaK2Buomo7xGIJfv9XD
+         T++g==
+X-Forwarded-Encrypted: i=1; AJvYcCX+hCiV0+pxJq3BUA9UUJRRyFl0IpzvtF4WcDS4N69qDSveu4RvI7AhJfLUz+3XXu1i1q/IE1uDC8UtvsY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjG8X9mBzCSTrVfDAP4Su5R3uzbZiGi59gZsIGv3vP/OL8cd3N
+	fjUeWVAo7KhLxtlFreYZI1LBQPMACTvy5SLejUJbnTul5Yf5UiJI9SgMMVZPdm0=
+X-Google-Smtp-Source: AGHT+IGaroc9U1gTQH8oIv9XintQoQrlC7c5FvJNC3/Om1CneZ+0NGXExK3IjmCzNnhwYO6jdZ3JsA==
+X-Received: by 2002:a05:6870:d60e:b0:288:aed8:c43d with SMTP id 586e51a60fabf-2890cf88610mr4183890fac.15.1729268758143;
+        Fri, 18 Oct 2024 09:25:58 -0700 (PDT)
 Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-718195da4d0sm376406a34.56.2024.10.18.09.24.26
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-718195da5f0sm377033a34.60.2024.10.18.09.25.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Oct 2024 09:24:27 -0700 (PDT)
-Message-ID: <40ca64d7-c8c9-47b1-ac17-95524bd76aa6@linuxfoundation.org>
-Date: Fri, 18 Oct 2024 10:24:25 -0600
+        Fri, 18 Oct 2024 09:25:57 -0700 (PDT)
+Message-ID: <3a41a1b5-e9a7-43db-b50e-84d6cc275d10@linuxfoundation.org>
+Date: Fri, 18 Oct 2024 10:25:55 -0600
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -104,7 +104,7 @@ Content-Language: en-US
 From: Shuah Khan <skhan@linuxfoundation.org>
 In-Reply-To: <7bbfc635-8d42-4c3d-8808-cb060cd9f658@lucifer.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 On 10/18/24 10:07, Lorenzo Stoakes wrote:
 > On Fri, Oct 18, 2024 at 09:32:17AM -0600, Shuah Khan wrote:
@@ -302,77 +302,11 @@ On 10/18/24 10:07, Lorenzo Stoakes wrote:
 > been more productive for you to first engage on why it is I'm deviating
 > here.
 > 
-> Firstly, as I said, the code _does not compile_ if I do not use braces in
-> many cases. This is probably an issue with the macros, but it is out of
-> scope for this series for me to fix that.
 
-I am not trying to throw the book at you. When I see 45 of
-them I have to ask the reasons why.
-
-> 
-> 'Fixing' these cases results in:
-> 
->    CC       guard-pages
-> guard-pages.c: In function ‘guard_pages_split_merge’:
-> guard-pages.c:566:17: error: ‘else’ without a previous ‘if’
->    566 |                 else
->        |                 ^~~~
-> guard-pages.c: In function ‘guard_pages_dontneed’:
-> guard-pages.c:666:17: error: ‘else’ without a previous ‘if’
->    666 |                 else
->        |                 ^~~~
-> guard-pages.c: In function ‘guard_pages_fork’:
-> guard-pages.c:957:17: error: ‘else’ without a previous ‘if’
->    957 |                 else
->        |                 ^~~~
-> guard-pages.c: In function ‘guard_pages_fork_wipeonfork’:
-> guard-pages.c:1010:17: error: ‘else’ without a previous ‘if’
->   1010 |                 else
->        |                 ^~~~
-> 
-> In other cases I am simply not a fan of single line loops where there is a
-> lot of compound stuff going on:
-> 
-> 	for (i = 0; i < 10; i++) {
-> 		ASSERT_FALSE(try_read_write_buf(&ptr1[i * page_size]));
-> 	}
-> 
-> vs.
-> 
-> 	for (i = 0; i < 10; i++)
-> 		ASSERT_FALSE(try_read_write_buf(&ptr1[i * page_size]));
-> 
-> When there are very many loops like this. This is kind of a test-specific
-> thing, you'd maybe put more effort into splitting this up + have less
-> repetition in non-test code.
-> 
-> I'm not going to die on the hill of single-line-for-loops though, so if you
-> insist I'll change those.
-> 
-> However I simply _cannot_ change the if/else blocks that cause compilation
-> errors.
-> 
-> This is what I mean about checkpatch being fallible. It's also fallible in
-> other cases, like variable declarations via macro (understandably).
-> 
-> Expecting checkpatch to give zero warnings is simply unattainable,
-> unfortunately.
-> 
-> As you seem adamant about strict adherence to checkpatch, and I always try
-> to be accommodating where I can be, I suggest I fix everything _except
-> where it breaks the compilation_ does that work for you?
-
-Yes Please. If you leave these in here as soon as the patch hits
-next, we start seeing a flood of patches. It becomes harder to fix
-these later due to merge conflicts.
-
-It becomes a patch overload issue. Yes I would like to see the ones
-that don't result in compile errors fixed.
+This is not the only comment I gave you in this patch and your
+other patches.
 
 thanks,
 -- Shuah
-
-> 
-> Thanks.
 
 
