@@ -1,200 +1,340 @@
-Return-Path: <linux-parisc+bounces-2832-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2833-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8E89A9FD3
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 12:22:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F89A9FED
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 12:26:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C025A1C21250
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 10:21:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82C331F23F88
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 10:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5E8199E8D;
-	Tue, 22 Oct 2024 10:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC3D19AA46;
+	Tue, 22 Oct 2024 10:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q0Dwv2E4"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="M/l+RQjc";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="abZMl2C7"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F931171066;
-	Tue, 22 Oct 2024 10:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729592517; cv=none; b=Cx5HIkXlKDE5adr8xCB7H+VbtFeDd/zLxZGdBKzRsa0mz/9n/XS/nU3WxMou6u7IArG3cpHJzFz8nKZENTbVUgWerTcVVlo0X0Z+9HaAL8WEXWjQ4VvSz5mLf6VyNdOBZNrXk0MyRl6fY4kD0MEDdvgOBDNvDCBKZ0SEEsD+hkA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729592517; c=relaxed/simple;
-	bh=AV2qizbKg6OBYja0QTKSFQnNhoDGuy4QLCP1NAfZPuk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=R/fKLA2DBoqZdB8CCDO35o56DAloaGHYaMjGaAcjXAq5rGrbua/y9z2wpOxWH3YGjfEDdLhWDL/JakkyDQ/SlzmwUQgqhyiuIAG8RCUZt+gjR7s020ufaWhJUbVRr/ZtyWJot0+1irSct9HT5sRZVpcuGukrByibL5G3nOgDptU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q0Dwv2E4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D8CC4CEC3;
-	Tue, 22 Oct 2024 10:21:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729592517;
-	bh=AV2qizbKg6OBYja0QTKSFQnNhoDGuy4QLCP1NAfZPuk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=q0Dwv2E4cQ9aPHZAyd6T9O5nTw+cwk7rYh7yOVSiJzLLMGVxPKzzbarWuahcbHEDz
-	 kpyFs/kEdSzA7cD8chrCYxE8lyuDpgOiVUDgF4IRySbhcYGhxmyk3wzKrYEpoNbkCK
-	 uXW/uTjWgQCkFUbbOmDkvJES44yYCBDii+4ImiW8Mup/HQx9mpyUUINZfVdFIXt7Aw
-	 0QUQdMwzUQhkGtHZjur0RcR2le86yOAsbGiwfZCo+xXhFfBsAxxGkS6+uvTakgnWuZ
-	 M2YkLweov6J1Un7ac1n+DjCOepl5y2Ep3/5j0LiopQt5lSZKxtKNN2YuZT2GQfrKBp
-	 sfC1pRJkvbWLA==
-From: Puranjay Mohan <puranjay@kernel.org>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexei Starovoitov <ast@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Andrii Nakryiko
- <andrii@kernel.org>, bpf@vger.kernel.org, Daniel Borkmann
- <daniel@iogearbox.net>, "David S. Miller" <davem@davemloft.net>, Eduard
- Zingerman <eddyz87@gmail.com>, Eric Dumazet <edumazet@google.com>, Hao Luo
- <haoluo@google.com>, Helge Deller <deller@gmx.de>, Jakub Kicinski
- <kuba@kernel.org>, "James E.J. Bottomley"
- <James.Bottomley@hansenpartnership.com>, Jiri Olsa <jolsa@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-riscv@lists.infradead.org, Martin KaFai Lau <martin.lau@linux.dev>,
- Mykola Lysenko <mykolal@fb.com>, netdev@vger.kernel.org, Palmer Dabbelt
- <palmer@dabbelt.com>, Paolo Abeni <pabeni@redhat.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Shuah Khan <shuah@kernel.org>, Song Liu
- <song@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Yonghong Song
- <yonghong.song@linux.dev>
-Subject: Re: [PATCH bpf-next 4/5] selftests/bpf: Add benchmark for
- bpf_csum_diff() helper
-In-Reply-To: <CAEf4BzY1LgCF1VOoAQkMdDTx87C0mfyftMvhvVU4GpsFc6fw5g@mail.gmail.com>
-References: <20241021122112.101513-1-puranjay@kernel.org>
- <20241021122112.101513-5-puranjay@kernel.org>
- <CAEf4BzY1LgCF1VOoAQkMdDTx87C0mfyftMvhvVU4GpsFc6fw5g@mail.gmail.com>
-Date: Tue, 22 Oct 2024 10:21:43 +0000
-Message-ID: <mb61pa5ewbfpk.fsf@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49CA8198842;
+	Tue, 22 Oct 2024 10:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729592797; cv=fail; b=VP/SiXF9hrgG2SxJtlXQv8ygfh3EVnjY6/F8LCY/QKy3anEiQM0gMErtMnMix6LgBuiEyb8e3FygV6HdeUj2LKcWmO8Rc7Wr7nW8Va44MayMGC7y2uTM/pbtojra2S9z6w+UnwuNd4i9E9C+8nj7cdfAKM+OXf/zw+QE2eYdXoI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729592797; c=relaxed/simple;
+	bh=x6ob/7J62UsPZLxME/tDmen439VQgzbCmn80bpQc58w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jzd3pF7vBMNk0YWBcQQB8v9noucVZpEnzkAGhvq8Ss8LD3O0UbEWYgGOz4p5u90K/pnffDL6uTdmQRkLMLT3bgsO4bodBRKaj3vP99RiQtKTePrV9z5FEe6XbJCsYbND4ZtFuHTyS0brL8kZkzJQwTnaG2w/OBm2agM8Sk3lF6Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=M/l+RQjc; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=abZMl2C7; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49M7tg4R011337;
+	Tue, 22 Oct 2024 10:25:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2023-11-20; bh=ERhKoConSGBBQF+IPs
+	GcGQVQEAz9j9Yw7D9l46CQznE=; b=M/l+RQjcKOacOVWJQ5sZXlRviRJNCpMXQ8
+	57YLkCZuBy4Hdj1wECgjN/5J+nP09mg24vlnnaADHONPSbKUtpeV1aeT6kQjK9Pj
+	0Lw49LjSBMRB2VVVT9JrYbY3chdUEYn6svV1zXEirK60Q6IWzPaPxdDG469tHT3A
+	g6dT53YS7Z4xq+3MQN+07T8aEAGQgPoW8+h8xFs6vACFzQA92YFGCPtj410DIH8n
+	i5amXY3ZcRPLzTlKBFKVf9meJt1pc1Rmusg0sRWwrnFyUDDzybnFUT+SzQfJGPOv
+	YkE+auFKA9TEyA2gbm8h3XYpeA9cEOpuMafSmMPK3frRIXU27kzQ==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 42c545590r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Oct 2024 10:25:20 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49M9vwmY023530;
+	Tue, 22 Oct 2024 10:25:19 GMT
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 42c8evbgvk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Oct 2024 10:25:19 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sodV97MeHmmsuSZQ+YZUcHj1LfPs8E/7dZ2A7NBCj3CgNIoJs4wHx/drSh1C2BIf5Ctioidr3KDPEtM4sj0tLg77ElxlH3LAKV27BEXO0zg1gjhCW2DCn7SyCoszKfsuj6p0CoadqXe1VrgbfXa6IE5Rh0UrayZqzhhgesD4aJqqFCUqM4f/wh96E6JReiHyQnd22Q63JpnKv1FGeaQOJieXGFvMX6bgL+VUE3qVFekRfvk5QWnp8UqbnPwzl25LNthZ6Ski4lF817zLn2ciFO6c8N7ujciLa12b+m8k/8gXKj2zlAnykASCIlC04xkxMLZgl1WwYMgt15LCGon9bQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ERhKoConSGBBQF+IPsGcGQVQEAz9j9Yw7D9l46CQznE=;
+ b=f073WGho5gm2ozpZdOv77GLPzsQQ9CZyZFte7VjagY3cg6gVmEwOjOiNrdZi0ye2d/AStZN8vlj/rQ8yyMZND7hxrlTSV+gN5c6oXWYpjs3h/jWiGVssheTqtIylvFxttlIaV+ec5juvVv4OhiP+xgmDJV1habEKI76oQu+KmwjBy6fkvwxik6dAp0zEzIS9NrO/b7hXO6lIxt+6JNjRmX8DrcnAfjXAtlcIuF5pNrTCU1GHGy1h6x1faWMaap6FEuVUNmVSp2B4u3p7XK/BpGLpU/pbvz/F5R1g4Yz/wD5AHr0r8mvQ+GmAMnnaR6IHDncMRnrcOs2jAfNEUEw/7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ERhKoConSGBBQF+IPsGcGQVQEAz9j9Yw7D9l46CQznE=;
+ b=abZMl2C7mxckZKI+YUZqIOvMW4BsCquSTgic/kpNTd1mKr+AiHzqZaznAr0qIYWSDEh2RXETpGxsxViceQZ83aeeR1UMtnzVDHT2zAvhL5oi3mdxs6+IU/js9cVbeWh//dlF9r6ynRFY3kC8vlANnvCb+NIs1ntDoq7lHGCX6Vs=
+Received: from BYAPR10MB3366.namprd10.prod.outlook.com (2603:10b6:a03:14f::25)
+ by BY5PR10MB4356.namprd10.prod.outlook.com (2603:10b6:a03:210::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.29; Tue, 22 Oct
+ 2024 10:25:17 +0000
+Received: from BYAPR10MB3366.namprd10.prod.outlook.com
+ ([fe80::baf2:dff1:d471:1c9]) by BYAPR10MB3366.namprd10.prod.outlook.com
+ ([fe80::baf2:dff1:d471:1c9%6]) with mapi id 15.20.8069.024; Tue, 22 Oct 2024
+ 10:25:17 +0000
+Date: Tue, 22 Oct 2024 11:25:11 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+        "Paul E . McKenney" <paulmck@kernel.org>, Jann Horn <jannh@google.com>,
+        David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-arch@vger.kernel.org,
+        Shuah Khan <shuah@kernel.org>, Christian Brauner <brauner@kernel.org>,
+        linux-kselftest@vger.kernel.org,
+        Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+        Jeff Xu <jeffxu@chromium.org>, Christoph Hellwig <hch@infradead.org>,
+        linux-api@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH v2 5/5] selftests/mm: add self tests for guard page
+ feature
+Message-ID: <9032e483-0e8c-4cff-a5a3-c329899829df@lucifer.local>
+References: <cover.1729440856.git.lorenzo.stoakes@oracle.com>
+ <090ed13db09bc25863a78eba902d8bf2c6534ced.1729440856.git.lorenzo.stoakes@oracle.com>
+ <360241aa-49ec-42b1-99c9-759a9a0873a0@linuxfoundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <360241aa-49ec-42b1-99c9-759a9a0873a0@linuxfoundation.org>
+X-ClientProxiedBy: LO4P123CA0405.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:189::14) To BYAPR10MB3366.namprd10.prod.outlook.com
+ (2603:10b6:a03:14f::25)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha512; protocol="application/pgp-signature"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR10MB3366:EE_|BY5PR10MB4356:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8470c6ca-6ffa-4036-c373-08dcf283d280
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?kHkZOLz3LT0STmDUkxK+xzfTda4chhCp0qDm07mI3eUgLdD3uJbAgrl5YV3k?=
+ =?us-ascii?Q?NVztTUlnCE56rrHcXn1uXrMdCvBCvV9oFuBqaqYazrp9xOkjhB4EYOOt6xZo?=
+ =?us-ascii?Q?zYu1xfhLkJXn1fKd1R4awP18a4Zk6SedQfQ6+3wA3PhUcODO6xZVxHtX1xqj?=
+ =?us-ascii?Q?f4xxcUa7wtYMwnoNQ12+OXB9DAjHGTjc7DztVCroQaXm73CJG4kPn4XXXsiN?=
+ =?us-ascii?Q?I5ywJoV/IaRbPJhqMesfNVzvfQ/bDgytzd4WJg+mrkX2vBg4oZsP9zhWszF0?=
+ =?us-ascii?Q?sfQah9WUcCC6kYyH//1KSFSdlAQJBoa38daHV2eVZxx9ofQIZMyOQ9zXXeuu?=
+ =?us-ascii?Q?giK4YSwmunLwf/gRx3zlfzxx1LT3ad2uQbQsX2p2lsO7OymOLaF4FZELJ7z/?=
+ =?us-ascii?Q?cq6acwDNl0oNGREmk7PtGbkkevOYq5+i3Yf8WQXqe4BwpnO9oooE1R+nfes9?=
+ =?us-ascii?Q?LehMXMv+Nv0BxMi9a6Hi227WNzOmvvUGxWiDVkvW+GVDZOPY4Cg3ZrKYSEpi?=
+ =?us-ascii?Q?qBJMEcM2JLuo1aTrmHe0I5VmMIHQ0mEOwtMb8kTVLjpEW5z6nvXz9bBhsP2M?=
+ =?us-ascii?Q?71xNYRXbdxoQZ6jNY+CuCnCUwKYFo3xqKooXru1iu5SHlCBNw56pDQbXrkZh?=
+ =?us-ascii?Q?x0A5R5q8NKZ/ms7b8Wb2CiYJwLSQFJaG54fnpfmi5WiDgGbJbQ2/+/FUD2e2?=
+ =?us-ascii?Q?uKKaLS1+jxdWlDhC2RwdKdXsqLYjHV/aLAf9blqBA7FSkOWK3g7uaYgP4xAp?=
+ =?us-ascii?Q?5UFXOA4i0NRf36KEmVnuu6eBzS+3WHPZ2aOb5vl/hEZjn/dK7EVcfu42tl1q?=
+ =?us-ascii?Q?K7xjdPHsARTZRgT892H8bDszJKQt4OfgF0aotOuAZoWVmUnFeAy1F3dplQLF?=
+ =?us-ascii?Q?eXQdzsbyF5cr/YY/deK4D15ABqQBcokT+GMrdGdoLKc6W60ZWQ2baXZ/doek?=
+ =?us-ascii?Q?N9qSZE8TrvnlTLH7YEtdbMlQNVqhSNPI6Njrbaiz+f1K9nAzORh0n5FhjFz3?=
+ =?us-ascii?Q?YtprV76fYKFwAWX2LyUqstUsarzdAmg7Dhlow76y3chOp8wXUdyPmLYouU4/?=
+ =?us-ascii?Q?O8UUJwRCjNllkjuvS/rIshzjkAw5ItkqMtcKBwvYi/huxA3+9awiLSPjILb8?=
+ =?us-ascii?Q?lxUgSrjRsMfC/ICAUITbSjwmH8tqANliGYw01QCAMcHShS1uOzGoubAzynGg?=
+ =?us-ascii?Q?XDKBcEqaGuPBJUt51nnOiNFp4xxircqx0Vr6LaEow78KVYI+zP6GWeMk7yQH?=
+ =?us-ascii?Q?moCvV2HWkqmpe/NzLwlCpymgBvh3EpdoQQYraFhtnHh7/zDZ5OHuzSPEOO+9?=
+ =?us-ascii?Q?x1kngLOgWiuBDZ3p8i8i5Fms?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB3366.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ExoCNxir+0w16+4PqXcn4vRDTDP0eTVTsPwqIl8/dLOLW0ELBfCt7qRXVB6s?=
+ =?us-ascii?Q?XbLl0ruWhtUwIMnNaHaioC72H42bRVXwCUNbIWQ3feBNqdDmpC8unPfLKBtb?=
+ =?us-ascii?Q?vuIq409hYplI0MO6jgt2w3PBNGwNyi8m/TNR8GxdDnrw91qTekpbTF2Uuwa9?=
+ =?us-ascii?Q?KEF3Ry7Ok/J1qPjP3WibNgcrdxn01wI4ppjf1Lw72TfrGQY8b/JpYsDhKDN7?=
+ =?us-ascii?Q?gy2VNSd9VW9UND53Y/KWj9UxsVcEiRyyH/McA3pDOeUomgFERGexk4TrWep4?=
+ =?us-ascii?Q?H7pVOg/EtgAmPyZLcgpSaBoiwfIf3tY6qeamqoTNTrHRd41pMYmtmyram7eY?=
+ =?us-ascii?Q?3EVRpxbrdi+4lqX7hY/7U4YPn5bgJ6teLWSpRk6/uSl05WK1iup9Dos0fHNn?=
+ =?us-ascii?Q?/tkXH7RNWtB+YeUKCxcwy1SMGVx7cY9nh/OOImV1+ao/f7eIrAmDHm3YhIsH?=
+ =?us-ascii?Q?Lm51eTN5mPXEBwtgoMSwdJugDSjyw/SPTLmC+h6AFp+ZIQ4YA90Pqsq28Twu?=
+ =?us-ascii?Q?i6h6hMThQwhJ66IyCkHo+AJ4neSm62I9FiI56/KWOJgJXH9b8RBBkRUdg64T?=
+ =?us-ascii?Q?KKT2reJ7sqQFR/30dl/y8N1RAMJNB2BslQxPcGn85oQoI90QB7pTfQHCcZbT?=
+ =?us-ascii?Q?rmfKZx2rzdfmwXIPpPWG8vA7p73ckSUDTFByXFhvSM+qayDFThpMBYOGCKx3?=
+ =?us-ascii?Q?ycxmco4EKV6/2kpByzq1Nfakn5Y/rk/RKtBl6HMGb2C1S1auUu721BuQpV4B?=
+ =?us-ascii?Q?T4cifTRARl+UyyYAvjuwAPNpPHKyciUe60Cq/fQalqSppXzJPNL7/zjMReZ5?=
+ =?us-ascii?Q?+qddo1rV1txPMHdtCxAdznT6Bv0SdDXU6G22vy43Nji+SO3I+cIb6INUPZwj?=
+ =?us-ascii?Q?UU97djrPAkHGUWomIw4cCST8GAtKRlovqrSptuMyJol/IJRvzLWfYvCur4yN?=
+ =?us-ascii?Q?4an2fnnMWNxQZTQ8czw45kD5i5hMdXZK05Xf2BI7BsT65iZPjmWD0eStwT8P?=
+ =?us-ascii?Q?HVqSnTvJPbv/DONH0r4SbZGAziQ77VvWzFPa1hq3eSzrM1Ph0IDEgS13SKRV?=
+ =?us-ascii?Q?t94kOz1zB951lllsk6gWcBONfVkwhsVycuTk2rO+2b4BqiM0dYEXX21hMU3L?=
+ =?us-ascii?Q?xBqQ9hUWFzWzamiQ1+/2KU/cc4LxCmFAGBLy6LJaO1Fwb5GMDdBWYO5gOocN?=
+ =?us-ascii?Q?8Qwjdw0WWoHMf06BQwNQRnDjmk9oOln1ps/+PvWQ09va5D8KNfmEkpwXnT9V?=
+ =?us-ascii?Q?NBP66Z70/abtru64+SdsMku8CLc/7cVPvJ2jifMX1OtY/gopYk6EIrY/0/SF?=
+ =?us-ascii?Q?TLHcVleoyXtv0qIldkYvXZI/J+HgUZepdtm6TaO6OLAWTo/YqI6f/X4w957k?=
+ =?us-ascii?Q?BtCg7v+2WuSKWcuLLOtAnlTnu3vlAqdU2++DZ7miKNA0hUkRaWLMls79QPSG?=
+ =?us-ascii?Q?7nuzCRA+G/eItTL4PKKhp+y+kmCtJXeaP/Humm45dNBmnIvqrxU6cbSEN59D?=
+ =?us-ascii?Q?tDl+vlTOmUJgpbMHpLDKhsPO4ZjCM8O4Rc+pV5hXzND0JBKRU78jVHYJ01CS?=
+ =?us-ascii?Q?WkY5VhEYM+0XQgcOd1uOTq40rwWQ/A6hst+DOO+h8JVOGQJ4mOmuN0p9uD9z?=
+ =?us-ascii?Q?y3s4iAxCG7TzxSA0nJDu2RzKL/w6Wqnx+tMZ34uqRiKLJW3QtvpBhz8fhvx0?=
+ =?us-ascii?Q?MCOPjQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	tlQ0bSLRR1cWk/ApUZZSNhdk/BrmiOW3GvCCQiRE/eTZLokGNFpBqIOtpwOGO/bJZVy1BcoBbowQbvpNpgobYlSVR4aktBBNwgbtVjf55sEHD9YVNo253Ohj2iG/cU1N9BAS8Y7pnNKvlun+z1+kTPD2tzlsGJ/u0dp3lpVg1puilD8nuxXckQ6w2xXoHeka6qedVkdMXvgJindHLATlRfk2qRhEy2txWs96DO0ZstTpDSUoVrGMCTenXENKj7fsK980vv0nS3emP2juY0d6msGB70mzwnWlcB1pkxNPunPg0KQX2A14kTJD/7elzZdxo3j7zjLbh2+02QQ30n3WRmAwpZEomRavIF0WBT8ytqBHxxP8E4g6X5IVSBULlYcOrda9Knd7RT0wpKvqjD8wo14lq3yWEL+5QJlliMjFMDbh7nvJwt1Xt4AhYMqz2c+6XANKSPYtzEBhiosk0DZU0sdD3QyYPwJbnfVLXLxATnvt8ygWnchXOyRjU7kmm1PakhbRLgLkVySCtQlvM7mmGUBBHIX+rgVIw9xelKeEufN7JHw06te5GAEMhNg6OrsnK5AqZsbzXCtASUzLlk0mmxIXXhMI8AlNc0xosHYf8IQ=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8470c6ca-6ffa-4036-c373-08dcf283d280
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB3366.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2024 10:25:17.0734
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HGYNJzhfqRUYYfC7+TEK898NzFLtGv6Nf6vThdRjK5PVYAixC33j5WeE/0ZS3apxmT1gw3RaZ/DfTea3dyJCV42QNNTen69CONLTvz1YN4E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR10MB4356
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-22_10,2024-10-21_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 suspectscore=0
+ adultscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2410220067
+X-Proofpoint-ORIG-GUID: -tQCqXWNLrA6jRq-BFd8FdInv0bgvmji
+X-Proofpoint-GUID: -tQCqXWNLrA6jRq-BFd8FdInv0bgvmji
 
---=-=-=
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-
-Andrii Nakryiko <andrii.nakryiko@gmail.com> writes:
-
-> On Mon, Oct 21, 2024 at 5:22=E2=80=AFAM Puranjay Mohan <puranjay@kernel.o=
-rg> wrote:
->>
->> Add a microbenchmark for bpf_csum_diff() helper. This benchmark works by
->> filling a 4KB buffer with random data and calculating the internet
->> checksum on different parts of this buffer using bpf_csum_diff().
->>
->> Example run using ./benchs/run_bench_csum_diff.sh on x86_64:
->>
->> [bpf]$ ./benchs/run_bench_csum_diff.sh
->> 4                    2.296 =C2=B1 0.066M/s (drops 0.000 =C2=B1 0.000M/s)
->> 8                    2.320 =C2=B1 0.003M/s (drops 0.000 =C2=B1 0.000M/s)
->> 16                   2.315 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/s)
->> 20                   2.318 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/s)
->> 32                   2.308 =C2=B1 0.003M/s (drops 0.000 =C2=B1 0.000M/s)
->> 40                   2.300 =C2=B1 0.029M/s (drops 0.000 =C2=B1 0.000M/s)
->> 64                   2.286 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/s)
->> 128                  2.250 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/s)
->> 256                  2.173 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/s)
->> 512                  2.023 =C2=B1 0.055M/s (drops 0.000 =C2=B1 0.000M/s)
+On Mon, Oct 21, 2024 at 03:31:59PM -0600, Shuah Khan wrote:
+> On 10/20/24 10:20, Lorenzo Stoakes wrote:
+> > Utilise the kselftest harmness to implement tests for the guard page
+> > implementation.
+> >
+> > We start by implement basic tests asserting that guard pages can be
+> > established (poisoned), cleared (remedied) and that touching poisoned pages
+> > result in SIGSEGV. We also assert that, in remedying a range, non-poison
+> > pages remain intact.
+> >
+> > We then examine different operations on regions containing poison markers
+> > behave to ensure correct behaviour:
+> >
+> > * Operations over multiple VMAs operate as expected.
+> > * Invoking MADV_GUARD_POISION / MADV_GUARD_REMEDY via process_madvise() in
+> >    batches works correctly.
+> > * Ensuring that munmap() correctly tears down poison markers.
+> > * Using mprotect() to adjust protection bits does not in any way override
+> >    or cause issues with poison markers.
+> > * Ensuring that splitting and merging VMAs around poison markers causes no
+> >    issue - i.e. that a marker which 'belongs' to one VMA can function just
+> >    as well 'belonging' to another.
+> > * Ensuring that madvise(..., MADV_DONTNEED) does not remove poison markers.
+> > * Ensuring that mlock()'ing a range containing poison markers does not
+> >    cause issues.
+> > * Ensuring that mremap() can move a poisoned range and retain poison
+> >    markers.
+> > * Ensuring that mremap() can expand a poisoned range and retain poison
+> >    markers (perhaps moving the range).
+> > * Ensuring that mremap() can shrink a poisoned range and retain poison
+> >    markers.
+> > * Ensuring that forking a process correctly retains poison markers.
+> > * Ensuring that forking a VMA with VM_WIPEONFORK set behaves sanely.
+> > * Ensuring that lazyfree simply clears poison markers.
+> > * Ensuring that userfaultfd can co-exist with guard pages.
+> > * Ensuring that madvise(..., MADV_POPULATE_READ) and
+> >    madvise(..., MADV_POPULATE_WRITE) error out when encountering
+> >    poison markers.
+> > * Ensuring that madvise(..., MADV_COLD) and madvise(..., MADV_PAGEOUT) do
+> >    not remove poison markers.
+> >
+> > If any test is unable to be run due to lack of permissions, that test is
+> > skipped.
+> >
+> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> > ---
+> >   tools/testing/selftests/mm/.gitignore    |    1 +
+> >   tools/testing/selftests/mm/Makefile      |    1 +
+> >   tools/testing/selftests/mm/guard-pages.c | 1228 ++++++++++++++++++++++
+> >   3 files changed, 1230 insertions(+)
+> >   create mode 100644 tools/testing/selftests/mm/guard-pages.c
+> >
+> > diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+> > index 689bbd520296..8f01f4da1c0d 100644
+> > --- a/tools/testing/selftests/mm/.gitignore
+> > +++ b/tools/testing/selftests/mm/.gitignore
+> > @@ -54,3 +54,4 @@ droppable
+> >   hugetlb_dio
+> >   pkey_sighandler_tests_32
+> >   pkey_sighandler_tests_64
+> > +guard-pages
+> > diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+> > index 02e1204971b0..15c734d6cfec 100644
+> > --- a/tools/testing/selftests/mm/Makefile
+> > +++ b/tools/testing/selftests/mm/Makefile
+> > @@ -79,6 +79,7 @@ TEST_GEN_FILES += hugetlb_fault_after_madv
+> >   TEST_GEN_FILES += hugetlb_madv_vs_map
+> >   TEST_GEN_FILES += hugetlb_dio
+> >   TEST_GEN_FILES += droppable
+> > +TEST_GEN_FILES += guard-pages
+> >   ifneq ($(ARCH),arm64)
+> >   TEST_GEN_FILES += soft-dirty
+> > diff --git a/tools/testing/selftests/mm/guard-pages.c b/tools/testing/selftests/mm/guard-pages.c
+> > new file mode 100644
+> > index 000000000000..f67d2700d44a
+> > --- /dev/null
+> > +++ b/tools/testing/selftests/mm/guard-pages.c
+> > @@ -0,0 +1,1228 @@
+> > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > +
+> > +#define _GNU_SOURCE
+> > +#include "../kselftest_harness.h"
+> > +#include <asm-generic/mman.h> /* Force the import of the tools version. */
+> > +#include <assert.h>
+> > +#include <errno.h>
+> > +#include <fcntl.h>
+> > +#include <linux/userfaultfd.h>
+> > +#include <setjmp.h>
+> > +#include <signal.h>
+> > +#include <stdbool.h>
+> > +#include <stdio.h>
+> > +#include <stdlib.h>
+> > +#include <string.h>
+> > +#include <sys/ioctl.h>
+> > +#include <sys/mman.h>
+> > +#include <sys/syscall.h>
+> > +#include <sys/uio.h>
+> > +#include <unistd.h>
+> > +
+> > +/*
+> > + * Ignore the checkpatch warning, as per the C99 standard, section 7.14.1.1:
+> > + *
+> > + * "If the signal occurs other than as the result of calling the abort or raise
+> > + *  function, the behavior is undefined if the signal handler refers to any
+> > + *  object with static storage duration other than by assigning a value to an
+> > + *  object declared as volatile sig_atomic_t"
+> > + */
+> > +static volatile sig_atomic_t signal_jump_set;
+> > +static sigjmp_buf signal_jmp_buf;
+> > +
+> > +/*
+> > + * Ignore the checkpatch warning, we must read from x but don't want to do
+> > + * anything with it in order to trigger a read page fault. We therefore must use
+> > + * volatile to stop the compiler from optimising this away.
+> > + */
+> > +#define FORCE_READ(x) (*(volatile typeof(x) *)x)
+> > +
 >
-> you are not benchmarking bpf_csum_diff(), you are benchmarking how
-> often you can call bpf_prog_test_run(). Add some batching on the BPF
-> side, these numbers tell you that there is no difference between
-> calculating checksum for 4 bytes and for 512, that didn't seem strange
-> to you?
-
-This didn't seem strange to me because if you see the tables I added to
-the cover letter, there is a clear improvement after optimizing the
-helper and arm64 even shows a linear drop going from 4 bytes to 512
-bytes, even after the optimization.
-
-On x86 after the improvement, 4 bytes and 512 bytes show similar numbers
-but there is still a small drop that can be seen going from 4 to 512
-bytes.
-
-My thought was that because the bpf_csum_diff() calls csum_partial() on
-x86 which is already optimised, most of the overhead was due to copying
-the buffer which is now removed.
-
-I guess I can amplify the difference between 4B and 512B by calling
-bpf_csum_diff() multiple times in a loop, or by calculating the csum by
-dividing the buffer into more parts (currently the BPF code divides it
-into 2 parts only).
-
->>
->> Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
->> ---
->>  tools/testing/selftests/bpf/Makefile          |   2 +
->>  tools/testing/selftests/bpf/bench.c           |   4 +
->>  .../selftests/bpf/benchs/bench_csum_diff.c    | 164 ++++++++++++++++++
->>  .../bpf/benchs/run_bench_csum_diff.sh         |  10 ++
->>  .../selftests/bpf/progs/csum_diff_bench.c     |  25 +++
->>  5 files changed, 205 insertions(+)
->>  create mode 100644 tools/testing/selftests/bpf/benchs/bench_csum_diff.c
->>  create mode 100755 tools/testing/selftests/bpf/benchs/run_bench_csum_di=
-ff.sh
->>  create mode 100644 tools/testing/selftests/bpf/progs/csum_diff_bench.c
->>
+> Thank you.
 >
-> [...]
+> Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+
+Thanks! :)
+
 >
->> +
->> +static void csum_diff_setup(void)
->> +{
->> +       int err;
->> +       char *buff;
->> +       size_t i, sz;
->> +
->> +       sz =3D sizeof(ctx.skel->rodata->buff);
->> +
->> +       setup_libbpf();
->> +
->> +       ctx.skel =3D csum_diff_bench__open();
->> +       if (!ctx.skel) {
->> +               fprintf(stderr, "failed to open skeleton\n");
->> +               exit(1);
->> +       }
->> +
->> +       srandom(time(NULL));
->> +       buff =3D ctx.skel->rodata->buff;
->> +
->> +       /*
->> +        * Set first 8 bytes of buffer to 0xdeadbeefdeadbeef, this is la=
-ter used to verify the
->> +        * correctness of the helper by comparing the checksum result fo=
-r 0xdeadbeefdeadbeef that
->> +        * should be 0x3b3b
->> +        */
->> +
->> +       *(u64 *)buff =3D 0xdeadbeefdeadbeef;
->> +
->> +       for (i =3D 8; i < sz; i++)
->> +               buff[i] =3D '1' + random() % 9;
+> thanks,
+> -- Shuah
 >
-> so, you only generate 9 different values for bytes, why? Why not full
-> byte range?
-
-Thanks for catching this, there is no reason for this to be [1,10] I
-will use the full byte range in the next version.
-
-Thanks,
-Puranjay
-
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iIoEARYKADIWIQQ3wHGvVs/5bdl78BKwwPkjG3B2nQUCZxd8uBQccHVyYW5qYXlA
-a2VybmVsLm9yZwAKCRCwwPkjG3B2naqLAP4gJRI2rNegFDPIetTizylOYrKkxJvb
-l6VHS1KEhetaqgEA2sTZjU7iKb6CxVDKnGjxvZfB+i7/KLqo8wHt7XSUDQU=
-=7l8n
------END PGP SIGNATURE-----
---=-=-=--
 
