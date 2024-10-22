@@ -1,296 +1,183 @@
-Return-Path: <linux-parisc+bounces-2837-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2838-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46B39AB5C4
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 20:10:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2280E9AB672
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 21:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C46F31C2307D
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 18:10:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6CB11F23736
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 19:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3091C9EB5;
-	Tue, 22 Oct 2024 18:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A471CB304;
+	Tue, 22 Oct 2024 19:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XKCnXBZt"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cT3PdKAC"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931E81C9DFA;
-	Tue, 22 Oct 2024 18:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06761CB309
+	for <linux-parisc@vger.kernel.org>; Tue, 22 Oct 2024 19:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729620604; cv=none; b=PH/UfDnJKLwk4wNHHsI2w7YUO1XwM9QXLzCqpbvHZ5HbiPe6JpBbv/dUqqxNSnp3OQCd1eHq2EQWslmgfDI5HnRkcrz/qWeBG6vD0evkopHkzVhcWR/TUz8SiaRBiNNNrtUYShrsU+6kUGGi2M6gULv4Q7dHe9QPeNnu1kOa9oM=
+	t=1729624175; cv=none; b=ciPq6qUH9TtVv1TmIzfE/w492GIk2BBDZFqTpTcwZZMxBy5x2Q3BbzaFLObkyKxSE86Ec3IfAsQlJX9w02rP60aSRdlkBWSnudQjsHtsr7KONcVZZfhs4Jcaw/4SZJ9fai67onsow6eD+R1sr07rSlekywrpqadrWsT/KVI5C6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729620604; c=relaxed/simple;
-	bh=Nq8Jdmiwq7WCGmATlFb2otP/fjTsQuLclZaTiLGwKYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SC1L+B01LYYB92I1BE9khhGUaMK3OYPDUWmtl2Zkuoiy7eDtKviFKRJHpG3NQAKPkvBXoChgDVtr1zrHREh4YD2auX1lzWpmo2nkc5KcrwyzbKSbLqdtJK3c02IQKbXNQwlLEaSqNSglI56o9s6g47PRsg+hNDnBHw6DfC8yRY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XKCnXBZt; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729620601; x=1761156601;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Nq8Jdmiwq7WCGmATlFb2otP/fjTsQuLclZaTiLGwKYY=;
-  b=XKCnXBZtpLTHZT8jq+00LbbLAWqqk2rI9fJycfUj1G+ez+6Wsb9Uhgkr
-   yWH17FvdI8cYE8556sjVdk67z3JOp74LPin2beUgfF1+hyuikIiP8NNQO
-   ovkr4uGZTsyP2LPsAOwQZipnSiyWMzy7nABCOFzhOUwVUP8Rl5oSJvRSa
-   qbLUxTMTd3Riz3ybGJtTN0otvKkSE7EkUljc1GdIaN3J4RUAOVGz52PO/
-   kcJPOL5kLyI1QlHjnDkZ/JKsTHXKGnWz8N0NMbUXiNIr7tIhAJOSXKa7f
-   xTdk4O0fSjRALpR8TO5W8mnx1gdAbV3hhVB+ZbQSAuTf4jGeM+Hmi9qyK
-   w==;
-X-CSE-ConnectionGUID: Udw4PVERQVygKmYsM6hPFg==
-X-CSE-MsgGUID: wcAYjCzlS+SVS10yQyNl4g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="32869503"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="32869503"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 11:10:01 -0700
-X-CSE-ConnectionGUID: GwlngA8XStyXbJqz5y0+2w==
-X-CSE-MsgGUID: Ol9EXL3fTwC9YvdVrBc0Mg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
-   d="scan'208";a="80363724"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 22 Oct 2024 11:09:54 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t3JKJ-000TvD-1K;
-	Tue, 22 Oct 2024 18:09:51 +0000
-Date: Wed, 23 Oct 2024 02:09:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Puranjay Mohan <puranjay@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Eric Dumazet <edumazet@google.com>, Hao Luo <haoluo@google.com>,
-	Helge Deller <deller@gmx.de>, Jakub Kicinski <kuba@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Mykola Lysenko <mykolal@fb.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Puranjay Mohan <puranjay12@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>, Song Liu <song@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH bpf-next 2/5] bpf: bpf_csum_diff: optimize and homogenize
- for all archs
-Message-ID: <202410230122.BYZLEUHz-lkp@intel.com>
-References: <20241021122112.101513-3-puranjay@kernel.org>
+	s=arc-20240116; t=1729624175; c=relaxed/simple;
+	bh=81gvCdvEgpB04Nn2JKObvXqoAtKSBk/mWn/H596JZbk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uZ8y2FE2PiB6lwebEgeTGjaTxINjQ5nvGGsY384svFsJnXZROYiHcmyJWQwmF1a9qlHFkf0t4+zVvDeCFALjDcIAMjhLb2X8ap0x1Z2IWQmW8T3AKBrdi/PM1cW0vDUyEdQvs9aW+OG8lcDX2CihTdp5mBx6DEWZKxiGzTvNlpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cT3PdKAC; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43150ea2db6so50065e9.0
+        for <linux-parisc@vger.kernel.org>; Tue, 22 Oct 2024 12:09:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1729624171; x=1730228971; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Aq7vYlKYjVUJ2Hf6UjPLePUAsgsPK2CPSZGZYNK3ODQ=;
+        b=cT3PdKAC9zr7KhODAieNwfi1GsU1GaLjVuEDvtqZRytv1glu3lU4RXsOt2X4qNhR2r
+         nNcIv208OnoUIcxQB8CuGhDUAaBfyv6wT+TNtRhoKVR3CKKS0RljahwhBdSiR/mqDkiV
+         5BwRPsUBFnDjt9gfVfetUjjo5/e+GUlLypFF3DIn1UBTX9p4twDG24peMq9FOFioUKEG
+         2UCrVGRQJPgDNgFFaj1TCbVJhdbZELl3K6at2cvfYQwKUkDCOlAJhANJx2jirXPneKh3
+         lbWJuoelrNVcisv4nodkxXpV+foJPUqa5B5QZb+F5X5O3C7q2UCUCPDo3O9W48fBzVwu
+         uZYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729624171; x=1730228971;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Aq7vYlKYjVUJ2Hf6UjPLePUAsgsPK2CPSZGZYNK3ODQ=;
+        b=eU1DtXHvJKyZAI3cSuEHGYnY9G9cCLmzDeM9/OUl2DG6REj/Jg6BGt3eou27A8jOZ2
+         H9yOxSrLYRU2XThxDl2VdUYOgjhTQipkoUNE/N9nBtI/QnFmnByELgy5qCSYI6LZSqb8
+         QHYksmkPM/rEHfIS4J+0sJCXVZ8/1Camlr3yUZEawjmpBhTG8Udx5Kjo2Gq1Xxf3SlIz
+         8evKdIYiq6Bif0bq3Af4e9ZPvzPgnpLfXHAKzmPmQ/u1BispZ6g7csN/o3zHF+5Fo1DT
+         XTaaLen1wcB/vIM5uKP0VQYB3DiJg19ywMdhFfvdE0BaYvPSg7+KJXcq8ktTIK1b1YT9
+         qDAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQysqRm2sl7P2DfH08harfsE4M0gvYV2kH4FSEK+HxUE9Fp1wdUyk/RUbKpxdYGLqt7izl3kb9cITCyYA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFy4ECAA+zVWrqLFdmTN2JLfYL68Irr/LAoZ8Zff5hl8DALk+4
+	Np1jD6XcBEKBwHTJdS6Gi0nk9bCyHnNdKCmr1Rw9lzW0mO7FLlQkFKjKCHvAo6lvqDn43F7vTbY
+	p9icdWBEToQfBPoVXMgnYqgW5ZMLu9pS/gDJk
+X-Google-Smtp-Source: AGHT+IHdTaQMVD7gfS71JCtoKNqFlL+ZH6CTrJ3WUvE3tBmxfLe5eVJcaVuq9zPzDtwFl3aO3H7IuCLtAGxl1WBUDSc=
+X-Received: by 2002:a05:600c:3d91:b0:426:7018:2e2f with SMTP id
+ 5b1f17b1804b1-43184628822mr181375e9.5.1729624170899; Tue, 22 Oct 2024
+ 12:09:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021122112.101513-3-puranjay@kernel.org>
+References: <cover.1729440856.git.lorenzo.stoakes@oracle.com>
+ <fce49bbbfe41b82161a37b022c8eb1e6c20e1d85.1729440856.git.lorenzo.stoakes@oracle.com>
+ <c37ada68-5bf5-4ca5-9de8-c0838160c443@suse.cz> <393b0932-1c52-4d59-9466-e5e6184a7daf@lucifer.local>
+ <f2448c59-0456-49e8-9676-609629227808@suse.cz>
+In-Reply-To: <f2448c59-0456-49e8-9676-609629227808@suse.cz>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 22 Oct 2024 21:08:53 +0200
+Message-ID: <CAG48ez3WS3EH9DuhE1b+7AX3+1=dVtd1M7y_5Ev4Shp2YxiYWg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] mm: madvise: implement lightweight guard page mechanism
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Matthew Wilcox <willy@infradead.org>, "Paul E . McKenney" <paulmck@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Muchun Song <muchun.song@linux.dev>, Richard Henderson <richard.henderson@linaro.org>, 
+	Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner <mattst88@gmail.com>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linux-arch@vger.kernel.org, 
+	Shuah Khan <shuah@kernel.org>, Christian Brauner <brauner@kernel.org>, linux-kselftest@vger.kernel.org, 
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>, Jeff Xu <jeffxu@chromium.org>, 
+	Christoph Hellwig <hch@infradead.org>, linux-api@vger.kernel.org, 
+	John Hubbard <jhubbard@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Puranjay,
+On Mon, Oct 21, 2024 at 10:46=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> w=
+rote:
+> On 10/21/24 22:27, Lorenzo Stoakes wrote:
+> > On Mon, Oct 21, 2024 at 10:11:29PM +0200, Vlastimil Babka wrote:
+> >> On 10/20/24 18:20, Lorenzo Stoakes wrote:
+> >> > +  while (true) {
+> >> > +          /* Returns < 0 on error, =3D=3D 0 if success, > 0 if zap =
+needed. */
+> >> > +          err =3D walk_page_range_mm(vma->vm_mm, start, end,
+> >> > +                                   &guard_poison_walk_ops, NULL);
+> >> > +          if (err <=3D 0)
+> >> > +                  return err;
+> >> > +
+> >> > +          /*
+> >> > +           * OK some of the range have non-guard pages mapped, zap
+> >> > +           * them. This leaves existing guard pages in place.
+> >> > +           */
+> >> > +          zap_page_range_single(vma, start, end - start, NULL);
+> >>
+> >> ... however the potentially endless loop doesn't seem great. Could a
+> >> malicious program keep refaulting the range (ignoring any segfaults if=
+ it
+> >> loses a race) with one thread while failing to make progress here with
+> >> another thread? Is that ok because it would only punish itself?
+> >
+> > Sigh. Again, I don't think you've read the previous series have you? Or
+> > even the changelog... I added this as Jann asked for it. Originally we'=
+d
+> > -EAGAIN if we got raced. See the discussion over in v1 for details.
+> >
+> > I did it that way specifically to avoid such things, but Jann didn't ap=
+pear
+> > to think it was a problem.
+>
+> If Jann is fine with this then it must be secure enough.
 
-kernel test robot noticed the following build warnings:
+My thinking there was:
 
-[auto build test WARNING on bpf-next/master]
+We can legitimately race with adjacent faults populating the area
+we're operating on with THP pages; as long as the zapping and
+poison-marker-setting are separate, *someone* will have to do the
+retry. Either we do it in the kernel, or we tell userspace to handle
+it, but having the kernel take care of it is preferable because it
+makes the stable UAPI less messy.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Puranjay-Mohan/net-checksum-move-from32to16-to-generic-header/20241021-202707
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
-patch link:    https://lore.kernel.org/r/20241021122112.101513-3-puranjay%40kernel.org
-patch subject: [PATCH bpf-next 2/5] bpf: bpf_csum_diff: optimize and homogenize for all archs
-config: x86_64-randconfig-122-20241022 (https://download.01.org/0day-ci/archive/20241023/202410230122.BYZLEUHz-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241023/202410230122.BYZLEUHz-lkp@intel.com/reproduce)
+One easy way to do it in the kernel would be to return -ERESTARTNOINTR
+after the zap_page_range_single() instead of jumping back up, which in
+terms of locking and signal handling and such would be equivalent to
+looping in userspace (because really that's what -ERESTARTNOINTR does
+- it returns out to userspace and moves the instruction pointer back
+to restart the syscall). Though if we do that immediately, it might
+make MADV_POISON unnecessarily slow, so we should probably retry once
+before doing that. The other easy way is to just loop here.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410230122.BYZLEUHz-lkp@intel.com/
+The cond_resched() and pending fatal signal check mean that (except on
+CONFIG_PREEMPT_NONE) the only differences between the current
+implementation and looping in userspace are that we don't handle
+non-fatal signals in between iterations and that we keep hogging the
+mmap_lock in read mode. We do already have a bunch of codepaths that
+retry on concurrent page table changes, like when zap_pte_range()
+encounters a pte_offset_map_lock() failure; though I guess the
+difference is that the retry on those is just a couple instructions,
+which would be harder to race consistently, while here we redo walks
+across the entire range, which should be fairly easy to race
+repeatedly.
 
-sparse warnings: (new ones prefixed by >>)
-   net/core/filter.c:1423:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sock_filter const *filter @@     got struct sock_filter [noderef] __user *filter @@
-   net/core/filter.c:1423:39: sparse:     expected struct sock_filter const *filter
-   net/core/filter.c:1423:39: sparse:     got struct sock_filter [noderef] __user *filter
-   net/core/filter.c:1501:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sock_filter const *filter @@     got struct sock_filter [noderef] __user *filter @@
-   net/core/filter.c:1501:39: sparse:     expected struct sock_filter const *filter
-   net/core/filter.c:1501:39: sparse:     got struct sock_filter [noderef] __user *filter
-   net/core/filter.c:2321:45: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected restricted __be32 [usertype] daddr @@     got unsigned int [usertype] ipv4_nh @@
-   net/core/filter.c:2321:45: sparse:     expected restricted __be32 [usertype] daddr
-   net/core/filter.c:2321:45: sparse:     got unsigned int [usertype] ipv4_nh
-   net/core/filter.c:10993:31: sparse: sparse: symbol 'sk_filter_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11000:27: sparse: sparse: symbol 'sk_filter_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11004:31: sparse: sparse: symbol 'tc_cls_act_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11013:27: sparse: sparse: symbol 'tc_cls_act_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11017:31: sparse: sparse: symbol 'xdp_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11029:31: sparse: sparse: symbol 'cg_skb_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11035:27: sparse: sparse: symbol 'cg_skb_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11039:31: sparse: sparse: symbol 'lwt_in_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11045:27: sparse: sparse: symbol 'lwt_in_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11049:31: sparse: sparse: symbol 'lwt_out_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11055:27: sparse: sparse: symbol 'lwt_out_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11059:31: sparse: sparse: symbol 'lwt_xmit_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11066:27: sparse: sparse: symbol 'lwt_xmit_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11070:31: sparse: sparse: symbol 'lwt_seg6local_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11076:27: sparse: sparse: symbol 'lwt_seg6local_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11079:31: sparse: sparse: symbol 'cg_sock_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11085:27: sparse: sparse: symbol 'cg_sock_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11088:31: sparse: sparse: symbol 'cg_sock_addr_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11094:27: sparse: sparse: symbol 'cg_sock_addr_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11097:31: sparse: sparse: symbol 'sock_ops_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11103:27: sparse: sparse: symbol 'sock_ops_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11106:31: sparse: sparse: symbol 'sk_skb_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11113:27: sparse: sparse: symbol 'sk_skb_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11116:31: sparse: sparse: symbol 'sk_msg_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11123:27: sparse: sparse: symbol 'sk_msg_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11126:31: sparse: sparse: symbol 'flow_dissector_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11132:27: sparse: sparse: symbol 'flow_dissector_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11460:31: sparse: sparse: symbol 'sk_reuseport_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:11466:27: sparse: sparse: symbol 'sk_reuseport_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11668:27: sparse: sparse: symbol 'sk_lookup_prog_ops' was not declared. Should it be static?
-   net/core/filter.c:11672:31: sparse: sparse: symbol 'sk_lookup_verifier_ops' was not declared. Should it be static?
-   net/core/filter.c:1931:43: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected restricted __wsum [usertype] diff @@     got unsigned long long [usertype] to @@
-   net/core/filter.c:1931:43: sparse:     expected restricted __wsum [usertype] diff
-   net/core/filter.c:1931:43: sparse:     got unsigned long long [usertype] to
-   net/core/filter.c:1934:36: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected restricted __be16 [usertype] old @@     got unsigned long long [usertype] from @@
-   net/core/filter.c:1934:36: sparse:     expected restricted __be16 [usertype] old
-   net/core/filter.c:1934:36: sparse:     got unsigned long long [usertype] from
-   net/core/filter.c:1934:42: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __be16 [usertype] new @@     got unsigned long long [usertype] to @@
-   net/core/filter.c:1934:42: sparse:     expected restricted __be16 [usertype] new
-   net/core/filter.c:1934:42: sparse:     got unsigned long long [usertype] to
-   net/core/filter.c:1937:36: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected restricted __be32 [usertype] from @@     got unsigned long long [usertype] from @@
-   net/core/filter.c:1937:36: sparse:     expected restricted __be32 [usertype] from
-   net/core/filter.c:1937:36: sparse:     got unsigned long long [usertype] from
-   net/core/filter.c:1937:42: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __be32 [usertype] to @@     got unsigned long long [usertype] to @@
-   net/core/filter.c:1937:42: sparse:     expected restricted __be32 [usertype] to
-   net/core/filter.c:1937:42: sparse:     got unsigned long long [usertype] to
-   net/core/filter.c:1982:59: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __wsum [usertype] diff @@     got unsigned long long [usertype] to @@
-   net/core/filter.c:1982:59: sparse:     expected restricted __wsum [usertype] diff
-   net/core/filter.c:1982:59: sparse:     got unsigned long long [usertype] to
-   net/core/filter.c:1985:52: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __be16 [usertype] from @@     got unsigned long long [usertype] from @@
-   net/core/filter.c:1985:52: sparse:     expected restricted __be16 [usertype] from
-   net/core/filter.c:1985:52: sparse:     got unsigned long long [usertype] from
-   net/core/filter.c:1985:58: sparse: sparse: incorrect type in argument 4 (different base types) @@     expected restricted __be16 [usertype] to @@     got unsigned long long [usertype] to @@
-   net/core/filter.c:1985:58: sparse:     expected restricted __be16 [usertype] to
-   net/core/filter.c:1985:58: sparse:     got unsigned long long [usertype] to
-   net/core/filter.c:1988:52: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __be32 [usertype] from @@     got unsigned long long [usertype] from @@
-   net/core/filter.c:1988:52: sparse:     expected restricted __be32 [usertype] from
-   net/core/filter.c:1988:52: sparse:     got unsigned long long [usertype] from
-   net/core/filter.c:1988:58: sparse: sparse: incorrect type in argument 4 (different base types) @@     expected restricted __be32 [usertype] to @@     got unsigned long long [usertype] to @@
-   net/core/filter.c:1988:58: sparse:     expected restricted __be32 [usertype] to
-   net/core/filter.c:1988:58: sparse:     got unsigned long long [usertype] to
->> net/core/filter.c:2023:39: sparse: sparse: incorrect type in return expression (different base types) @@     expected unsigned long long @@     got restricted __sum16 @@
-   net/core/filter.c:2023:39: sparse:     expected unsigned long long
-   net/core/filter.c:2023:39: sparse:     got restricted __sum16
-   net/core/filter.c:2026:39: sparse: sparse: incorrect type in return expression (different base types) @@     expected unsigned long long @@     got restricted __sum16 @@
-   net/core/filter.c:2026:39: sparse:     expected unsigned long long
-   net/core/filter.c:2026:39: sparse:     got restricted __sum16
-   net/core/filter.c:2029:39: sparse: sparse: incorrect type in return expression (different base types) @@     expected unsigned long long @@     got restricted __sum16 @@
-   net/core/filter.c:2029:39: sparse:     expected unsigned long long
-   net/core/filter.c:2029:39: sparse:     got restricted __sum16
->> net/core/filter.c:2031:16: sparse: sparse: incorrect type in return expression (different base types) @@     expected unsigned long long @@     got restricted __wsum [usertype] seed @@
-   net/core/filter.c:2031:16: sparse:     expected unsigned long long
-   net/core/filter.c:2031:16: sparse:     got restricted __wsum [usertype] seed
-   net/core/filter.c:2053:35: sparse: sparse: incorrect type in return expression (different base types) @@     expected unsigned long long @@     got restricted __wsum [usertype] csum @@
-   net/core/filter.c:2053:35: sparse:     expected unsigned long long
-   net/core/filter.c:2053:35: sparse:     got restricted __wsum [usertype] csum
+So I guess you have a point that this might be the easiest way to
+stall other tasks that are trying to take mmap_lock for an extended
+amount of time, I did not fully consider that... and then I guess you
+could use that to slow down usercopy fault handling (once the lock
+switches to handoff mode because of a stalled writer?) or slow down
+other processes trying to read /proc/$pid/cmdline?
 
-vim +2023 net/core/filter.c
+You can already indefinitely hog the mmap_lock with FUSE, though that
+requires that you can mount a FUSE filesystem (which you wouldn't be
+able in reasonably sandboxed code) and that you can find something
+like a pin_user_pages() call that can't drop the mmap lock in between,
+and there aren't actually that many of those...
 
-  1956	
-  1957	BPF_CALL_5(bpf_l4_csum_replace, struct sk_buff *, skb, u32, offset,
-  1958		   u64, from, u64, to, u64, flags)
-  1959	{
-  1960		bool is_pseudo = flags & BPF_F_PSEUDO_HDR;
-  1961		bool is_mmzero = flags & BPF_F_MARK_MANGLED_0;
-  1962		bool do_mforce = flags & BPF_F_MARK_ENFORCE;
-  1963		__sum16 *ptr;
-  1964	
-  1965		if (unlikely(flags & ~(BPF_F_MARK_MANGLED_0 | BPF_F_MARK_ENFORCE |
-  1966				       BPF_F_PSEUDO_HDR | BPF_F_HDR_FIELD_MASK)))
-  1967			return -EINVAL;
-  1968		if (unlikely(offset > 0xffff || offset & 1))
-  1969			return -EFAULT;
-  1970		if (unlikely(bpf_try_make_writable(skb, offset + sizeof(*ptr))))
-  1971			return -EFAULT;
-  1972	
-  1973		ptr = (__sum16 *)(skb->data + offset);
-  1974		if (is_mmzero && !do_mforce && !*ptr)
-  1975			return 0;
-  1976	
-  1977		switch (flags & BPF_F_HDR_FIELD_MASK) {
-  1978		case 0:
-  1979			if (unlikely(from != 0))
-  1980				return -EINVAL;
-  1981	
-  1982			inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo);
-  1983			break;
-  1984		case 2:
-> 1985			inet_proto_csum_replace2(ptr, skb, from, to, is_pseudo);
-  1986			break;
-  1987		case 4:
-  1988			inet_proto_csum_replace4(ptr, skb, from, to, is_pseudo);
-  1989			break;
-  1990		default:
-  1991			return -EINVAL;
-  1992		}
-  1993	
-  1994		if (is_mmzero && !*ptr)
-  1995			*ptr = CSUM_MANGLED_0;
-  1996		return 0;
-  1997	}
-  1998	
-  1999	static const struct bpf_func_proto bpf_l4_csum_replace_proto = {
-  2000		.func		= bpf_l4_csum_replace,
-  2001		.gpl_only	= false,
-  2002		.ret_type	= RET_INTEGER,
-  2003		.arg1_type	= ARG_PTR_TO_CTX,
-  2004		.arg2_type	= ARG_ANYTHING,
-  2005		.arg3_type	= ARG_ANYTHING,
-  2006		.arg4_type	= ARG_ANYTHING,
-  2007		.arg5_type	= ARG_ANYTHING,
-  2008	};
-  2009	
-  2010	BPF_CALL_5(bpf_csum_diff, __be32 *, from, u32, from_size,
-  2011		   __be32 *, to, u32, to_size, __wsum, seed)
-  2012	{
-  2013		/* This is quite flexible, some examples:
-  2014		 *
-  2015		 * from_size == 0, to_size > 0,  seed := csum --> pushing data
-  2016		 * from_size > 0,  to_size == 0, seed := csum --> pulling data
-  2017		 * from_size > 0,  to_size > 0,  seed := 0    --> diffing data
-  2018		 *
-  2019		 * Even for diffing, from_size and to_size don't need to be equal.
-  2020		 */
-  2021	
-  2022		if (from_size && to_size)
-> 2023			return csum_from32to16(csum_sub(csum_partial(to, to_size, seed),
-  2024							csum_partial(from, from_size, 0)));
-  2025		if (to_size)
-  2026			return csum_from32to16(csum_partial(to, to_size, seed));
-  2027	
-  2028		if (from_size)
-  2029			return csum_from32to16(~csum_partial(from, from_size, ~seed));
-  2030	
-> 2031		return seed;
-  2032	}
-  2033	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+So I guess you have a point and the -ERESTARTNOINTR approach would be
+a little bit nicer, as long as it's easy to implement.
 
