@@ -1,196 +1,198 @@
-Return-Path: <linux-parisc+bounces-2834-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2835-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9229AB011
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 15:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFF99AB56D
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 19:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0DB21C224F1
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 13:51:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9C031C23026
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 17:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5D519F118;
-	Tue, 22 Oct 2024 13:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90231C245C;
+	Tue, 22 Oct 2024 17:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U4TYgQMN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HC33xv4B"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA96919EED2;
-	Tue, 22 Oct 2024 13:50:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA313FE55;
+	Tue, 22 Oct 2024 17:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729605050; cv=none; b=a6fOr+L+1d5yaBOlevW/d98wbGI2IOFN99VIPk/JNQi/GcB87a983MKVaf2V4zthkxS/iSzifA8pt7IdKdfvZNp33Q242rxnndXmuj/4iMGowFSx/Fp5nxQRXFzsF7IOh/6RfSH6JLmnYWxdDlWS8xDAxQ+aT/1OBb1DakaRXBY=
+	t=1729619246; cv=none; b=jxCMvcDq2dYeece9/GrV1CSF4AJM4rLlte0lr/zGaWnD2gSLgWP4wn1VvU1nuX/6rsGt0iphGCBb6Edy11SzQ+7ydwInGseqeX4eGHs8zcgt09iJn/SSJ3LCExtAk3oJtojXiyfnIbyD2a3VtpYR2oMLuwUScBXChbCKlFkhv4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729605050; c=relaxed/simple;
-	bh=epoMaoM6MMwh/KBGwPkmJaakzhozvJct5sHt4yT4Z9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gp65WTpa6TGGkQoyByK+Z2nr+Wf8x46d7sDgA5txXbPXYiL2R6qkzi9XZd9YhrQ7imBBdZCfGmfWjiSzBdfm+VcO7sCEOsNRa/IvzbayKf4a4xAAhelFQGFgrL9ntIad3NyBoYRTnaCyR4DDLTbuIhqwzZO02bxd0gl+tbwqAB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U4TYgQMN; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729605049; x=1761141049;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=epoMaoM6MMwh/KBGwPkmJaakzhozvJct5sHt4yT4Z9s=;
-  b=U4TYgQMN7o+rXv0y0pJv7HQEgnjo/B38pkJ0c5I4QKjSGi4hYJRLOYB7
-   6gP4sevSyF5mBrcuN9ZzTiyBFvsB37xi7VFT9s/uUuj0Xp+LJgv9NYy6h
-   tO2wyABY+5DyuXTNxGysnelvNB4c40+RW9CV8+ltslpPy0U2mUGQImWV3
-   bXdMeXfZEpkySPOevdIAUmFEgZNhbxc6wMgdV54Gj7ZSE541popMQTs0j
-   bseCD/77V3vfNWI/Ocj+TTba26FMlK8v9h3xTUXvt6Pvur1BxtVcE/7ND
-   Xs1LJDAtUf3LeFOKWJe30ORr5HWo7JlytwCIoXLKKqMDTCRUGgggaBXSQ
-   A==;
-X-CSE-ConnectionGUID: 4P+BpasQRxWdd9E9CO+Sxg==
-X-CSE-MsgGUID: MKYeqabVSQiWkbyj+v4HhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="40531462"
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
-   d="scan'208";a="40531462"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 06:50:47 -0700
-X-CSE-ConnectionGUID: WQvPy/wOQryWrGcK4sqBHA==
-X-CSE-MsgGUID: cHeUKNTnTiqUvliz9qbK9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; 
-   d="scan'208";a="80694139"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 22 Oct 2024 06:50:40 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t3FHS-000Tdu-0u;
-	Tue, 22 Oct 2024 13:50:38 +0000
-Date: Tue, 22 Oct 2024 21:50:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Puranjay Mohan <puranjay@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Eric Dumazet <edumazet@google.com>, Hao Luo <haoluo@google.com>,
-	Helge Deller <deller@gmx.de>, Jakub Kicinski <kuba@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Mykola Lysenko <mykolal@fb.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Puranjay Mohan <puranjay12@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>, Song Liu <song@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH bpf-next 1/5] net: checksum: move from32to16() to generic
- header
-Message-ID: <202410222149.3FVJFYYy-lkp@intel.com>
-References: <20241021122112.101513-2-puranjay@kernel.org>
+	s=arc-20240116; t=1729619246; c=relaxed/simple;
+	bh=raYP82xdEbL7nQYAeHkY+SkxWx7riZAwYtNgws8ZUiY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g6TuDHopDxb4HYyyrlTz72rziy+w3S7oHXMhFrnwynYzlHupZJoNoXbOWPUI2tu/u8yK1n9ZirjyAAomeMZdlRNKg6cO/YwiMmzZUBwXnzrR9xsKbtNWrmvoRqsIJVouVZdOX9b2lEJ/BRgcpzsIVGhd5oF+2ftFpi67+9SQYOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HC33xv4B; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e625b00bcso4350851b3a.3;
+        Tue, 22 Oct 2024 10:47:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729619244; x=1730224044; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8ddUMQ7YsPimbk4F7Nb5pyH2YBrKesDZgI8kYiDJ2Fc=;
+        b=HC33xv4BzmaatrvM7il8uEj0yCZSgMJCRolOU/vbvFla8mm+5BIeLqGOZRkUR0jWlt
+         EVc6dJOziRhipD464C7VTCpDKNVyCBJfqQ5J/U5b+K3iRF2iF8hDBUt1xvTK6Ng5GiAT
+         z/iDToj4ltDefyZJLfcGNO/OXwhqw8GGQCmxMIymEjHSzP+39BapW/72TZfwnhAleoWd
+         fsYZ3EOwb9tuJieNV0cqADNJL8rNQzSp3tXlaruH3JixKb/5cTsW6QZZtIyHONuCDGSN
+         tjIVCuYrFhxbR9K9dhDOgIzldjUknZjauvgnCTths+xPI5mT/sIuia8kfBFVvfLE6vYq
+         VsCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729619244; x=1730224044;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8ddUMQ7YsPimbk4F7Nb5pyH2YBrKesDZgI8kYiDJ2Fc=;
+        b=rWfbjTVR9AEC25yDLfH1PWaQJFULgbgqd8cOtiL++3ueNFKMozZtVvDYJ5fp13sID8
+         OgddFeRtTikIRZ3ZkMDbobFgmdFPmbt5hx6yC3/+soZGZcVAKNeaef1ZFZhexlwv4mVZ
+         8infYEI/8fI/v630gF4jm+xFYccZ1CXjrNCwVxN0L5eg6b1zrigjPGmj8yQDMhoATL2d
+         CPxuDZC109KKLJgh6WVF7b2cnzaT5VCxq4SvV9wbfNj9h3bMhy+rBmxQ5aapDNuW9VJu
+         Nq/p3CKReAg8Yy3DYCUgRpIHx/y8Qo78vPfV5WL77bDXtMCU70TwqIXE+mH+zNz4/vOr
+         b8dw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/F63HMePTwWSeTs2Muk+MBvN3ftyvEpfG+xvtEKomdBlMAJytkw9aMU2MJgG4Gua2JbM=@vger.kernel.org, AJvYcCU1WNjuN6ZH3czy+Fwqb1mDLbSzhi9Shrx9uagjaroTkypjRwwB/Ocncv8klLVExyCKlw54L1PFfaPVl2sK@vger.kernel.org, AJvYcCUKE6NRXkv8MrdaxLZC7U6AJYpov4JuI3LfxVWjoPR1ZxLIlcjbrVgO4e31pradMB/FQFcx91BX@vger.kernel.org, AJvYcCUXdpPZDlCkEM+e89GRhgcFw066CjAHG+G3mloYUB6FM0aZTpzDoUhqXSWk65xUYQunJttve9cZh9IuyGPu@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeUNFzsBdTuk9JkXZJHKvrnU1rCu1NQrAMg9XLvxUPT/tlg1On
+	dJpww5XHjZVHfxFziYQhkPaKJnX2LuHTEkvHxOe5os5rudAmUxFb7Gyh3SGEIXsS/kujx3Nln6E
+	3m5fw7qPyG5c4RVl86s7UL1APrxM=
+X-Google-Smtp-Source: AGHT+IHYzZ1MPfouURSpXauQvjKpAqxHOZgCBInLj8fQ2B+q8L2j1IhoGXxHbfumGhFT2TP8+T2OX/YchRKQE6e2aiM=
+X-Received: by 2002:a05:6a20:d528:b0:1d8:a899:8899 with SMTP id
+ adf61e73a8af0-1d96dece18cmr3235223637.29.1729619244353; Tue, 22 Oct 2024
+ 10:47:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241021122112.101513-2-puranjay@kernel.org>
+References: <20241021122112.101513-1-puranjay@kernel.org> <20241021122112.101513-5-puranjay@kernel.org>
+ <CAEf4BzY1LgCF1VOoAQkMdDTx87C0mfyftMvhvVU4GpsFc6fw5g@mail.gmail.com> <mb61pa5ewbfpk.fsf@kernel.org>
+In-Reply-To: <mb61pa5ewbfpk.fsf@kernel.org>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Tue, 22 Oct 2024 10:47:12 -0700
+Message-ID: <CAEf4BzZ-gfBqez-QJCSRVOPnvz-inaiVdNGOFRCdc2KQbnmeZQ@mail.gmail.com>
+Subject: Re: [PATCH bpf-next 4/5] selftests/bpf: Add benchmark for
+ bpf_csum_diff() helper
+To: Puranjay Mohan <puranjay@kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexei Starovoitov <ast@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org, 
+	Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller" <davem@davemloft.net>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Eric Dumazet <edumazet@google.com>, Hao Luo <haoluo@google.com>, 
+	Helge Deller <deller@gmx.de>, Jakub Kicinski <kuba@kernel.org>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Jiri Olsa <jolsa@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Mykola Lysenko <mykolal@fb.com>, netdev@vger.kernel.org, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Shuah Khan <shuah@kernel.org>, Song Liu <song@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Yonghong Song <yonghong.song@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Puranjay,
+On Tue, Oct 22, 2024 at 3:21=E2=80=AFAM Puranjay Mohan <puranjay@kernel.org=
+> wrote:
+>
+> Andrii Nakryiko <andrii.nakryiko@gmail.com> writes:
+>
+> > On Mon, Oct 21, 2024 at 5:22=E2=80=AFAM Puranjay Mohan <puranjay@kernel=
+.org> wrote:
+> >>
+> >> Add a microbenchmark for bpf_csum_diff() helper. This benchmark works =
+by
+> >> filling a 4KB buffer with random data and calculating the internet
+> >> checksum on different parts of this buffer using bpf_csum_diff().
+> >>
+> >> Example run using ./benchs/run_bench_csum_diff.sh on x86_64:
+> >>
+> >> [bpf]$ ./benchs/run_bench_csum_diff.sh
+> >> 4                    2.296 =C2=B1 0.066M/s (drops 0.000 =C2=B1 0.000M/=
+s)
+> >> 8                    2.320 =C2=B1 0.003M/s (drops 0.000 =C2=B1 0.000M/=
+s)
+> >> 16                   2.315 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/=
+s)
+> >> 20                   2.318 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/=
+s)
+> >> 32                   2.308 =C2=B1 0.003M/s (drops 0.000 =C2=B1 0.000M/=
+s)
+> >> 40                   2.300 =C2=B1 0.029M/s (drops 0.000 =C2=B1 0.000M/=
+s)
+> >> 64                   2.286 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/=
+s)
+> >> 128                  2.250 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/=
+s)
+> >> 256                  2.173 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/=
+s)
+> >> 512                  2.023 =C2=B1 0.055M/s (drops 0.000 =C2=B1 0.000M/=
+s)
+> >
+> > you are not benchmarking bpf_csum_diff(), you are benchmarking how
+> > often you can call bpf_prog_test_run(). Add some batching on the BPF
+> > side, these numbers tell you that there is no difference between
+> > calculating checksum for 4 bytes and for 512, that didn't seem strange
+> > to you?
+>
+> This didn't seem strange to me because if you see the tables I added to
+> the cover letter, there is a clear improvement after optimizing the
+> helper and arm64 even shows a linear drop going from 4 bytes to 512
+> bytes, even after the optimization.
+>
 
-kernel test robot noticed the following build warnings:
+Regardless of optimization, it's strange that throughput barely
+differs when you vary the amount of work by more than 100x. This
+wouldn't be strange if this checksum calculation was some sort of
+cryptographic hash, where it's intentional to have the same timing
+regardless of amount of work, or something along those lines. But I
+don't think that's the case here.
 
-[auto build test WARNING on bpf-next/master]
+But as it is right now, this benchmark is benchmarking
+bpf_prog_test_run(), as I mentioned, which seems to be bottlenecking
+at about 2mln/s throughput for your machine. bpf_csum_diff()'s
+overhead is trivial compared to bpf_prog_test_run() overhead and
+syscall/context switch overhead.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Puranjay-Mohan/net-checksum-move-from32to16-to-generic-header/20241021-202707
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
-patch link:    https://lore.kernel.org/r/20241021122112.101513-2-puranjay%40kernel.org
-patch subject: [PATCH bpf-next 1/5] net: checksum: move from32to16() to generic header
-config: x86_64-randconfig-122-20241022 (https://download.01.org/0day-ci/archive/20241022/202410222149.3FVJFYYy-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241022/202410222149.3FVJFYYy-lkp@intel.com/reproduce)
+We shouldn't add the benchmark that doesn't benchmark the right thing.
+So just add a bpf_for(i, 0, 100) loop doing bpf_csum_diff(), and then
+do atomic increment *after* the loop (to minimize atomics overhead).
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410222149.3FVJFYYy-lkp@intel.com/
+> On x86 after the improvement, 4 bytes and 512 bytes show similar numbers
+> but there is still a small drop that can be seen going from 4 to 512
+> bytes.
+>
+> My thought was that because the bpf_csum_diff() calls csum_partial() on
+> x86 which is already optimised, most of the overhead was due to copying
+> the buffer which is now removed.
+>
+> I guess I can amplify the difference between 4B and 512B by calling
+> bpf_csum_diff() multiple times in a loop, or by calculating the csum by
+> dividing the buffer into more parts (currently the BPF code divides it
+> into 2 parts only).
+>
+> >>
+> >> Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+> >> ---
+> >>  tools/testing/selftests/bpf/Makefile          |   2 +
+> >>  tools/testing/selftests/bpf/bench.c           |   4 +
+> >>  .../selftests/bpf/benchs/bench_csum_diff.c    | 164 +++++++++++++++++=
++
+> >>  .../bpf/benchs/run_bench_csum_diff.sh         |  10 ++
+> >>  .../selftests/bpf/progs/csum_diff_bench.c     |  25 +++
+> >>  5 files changed, 205 insertions(+)
+> >>  create mode 100644 tools/testing/selftests/bpf/benchs/bench_csum_diff=
+.c
+> >>  create mode 100755 tools/testing/selftests/bpf/benchs/run_bench_csum_=
+diff.sh
+> >>  create mode 100644 tools/testing/selftests/bpf/progs/csum_diff_bench.=
+c
+> >>
+> >
 
-sparse warnings: (new ones prefixed by >>)
->> lib/checksum.c:84:34: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected restricted __wsum [usertype] sum @@     got unsigned int [assigned] result @@
-   lib/checksum.c:84:34: sparse:     expected restricted __wsum [usertype] sum
-   lib/checksum.c:84:34: sparse:     got unsigned int [assigned] result
->> lib/checksum.c:84:16: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned int [assigned] result @@     got restricted __sum16 @@
-   lib/checksum.c:84:16: sparse:     expected unsigned int [assigned] result
-   lib/checksum.c:84:16: sparse:     got restricted __sum16
-
-vim +84 lib/checksum.c
-
-    35	
-    36	#ifndef do_csum
-    37	static unsigned int do_csum(const unsigned char *buff, int len)
-    38	{
-    39		int odd;
-    40		unsigned int result = 0;
-    41	
-    42		if (len <= 0)
-    43			goto out;
-    44		odd = 1 & (unsigned long) buff;
-    45		if (odd) {
-    46	#ifdef __LITTLE_ENDIAN
-    47			result += (*buff << 8);
-    48	#else
-    49			result = *buff;
-    50	#endif
-    51			len--;
-    52			buff++;
-    53		}
-    54		if (len >= 2) {
-    55			if (2 & (unsigned long) buff) {
-    56				result += *(unsigned short *) buff;
-    57				len -= 2;
-    58				buff += 2;
-    59			}
-    60			if (len >= 4) {
-    61				const unsigned char *end = buff + ((unsigned)len & ~3);
-    62				unsigned int carry = 0;
-    63				do {
-    64					unsigned int w = *(unsigned int *) buff;
-    65					buff += 4;
-    66					result += carry;
-    67					result += w;
-    68					carry = (w > result);
-    69				} while (buff < end);
-    70				result += carry;
-    71				result = (result & 0xffff) + (result >> 16);
-    72			}
-    73			if (len & 2) {
-    74				result += *(unsigned short *) buff;
-    75				buff += 2;
-    76			}
-    77		}
-    78		if (len & 1)
-    79	#ifdef __LITTLE_ENDIAN
-    80			result += *buff;
-    81	#else
-    82			result += (*buff << 8);
-    83	#endif
-  > 84		result = csum_from32to16(result);
-    85		if (odd)
-    86			result = ((result >> 8) & 0xff) | ((result & 0xff) << 8);
-    87	out:
-    88		return result;
-    89	}
-    90	#endif
-    91	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[...]
 
