@@ -1,194 +1,126 @@
-Return-Path: <linux-parisc+bounces-2828-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2829-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F4F9A9429
-	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 01:29:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E95A9A9F2E
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 11:50:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 492431F2241D
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Oct 2024 23:29:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 826381C248A2
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Oct 2024 09:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FF21FF041;
-	Mon, 21 Oct 2024 23:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF2419AD70;
+	Tue, 22 Oct 2024 09:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iHnrkhqa"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c0ccslYX"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283D31E3766;
-	Mon, 21 Oct 2024 23:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBA31991CA
+	for <linux-parisc@vger.kernel.org>; Tue, 22 Oct 2024 09:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729553342; cv=none; b=UNu707iSgTnL+Lijpil9+ciz5wLi/n/AD8UuDRWSHNfNximYpWhJ1iCaI21Z0BK0/1HZqQvnTutiXhk95h1/5Zd5VSz2+lzuq+CaGGT2pYQgtmHGDErdJ3OFbIUY8A5UMv84Sgo0zloc7N+jGlrGmX9UQSLjgG+tujb+dndlCiw=
+	t=1729590598; cv=none; b=tSMw8kQcRqFLTl9oDqFMUIPv4LkmvHwo+xsTCJG+/I2cbCbFXbfDMjeY+SuPsFFKKiEADpH/OS8MdftKddrpi43p9ArJj5WiM1vYJW71dRiCs9hlqiVzFhJfNlWKgzI8IKByYTNr2GGfzj11gW/cY3sY3OkqChFObBe7lo1C+MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729553342; c=relaxed/simple;
-	bh=x2H3ahgB5xIvSFbzpAzCQsUV4OlJPhvj2R6p1tI+K3U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d3P+gpF4s4MAHw7K6KPHEWFB32ruagV8b148R/yQ8vqOQ3sLXMfunV8CTTgLNUG4PDFGK60b287J+ZX9LWdJgCLjmbieOey8k1EE07lWXgciNWzAr3WXH75AyAfgiRC7csKAeSjQFQZm24gDhx9wANmxBnOpyHilNiavIrJZ/Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iHnrkhqa; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e57d89ffaso3887027b3a.1;
-        Mon, 21 Oct 2024 16:29:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729553340; x=1730158140; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b0ab/y3NIxWQ5IPwf4tlrWjgA/VWZRdS/usp1PdmtaA=;
-        b=iHnrkhqap5K634mmOogO0j3ONfofIj8H1Zg6CY7vmc35bA5Q5FmfDB7OlT3BwC5dx0
-         yYvExBpIE5OWte4BY0BwHL4DxIU2JcQX6CnMQygmW1QJAv+zC83xakHDlovIioKO0+ol
-         XwDodasG7zJbRBP7a3EO0/UC7ChV9aXLFm/Q/ksIX+EADzxCwEZAvT14m9WrNiTpJHPJ
-         lu6/MkPQJv8QwpKjHpcKpt1Sfu2e0zST4gxsXJTLxE/xB4TwlqLBd5cXUNsP+kgggf1t
-         958jFLmoKKdOUuVfWJHMKXVCuL3Wck5xaR1K9wV3ySs+ejeVhDy/TQ7zwYdt3Z+29jnT
-         oUbw==
+	s=arc-20240116; t=1729590598; c=relaxed/simple;
+	bh=FHDMCQSj4bOSnFGm64uWhd8NfaqRwIffME40ECj3VBk=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jQ9+tJyFNJ50TPAj6M/uxIVwArLlfZyjVqzxEzwmWlNTZOVjvgDn6WD9lgKmxXNfM6BeUhjV3MSzgn8XBlJMa8RtxhVtdazrllmfRZe5vsnPcRjYHcesOYtjc/y07olFcKTF1BAG2h9lQGip9sjRtd/REQoi7cy49piUDjTFY28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c0ccslYX; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729590594;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FHDMCQSj4bOSnFGm64uWhd8NfaqRwIffME40ECj3VBk=;
+	b=c0ccslYXT1Jvr5bfvIpZnLGgoYJXQt8jyPMqYh/lOVn9mdHEp9iAR0diAnVPYqR+TNq+Nf
+	XyAhSrHk5BMwI9Mbkt0NMHTZyo/dX5j4AFfFM+L8igqIm2LwM3BR+iL9weRObJ4/05/Xi1
+	a5MwUBsH6c0QpY1qHdlhnYY4tPy+4Js=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-314-YA1eY-4jO4uzVZXLi5SsBQ-1; Tue, 22 Oct 2024 05:49:53 -0400
+X-MC-Unique: YA1eY-4jO4uzVZXLi5SsBQ-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-37d5ca192b8so2956305f8f.1
+        for <linux-parisc@vger.kernel.org>; Tue, 22 Oct 2024 02:49:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729553340; x=1730158140;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b0ab/y3NIxWQ5IPwf4tlrWjgA/VWZRdS/usp1PdmtaA=;
-        b=VLG1pjUbMBVaX1Akq7Hp/Y5wz4V7UcDCpIZ119jpfgE2ZdxPnHvFojtfumEP4kIbGH
-         cUQDzreyYkvnisT8BWoYgWzp4d9kB+Lye3TiZ+LaaYi0kbG4u/HoRsrcH3X7NWyfjgvR
-         lH/4ECIwWD5vIgQDsHAVB4J9oougHEA97Sqpz6pgk/q5QVsioe50H0I6XH6l01Xis3xZ
-         j7Lf0eFhKxyrCqATG0c88G+1r1R9SV0nSmQXRF3nzDV1ospz6Ao4dSwLrRl19w0Je1Pj
-         CcqwRdk8Hzhywp2k289sIhw9fWHVoLVDoU95QxWncs7NUfoJe/L3b4sRLL0unG7SlNx5
-         FJMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUYZGOHTsIkyMkc/Ht40QHVeXmMPrWXBcK5TGbRcXcf3zmMuTUyXcf7tAkfzkG3UvM3eCYpSiks+BjaLlKO@vger.kernel.org, AJvYcCVxvZ/8cLLLru0tHcs52qHUKO/ppxGI/eIbr2CJLGwhj3o5kzNAFS+H0XZVwfqjjpGd9eg=@vger.kernel.org, AJvYcCWuM8s4qDk+ZLfJO7dIX8zkxxyk7MqX/G5bEoHArLlRklQeRqFA5gS5iQQwD4MesL94faWVkD5a@vger.kernel.org, AJvYcCX6fk1U/ZPewCJ7rlevci7cEhSnJtfwLAjvEfHyIhtzqzJHJPnfyeoe+RVqAdJ/onRLqTdlbjdZ651hkdPV@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhPVSX6MiEBBrOcAWtvywYj/2UmTa9wGfJMfmpMLCWQ62qP6iU
-	c7nppeMrm/4GBJP/uWagxUqwfrIGyjFZYOR6c7RqPyNdXK1yarc5FqYr64CyAQQjN7p+4WSic0H
-	LQMTcstJWsfLPuWuATyaSwKdIBQc=
-X-Google-Smtp-Source: AGHT+IE+UiBdod8YrP4CWXmEaQOA8OoWyHHG8IWleRCcBhZxXsjPZXGjvcba7orZTZIub5J+BX3UYq9GPtRAU8ZvLAE=
-X-Received: by 2002:a05:6a00:9282:b0:71e:587d:f268 with SMTP id
- d2e1a72fcca58-71edbbc153bmr2117649b3a.4.1729553340212; Mon, 21 Oct 2024
- 16:29:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1729590592; x=1730195392;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:to:from:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FHDMCQSj4bOSnFGm64uWhd8NfaqRwIffME40ECj3VBk=;
+        b=OhozU8fZ1XGrgTMwQFKadSCJFA/kKXJftSt11HpjZ2hLUNrZ8DXgejVsNU4m4PI7nl
+         ZznvHznPI7xRnAeKKda0hS7TtG3KESuiutIrI2EzE7ZSDDm3btfkI9Nxf0TgDnEZAJMm
+         fO8cMz6tDjTVBoET+AHvCQSvld2tNbjW0vZtlgRKSWjoweIaBKNc3LFmZzzEhJWSnFMw
+         alF/gasGfS7Jb5QKElMxJHDgAFR2sZv1HKvI8C+wALUkgGBEWaplPrjJlGmtrks89V3f
+         SAM4Hle0BgInfrQfDl5+VVX07LSp9Mm9tIeMyZpB593tkVSjxvujx/IgLV99Y+19675j
+         gu1w==
+X-Forwarded-Encrypted: i=1; AJvYcCVcjTEHuoFmOoh/ZyAtPvhGp03iI5mZw8RQVJoRp1zE/i62/ES2Y6tVahluFY3ys1Snd/7D4vMe0jQcphI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx17SHwiXwJvjCd3a/IOi+7gpRSy5HGxI3YVNhf3aXnOQQUV7as
+	n+lcUxBdMR4JX+jt6LWlTqmHmqK1J3saaoYJ0ufhaAPSLjCxA51999cMS/N1wK+l8rnVxBdDlBH
+	pRMywAkUVIMK4tjFQonV+F4LvYz9i9Auow2a1JoGHvK8co+/o9uQVuVqDC7cpHQ==
+X-Received: by 2002:adf:b186:0:b0:376:dbb5:10c2 with SMTP id ffacd0b85a97d-37ef13cd752mr1751575f8f.29.1729590592138;
+        Tue, 22 Oct 2024 02:49:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGIEHKao3U/XFI7bzq9Kj6t6RyZxy0cnLw5nrYDT+Cbr6tQg8AZS6TySYFQBcdNzKRVWndUxQ==
+X-Received: by 2002:adf:b186:0:b0:376:dbb5:10c2 with SMTP id ffacd0b85a97d-37ef13cd752mr1751544f8f.29.1729590591777;
+        Tue, 22 Oct 2024 02:49:51 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0b9bcc8sm6205364f8f.107.2024.10.22.02.49.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Oct 2024 02:49:51 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 84B08160B2CF; Tue, 22 Oct 2024 11:49:50 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Puranjay Mohan <puranjay@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexei Starovoitov <ast@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Andrii Nakryiko <andrii@kernel.org>,
+ bpf@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>, "David S.
+ Miller" <davem@davemloft.net>, Eduard Zingerman <eddyz87@gmail.com>, Eric
+ Dumazet <edumazet@google.com>, Hao Luo <haoluo@google.com>, Helge Deller
+ <deller@gmx.de>, Jakub Kicinski <kuba@kernel.org>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Jiri Olsa <jolsa@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Martin KaFai Lau <martin.lau@linux.dev>,
+ Mykola Lysenko <mykolal@fb.com>, netdev@vger.kernel.org, Palmer Dabbelt
+ <palmer@dabbelt.com>, Paolo Abeni <pabeni@redhat.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Puranjay Mohan <puranjay12@gmail.com>,
+ Puranjay Mohan <puranjay@kernel.org>, Shuah Khan <shuah@kernel.org>, Song
+ Liu <song@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Yonghong Song
+ <yonghong.song@linux.dev>
+Subject: Re: [PATCH bpf-next 1/5] net: checksum: move from32to16() to
+ generic header
+In-Reply-To: <20241021122112.101513-2-puranjay@kernel.org>
+References: <20241021122112.101513-1-puranjay@kernel.org>
+ <20241021122112.101513-2-puranjay@kernel.org>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Tue, 22 Oct 2024 11:49:50 +0200
+Message-ID: <877ca0ii0x.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241021122112.101513-1-puranjay@kernel.org> <20241021122112.101513-5-puranjay@kernel.org>
-In-Reply-To: <20241021122112.101513-5-puranjay@kernel.org>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Mon, 21 Oct 2024 16:28:47 -0700
-Message-ID: <CAEf4BzY1LgCF1VOoAQkMdDTx87C0mfyftMvhvVU4GpsFc6fw5g@mail.gmail.com>
-Subject: Re: [PATCH bpf-next 4/5] selftests/bpf: Add benchmark for
- bpf_csum_diff() helper
-To: Puranjay Mohan <puranjay@kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org, 
-	Daniel Borkmann <daniel@iogearbox.net>, "David S. Miller" <davem@davemloft.net>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Eric Dumazet <edumazet@google.com>, Hao Luo <haoluo@google.com>, 
-	Helge Deller <deller@gmx.de>, Jakub Kicinski <kuba@kernel.org>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Jiri Olsa <jolsa@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Mykola Lysenko <mykolal@fb.com>, netdev@vger.kernel.org, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Puranjay Mohan <puranjay12@gmail.com>, 
-	Shuah Khan <shuah@kernel.org>, Song Liu <song@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Yonghong Song <yonghong.song@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 21, 2024 at 5:22=E2=80=AFAM Puranjay Mohan <puranjay@kernel.org=
-> wrote:
->
-> Add a microbenchmark for bpf_csum_diff() helper. This benchmark works by
-> filling a 4KB buffer with random data and calculating the internet
-> checksum on different parts of this buffer using bpf_csum_diff().
->
-> Example run using ./benchs/run_bench_csum_diff.sh on x86_64:
->
-> [bpf]$ ./benchs/run_bench_csum_diff.sh
-> 4                    2.296 =C2=B1 0.066M/s (drops 0.000 =C2=B1 0.000M/s)
-> 8                    2.320 =C2=B1 0.003M/s (drops 0.000 =C2=B1 0.000M/s)
-> 16                   2.315 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/s)
-> 20                   2.318 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/s)
-> 32                   2.308 =C2=B1 0.003M/s (drops 0.000 =C2=B1 0.000M/s)
-> 40                   2.300 =C2=B1 0.029M/s (drops 0.000 =C2=B1 0.000M/s)
-> 64                   2.286 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/s)
-> 128                  2.250 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/s)
-> 256                  2.173 =C2=B1 0.001M/s (drops 0.000 =C2=B1 0.000M/s)
-> 512                  2.023 =C2=B1 0.055M/s (drops 0.000 =C2=B1 0.000M/s)
+Puranjay Mohan <puranjay@kernel.org> writes:
 
-you are not benchmarking bpf_csum_diff(), you are benchmarking how
-often you can call bpf_prog_test_run(). Add some batching on the BPF
-side, these numbers tell you that there is no difference between
-calculating checksum for 4 bytes and for 512, that didn't seem strange
-to you?
-
-pw-bot: cr
-
+> from32to16() is used by lib/checksum.c and also by
+> arch/parisc/lib/checksum.c. The next patch will use it in the
+> bpf_csum_diff helper.
+>
+> Move from32to16() to the include/net/checksum.h as csum_from32to16() and
+> remove other implementations.
 >
 > Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
-> ---
->  tools/testing/selftests/bpf/Makefile          |   2 +
->  tools/testing/selftests/bpf/bench.c           |   4 +
->  .../selftests/bpf/benchs/bench_csum_diff.c    | 164 ++++++++++++++++++
->  .../bpf/benchs/run_bench_csum_diff.sh         |  10 ++
->  .../selftests/bpf/progs/csum_diff_bench.c     |  25 +++
->  5 files changed, 205 insertions(+)
->  create mode 100644 tools/testing/selftests/bpf/benchs/bench_csum_diff.c
->  create mode 100755 tools/testing/selftests/bpf/benchs/run_bench_csum_dif=
-f.sh
->  create mode 100644 tools/testing/selftests/bpf/progs/csum_diff_bench.c
->
 
-[...]
+Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
-> +
-> +static void csum_diff_setup(void)
-> +{
-> +       int err;
-> +       char *buff;
-> +       size_t i, sz;
-> +
-> +       sz =3D sizeof(ctx.skel->rodata->buff);
-> +
-> +       setup_libbpf();
-> +
-> +       ctx.skel =3D csum_diff_bench__open();
-> +       if (!ctx.skel) {
-> +               fprintf(stderr, "failed to open skeleton\n");
-> +               exit(1);
-> +       }
-> +
-> +       srandom(time(NULL));
-> +       buff =3D ctx.skel->rodata->buff;
-> +
-> +       /*
-> +        * Set first 8 bytes of buffer to 0xdeadbeefdeadbeef, this is lat=
-er used to verify the
-> +        * correctness of the helper by comparing the checksum result for=
- 0xdeadbeefdeadbeef that
-> +        * should be 0x3b3b
-> +        */
-> +
-> +       *(u64 *)buff =3D 0xdeadbeefdeadbeef;
-> +
-> +       for (i =3D 8; i < sz; i++)
-> +               buff[i] =3D '1' + random() % 9;
-
-so, you only generate 9 different values for bytes, why? Why not full
-byte range?
-
-> +
-> +       ctx.skel->rodata->buff_len =3D args.buff_len;
-> +
-> +       err =3D csum_diff_bench__load(ctx.skel);
-> +       if (err) {
-> +               fprintf(stderr, "failed to load skeleton\n");
-> +               csum_diff_bench__destroy(ctx.skel);
-> +               exit(1);
-> +       }
-> +}
-> +
-
-[...]
 
