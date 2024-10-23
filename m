@@ -1,118 +1,196 @@
-Return-Path: <linux-parisc+bounces-2847-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2848-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9EF79ABE9D
-	for <lists+linux-parisc@lfdr.de>; Wed, 23 Oct 2024 08:24:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A679AC00B
+	for <lists+linux-parisc@lfdr.de>; Wed, 23 Oct 2024 09:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3996E2842D3
-	for <lists+linux-parisc@lfdr.de>; Wed, 23 Oct 2024 06:24:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 895761C20B46
+	for <lists+linux-parisc@lfdr.de>; Wed, 23 Oct 2024 07:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E861482F6;
-	Wed, 23 Oct 2024 06:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59049155303;
+	Wed, 23 Oct 2024 07:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PrwYraWd"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XjwuUp+M"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E2F1448C1
-	for <linux-parisc@vger.kernel.org>; Wed, 23 Oct 2024 06:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FE3154BFE
+	for <linux-parisc@vger.kernel.org>; Wed, 23 Oct 2024 07:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729664665; cv=none; b=Jt159t/hnQQSGusKxW1zdJhfe7h3C2JX1EuigbrCXwsUOF9ZEcezteayvHOJur67jOaVWVqWKD2Y//+ycFpu4aaZD1QZOuBAwT+TjRFXYGIGZgJ5ZIJPmiJkA5PPlR0fM1Lxq4gLUEU0RX1Wh6ppCWK/uNQrCKBysE5dbJta9hM=
+	t=1729667952; cv=none; b=VMs+YbHRpkfURZUMyVng1bzNhGse2i5LggmzudnJPiwZ5oqOPwXI17SObmNLvzRp5AK26QCGzzda8QVaPeT4cvhM4wkV0HXQTdCdYzPQDZ875gewSsHHVXmxrdqGF3hJXig3vqtrBRDq9brqasjVgZbnfZMxTUi/0JOxut0b380=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729664665; c=relaxed/simple;
-	bh=Kmf/1xEzbwqpAKJt9go6uvl87csSe+TqzWzUtyTAm8I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ecHvWh8PiUuYwC/I58JXdK1dJHksfrdEeGLm6ij33tgbKnRvf7K/7yB7M2GzKwzA9xHGcf/tlRZ8ZFuc8IRU7sKu44D6P8IPh3wq6tGEkDx9ROhL1AuMdnh3+/4kSLZemsm/HbCXuoFYO0v8ZSW4v9MteSzW6JHerxWfxQCvhUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--dvyukov.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PrwYraWd; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--dvyukov.bounces.google.com
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-5c936f71759so3785169a12.2
-        for <linux-parisc@vger.kernel.org>; Tue, 22 Oct 2024 23:24:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1729664662; x=1730269462; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kmf/1xEzbwqpAKJt9go6uvl87csSe+TqzWzUtyTAm8I=;
-        b=PrwYraWdobug2t+uC6Vp7EV4xdzZoVwTNHirr73b2IFqvth+F4o5VWgdzH0i/gmNvh
-         ZHKJqzhqNtxP4SqT2eY+kDTQkKUIEiSTrPi2nYwkJPIR9tvneugekSRGtKKYanGleFub
-         MiPMP10l4ktHx4DwnjU+siCw1amlk+KOzUAMa8+2a55LPcNcIS61hYzNq+ny/WCJkCw4
-         BkyTRidsui8NTTW/yt3kJxhZHry4mZHojJevjbmbTv15Y1da8qnnzb/yZeO/MRvUl2mq
-         AENdyKhdfRgcLxVfG99qakdKL1WOe/Ui47pY20zETidEzKKkp81ECCFRYvnJmA1SptM/
-         Q2TA==
+	s=arc-20240116; t=1729667952; c=relaxed/simple;
+	bh=bKrUGf4U7cuFbm/oePLuNwJ0rXtkr0eVGYDs+YteWIY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LK5rHv5veTbYMczIQlTPnzo7CPALVvwHoNZm785pxOYz4U2BPiyA8p7FCELzmqGA83bj3Ym65ANDO6Rq85un1JjW9/r7D4WoXPlnhTqU6OvKcNkfV5uQU9vX049Lm07q3odSlNlc8iTJ9MpSji5Z4yUQaCtBhq87fb2ZKc8p+Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XjwuUp+M; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729667949;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2J8ZqubO+8AlKbFE9Qv2kRLiKggvUmjZRZtAw8rfrEY=;
+	b=XjwuUp+M7Sq75P4Tkp6gUAtALTFniP9d/EDhT8BqCUMGQhTAhXGKiC0YfybY9NTvNxR4vH
+	iyzCRj5cuOoIi/HH9DkI/MNmkq5gMjzfXqOy3ImYvKIZuIGnOazLvsYTT0ykJJWAhMzWXh
+	9tnAEyvWY6yLtNZIMZO/DQllPVa5Q4Q=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-122-Ya7m4i4IOnOxD7hAV8Ol1g-1; Wed, 23 Oct 2024 03:19:08 -0400
+X-MC-Unique: Ya7m4i4IOnOxD7hAV8Ol1g-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-37d5116f0a6so3169825f8f.0
+        for <linux-parisc@vger.kernel.org>; Wed, 23 Oct 2024 00:19:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729664662; x=1730269462;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kmf/1xEzbwqpAKJt9go6uvl87csSe+TqzWzUtyTAm8I=;
-        b=DLp88N4BW8gQj/Q0YHr0h1AUkxPMc9BzHQK6yx1c5hz8cnarJgWDiDzu21B6cWFCFQ
-         yGJ2NdLcgWK3oTJhL1d1/5lHf6IA5ny2P5UaXYzuPOASUIlOee9K/g5nig1S+RE9OQqi
-         Cr3tYONLVxTMYc1uXvQweImej8IdGDaoxmF6IrJq4VppMXVZEbBF9w4v0KWd02m+FD7T
-         1KU1FUZ5WGxf6XoaNMGfG1dRaXG6a1O+R0PZTWmBrLjASc8zLDkixE5Mz/g2IDfI9wro
-         /Op835F3YrWFs6QtrEAdnxNpznTq6H6mdF0v0CcZmeRxpzLaeBb9JuNFxVMct4QOLF3p
-         mZqg==
-X-Forwarded-Encrypted: i=1; AJvYcCUTu2LjrSx9SoOayQLZUKS0FbJZcoejK4491tg8mHxUIOdl63zh1C5sJUyKtVdKKoC7iSs3cSH1ZMWVZSI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6RisgdILslNV2AF+MPXqpXNDWaImiHcwbnbdDdf/AExGTyuT1
-	Awn4H2v14lfeh6Ys0FMx86DuZWekAeJtu9aGuQE1Uzk2dkaQp2TOiMcCOqW0R660hLjAt0sZHSs
-	l3S64+Q==
-X-Google-Smtp-Source: AGHT+IH2bi6zc9dFjuEaAFUh7qdl0Clkcf7sHX1Yomy2F23FgFUOKN443WAQT8QytBDy9+TF/aj9qhft85qo
-X-Received: from dvyukov9.muc.corp.google.com ([2a00:79e0:9c:201:6e9d:53fb:bcc1:7c2d])
- (user=dvyukov job=sendgmr) by 2002:a05:6402:3482:b0:5c9:5cbf:e5b9 with SMTP
- id 4fb4d7f45d1cf-5cb8b20d251mr583a12.8.1729664661613; Tue, 22 Oct 2024
- 23:24:21 -0700 (PDT)
-Date: Wed, 23 Oct 2024 08:24:17 +0200
-In-Reply-To: <87a5eysmj1.fsf@mid.deneb.enyo.de>
+        d=1e100.net; s=20230601; t=1729667947; x=1730272747;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2J8ZqubO+8AlKbFE9Qv2kRLiKggvUmjZRZtAw8rfrEY=;
+        b=OjwACoAsH+HgmDLaKPbRwx4RPqftX/daXbB2KcvLtPPhDAOdNEsiS5HE/7AWlZP8Wr
+         3NoBMbIJQkiUhE7ZuC+NEBofg8b31sSnJ9sEPf1O5OrAqQwFUJlTiQF62iZuj2VB4Pu0
+         mD/LUNUkC9kS3OJwSbJluF3Fc88hDgIfLum/fQKP08hKRbo09RXubXyRcsVYQ+YiFNw+
+         Qfaaju6f/2DI/JUmeL7JW2fSoI3yyb5CrlfnY4UloBFLR7BG9zfh+rjOMOmc0Yej6d9P
+         kWGfqhJGLjjxzGFVC9FjhLOY4ojmS3zjJ8HwdHpIxhhjurl9fZPmy67ObdLyKk69euup
+         jY8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWPjqudcEBDirJYKrrdRHK4T5x/w6cPwQHueNVcU4APavMXLPbU/3M4MeRGo69cico9gR4844/zqjG43zU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgwXAsbcLDKGwaBEPHONUde0tC5ZNMJqcpHMdGDJ82S2HuLFiG
+	2t9XLrOD0b1dW3zJkBObUIdk4cUn4sxkHVUHWxCODLD7RlXQ8VAiwQjt6JlcWIknTl9QwCFrzqa
+	+fADSmeZLvnGU1ZIb80gcaTeXUipHVtyIM7ah5yuXP4V5U7pd8kMhy9cGsbZOow==
+X-Received: by 2002:a05:6000:d08:b0:37d:446b:7dfa with SMTP id ffacd0b85a97d-37efcf7ebd9mr912438f8f.39.1729667946891;
+        Wed, 23 Oct 2024 00:19:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFqzEDQ57fgD1+CK3sngwj8y5ncZ+zhRCIKvEIDF/zJ+B/m+m+ZwPj3lma4Yv4rl/K1V35C/w==
+X-Received: by 2002:a05:6000:d08:b0:37d:446b:7dfa with SMTP id ffacd0b85a97d-37efcf7ebd9mr912404f8f.39.1729667946324;
+        Wed, 23 Oct 2024 00:19:06 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70c:cd00:c139:924e:3595:3b5? (p200300cbc70ccd00c139924e359503b5.dip0.t-ipconnect.de. [2003:cb:c70c:cd00:c139:924e:3595:3b5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ee0a37d25sm8269356f8f.23.2024.10.23.00.19.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Oct 2024 00:19:05 -0700 (PDT)
+Message-ID: <8471d7b1-576b-41a6-91fb-1c9baae8c540@redhat.com>
+Date: Wed, 23 Oct 2024 09:19:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <87a5eysmj1.fsf@mid.deneb.enyo.de>
-X-Mailer: git-send-email 2.47.0.105.g07ac214952-goog
-Message-ID: <20241023062417.3862170-1-dvyukov@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 0/5] implement lightweight guard pages
-From: Dmitry Vyukov <dvyukov@google.com>
-To: fw@deneb.enyo.de
-Cc: James.Bottomley@HansenPartnership.com, Liam.Howlett@oracle.com, 
-	akpm@linux-foundation.org, arnd@arndb.de, brauner@kernel.org, 
-	chris@zankel.net, david@redhat.com, deller@gmx.de, hch@infradead.org, 
-	ink@jurassic.park.msu.ru, jannh@google.com, jcmvbkbc@gmail.com, 
-	jeffxu@chromium.org, jhubbard@nvidia.com, linux-alpha@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-mm@kvack.org, linux-parisc@vger.kernel.org, 
-	lorenzo.stoakes@oracle.com, mattst88@gmail.com, muchun.song@linux.dev, 
-	paulmck@kernel.org, richard.henderson@linaro.org, shuah@kernel.org, 
-	sidhartha.kumar@oracle.com, surenb@google.com, tsbogend@alpha.franken.de, 
-	vbabka@suse.cz, willy@infradead.org, elver@google.com
-Content-Type: text/plain; charset="UTF-8"
+To: Dmitry Vyukov <dvyukov@google.com>, fw@deneb.enyo.de
+Cc: James.Bottomley@HansenPartnership.com, Liam.Howlett@oracle.com,
+ akpm@linux-foundation.org, arnd@arndb.de, brauner@kernel.org,
+ chris@zankel.net, deller@gmx.de, hch@infradead.org,
+ ink@jurassic.park.msu.ru, jannh@google.com, jcmvbkbc@gmail.com,
+ jeffxu@chromium.org, jhubbard@nvidia.com, linux-alpha@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-parisc@vger.kernel.org, lorenzo.stoakes@oracle.com,
+ mattst88@gmail.com, muchun.song@linux.dev, paulmck@kernel.org,
+ richard.henderson@linaro.org, shuah@kernel.org, sidhartha.kumar@oracle.com,
+ surenb@google.com, tsbogend@alpha.franken.de, vbabka@suse.cz,
+ willy@infradead.org, elver@google.com
+References: <87a5eysmj1.fsf@mid.deneb.enyo.de>
+ <20241023062417.3862170-1-dvyukov@google.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20241023062417.3862170-1-dvyukov@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Florian, Lorenzo,
+On 23.10.24 08:24, Dmitry Vyukov wrote:
+> Hi Florian, Lorenzo,
+> 
+> This looks great!
+> 
+> What I am VERY interested in is if poisoned pages cause SIGSEGV even when
+> the access happens in the kernel. Namely, the syscall still returns EFAULT,
+> but also SIGSEGV is queued on return to user-space.
+> 
+> Catching bad accesses in system calls is currently the weak spot for
+> all user-space bug detection tools (GWP-ASan, libefence, libefency, etc).
+> It's almost possible with userfaultfd, but catching faults in the kernel
+> requires admin capability, so not really an option for generic bug
+> detection tools (+inconvinience of userfaultfd setup/handler).
+> Intercepting all EFAULT from syscalls is not generally possible
+> (w/o ptrace, usually not an option as well), and EFAULT does not always
+> mean a bug.
+> 
+> Triggering SIGSEGV even in syscalls would be not just a performance
+> optimization, but a new useful capability that would allow it to catch
+> more bugs.
 
-This looks great!
+Right, we discussed that offline also as a possible extension to the 
+userfaultfd SIGBUS mode.
 
-What I am VERY interested in is if poisoned pages cause SIGSEGV even when
-the access happens in the kernel. Namely, the syscall still returns EFAULT,
-but also SIGSEGV is queued on return to user-space.
+I did not look into that yet, but I was wonder if there could be cases 
+where a different process could trigger that SIGSEGV, and how to (and if 
+to) handle that.
 
-Catching bad accesses in system calls is currently the weak spot for
-all user-space bug detection tools (GWP-ASan, libefence, libefency, etc).
-It's almost possible with userfaultfd, but catching faults in the kernel
-requires admin capability, so not really an option for generic bug
-detection tools (+inconvinience of userfaultfd setup/handler).
-Intercepting all EFAULT from syscalls is not generally possible
-(w/o ptrace, usually not an option as well), and EFAULT does not always
-mean a bug.
+For example, ptrace (access_remote_vm()) -> GUP likely can trigger that. 
+I think with userfaultfd() we will currently return -EFAULT, because we 
+call get_user_page_vma_remote() that is not prepared for dropping the 
+mmap lock. Possibly that is the right thing to do, but not sure :)
 
-Triggering SIGSEGV even in syscalls would be not just a performance
-optimization, but a new useful capability that would allow it to catch
-more bugs.
+These "remote" faults set FOLL_REMOTE -> FAULT_FLAG_REMOTE, so we might 
+be able to distinguish them and perform different handling.
 
-Thanks
+-- 
+Cheers,
+
+David / dhildenb
 
 
