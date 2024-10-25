@@ -1,313 +1,243 @@
-Return-Path: <linux-parisc+bounces-2889-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2890-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004B29AE316
-	for <lists+linux-parisc@lfdr.de>; Thu, 24 Oct 2024 12:53:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285AC9AFB41
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Oct 2024 09:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B6D61C21721
-	for <lists+linux-parisc@lfdr.de>; Thu, 24 Oct 2024 10:53:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB6261F2288C
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Oct 2024 07:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765DF1C9EDB;
-	Thu, 24 Oct 2024 10:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0284A1B6CF6;
+	Fri, 25 Oct 2024 07:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BbuIIGYW"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DCA1B85E2;
-	Thu, 24 Oct 2024 10:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5231BC9E6;
+	Fri, 25 Oct 2024 07:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729767175; cv=none; b=gOfo3Wfoca++OGmgNWwnFY9LOeolu56VpUWmGSQPuVxJUtBpqbC0z7rstA5O5Y4g4xNTG/EW9KbShKmCv1z6fm0WVTCv5BcjtTg16VI9WUkpWnFbEwHPNEDCKuYPk8eo0Xj1zK7U0lNb3CRkgI6s8tBhR+DzFCpGzcWAUOMmyXM=
+	t=1729842004; cv=none; b=T2w0V/20AvnImW6ZDNJdcM5TNaDnQZlDQ7Jz08vzA2uyjlfUgBhawN/QVEdFc8MMheAKmqCrfxRU6JAsgUN1vzk7tMn0RAfk6Ydtq7Dlu7WcfMNv/4bQOi+CEeJB9KoPS3AsK3oQNdy0QfUxdqcYIggFnHz7t4ZHla1r1x+9W08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729767175; c=relaxed/simple;
-	bh=gPlA1+J0NJzLZMqSBN3DdFrWVxb4cP6uwM/TMB44Xh0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Y2odxkdl13w70K1QbFujqkSUxRsrfHonhmrMTjh7bvNymP+5nA+36n+q0rdIY26Dq917WBfHbIcA5pbbzEgYHDGrFaMt0w+sXmFwcKXiLTWNaX1CZIUzeeoKHaGjDAeG+rPjC7KCWeTWfB7W41U8cTW/kJ2XUSeI5+q6Qh66y64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DEFD497;
-	Thu, 24 Oct 2024 03:53:21 -0700 (PDT)
-Received: from [10.1.30.45] (e122027.cambridge.arm.com [10.1.30.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 67C983F71E;
-	Thu, 24 Oct 2024 03:52:42 -0700 (PDT)
-Message-ID: <b11631ba-224f-41fb-b82e-59f1b258aea1@arm.com>
-Date: Thu, 24 Oct 2024 11:52:40 +0100
+	s=arc-20240116; t=1729842004; c=relaxed/simple;
+	bh=yBbBH9p6aqtBMVil5u+tl7Fqa8eFLhohsl5YWvv6Zaw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ln9wWztVXhRPfDWxpLv5pBVGWst1PdUgfTx52C9QVFglCvFmq8yDFyLsjLEvin1TaihNr7Bc79UnVLZKF1Pqhikk8iaOPy9L9lF84WPkTk4/U2bNNoQp2CuDgJAs+p39nL5GBOAKhnlBtq30okGfcl9odoPvn828+9VzORfK/oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BbuIIGYW; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729842003; x=1761378003;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yBbBH9p6aqtBMVil5u+tl7Fqa8eFLhohsl5YWvv6Zaw=;
+  b=BbuIIGYWwc7TKbIyB5Yj6y9+CSa1D1VWajTcwNymHKOCpPRDk9SGZK4o
+   /mWfy7ryuM4xHjeLtVcsGNZEfPg+2Q5nuemb+5S0Z6jkxO57dVkWsPwfR
+   UqCF57MFireOUBFCSmWYvm5njQq9jny61xN4EOnGvWU3ZDYELpc1jUTtv
+   3HN1DiPgNL3spIlZ5N+jr7VZDzFAEkSww9GULm5G5M+ZGLOWCwbZX/D7A
+   9ARgoxKCBazxzMBZ//LU0YuSESNsxStmsJrw/6vML+yU747MNyZE1WTWa
+   qCVIwsZTo/4YijfN+e9ANYPOfUHc019vyD7s2lKDCirX+B/kuCjdcQsbH
+   w==;
+X-CSE-ConnectionGUID: SSMEOhRgSt2GHSYCHRz4tg==
+X-CSE-MsgGUID: a/gFFDT8TQunwyLBc1gJxQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40610793"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="40610793"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 00:40:01 -0700
+X-CSE-ConnectionGUID: +EtDZenqS3uQRCXmiEZu3w==
+X-CSE-MsgGUID: NtENei+HSruYwJ95nzTfEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; 
+   d="scan'208";a="85632621"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 25 Oct 2024 00:39:48 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t4EvB-000Xmi-1n;
+	Fri, 25 Oct 2024 07:39:45 +0000
+Date: Fri, 25 Oct 2024 15:38:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Puranjay Mohan <puranjay@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii@kernel.org>, bpf@vger.kernel.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Eric Dumazet <edumazet@google.com>, Hao Luo <haoluo@google.com>,
+	Helge Deller <deller@gmx.de>, Jakub Kicinski <kuba@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Mykola Lysenko <mykolal@fb.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Puranjay Mohan <puranjay12@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>, Song Liu <song@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH bpf-next v2 2/4] bpf: bpf_csum_diff: optimize and
+ homogenize for all archs
+Message-ID: <202410251552.LR73LP4V-lkp@intel.com>
+References: <20241023153922.86909-3-puranjay@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 0/4] mm: Introduce MAP_BELOW_HINT
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Charlie Jenkins <charlie@rivosinc.com>, Arnd Bergmann <arnd@arndb.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Matt Turner
- <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Guo Ren <guoren@kernel.org>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Shuah Khan <shuah@kernel.org>,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org
-References: <20240829-patches-below_hint_mmap-v2-0-638a28d9eae0@rivosinc.com>
- <yu7um2tcxg2apoz372rmzpkrfgbb42ndvabvrsp4usb2e3bkrf@huaucjsp5vlj>
- <Ztnp3OAIRz/daj7s@ghost>
- <pbotlphw77fkfacldtpxfjcs2w5nhb2uvxszv5rmlrhjm42akd@4pvcqb7ojq4v>
- <b6ca55b7-4de2-4085-97bd-619f91d9fcb8@arm.com>
- <5u7xntjdye5ejjmkgpp7m3ogpzblxcztrwngulejdft63fzuwf@xcxfcbaccqtw>
- <07c5e292-5218-43ee-a167-da09d108a663@arm.com>
- <gcyxymiqvxgkkhn76a6ksvevzcq36rridwakgyjsa24obcab3t@leqlqjcx3va3>
-From: Steven Price <steven.price@arm.com>
-Content-Language: en-GB
-In-Reply-To: <gcyxymiqvxgkkhn76a6ksvevzcq36rridwakgyjsa24obcab3t@leqlqjcx3va3>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241023153922.86909-3-puranjay@kernel.org>
 
-On 23/10/2024 19:10, Liam R. Howlett wrote:
-> * Steven Price <steven.price@arm.com> [241023 05:31]:
->>>>   * Box64 seems to have a custom allocator based on reading 
->>>>     /proc/self/maps to allocate a block of VA space with a low enough 
->>>>     address [1]
->>>>
->>>>   * PHP has code reading /proc/self/maps - I think this is to find a 
->>>>     segment which is close enough to the text segment [2]
->>>>
->>>>   * FEX-Emu mmap()s the upper 128TB of VA on Arm to avoid full 48 bit
->>>>     addresses [3][4]
->>>
->>> Can't the limited number of applications that need to restrict the upper
->>> bound use an LD_PRELOAD compatible library to do this?
->>
->> I'm not entirely sure what point you are making here. Yes an LD_PRELOAD
->> approach could be used instead of a personality type as a 'hack' to
->> preallocate the upper address space. The obvious disadvantage is that
->> you can't (easily) layer LD_PRELOAD so it won't work in the general case.
-> 
-> My point is that riscv could work around the limited number of
-> applications that requires this.  It's not really viable for you.
+Hi Puranjay,
 
-Ah ok - thanks for the clarification.
+kernel test robot noticed the following build warnings:
 
->>
->>>>
->>>>   * pmdk has some funky code to find the lowest address that meets 
->>>>     certain requirements - this does look like an ALSR alternative and 
->>>>     probably couldn't directly use MAP_BELOW_HINT, although maybe this 
->>>>     suggests we need a mechanism to map without a VA-range? [5]
->>>>
->>>>   * MIT-Scheme parses /proc/self/maps to find the lowest mapping within 
->>>>     a range [6]
->>>>
->>>>   * LuaJIT uses an approach to 'probe' to find a suitable low address 
->>>>     for allocation [7]
->>>>
->>>
->>> Although I did not take a deep dive into each example above, there are
->>> some very odd things being done, we will never cover all the use cases
->>> with an exact API match.  What we have today can be made to work for
->>> these users as they have figured ways to do it.
->>>
->>> Are they pretty? no.  Are they common? no.  I'm not sure it's worth
->>> plumbing in new MM code in for these users.
->>
->> My issue with the existing 'solutions' is that they all seem to be fragile:
->>
->>  * Using /proc/self/maps is inherently racy if there could be any other
->> code running in the process at the same time.
-> 
-> Yes, it is not thread safe.  Parsing text is also undesirable.
-> 
->>
->>  * Attempting to map the upper part of the address space only works if
->> done early enough - once an allocation arrives there, there's very
->> little you can robustly do (because the stray allocation might be freed).
->>
->>  * LuaJIT's probing mechanism is probably robust, but it's inefficient -
->> LuaJIT has a fallback of linear probing, following by no hint (ASLR),
->> followed by pseudo-random probing. I don't know the history of the code
->> but it looks like it's probably been tweaked to try to avoid performance
->> issues.
->>
->>>> The biggest benefit I see of MAP_BELOW_HINT is that it would allow a
->>>> library to get low addresses without causing any problems for the rest
->>>> of the application. The use case I'm looking at is in a library and 
->>>> therefore a personality mode wouldn't be appropriate (because I don't 
->>>> want to affect the rest of the application). Reading /proc/self/maps
->>>> is also problematic because other threads could be allocating/freeing
->>>> at the same time.
->>>
->>> As long as you don't exhaust the lower limit you are trying to allocate
->>> within - which is exactly the issue riscv is hitting.
->>
->> Obviously if you actually exhaust the lower limit then any
->> MAP_BELOW_HINT API would also fail - there's really not much that can be
->> done in that case.
-> 
-> Today we reverse the search, so you end up in the higher address
-> (bottom-up vs top-down) - although the direction is arch dependent.
-> 
-> If the allocation is too high/low then you could detect, free, and
-> handle the failure.
+[auto build test WARNING on bpf-next/master]
 
-Agreed, that's fine.
+url:    https://github.com/intel-lab-lkp/linux/commits/Puranjay-Mohan/net-checksum-move-from32to16-to-generic-header/20241023-234347
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
+patch link:    https://lore.kernel.org/r/20241023153922.86909-3-puranjay%40kernel.org
+patch subject: [PATCH bpf-next v2 2/4] bpf: bpf_csum_diff: optimize and homogenize for all archs
+config: i386-randconfig-061-20241025 (https://download.01.org/0day-ci/archive/20241025/202410251552.LR73LP4V-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241025/202410251552.LR73LP4V-lkp@intel.com/reproduce)
 
->>
->>> I understand that you are providing examples to prove that this is
->>> needed, but I feel like you are better demonstrating the flexibility
->>> exists to implement solutions in different ways using todays API.
->>
->> My intention is to show that today's API doesn't provide a robust way of
->> doing this. Although I'm quite happy if you can point me at a robust way
->> with the current API. As I mentioned my goal is to be able to map memory
->> in a (multithreaded) library with a (ideally configurable) number of VA
->> bits. I don't particularly want to restrict the whole process, just
->> specific allocations.
-> 
-> If you don't need to restrict everything, won't the hint work for your
-> usecase?  I must be missing something from your requirements.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410251552.LR73LP4V-lkp@intel.com/
 
-The hint only works if the hint address is actually free. Otherwise
-mmap() falls back to as if the hint address wasn't specified.
+sparse warnings: (new ones prefixed by >>)
+   net/core/filter.c:1423:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sock_filter const *filter @@     got struct sock_filter [noderef] __user *filter @@
+   net/core/filter.c:1423:39: sparse:     expected struct sock_filter const *filter
+   net/core/filter.c:1423:39: sparse:     got struct sock_filter [noderef] __user *filter
+   net/core/filter.c:1501:39: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct sock_filter const *filter @@     got struct sock_filter [noderef] __user *filter @@
+   net/core/filter.c:1501:39: sparse:     expected struct sock_filter const *filter
+   net/core/filter.c:1501:39: sparse:     got struct sock_filter [noderef] __user *filter
+   net/core/filter.c:2321:45: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected restricted __be32 [usertype] daddr @@     got unsigned int [usertype] ipv4_nh @@
+   net/core/filter.c:2321:45: sparse:     expected restricted __be32 [usertype] daddr
+   net/core/filter.c:2321:45: sparse:     got unsigned int [usertype] ipv4_nh
+   net/core/filter.c:10993:31: sparse: sparse: symbol 'sk_filter_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11000:27: sparse: sparse: symbol 'sk_filter_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11004:31: sparse: sparse: symbol 'tc_cls_act_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11013:27: sparse: sparse: symbol 'tc_cls_act_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11017:31: sparse: sparse: symbol 'xdp_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11029:31: sparse: sparse: symbol 'cg_skb_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11035:27: sparse: sparse: symbol 'cg_skb_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11039:31: sparse: sparse: symbol 'lwt_in_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11045:27: sparse: sparse: symbol 'lwt_in_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11049:31: sparse: sparse: symbol 'lwt_out_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11055:27: sparse: sparse: symbol 'lwt_out_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11059:31: sparse: sparse: symbol 'lwt_xmit_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11066:27: sparse: sparse: symbol 'lwt_xmit_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11070:31: sparse: sparse: symbol 'lwt_seg6local_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11076:27: sparse: sparse: symbol 'lwt_seg6local_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11079:31: sparse: sparse: symbol 'cg_sock_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11085:27: sparse: sparse: symbol 'cg_sock_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11088:31: sparse: sparse: symbol 'cg_sock_addr_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11094:27: sparse: sparse: symbol 'cg_sock_addr_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11097:31: sparse: sparse: symbol 'sock_ops_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11103:27: sparse: sparse: symbol 'sock_ops_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11106:31: sparse: sparse: symbol 'sk_skb_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11113:27: sparse: sparse: symbol 'sk_skb_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11116:31: sparse: sparse: symbol 'sk_msg_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11123:27: sparse: sparse: symbol 'sk_msg_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11126:31: sparse: sparse: symbol 'flow_dissector_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11132:27: sparse: sparse: symbol 'flow_dissector_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11460:31: sparse: sparse: symbol 'sk_reuseport_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:11466:27: sparse: sparse: symbol 'sk_reuseport_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11668:27: sparse: sparse: symbol 'sk_lookup_prog_ops' was not declared. Should it be static?
+   net/core/filter.c:11672:31: sparse: sparse: symbol 'sk_lookup_verifier_ops' was not declared. Should it be static?
+   net/core/filter.c:1931:43: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected restricted __wsum [usertype] diff @@     got unsigned long long [usertype] to @@
+   net/core/filter.c:1931:43: sparse:     expected restricted __wsum [usertype] diff
+   net/core/filter.c:1931:43: sparse:     got unsigned long long [usertype] to
+   net/core/filter.c:1934:36: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected restricted __be16 [usertype] old @@     got unsigned long long [usertype] from @@
+   net/core/filter.c:1934:36: sparse:     expected restricted __be16 [usertype] old
+   net/core/filter.c:1934:36: sparse:     got unsigned long long [usertype] from
+   net/core/filter.c:1934:42: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __be16 [usertype] new @@     got unsigned long long [usertype] to @@
+   net/core/filter.c:1934:42: sparse:     expected restricted __be16 [usertype] new
+   net/core/filter.c:1934:42: sparse:     got unsigned long long [usertype] to
+   net/core/filter.c:1937:36: sparse: sparse: incorrect type in argument 2 (different base types) @@     expected restricted __be32 [usertype] from @@     got unsigned long long [usertype] from @@
+   net/core/filter.c:1937:36: sparse:     expected restricted __be32 [usertype] from
+   net/core/filter.c:1937:36: sparse:     got unsigned long long [usertype] from
+   net/core/filter.c:1937:42: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __be32 [usertype] to @@     got unsigned long long [usertype] to @@
+   net/core/filter.c:1937:42: sparse:     expected restricted __be32 [usertype] to
+   net/core/filter.c:1937:42: sparse:     got unsigned long long [usertype] to
+   net/core/filter.c:1982:59: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __wsum [usertype] diff @@     got unsigned long long [usertype] to @@
+   net/core/filter.c:1982:59: sparse:     expected restricted __wsum [usertype] diff
+   net/core/filter.c:1982:59: sparse:     got unsigned long long [usertype] to
+   net/core/filter.c:1985:52: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __be16 [usertype] from @@     got unsigned long long [usertype] from @@
+   net/core/filter.c:1985:52: sparse:     expected restricted __be16 [usertype] from
+   net/core/filter.c:1985:52: sparse:     got unsigned long long [usertype] from
+   net/core/filter.c:1985:58: sparse: sparse: incorrect type in argument 4 (different base types) @@     expected restricted __be16 [usertype] to @@     got unsigned long long [usertype] to @@
+   net/core/filter.c:1985:58: sparse:     expected restricted __be16 [usertype] to
+   net/core/filter.c:1985:58: sparse:     got unsigned long long [usertype] to
+   net/core/filter.c:1988:52: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __be32 [usertype] from @@     got unsigned long long [usertype] from @@
+   net/core/filter.c:1988:52: sparse:     expected restricted __be32 [usertype] from
+   net/core/filter.c:1988:52: sparse:     got unsigned long long [usertype] from
+   net/core/filter.c:1988:58: sparse: sparse: incorrect type in argument 4 (different base types) @@     expected restricted __be32 [usertype] to @@     got unsigned long long [usertype] to @@
+   net/core/filter.c:1988:58: sparse:     expected restricted __be32 [usertype] to
+   net/core/filter.c:1988:58: sparse:     got unsigned long long [usertype] to
+>> net/core/filter.c:2023:48: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned int sum @@     got restricted __wsum @@
+   net/core/filter.c:2023:48: sparse:     expected unsigned int sum
+   net/core/filter.c:2023:48: sparse:     got restricted __wsum
+   net/core/filter.c:2026:52: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned int sum @@     got restricted __wsum @@
+   net/core/filter.c:2026:52: sparse:     expected unsigned int sum
+   net/core/filter.c:2026:52: sparse:     got restricted __wsum
+   net/core/filter.c:2029:40: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned int sum @@     got restricted __wsum @@
+   net/core/filter.c:2029:40: sparse:     expected unsigned int sum
+   net/core/filter.c:2029:40: sparse:     got restricted __wsum
+   net/core/filter.c:2031:16: sparse: sparse: incorrect type in return expression (different base types) @@     expected unsigned long long @@     got restricted __wsum [usertype] seed @@
+   net/core/filter.c:2031:16: sparse:     expected unsigned long long
+   net/core/filter.c:2031:16: sparse:     got restricted __wsum [usertype] seed
+   net/core/filter.c:2053:35: sparse: sparse: incorrect type in return expression (different base types) @@     expected unsigned long long @@     got restricted __wsum [usertype] csum @@
+   net/core/filter.c:2053:35: sparse:     expected unsigned long long
+   net/core/filter.c:2053:35: sparse:     got restricted __wsum [usertype] csum
 
-E.g.
+vim +2023 net/core/filter.c
 
-> 	for(int i = 0; i < 2; i++) {
-> 		void *addr = mmap((void*)(1UL << 32), PAGE_SIZE, PROT_NONE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-> 		printf("%p\n", addr);
-> 	}
+  2009	
+  2010	BPF_CALL_5(bpf_csum_diff, __be32 *, from, u32, from_size,
+  2011		   __be32 *, to, u32, to_size, __wsum, seed)
+  2012	{
+  2013		/* This is quite flexible, some examples:
+  2014		 *
+  2015		 * from_size == 0, to_size > 0,  seed := csum --> pushing data
+  2016		 * from_size > 0,  to_size == 0, seed := csum --> pulling data
+  2017		 * from_size > 0,  to_size > 0,  seed := 0    --> diffing data
+  2018		 *
+  2019		 * Even for diffing, from_size and to_size don't need to be equal.
+  2020		 */
+  2021	
+  2022		if (from_size && to_size)
+> 2023			return csum_from32to16(csum_sub(csum_partial(to, to_size, seed),
+  2024							csum_partial(from, from_size, 0)));
+  2025		if (to_size)
+  2026			return csum_from32to16(csum_partial(to, to_size, seed));
+  2027	
+  2028		if (from_size)
+  2029			return csum_from32to16(~csum_partial(from, from_size, ~seed));
+  2030	
+  2031		return seed;
+  2032	}
+  2033	
 
-Prints something like:
-
-0x100000000
-0x7f20d21e0000
-
-The hint is ignored for the second mmap() because there's already a VMA
-at the hint address.
-
-So the question is how to generate a hint value that is (or has a high
-likelihood of being) empty? This AFAICT is the LuaJIT approach, but
-their approach is to pick random values in the hope of getting a free
-address (and then working linearly up for subsequent allocations). Which
-doesn't meet my idea of "robust".
-
->>
->> I had typed up a series similar to this one as a MAP_BELOW flag would
->> fit my use-case well.
->>
->>> I think it would be best to use the existing methods and work around the
->>> issue that was created in riscv while future changes could mirror amd64
->>> and arm64.
->>
->> The riscv issue is a different issue to the one I'm trying to solve. I
->> agree MAP_BELOW_HINT isn't a great fix for that because we already have
->> differences between amd64 and arm64 and obviously no software currently
->> out there uses this new flag.
->>
->> However, if we had introduced this flag in the past (e.g. if MAP_32BIT
->> had been implemented more generically, across architectures and with a
->> hint value, like this new flag) then we probably wouldn't be in this
->> situation. Applications that want to restrict the VA space would be able
->> to opt-in and be portable across architectures.
-> 
-> I don't think that's true.  Some of the applications want all of the
-> allocations below a certain threshold and by the time they are adding
-> flags to allocations, it's too late.  What you are looking for is a
-> counterpart to mmap_min_addr, but for higher addresses?  This would have
-> to be set before any of the allocations occur for a specific binary (ie:
-> existing libraries need to be below that threshold too), I think?
-
-Well that's not what *I* am looking for. A mmap_max_addr might be useful
-for others for the purpose of restricting all allocations.
-
-I think there are roughly three classes of application:
-
- 1. Applications which do nothing special with pointers. This is most
-applications and they could benefit from any future expansions to the VA
-size without any modification. E.g. if 64 bit VA addresses were somehow
-available they could deal with them today (without recompilation).
-
- 2. Applications which need VA addresses to meet certain requirements.
-They might be emulating another architecture (e.g. FEX) and want
-pointers that can be exposed to the emulation. They might be aware of
-restrictions in JIT code (e.g. PHP). Or they might want to store
-pointers in 'weird' ways which involve fewer bits - AFAICT that's the
-LuaJIT situation. These applications are usually well aware that they
-are doing something "unusual" and would likely use a Linux API if it
-existed.
-
- 3. Applications which abuse the top bits of a VA because they've read
-the architecture documentation and they "know" that the VA space is limited.
-
-Class 3 would benefit from mmap_max_addr - either because the
-architecture has been extended (although that's been worked around by
-requiring the hint value to allocate into the top address space) or
-because they get ported to another architecture (which I believe is the
-RiscV issue). There is some argument these applications are buggy but
-"we don't break userspace" so we deal with them in kernel until they get
-ported and then ideally the bugs are fixed.
-
-Class 1 is the applications we know and love, they don't need anything
-special.
-
-Class 2 is the case I care about. The application knows it wants special
-addresses, and in the cases I've detailed there has been significant
-code written to try to achieve this. But the kernel isn't currently
-providing a good mechanism to do this.
-
->>
->> Another potential option is a mmap3() which actually allows the caller
->> to place constraints on the VA space (e.g. minimum, maximum and
->> alignment). There's plenty of code out there that has to over-allocate
->> and munmap() the unneeded part for alignment reasons. But I don't have a
->> specific need for that, and I'm guessing you wouldn't be in favour.
-> 
-> You'd probably want control of the direction of the search too.
-
-Very true, and one of the reasons I don't want to do a mmap3() is that
-I'm pretty I'd miss something.
-
-> I think mmap3() would be difficult to have accepted as well.
-
-And that's the other major reason ;)
-
-Thanks,
-
-Steve
-
-> ...
-> 
-> Thanks,
-> Liam
-> 
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
