@@ -1,95 +1,81 @@
-Return-Path: <linux-parisc+bounces-2895-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2896-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28789B0CEA
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Oct 2024 20:14:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CFA99B0DF7
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Oct 2024 21:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58DA285BF1
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Oct 2024 18:14:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 808C91C20E56
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Oct 2024 19:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2F920EA43;
-	Fri, 25 Oct 2024 18:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F7C20EA31;
+	Fri, 25 Oct 2024 19:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Jnrff6cZ";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3NgZMXIE";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Jnrff6cZ";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3NgZMXIE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J5SiOQXd"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C7320BB3C;
-	Fri, 25 Oct 2024 18:13:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F91D20EA2C
+	for <linux-parisc@vger.kernel.org>; Fri, 25 Oct 2024 19:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729880011; cv=none; b=GfhM+IuwHtthdYlHhPWRByy0m4VNlnESb0nN1phVkchiohmxrNsPGNrtXPl0yCIiBJi4IERvfzlzShqmkS4MeV/RiBSLkpJmZLNQA1V31ZjNoPesZpbu9gHBeNoSbOeqx5rLHsU6IAOwWATy1pYBQjzFvPlODqKjb57IRAM/In4=
+	t=1729883314; cv=none; b=twJ3M05Jh/4cktyL4rQKki81Qn3uJl2o3Txq3DwW5i9qaoKZpBMoZrXE9iD63jVKZFPN/wW+XVYwTVhpdPzIByv69GrcDP8DjyhFJQ4whxBoobnSyWNrS/qfD+rHe7JUTrFOsaQIRBpQVF8LU5SclsXS/K8JFc04BH+jjnGmBr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729880011; c=relaxed/simple;
-	bh=/PDztJNHx/avwMtJDa4GSCL4ZVfxliImRbrp3B3rzL8=;
+	s=arc-20240116; t=1729883314; c=relaxed/simple;
+	bh=Atqhu9Vvs2j4kgk125WY6kREgeM34LSEqvCjPbaLUVk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z+P85JE1LG8Rx56PoaB3cBxo9+PsF9DL13XKw1kfLYYSH9Z/KIRkqQ53cC7NToQlv5QgyFTPMcUteeubCi52DfGU/8l5lxzDj7hpEKtmCG66GXc2VQ9UDrfrzt1eOxme5X28DNYPE+tQiBPf8bjfYmOKLZEoYMC3VDOodrpavxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Jnrff6cZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3NgZMXIE; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Jnrff6cZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3NgZMXIE; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 011E31FE29;
-	Fri, 25 Oct 2024 18:13:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1729880007; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	 In-Reply-To:Content-Type; b=a5jE1OCQ998PK/tKqYbw3BlfpDiFPvkNUW4+2AXS9s7YJ55UZUsi2UdLjGUgmrD8oKnaDaj0dfFFPJ9rZXcmHG1EU3EqOpHvGn+WJ9jQtudeHlBWuieprTswzfzCFn1ozVgUBZK7LIhE2FWOUth+UzW53jJdmuBBH2d4C82fPWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J5SiOQXd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729883311;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zKXJJEviamphxC/DA/8mSG5DEJnMjhmEflprXxZTXok=;
-	b=Jnrff6cZgnegSXi9fKCBaBsAV7wjOxbBywa2Yrbp1Nc5KJ/20qOogMfdqgaUtE2nJye/H0
-	vHmQm2sPJgy9stbr1gTKHyF9ii3nypSNfDCQV+A8eC+chXVx42hP3AVoMa6/on5+EkBsqP
-	ICKmUybNlTRppjoOCXYCLEtgUtFpHms=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1729880007;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zKXJJEviamphxC/DA/8mSG5DEJnMjhmEflprXxZTXok=;
-	b=3NgZMXIE3ZBeAqZQyJ3SQbfDyHo/PPltA0sQ3+akKvPcFgWPIOzY2jRut8HKSvH97pGqSI
-	IZTwamiefcKK7LCw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1729880007; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zKXJJEviamphxC/DA/8mSG5DEJnMjhmEflprXxZTXok=;
-	b=Jnrff6cZgnegSXi9fKCBaBsAV7wjOxbBywa2Yrbp1Nc5KJ/20qOogMfdqgaUtE2nJye/H0
-	vHmQm2sPJgy9stbr1gTKHyF9ii3nypSNfDCQV+A8eC+chXVx42hP3AVoMa6/on5+EkBsqP
-	ICKmUybNlTRppjoOCXYCLEtgUtFpHms=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1729880007;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zKXJJEviamphxC/DA/8mSG5DEJnMjhmEflprXxZTXok=;
-	b=3NgZMXIE3ZBeAqZQyJ3SQbfDyHo/PPltA0sQ3+akKvPcFgWPIOzY2jRut8HKSvH97pGqSI
-	IZTwamiefcKK7LCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7D347132D3;
-	Fri, 25 Oct 2024 18:13:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id HFLaG8bfG2edIQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 25 Oct 2024 18:13:26 +0000
-Message-ID: <8b1854b5-5c0a-43b1-aed7-aa4e8b8e8a1a@suse.cz>
-Date: Fri, 25 Oct 2024 20:13:26 +0200
+	bh=MVSXZyg6q4vB/F/dlOCG25S11OL3q8xNphEevi1OUr8=;
+	b=J5SiOQXdI1V5SMJA+OkGofwGhHr0dEaO+bsEXLoX/H3ApR6OgeEpswsm/pMmLKMatMQyxH
+	UWV0SXOgDv3Id4yCnxgmzOrX7nGIhaDH/n9i27nLC4s9GWqERgPw9tM98UlmCOiC9bDEW0
+	4TZ49L0uyxG8gJVHiY+j/MaKSI91Ge4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-692-M0yOfjA4Nc2MQIbTvxYYDg-1; Fri, 25 Oct 2024 15:08:30 -0400
+X-MC-Unique: M0yOfjA4Nc2MQIbTvxYYDg-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4315a0f25afso17705615e9.3
+        for <linux-parisc@vger.kernel.org>; Fri, 25 Oct 2024 12:08:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729883309; x=1730488109;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MVSXZyg6q4vB/F/dlOCG25S11OL3q8xNphEevi1OUr8=;
+        b=DIkKjyss/bg8aFHxHhU8XrUppB4GrlP+sDpHeiQ0p6erGv0WvVtifLws48Oi7+5ny2
+         r7Zc5zTXVyYpjujjDpQ1bxLlC21SA5X1dveCLiOBjipN5jT7qBMQ3wUGyjbZPIKRbIsA
+         o0te1A98wL7fTRWV0vX53iLeOpls7m766wQ9IhHQa8gLM+kN1HdnVwMIPtgMHTIQcPM/
+         IiZzTH674d5yFB9UCKhnTGEk7jgi4EunXpbaaOemd1bH+SJDMHsrv1kdAfMosycBgnT+
+         x/nc3a2Fe3ByXmlKLH94lXAJ5zUoJV3eeQXEuTfYT50vMelstAjwWm2UWjgLf5CwIqtK
+         WUiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUD8jxXoW5d9yn4ax5USdQ+hY+qDwYAM66kh9KuPYqquJlev/otFN6eNMwf0o6200FZGwNXS6Ee3CqGDcQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwupQECmcF67ZWR0Q4KYyeuOZNksZUZq5YR2X9HPIBiLqrSwJSE
+	kKRM8GS6a6RXLqYWdH8KBGp5RM2TmgWQ1vUpZUbqByicC/h+I9bzSt1iKw2TAme8EqYJz4nfFH3
+	2EmKUjUC9hML+nJpKP891OHk3VtKJx9ldUBNnd5bF/BArWQ7w5LxQHqoqnWsJfw==
+X-Received: by 2002:a05:600c:4e8e:b0:42c:b45d:4a7b with SMTP id 5b1f17b1804b1-4319ad146ebmr1855605e9.25.1729883308646;
+        Fri, 25 Oct 2024 12:08:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF4/uB4vkEM8EwI0WND/9FVu+Ru6uZegvdPG4ihlFPwI38k6kKKl957e+0DOV/SgltwNfr85Q==
+X-Received: by 2002:a05:600c:4e8e:b0:42c:b45d:4a7b with SMTP id 5b1f17b1804b1-4319ad146ebmr1855235e9.25.1729883308239;
+        Fri, 25 Oct 2024 12:08:28 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70d:d800:499c:485a:c734:f290? (p200300cbc70dd800499c485ac734f290.dip0.t-ipconnect.de. [2003:cb:c70d:d800:499c:485a:c734:f290])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b5430absm56204345e9.6.2024.10.25.12.08.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Oct 2024 12:08:27 -0700 (PDT)
+Message-ID: <c072049b-d6ef-47ce-b281-006ae0f721b3@redhat.com>
+Date: Fri, 25 Oct 2024 21:08:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -98,19 +84,18 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 1/5] mm: pagewalk: add the ability to install PTEs
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Suren Baghdasaryan <surenb@google.com>,
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>,
  "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Matthew Wilcox <willy@infradead.org>, "Paul E . McKenney"
- <paulmck@kernel.org>, Jann Horn <jannh@google.com>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>,
+ Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>,
+ "Paul E . McKenney" <paulmck@kernel.org>, Jann Horn <jannh@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Muchun Song <muchun.song@linux.dev>,
  Richard Henderson <richard.henderson@linaro.org>,
  Matt Turner <mattst88@gmail.com>,
  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
  Helge Deller <deller@gmx.de>, Chris Zankel <chris@zankel.net>,
  Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@kernel.org>,
  linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
@@ -122,206 +107,108 @@ Cc: Suren Baghdasaryan <surenb@google.com>,
  John Hubbard <jhubbard@nvidia.com>
 References: <cover.1729699916.git.lorenzo.stoakes@oracle.com>
  <9be732fd0e897453116b433fe2f468ef7795602e.1729699916.git.lorenzo.stoakes@oracle.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <9be732fd0e897453116b433fe2f468ef7795602e.1729699916.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+ <20241023160405.33995c68f20c141325a8fadb@linux-foundation.org>
+ <635de052-35a6-40e0-82ea-4349f3aecc06@lucifer.local>
+ <a089ff3b-119e-44a0-a780-3abca01886f7@redhat.com>
+ <e62ef664-1c71-48e0-a695-6a53b6d46922@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
+ 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
+ rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
+ wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
+ 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
+ pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
+ KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
+ BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
+ 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
+ 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
+ M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
+ Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
+ T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
+ 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
+ CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
+ NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
+ 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
+ 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
+ lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
+ AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
+ N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
+ AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
+ boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
+ 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
+ XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
+ a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
+ Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
+ 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
+ kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
+ th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
+ jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <e62ef664-1c71-48e0-a695-6a53b6d46922@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[31];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[google.com,oracle.com,infradead.org,kernel.org,redhat.com,kvack.org,vger.kernel.org,linux.dev,linaro.org,gmail.com,alpha.franken.de,HansenPartnership.com,gmx.de,zankel.net,chromium.org,nvidia.com];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	R_RATELIMIT(0.00)[to_ip_from(RL3py1j7x8bxoj6nr7eaeb97sq)]
-X-Spam-Flag: NO
-X-Spam-Level: 
 
-On 10/23/24 18:24, Lorenzo Stoakes wrote:
-> The existing generic pagewalk logic permits the walking of page tables,
-> invoking callbacks at individual page table levels via user-provided
-> mm_walk_ops callbacks.
+>>
+>> We already discussed in the past that we need a better and more efficient
+>> way to walk page tables. I have part of that on my TODO list, but I'm
+>> getting distracted.
 > 
-> This is useful for traversing existing page table entries, but precludes
-> the ability to establish new ones.
+> Yes I remember an LSF session on this, it's a really obvious area of improvement
+> that stands out at the moment for sure.
 > 
-> Existing mechanism for performing a walk which also installs page table
-> entries if necessary are heavily duplicated throughout the kernel, each
-> with semantic differences from one another and largely unavailable for use
-> elsewhere.
-> 
-> Rather than add yet another implementation, we extend the generic pagewalk
-> logic to enable the installation of page table entries by adding a new
-> install_pte() callback in mm_walk_ops. If this is specified, then upon
-> encountering a missing page table entry, we allocate and install a new one
-> and continue the traversal.
-> 
-> If a THP huge page is encountered at either the PMD or PUD level we split
-> it only if there are ops->pte_entry() (or ops->pmd_entry at PUD level),
-> otherwise if there is only an ops->install_pte(), we avoid the unnecessary
-> split.
-> 
-> We do not support hugetlb at this stage.
-> 
-> If this function returns an error, or an allocation fails during the
-> operation, we abort the operation altogether. It is up to the caller to
-> deal appropriately with partially populated page table ranges.
-> 
-> If install_pte() is defined, the semantics of pte_entry() change - this
-> callback is then only invoked if the entry already exists. This is a useful
-> property, as it allows a caller to handle existing PTEs while installing
-> new ones where necessary in the specified range.
-> 
-> If install_pte() is not defined, then there is no functional difference to
-> this patch, so all existing logic will work precisely as it did before.
-> 
-> As we only permit the installation of PTEs where a mapping does not already
-> exist there is no need for TLB management, however we do invoke
-> update_mmu_cache() for architectures which require manual maintenance of
-> mappings for other CPUs.
-> 
-> We explicitly do not allow the existing page walk API to expose this
-> feature as it is dangerous and intended for internal mm use only. Therefore
-> we provide a new walk_page_range_mm() function exposed only to
-> mm/internal.h.
-> 
-> Reviewed-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Having worked several 12+ hour days in a row though recently I can relate to
+> workload making this difficult though :)
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Yes :)
 
-Just a small subjective suggestion in case you agree and there's a respin or
-followups:
+> 
+>>
+>> *Inserting* (not walking/modifying existing things as most users to) as done
+>> in this patch is slightly different though, likely "on thing that fits all"
+>> will not apply to all page table walker user cases.
+> 
+> Yeah, there's also replace scenarios which then have to do egregious amounts of
+> work to make sure we do everything right, in fact there's duplicates of this in
+> mm/madvise.c *grumble grumble*.
+> 
+>>
+>> --
+>> Cheers,
+>>
+>> David / dhildenb
+>>
+> 
+> OK so I guess I'll hold off my TODOs on this as you are looking in this area and
+> I trust you :)
 
-> @@ -109,18 +131,19 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->  
->  		if (walk->action == ACTION_AGAIN)
->  			goto again;
-> -
-> -		/*
-> -		 * Check this here so we only break down trans_huge
-> -		 * pages when we _need_ to
-> -		 */
-> -		if ((!walk->vma && (pmd_leaf(*pmd) || !pmd_present(*pmd))) ||
-> -		    walk->action == ACTION_CONTINUE ||
-> -		    !(ops->pte_entry))
-> +		if (walk->action == ACTION_CONTINUE)
->  			continue;
-> +		if (!ops->install_pte && !ops->pte_entry)
-> +			continue; /* Nothing to do. */
-> +		if (!ops->pte_entry && ops->install_pte &&
-> +		    pmd_present(*pmd) &&
-> +		    (pmd_trans_huge(*pmd) || pmd_devmap(*pmd)))
-> +			continue; /* Avoid unnecessary split. */
+It will probably take me a while until I get to it, though. I'd focus on 
+walking (and batching what we can) first, then on top modifying existing 
+entries.
 
-Much better now, thanks, but maybe the last 2 parts could be:
+The "install something where there is nothing yet" (incl. populating 
+fresh page tables etc.) case probably deserves a separate "walker".
 
-if (!ops->pte_entry) {
-	if (!ops->install_pte)
-		continue; /* Nothing to do. */
-	else if (pmd_present(*pmd)
-		 && (pmd_trans_huge(*pmd) || pmd_devmap(*pmd)))
-		continue; /* Avoid unnecessary split. */
-}
+If you end up having spare cycles and want to sync on a possible design 
+for some part of that bigger task -- removing the old pagewalk logic -- 
+please do reach out! :)
 
-Or at least put !ops->pte_entry first in both conditions?
+-- 
+Cheers,
 
->  		if (walk->vma)
->  			split_huge_pmd(walk->vma, pmd, addr);
-> +		else if (pmd_leaf(*pmd) || !pmd_present(*pmd))
-> +			continue; /* Nothing to do. */
->  
->  		err = walk_pte_range(pmd, addr, next, walk);
->  		if (err)
-> @@ -148,11 +171,14 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->   again:
->  		next = pud_addr_end(addr, end);
->  		if (pud_none(*pud)) {
-> -			if (ops->pte_hole)
-> +			if (ops->install_pte)
-> +				err = __pmd_alloc(walk->mm, pud, addr);
-> +			else if (ops->pte_hole)
->  				err = ops->pte_hole(addr, next, depth, walk);
->  			if (err)
->  				break;
-> -			continue;
-> +			if (!ops->install_pte)
-> +				continue;
->  		}
->  
->  		walk->action = ACTION_SUBTREE;
-> @@ -164,14 +190,20 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->  
->  		if (walk->action == ACTION_AGAIN)
->  			goto again;
-> -
-> -		if ((!walk->vma && (pud_leaf(*pud) || !pud_present(*pud))) ||
-> -		    walk->action == ACTION_CONTINUE ||
-> -		    !(ops->pmd_entry || ops->pte_entry))
-> +		if (walk->action == ACTION_CONTINUE)
->  			continue;
-> +		if (!ops->install_pte && !ops->pte_entry && !ops->pmd_entry)
-> +			continue;  /* Nothing to do. */
-> +		if (!ops->pmd_entry && !ops->pte_entry && ops->install_pte &&
-> +		    pud_present(*pud) &&
-> +		    (pud_trans_huge(*pud) || pud_devmap(*pud)))
-> +			continue; /* Avoid unnecessary split. */
-
-Ditto.
-
-Thanks!
+David / dhildenb
 
 
