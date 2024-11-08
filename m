@@ -1,106 +1,148 @@
-Return-Path: <linux-parisc+bounces-2933-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2934-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8AE09C2071
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Nov 2024 16:30:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFDF39C21FE
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Nov 2024 17:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E57D1F2102C
-	for <lists+linux-parisc@lfdr.de>; Fri,  8 Nov 2024 15:30:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B4892828CA
+	for <lists+linux-parisc@lfdr.de>; Fri,  8 Nov 2024 16:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221572071E1;
-	Fri,  8 Nov 2024 15:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753441991BD;
+	Fri,  8 Nov 2024 16:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="HaUjtcWH"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="NTzzsbwi"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42FCC1F4295;
-	Fri,  8 Nov 2024 15:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11BD19A288;
+	Fri,  8 Nov 2024 16:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731079834; cv=none; b=DCWsry9uIw6l0+CRGwm0c41CRBfSaCdpNa+dRgCWHbjHoQ2RGrxVuomZmg10OrY0zyQWoMKTLIYLxBRDetv6ZRXcahTj57QsPJ5ebG7P/T0HR92j1sZg3XGONHp10W8ne1IdDXWNMiTk9k88ojH8NlL3OzzwUCbRwlv2I4iHs0s=
+	t=1731082943; cv=none; b=iklsxjvyJgL1KVjshx6oqbHJdOYAKiZnEV8ikDG0S8B985F80LTTx1znmE/IT8OWdA7+IMckGWsSd2t7iBrFZ7sjWT+n1I7f+YCPV5B2n1hGNtzqbkWgtIAZwVGndnvxTx2t8bHCSH6GKIwAtCjHr7ncSyHM2FGHJwGYWrVFQ+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731079834; c=relaxed/simple;
-	bh=YBes01HIGxCY9uAMUwOSqshjVdaMRIIeY82NB1cajGY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=vFjeymaqXBr2CrJAXe6rIeWUV5BOq6QzUh0BRlH4MNZWrrOo0f7DUV4weQA/Rb1Iavsq2265VslXxBES7yO7oX73z3nwpdwUN/86gG5HV4JP6NMXWilg5EZUGC+cEwOfru+DzLeeQD8yuzJEpElZ3f9t8ScxNN1IldXan7ZJ4Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=HaUjtcWH reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.4
+	s=arc-20240116; t=1731082943; c=relaxed/simple;
+	bh=Wc9cLe7IVYxZLT9/5tiwY+AQh4oiPQMTZDWcoqSOIdk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=amJtLYLf+RuyB7y74a7k4B5cXiC1feYKgVTn5FZCj04SdggjuZaiepjqviNTI5atu1Edu6IfDuRC2ZyCzfopSnLboKQMXfjU2stYKg8q7vM+K/ng7yXguHatcDDNq0f8aic9X3L535/kECdBW9QXrpKIBAcBp5T+DCp725RrwWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=NTzzsbwi; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=iQMcJa4BmFPVqKmXobn4cIhRx4UhLAzJDxklpcxlLI8=; b=H
-	aUjtcWHDFt1bKqSXkqJGs1dRc5kfURcXD/snEVL02VfzHVmJDJvgfdNFSH25sFJS
-	e/QmXTeDXcuNeFVAyRIvkZptmIV0qg/a2iU0Q4ogCM+qEHNRN03W89MpCkKtr4sE
-	EYlKvW6V2O6HdedRW0CAf+PWbdmw0x1Jl4G7mFEXQs=
-Received: from 00107082$163.com ( [111.35.191.191] ) by
- ajax-webmail-wmsvr-40-148 (Coremail) ; Fri, 8 Nov 2024 23:28:00 +0800 (CST)
-Date: Fri, 8 Nov 2024 23:28:00 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Thomas Gleixner" <tglx@linutronix.de>
-Cc: richard.henderson@linaro.org, linux@armlinux.org.uk, catalin.marinas@arm.com, 
-	will@kernel.org, guoren@kernel.org, chenhuacai@kernel.org, 
-	kernel@xen0n.name, James.Bottomley@HansenPartnership.com, 
-	deller@gmx.de, mpe@ellerman.id.au, paul.walmsley@sifive.com, 
-	ysato@users.sourceforge.jp, dalias@libc.org, 
-	glaubitz@physik.fu-berlin.de, davem@davemloft.net, 
-	andreas@gaisler.com, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, chris@zankel.net, 
-	jcmvbkbc@gmail.com, linux-kernel@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org
-Subject: Re: [PATCH] kernel/irq/proc: performance: replace seq_printf with
- seq_put_decimal_ull_width
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2024 www.mailtech.cn 163com
-In-Reply-To: <87r07lol9y.ffs@tglx>
-References: <20241103080552.4787-1-00107082@163.com> <87r07lol9y.ffs@tglx>
-X-NTES-SC: AL_Qu2YA/yctk4j5iSfbOkZnEYQheY4XMKyuPkg1YJXOp80uSbP/wc5cnBJEkHY4sOvLTmSvxeqUTR3+8t1RrNYQqbBTxgILkv4stMHL//JBWTB
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=W9dQM
+	r8jOEecKFU+yREnJFJ6sLM3jGmavbMn1MTCrSM=; b=NTzzsbwiAP1qmhkbrWDVW
+	pbbJ5UWSHSUht4baIVeCQKjTkHLPOQrkb7JKK5UJ3XtKoCnnAPcmPOhYjdblEhKa
+	qDC6xiVTgPt6fylJknbbUdxyLj2TBBDlMZp/8TV1OUciTC3iAI8Tja6lloOp6pW+
+	ujkjwAXDeXcmmgAbr7nBLc=
+Received: from localhost.localdomain (unknown [111.35.191.191])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDn19irOi5nxBV0Fw--.56359S4;
+	Sat, 09 Nov 2024 00:22:09 +0800 (CST)
+From: David Wang <00107082@163.com>
+To: James.Bottomley@HansenPartnership.com,
+	deller@gmx.de
+Cc: linux-kernel@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	David Wang <00107082@163.com>
+Subject: [PATCH 10/13] parisc/irq: use seq_put_decimal_ull_width() for decimal values
+Date: Sat,  9 Nov 2024 00:22:01 +0800
+Message-Id: <20241108162201.9853-1-00107082@163.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <3319cd6e.b980.1930c63b1e5.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:lCgvCgD3fwoBLi5nnLAiAA--.7283W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/1tbiqQKRqmcuF0eQdwACss
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDn19irOi5nxBV0Fw--.56359S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxur43Gr1xtw1ktrW3ur4UArb_yoW5ZF4rpa
+	n3CFsrXw4fZw1Yqr13Jay7ZwnxKFn0yFyYqwsxKrWfA3Z8uws3X3W3ur17WFy7KryIvrs3
+	uF98Wry2gF909w7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRw2-8UUUUU=
+X-CM-SenderInfo: qqqrilqqysqiywtou0bp/1tbiqR2RqmcuNe9NzAAAsd
 
-SGksICAKCkF0IDIwMjQtMTEtMDggMjI6MjU6MTMsICJUaG9tYXMgR2xlaXhuZXIiIDx0Z2x4QGxp
-bnV0cm9uaXguZGU+IHdyb3RlOgo+RGF2aWQhCj4KPk9uIFN1biwgTm92IDAzIDIwMjQgYXQgMTY6
-MDUsIERhdmlkIFdhbmcgd3JvdGU6Cj4KPiRTdWJqZWN0OiBbUEFUQ0hdIGtlcm5lbC9pcnEvcHJv
-YzogcGVyZm9ybWFuY2U6IC4uLgo+Cj5UaGF0J3Mgbm90IGEgdmFsaWQgc3Vic3lzdGVtIHByZWZp
-eC4KCmNvcHkgdGhhdH4KCj4KPj4gc2VxX3ByaW50ZiBpcyBjb3N0eSwgd2hlbiBzdHJlc3MgcmVh
-ZGluZyAvcHJvYy9pbnRlcnJ1cHRzLCBwcm9maWxpbmcgaW5kaWNhdGVzCj4+IHNlcV9wcmludGYg
-dGFrZXMgYWJvdXQgfjQ3JSBvZiBzaG93X2ludGVycnVwdHMgc2FtcGxlczoKPgo+QWxzbyBwbGVh
-c2UgZm9sbG93IHRoZSBkb2N1bWVudGF0aW9uIGZvciBkZW5vdGluZyBmdW5jdGlvbnMgaW4gY2hh
-bmdlCj5sb2dzOgo+Cj5odHRwczovL3d3dy5rZXJuZWwub3JnL2RvYy9odG1sL2xhdGVzdC9wcm9j
-ZXNzL21haW50YWluZXItdGlwLmh0bWwjZnVuY3Rpb24tcmVmZXJlbmNlcy1pbi1jaGFuZ2Vsb2dz
-Cj4KCmNvcHkgdGhhdH4KCj4+ICBhcmNoL2FscGhhL2tlcm5lbC9pcnEuYyAgICAgfCAgIDggKy0t
-Cj4+ICBhcmNoL2FybS9rZXJuZWwvc21wLmMgICAgICAgfCAgIDQgKy0KPj4gIGFyY2gvYXJtNjQv
-a2VybmVsL3NtcC5jICAgICB8ICAgMyArLQo+PiAgYXJjaC9jc2t5L2tlcm5lbC9zbXAuYyAgICAg
-IHwgICA0ICstCj4+ICBhcmNoL2xvb25nYXJjaC9rZXJuZWwvc21wLmMgfCAgIDIgKy0KPj4gIGFy
-Y2gvcGFyaXNjL2tlcm5lbC9pcnEuYyAgICB8ICAzNCArKysrKystLS0tLS0KPj4gIGFyY2gvcG93
-ZXJwYy9rZXJuZWwvaXJxLmMgICB8ICA0NCArKysrKysrKy0tLS0tLS0tCj4+ICBhcmNoL3Jpc2N2
-L2tlcm5lbC9zbXAuYyAgICAgfCAgIDMgKy0KPj4gIGFyY2gvc2gva2VybmVsL2lycS5jICAgICAg
-ICB8ICAgNCArLQo+PiAgYXJjaC9zcGFyYy9rZXJuZWwvaXJxXzMyLmMgIHwgIDEyICsrLS0tCj4+
-ICBhcmNoL3NwYXJjL2tlcm5lbC9pcnFfNjQuYyAgfCAgIDQgKy0KPj4gIGFyY2gveDg2L2tlcm5l
-bC9pcnEuYyAgICAgICB8IDEwMCArKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0K
-Pj4gIGFyY2gveHRlbnNhL2tlcm5lbC9pcnEuYyAgICB8ICAgMiArLQo+PiAgYXJjaC94dGVuc2Ev
-a2VybmVsL3NtcC5jICAgIHwgICA0ICstCj4+ICBrZXJuZWwvaXJxL3Byb2MuYyAgICAgICAgICAg
-fCAgIDYgKystCj4KPlRoZXJlIGlzIG5vIGRlcGVuZGVuY3kgb24gdGhlc2UgY2hhbmdlcy4gU28g
-cGxlYXNlIHNwbGl0IHRoZW0gdXAgaW50bwo+c2VwZXJhdGUgcGF0Y2hlcyBmb3IgY29yZSBhbmQg
-dGhlIGluZGl2aWR1YWwgYXJjaGl0ZWN0dXJlcy5hbgoKVGhhbmtzIGZvciBhbGwgdGhlIHJldmll
-dywgSSB3aWxsIG1ha2UgYSBwYXRjaHNldCBmb3IgdGhpcy4KPgo+VGhhbmtzLAo+Cj4gICAgICAg
-IHRnbHgKCgpEYXZpZA==
+Performance improvement for reading /proc/interrupts on arch parisc
+
+Signed-off-by: David Wang <00107082@163.com>
+---
+ arch/parisc/kernel/irq.c | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
+
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index dff66be65d29..b060d7e6da46 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -133,40 +133,42 @@ int arch_show_interrupts(struct seq_file *p, int prec)
+ 	int j;
+ 
+ #ifdef CONFIG_DEBUG_STACKOVERFLOW
+-	seq_printf(p, "%*s: ", prec, "STK");
++	seq_printf(p, "%*s:", prec, "STK");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", irq_stats(j)->kernel_stack_usage);
++		seq_put_decimal_ull_width(p, " ", irq_stats(j)->kernel_stack_usage, 10);
+ 	seq_puts(p, "  Kernel stack usage\n");
+ # ifdef CONFIG_IRQSTACKS
+-	seq_printf(p, "%*s: ", prec, "IST");
++	seq_printf(p, "%*s:", prec, "IST");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", irq_stats(j)->irq_stack_usage);
++		seq_put_decimal_ull_width(p, " ", irq_stats(j)->irq_stack_usage, 10);
+ 	seq_puts(p, "  Interrupt stack usage\n");
+ # endif
+ #endif
+ #ifdef CONFIG_SMP
+ 	if (num_online_cpus() > 1) {
+-		seq_printf(p, "%*s: ", prec, "RES");
++		seq_printf(p, "%*s:", prec, "RES");
+ 		for_each_online_cpu(j)
+-			seq_printf(p, "%10u ", irq_stats(j)->irq_resched_count);
++			seq_put_decimal_ull_width(p, " ",
++						  irq_stats(j)->irq_resched_count, 10);
+ 		seq_puts(p, "  Rescheduling interrupts\n");
+-		seq_printf(p, "%*s: ", prec, "CAL");
++		seq_printf(p, "%*s:", prec, "CAL");
+ 		for_each_online_cpu(j)
+-			seq_printf(p, "%10u ", irq_stats(j)->irq_call_count);
++			seq_put_decimal_ull_width(p, " ",
++						  irq_stats(j)->irq_call_count, 10);
+ 		seq_puts(p, "  Function call interrupts\n");
+ 	}
+ #endif
+-	seq_printf(p, "%*s: ", prec, "UAH");
++	seq_printf(p, "%*s:", prec, "UAH");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", irq_stats(j)->irq_unaligned_count);
++		seq_put_decimal_ull_width(p, " ", irq_stats(j)->irq_unaligned_count, 10);
+ 	seq_puts(p, "  Unaligned access handler traps\n");
+-	seq_printf(p, "%*s: ", prec, "FPA");
++	seq_printf(p, "%*s:", prec, "FPA");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", irq_stats(j)->irq_fpassist_count);
++		seq_put_decimal_ull_width(p, " ", irq_stats(j)->irq_fpassist_count, 10);
+ 	seq_puts(p, "  Floating point assist traps\n");
+-	seq_printf(p, "%*s: ", prec, "TLB");
++	seq_printf(p, "%*s:", prec, "TLB");
+ 	for_each_online_cpu(j)
+-		seq_printf(p, "%10u ", irq_stats(j)->irq_tlb_count);
++		seq_put_decimal_ull_width(p, " ", irq_stats(j)->irq_tlb_count, 10);
+ 	seq_puts(p, "  TLB shootdowns\n");
+ 	return 0;
+ }
+@@ -195,10 +197,10 @@ int show_interrupts(struct seq_file *p, void *v)
+ 		action = desc->action;
+ 		if (!action)
+ 			goto skip;
+-		seq_printf(p, "%3d: ", i);
++		seq_printf(p, "%3d:", i);
+ 
+ 		for_each_online_cpu(j)
+-			seq_printf(p, "%10u ", irq_desc_kstat_cpu(desc, j));
++			seq_put_decimal_ull_width(p, " ", irq_desc_kstat_cpu(desc, j), 10);
+ 
+ 		seq_printf(p, " %14s", irq_desc_get_chip(desc)->name);
+ #ifndef PARISC_IRQ_CR16_COUNTS
+-- 
+2.39.2
+
 
