@@ -1,53 +1,53 @@
-Return-Path: <linux-parisc+bounces-2946-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2947-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661339DEC88
-	for <lists+linux-parisc@lfdr.de>; Fri, 29 Nov 2024 20:38:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1034C9DF149
+	for <lists+linux-parisc@lfdr.de>; Sat, 30 Nov 2024 15:48:53 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B9C8282256
-	for <lists+linux-parisc@lfdr.de>; Fri, 29 Nov 2024 19:38:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28561162A0A
+	for <lists+linux-parisc@lfdr.de>; Sat, 30 Nov 2024 14:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E6E1A0BFF;
-	Fri, 29 Nov 2024 19:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEE01A00E7;
+	Sat, 30 Nov 2024 14:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="Phm5VRb0"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="MeCvSx6L"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-torrgo002.bell.net (mta-tor-003.bell.net [209.71.212.30])
+Received: from cmx-torrgo001.bell.net (mta-tor-002.bell.net [209.71.212.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CAB14D430
-	for <linux-parisc@vger.kernel.org>; Fri, 29 Nov 2024 19:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BBA19EEA1
+	for <linux-parisc@vger.kernel.org>; Sat, 30 Nov 2024 14:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732909116; cv=none; b=CkodPrrzQHWrn3EFC3e8rFYomIKJoLVoQDTFDuJG5d8SDwiJn8EUkUDQnVDgXRNEdPKZWhcCBoS1/BCcV82G0oLOffLYvikQo/SiEM1UHT6GRqY8xd3BJrlQXCXaZM7A0Skmb+DfUJEuuXiCI91GRKIeVbmr0beUgu38ki9IBtw=
+	t=1732978120; cv=none; b=jUB8zlpHqeo8hZTMHe9vBh7n7dNd8VW4uOED5VCmil66pKTKvvUU5HvJt9B+6ehmDRZXMLcBrahSWlIQOnDH0TSRRaiCVo2f40X5THLHbZjg596JwTHQiznxx2sR2Ykegz1Cn/63Lj18rA2vLzh0p9HgkxBXwv4uT+wbQLHZIGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732909116; c=relaxed/simple;
-	bh=9PeLuoPzzeE3hjtTp9VDMdRzQX9e2Alu389RB4GoXfo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KjFwI49RUfRuBzZI1JCbo7Zk04gH9OdNNfyiVwp9uRfRpR3LBCtJ4muPx1OkNGiUyIG7nVzKpeqH2rHAAofz8PctIsh+Ce6XxCUVIN8LaKhF6uX+And8RL4i2uNBjJ6Ny7q80cy4+KWPq2bH0ddAUzjySvOVFQFVQw1hEUJOoWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=Phm5VRb0; arc=none smtp.client-ip=209.71.212.30
+	s=arc-20240116; t=1732978120; c=relaxed/simple;
+	bh=/KcmS/1G0uFA/1QOWD3nyV9/3MtrKo21iDBWYVhksnc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jpt7nX6LmpDAl1AVmYiFqKwADJdmZ2zs16u9zBhLNEa2W+ICX5lnzqQl22owaGzbDPb9s9QBAznMhep5ZjQpndoXZH6bR/C9lA33R986FLo7ISCMyOeHEq0fICV7tDLRWsrc62lesaXr3ZyXHfExRUvg9chSsWr+KrXx+LXVDDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=MeCvSx6L; arc=none smtp.client-ip=209.71.212.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1732909114; 
-        bh=t7Act4tcjbm/5oGFOPrHuf6PYkSTLyXwpJMwkPpJ+hE=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=Phm5VRb0EIG7E3XAlf+u++sPU99xNpCZrR8/7AecYU5/Rkmum/yNrryFRKpGS0vcClyhrkXUSMy7MvwKqo0dDfJmLHS4YDaG85tlPSvkMKvNHMqHPks7BtpCSZb1vSeRngGZYkRKwTAM4SKxDg+27SoDQFKyB9vZDz6/kBWxWvf6vmuVdzuZ4EFIUSi47mOoj1+xn35NMg06hewv4xy1baZufqi1iNV98wArapKg/9v1x6aQFK0vJm3zdkIx25z8bOHCZY1le1qhTRPKZBnjN0ZiDlQWE4bNnHnhGRYiNPWBI7KWaPQNx1+QCR82rOgf+RDOnhTlqUzn+nILWPYcmQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1732978117; 
+        bh=ReO5J0xTxUe5t5DRR3cv+ojXJnDkAlMf8+ZN1OiVS3s=;
+        h=Message-ID:Date:MIME-Version:Subject:From:To:References:In-Reply-To:Content-Type;
+        b=MeCvSx6LRAezikJzb4nwt5mZkDcCA6lxLQUiUBRtaZ4HL8IQCUyT2L44G5i0nghPQAIAShzEjnv8VQrW+qXEuXBavtTSaXkQQ3okuW2eSy1R4DS83aXu5iBI0Cj7TEEQXg/gifey3jcsNl/xB5K5rvMj+5xMhy31ZF+W/z20haeJpspX+77jUxbsRYtoJdVwt31+Xwkg5n0azWTG2sNtPwKy9FdU2gQWdAcCk6r8DWF/ab1ztxY+aBfnZJl5VkAf0taekkELDnCdUHp5y8ugdaveRAB9IN54uPub7QNSv7cNcVVvXYlnHUOBa2iUYBZfYFNy9XlPPysJcIAkXL4TKw==
 X-RG-SOPHOS: Clean
 X-RG-VADE-SC: 0
 X-RG-VADE: Clean
 X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 673CED6E01B7C311
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeefuddrheefgdduvdehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuuefgnffnpdfqfgfvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeenucfhrhhomheplfhohhhnucffrghvihguucetnhhglhhinhcuoegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvtheqnecuggftrfgrthhtvghrnhepuddvjedvffffheffgeekuedtueelledtueffffehffekhfefgeevffeuhfehkefgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepudegvddruddviedruddvledrieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedugedvrdduvdeirdduvdelrdeipdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgvvhfkrfepsghrrghsqdgsrghsvgdqohhtfigrohhntdeltdeifidqghhrtgdqtdegqddugedvqdduvdeiqdduvdelqdeirdgushhlrdgsvghllhdr
-	tggrpdgruhhthhgpuhhsvghrpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpghgvohfkrfepveetpdfovfetjfhoshhtpegtmhigqdhtohhrrhhgohdttddv
+X-RG-Rigid: 674075B80150561E
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeefuddrheehgdeiiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffhvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpefhiedukeehlefghefhtdelffekvedvfefglefgtdelhffggefhueeitddutddugfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedugedvrdduvdeirdduvdelrdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepudegvddruddviedruddvledriedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepfedprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrhesghhmgidruggvpdhrtghpthhtoheplhhinhhugidqphgrrhhishgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrvghvkffrpegsrhgrshdqsggrshgvqdhothifrghonhdtledtieifqdhgrhgtqddtgedqudegvddquddviedquddvledqiedrughslhdrsggvlhhlrdgt
+	rgdprghuthhhpghushgvrhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhgvghokffrpeevtedpoffvtefjohhstheptghmgidqthhorhhrghhotddtud
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.126.129.6) by cmx-torrgo002.bell.net (authenticated as dave.anglin@bell.net)
-        id 673CED6E01B7C311; Fri, 29 Nov 2024 14:37:05 -0500
-Message-ID: <5468692c-df88-44ca-9f0c-f8d2e535bfa0@bell.net>
-Date: Fri, 29 Nov 2024 14:37:05 -0500
+Received: from [192.168.2.49] (142.126.129.6) by cmx-torrgo001.bell.net (authenticated as dave.anglin@bell.net)
+        id 674075B80150561E; Sat, 30 Nov 2024 09:48:28 -0500
+Message-ID: <6d49b2eb-986e-4489-8f4e-878a4a24db2c@bell.net>
+Date: Sat, 30 Nov 2024 09:48:29 -0500
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -56,12 +56,13 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: stage1 compiler sometimes hangs
+From: John David Anglin <dave.anglin@bell.net>
 To: Helge Deller <deller@gmx.de>
 Cc: linux-parisc <linux-parisc@vger.kernel.org>
 References: <54fbebcc-d4f5-40f3-8711-bac14dcd5397@bell.net>
  <a5b5e745-30b8-4a1d-b406-fc1d991dc775@gmx.de>
+ <5468692c-df88-44ca-9f0c-f8d2e535bfa0@bell.net>
 Content-Language: en-US
-From: John David Anglin <dave.anglin@bell.net>
 Autocrypt: addr=dave.anglin@bell.net; keydata=
  xsFNBFJfN1MBEACxBrfJ+5RdCO+UQOUARQLSsnVewkvmNlJRgykqJkkI5BjO2hhScE+MHoTK
  MoAeKwoLfBwltwoohH5RKxDSAIWajTY5BtkJBT23y0hm37fN2JXHGS4PwwgHTSz63cu5N1MK
@@ -105,67 +106,17 @@ Autocrypt: addr=dave.anglin@bell.net; keydata=
  XV2KRzaE359RgbM3pNEViXp3NclPYmeu+XI8Ls/y6tSq5e/o/egktdyJj+xvAj9ZS18b10Jp
  e67qK8wZC/+N7LGON05VcLrdZ+FXuEEojJWbabF6rJGN5X/UlH5OowVFEMhD9s31tciAvBwy
  T70V9SSrl2hiw38vRzsl
-In-Reply-To: <a5b5e745-30b8-4a1d-b406-fc1d991dc775@gmx.de>
+In-Reply-To: <5468692c-df88-44ca-9f0c-f8d2e535bfa0@bell.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2024-11-29 1:03 p.m., Helge Deller wrote:
-> On 11/29/24 5:52 PM, John David Anglin wrote:
->> Hi Helge,
->
-> Hi Dave,
->
->> I have done a lot of work on gcc in the past month or so trying to resolve issues with LRA.
->
-> Thanks!
->
->> Sometimes cc1plus will hang during bootstrap.  This usually occurs fairly soon after the
->> stage1 compiler is built.  Sometimes it hangs doing conf tests or building libstdc++ for stage2.
->>
->> top shows hung process running at 100%.
->>
->> Once a hang occurs, it seems system is more likely to hang again (i.e., the gdb trick only
->> lasts for a few compiles before another hang occurs).  Maybe hang is more likely after
->> system has been running for sometime.
->>
->> There is no output from strace if it is attached to processor.
->>
->> If I attach gdb to hung process, I see cc1plus is usually in parser.  If I continue process or
->> just quit, process runs successfully to completion.
->>
->> I suspect this problem is somehow related to the size of cc1plus. If I build stage1 with -O1,
->> the problem is reduced or goes away.  I've never seen a hang building stage 1 or with the
->> stage2 compiler.
->>
->> Could this be a swap problem?  Or maybe trace bit gets turned on so process runs really slow?
->
-> I doubt that's caused by swap/trace bits.
->
->> Any other thoughts?
->
-> Which kernel is affected?
-I've seen problem with 6.10.14 and every 6.11.x build that I've tried.  All my builds
-have generic clockevent patch installed.
-
-Problem could go back further than 6.10.14.  I wasn't doing as many gcc builds then.
-
-Haven't tested 6.12 yet.
-
-I've also seen problem with debian 6.11.9-parisc64.  I don't think it has clockevent
-patch.
->
-> I suspect some issue with kernel timer (and thus scheduler).
-> You could try reverting this patch: "parisc: Convert to generic clockevents"
-> https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/commit/?h=parisc-6.12-1&id=b5ff52be891347f8847872c49d7a5c2fa29400a7
-That's an interesting thought.
->
-> Do you still need to press enter so that systemd continues boot?
-> Might be related.
-Yes with 6.11.x.  6.10.14 boots normally.
->
-> I see some 100% hangs with apt-cacher-ng (again) on one of the machines at SAP,
-> although apt-cacher-ng has my latest patches applied.
-apt-cacher-ng is not currently installed on mx3210.
+On 2024-11-29 2:37 p.m., John David Anglin wrote:
+>> I suspect some issue with kernel timer (and thus scheduler).
+>> You could try reverting this patch: "parisc: Convert to generic clockevents"
+>> https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/commit/?h=parisc-6.12-1&id=b5ff52be891347f8847872c49d7a5c2fa29400a7
+> That's an interesting thought.
+There's one more unique thing about mx3210.  These builds are being done on a 1 TB PCI NVME drive.
+I added this drive after the system boot drive failed and I had a difficult time getting a working replacement.
 
 Dave
 
