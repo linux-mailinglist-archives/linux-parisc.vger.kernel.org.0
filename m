@@ -1,53 +1,53 @@
-Return-Path: <linux-parisc+bounces-2949-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2950-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0DF9DF3D4
-	for <lists+linux-parisc@lfdr.de>; Sun,  1 Dec 2024 00:36:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41AC9DF63F
+	for <lists+linux-parisc@lfdr.de>; Sun,  1 Dec 2024 16:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 750FEB216AB
-	for <lists+linux-parisc@lfdr.de>; Sat, 30 Nov 2024 23:36:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25B132819F8
+	for <lists+linux-parisc@lfdr.de>; Sun,  1 Dec 2024 15:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BA616C6A1;
-	Sat, 30 Nov 2024 23:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705EB134B0;
+	Sun,  1 Dec 2024 15:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="FIwLPn/G"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="L72l2WYt"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-torrgo001.bell.net (mta-tor-002.bell.net [209.71.212.29])
+Received: from cmx-torrgo002.bell.net (mta-tor-005.bell.net [209.71.212.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3604158D92
-	for <linux-parisc@vger.kernel.org>; Sat, 30 Nov 2024 23:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA9A6FB9
+	for <linux-parisc@vger.kernel.org>; Sun,  1 Dec 2024 15:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733009804; cv=none; b=GTSQrxUU1TBjEE339GjcqoXe6VrHyxZNnDb6Vv5cijd3s88FhV8a1kTOXVjiCFZxWIN053kh/RPuqZLSAMa3FMKQ87UkXzhHC0Xo5wsT9GJA4e1xvFVUSQHu7JNIdAK3Dxtbjk+kYJNNfDIrbrqBsX9wGrjGkt8AzVgz8xwEUDc=
+	t=1733067073; cv=none; b=RpXvSbKoMT6skR7Kamb0UkvSl1pJs3kWR2BjjE2/lb5tK5f+XA1X+ymjYZeaSJW4DxjsqphH+qYUebtJwwxjBvQGU8TSktS+82dURra8v2vQ9y6llHq8rdyS5/MJ+7gxZpnz8L2HF/1IvkRWuihM4MDf3voMJ19NOH8xHGAQz8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733009804; c=relaxed/simple;
-	bh=FLp0eR15DCYZAYVEbfmtS9Qb2CLQK5cgSFzgkVZ9yy4=;
+	s=arc-20240116; t=1733067073; c=relaxed/simple;
+	bh=VXkIPP6LO661xmRdFllxWtz7N3yMFP8WfnBdJH+c9hg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=FXw548Bp1X4YkcbjfzvSwsIHFQqA/cExNlIKJNbwVavA2OOHcA9YDlw8uMnIjmCC5wrFTS5pGNzGzJDLb6roaE97x9fnmeDqkZ3a+G8mM3bcZdlFZmIZI8UGz2SLG8HxWwZ/1MWy1X98eUD1+SpRWcNbJU1/AaCUJ8r9cw4BL5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=FIwLPn/G; arc=none smtp.client-ip=209.71.212.29
+	 In-Reply-To:Content-Type; b=PMxbl5m7o7p+czc0aGH58z4waEpDV5730SGTQuyhrZbf/8/OjF+Jj+apCRQTlIZXrDOEbTzSVqMKwWtazNR52tv0NunrobjJkeWnz1r+N8kxc9+Q0Evilsyw2Q2mBtbSGT2qnUEiitVMIcEG5S/AsCag0QJAzMcwtb5RDHosGX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=L72l2WYt; arc=none smtp.client-ip=209.71.212.37
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1733009802; 
-        bh=y6JhwlRhWXwbDOSd6qGQxYutJGMH696ZKijhy5B8eCM=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1733067071; 
+        bh=XbKF9oL3LS4mFnAOFUO7dpbZKjR1pgZH00I33ECHUZA=;
         h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=FIwLPn/GDKnKXWnMnnj7UMjjg6l2/XXCTJf4Ju9dsiOJOCPV2WDW9U7ojiLbBNCxTh3T6HG4PHiPOxfEtuoMklEH7OgiYNXsST3DEF9W1Fe3O1AxtIlk7GYfPxIKsWKugwwcXIoOhuar6epRqMbfsNzjVowNbshRwfK0alf+GyElBCmwz4KHZ65j7xO0WqSKHzlpqmeVbWIcL+UNbQSNj3QBFY+3n+RyVfskwmsAUDXAXEyjnWPeiJ6oEqId7eFqa7yeClRRw+YNOwF3sLp15Z8ZBH7UnKSN5X8VvnBRiregjQoYKqChWIIx0P+Vawt4JAEoqgbwCf/jc3JIRnKEjA==
+        b=L72l2WYtlkmi7p2TBW5H90zIup7HF2ZSpKXhpBmTznw9sAOanZfqlTjP5x9CHVQsKrwHirfSKiI7rKaHjcZ4y/u/jAyQrzH41qrqGlQsAvqwWdMztCfnDK+smuBLpy2ZMwUIAaiXEzaZgv9J72q1VIRSfRkNgAnXMvfg2ldPpSQahxD3XmaAVsoiJCPrfZ4ahwYKpeNKor+cFcv0sqcOqL6xvfUEqGAmVSC/zPwAd0+1/OdrWZpg13bKdm2FMItWYLPwe9XdG8ZwySHKu4+sF2q2/Z7euC213QawOaiNE3uh7W/zVhBzgqgudbTevd+lkxe0eEFZMN1fMif0MHMNnA==
 X-RG-SOPHOS: Clean
 X-RG-VADE-SC: 0
 X-RG-VADE: Clean
 X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 674075B8015FB8D2
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeefuddrheeigddufecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthekredttddvjeenucfhrhhomheplfhohhhnucffrghvihguucetnhhglhhinhcuoegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffffduieetteeiiedvveehheefkeeugeeigeelteeuffdvgfdtveeuleeftedunecukfhppedugedvrdduvdeirdduvdelrdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepudegvddruddviedruddvledriedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepfedprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguohifnhhinhhthhgvsghunhhnhihhohhlvgesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgvvhfkrfepsghrrghsqdgsrghsvgdqohhtfigrohhntdeltdeifidqghhrtgdqtdegqddugedvqdduvdeiqdduvdelqdeirdgushhlrdgsvghllhdrtggrpdgruhht
-	hhgpuhhsvghrpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpghgvohfkrfepveetpdfovfetjfhoshhtpegtmhigqdhtohhrrhhgohdttddu
+X-RG-Rigid: 673CED6E01FC0C28
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeefuddrheejgdejiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthekredttddvjeenucfhrhhomheplfhohhhnucffrghvihguucetnhhglhhinhcuoegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffffduieetteeiiedvveehheefkeeugeeigeelteeuffdvgfdtveeuleeftedunecukfhppedugedvrdduvdeirdduvdelrdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepudegvddruddviedruddvledriedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepfedprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrhesghhmgidruggvpdhrtghpthhtoheplhhinhhugidqphgrrhhishgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrvghvkffrpegsrhgrshdqsggrshgvqdhothifrghonhdtledtieifqdhgrhgtqddtgedqudegvddquddviedquddvledqiedrughslhdrsggvlhhlrdgtrgdprghuthhhpghushgvrhepuggrvhgvrdgrnhhg
+	lhhinhessggvlhhlrdhnvghtpdhgvghokffrpeevtedpoffvtefjohhstheptghmgidqthhorhhrghhotddtvd
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.126.129.6) by cmx-torrgo001.bell.net (authenticated as dave.anglin@bell.net)
-        id 674075B8015FB8D2; Sat, 30 Nov 2024 18:36:38 -0500
-Message-ID: <8c39a00d-a978-4a1e-a864-bc3a409aeb90@bell.net>
-Date: Sat, 30 Nov 2024 18:36:39 -0500
+Received: from [192.168.2.49] (142.126.129.6) by cmx-torrgo002.bell.net (authenticated as dave.anglin@bell.net)
+        id 673CED6E01FC0C28; Sun, 1 Dec 2024 10:31:02 -0500
+Message-ID: <53e47dad-74ad-437d-9443-18d36c06f852@bell.net>
+Date: Sun, 1 Dec 2024 10:31:02 -0500
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -55,14 +55,12 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: mm/slab.h "unknown type name 'u128'"
-To: DiTBho Down in The Bunny hole <downinthebunnyhole@gmail.com>,
- linux-parisc <linux-parisc@vger.kernel.org>
-References: <54fbebcc-d4f5-40f3-8711-bac14dcd5397@bell.net>
- <a5b5e745-30b8-4a1d-b406-fc1d991dc775@gmx.de>
- <5468692c-df88-44ca-9f0c-f8d2e535bfa0@bell.net>
- <6d49b2eb-986e-4489-8f4e-878a4a24db2c@bell.net>
- <CAAZ8i81QnEYyEvWBNWeE0E=5xK9LDZD0FVkSuOGfQv9NFAwNbA@mail.gmail.com>
+Subject: Re: WARNING: CPU: 1 PID: 1 at drivers/pci/devres.c:602
+ pcim_add_mapping_to_legacy_table+0x74/0x90
+To: Helge Deller <deller@gmx.de>, linux-parisc <linux-parisc@vger.kernel.org>
+References: <09692e99-a05a-4240-96bf-040eea60d936@bell.net>
+ <f7d0e2fe-b613-4327-b926-5a36d5b8163c@bell.net>
+ <c312debc-f6e7-4c9e-8e20-e47e7e3b27f3@gmx.de>
 Content-Language: en-US
 From: John David Anglin <dave.anglin@bell.net>
 Autocrypt: addr=dave.anglin@bell.net; keydata=
@@ -108,32 +106,22 @@ Autocrypt: addr=dave.anglin@bell.net; keydata=
  XV2KRzaE359RgbM3pNEViXp3NclPYmeu+XI8Ls/y6tSq5e/o/egktdyJj+xvAj9ZS18b10Jp
  e67qK8wZC/+N7LGON05VcLrdZ+FXuEEojJWbabF6rJGN5X/UlH5OowVFEMhD9s31tciAvBwy
  T70V9SSrl2hiw38vRzsl
-In-Reply-To: <CAAZ8i81QnEYyEvWBNWeE0E=5xK9LDZD0FVkSuOGfQv9NFAwNbA@mail.gmail.com>
+In-Reply-To: <c312debc-f6e7-4c9e-8e20-e47e7e3b27f3@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2024-11-30 5:54 p.m., DiTBho Down in The Bunny hole wrote:
-> hi
-> I am trying to compile recent >= kernel-6.12.*
-> with the toolchain hppa64-unknown-linux-gnu
-> + binutils-v2.34.0
-> + gcc-v9.3.0
+On 2024-11-24 3:01 p.m., Helge Deller wrote:
+>> I don't know if this is related but I need to enter a return to get past the ip_tables patching:
 >
-> The process stops with an error
->
-> In file included from mm/mempool.c:21:
-> mm/slab.h:25:9: error: unknown type name 'u128'
->     25 | typedef u128 freelist_full_t;
->        |         ^~~~
->
-> where "u128" should be defined?
-> Is my cc too old?
-Yes.  TImode is a relatively recent addition to hppa64 compiler.  I know it's in gcc-12.  Your
-binutils version is also very old.
+> I had to press enter to get console login.
+6.12.1 booted normally.  So, this problem seems limited to v6.11.x.
+
+Still have this warning:
+[    1.350744] WARNING: CPU: 1 PID: 1 at drivers/pci/devres.c:602 pcim_add_mapping_to_legacy_table+0x74/0x90
 
 Dave
----
 
+-- 
 John David Anglin  dave.anglin@bell.net
 
 
