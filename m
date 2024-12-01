@@ -1,127 +1,231 @@
-Return-Path: <linux-parisc+bounces-2950-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2951-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41AC9DF63F
-	for <lists+linux-parisc@lfdr.de>; Sun,  1 Dec 2024 16:31:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A8B9DF643
+	for <lists+linux-parisc@lfdr.de>; Sun,  1 Dec 2024 16:39:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25B132819F8
-	for <lists+linux-parisc@lfdr.de>; Sun,  1 Dec 2024 15:31:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BB15162FBE
+	for <lists+linux-parisc@lfdr.de>; Sun,  1 Dec 2024 15:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705EB134B0;
-	Sun,  1 Dec 2024 15:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84FB1D63CD;
+	Sun,  1 Dec 2024 15:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="L72l2WYt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M5g1P1mm"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-torrgo002.bell.net (mta-tor-005.bell.net [209.71.212.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA9A6FB9
-	for <linux-parisc@vger.kernel.org>; Sun,  1 Dec 2024 15:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CBE1D61A2
+	for <linux-parisc@vger.kernel.org>; Sun,  1 Dec 2024 15:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733067073; cv=none; b=RpXvSbKoMT6skR7Kamb0UkvSl1pJs3kWR2BjjE2/lb5tK5f+XA1X+ymjYZeaSJW4DxjsqphH+qYUebtJwwxjBvQGU8TSktS+82dURra8v2vQ9y6llHq8rdyS5/MJ+7gxZpnz8L2HF/1IvkRWuihM4MDf3voMJ19NOH8xHGAQz8s=
+	t=1733067550; cv=none; b=l35K7wPPIjFJmULfNf84vxceclfuZV0MmEsEDJQrs3n1jpm/5MT8NnGpkQxoz8FfYDhR4GFHu742sXT79/o4wLcxqSgJBTWF2p3KGnh7fuGqrDYKTKNQhL9k7i7CAS6oQLw7W5bD6pJ35zSSXbURKJuvO4OYKOt/tl8Dgh3NRHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733067073; c=relaxed/simple;
-	bh=VXkIPP6LO661xmRdFllxWtz7N3yMFP8WfnBdJH+c9hg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=PMxbl5m7o7p+czc0aGH58z4waEpDV5730SGTQuyhrZbf/8/OjF+Jj+apCRQTlIZXrDOEbTzSVqMKwWtazNR52tv0NunrobjJkeWnz1r+N8kxc9+Q0Evilsyw2Q2mBtbSGT2qnUEiitVMIcEG5S/AsCag0QJAzMcwtb5RDHosGX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=L72l2WYt; arc=none smtp.client-ip=209.71.212.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1733067071; 
-        bh=XbKF9oL3LS4mFnAOFUO7dpbZKjR1pgZH00I33ECHUZA=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=L72l2WYtlkmi7p2TBW5H90zIup7HF2ZSpKXhpBmTznw9sAOanZfqlTjP5x9CHVQsKrwHirfSKiI7rKaHjcZ4y/u/jAyQrzH41qrqGlQsAvqwWdMztCfnDK+smuBLpy2ZMwUIAaiXEzaZgv9J72q1VIRSfRkNgAnXMvfg2ldPpSQahxD3XmaAVsoiJCPrfZ4ahwYKpeNKor+cFcv0sqcOqL6xvfUEqGAmVSC/zPwAd0+1/OdrWZpg13bKdm2FMItWYLPwe9XdG8ZwySHKu4+sF2q2/Z7euC213QawOaiNE3uh7W/zVhBzgqgudbTevd+lkxe0eEFZMN1fMif0MHMNnA==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 673CED6E01FC0C28
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeefuddrheejgdejiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvfhfhjggtgfesthekredttddvjeenucfhrhhomheplfhohhhnucffrghvihguucetnhhglhhinhcuoegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvtheqnecuggftrfgrthhtvghrnhepvdffffduieetteeiiedvveehheefkeeugeeigeelteeuffdvgfdtveeuleeftedunecukfhppedugedvrdduvdeirdduvdelrdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepudegvddruddviedruddvledriedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepfedprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrhesghhmgidruggvpdhrtghpthhtoheplhhinhhugidqphgrrhhishgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrvghvkffrpegsrhgrshdqsggrshgvqdhothifrghonhdtledtieifqdhgrhgtqddtgedqudegvddquddviedquddvledqiedrughslhdrsggvlhhlrdgtrgdprghuthhhpghushgvrhepuggrvhgvrdgrnhhg
-	lhhinhessggvlhhlrdhnvghtpdhgvghokffrpeevtedpoffvtefjohhstheptghmgidqthhorhhrghhotddtvd
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.126.129.6) by cmx-torrgo002.bell.net (authenticated as dave.anglin@bell.net)
-        id 673CED6E01FC0C28; Sun, 1 Dec 2024 10:31:02 -0500
-Message-ID: <53e47dad-74ad-437d-9443-18d36c06f852@bell.net>
-Date: Sun, 1 Dec 2024 10:31:02 -0500
+	s=arc-20240116; t=1733067550; c=relaxed/simple;
+	bh=A3WxOhLIm0YVoROHLBEyFtxjrFbIXtHNFyQ4IiH2M6k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=G/1/yGK7DPYQldgVNDuj5T4pBTYbZ3OcpbP26SYL4hlw53RPtiopggGehlL96oaZm1qFKAqrc/rg9EYts4AjqOz2RNwAyNvK96Krr87SM131G4qRc2InNQPWMR012VDmdRlJTrMgmWNVE5Zk++g48wwrhe67elcU9kBRzEfCGUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M5g1P1mm; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5cf6f804233so4034339a12.2
+        for <linux-parisc@vger.kernel.org>; Sun, 01 Dec 2024 07:39:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733067547; x=1733672347; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dm1x/dpdWPhlQxKptGTV5ps8pUHtS/UYx+HZURwjWms=;
+        b=M5g1P1mmna4CtC1j3jElBhyVckqfrJaU0Pd0FK8qxil++cdy4/bkcXwtAuQdofB7wP
+         gxEUf7kl4F+k1VrTQGYA5hukYDR5oLxj1YNLJ4aqFBAy1GHoA4gXoGLGkVvqLCWP2lvN
+         6BXPTMEFj0VjP74tJ0jaiMm2/lQVcGx4hJ7vBsf11Gdn1KOPql0lUaNFM69Uy6lKG9h8
+         xWT1IVMoL513h+334lq0gproeIiwvY1LlkrMEBpwh6nhJKrsuIWOPUVd0jrD4l0MnpQH
+         qq8XO7zUPtSsS2wlwXXjV9wNQj4Jbc+bJCFCgxYZCm5A0pHMkBtfpgIgRtoki94ghXyQ
+         HDPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733067547; x=1733672347;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dm1x/dpdWPhlQxKptGTV5ps8pUHtS/UYx+HZURwjWms=;
+        b=NBfrp44fTzCCBDNlc1DVADhIW0HkiVSxMPfLy08Di/krSho26JQeSDJ9YRlU4FE0QA
+         DKmABSnOTSiUhlrDcvlIwL+GdVufN6SRZ85+5/BjKhLn9JbYdxZRozIHLAxI95OWmI5b
+         VQ0tZS8ENF8NhKmjJgCJUEDaqSIBnmT7JmTCMlN2cpleMUhezp6ZVg1HvfsMtyH5PrwE
+         ViQrkmDf+42C5YOOTE3kXwH5PKTdRa3s/RlRkome0uBm9Zf+De+Aqww9D0EWZeynJmvQ
+         FW+4ZOIfX7gVE24M2zU5tnZC47iSc9iMpi4lOsuQn+qD+plscs61oycDcxhCc1oiQmro
+         wNmg==
+X-Gm-Message-State: AOJu0YzDi7Al0hDRVfdKgLJvWoRI6zVSVlGyj1bW/ECKRKZ7h/BpLoM2
+	ytF7CBWC+XOPolVoD7rVweNICc0wGogQcLs2ZCrKrPeYhTgtPc44eRJUsNtE2HeRfu5YCcIsVlv
+	66S1hdDLtxopl/006X++bImcHRaI=
+X-Gm-Gg: ASbGnctmsWfQmxnoHmZ+82C4L5uxSFjIUQctlw2HVaqn6OfBrNE4x+NQl+HBqTQP1cW
+	11/UcbdgHduyyYXLCMfpBRHkqVXUjECR7AblL0QyqVsZZNMfgrbL07yO1va8Wp7a3
+X-Google-Smtp-Source: AGHT+IH0EPYuKDwtWcg9lsVnxtTIprquIVwGEcj/VTJHOFf0lRyp5j/pUj+5ISNJqskNLiCF7PU6PBSlWHTfqZqYRP0=
+X-Received: by 2002:a05:6402:1eca:b0:5cf:d1b5:1bd5 with SMTP id
+ 4fb4d7f45d1cf-5d080c533c8mr17093823a12.16.1733067546851; Sun, 01 Dec 2024
+ 07:39:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: WARNING: CPU: 1 PID: 1 at drivers/pci/devres.c:602
- pcim_add_mapping_to_legacy_table+0x74/0x90
-To: Helge Deller <deller@gmx.de>, linux-parisc <linux-parisc@vger.kernel.org>
-References: <09692e99-a05a-4240-96bf-040eea60d936@bell.net>
- <f7d0e2fe-b613-4327-b926-5a36d5b8163c@bell.net>
- <c312debc-f6e7-4c9e-8e20-e47e7e3b27f3@gmx.de>
-Content-Language: en-US
-From: John David Anglin <dave.anglin@bell.net>
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- xsFNBFJfN1MBEACxBrfJ+5RdCO+UQOUARQLSsnVewkvmNlJRgykqJkkI5BjO2hhScE+MHoTK
- MoAeKwoLfBwltwoohH5RKxDSAIWajTY5BtkJBT23y0hm37fN2JXHGS4PwwgHTSz63cu5N1MK
- n8DZ3xbXFmqKtyaWRwdA40dy11UfI4xzX/qWR3llW5lp6ERdsDDGHm5u/xwXdjrAilPDk/av
- d9WmA4s7TvM/DY3/GCJyNp0aJPcLShU2+1JgBxC6NO6oImVwW07Ico89ETcyaQtlXuGeXYTK
- UoKdEHQsRf669vwcV5XbmQ6qhur7QYTlOOIdDT+8zmBSlqBLLe09soATDciJnyyXDO1Nf/hZ
- gcI3lFX86i8Fm7lQvp2oM5tLsODZUTWVT1qAFkHCOJknVwqRZ8MfOvaTE7L9hzQ9QKgIKrSE
- FRgf+gs1t1vQMRHkIxVWb730C0TGiMGNn2oRUV5O5QEdb/tnH0Te1l+hX540adKZ8/CWzzW9
- vcx+qD9IWLRyZMsM9JnmAIvYv06+YIcdpbRYOngWPd2BqvktzIs9mC4n9oU6WmUhBIaGOGnt
- t/49bTRtJznqm/lgqxtE2NliJN79dbZJuJWe5HkjVa7mP4xtsG59Rh2hat9ByUfROOfoZ0dS
- sVHF/N6NLWcf44trK9HZdT/wUeftEWtMV9WqxIwsA4cgSHFR2QARAQABzTdKb2huIERhdmlk
- IEFuZ2xpbiAoRGViaWFuIFBvcnRzKSA8ZGF2ZS5hbmdsaW5AYmVsbC5uZXQ+wsF3BBMBCAAh
- BQJSXzdTAhsDBQsJCAcDBRUKCQgLBRYCAwEAAh4BAheAAAoJEF2/za5fGU3xs/4P/15sNizR
- ukZLNYoeGAd6keRtNcEcVGEpRgzc/WYlXCRTEjRknMvmCu9z13z8qB9Y9N4JrPdp+NQj5HEs
- ODPI+1w1Mjj9R2VZ1v7suFwhjxMTUQUjCsgna1H+zW/UFsrL5ERX2G3aUKlVdYmSWapeGeFL
- xSMPzawPEDsbWzBzYLSHUOZexMAxoJYWnpN9JceEcGvK1SU2AaGkhomFoPfEf7Ql1u3Pgzie
- ClWEr2QHl+Ku1xW0qx5OLKHxntaQiu30wKHBcsF0Zx2uVGYoINJl/syazfZyKTdbmJnEYyNa
- Bdbn7B8jIkVCShLOWJ8AQGX/XiOoL/oE9pSZ60+MBO9qd18TGYByj0X2PvH+OyQGul5zYM7Q
- 7lT97PEzh8xnib49zJVVrKDdJds/rxFwkcHdeppRkxJH0+4T0GnU2IZsEkvpRQNJAEDmEE8n
- uRfssr7RudZQQwaBugUGaoouVyFxzCxdpSYL6zWHA51VojvJYEBQDuFNlUCqet9LtNlLKx2z
- CAKmUPTaDwPcS3uOywOW7WZrAGva1kz9lzxZ+GAwgh38HAFqQT8DQvW8jnBBG4m4q7lbaum3
- znERv7kcfKWoWS7fzxLNTIitrbpYA3E7Zl9D2pDV3v55ZQcO/M35K9teRo6glrtFDU/HXM+r
- ABbh8u9UnADbPmJr9nb7J0tZUSS/zsFNBFJfN1MBEADBzhVn4XyGkPAaFbLPcMUfwcIgvvPF
- UsLi9Q53H/F00cf7BkMY40gLEXvsvdUjAFyfas6z89gzVoTUx3HXkJTIDTiPuUc1TOdUpGYP
- hlftgU+UqW5O8MMvKM8gx5qn64DU0UFcS+7/CQrKOJmzktr/72g98nVznf5VGysa44cgYeoA
- v1HuEoqGO9taA3Io1KcGrzr9cAZtlpwj/tcUJlc6H5mqPHn2EdWYmJeGvNnFtxd0qJDmxp5e
- YVe4HFNjUwsb3oJekIUopDksAP41RRV0FM/2XaPatkNlTZR2krIVq2YNr0dMU8MbMPxGHnI9
- b0GUI+T/EZYeFsbx3eRqjv1rnNg2A6kPRQpn8dN3BKhTR5CA7E/cs+4kTmV76aHpW8m/NmTc
- t7KNrkMKfi+luhU2P/sKh7Xqfbcs7txOWB2V4/sbco00PPxWr20JCA5hYidaKGyQxuXdPUlQ
- Qja4WJFnAtBhh3Oajgwhbvd6S79tz1acjNXZ89b8IN7yDm9sQ+4LhWoUQhB5EEUUUVQTrzYS
- yTGN1YTTO5IUU5UJHb5WGMnSPLLArASctOE01/FYnnOGeU+GFIeQp91p+Jhd07hUr6KWYeJY
- OgEmu+K8SyjfggCWdo8aGy0H3Yr0YzaHeK2HrfC3eZcUuo+yDW3tnrNwM1rd1i3F3+zJK18q
- GnBxEQARAQABwsFfBBgBCAAJBQJSXzdTAhsMAAoJEF2/za5fGU3xNDQP/ikzh1NK/UBrWtpN
- yXLbype4k5/zyQd9FIBxAOYEOogfKdkp+Yc66qNf36gO6vsokxsDXU9me1n8tFoB/DCdzKbQ
- /RjKQRMNNR4fT2Q9XV6GZYSL/P2A1wzDW06tEI+u+1dV40ciQULQ3ZH4idBW3LdN+nloQf/C
- qoYkOf4WoLyhSzW7xdNPZqiJCAdcz9djN79FOz8US+waBCJrL6q5dFSvvsYj6PoPJkCgXhiJ
- hI91/ERMuK9oA1oaBxCvuObBPiFlBDNXZCwmUk6qzLDjfZ3wdiZCxc5g7d2e2taBZw/MsKFc
- k+m6bN5+Hi1lkmZEP0L4MD6zcPuOjHmYYzX4XfQ61lQ8c4ztXp5cKkrvaMuN/bD57HJ6Y73Q
- Y+wVxs9x7srl4iRnbulCeiSOAqHmwBAoWaolthqe7EYL4d2+CjPCcfIuK7ezsEm8c3o3EqC4
- /UpL1nTi0rknRTGc0VmPef+IqQUj33GGj5JRzVJZPnYyCx8sCb35Lhs6X8ggpsafUkuKrH76
- XV2KRzaE359RgbM3pNEViXp3NclPYmeu+XI8Ls/y6tSq5e/o/egktdyJj+xvAj9ZS18b10Jp
- e67qK8wZC/+N7LGON05VcLrdZ+FXuEEojJWbabF6rJGN5X/UlH5OowVFEMhD9s31tciAvBwy
- T70V9SSrl2hiw38vRzsl
-In-Reply-To: <c312debc-f6e7-4c9e-8e20-e47e7e3b27f3@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <54fbebcc-d4f5-40f3-8711-bac14dcd5397@bell.net>
+ <a5b5e745-30b8-4a1d-b406-fc1d991dc775@gmx.de> <5468692c-df88-44ca-9f0c-f8d2e535bfa0@bell.net>
+ <6d49b2eb-986e-4489-8f4e-878a4a24db2c@bell.net> <CAAZ8i81QnEYyEvWBNWeE0E=5xK9LDZD0FVkSuOGfQv9NFAwNbA@mail.gmail.com>
+ <8c39a00d-a978-4a1e-a864-bc3a409aeb90@bell.net>
+In-Reply-To: <8c39a00d-a978-4a1e-a864-bc3a409aeb90@bell.net>
+From: DiTBho Down in The Bunny hole <downinthebunnyhole@gmail.com>
+Date: Sun, 1 Dec 2024 16:38:55 +0100
+Message-ID: <CAAZ8i80MoCG0bhwCOznBCJGt3KCL5havJYY0voadf+ODVyz2RA@mail.gmail.com>
+Subject: Re: mm/slab.h "unknown type name 'u128'"
+To: John David Anglin <dave.anglin@bell.net>
+Cc: linux-parisc <linux-parisc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2024-11-24 3:01 p.m., Helge Deller wrote:
->> I don't know if this is related but I need to enter a return to get past the ip_tables patching:
+hi
+thanks, firmware, kernel, and userland files are on a distributed pool
+of disks, mounted time to time to chrooted gentoo stage4 rootfs on
+different machines (Apple MacMini intel, but also PowerMacG5, and XEON
+servers). I needed a way to identify the environment provided by the
+chrooted rootfs, and a way to manage to check the tools versions in
+the ecosystem
+
+(
+with gentoo, you also have multiple gcc, both native and
+cross-compiler, you need to check which version is currently selected
+gcc-config -l
+ [1] aarch64-unknown-linux-gnu-6.5.0
+ [2] aarch64-unknown-linux-gnu-9.3.0 *
+
+ [3] armv5tel-softfloat-linux-gnueabi-6.5.0 *
+ [4] armv5tel-softfloat-linux-gnueabi-9.3.0
+
+ [5] armv7a-unknown-linux-gnueabihf-6.5.0
+ [6] armv7a-unknown-linux-gnueabihf-8.4.0
+ [7] armv7a-unknown-linux-gnueabihf-9.3.0 *
+
+ [8] hppa-unknown-linux-gnu-6.5.0
+ [9] hppa-unknown-linux-gnu-9.3.0 *
+
+ [10] hppa64-unknown-linux-gnu-6.5.0
+ [11] hppa64-unknown-linux-gnu-9.3.0 *
+
+ [12] i686-pc-linux-gnu-4.9.4-gnat2016
+ [13] i686-pc-linux-gnu-6.5.0
+ [14] i686-pc-linux-gnu-7.3.1-gnat2018
+ [15] i686-pc-linux-gnu-7.5.0
+ [16] i686-pc-linux-gnu-8.3.1-gnat2019
+ [17] i686-pc-linux-gnu-8.4.0
+ [18] i686-pc-linux-gnu-9.3.0
+ [19] i686-pc-linux-gnu-10.2.0 *
+
+ [20] mips-unknown-linux-gnu-4.1.2-legacy
+ [21] mips-unknown-linux-gnu-4.5.3-legacy
+ [22] mips-unknown-linux-gnu-6.5.0
+ [23] mips-unknown-linux-gnu-9.3.0 *
+
+ [24] mips64-unknown-linux-gnu-6.5.0 *
+ [25] mips64-unknown-linux-gnu-9.3.0
+
+ [26] mipsel-unknown-linux-gnu-6.5.0
+ [27] mipsel-unknown-linux-gnu-9.3.0 *
+
+ [28] mipsle-unknown-linux-gnu-4.5.3-legacy *
+
+ [29] powerpc-unknown-linux-gnu-6.5.0
+ [30] powerpc-unknown-linux-gnu-9.3.0 *
+
+ [31] powerpc64-unknown-linux-gnu-9.3.0 *
+
+ [32] sparc64-unknown-linux-gnu-6.5.0 *
+ [33] sparc64-unknown-linux-gnu-9.3.0
+
+ [34] x86_64-pc-linux-gnu-10.2.0 *
+)
+
+So, I created a "building script" that manages these checks before
+starting compiling stuff.
+
+It's still beta stuff, but it's very handy, especially after months
+when you don't remember what you were using, on which chroot, etc, and
+which are the minimal requisites.
+
+macmini2-intel kernel-6.0.2-parisc-c3750 # ./mybuild-2024 2
+[step2] compiling
+kernel-6.0.2(parisc/c3750)
+| note: experimental, not yet booted
+toolchain(hppa64-unknown-linux-gnu:2.34.0/9.3.0)
+-----------------------------------------------
+checking myhost as qualified_host ... success
+checking .config ... success
+checking blobs ... success
+-----------------------------------------------
+gadget_to_do(build) ... kernel/build
+cleaning ............. done
+gadget_to_do(clean) ... kernel/clean
+building kernel ... success
+-----------------------------------------------
+gadget_to_do(binary) ... overlay/binary
+gadget_to_do(sweep) ... kernel/sweep
+app_body    =3Dkernel.elf
+app_size    =3D7833152 byte
+app_size_max=3D8000000 byte
+checking size ... passed
+gadget_to_do(binary_report) ... kernel/binary_report
+
+At the moment, I'm compiling a new Gentoo-stage4/x86-64bit with
+cross-gcc-v12 and v13 for hppa64 in the list of things to be emerged.
+
+For kernel >=3D6.12.* It will easy to add the "the kernel requires this
+gcc minimal version" constrain
+
+echo "12.0" > profile/gcc_ver_min
+
+and "qualified host", as this new "2024/12 rootfs" containing gcc-hppa64-v1=
+2
+
+echo "macmini2-intel/v19.0-2024-12" > profile/qualified_host
+
+"macmini2-intel" is a unique name within the network, associated with
+a static ip.
+So, it's a label that identifies only a computer.
+The other entry "v18.0-2024-12" identifies the rootfs.
+The version comes from "gentoo portage version", the date is my build-date.
+
+Thanks for your quick reply =3D)
+
+D.
+
+On Sun, Dec 1, 2024 at 12:36=E2=80=AFAM John David Anglin <dave.anglin@bell=
+.net> wrote:
 >
-> I had to press enter to get console login.
-6.12.1 booted normally.  So, this problem seems limited to v6.11.x.
-
-Still have this warning:
-[    1.350744] WARNING: CPU: 1 PID: 1 at drivers/pci/devres.c:602 pcim_add_mapping_to_legacy_table+0x74/0x90
-
-Dave
-
--- 
-John David Anglin  dave.anglin@bell.net
-
+> On 2024-11-30 5:54 p.m., DiTBho Down in The Bunny hole wrote:
+> > hi
+> > I am trying to compile recent >=3D kernel-6.12.*
+> > with the toolchain hppa64-unknown-linux-gnu
+> > + binutils-v2.34.0
+> > + gcc-v9.3.0
+> >
+> > The process stops with an error
+> >
+> > In file included from mm/mempool.c:21:
+> > mm/slab.h:25:9: error: unknown type name 'u128'
+> >     25 | typedef u128 freelist_full_t;
+> >        |         ^~~~
+> >
+> > where "u128" should be defined?
+> > Is my cc too old?
+> Yes.  TImode is a relatively recent addition to hppa64 compiler.  I know =
+it's in gcc-12.  Your
+> binutils version is also very old.
+>
+> Dave
+> ---
+>
+> John David Anglin  dave.anglin@bell.net
+>
 
