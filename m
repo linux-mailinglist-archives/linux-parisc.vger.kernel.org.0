@@ -1,53 +1,53 @@
-Return-Path: <linux-parisc+bounces-2956-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2959-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BED09E0A2E
-	for <lists+linux-parisc@lfdr.de>; Mon,  2 Dec 2024 18:37:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9E69E0C85
+	for <lists+linux-parisc@lfdr.de>; Mon,  2 Dec 2024 20:47:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBE36B2F568
-	for <lists+linux-parisc@lfdr.de>; Mon,  2 Dec 2024 14:58:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A393165396
+	for <lists+linux-parisc@lfdr.de>; Mon,  2 Dec 2024 19:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA4A205AB0;
-	Mon,  2 Dec 2024 14:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75081DE4F0;
+	Mon,  2 Dec 2024 19:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="KHLYh4rW"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="I69+oZWc"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-mtlrgo001.bell.net (mta-mtl-005.bell.net [209.71.208.25])
+Received: from cmx-mtlrgo002.bell.net (mta-mtl-005.bell.net [209.71.208.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE62204F82;
-	Mon,  2 Dec 2024 14:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD231632FE;
+	Mon,  2 Dec 2024 19:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733151273; cv=none; b=WV5lV+hShyij5bonTV3uJiwGRAFvisnhRNPQ4AwbtYfvB5UaIyZ/8eBtJzqA1XKxmQ7ACzSmagoYP1TNgMj5d1iLznlep5oHmgxolQpO0nYZ2eD8nDUoKW6+PoaAb5MeYc0GT/k2M3E7TYXZHxcTNPzNOZrW0cRKo2+nj88LnoE=
+	t=1733168832; cv=none; b=UFFNpv766YdWiVKpgEudqXaUuo9F8l1wY7m0ViNRCEwfou0ruJOgIRiZPjgZK2sq5KE6yOW9+ewRwldp90nBvZU7U4KpQQaDuxg2b0bxq96jsT3gIgF0b4DprIELjpT4DS3tKdgZNE8XJ+VQnfVRv+sYyHOSoXC+zbYtRsXoOAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733151273; c=relaxed/simple;
-	bh=ydJ050p5kRpGPo5p0DhJYef3kqtFLbzFSwEI1+UYF0A=;
+	s=arc-20240116; t=1733168832; c=relaxed/simple;
+	bh=rwHut94+3FKzZraJmYqcchUmUzHraDSCv/gfJ0qOL7E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gGtDgD94ve+5U3AAx4jxP30o3sDPRWxldoCbIcD7HKIL/Ndp1S4Pw95XqFGMojxx3ifFRTMBhvoCKzAZ7ci91uVTZqZmh+zNQbnaCQJx0Vq/3YEDFFz+5jLbLCUCcJU0dBTgFOXMgqSj9Zfv06z++xs1ebbodr7X3qzET/6mm04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=KHLYh4rW; arc=none smtp.client-ip=209.71.208.25
+	 In-Reply-To:Content-Type; b=OunJK+S2T0XUgxPNdHXTmvu6+VkmvZv7IkJrrl0s7LZlJMSPGP/ImvHG2DUmYQSKKWp1DjzMzUYxFM1H6I73J4uCpaMdcX20E8cJxc8V31M9GMp2HdTBgMB7G9+7p0O06u6Y+/7NW+90FFneig6xoHGdnrs0agdI2eBpnigMlgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=I69+oZWc; arc=none smtp.client-ip=209.71.208.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1733151271; 
-        bh=DY3LsWMnbJe3ainU8D47fIH4dK+344l/UIDmFctiWFQ=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1733168830; 
+        bh=YLYX+jO/CsxmCmIteRhc0kdbPNRU8UFjndSQbQY3B/A=;
         h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=KHLYh4rWiB+/iII/Yp7vpNlaAFkd0Ir7dtqjWqizh5RchUqYHHjgLuwGLUjDOz3pvQVR5ryG2tTgWh3sBCTzoOsYebesISODVU6qeZCt2vdWBlIuHz6zZpq8QKiBCBUWzYD61u1eK4ENHRVGcwcbR6P5/1Wa+q1l/1YHWB83IoVWFcHVh0dMTpmXoNyDD3QmsiEn8LMBl/Lw0cvqd9vFvpac52CFbkm1pGHbuNjfl+9VWraUOXqKdJXaxBp4WOU40TKftqPUv0AijorgX37eEGeQHgAEFIpfq8SDvLW0N5x1N62WtrZKGQ8j2CTTEciJspGe1wOI1aZ0IxvlN+k6cw==
+        b=I69+oZWcVJIgw1ueRxX3yd2r90j5ieVwyBbtk2z1NpUtIiM2K310eSFPyQZnBk3LyquQ0mIXrp6CxkWhIBooq9QY4WsVTcUaloXokg1zZe09n1PI6vKzk2f2jaqsrqFanz0S0/Timi6W2Ngg9B9nT3OaIyKMtpExGiX8TjTeKXdWeebXioK58Aoa3uJ06TLgEO+gCH5la29li4J5CVCUogaWufAabLKTNgSvNLGa+i8Ou//0DNypNZ80ZnJ1MEiMHFWThM5yf9fIVNev6WM9VTXi/F8x/OocM3KqOtLBK2i/q9p0AbbhPqzDwfAEO9VNs4K5dmgM+wF/fs5BpGm1jQ==
 X-RG-SOPHOS: Clean
 X-RG-VADE-SC: 0
 X-RG-VADE: Clean
 X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 673CEB06026C2CE5
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeefuddrheelgdeikecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeejleffffejhefggfeuheelgeefgeeuieegtdekffegudeuteffgeffjedukefgueenucfkphepudegvddruddviedruddvledrieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedugedvrdduvdeirdduvdelrdeipdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeekpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopeguvghllhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhmrghgjeesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghr
-	nhgvlhdrohhrghdprhgtphhtthhopehmrghtohhrohgpmhgrihhlihhnghhlihhsthgpkhgvrhhnvghlsehmrghtohhrohdrthhkpdhrtghpthhtohepshgrmhesghgvnhhtohhordhorhhg
+X-RG-Rigid: 673CECCF01A749AB
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeefuddrheelgdduvdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuuefgnffnpdfqfgfvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfghrlhcuvffnffculdduhedmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpeffteeiveeguedtfeevhfdvieelvdfhfeevgefhhfeihfetudeuueelfeeiffefffenucffohhmrghinhepmhgrthhorhhordhtkhenucfkphepudegvddruddviedruddvledrieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedrvddrgeelngdpihhnvghtpedugedvrdduvdeirdduvdelrdeipdhmrghilhhfrhhomhepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhnsggprhgtphhtthhopeekpdhrtghpthhtohepuggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprhgtphhtthhopeguvghllhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhmrghgjeesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdr
+	ohhrghdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmrghtohhrohgpmhgrihhlihhnghhlihhsthgpkhgvrhhnvghlsehmrghtohhrohdrthhkpdhrtghpthhtohepshgrmhesghgvnhhtohhordhorhhg
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.126.129.6) by cmx-mtlrgo001.bell.net (authenticated as dave.anglin@bell.net)
-        id 673CEB06026C2CE5; Mon, 2 Dec 2024 09:54:21 -0500
-Message-ID: <03978220-0153-417c-8479-09239d19c9ba@bell.net>
-Date: Mon, 2 Dec 2024 09:54:21 -0500
+Received: from [192.168.2.49] (142.126.129.6) by cmx-mtlrgo002.bell.net (authenticated as dave.anglin@bell.net)
+        id 673CECCF01A749AB; Mon, 2 Dec 2024 14:45:47 -0500
+Message-ID: <7e3682f8-ec11-40b0-898f-f3729d6f110b@bell.net>
+Date: Mon, 2 Dec 2024 14:45:48 -0500
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -56,15 +56,17 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [bisected] ext4 corruption on parisc since 6.12
-To: Magnus Lindholm <linmag7@gmail.com>,
- matoro <matoro_mailinglist_kernel@matoro.tk>
-Cc: Linux Parisc <linux-parisc@vger.kernel.org>, deller@kernel.org,
+To: matoro <matoro_mailinglist_kernel@matoro.tk>
+Cc: Magnus Lindholm <linmag7@gmail.com>,
+ Linux Parisc <linux-parisc@vger.kernel.org>, deller@kernel.org,
  Deller <deller@gmx.de>, Sam James <sam@gentoo.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 References: <84d7b3e1053b2a8397bcc7fc8eee8106@matoro.tk>
  <31c884b9-77c8-48dc-b84c-20e52cdc4d44@bell.net>
  <71fae3d3a9bd816ea268eb73c152b564@matoro.tk>
  <CA+=Fv5Qy0818xS3uW2bh2nVpy-3COUzbq5X0JPY6=YzbfYgNOA@mail.gmail.com>
+ <03978220-0153-417c-8479-09239d19c9ba@bell.net>
+ <9bdbf64bd63ab7eef2f5ead467f3c8c4@matoro.tk>
 Content-Language: en-US
 From: John David Anglin <dave.anglin@bell.net>
 Autocrypt: addr=dave.anglin@bell.net; keydata=
@@ -110,48 +112,96 @@ Autocrypt: addr=dave.anglin@bell.net; keydata=
  XV2KRzaE359RgbM3pNEViXp3NclPYmeu+XI8Ls/y6tSq5e/o/egktdyJj+xvAj9ZS18b10Jp
  e67qK8wZC/+N7LGON05VcLrdZ+FXuEEojJWbabF6rJGN5X/UlH5OowVFEMhD9s31tciAvBwy
  T70V9SSrl2hiw38vRzsl
-In-Reply-To: <CA+=Fv5Qy0818xS3uW2bh2nVpy-3COUzbq5X0JPY6=YzbfYgNOA@mail.gmail.com>
+In-Reply-To: <9bdbf64bd63ab7eef2f5ead467f3c8c4@matoro.tk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 2024-12-02 1:30 a.m., Magnus Lindholm wrote:
-> On Mon, Dec 2, 2024 at 5:55 AM matoro
-> <matoro_mailinglist_kernel@matoro.tk> wrote:
->> Hmm, this is my config, also on an rp3440:
+On 2024-12-02 10:31 a.m., matoro wrote:
+> On 2024-12-02 09:54, John David Anglin wrote:
+>> On 2024-12-02 1:30 a.m., Magnus Lindholm wrote:
+>>> On Mon, Dec 2, 2024 at 5:55 AM matoro
+>>> <matoro_mailinglist_kernel@matoro.tk> wrote:
+>>>> Hmm, this is my config, also on an rp3440:
+>>>>
+>>>> #
+>>>> # Timers subsystem
+>>>> #
+>>>> CONFIG_HZ_PERIODIC=y
+>>>> # CONFIG_NO_HZ_IDLE is not set
+>>>> # CONFIG_NO_HZ is not set
+>>>> # CONFIG_HIGH_RES_TIMERS is not set
+>>>> # end of Timers subsystem
+>>>>
+>>>> lindholm can confirm on their hardware/config.  Maybe you can try that and
+>>>> see if you can reproduce?  I will try your config as well.
+>>> Hi, I'm on a HPC8000 "parisc64 PA8800 (Mako) 9000/785/C8000". I can confirm
+>>> that building a kernel CONFIG_SMP=n will mitigate this problem.
+>>> I haven't messed around with the config in the Timer subsystem so in my case the
+>>> parameters suggested are unset. (my config looks like matoros)
+>> The clockevent driver was tested on both rp3440 and c8000, and some other SMP machines.
+>> Helge knows details.  I have used it on rp3440 and c8000.
 >>
->> #
->> # Timers subsystem
->> #
->> CONFIG_HZ_PERIODIC=y
->> # CONFIG_NO_HZ_IDLE is not set
->> # CONFIG_NO_HZ is not set
->> # CONFIG_HIGH_RES_TIMERS is not set
->> # end of Timers subsystem
+>> I would try my settings.  The primary reason in switching to the clockevent drivers was to
+>> improve clock resolution.  The best resolution with the old drivers was 1 ms at 1000 HZ.
+>> This caused problems with various package tests.  If config is the issue, probably
+>> CONFIG_HIGH_RES_TIMERS needs to be forced when clockevent drivers are used.
 >>
->> lindholm can confirm on their hardware/config.  Maybe you can try that and
->> see if you can reproduce?  I will try your config as well.
-> Hi, I'm on a HPC8000 "parisc64 PA8800 (Mako) 9000/785/C8000". I can confirm
-> that building a kernel CONFIG_SMP=n will mitigate this problem.
-> I haven't messed around with the config in the Timer subsystem so in my case the
-> parameters suggested are unset. (my config looks like matoros)
-The clockevent driver was tested on both rp3440 and c8000, and some other SMP machines.
-Helge knows details.  I have used it on rp3440 and c8000.
+>> Almost every other system uses the clockevent drivers.  So, there was a risk that parisc would
+>> become unsupported.
+>>
+>> I wonder if this could be caused by dead RTC battery.  Did you check output of date command?
+>> Maybe a dead RTC battery interacts badly with clockevent drivers.
+>>
+>> I run ntp on all my machines.
+>>
+>> What files have bad dates (i.e., is this really a ext4 file system issue) or is it just that system has
+>> a bad clock?
+>>
+>> Dave
+>
+> The files that have bad dates seem to be the ones /init on this system touches at early boot.  See the output here: 
+> https://paste.matoro.tk/8cq8omg
+>
+> When booted into the bad kernel, date(1) works and displays the correct time.  I'm using chrony for time syncing as well.
+>
+> After switching to the config specified above, boot hangs before even getting to userspace with the following output:
+>
+> [   12.473410] 0000:e0:01.1: ttyS2 at MMIO 0xfffffffff4050038 (irq = 73, base_baud = 115200) is a 16550A
+> [   12.757386] sym0: <1010-66> rev 0x1 at pci 0000:20:01.0 irq 70
+> [   12.761419] sym0: PA-RISC Firmware, ID 7, Fast-80, LVD, parity checking
+> [   12.885367] sym0: SCSI BUS has been reset.
+> [   12.889389] scsi host0: sym-2.2.3
+> [   13.053380] sym1: <1010-66> rev 0x1 at pci 0000:20:01.1 irq 71
+> [   13.055515] sym1: PA-RISC Firmware, ID 7, Fast-80, LVD, parity checking
+> [   13.165367] sym1: SCSI BUS has been reset.
+> [   13.169388] scsi host1: sym-2.2.3
+> [   13.208927] rtc-generic rtc-generic: registered as rtc0
+> [   13.281367] rtc-generic rtc-generic: setting system clock to 2024-12-02T07:17:02 UTC (1733123822)
+> [   13.281367] NET: Registered PF_INET6 protocol family
+> [   13.281367] Segment Routing with IPv6
+> [   13.281367] In-situ OAM (IOAM) with IPv6
+> [   13.281367] registered taskstats version 1
+> [   13.281367] Unstable clock detected, switching default tracing clock to "global"
+> [   13.281367] If you want to keep using the local clock, then add:
+> [   13.281367]   "trace_clock=local"
+> [   13.281367] on the kernel command line
+>
+> At the end there the clock seems to stop progressing forward, as there are several real-time seconds that elapse in between messages with the 
+> same timestamp.  So I'm completely unable to boot with this config at all.
+I don't see "Unstable clock detected" message.
 
-I would try my settings.  The primary reason in switching to the clockevent drivers was to
-improve clock resolution.  The best resolution with the old drivers was 1 ms at 1000 HZ.
-This caused problems with various package tests.  If config is the issue, probably
-CONFIG_HIGH_RES_TIMERS needs to be forced when clockevent drivers are used.
+I also have in config:
+CONFIG_HAVE_UNSTABLE_SCHED_CLOCK=y
+CONFIG_GENERIC_SCHED_CLOCK=y
 
-Almost every other system uses the clockevent drivers.  So, there was a risk that parisc would
-become unsupported.
+Clock seems to get stuck here;
+[   13.281367] rtc-generic rtc-generic: setting system clock to 2024-12-02T07:17:02 UTC (1733123822)
 
-I wonder if this could be caused by dead RTC battery.  Did you check output of date command?
-Maybe a dead RTC battery interacts badly with clockevent drivers.
-
-I run ntp on all my machines.
-
-What files have bad dates (i.e., is this really a ext4 file system issue) or is it just that system has
-a bad clock?
+On mx3210, clock continues to increment:
+[    1.995462] rtc-generic rtc-generic: registered as rtc0
+[    2.003158] rtc-generic rtc-generic: setting system clock to 2024-12-01T15:23:25 UTC (1733066605)
+[    2.003719] IR JVC protocol handler initialized
+[    2.004109] IR MCE Keyboard/mouse protocol handler initialized
 
 Dave
 
