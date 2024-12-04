@@ -1,211 +1,119 @@
-Return-Path: <linux-parisc+bounces-2962-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2963-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6F469E3534
-	for <lists+linux-parisc@lfdr.de>; Wed,  4 Dec 2024 09:25:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064D49E35F1
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Dec 2024 09:52:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00814B37AED
-	for <lists+linux-parisc@lfdr.de>; Wed,  4 Dec 2024 08:06:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B95D1165A40
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Dec 2024 08:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B156B18D64B;
-	Wed,  4 Dec 2024 08:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE59195FE8;
+	Wed,  4 Dec 2024 08:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="CZa6ESmv";
-	dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="sazbsbYT"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="i9VVAO/2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="5BGe4aMW"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC06189F56;
-	Wed,  4 Dec 2024 08:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.166
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733299504; cv=pass; b=aV/XiTL+zLdP0TF3E+vCk2zw/IBtI+PyEdj1P+4ZDpnucJAFVFZrv9BN3ABLz/qQSnYNce7ONc2mgI3DY3ABGLbMlK/ljKpt4lU6UITL3h9AyzP1ewvKch9I/I9WJZpLlW3yr7mZRwoA4ooTtz0iJsZvOcy4pg9TjajKJ0kyRvE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733299504; c=relaxed/simple;
-	bh=XK3q7ajrPEkEBPZ4BeyLsoPyHAONosmfl2NTR/B5py4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=faUSKGFtmPtsnGinMvYZieTkjgktwO4Wd4HLs3GOh4488qsuRkuWC49wlKU1kIGaq7fv25EAoq2Sj8fAoKkNz20ztlFQl3V9j4PLKQ4AVfcFc+y5ygkPRG0GD+7jPzrQt5t96DnCy890N+Y4SNq8LxnwEzoEyYpFKBBTcuKHhDw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org; spf=none smtp.mailfrom=outer-limits.org; dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=CZa6ESmv; dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=sazbsbYT; arc=pass smtp.client-ip=81.169.146.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=outer-limits.org
-ARC-Seal: i=1; a=rsa-sha256; t=1733299499; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=nsIlw2EFyz3yT1LldAYOTcqErG582TjG2oY5nf+QKJFXvRrYHHgvvicjFbqOzYu4RY
-    iCGzVqv9FtZ+qj+3iWqOcvY9Amh8aD5TbsqHtw5LoeAOFRCwrkWuCR23d6n9ymugGJhu
-    /9sz8WmjWbqBVTzACFtgz7ke34wt/VMq1V5tzKqbcHvH6PqOqyyAjE1CQkE//TSrpdpO
-    jTZCQtvMez+2Adr+Ngds/BvP44/1q7oNqejjEAhlJT6Ajb2oBbvbOKWtDnL6FfbzuD+g
-    F2tdI21Scq/4jA40xhXZPiYv47pNng4WGyFNDY82ZrX85ebUIKhLj+lQJsCAYlR4SH65
-    MQRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1733299499;
-    s=strato-dkim-0002; d=strato.com;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=7MssRol3K7ItcFHd/ONuI+GpueXbhvQJYbT9pZF/fag=;
-    b=glNIhwHaUjoFxCWCXl7lDbpEcxXty6iB2f7NBkq0SWpkYNYaYQhKv+5tK4K7hjbqjr
-    MUXKHvECS9oVMm1WFA3pIWgYF+3RrpVg/SnsJFp7imrA6b97SBsPXshQjgSuC1/jL0qL
-    zBjfWFSaH3L8WytSWWNKH1teCaK3PqgCX/zdPxXT1odm8t1+CgtKPtcA7h/Z/u45CQV+
-    ePbYlWiIFUWICYZ99ffA6DxGaC+tR04PRX2FLZMAkjN9zy8uTZ0vszvB9UQpUwubnB8H
-    4dLmG0Z38sIdiJm1QAM6ZOJ2KmA8Kd52e8KMt4AcgsN+sP7SzXQMQWihGV3gSoH26E75
-    fISg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1733299499;
-    s=strato-dkim-0002; d=outer-limits.org;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=7MssRol3K7ItcFHd/ONuI+GpueXbhvQJYbT9pZF/fag=;
-    b=CZa6ESmvRVTrpu0qDNSDvo8+AbWcs5cqcGWHAtfnsSF06zYpYRIaGm7gd8amYOrxv7
-    ORlZPd9osDU/hl/bByrr8giyq1irmr5Q8GkUF++e+Nm5Ro8fOhnQs96KMdOeVnPd4qdS
-    sfhACz6dPoLzy/ccQYBwRH48IZWk3HHvYqwRoZ0fmAUVBZKbvOspyzWoY1bLSFVxgA4J
-    d8A59Eus25PO+uito96EotGvyTbWhtkgDn3ddjHfxh6EBdc+diQDuJfXTqWEHlxx/JHi
-    H6BhrYdgjm6qQ9CrRaAznbuHbju2m6VC2sq7sE4zLaWIycRBZBNqEjYIQ/2cfEUUnvMP
-    oiiQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1733299499;
-    s=strato-dkim-0003; d=outer-limits.org;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=7MssRol3K7ItcFHd/ONuI+GpueXbhvQJYbT9pZF/fag=;
-    b=sazbsbYTmKVWZxd6KQ+tBKSuj+kSGr5q2Uzex4U+W4N//uJJUGx9F/pQV4nJigTvXt
-    atG3clUnVBa85Zr/n+BQ==
-X-RZG-AUTH: ":JnkIfEGmW/AMJS6HttH4FbRVwc4dHlPLCp4e/IoHo8zEMMHAgwTfqBEHcVJSv9P5mRTGd2ImeA=="
-Received: from ws2104.lan.kalrayinc.com
-    by smtp.strato.de (RZmta 51.2.11 AUTH)
-    with ESMTPSA id Ja0a030B484xQyk
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 4 Dec 2024 09:04:59 +0100 (CET)
-From: Julian Vetter <julian@outer-limits.org>
-To: Arnd Bergmann <arnd@arndb.de>,
-	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Julian Vetter <julian@outer-limits.org>
-Subject: [PATCH v2] parisc: Remove memcpy_toio and memset_io
-Date: Wed,  4 Dec 2024 09:04:40 +0100
-Message-Id: <20241204080440.3721170-1-julian@outer-limits.org>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E131946BC;
+	Wed,  4 Dec 2024 08:52:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733302329; cv=none; b=JmH836nOHCsaVq8hsHe9czPju8m1hmOAgkttGpk5CJoSnD/LJJ5kPJPYu+/K2ybnOJ/TcP0ANVaPS/OBtv/U8u2PCIePgFgNypCybdrzCjBoK8lGjA/QzBp6AcRKqh+7p6Qp4fRgRsodZCHVgszwTTr0R7NmEhxV9bPbHzJauZ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733302329; c=relaxed/simple;
+	bh=zIcQJvA+oKpRsAfJuyACQLHY0DQLwZWhzgfqlh/fzA0=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=QGC02CuAd0HVDPTbXG9tdxWnJq37PyJwBxNJ9TCmfbwyO4kocX1WoH4z/Z7VVBxJxE5G/XjNoW0rFh1OYZ3+XjP95xlt/EluyWc30kvhJViEhsVyukBzeonaqO1+u1twaIYZa05WliO9F3G4FY6FjKcU9Rt7Yy2BMN4bicFWIJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=i9VVAO/2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=5BGe4aMW; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 17E2F1140122;
+	Wed,  4 Dec 2024 03:52:05 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Wed, 04 Dec 2024 03:52:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1733302325;
+	 x=1733388725; bh=zIcQJvA+oKpRsAfJuyACQLHY0DQLwZWhzgfqlh/fzA0=; b=
+	i9VVAO/2eSjekmfjZMyGWZSj0oO08SuuusIbfvUNfuwYi5exo5qIq4o5Dh04jNLi
+	VZSQnMYc8JUuzs+gZefJqioqkrEi6gc2MLt3N12xBNIVMJtuu017z0tZ6FDAMJHR
+	jPYEzznRcsPLZP1dKGnG/vXpGMJhZ5/oqjprBHtxngc7KQ/NURChCOVL1UOsScMU
+	mR7uTgHm00CT6G4qMe/SPHpZmmwmjdu4hrAiAwnuBf64Hc0jofc7/DxxpfsVIwyo
+	4cknDpJAErwnhC5KkVgPnsruQJSdoFm4o/cwGl7etYn+030Pi1m35vC+tL6Js7td
+	nsZTvjBNYGEXBRsxim26Uw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733302325; x=
+	1733388725; bh=zIcQJvA+oKpRsAfJuyACQLHY0DQLwZWhzgfqlh/fzA0=; b=5
+	BGe4aMW3s+6AsdFqTKHiEypiD7kqbCXk2RjjUZVoQKcrcUTZJ3OsxGPkG6/xEsF3
+	O3xi/1eV2EYEmI4JHaPW9pNIdTriTOUKdb7czd6NkgVMNyDLaGXLcz64v4cs+ABJ
+	HZziKcwV1aJUNlyGzO4LkrAdcAb0x4DcuxDNILpqDraTgI4jKmJbWAWHiRLD7ZFG
+	El/ZgTnql2PjLWJZnio9u0aLoUZZCfW/X6AqoxTBOkZk6jWCxDYXUvGXr/Tw0olR
+	sve+4cmF9AdA6/YvFvoIBWzaKAGEC8awZwphcph/QYSeP6OMfoh6xj4N8I7ZJ5tk
+	eQrFTPRAoUumLAiBpjqjQ==
+X-ME-Sender: <xms:NBhQZ7rxsgUuQr7pdhD-A68BzOQsBZ3TARqt37qjekDjF1KYSqmbRA>
+    <xme:NBhQZ1okzJ1fUbf1gK_SstYTdbnGgmRp5NZ7vT4DYlvQR5yLqnUTW3VivM9lTzv6l
+    LIhGx88qc-tqRNvh2Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrieeggdduvdduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohephedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprh
+    gtphhtthhopehjrghmvghsrdgsohhtthhomhhlvgihsehhrghnshgvnhhprghrthhnvghr
+    shhhihhprdgtohhmpdhrtghpthhtohepjhhulhhirghnsehouhhtvghrqdhlihhmihhtsh
+    drohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnh
+    gvlhdrohhrgh
+X-ME-Proxy: <xmx:NBhQZ4Ou7B6qSOwvaonH0vCl65r5dKYgW3jx2j_PPFmxo0asGdn_sg>
+    <xmx:NBhQZ-5rN49UsAzrbL4K4aBPrd_zk3CFj4pI5GMbCJMCb9eVCaIONA>
+    <xmx:NBhQZ66MPOWyHe8tmSNzOxUPOTN9dLaSQ4Ay8jABvatPfOuisfzVvQ>
+    <xmx:NBhQZ2jWehaxemh9mYfQzO-exsXDIeARzbo32B2S3_MYh1wPtU-Clg>
+    <xmx:NRhQZ11GwuXS6AJF6Z-EmkR1grMeIhoD_jgNnFCGFzQnpXiYEvKyRNOS>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 8B6EB2220072; Wed,  4 Dec 2024 03:52:04 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
+Date: Wed, 04 Dec 2024 09:51:42 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Julian Vetter" <julian@outer-limits.org>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Helge Deller" <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <e8c80d6e-4b4e-4108-bdd0-b096c8d634f5@app.fastmail.com>
+In-Reply-To: <20241204074632.3683523-1-julian@outer-limits.org>
+References: <20241204074632.3683523-1-julian@outer-limits.org>
+Subject: Re: [PATCH] parisc: Remove memcpy_toio and memset_io
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Recently new functions for IO memcpy and IO memset were added in
-libs/iomem_copy.c. So, remove the arch specific implementations, to fall
-back to the generic ones which do exactly the same. Keep memcpy_fromio
-for now, because it's slight more optimized by doing 'u16' accesses if
-the buffer is aligned this way.
+On Wed, Dec 4, 2024, at 08:46, Julian Vetter wrote:
+> Recently new functions for IO memcpy and IO memset were added in
+> libs/iomem_copy.c. So, remove the arch specific implementations, to fall
+> back to the generic ones which do exactly the same. Keep memcpy_fromio
+> for now, because it's slight more optimized by doing 'u16' accesses if
+> the buffer is aligned this way.
+>
+> Signed-off-by: Julian Vetter <julian@outer-limits.org>
 
-Signed-off-by: Julian Vetter <julian@outer-limits.org>
----
- arch/parisc/include/asm/io.h      |  4 ---
- arch/parisc/kernel/parisc_ksyms.c |  2 --
- arch/parisc/lib/io.c              | 47 -------------------------------
- 3 files changed, 53 deletions(-)
-
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index a63190af2f05..3143cf29ce27 100644
---- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -135,12 +135,8 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
- 
- #define pci_iounmap			pci_iounmap
- 
--void memset_io(volatile void __iomem *addr, unsigned char val, int count);
- void memcpy_fromio(void *dst, const volatile void __iomem *src, int count);
--void memcpy_toio(volatile void __iomem *dst, const void *src, int count);
--#define memset_io memset_io
- #define memcpy_fromio memcpy_fromio
--#define memcpy_toio memcpy_toio
- 
- /* Port-space IO */
- 
-diff --git a/arch/parisc/kernel/parisc_ksyms.c b/arch/parisc/kernel/parisc_ksyms.c
-index c1587aa35beb..1c366b0d3134 100644
---- a/arch/parisc/kernel/parisc_ksyms.c
-+++ b/arch/parisc/kernel/parisc_ksyms.c
-@@ -43,9 +43,7 @@ EXPORT_SYMBOL($global$);
- #endif
- 
- #include <asm/io.h>
--EXPORT_SYMBOL(memcpy_toio);
- EXPORT_SYMBOL(memcpy_fromio);
--EXPORT_SYMBOL(memset_io);
- 
- extern void $$divI(void);
- extern void $$divU(void);
-diff --git a/arch/parisc/lib/io.c b/arch/parisc/lib/io.c
-index 7c00496b47d4..7461366a65c9 100644
---- a/arch/parisc/lib/io.c
-+++ b/arch/parisc/lib/io.c
-@@ -12,32 +12,6 @@
- #include <linux/module.h>
- #include <asm/io.h>
- 
--/* Copies a block of memory to a device in an efficient manner.
-- * Assumes the device can cope with 32-bit transfers.  If it can't,
-- * don't use this function.
-- */
--void memcpy_toio(volatile void __iomem *dst, const void *src, int count)
--{
--	if (((unsigned long)dst & 3) != ((unsigned long)src & 3))
--		goto bytecopy;
--	while ((unsigned long)dst & 3) {
--		writeb(*(char *)src, dst++);
--		src++;
--		count--;
--	}
--	while (count > 3) {
--		__raw_writel(*(u32 *)src, dst);
--		src += 4;
--		dst += 4;
--		count -= 4;
--	}
-- bytecopy:
--	while (count--) {
--		writeb(*(char *)src, dst++);
--		src++;
--	}
--}
--
- /*
- ** Copies a block of memory from a device in an efficient manner.
- ** Assumes the device can cope with 32-bit transfers.  If it can't,
-@@ -99,27 +73,6 @@ void memcpy_fromio(void *dst, const volatile void __iomem *src, int count)
- 	}
- }
- 
--/* Sets a block of memory on a device to a given value.
-- * Assumes the device can cope with 32-bit transfers.  If it can't,
-- * don't use this function.
-- */
--void memset_io(volatile void __iomem *addr, unsigned char val, int count)
--{
--	u32 val32 = (val << 24) | (val << 16) | (val << 8) | val;
--	while ((unsigned long)addr & 3) {
--		writeb(val, addr++);
--		count--;
--	}
--	while (count > 3) {
--		__raw_writel(val32, addr);
--		addr += 4;
--		count -= 4;
--	}
--	while (count--) {
--		writeb(val, addr++);
--	}
--}
--
- /*
-  * Read COUNT 8-bit bytes from port PORT into memory starting at
-  * SRC.
--- 
-2.34.1
-
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
