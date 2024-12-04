@@ -1,81 +1,81 @@
-Return-Path: <linux-parisc+bounces-2961-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2962-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B1F9E34B5
-	for <lists+linux-parisc@lfdr.de>; Wed,  4 Dec 2024 09:00:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43E72166D73
-	for <lists+linux-parisc@lfdr.de>; Wed,  4 Dec 2024 08:00:13 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8F720C00B;
-	Wed,  4 Dec 2024 07:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="iYULa6lf";
-	dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="gXOqmg0k"
-X-Original-To: linux-parisc@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F469E3534
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Dec 2024 09:25:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E026320B7F1;
-	Wed,  4 Dec 2024 07:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.50
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00814B37AED
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Dec 2024 08:06:09 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B156B18D64B;
+	Wed,  4 Dec 2024 08:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="CZa6ESmv";
+	dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="sazbsbYT"
+X-Original-To: linux-parisc@vger.kernel.org
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC06189F56;
+	Wed,  4 Dec 2024 08:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.166
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733298595; cv=pass; b=GwEM4LJ5EtgDtQukzRJue751xU8hnImpMF2FUWHf7/G8NqSc4zL/b4uuwNqteFE0V19nxXhUcy3uQKSyFo1/dV5Ghp9try2GEK+EPiUgrjqvuMmtgNKNYelrQNbKVVdtZeC4mAH6WzssYZNgzL10ZkXQofFzWCyirzsKII1yUnI=
+	t=1733299504; cv=pass; b=aV/XiTL+zLdP0TF3E+vCk2zw/IBtI+PyEdj1P+4ZDpnucJAFVFZrv9BN3ABLz/qQSnYNce7ONc2mgI3DY3ABGLbMlK/ljKpt4lU6UITL3h9AyzP1ewvKch9I/I9WJZpLlW3yr7mZRwoA4ooTtz0iJsZvOcy4pg9TjajKJ0kyRvE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733298595; c=relaxed/simple;
-	bh=M6RwKluML8bmmOp1YgaUxZ4urfVP07tr+vFA/heYw+c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=DdsJDouv9T62fyDcQ0Nl5vA9n/g/CJpeR57T5VU3n/lpsh8S6qRIfXs2kLUBigvfgAnm/flzlYZWE06suIfLjDhcbElYV/be5YBImL6d5s2KiYMcrFhIzJw7cFEO/KZ0bc1OkZY18z2XTmhd3cgmGCc4hh7IrAZf36Bx6kcyD4o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org; spf=none smtp.mailfrom=outer-limits.org; dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=iYULa6lf; dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=gXOqmg0k; arc=pass smtp.client-ip=85.215.255.50
+	s=arc-20240116; t=1733299504; c=relaxed/simple;
+	bh=XK3q7ajrPEkEBPZ4BeyLsoPyHAONosmfl2NTR/B5py4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=faUSKGFtmPtsnGinMvYZieTkjgktwO4Wd4HLs3GOh4488qsuRkuWC49wlKU1kIGaq7fv25EAoq2Sj8fAoKkNz20ztlFQl3V9j4PLKQ4AVfcFc+y5ygkPRG0GD+7jPzrQt5t96DnCy890N+Y4SNq8LxnwEzoEyYpFKBBTcuKHhDw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org; spf=none smtp.mailfrom=outer-limits.org; dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=CZa6ESmv; dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=sazbsbYT; arc=pass smtp.client-ip=81.169.146.166
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=outer-limits.org
-ARC-Seal: i=1; a=rsa-sha256; t=1733298406; cv=none;
+ARC-Seal: i=1; a=rsa-sha256; t=1733299499; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=ofPnBNBvn05vQEPQimJekSufbpDRzrEYpcoAEybHqTT+XnTTSYOHaMqeFGlWOebflq
-    gQl/q2c3kWKIS4btGUoJW8ROUO6yAsRjmILhamZANC1pYL1rT1IoFKWyBzh+0wV5DPcH
-    t34doOS6F26DNhoouiko1+Lu3chM3xfmlFCo4vfAWgkHBaxTeHM5zk2aJ+AE3ZFQz7gG
-    mq+xubdXSqhljA0iLnUd8UTHwGEXqM/SCbMpeqnQjBF5C3V0//n6rfLED4JYWnBs35Vp
-    +/YZQ3IV0iV7Xj1YFBlPU5+VO/WZKyzxkNyzMvmss7fm/uv33iB52qoXeqgs1t2clCiQ
-    sKcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1733298406;
+    b=nsIlw2EFyz3yT1LldAYOTcqErG582TjG2oY5nf+QKJFXvRrYHHgvvicjFbqOzYu4RY
+    iCGzVqv9FtZ+qj+3iWqOcvY9Amh8aD5TbsqHtw5LoeAOFRCwrkWuCR23d6n9ymugGJhu
+    /9sz8WmjWbqBVTzACFtgz7ke34wt/VMq1V5tzKqbcHvH6PqOqyyAjE1CQkE//TSrpdpO
+    jTZCQtvMez+2Adr+Ngds/BvP44/1q7oNqejjEAhlJT6Ajb2oBbvbOKWtDnL6FfbzuD+g
+    F2tdI21Scq/4jA40xhXZPiYv47pNng4WGyFNDY82ZrX85ebUIKhLj+lQJsCAYlR4SH65
+    MQRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1733299499;
     s=strato-dkim-0002; d=strato.com;
     h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=vdY7+wuKPrphJStJSSvgK5sCtQyNjRN2UeTezk9EShM=;
-    b=g4yEEMq3Lk5a7bTP+LZnQAe/tTj0zn25IREgshWyDK9pRfvKzYbB4Y+s7Rp7lsEVOc
-    le+51wCizrCQ+h+L7TsR0KQEdLT41/8Gdv4Wr7gVUojqAi9hyff0XFEXFu0eoG1vObE5
-    ITVK+ejIriV9Icbxjy+HLEqvHq0y57wP4LzZqIMFLUSmq+Qhdo1CpahIbjOuRJuKvFoC
-    xfiYN5+wwURAe6lo4ZEVBNDWvUYLX0AH5GNekFES7BYbfO/9QLhopbE3RD6Ne7bARiEe
-    jd5qaIUZjE066PdVFbbqKhgKX59VHcAMfDJ0mbtQq4uvUweuLSK0jSC7Q2E1fORAFhpL
-    UxIQ==
+    bh=7MssRol3K7ItcFHd/ONuI+GpueXbhvQJYbT9pZF/fag=;
+    b=glNIhwHaUjoFxCWCXl7lDbpEcxXty6iB2f7NBkq0SWpkYNYaYQhKv+5tK4K7hjbqjr
+    MUXKHvECS9oVMm1WFA3pIWgYF+3RrpVg/SnsJFp7imrA6b97SBsPXshQjgSuC1/jL0qL
+    zBjfWFSaH3L8WytSWWNKH1teCaK3PqgCX/zdPxXT1odm8t1+CgtKPtcA7h/Z/u45CQV+
+    ePbYlWiIFUWICYZ99ffA6DxGaC+tR04PRX2FLZMAkjN9zy8uTZ0vszvB9UQpUwubnB8H
+    4dLmG0Z38sIdiJm1QAM6ZOJ2KmA8Kd52e8KMt4AcgsN+sP7SzXQMQWihGV3gSoH26E75
+    fISg==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
 X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1733298406;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1733299499;
     s=strato-dkim-0002; d=outer-limits.org;
     h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=vdY7+wuKPrphJStJSSvgK5sCtQyNjRN2UeTezk9EShM=;
-    b=iYULa6lf4ulqokbrACJSUQVpnNLR+5vRUnhIw+9oBvzGC36ZMHl7diwTTzcDvMHvcO
-    8CDCgVhkrptlUFE606qnjhUUC6Zl2H9JT0/AOSu491BqGqcBwblYsmtq53b2FEsZpbGX
-    timWfCQHzDf08GEJnuE8bwJMsvYGrgPRZ8rGpauHhvGue3zZA85LX9Tfxx0oCKTH81td
-    bzDFBJkOYL5oU3zKfwGUJzq/sj+AaQkceAZgvokCh2GvQQEpP36nIguavl5/xIyIvW2c
-    wS5IAn7mv9F7BL4GPQXVCI2cYEiT9EsN5BZ2N9O9z7ItHWsnXSbQg4zapupZTqy87SFI
-    toTg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1733298406;
+    bh=7MssRol3K7ItcFHd/ONuI+GpueXbhvQJYbT9pZF/fag=;
+    b=CZa6ESmvRVTrpu0qDNSDvo8+AbWcs5cqcGWHAtfnsSF06zYpYRIaGm7gd8amYOrxv7
+    ORlZPd9osDU/hl/bByrr8giyq1irmr5Q8GkUF++e+Nm5Ro8fOhnQs96KMdOeVnPd4qdS
+    sfhACz6dPoLzy/ccQYBwRH48IZWk3HHvYqwRoZ0fmAUVBZKbvOspyzWoY1bLSFVxgA4J
+    d8A59Eus25PO+uito96EotGvyTbWhtkgDn3ddjHfxh6EBdc+diQDuJfXTqWEHlxx/JHi
+    H6BhrYdgjm6qQ9CrRaAznbuHbju2m6VC2sq7sE4zLaWIycRBZBNqEjYIQ/2cfEUUnvMP
+    oiiQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1733299499;
     s=strato-dkim-0003; d=outer-limits.org;
     h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=vdY7+wuKPrphJStJSSvgK5sCtQyNjRN2UeTezk9EShM=;
-    b=gXOqmg0kd6J+XNhyfvkOSTO4FU50FQETCjNZM0rc8NzRYyuEUKOYc9lKc2sDXIYWau
-    Ec3bAPhDjLSAVNXEvNAA==
+    bh=7MssRol3K7ItcFHd/ONuI+GpueXbhvQJYbT9pZF/fag=;
+    b=sazbsbYTmKVWZxd6KQ+tBKSuj+kSGr5q2Uzex4U+W4N//uJJUGx9F/pQV4nJigTvXt
+    atG3clUnVBa85Zr/n+BQ==
 X-RZG-AUTH: ":JnkIfEGmW/AMJS6HttH4FbRVwc4dHlPLCp4e/IoHo8zEMMHAgwTfqBEHcVJSv9P5mRTGd2ImeA=="
 Received: from ws2104.lan.kalrayinc.com
     by smtp.strato.de (RZmta 51.2.11 AUTH)
-    with ESMTPSA id Ja0a030B47kjQjQ
+    with ESMTPSA id Ja0a030B484xQyk
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
-    Wed, 4 Dec 2024 08:46:45 +0100 (CET)
+    Wed, 4 Dec 2024 09:04:59 +0100 (CET)
 From: Julian Vetter <julian@outer-limits.org>
 To: Arnd Bergmann <arnd@arndb.de>,
 	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
@@ -83,9 +83,9 @@ To: Arnd Bergmann <arnd@arndb.de>,
 Cc: linux-parisc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Julian Vetter <julian@outer-limits.org>
-Subject: [PATCH] parisc: Remove memcpy_toio and memset_io
-Date: Wed,  4 Dec 2024 08:46:32 +0100
-Message-Id: <20241204074632.3683523-1-julian@outer-limits.org>
+Subject: [PATCH v2] parisc: Remove memcpy_toio and memset_io
+Date: Wed,  4 Dec 2024 09:04:40 +0100
+Message-Id: <20241204080440.3721170-1-julian@outer-limits.org>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
@@ -104,9 +104,10 @@ the buffer is aligned this way.
 
 Signed-off-by: Julian Vetter <julian@outer-limits.org>
 ---
- arch/parisc/include/asm/io.h |  4 ---
- arch/parisc/lib/io.c         | 47 ------------------------------------
- 2 files changed, 51 deletions(-)
+ arch/parisc/include/asm/io.h      |  4 ---
+ arch/parisc/kernel/parisc_ksyms.c |  2 --
+ arch/parisc/lib/io.c              | 47 -------------------------------
+ 3 files changed, 53 deletions(-)
 
 diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
 index a63190af2f05..3143cf29ce27 100644
@@ -125,6 +126,20 @@ index a63190af2f05..3143cf29ce27 100644
  
  /* Port-space IO */
  
+diff --git a/arch/parisc/kernel/parisc_ksyms.c b/arch/parisc/kernel/parisc_ksyms.c
+index c1587aa35beb..1c366b0d3134 100644
+--- a/arch/parisc/kernel/parisc_ksyms.c
++++ b/arch/parisc/kernel/parisc_ksyms.c
+@@ -43,9 +43,7 @@ EXPORT_SYMBOL($global$);
+ #endif
+ 
+ #include <asm/io.h>
+-EXPORT_SYMBOL(memcpy_toio);
+ EXPORT_SYMBOL(memcpy_fromio);
+-EXPORT_SYMBOL(memset_io);
+ 
+ extern void $$divI(void);
+ extern void $$divU(void);
 diff --git a/arch/parisc/lib/io.c b/arch/parisc/lib/io.c
 index 7c00496b47d4..7461366a65c9 100644
 --- a/arch/parisc/lib/io.c
