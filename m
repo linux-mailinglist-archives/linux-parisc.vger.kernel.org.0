@@ -1,137 +1,196 @@
-Return-Path: <linux-parisc+bounces-2960-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-2961-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C639E29F2
-	for <lists+linux-parisc@lfdr.de>; Tue,  3 Dec 2024 18:49:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B1F9E34B5
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Dec 2024 09:00:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43DE8B24E57
-	for <lists+linux-parisc@lfdr.de>; Tue,  3 Dec 2024 16:39:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43E72166D73
+	for <lists+linux-parisc@lfdr.de>; Wed,  4 Dec 2024 08:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DAC1F4707;
-	Tue,  3 Dec 2024 16:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8F720C00B;
+	Wed,  4 Dec 2024 07:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="68ogcBc1"
+	dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="iYULa6lf";
+	dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="gXOqmg0k"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-mtlrgo001.bell.net (mta-mtl-001.bell.net [209.71.208.11])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0671EE019;
-	Tue,  3 Dec 2024 16:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733243943; cv=none; b=k6XzE/AikgUrVu7iWU1u6kekLBM2jlxOE3VbPU0aABz+zGlmnoAxdiqNettQiWg7nfvLCn9hQTibaVL0ApFD8/Ju6keOosvcBQhgBKWB4pCI5JU7QWfbg87kr41kDlt1o9+b1Hp6MRhIneRXjWyPFp0MR06TEZfdJLlspMrW8MU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733243943; c=relaxed/simple;
-	bh=vxms5DIqNTipQhhG6Cp4FqAvutQweeMElDMclIuldlM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Cqj8ZCb179Dh0eh0yQ0R95N84Y93/LYPfaAigMylvH3BqgX3uxgoTIveryW2dtwUPEx6rEuJn1jmEDZA1TlDYO93yrdnVeTV7qmtZ1l7rylqwslOaXgqdwelhhDzs/dsGwIzaqtWqr9q35B7/X65ypPskTUuvHVza716NyRzP4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=68ogcBc1; arc=none smtp.client-ip=209.71.208.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1733243941; 
-        bh=oZ7q7RSNOOH9YeKm6NnPg1ciR8arHxUfoukjYdNgT/o=;
-        h=Message-ID:Date:MIME-Version:Subject:From:To:References:In-Reply-To:Content-Type;
-        b=68ogcBc1KvGD9QIdTYkNtpS827pGiuJgL2pbWZUfITywUXr9kuwkl1a5ZthCNwxoCP3DZh2PmbqEhLL6RTp1Ba8vovQ9o8fCbZtpqcQW8iHQRGudsbuWMN8yA4zVUO3VePwXYCCkGubWwN/DS/wPIttQjxjN7GV4CGFGm4YBJInnXjF5OZGTq9QVeNWO4NZm5rmcumEhsEoHeABxz/PHHR/FmNN8CRwULuNr+8/9RBscYaxghiaUC5nOxjalPl9KfHhuIHKr/VKZs+VDg8DqdQWLqGkaWTcGeYDPflHtmdMejt8on0PuA1/rGGaHDCDk/Ee/Qp2nHJReUWrqgJI7pw==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 673CEB0602AB19D5
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeefuddrieefgdeivdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceugffnnfdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffhvfevfhgjtgfgsehtkeertddtvdejnecuhfhrohhmpeflohhhnhcuffgrvhhiugcutehnghhlihhnuceouggrvhgvrdgrnhhglhhinhessggvlhhlrdhnvghtqeenucggtffrrghtthgvrhhnpefhiedukeehlefghefhtdelffekvedvfefglefgtdelhffggefhueeitddutddugfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedugedvrdduvdeirdduvdelrdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddvrdeglegnpdhinhgvthepudegvddruddviedruddvledriedpmhgrihhlfhhrohhmpegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdpnhgspghrtghpthhtohepkedprhgtphhtthhopegurghvvgdrrghnghhlihhnsegsvghllhdrnhgvthdprhgtphhtthhopeguvghllhgvrhesghhmgidruggvpdhrtghpthhtohepuggvlhhlvghrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnmhgrghejsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhi
-	nhhugidqphgrrhhishgtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrthhorhhopghmrghilhhinhhglhhishhtpghkvghrnhgvlhesmhgrthhorhhordhtkhdprhgtphhtthhopehsrghmsehgvghnthhoohdrohhrgh
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.126.129.6) by cmx-mtlrgo001.bell.net (authenticated as dave.anglin@bell.net)
-        id 673CEB0602AB19D5; Tue, 3 Dec 2024 11:38:52 -0500
-Message-ID: <7551c27f-58d5-4e4b-ac7f-8d09be634104@bell.net>
-Date: Tue, 3 Dec 2024 11:38:52 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E026320B7F1;
+	Wed,  4 Dec 2024 07:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733298595; cv=pass; b=GwEM4LJ5EtgDtQukzRJue751xU8hnImpMF2FUWHf7/G8NqSc4zL/b4uuwNqteFE0V19nxXhUcy3uQKSyFo1/dV5Ghp9try2GEK+EPiUgrjqvuMmtgNKNYelrQNbKVVdtZeC4mAH6WzssYZNgzL10ZkXQofFzWCyirzsKII1yUnI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733298595; c=relaxed/simple;
+	bh=M6RwKluML8bmmOp1YgaUxZ4urfVP07tr+vFA/heYw+c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=DdsJDouv9T62fyDcQ0Nl5vA9n/g/CJpeR57T5VU3n/lpsh8S6qRIfXs2kLUBigvfgAnm/flzlYZWE06suIfLjDhcbElYV/be5YBImL6d5s2KiYMcrFhIzJw7cFEO/KZ0bc1OkZY18z2XTmhd3cgmGCc4hh7IrAZf36Bx6kcyD4o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org; spf=none smtp.mailfrom=outer-limits.org; dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=iYULa6lf; dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=gXOqmg0k; arc=pass smtp.client-ip=85.215.255.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=outer-limits.org
+ARC-Seal: i=1; a=rsa-sha256; t=1733298406; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=ofPnBNBvn05vQEPQimJekSufbpDRzrEYpcoAEybHqTT+XnTTSYOHaMqeFGlWOebflq
+    gQl/q2c3kWKIS4btGUoJW8ROUO6yAsRjmILhamZANC1pYL1rT1IoFKWyBzh+0wV5DPcH
+    t34doOS6F26DNhoouiko1+Lu3chM3xfmlFCo4vfAWgkHBaxTeHM5zk2aJ+AE3ZFQz7gG
+    mq+xubdXSqhljA0iLnUd8UTHwGEXqM/SCbMpeqnQjBF5C3V0//n6rfLED4JYWnBs35Vp
+    +/YZQ3IV0iV7Xj1YFBlPU5+VO/WZKyzxkNyzMvmss7fm/uv33iB52qoXeqgs1t2clCiQ
+    sKcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1733298406;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=vdY7+wuKPrphJStJSSvgK5sCtQyNjRN2UeTezk9EShM=;
+    b=g4yEEMq3Lk5a7bTP+LZnQAe/tTj0zn25IREgshWyDK9pRfvKzYbB4Y+s7Rp7lsEVOc
+    le+51wCizrCQ+h+L7TsR0KQEdLT41/8Gdv4Wr7gVUojqAi9hyff0XFEXFu0eoG1vObE5
+    ITVK+ejIriV9Icbxjy+HLEqvHq0y57wP4LzZqIMFLUSmq+Qhdo1CpahIbjOuRJuKvFoC
+    xfiYN5+wwURAe6lo4ZEVBNDWvUYLX0AH5GNekFES7BYbfO/9QLhopbE3RD6Ne7bARiEe
+    jd5qaIUZjE066PdVFbbqKhgKX59VHcAMfDJ0mbtQq4uvUweuLSK0jSC7Q2E1fORAFhpL
+    UxIQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1733298406;
+    s=strato-dkim-0002; d=outer-limits.org;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=vdY7+wuKPrphJStJSSvgK5sCtQyNjRN2UeTezk9EShM=;
+    b=iYULa6lf4ulqokbrACJSUQVpnNLR+5vRUnhIw+9oBvzGC36ZMHl7diwTTzcDvMHvcO
+    8CDCgVhkrptlUFE606qnjhUUC6Zl2H9JT0/AOSu491BqGqcBwblYsmtq53b2FEsZpbGX
+    timWfCQHzDf08GEJnuE8bwJMsvYGrgPRZ8rGpauHhvGue3zZA85LX9Tfxx0oCKTH81td
+    bzDFBJkOYL5oU3zKfwGUJzq/sj+AaQkceAZgvokCh2GvQQEpP36nIguavl5/xIyIvW2c
+    wS5IAn7mv9F7BL4GPQXVCI2cYEiT9EsN5BZ2N9O9z7ItHWsnXSbQg4zapupZTqy87SFI
+    toTg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1733298406;
+    s=strato-dkim-0003; d=outer-limits.org;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=vdY7+wuKPrphJStJSSvgK5sCtQyNjRN2UeTezk9EShM=;
+    b=gXOqmg0kd6J+XNhyfvkOSTO4FU50FQETCjNZM0rc8NzRYyuEUKOYc9lKc2sDXIYWau
+    Ec3bAPhDjLSAVNXEvNAA==
+X-RZG-AUTH: ":JnkIfEGmW/AMJS6HttH4FbRVwc4dHlPLCp4e/IoHo8zEMMHAgwTfqBEHcVJSv9P5mRTGd2ImeA=="
+Received: from ws2104.lan.kalrayinc.com
+    by smtp.strato.de (RZmta 51.2.11 AUTH)
+    with ESMTPSA id Ja0a030B47kjQjQ
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Wed, 4 Dec 2024 08:46:45 +0100 (CET)
+From: Julian Vetter <julian@outer-limits.org>
+To: Arnd Bergmann <arnd@arndb.de>,
+	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Julian Vetter <julian@outer-limits.org>
+Subject: [PATCH] parisc: Remove memcpy_toio and memset_io
+Date: Wed,  4 Dec 2024 08:46:32 +0100
+Message-Id: <20241204074632.3683523-1-julian@outer-limits.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bisected] ext4 corruption on parisc since 6.12
-From: John David Anglin <dave.anglin@bell.net>
-To: matoro <matoro_mailinglist_kernel@matoro.tk>
-Cc: Magnus Lindholm <linmag7@gmail.com>,
- Linux Parisc <linux-parisc@vger.kernel.org>, deller@kernel.org,
- Deller <deller@gmx.de>, Sam James <sam@gentoo.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <84d7b3e1053b2a8397bcc7fc8eee8106@matoro.tk>
- <31c884b9-77c8-48dc-b84c-20e52cdc4d44@bell.net>
- <71fae3d3a9bd816ea268eb73c152b564@matoro.tk>
- <CA+=Fv5Qy0818xS3uW2bh2nVpy-3COUzbq5X0JPY6=YzbfYgNOA@mail.gmail.com>
- <03978220-0153-417c-8479-09239d19c9ba@bell.net>
- <9bdbf64bd63ab7eef2f5ead467f3c8c4@matoro.tk>
- <7e3682f8-ec11-40b0-898f-f3729d6f110b@bell.net>
-Content-Language: en-US
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- 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
- T70V9SSrl2hiw38vRzsl
-In-Reply-To: <7e3682f8-ec11-40b0-898f-f3729d6f110b@bell.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
 
-On 2024-12-02 2:45 p.m., John David Anglin wrote:
-> I also have in config:
-> CONFIG_HAVE_UNSTABLE_SCHED_CLOCK=y
-Here is a comment from <https://www.kernel.org/doc/Documentation/timers/timekeeping.txt>:
+Recently new functions for IO memcpy and IO memset were added in
+libs/iomem_copy.c. So, remove the arch specific implementations, to fall
+back to the generic ones which do exactly the same. Keep memcpy_fromio
+for now, because it's slight more optimized by doing 'u16' accesses if
+the buffer is aligned this way.
 
-On SMP systems, it is crucial for performance that sched_clock() can be called
-independently on each CPU without any synchronization performance hits.
-Some hardware (such as the x86 TSC) will cause the sched_clock() function to
-drift between the CPUs on the system. The kernel can work around this by
-enabling the CONFIG_HAVE_UNSTABLE_SCHED_CLOCK option. This is another aspect
-that makes sched_clock() different from the ordinary clock source.
+Signed-off-by: Julian Vetter <julian@outer-limits.org>
+---
+ arch/parisc/include/asm/io.h |  4 ---
+ arch/parisc/lib/io.c         | 47 ------------------------------------
+ 2 files changed, 51 deletions(-)
 
-Dave
-
+diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
+index a63190af2f05..3143cf29ce27 100644
+--- a/arch/parisc/include/asm/io.h
++++ b/arch/parisc/include/asm/io.h
+@@ -135,12 +135,8 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
+ 
+ #define pci_iounmap			pci_iounmap
+ 
+-void memset_io(volatile void __iomem *addr, unsigned char val, int count);
+ void memcpy_fromio(void *dst, const volatile void __iomem *src, int count);
+-void memcpy_toio(volatile void __iomem *dst, const void *src, int count);
+-#define memset_io memset_io
+ #define memcpy_fromio memcpy_fromio
+-#define memcpy_toio memcpy_toio
+ 
+ /* Port-space IO */
+ 
+diff --git a/arch/parisc/lib/io.c b/arch/parisc/lib/io.c
+index 7c00496b47d4..7461366a65c9 100644
+--- a/arch/parisc/lib/io.c
++++ b/arch/parisc/lib/io.c
+@@ -12,32 +12,6 @@
+ #include <linux/module.h>
+ #include <asm/io.h>
+ 
+-/* Copies a block of memory to a device in an efficient manner.
+- * Assumes the device can cope with 32-bit transfers.  If it can't,
+- * don't use this function.
+- */
+-void memcpy_toio(volatile void __iomem *dst, const void *src, int count)
+-{
+-	if (((unsigned long)dst & 3) != ((unsigned long)src & 3))
+-		goto bytecopy;
+-	while ((unsigned long)dst & 3) {
+-		writeb(*(char *)src, dst++);
+-		src++;
+-		count--;
+-	}
+-	while (count > 3) {
+-		__raw_writel(*(u32 *)src, dst);
+-		src += 4;
+-		dst += 4;
+-		count -= 4;
+-	}
+- bytecopy:
+-	while (count--) {
+-		writeb(*(char *)src, dst++);
+-		src++;
+-	}
+-}
+-
+ /*
+ ** Copies a block of memory from a device in an efficient manner.
+ ** Assumes the device can cope with 32-bit transfers.  If it can't,
+@@ -99,27 +73,6 @@ void memcpy_fromio(void *dst, const volatile void __iomem *src, int count)
+ 	}
+ }
+ 
+-/* Sets a block of memory on a device to a given value.
+- * Assumes the device can cope with 32-bit transfers.  If it can't,
+- * don't use this function.
+- */
+-void memset_io(volatile void __iomem *addr, unsigned char val, int count)
+-{
+-	u32 val32 = (val << 24) | (val << 16) | (val << 8) | val;
+-	while ((unsigned long)addr & 3) {
+-		writeb(val, addr++);
+-		count--;
+-	}
+-	while (count > 3) {
+-		__raw_writel(val32, addr);
+-		addr += 4;
+-		count -= 4;
+-	}
+-	while (count--) {
+-		writeb(val, addr++);
+-	}
+-}
+-
+ /*
+  * Read COUNT 8-bit bytes from port PORT into memory starting at
+  * SRC.
 -- 
-John David Anglin  dave.anglin@bell.net
+2.34.1
 
 
