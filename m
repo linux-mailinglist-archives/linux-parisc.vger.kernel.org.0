@@ -1,182 +1,162 @@
-Return-Path: <linux-parisc+bounces-3062-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3063-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448EA9F6B54
-	for <lists+linux-parisc@lfdr.de>; Wed, 18 Dec 2024 17:37:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F049F70BF
+	for <lists+linux-parisc@lfdr.de>; Thu, 19 Dec 2024 00:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 590A5166C9E
-	for <lists+linux-parisc@lfdr.de>; Wed, 18 Dec 2024 16:36:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 916887A3FD6
+	for <lists+linux-parisc@lfdr.de>; Wed, 18 Dec 2024 23:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199901F76A2;
-	Wed, 18 Dec 2024 16:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE671FCFD8;
+	Wed, 18 Dec 2024 23:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ZBQAOqwW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KqJZWQVI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sKiuS8yl"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0711F7570;
-	Wed, 18 Dec 2024 16:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8705C1991B8
+	for <linux-parisc@vger.kernel.org>; Wed, 18 Dec 2024 23:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734539801; cv=none; b=NOUzGtVO1g4n481HtLImjmiuwrhrfGipot+ttMPP7vJF8090Yikz3XEBuiTIr+6PaVMvzSI4jPQyAOwM9ldwgQMshqO5XjsUdI7AW6Ho8ybvNrneCVWFKHBPNvlQ5ekSWGd12yCB9gU4nHJ6C/N7K72A9hVOrzf8Fn0X4XINPc8=
+	t=1734564372; cv=none; b=E/P5Cs6CYwtkcspD14X/oEuxDKYzGPgzRJ4ZgLEmd32J/OAYfzFa9JbnnteUIJYj94L/eEbBBh4iJA3Eh31qzlKzP6bwTGJ28UhqzZSBA/TBEq3huQgZDm4/cfp2bjuhT3wFkd7rhc2bvHb+Kr+UbFenEozYaOjtp73FtxOXIno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734539801; c=relaxed/simple;
-	bh=ECU7a7g+Yd5ux9s9u8W1DLTzWcr6VeDcVb9iJT8TVAY=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=FTb1dAu8FqdA9hldCAivGIvxvjMkXVVS5bGoXVSy4b+jFyomSgvdccPFlM/f/f99e6Jz1aF/CjGHgfJtKD3voDQXK/zm3Ti9mkvvLnWll0Bz2UpSDPSrISwbmaI8RKAzSwPeQj3dzX3p1uhhbm6W6+FECBgN2qQXaQICONbbtzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ZBQAOqwW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KqJZWQVI; arc=none smtp.client-ip=202.12.124.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailflow.stl.internal (Postfix) with ESMTP id 604441D40442;
-	Wed, 18 Dec 2024 11:36:36 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Wed, 18 Dec 2024 11:36:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1734539796;
-	 x=1734546996; bh=nfvIer0zFabb2CSH4FYG5+b3Q6Xz7yeeSWmQEgNJheM=; b=
-	ZBQAOqwWg2K05L5uK2bYuwdACrxkLsoc2PIgD0cQgiEZ7YYzhpCxLlGgVZW3DVx6
-	RnHtDGYZacvkFOApE5i8PpEKXJJGSLMPZi1/7zYeCxngLwFiuC9mIs0r1MfRf1d7
-	ljvkEfr+wDzKKBBc+aurNSqkpq8ZRtQDdq0HUTxnfOR5XzEt97aJE7dwOdFVZ/hQ
-	G7NwA6xY0dgZ+/xg4YILY7/7WbCEybiUYNzp0z8/igRlYf8NVwKiJsF4kOTG+iqu
-	JyrXPLjrjW44Sllz4+cRSo0lIJniQhepEl9dIW9Ha7JzvHs7+IVaGL96wRRmTQVz
-	/xIay+l60aHEAef4QHVc4w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734539796; x=
-	1734546996; bh=nfvIer0zFabb2CSH4FYG5+b3Q6Xz7yeeSWmQEgNJheM=; b=K
-	qJZWQVI8dLKjsLZD5P9G0J1qUuKhEEsdqq+hKLVZma8PcO0rePXvzMeh3Gx+vBOD
-	4nrPDtjhBHF33PiCb2oLKtLN8BuhIxgjeQHXotN9690yJVqb/PXCqLhFT2gY2knP
-	SHOoAC5zDrv2o7AYcQSL9H9AgGMdlkVSHmV5ZjLFwBX52jgdNDzgyVppGNX1wod9
-	7ttZ7ZLraiTYPJxQ1MR/SR1x3wO/EGPAqJ0WFhEdeVI7D2KnDKbbNvBechT+mDuz
-	cpPDpxvu0YbekmHfrUlPuFeXsXgCSELupq6HK7beqkIp0QrURFeBQbSN0zMiN8me
-	L7v+l+rQqTjKGKfPI+cXQ==
-X-ME-Sender: <xms:EPpiZ2PhewnaDdeTezsY7UHZ-8MZHheQgg2o6m05zEshehzpenow1A>
-    <xme:EPpiZ08FeD-PHv9DfxkMbyU44Z2agIt5ndVb5bJvAT7p7tClm27qKJ2TH4eLJ14WB
-    FQJfPGZ_sMFiMW81M0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrleekgdeltdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeen
-    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
-    gvqeenucggtffrrghtthgvrhhnpedvhfdvkeeuudevfffftefgvdevfedvleehvddvgeej
-    vdefhedtgeegveehfeeljeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeegiedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsghpsegrlhhivghnkedruggvpdhrtg
-    hpthhtohepthhssghoghgvnhgusegrlhhphhgrrdhfrhgrnhhkvghnrdguvgdprhgtphht
-    thhopegtrghtrghlihhnrdhmrghrihhnrghssegrrhhmrdgtohhmpdhrtghpthhtohepvh
-    hinhgtvghniihordhfrhgrshgtihhnohesrghrmhdrtghomhdprhgtphhtthhopehlihhn
-    uhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhrtghpthhtoheptghhrhhishhtohhphh
-    gvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopehprghlmhgvrhesuggr
-    sggsvghlthdrtghomhdprhgtphhtthhopegrohhusegvvggtshdrsggvrhhkvghlvgihrd
-    gvughupdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghu
-X-ME-Proxy: <xmx:EPpiZ9SUEzmB8m4BWTnSvNTtSXRoY8pckW1eK5W5rKnWC0lS5naOKQ>
-    <xmx:EPpiZ2tCYDXsXEJFpJcBW2DlzBqmukOXYouat3DqxhmhFciRrpQLMQ>
-    <xmx:EPpiZ-ctkHakbRRswX0-1x3fLnbcgCLh6ogHHQVM_Yz1HDnHdPdaLw>
-    <xmx:EPpiZ62xeygOoJZVhzcxu1Lkfiip8AzfGhxGF4meBhl3PD_5MD0-1Q>
-    <xmx:FPpiZ3eUuVl_kIXn3EabUXk14dEdg5IU1747WEAAdir6NevQA5VhmJtW>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 5B4AC2220075; Wed, 18 Dec 2024 11:36:32 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1734564372; c=relaxed/simple;
+	bh=gmHKb+ysBgOen3S1SaYoWzEoCpbcqxaWst0I1KwE2nU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Mra7ktQCdrtLK5y8p+vpXefpu5W+r9F70Ie1Hg4dVmRM33SwdLO1a3+dG6wW/u5sXUdYKkJXt5vmIbunozA4O9PIFJvMp7Cds8pelDO90VcAj7NypEkcJznhDMELEkwcmno7Omq5gXDT2Hqb6rAKM80uXwclJF3Q/C7V9RAwXV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sKiuS8yl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17675C4CECD;
+	Wed, 18 Dec 2024 23:26:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734564372;
+	bh=gmHKb+ysBgOen3S1SaYoWzEoCpbcqxaWst0I1KwE2nU=;
+	h=Date:From:To:Cc:Subject:From;
+	b=sKiuS8yltBt95/e5gPOkWXuSTJb6bRHwUXoCueigI+0wcTIS4wLjpQF1pP2W+0ga4
+	 b0pn0diIvbC1HseiAj/4Y5uJWGnNIWLrmGrIhYYtMcyttTaFeKdDkJZyqkD/qIRlti
+	 DZcY6vpo4AmLFKzyQ/PAxCY/kJQhJ+WUNEfkE/kspeCxY5LZiNM3zfXoFRcSJM1CnR
+	 9Et/j91NMZ8xWmsUXuv1z/EMr2QaS+aaeAlUX0BwbcEHwUhRPXod7GSFDMFLPg+G4P
+	 sao5H/ERhfFZdeQJDkVX0umF2jnhiCqoV/aDwhgsPYt8nCAvcYs86ziqUu4mHk0z8r
+	 ycMRcKgouzZeg==
+Date: Thu, 19 Dec 2024 00:26:08 +0100
+From: Helge Deller <deller@kernel.org>
+To: libc-alpha@sourceware.org, John David Anglin <dave.anglin@bell.net>
+Cc: linux-parisc@vger.kernel.org
+Subject: [PATCH v2] hppa: Wire up cacheflush syscall
+Message-ID: <Z2NaED_0wNDlLIwZ@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 18 Dec 2024 17:35:31 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- "Conor Dooley" <conor@kernel.org>
-Cc: "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Helge Deller" <deller@gmx.de>, "Andy Lutomirski" <luto@kernel.org>,
- "Thomas Gleixner" <tglx@linutronix.de>,
- "Vincenzo Frascino" <vincenzo.frascino@arm.com>,
- "Anna-Maria Gleixner" <anna-maria@linutronix.de>,
- "Frederic Weisbecker" <frederic@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>,
- "Will Deacon" <will@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
- "Jason A . Donenfeld" <Jason@zx2c4.com>,
- "Paul Walmsley" <paul.walmsley@sifive.com>,
- "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Albert Ou" <aou@eecs.berkeley.edu>,
- "Huacai Chen" <chenhuacai@kernel.org>, "WANG Xuerui" <kernel@xen0n.name>,
- "Russell King" <linux@armlinux.org.uk>,
- "Heiko Carstens" <hca@linux.ibm.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>,
- "Sven Schnelle" <svens@linux.ibm.com>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Naveen N Rao" <naveen@kernel.org>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
- linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Linux-Arch <linux-arch@vger.kernel.org>,
- "Nam Cao" <namcao@linutronix.de>
-Message-Id: <137c0594-e178-4c91-bc8b-5f99b3ddb2f0@app.fastmail.com>
-In-Reply-To: 
- <20241218162031-ee920684-db10-4f17-b1cb-50373d7ea954@linutronix.de>
-References: <20241216-vdso-store-rng-v1-0-f7aed1bdb3b2@linutronix.de>
- <20241216-vdso-store-rng-v1-7-f7aed1bdb3b2@linutronix.de>
- <20241218-action-matchbook-571b597b7f55@spud>
- <20241218162031-ee920684-db10-4f17-b1cb-50373d7ea954@linutronix.de>
-Subject: Re: [PATCH 07/17] riscv: vdso: Switch to generic storage implementation
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, Dec 18, 2024, at 16:46, Thomas Wei=C3=9Fschuh wrote:
-> On Wed, Dec 18, 2024 at 03:08:28PM +0000, Conor Dooley wrote:
->> On Mon, Dec 16, 2024 at 03:10:03PM +0100, Thomas Wei=C3=9Fschuh wrote:
+The hppa Linux kernel supports the cacheflush() syscall
+since version 6.5. This adds the glibc syscall wrapper.
 
->> Might be a clang thing, allmodconfig with clang doesn't build either.
->
-> The proposed generic storage infrastructure currently expects that all
-> its users also use HAVE_GENERIC_VDSO.
-> I missed rv32 when checking this assumption.
->
-> I can add a bunch of ifdefs into the storage code to handle this.
->
-> Or we re-add the time vDSO functions which were removed in commit
-> d4c08b9776b3 ("riscv: Use latest system call ABI").
-> Today there are upstream ports of musl and glibc which can use them.
-> (currently musl even tries to use __vdso_clock_gettime() as 64-bit only
-> on rv32 due to a copy-and-paste error from its rv64 code)
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-Adding back __vdso_clock_gettime() wouldn't work on rv32 because there
-is no fallback syscall for it, and it wouldn't really help since
-there is no existing userspace that uses time32 structures.
+---
+v2: This patch was too late in release cycle for GLIBC_2.40,
+    so Update now to GLIBC_2.41 instead.
 
-> There is precedence in providing 64bit only vDSO functions, for example
-> __vdso_clock_gettime64() in arm.
-> I do have a small, so far untested, proof-of-concept patch for it.
-> This would even be less code than the ifdefs.
->
-> What do you think about it?
 
-Yes, simply exposing the normal time64 syscalls through vdso
-should be fine. I think this currently works on everything except
-rv32 and sparc32, probably because neither of them have actual
-users that are able to test.
-
-       Arnd
+diff --git a/sysdeps/unix/sysv/linux/hppa/Makefile b/sysdeps/unix/sysv/linux/hppa/Makefile
+index 2e031e2f8a..9eebe8e0e7 100644
+--- a/sysdeps/unix/sysv/linux/hppa/Makefile
++++ b/sysdeps/unix/sysv/linux/hppa/Makefile
+@@ -15,6 +15,11 @@ test-xfail-check-wx-segment = *
+ 
+ endif # $(subdir) == elf
+ 
++ifeq ($(subdir),misc)
++sysdep_routines += cacheflush
++sysdep_headers += sys/cachectl.h
++endif
++
+ ifeq ($(subdir),debug)
+ test-xfail-tst-ssp-1 = $(have-ssp)
+ endif # $(subdir) == debug
+diff --git a/sysdeps/unix/sysv/linux/hppa/Versions b/sysdeps/unix/sysv/linux/hppa/Versions
+index 78528e5fa2..1f83840d2f 100644
+--- a/sysdeps/unix/sysv/linux/hppa/Versions
++++ b/sysdeps/unix/sysv/linux/hppa/Versions
+@@ -23,4 +23,7 @@ libc {
+   GLIBC_2.19 {
+     fanotify_mark;
+   }
++  GLIBC_2.41 {
++    cacheflush;
++  }
+ }
+diff --git a/sysdeps/unix/sysv/linux/hppa/libc.abilist b/sysdeps/unix/sysv/linux/hppa/libc.abilist
+index 8de7644a59..306b90c8b5 100644
+--- a/sysdeps/unix/sysv/linux/hppa/libc.abilist
++++ b/sysdeps/unix/sysv/linux/hppa/libc.abilist
+@@ -2823,6 +2823,7 @@ GLIBC_2.4 unlinkat F
+ GLIBC_2.4 unshare F
+ GLIBC_2.41 sched_getattr F
+ GLIBC_2.41 sched_setattr F
++GLIBC_2.41 cacheflush F
+ GLIBC_2.5 __readlinkat_chk F
+ GLIBC_2.5 inet6_opt_append F
+ GLIBC_2.5 inet6_opt_find F
+diff --git a/sysdeps/unix/sysv/linux/hppa/sys/cachectl.h b/sysdeps/unix/sysv/linux/hppa/sys/cachectl.h
+new file mode 100644
+index 0000000000..16e47d1329
+--- /dev/null
++++ b/sysdeps/unix/sysv/linux/hppa/sys/cachectl.h
+@@ -0,0 +1,36 @@
++/* HPPA cache flushing interface.
++   Copyright (C) 2018-2024 Free Software Foundation, Inc.
++   This file is part of the GNU C Library.
++
++   The GNU C Library is free software; you can redistribute it and/or
++   modify it under the terms of the GNU Lesser General Public
++   License as published by the Free Software Foundation; either
++   version 2.1 of the License, or (at your option) any later version.
++
++   The GNU C Library is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++   Lesser General Public License for more details.
++
++   You should have received a copy of the GNU Lesser General Public
++   License along with the GNU C Library.  If not, see
++   <https://www.gnu.org/licenses/>.  */
++
++#ifndef _SYS_CACHECTL_H
++#define _SYS_CACHECTL_H 1
++
++#include <features.h>
++
++/* Get the kernel definition for the op bits.  */
++#include <asm/cachectl.h>
++
++__BEGIN_DECLS
++
++#ifdef __USE_MISC
++extern int cacheflush (void *__addr, const int __nbytes,
++		       const int __op) __THROW;
++#endif
++
++__END_DECLS
++
++#endif /* sys/cachectl.h */
+diff --git a/sysdeps/unix/sysv/linux/hppa/syscalls.list b/sysdeps/unix/sysv/linux/hppa/syscalls.list
+index 12e4adeccc..b3020114d6 100644
+--- a/sysdeps/unix/sysv/linux/hppa/syscalls.list
++++ b/sysdeps/unix/sysv/linux/hppa/syscalls.list
+@@ -8,5 +8,6 @@ listen		-	listen		i:ii	__listen	listen
+ shutdown	-	shutdown	i:ii	__shutdown	shutdown
+ socket		-	socket		i:iii	__socket	socket
+ socketpair	-	socketpair	i:iiif	__socketpair	socketpair
++cacheflush	-	cacheflush	i:pii	_flush_cache	cacheflush
+ 
+ personality	EXTRA	personality	Ei:i	__personality	personality
 
