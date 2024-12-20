@@ -1,136 +1,167 @@
-Return-Path: <linux-parisc+bounces-3088-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3089-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76C29F98D0
-	for <lists+linux-parisc@lfdr.de>; Fri, 20 Dec 2024 18:58:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05959F9A8A
+	for <lists+linux-parisc@lfdr.de>; Fri, 20 Dec 2024 20:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5F51169E47
-	for <lists+linux-parisc@lfdr.de>; Fri, 20 Dec 2024 17:57:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD96216DBD1
+	for <lists+linux-parisc@lfdr.de>; Fri, 20 Dec 2024 19:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510B62236E1;
-	Fri, 20 Dec 2024 17:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BD5222568;
+	Fri, 20 Dec 2024 19:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VeWM7rW9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fMKoUaee"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lBvD8A5g"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A52D21B182;
-	Fri, 20 Dec 2024 17:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EF9221451;
+	Fri, 20 Dec 2024 19:31:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734716861; cv=none; b=H9aSzaLDU7t0KWnLFIfde+/u2R7A6cb6LugHkYODYc5uvBbiE1r3p4XJWUb2a3nxWHJmTS84QLj5mwbEtLU/v3f4as5AJuzg7DzZ6Vj4h3BwCJWWvqzPvtyH3eMlp0neDNnjcUdgaTl6jml19V5Ebgcpfhx3pXInkRVvAqKNGc4=
+	t=1734723116; cv=none; b=MlsYBSzvzzWdOdwu/DpqFu+kXAEko+zXnes7THwnFF9AlWaPexzsGHnIwnrCvP6Ymkqi2YYR3AvA6BSuZFwzdzxcN4jlvKzInjUCFsoeKevTZaDjLcHK0VPqQpzZ/GRRXyYKjrew62D/8w1cpHm/o1DxlCtJ8qqQ48+XsOEKsyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734716861; c=relaxed/simple;
-	bh=Ez9a8QqH18hxi3K7lFzriilp7Ti8WL3yb/1TbjOD3jM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZktWysRMa9tB/Q5Lp7n8P5OxsSWruOPTi3ELyqD+hST2K5H9Wlo01/P14ZDVTkXOyxUs4B/xDGiqIlO55bxgWfpESle3HMbQ550+2LZyp2PNDyoPoLy7M6vwpgy0kZEfpVqGvAaTsE/JjVuO5SqifDssWNCdj7nM7D95wo4WCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VeWM7rW9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fMKoUaee; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1734716856;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mUoDDG+l47O3+vMUk6eVXEzXq+1GxAnfmkZBqPU3miY=;
-	b=VeWM7rW9QXtAMWnHN9WczxUc8haDbC9szTWTTWi1ntBBobpSJCm6AvixLsi5EK9Lb380y8
-	DFoFOB2i/diTlb5SXTH0+m1Wlqc9IjtX8EoJS1rBn2USkwu4mu2n8vuE3/jiiJB7cdoduG
-	TjWlcB+QEr4ItWUiSJRLYi4VFU0XIT+sqTD3S9y+cXGZsQXoUn00OpnHyu8sar4TZ6fP6M
-	j+E+ywk+liYExCeT679qnQyqlvXwtPE+QReVRbAOtglXDepHRwYhlH/v0MGxTlhLugx3CM
-	vK/9c7WIDzTJ7RdlYOS1YK0LaRXplkCsVPKsovr6ZYWZOLU5kMGbIJD6Cq4T4w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1734716856;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mUoDDG+l47O3+vMUk6eVXEzXq+1GxAnfmkZBqPU3miY=;
-	b=fMKoUaee6BrFn2ilOUvKtZTzJ99Gmt55PbVZODBJtohd+3QWbGix3h5CEtsqB532rftSSe
-	IAum2v4ago/eu3CA==
-To: linux-modules@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Daniel Gomez <da.gomez@samsung.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 01/28] module: Extend the preempt disabled section in dereference_symbol_descriptor().
-Date: Fri, 20 Dec 2024 18:41:15 +0100
-Message-ID: <20241220174731.514432-2-bigeasy@linutronix.de>
-In-Reply-To: <20241220174731.514432-1-bigeasy@linutronix.de>
-References: <20241220174731.514432-1-bigeasy@linutronix.de>
+	s=arc-20240116; t=1734723116; c=relaxed/simple;
+	bh=cWsdyve87/ahvL1Kdn+WU4yfF9lwFtfjevTBD3q3a5I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W0ofl3mxLmM51BVC5xUsjdwv322k6C0RCA3M8JvJ6u1ZNM2rdR2RUurEowhj5FSNGKoLdax2ORsvq0RCqg5PJ4NtC9kjZ5gTlityQua8Ln/KYV/m3+7vIiDlspA+LTqI5HE1OrhejdUjzW+Il7K16AZcf/QC4LdEbaJBfyg/MP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lBvD8A5g; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734723115; x=1766259115;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=cWsdyve87/ahvL1Kdn+WU4yfF9lwFtfjevTBD3q3a5I=;
+  b=lBvD8A5gq5ZhryWgEkUZa0tFdge/1GcQ791QTG32VqCO+Cc4YhJkljiX
+   DGiz+DiH3RGoRZ36KpD+o1zt9T3dt5D5aL42RtSCPl3fTTTYlRoU7DBaY
+   v4I4A+7Tc4dXuyaBw6ZwSwzpm/qBIikYjZ08/qGuWCt6PXHeHVNHwpsUp
+   9f3PrZ56qnpn4rhOwNeuSy5YM3Op68DXz3Dhn3sYbAew/CwKMBx5mRzJH
+   KyM+HeJf+2QSwy940k69bl+/RbS/TIQRPipzr6AHaGuaBe4tWG9S6rbU+
+   MFnWt7NzIQNXWR/vLYyWEU1Lvjk17tt8D8vvONNEFzY6KKwnQsdOrCRbw
+   w==;
+X-CSE-ConnectionGUID: VYO5eTQgQgSWLHO0uTdf1g==
+X-CSE-MsgGUID: nyNw2gJKRAmi/wiISM/PwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11292"; a="35498885"
+X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; 
+   d="scan'208";a="35498885"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 11:31:53 -0800
+X-CSE-ConnectionGUID: puhYWLhrTxCkddI44a7G2Q==
+X-CSE-MsgGUID: ZOvVbemkRy6XjG3xptTdtg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,251,1728975600"; 
+   d="scan'208";a="98986706"
+Received: from jairdeje-mobl1.amr.corp.intel.com (HELO [10.124.221.219]) ([10.124.221.219])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2024 11:31:52 -0800
+Message-ID: <989b55cf-1f9e-4b73-b3dd-d8b6a62be3f2@intel.com>
+Date: Fri, 20 Dec 2024 11:31:51 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] Account page tables at all levels
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, "Mike Rapoport (IBM)"
+ <rppt@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, linux-alpha@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-um@lists.infradead.org, loongarch@lists.linux.dev, x86@kernel.org,
+ Joerg Roedel <jroedel@suse.de>
+References: <20241219164425.2277022-1-kevin.brodsky@arm.com>
+ <a7398426-56d1-40b4-a1c9-40ae8c8a4b4b@intel.com>
+ <765aec36-55a4-4161-bb30-4ff838bc2d98@arm.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <765aec36-55a4-4161-bb30-4ff838bc2d98@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-dereference_symbol_descriptor() needs to obtain the module pointer
-belonging to pointer in order to resolve that pointer.
-The returned mod pointer is obtained under RCU-sched/ preempt_disable()
-guarantees and needs to be used within this section to ensure that the
-module is not removed in the meantime.
+On 12/20/24 02:58, Kevin Brodsky wrote:
+>> One super tiny nit is that the PAE pgd _can_ be allocated using
+>> __get_free_pages(). It was originally there for Xen, but I think it's
+>> being used for PTI only at this point and the comments are wrong-ish.
+>>
+>> I kinda think we should just get rid of the 32-bit kmem_cache entirely.
+> That would certainly simplify things on the x86 side! I'm not at all
+> familiar with that code though, would you be happy with providing a
+> patch? I could add it to this series if that's convenient.
 
-Extend the preempt_disable() section to also cover
-dereference_module_function_descriptor().
+I hacked this together yesterday:
 
-Fixes: 04b8eb7a4ccd9 ("symbol lookup: introduce dereference_symbol_descript=
-or()")
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- include/linux/kallsyms.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> https://git.kernel.org/pub/scm/linux/kernel/git/daveh/devel.git/log/?h=simplify-pae-20241220
+It definitely needs some more work. I'm particularly still puzzling
+about why SHARED_KERNEL_PMD is used both as a trigger for 32b vs.
+PAGE_SIZE PAE pgd allocations _and_ for the actual PMD sharing.
 
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index c3f075e8f60cb..1c6a6c1704d8d 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -57,10 +57,10 @@ static inline void *dereference_symbol_descriptor(void =
-*ptr)
-=20
- 	preempt_disable();
- 	mod =3D __module_address((unsigned long)ptr);
--	preempt_enable();
-=20
- 	if (mod)
- 		ptr =3D dereference_module_function_descriptor(mod, ptr);
-+	preempt_enable();
- #endif
- 	return ptr;
- }
---=20
-2.45.2
+Xen definitely needed the whole page behavior but I'm not sure why PTI did.
+
+Either way, that series should make the PAE PGDs a _bit_ less weird at
+the cost of an extra ~2 pages per process for folks who are running
+32-bit PAE kernels with PTI disabled.
+
+But I think the diffstat is worth it:
+
+ 5 files changed, 16 insertions(+), 96 deletions(-)
 
 
