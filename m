@@ -1,55 +1,55 @@
-Return-Path: <linux-parisc+bounces-3091-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3092-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B78F9F9EBE
-	for <lists+linux-parisc@lfdr.de>; Sat, 21 Dec 2024 07:16:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFDC9F9FED
+	for <lists+linux-parisc@lfdr.de>; Sat, 21 Dec 2024 10:52:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54CBC7A1AFA
-	for <lists+linux-parisc@lfdr.de>; Sat, 21 Dec 2024 06:16:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1C891892028
+	for <lists+linux-parisc@lfdr.de>; Sat, 21 Dec 2024 09:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7121DED57;
-	Sat, 21 Dec 2024 06:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EEC61F0E2B;
+	Sat, 21 Dec 2024 09:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NV9xzF/h"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G+aImdx5"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8A61C32FE;
-	Sat, 21 Dec 2024 06:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39E41EE7B3
+	for <linux-parisc@vger.kernel.org>; Sat, 21 Dec 2024 09:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734761799; cv=none; b=gY9Tj9max8N72Ez85iGPNmd4bohkRM+JuNF9mwDGIsKRrF7+lICAPUOTJm7Es+kgQaWfymNHbQPLwMURw8C5ewSb02sv+gnYBYm343T4bvxkAew+cV56rdG+Eb5RVbOUeE28rtMeciQLKNnWKKN1TnPIJuVc+JutJsdQOv4l+4M=
+	t=1734774742; cv=none; b=K4nNjh4g5EULE2LGXbZkzqX4NXjRYpTQo3NHY/iT867nGilku80PBgrWSc7xCkkyg9+M5vdskx4k4VHWNrR+5MeyxAepnDwl6mVVYgM/K+zxfRmNFtbP/yroa5zVxrCvRTCee6ibN0w6iycvVN6j+mI5l0gJ6/5KI3+3sR0nAkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734761799; c=relaxed/simple;
-	bh=1kxkdWJxgnRAvDO7bsJ206JEOaqz8NZsEvJzwGh9FPM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N2lk/sP9kB6xB+KPyzQYYAqqtT79ojliygYyj7cYbYiaPXUrt9mp48+7Mq5dye4vbT4M5jUffsDU7GmGdkCsL8T3RfZtT/9A4xQ064gIWIxn72o1O52xnnJ2nDTGKkP1m2Fb/y0sVbKRUrfq3iOSKghVDnqKBJeI0oILLgkW0PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NV9xzF/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D712FC4CECE;
-	Sat, 21 Dec 2024 06:16:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734761799;
-	bh=1kxkdWJxgnRAvDO7bsJ206JEOaqz8NZsEvJzwGh9FPM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NV9xzF/hrURYS+nYkE+p6jP7u20NrninSDuXcb8tdequ8uGBkXV93tPmS1ZE1yQd8
-	 KpqvDH90kgF/Y47V1XiEVybjA/KxKKGr0Mg4EUXVcyIVuJy+bzisGn+tj6JzilxJei
-	 +FTlIBtgk1AuGq6Xin0SbpFRpsaoTgrJODbiZRu/ANQ2I67MLYOhFXlmJjnG9+z9q4
-	 gRkTJVrEFlesgfiEqUOnAQd4sFSpTxnOLGSND9GcM77jA6icxwdHRBDFHO5EI0C9Ko
-	 p4HpfVCdnoAcY4auf63CV1hqmx8mzHcNQHnfXeCuFIArGu6JwBo7JrfnqhMXWQnXni
-	 XZT/6TEAuKCCQ==
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: Helge Deller <deller@gmx.de>,
-	linux-parisc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Subject: [PATCH] parisc: add vdso linker script to 'targets' instead of extra-y
-Date: Sat, 21 Dec 2024 15:16:18 +0900
-Message-ID: <20241221061631.328327-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1734774742; c=relaxed/simple;
+	bh=bBQGMjtmehLhiHYnuPhaI6TAnsR36mqxUXDSdnaB/O8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DR5gnspcpkV7WV1PHpGlfNvq34EqWbattNTy7xq55UScai7q+dz7m3lDvQb7NZVrww04jMlAIAzqcjAlZXr8U4RS8tVERLFCvnTsCjjwrUsYmqxfufOkXHCNkxmUvscz3A4J1o0p3Ue39GLoqTpjhNy+5XMh0iUKZ6i+gmPFwtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G+aImdx5; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1734774738;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7OlUS5D46h7r/4zsY2+HDH2lSpd8R101wqbvEQXcPGM=;
+	b=G+aImdx5CI0/ka/LhCGBW1QaHRoVYXUhfCdzM1T42LvN1zDb7XmZ+J8JC3md2rUa5w8yHK
+	v3dd9qAWX2vUaPi3R5Q8TwmsyEP9j9p+2s+Z+IdeKEb3azijoe/dzZwyDws8E7DKfgmq1J
+	L1XcLpzz9o0Fbv6Ai0Wj+u4eKqa2g+k=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	linux-parisc@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ALSA: ad1889: Use str_enabled_disabled() helper function
+Date: Sat, 21 Dec 2024 10:52:08 +0100
+Message-ID: <20241221095210.5473-1-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -57,48 +57,57 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-The vdso linker script is preprocessed on demand.
-Adding it to 'targets' is enough to include the .cmd file.
+Remove hard-coded strings by using the str_enabled_disabled() helper
+function.
 
-This commit applies the previous change to parisc, which added the
-vdso support after commit 887af6d7c99e ("arch: vdso: add vdso linker
-script to 'targets' instead of extra-y").
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
+ sound/pci/ad1889.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
- arch/parisc/kernel/vdso32/Makefile | 2 +-
- arch/parisc/kernel/vdso64/Makefile | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/parisc/kernel/vdso32/Makefile b/arch/parisc/kernel/vdso32/Makefile
-index 2b36d25ada6e..288f8b85978f 100644
---- a/arch/parisc/kernel/vdso32/Makefile
-+++ b/arch/parisc/kernel/vdso32/Makefile
-@@ -33,7 +33,7 @@ KBUILD_CFLAGS += -DBUILD_VDSO -DDISABLE_BRANCH_PROFILING
- VDSO_LIBGCC := $(shell $(CROSS32CC) -print-libgcc-file-name)
+diff --git a/sound/pci/ad1889.c b/sound/pci/ad1889.c
+index 50e30704bf6f..9ed778b6b03c 100644
+--- a/sound/pci/ad1889.c
++++ b/sound/pci/ad1889.c
+@@ -626,7 +626,7 @@ snd_ad1889_proc_read(struct snd_info_entry *entry, struct snd_info_buffer *buffe
  
- obj-y += vdso32_wrapper.o
--extra-y += vdso32.lds
-+targets += vdso32.lds
- CPPFLAGS_vdso32.lds += -P -C  #  -U$(ARCH)
+ 	reg = ad1889_readw(chip, AD_DS_WSMC);
+ 	snd_iprintf(buffer, "Wave output: %s\n",
+-			(reg & AD_DS_WSMC_WAEN) ? "enabled" : "disabled");
++			str_enabled_disabled(reg & AD_DS_WSMC_WAEN));
+ 	snd_iprintf(buffer, "Wave Channels: %s\n",
+ 			(reg & AD_DS_WSMC_WAST) ? "stereo" : "mono");
+ 	snd_iprintf(buffer, "Wave Quality: %d-bit linear\n",
+@@ -642,7 +642,7 @@ snd_ad1889_proc_read(struct snd_info_entry *entry, struct snd_info_buffer *buffe
+ 				
+ 	
+ 	snd_iprintf(buffer, "Synthesis output: %s\n",
+-			reg & AD_DS_WSMC_SYEN ? "enabled" : "disabled");
++			str_enabled_disabled(reg & AD_DS_WSMC_SYEN));
+ 	
+ 	/* SYRQ is at offset 4 */
+ 	tmp = (reg & AD_DS_WSMC_SYRQ) ?
+@@ -654,7 +654,7 @@ snd_ad1889_proc_read(struct snd_info_entry *entry, struct snd_info_buffer *buffe
  
- $(obj)/vdso32_wrapper.o : $(obj)/vdso32.so FORCE
-diff --git a/arch/parisc/kernel/vdso64/Makefile b/arch/parisc/kernel/vdso64/Makefile
-index bd87bd6a6659..bc5d9553f311 100644
---- a/arch/parisc/kernel/vdso64/Makefile
-+++ b/arch/parisc/kernel/vdso64/Makefile
-@@ -32,7 +32,7 @@ KBUILD_CFLAGS += -DBUILD_VDSO -DDISABLE_BRANCH_PROFILING
- VDSO_LIBGCC := $(shell $(CC) -print-libgcc-file-name)
- 
- obj-y += vdso64_wrapper.o
--extra-y += vdso64.lds
-+targets += vdso64.lds
- CPPFLAGS_vdso64.lds += -P -C -U$(ARCH)
- 
- $(obj)/vdso64_wrapper.o : $(obj)/vdso64.so FORCE
+ 	reg = ad1889_readw(chip, AD_DS_RAMC);
+ 	snd_iprintf(buffer, "ADC input: %s\n",
+-			(reg & AD_DS_RAMC_ADEN) ? "enabled" : "disabled");
++			str_enabled_disabled(reg & AD_DS_RAMC_ADEN));
+ 	snd_iprintf(buffer, "ADC Channels: %s\n",
+ 			(reg & AD_DS_RAMC_ADST) ? "stereo" : "mono");
+ 	snd_iprintf(buffer, "ADC Quality: %d-bit linear\n",
+@@ -669,7 +669,7 @@ snd_ad1889_proc_read(struct snd_info_entry *entry, struct snd_info_buffer *buffe
+ 			(reg & AD_DS_RAMC_ADST) ? "stereo" : "mono");
+ 	
+ 	snd_iprintf(buffer, "Resampler input: %s\n",
+-			reg & AD_DS_RAMC_REEN ? "enabled" : "disabled");
++			str_enabled_disabled(reg & AD_DS_RAMC_REEN));
+ 			
+ 	/* RERQ is at offset 12 */
+ 	tmp = (reg & AD_DS_RAMC_RERQ) ?
 -- 
-2.43.0
+2.47.1
 
 
