@@ -1,157 +1,104 @@
-Return-Path: <linux-parisc+bounces-3090-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3091-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C479F9D01
-	for <lists+linux-parisc@lfdr.de>; Sat, 21 Dec 2024 00:06:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B78F9F9EBE
+	for <lists+linux-parisc@lfdr.de>; Sat, 21 Dec 2024 07:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00EAD188FCFD
-	for <lists+linux-parisc@lfdr.de>; Fri, 20 Dec 2024 23:06:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54CBC7A1AFA
+	for <lists+linux-parisc@lfdr.de>; Sat, 21 Dec 2024 06:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CED5226883;
-	Fri, 20 Dec 2024 23:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7121DED57;
+	Sat, 21 Dec 2024 06:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ko0NoC85"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NV9xzF/h"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9531AAA00;
-	Fri, 20 Dec 2024 23:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8A61C32FE;
+	Sat, 21 Dec 2024 06:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734735989; cv=none; b=AEEhS997a/E77qiLD4RxVb7iX70rD009DOEiC1QndK4tleHmYBiaDGj8LLb9mO8BCmvAuni+KmNFGGk7heWDNa/Yx6gnZ2qF/d1YXj4Rn5K7sMFCNlZ3+rpXutqSFFey59rLjZruDKHGZmAEZBG9KGtXGe4RR12ACpsJ2BrPMOs=
+	t=1734761799; cv=none; b=gY9Tj9max8N72Ez85iGPNmd4bohkRM+JuNF9mwDGIsKRrF7+lICAPUOTJm7Es+kgQaWfymNHbQPLwMURw8C5ewSb02sv+gnYBYm343T4bvxkAew+cV56rdG+Eb5RVbOUeE28rtMeciQLKNnWKKN1TnPIJuVc+JutJsdQOv4l+4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734735989; c=relaxed/simple;
-	bh=rDnT4CiiEQHDei+WTY8t89wAldSK7/wzy9hzuNQ2FY0=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=mR9kqnewnuKbl4Z6HKX782zc6ZZY4ffOkl8y89IwF3ijfVzjD0RbX27USRLC159FaDuSuyd7NUSOJE8/OXSOBBawVmJms95i9/qtPJtetAe58F47wxu7KZXAN7QgK8e4bcHWohEozn+w06AOc3PBkG39JKGUGyQJBhltZ0C3u5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ko0NoC85; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D4DC4CECD;
-	Fri, 20 Dec 2024 23:06:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1734735987;
-	bh=rDnT4CiiEQHDei+WTY8t89wAldSK7/wzy9hzuNQ2FY0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ko0NoC85TGcP1IppTBQ7r5GFZyBBTG2SpQ0tFrc/AJkG+/T9Itx2K+hPhmLUjOFT3
-	 W/JopMsDfKdWQ+Sgte/CaZu5u4oCC9X7AhqHTGt1/QNG5SKrdk/OmLPnondMcorXOq
-	 YK2sRjfqtNIqcRTWYGNAXSYWTaR7HQTBx80wOGXo=
-Date: Fri, 20 Dec 2024 15:06:23 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Guo Weikang <guoweikang.kernel@gmail.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun
- Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>, Sam Creasey <sammy@sammy.net>, Geert
- Uytterhoeven <geert@linux-m68k.org>, Huacai Chen <chenhuacai@kernel.org>,
- Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Oreoluwa Babatunde <quic_obabatun@quicinc.com>, rafael.j.wysocki@intel.com,
- Palmer Dabbelt <palmer@rivosinc.com>, Hanjun Guo <guohanjun@huawei.com>,
- Easwar Hariharan <eahariha@linux.microsoft.com>, Johannes Berg
- <johannes.berg@intel.com>, Ingo Molnar <mingo@kernel.org>, Dave Hansen
- <dave.hansen@intel.com>, Christian Brauner <brauner@kernel.org>, KP Singh
- <kpsingh@kernel.org>, Richard Henderson <richard.henderson@linaro.org>,
- Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>,
- WANG Xuerui <kernel@xen0n.name>, Michael Ellerman <mpe@ellerman.id.au>,
- Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson
- <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>,
- Helge Deller <deller@gmx.de>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao
- <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Geoff
- Levand <geoff@infradead.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
- <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov
- <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Heiko
- Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander
- Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Yoshinori
- Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, John Paul
- Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Andreas Larsson
- <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, Len Brown <lenb@kernel.org>,
- Juergen Gross <jgross@suse.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Chris Zankel <chris@zankel.net>, Max Filippov
- <jcmvbkbc@gmail.com>, Tero Kristo <kristo@kernel.org>, Michael Turquette
- <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring
- <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Pavel Machek
- <pavel@ucw.cz>, Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
- <linux@rasmusvillemoes.dk>, Marco Elver <elver@google.com>, Al Viro
- <viro@zeniv.linux.org.uk>, Arnd Bergmann <arnd@arndb.de>,
- linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- kasan-dev@googlegroups.com, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org, linux-acpi@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-omap@vger.kernel.org,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org, linux-mm@kvack.org,
- linux-pm@vger.kernel.org
-Subject: Re: [PATCH] mm/memblock: Add memblock_alloc_or_panic interface
-Message-Id: <20241220150623.278e8fa9f073b66dc81edfe6@linux-foundation.org>
-In-Reply-To: <20241220092638.2611414-1-guoweikang.kernel@gmail.com>
-References: <20241220092638.2611414-1-guoweikang.kernel@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1734761799; c=relaxed/simple;
+	bh=1kxkdWJxgnRAvDO7bsJ206JEOaqz8NZsEvJzwGh9FPM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N2lk/sP9kB6xB+KPyzQYYAqqtT79ojliygYyj7cYbYiaPXUrt9mp48+7Mq5dye4vbT4M5jUffsDU7GmGdkCsL8T3RfZtT/9A4xQ064gIWIxn72o1O52xnnJ2nDTGKkP1m2Fb/y0sVbKRUrfq3iOSKghVDnqKBJeI0oILLgkW0PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NV9xzF/h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D712FC4CECE;
+	Sat, 21 Dec 2024 06:16:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734761799;
+	bh=1kxkdWJxgnRAvDO7bsJ206JEOaqz8NZsEvJzwGh9FPM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NV9xzF/hrURYS+nYkE+p6jP7u20NrninSDuXcb8tdequ8uGBkXV93tPmS1ZE1yQd8
+	 KpqvDH90kgF/Y47V1XiEVybjA/KxKKGr0Mg4EUXVcyIVuJy+bzisGn+tj6JzilxJei
+	 +FTlIBtgk1AuGq6Xin0SbpFRpsaoTgrJODbiZRu/ANQ2I67MLYOhFXlmJjnG9+z9q4
+	 gRkTJVrEFlesgfiEqUOnAQd4sFSpTxnOLGSND9GcM77jA6icxwdHRBDFHO5EI0C9Ko
+	 p4HpfVCdnoAcY4auf63CV1hqmx8mzHcNQHnfXeCuFIArGu6JwBo7JrfnqhMXWQnXni
+	 XZT/6TEAuKCCQ==
+From: Masahiro Yamada <masahiroy@kernel.org>
+To: Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Subject: [PATCH] parisc: add vdso linker script to 'targets' instead of extra-y
+Date: Sat, 21 Dec 2024 15:16:18 +0900
+Message-ID: <20241221061631.328327-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri, 20 Dec 2024 17:26:38 +0800 Guo Weikang <guoweikang.kernel@gmail.com> wrote:
+The vdso linker script is preprocessed on demand.
+Adding it to 'targets' is enough to include the .cmd file.
 
-> Before SLUB initialization, various subsystems used memblock_alloc to
-> allocate memory. In most cases, when memory allocation fails, an immediate
-> panic is required. To simplify this behavior and reduce repetitive checks,
-> introduce `memblock_alloc_or_panic`. This function ensures that memory
-> allocation failures result in a panic automatically, improving code
-> readability and consistency across subsystems that require this behavior.
-> 
+This commit applies the previous change to parisc, which added the
+vdso support after commit 887af6d7c99e ("arch: vdso: add vdso linker
+script to 'targets' instead of extra-y").
 
-Seems nice.
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-> ...
->
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -417,6 +417,19 @@ static __always_inline void *memblock_alloc(phys_addr_t size, phys_addr_t align)
->  				      MEMBLOCK_ALLOC_ACCESSIBLE, NUMA_NO_NODE);
->  }
->  
-> +static __always_inline void *memblock_alloc_or_panic(phys_addr_t size, phys_addr_t align)
+ arch/parisc/kernel/vdso32/Makefile | 2 +-
+ arch/parisc/kernel/vdso64/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-We lost the printing of the function name, but it's easy to retain with
-something like
-
-#define memblock_alloc_or_panic(size, align)	\
-		__memblock_alloc_or_panic(size, align, __func__)
-
-> +{
-> +	void *addr = memblock_alloc(size, align);
-> +
-> +	if (unlikely(!addr))
-> +#ifdef CONFIG_PHYS_ADDR_T_64BIT
-> +		panic("%s: Failed to allocate %llu bytes\n", __func__, size);
-
-Won't this always print "memblock_alloc_or_panic: Failed ..."?  Not
-very useful.
-
-> +#else
-> +		panic("%s: Failed to allocate %u bytes\n", __func__, size);
-> +#endif
-
-We can avoid the ifdef with printk's "%pap"?
-
-> +	return addr;
-> +}
+diff --git a/arch/parisc/kernel/vdso32/Makefile b/arch/parisc/kernel/vdso32/Makefile
+index 2b36d25ada6e..288f8b85978f 100644
+--- a/arch/parisc/kernel/vdso32/Makefile
++++ b/arch/parisc/kernel/vdso32/Makefile
+@@ -33,7 +33,7 @@ KBUILD_CFLAGS += -DBUILD_VDSO -DDISABLE_BRANCH_PROFILING
+ VDSO_LIBGCC := $(shell $(CROSS32CC) -print-libgcc-file-name)
+ 
+ obj-y += vdso32_wrapper.o
+-extra-y += vdso32.lds
++targets += vdso32.lds
+ CPPFLAGS_vdso32.lds += -P -C  #  -U$(ARCH)
+ 
+ $(obj)/vdso32_wrapper.o : $(obj)/vdso32.so FORCE
+diff --git a/arch/parisc/kernel/vdso64/Makefile b/arch/parisc/kernel/vdso64/Makefile
+index bd87bd6a6659..bc5d9553f311 100644
+--- a/arch/parisc/kernel/vdso64/Makefile
++++ b/arch/parisc/kernel/vdso64/Makefile
+@@ -32,7 +32,7 @@ KBUILD_CFLAGS += -DBUILD_VDSO -DDISABLE_BRANCH_PROFILING
+ VDSO_LIBGCC := $(shell $(CC) -print-libgcc-file-name)
+ 
+ obj-y += vdso64_wrapper.o
+-extra-y += vdso64.lds
++targets += vdso64.lds
+ CPPFLAGS_vdso64.lds += -P -C -U$(ARCH)
+ 
+ $(obj)/vdso64_wrapper.o : $(obj)/vdso64.so FORCE
+-- 
+2.43.0
 
 
