@@ -1,453 +1,209 @@
-Return-Path: <linux-parisc+bounces-3137-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3138-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B9F4A0568C
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jan 2025 10:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9ED5A0577E
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jan 2025 10:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABFE03A6D3B
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jan 2025 09:16:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 079903A71D9
+	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jan 2025 09:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04A1198A06;
-	Wed,  8 Jan 2025 09:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACEC1F7544;
+	Wed,  8 Jan 2025 09:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="GEI1b8lv"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="LKYR3CmT"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout-y-111.mailbox.org (mout-y-111.mailbox.org [91.198.250.236])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004AE1F12E8;
-	Wed,  8 Jan 2025 09:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5D81F76D8;
+	Wed,  8 Jan 2025 09:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736327816; cv=none; b=GSH5Bhupvkse7ogAj7eHnGCnZT583dBxnhDs2v5JlA6gxFlcAsGTjgCpx9Ren5KbM9mrbesG17Lq6BK8P+bUqEufZ6A9jtTmqMrlYsvW5LiMT60dDoeu0i3pCSRg+Y1rSL9zcYXmnLkdegG3EkXR3vj5eqcS9yHy+1yr6Kzbm7w=
+	t=1736330149; cv=none; b=ImCObASrOeu+QbwiIVmbJjNeAK6V1KPPVtMch3m/ezTSGnFKi6L5656siuFLKafMLfF3aVMggHQhdM+H/StKvpOOUhIxmeXjwQ+CW3o/FYms1wQ/yR20kPe/AnFnqqntOaTVyKJGlx/xs5bznz6DRWxIfOeMFvOMMIUqKY12Kpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736327816; c=relaxed/simple;
-	bh=sSQeXypCQyxJlaJuPpuwCap1kRRCKGe3hx7PgH8V+0Y=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rPMp6kyuUaYTlT0G7nBzGEv/PdS+5Q0AEcL2NFK5EOHQos0IQvC9YStAjF1RpVI/NQ8aGtzzQn+uWQBeRmNPLOWs8AkPjKqDYE9Y5CXTqMva6gRoYZvtAPPeEfSlSHBYDQXFjAobTW7pX7E1DQEJ6fzdiNou+8/jm8Rbk+WEpOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=GEI1b8lv; arc=none smtp.client-ip=91.198.250.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-y-111.mailbox.org (Postfix) with ESMTPS id 4YShsm4CCBz9xjb;
-	Wed,  8 Jan 2025 10:08:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1736327308; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sSQeXypCQyxJlaJuPpuwCap1kRRCKGe3hx7PgH8V+0Y=;
-	b=GEI1b8lvtyaJp/G9rrcNTo1AL/Sq5rqXp4hKN5F7M23SZa38MMvBtQLxZW1SIjXgreFKuN
-	Y15z1zNyDpcbZRi8TiF5aZh9DsgA3zsF4OdcMcDEtFchsXMUMDZHXwtRsU1h0OwCyJ36Zu
-	L0dVkdbaNPA29mcbyCRfzkQufWCCwDQemF1cbWao6Uyp0G0S4ys5Q3wcxk32QE84M64gB2
-	HEvnvi99L9w2sfje8ZGDuK4aj1EEbDgO9F1vU2TfogSWApnwxG+nHcegKZguUH2fqdo/d5
-	EoMVSXtEaKelGO6gLRQUIq8Mwbp7H0mygx96/6s4G/gF6htfGAKnF5mp/0+vhg==
-Message-ID: <dcd0add74cf1f61052710b5cb91baf38548c5a52.camel@mailbox.org>
-Subject: Re: [PATCH] sound: Replace deprecated PCI functions
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Takashi Iwai <tiwai@suse.de>, Philipp Stanner <phasta@kernel.org>
-Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Clemens
- Ladisch <clemens@ladisch.de>, Liam Girdwood <lgirdwood@gmail.com>, Mark
- Brown <broonie@kernel.org>,  Bard Liao <yung-chuan.liao@linux.intel.com>,
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,  Pierre-Louis Bossart
- <pierre-louis.bossart@linux.dev>, Amadeusz =?UTF-8?Q?S=C5=82awi=C5=84ski?=
- <amadeuszx.slawinski@linux.intel.com>, Heiner Kallweit
- <hkallweit1@gmail.com>,  Rui Salvaterra <rsalvaterra@gmail.com>, Huacai
- Chen <chenhuacai@kernel.org>, David Rhodes <drhodes@opensource.cirrus.com>,
- Jerome Brunet <jbrunet@baylibre.com>, He Lugang <helugang@uniontech.com>,
- Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,  Binbin Zhou
- <zhoubinbin@loongson.cn>, Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>, Tang Bin <tangbin@cmss.chinamobile.com>,
- linux-parisc@vger.kernel.org,  linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 08 Jan 2025 10:07:28 +0100
-In-Reply-To: <8734hyzzqp.wl-tiwai@suse.de>
-References: <20250103175053.149735-2-phasta@kernel.org>
-	 <8734hyzzqp.wl-tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1736330149; c=relaxed/simple;
+	bh=LOcLJoHuXGeCsqWi41zWQyajyaxK80/wSjjIMZBnptY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F/NAJOXW4chJLKWL82eSnX+LR+2T3e9Ko1qW+0Pw71kW0jIAHrFevnajaL83vnOoFJh+u0ENXpCAJXbUvrL9hsR0d1A3FP+BMIN0b0tQ1dLsqo19+6OpWi1e2YneUrWhu6u3E43cSDc4lnDv/lSrmrN6jyOy9toR6VdEyX0WWzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=LKYR3CmT; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1736330107; x=1736934907; i=deller@gmx.de;
+	bh=h+FDPMNYxrfjF0i2mQ0uoWU9n5W/BNw1XId/Jy4xp1w=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=LKYR3CmTAnqKAJfB0F+Ml25i8CNqE6DQqynPEeG2J2j6gZxVXRlDZ4WSDp/r2/jM
+	 7b1tcqQjJ0p942+xZWgtH8n0N8Qw3Ie57BoHJZchtLb/7AdsTwGHycNDWHgPsscbU
+	 mb8o+KbgkkHg88dtI2RExiVQTYBMUXW0plFt+auVQ8ir2yBMW1BwJ2VY3IFzazJns
+	 8wQ03WeH9RLLF99Rz9lTbGCjshrTejn6fKSmGM/a7HrC/vxHkhmAIE5I6OfUTHNOZ
+	 1WFekoL7H0D/Yz9oOmYHgIkjlj0ehdgcBKppc9oEVPTfT618sjPutGYcDVjCyaR2h
+	 hwHC9ffGJs4Ltn9htQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.8.0.6] ([78.94.87.245]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYNJg-1t05yS2wRG-00MHsk; Wed, 08
+ Jan 2025 10:55:06 +0100
+Message-ID: <6e8ef32e-6698-496e-a9e4-09f0ade5f264@gmx.de>
+Date: Wed, 8 Jan 2025 10:55:04 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-ID: 988eb3818ef2979f353
-X-MBO-RS-META: 7aqx4385zxfrmkzmmzr397p981fz6yxh
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/28] module: Extend the preempt disabled section in
+ dereference_symbol_descriptor().
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Daniel Gomez <da.gomez@samsung.com>, Luis Chamberlain
+ <mcgrof@kernel.org>, "Paul E . McKenney" <paulmck@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Naveen N Rao <naveen@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+References: <20250108090457.512198-1-bigeasy@linutronix.de>
+ <20250108090457.512198-2-bigeasy@linutronix.de>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20250108090457.512198-2-bigeasy@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:NhXedhMSLlZ7ulSfMLkndsPoKhwqFocc8tNYosRsVObc1ugZJFU
+ 4P/lozizkTV2AndWGOCWRIr4tm8hvnaO6v8sy0/QbHSC+zWUo7IWH2ru+foZTuHQryj6Zqr
+ warogruhQdz1S2NOSGHAmpl1qrGvQnbQT5tE2UO/fi1BQmvYnlVlfS21cRarHDYwDpKrjKz
+ TnsrEWWNiZegEzyRTEbsQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:6AZrJ/KbjLU=;ub3kUj1c3dF3BTYf0wjHg+aHhFu
+ ebYetpUe1Zpunwk5noPXayYJZcIT7xEEREgQPwehB0sVXuEh3msskx47rCpHotSRgbV6dnFC7
+ mYtI/6z2OQEGAza/cNCBJu/xI+/n+oDGMqWtfnxJAKtLTqp+iiQPO494IuScgglISYG6St8ZD
+ 08yzhM4pA5FZ10ig7nJ4X/cKtWw4hINZ8cnxV1yGk0fSGnrxgY6K6BN/P1ZI15yhq50Fr8YeG
+ ymylELXaGCp8o1SWlkpYD6L/BPQcNp1i4inKSsPB/HwyhwuRv+SMPRbKOOy3Ulcqg23LVY+sG
+ MueIPzCA25O7pwRF/77EEeDuOqhm5wNKxGYdT4zh41hID9zPEwUl9xmWpkYA5736CUDUBQPUT
+ F4KbAWXLtwu+DpCXtwqVpPncaAOULidLsWaB44NzH5vMizK5ZNsyHdDzfqAelD6C6iuI0IJ4X
+ DmPzP7GUGNVwAfpd2Q8bmb4D1chJ3k1cljXBcdY/JEKrlH9jbCfNJPfPSDTUjGYfe1E88hArU
+ 7vM5/xZsEjVcyVR8bykZKyInaRu8HrBAztfMYAHQYmGq6s8E++xK4GLecMDECcBm7EQLlSyGN
+ 2lhi/2nri/rcbvcNpI2OIHOyej47vWnZMH5xdZ8/1OmZovh2aTrkP6PnoGJxj0DP+p3WpmIyk
+ HatAKEMLAcEXGHfK05PGQ8jGUpC+73Anei54Xn0d6k5LX/oix2GeBkMuGpN+3W48K1rws8Chy
+ DlFz71wlIXJ3viYbOkgaj8Va/scnIIGZrLaywkQHM9zPaDYkn7ejrA5KxCS02wt3Kcue7PktB
+ Ak6DIs8a0tL55AwXD76HB64kbK7CQvS3daBIP+BAn+Hvu5dGm62SljUpGCgN+vwNDIacHbNt+
+ Eh6ICY3AVzXLBduDNFPkSrzN7j5oP1yNWm39qYU0T23IT7oIkqXNs82S4vvjHUJsOh8IRdMLJ
+ /O4dUP/GjYECPC0ayOEIkPFcXQWoH79ruZw7WFGCJtnyPMODNKkBSbBqiZCgSYv28eXDF+/cM
+ 1/WGaiXuq5CssOktRjqP2gUyIuR8/WmXhdFAYo4CugGhUE2nsCYj/DJ2VKDuJI5fOic1yo66Z
+ SJCRL24LwUJv7Mw86Dx82GrS1TgdaM
 
-On Sat, 2025-01-04 at 10:37 +0100, Takashi Iwai wrote:
-> On Fri, 03 Jan 2025 18:50:54 +0100,
-> Philipp Stanner wrote:
-> >=20
-> > pcim_iomap_table() and pcim_iomap_regions() have been deprecated
-> > and
-> > should be removed from the kernel. Furthermore, some users of the
-> > latter
-> > function in sound/ currently misuse the @name parameter, which
-> > should
-> > describe the driver reserving a region, not the device the region
-> > is on.
-> >=20
-> > Replace the deprecated functions with pcim_iomap_region().
-> >=20
-> > Always pass the driver's name in that new function's @name
-> > parameter.
-> >=20
-> > Signed-off-by: Philipp Stanner <phasta@kernel.org>
->=20
-> The changes look OK, but I prefer splitting the patch to each driver,
-> so that it can be applied more safely for stable kernels if needed.
->=20
-> Care to do that?
+On 1/8/25 10:04, Sebastian Andrzej Siewior wrote:
+> dereference_symbol_descriptor() needs to obtain the module pointer
+> belonging to pointer in order to resolve that pointer.
+> The returned mod pointer is obtained under RCU-sched/ preempt_disable()
+> guarantees and needs to be used within this section to ensure that the
+> module is not removed in the meantime.
+>
+> Extend the preempt_disable() section to also cover
+> dereference_module_function_descriptor().
+>
+> Fixes: 04b8eb7a4ccd9 ("symbol lookup: introduce dereference_symbol_descr=
+iptor()")
+> Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Naveen N Rao <naveen@kernel.org>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-Yes, I can do that. Could take a while until I find a slot for it. I'll
-send a v2 then
+Nice catch.
 
-P.
+Acked-by: Helge Deller <deller@gmx.de>
 
->=20
->=20
-> thanks,
->=20
-> Takashi
->=20
-> > ---
-> > =C2=A0sound/pci/ad1889.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 7 +++----
-> > =C2=A0sound/pci/atiixp.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 7 +++----
-> > =C2=A0sound/pci/atiixp_modem.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 7 +++----
-> > =C2=A0sound/pci/au88x0/au88x0.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 7 +++----
-> > =C2=A0sound/pci/aw2/aw2-alsa.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 7 +++----
-> > =C2=A0sound/pci/bt87x.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
-=C2=A0 7 +++----
-> > =C2=A0sound/pci/cs4281.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 13 =
-+++++++------
-> > =C2=A0sound/pci/cs5530.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 7 +++----
-> > =C2=A0sound/pci/hda/hda_intel.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 7 +++----
-> > =C2=A0sound/pci/lola/lola.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 16 +++++++++++----=
--
-> > =C2=A0sound/pci/rme9652/hdspm.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 7 +++----
-> > =C2=A0sound/soc/loongson/loongson_i2s_pci.c | 13 +++++++------
-> > =C2=A012 files changed, 52 insertions(+), 53 deletions(-)
-> >=20
-> > diff --git a/sound/pci/ad1889.c b/sound/pci/ad1889.c
-> > index 50e30704bf6f..a90c579f77a2 100644
-> > --- a/sound/pci/ad1889.c
-> > +++ b/sound/pci/ad1889.c
-> > @@ -810,12 +810,11 @@ snd_ad1889_create(struct snd_card *card,
-> > struct pci_dev *pci)
-> > =C2=A0 chip->irq =3D -1;
-> > =C2=A0
-> > =C2=A0 /* (1) PCI resource allocation */
-> > - err =3D pcim_iomap_regions(pci, 1 << 0, card->driver);
-> > - if (err < 0)
-> > - return err;
-> > + chip->iobase =3D pcim_iomap_region(pci, 0, card->driver);
-> > + if (IS_ERR(chip->iobase))
-> > + return PTR_ERR(chip->iobase);
-> > =C2=A0
-> > =C2=A0 chip->bar =3D pci_resource_start(pci, 0);
-> > - chip->iobase =3D pcim_iomap_table(pci)[0];
-> > =C2=A0=20
-> > =C2=A0 pci_set_master(pci);
-> > =C2=A0
-> > diff --git a/sound/pci/atiixp.c b/sound/pci/atiixp.c
-> > index df2fef726d60..427006be240b 100644
-> > --- a/sound/pci/atiixp.c
-> > +++ b/sound/pci/atiixp.c
-> > @@ -1544,11 +1544,10 @@ static int snd_atiixp_init(struct snd_card
-> > *card, struct pci_dev *pci)
-> > =C2=A0 chip->card =3D card;
-> > =C2=A0 chip->pci =3D pci;
-> > =C2=A0 chip->irq =3D -1;
-> > - err =3D pcim_iomap_regions(pci, 1 << 0, "ATI IXP AC97");
-> > - if (err < 0)
-> > - return err;
-> > + chip->remap_addr =3D pcim_iomap_region(pci, 0, "ATI IXP AC97");
-> > + if (IS_ERR(chip->remap_addr))
-> > + return PTR_ERR(chip->remap_addr);
-> > =C2=A0 chip->addr =3D pci_resource_start(pci, 0);
-> > - chip->remap_addr =3D pcim_iomap_table(pci)[0];
-> > =C2=A0
-> > =C2=A0 if (devm_request_irq(&pci->dev, pci->irq, snd_atiixp_interrupt,
-> > =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 IRQF_SHARED, KBUILD_MODNAME, chip)) {
-> > diff --git a/sound/pci/atiixp_modem.c b/sound/pci/atiixp_modem.c
-> > index eb569539f322..8d3083b9b024 100644
-> > --- a/sound/pci/atiixp_modem.c
-> > +++ b/sound/pci/atiixp_modem.c
-> > @@ -1174,11 +1174,10 @@ static int snd_atiixp_init(struct snd_card
-> > *card, struct pci_dev *pci)
-> > =C2=A0 chip->card =3D card;
-> > =C2=A0 chip->pci =3D pci;
-> > =C2=A0 chip->irq =3D -1;
-> > - err =3D pcim_iomap_regions(pci, 1 << 0, "ATI IXP MC97");
-> > - if (err < 0)
-> > - return err;
-> > + chip->remap_addr =3D pcim_iomap_region(pci, 0, "ATI IXP MC97");
-> > + if (IS_ERR(chip->remap_addr))
-> > + return PTR_ERR(chip->remap_addr);
-> > =C2=A0 chip->addr =3D pci_resource_start(pci, 0);
-> > - chip->remap_addr =3D pcim_iomap_table(pci)[0];
-> > =C2=A0
-> > =C2=A0 if (devm_request_irq(&pci->dev, pci->irq, snd_atiixp_interrupt,
-> > =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 IRQF_SHARED, KBUILD_MODNAME, chip)) {
-> > diff --git a/sound/pci/au88x0/au88x0.c b/sound/pci/au88x0/au88x0.c
-> > index 62b10b0e07b1..fd986247331a 100644
-> > --- a/sound/pci/au88x0/au88x0.c
-> > +++ b/sound/pci/au88x0/au88x0.c
-> > @@ -160,12 +160,11 @@ snd_vortex_create(struct snd_card *card,
-> > struct pci_dev *pci)
-> > =C2=A0 // (1) PCI resource allocation
-> > =C2=A0 // Get MMIO area
-> > =C2=A0 //
-> > - err =3D pcim_iomap_regions(pci, 1 << 0, CARD_NAME_SHORT);
-> > - if (err)
-> > - return err;
-> > + chip->mmio =3D pcim_iomap_region(pci, 0, KBUILD_MODNAME);
-> > + if (IS_ERR(chip->mmio))
-> > + return PTR_ERR(chip->mmio);
-> > =C2=A0
-> > =C2=A0 chip->io =3D pci_resource_start(pci, 0);
-> > - chip->mmio =3D pcim_iomap_table(pci)[0];
-> > =C2=A0
-> > =C2=A0 /* Init audio core.
-> > =C2=A0 * This must be done before we do request_irq otherwise we can ge=
-t
-> > spurious
-> > diff --git a/sound/pci/aw2/aw2-alsa.c b/sound/pci/aw2/aw2-alsa.c
-> > index 29a4bcdec237..7b4b8f785517 100644
-> > --- a/sound/pci/aw2/aw2-alsa.c
-> > +++ b/sound/pci/aw2/aw2-alsa.c
-> > @@ -225,11 +225,10 @@ static int snd_aw2_create(struct snd_card
-> > *card,
-> > =C2=A0 chip->irq =3D -1;
-> > =C2=A0
-> > =C2=A0 /* (1) PCI resource allocation */
-> > - err =3D pcim_iomap_regions(pci, 1 << 0, "Audiowerk2");
-> > - if (err < 0)
-> > - return err;
-> > + chip->iobase_virt =3D pcim_iomap_region(pci, 0, "Audiowerk2");
-> > + if (IS_ERR(chip->iobase_virt))
-> > + return PTR_ERR(chip->iobase_virt);
-> > =C2=A0 chip->iobase_phys =3D pci_resource_start(pci, 0);
-> > - chip->iobase_virt =3D pcim_iomap_table(pci)[0];
-> > =C2=A0
-> > =C2=A0 /* (2) initialization of the chip hardware */
-> > =C2=A0 snd_aw2_saa7146_setup(&chip->saa7146, chip->iobase_virt);
-> > diff --git a/sound/pci/bt87x.c b/sound/pci/bt87x.c
-> > index 621985bfee5d..91492dd2b38a 100644
-> > --- a/sound/pci/bt87x.c
-> > +++ b/sound/pci/bt87x.c
-> > @@ -696,10 +696,9 @@ static int snd_bt87x_create(struct snd_card
-> > *card,
-> > =C2=A0 chip->irq =3D -1;
-> > =C2=A0 spin_lock_init(&chip->reg_lock);
-> > =C2=A0
-> > - err =3D pcim_iomap_regions(pci, 1 << 0, "Bt87x audio");
-> > - if (err < 0)
-> > - return err;
-> > - chip->mmio =3D pcim_iomap_table(pci)[0];
-> > + chip->mmio =3D pcim_iomap_region(pci, 0, "Bt87x audio");
-> > + if (IS_ERR(chip->mmio))
-> > + return PTR_ERR(chip->mmio);
-> > =C2=A0
-> > =C2=A0 chip->reg_control =3D CTL_A_PWRDN | CTL_DA_ES2 |
-> > =C2=A0 =C2=A0=C2=A0=C2=A0 CTL_PKTP_16 | (15 << CTL_DA_SDR_SHIFT);
-> > diff --git a/sound/pci/cs4281.c b/sound/pci/cs4281.c
-> > index 0cc86e73cc62..90958a422b75 100644
-> > --- a/sound/pci/cs4281.c
-> > +++ b/sound/pci/cs4281.c
-> > @@ -1302,14 +1302,15 @@ static int snd_cs4281_create(struct
-> > snd_card *card,
-> > =C2=A0 }
-> > =C2=A0 chip->dual_codec =3D dual_codec;
-> > =C2=A0
-> > - err =3D pcim_iomap_regions(pci, 0x03, "CS4281"); /* 2 BARs */
-> > - if (err < 0)
-> > - return err;
-> > + chip->ba0 =3D pcim_iomap_region(pci, 0, "CS4281");
-> > + if (IS_ERR(chip->ba0))
-> > + return PTR_ERR(chip->ba0);
-> > =C2=A0 chip->ba0_addr =3D pci_resource_start(pci, 0);
-> > - chip->ba1_addr =3D pci_resource_start(pci, 1);
-> > =C2=A0
-> > - chip->ba0 =3D pcim_iomap_table(pci)[0];
-> > - chip->ba1 =3D pcim_iomap_table(pci)[1];
-> > + chip->ba1 =3D pcim_iomap_region(pci, 1, "CS4281");
-> > + if (IS_ERR(chip->ba1))
-> > + return PTR_ERR(chip->ba1);
-> > + chip->ba1_addr =3D pci_resource_start(pci, 1);
-> > =C2=A0=20
-> > =C2=A0 if (devm_request_irq(&pci->dev, pci->irq, snd_cs4281_interrupt,
-> > =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 IRQF_SHARED, KBUILD_MODNAME, chip)) {
-> > diff --git a/sound/pci/cs5530.c b/sound/pci/cs5530.c
-> > index 93ff029e6583..532891e67c34 100644
-> > --- a/sound/pci/cs5530.c
-> > +++ b/sound/pci/cs5530.c
-> > @@ -91,11 +91,10 @@ static int snd_cs5530_create(struct snd_card
-> > *card,
-> > =C2=A0 chip->card =3D card;
-> > =C2=A0 chip->pci =3D pci;
-> > =C2=A0
-> > - err =3D pcim_iomap_regions(pci, 1 << 0, "CS5530");
-> > - if (err < 0)
-> > - return err;
-> > + mem =3D pcim_iomap_region(pci, 0, "CS5530");
-> > + if (IS_ERR(mem))
-> > + return PTR_ERR(mem);
-> > =C2=A0 chip->pci_base =3D pci_resource_start(pci, 0);
-> > - mem =3D pcim_iomap_table(pci)[0];
-> > =C2=A0 map =3D readw(mem + 0x18);
-> > =C2=A0
-> > =C2=A0 /* Map bits
-> > diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-> > index 4a62440adfaf..73ac16ac6900 100644
-> > --- a/sound/pci/hda/hda_intel.c
-> > +++ b/sound/pci/hda/hda_intel.c
-> > @@ -1863,12 +1863,11 @@ static int azx_first_init(struct azx *chip)
-> > =C2=A0 chip->jackpoll_interval =3D msecs_to_jiffies(1500);
-> > =C2=A0 }
-> > =C2=A0
-> > - err =3D pcim_iomap_regions(pci, 1 << 0, "ICH HD audio");
-> > - if (err < 0)
-> > - return err;
-> > + bus->remap_addr =3D pcim_iomap_region(pci, 0, "ICH HD audio");
-> > + if (IS_ERR(bus->remap_addr))
-> > + return PTR_ERR(bus->remap_addr);
-> > =C2=A0
-> > =C2=A0 bus->addr =3D pci_resource_start(pci, 0);
-> > - bus->remap_addr =3D pcim_iomap_table(pci)[0];
-> > =C2=A0
-> > =C2=A0 if (chip->driver_type =3D=3D AZX_DRIVER_SKL)
-> > =C2=A0 snd_hdac_bus_parse_capabilities(bus);
-> > diff --git a/sound/pci/lola/lola.c b/sound/pci/lola/lola.c
-> > index 1aa30e90b86a..fb8bd54e4c2d 100644
-> > --- a/sound/pci/lola/lola.c
-> > +++ b/sound/pci/lola/lola.c
-> > @@ -541,6 +541,7 @@ static int lola_create(struct snd_card *card,
-> > struct pci_dev *pci, int dev)
-> > =C2=A0 struct lola *chip =3D card->private_data;
-> > =C2=A0 int err;
-> > =C2=A0 unsigned int dever;
-> > + void __iomem *iomem;
-> > =C2=A0
-> > =C2=A0 err =3D pcim_enable_device(pci);
-> > =C2=A0 if (err < 0)
-> > @@ -580,14 +581,19 @@ static int lola_create(struct snd_card *card,
-> > struct pci_dev *pci, int dev)
-> > =C2=A0 chip->sample_rate_min =3D 16000;
-> > =C2=A0 }
-> > =C2=A0
-> > - err =3D pcim_iomap_regions(pci, (1 << 0) | (1 << 2), DRVNAME);
-> > - if (err < 0)
-> > - return err;
-> > + iomem =3D pcim_iomap_region(pci, 0, DRVNAME);
-> > + if (IS_ERR(iomem))
-> > + return PTR_ERR(iomem);
-> > =C2=A0
-> > + chip->bar[0].remap_addr =3D iomem;
-> > =C2=A0 chip->bar[0].addr =3D pci_resource_start(pci, 0);
-> > - chip->bar[0].remap_addr =3D pcim_iomap_table(pci)[0];
-> > +
-> > + iomem =3D pcim_iomap_region(pci, 2, DRVNAME);
-> > + if (IS_ERR(iomem))
-> > + return PTR_ERR(iomem);
-> > +
-> > + chip->bar[1].remap_addr =3D iomem;
-> > =C2=A0 chip->bar[1].addr =3D pci_resource_start(pci, 2);
-> > - chip->bar[1].remap_addr =3D pcim_iomap_table(pci)[2];
-> > =C2=A0
-> > =C2=A0 pci_set_master(pci);
-> > =C2=A0
-> > diff --git a/sound/pci/rme9652/hdspm.c b/sound/pci/rme9652/hdspm.c
-> > index d7290463d654..9aa2b2f37c25 100644
-> > --- a/sound/pci/rme9652/hdspm.c
-> > +++ b/sound/pci/rme9652/hdspm.c
-> > @@ -6561,13 +6561,12 @@ static int snd_hdspm_create(struct snd_card
-> > *card,
-> > =C2=A0
-> > =C2=A0 pci_set_master(hdspm->pci);
-> > =C2=A0
-> > - err =3D pcim_iomap_regions(pci, 1 << 0, "hdspm");
-> > - if (err < 0)
-> > - return err;
-> > + hdspm->iobase =3D pcim_iomap_region(pci, 0, "hdspm");
-> > + if (IS_ERR(hdspm->iobase))
-> > + return PTR_ERR(hdspm->iobase);
-> > =C2=A0
-> > =C2=A0 hdspm->port =3D pci_resource_start(pci, 0);
-> > =C2=A0 io_extent =3D pci_resource_len(pci, 0);
-> > - hdspm->iobase =3D pcim_iomap_table(pci)[0];
-> > =C2=A0 dev_dbg(card->dev, "remapped region (0x%lx) 0x%lx-0x%lx\n",
-> > =C2=A0 (unsigned long)hdspm->iobase, hdspm->port,
-> > =C2=A0 hdspm->port + io_extent - 1);
-> > diff --git a/sound/soc/loongson/loongson_i2s_pci.c
-> > b/sound/soc/loongson/loongson_i2s_pci.c
-> > index d2d0e5d8cac9..1ea5501a97f8 100644
-> > --- a/sound/soc/loongson/loongson_i2s_pci.c
-> > +++ b/sound/soc/loongson/loongson_i2s_pci.c
-> > @@ -16,6 +16,8 @@
-> > =C2=A0#include "loongson_i2s.h"
-> > =C2=A0#include "loongson_dma.h"
-> > =C2=A0
-> > +#define DRIVER_NAME "loongson-i2s-pci"
-> > +
-> > =C2=A0static bool loongson_i2s_wr_reg(struct device *dev, unsigned int
-> > reg)
-> > =C2=A0{
-> > =C2=A0 switch (reg) {
-> > @@ -92,13 +94,12 @@ static int loongson_i2s_pci_probe(struct
-> > pci_dev *pdev,
-> > =C2=A0 i2s->dev =3D dev;
-> > =C2=A0 pci_set_drvdata(pdev, i2s);
-> > =C2=A0
-> > - ret =3D pcim_iomap_regions(pdev, 1 << 0, dev_name(dev));
-> > - if (ret < 0) {
-> > - dev_err(dev, "iomap_regions failed\n");
-> > - return ret;
-> > + i2s->reg_base =3D pcim_iomap_region(pdev, 0, DRIVER_NAME);
-> > + if (IS_ERR(i2s->reg_base)) {
-> > + dev_err(dev, "iomap_region failed\n");
-> > + return PTR_ERR(i2s->reg_base);
-> > =C2=A0 }
-> > =C2=A0
-> > - i2s->reg_base =3D pcim_iomap_table(pdev)[0];
-> > =C2=A0 i2s->regmap =3D devm_regmap_init_mmio(dev, i2s->reg_base,
-> > =C2=A0 =C2=A0=C2=A0=C2=A0 &loongson_i2s_regmap_config);
-> > =C2=A0 if (IS_ERR(i2s->regmap))
-> > @@ -147,7 +148,7 @@ static const struct pci_device_id
-> > loongson_i2s_ids[] =3D {
-> > =C2=A0MODULE_DEVICE_TABLE(pci, loongson_i2s_ids);
-> > =C2=A0
-> > =C2=A0static struct pci_driver loongson_i2s_driver =3D {
-> > - .name =3D "loongson-i2s-pci",
-> > + .name =3D DRIVER_NAME,
-> > =C2=A0 .id_table =3D loongson_i2s_ids,
-> > =C2=A0 .probe =3D loongson_i2s_pci_probe,
-> > =C2=A0 .driver =3D {
-> > --=20
-> > 2.47.1
-> >=20
+This patch really should be backported.
+Can you add a Cc: stable tag?
+
+Helge
+
+
+> ---
+>   include/linux/kallsyms.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
+> index c3f075e8f60cb..1c6a6c1704d8d 100644
+> --- a/include/linux/kallsyms.h
+> +++ b/include/linux/kallsyms.h
+> @@ -57,10 +57,10 @@ static inline void *dereference_symbol_descriptor(vo=
+id *ptr)
+>
+>   	preempt_disable();
+>   	mod =3D __module_address((unsigned long)ptr);
+> -	preempt_enable();
+>
+>   	if (mod)
+>   		ptr =3D dereference_module_function_descriptor(mod, ptr);
+> +	preempt_enable();
+>   #endif
+>   	return ptr;
+>   }
 
 
