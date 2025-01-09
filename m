@@ -1,155 +1,113 @@
-Return-Path: <linux-parisc+bounces-3141-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3142-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCBBA07521
-	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jan 2025 12:55:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C5EA07541
+	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jan 2025 13:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A231166B8E
-	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jan 2025 11:55:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 363E0165C72
+	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jan 2025 12:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787E3216616;
-	Thu,  9 Jan 2025 11:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85913216E0A;
+	Thu,  9 Jan 2025 12:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HU3Eulhe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QTfkJrFR"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FA41A23B0;
-	Thu,  9 Jan 2025 11:55:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E241C216604
+	for <linux-parisc@vger.kernel.org>; Thu,  9 Jan 2025 12:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736423726; cv=none; b=aWndq0gcDUU65xO56qSdH+7NDJrdnujP8fv4muu/K11JxwjN9j1qqv39+W5jv360aslShcaox+PZXpNfNZWbrVKwMQlfaUZRtPDlxTo2KiweW0MtyE87vF0Rvl/67P0gfPfbzpZYM4TEjEJL4vpzGeOWUtPWFC19A+ujlSNnJB0=
+	t=1736424342; cv=none; b=Y7RmxPTkaieTuZjWbH7HUWPNKdH+aY0JTVaAGLy7qsJcMN15ixAoVrWlKAWoRtriBui5Hu2ajpdjzbqvefs6XoQPTcDDj8WjPYnDGyj6TblTHai6CgrhuNFgeQkKSRq4to6fRs263fNS67aoVaGYDawVauKJvA2MZq30sk6CO4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736423726; c=relaxed/simple;
-	bh=D3sA98W32+zngVbnalNpt0EtP/yVNDM4WQtJkKd3srk=;
+	s=arc-20240116; t=1736424342; c=relaxed/simple;
+	bh=4IB/eQ9VBoGQuFGrmyKaV7oClh4zrK7iu/0v7nFpJOo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dF77KBIbKasAvH7fpDo0SvI4qzE3z38ESan405k4ds1KYyZ1Y8kS6ydrXMMnSvq+aMRJ7sVi9Y+VOnlON5kBiLNhlCqf7SgAFiCic4G9ZRna1ucg5dDnhprQhBgo0r0VH5JBwfDW7posBI06j89SA1u7tzZG/oqBlLpXj+eIp/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HU3Eulhe; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 509864T9022893;
-	Thu, 9 Jan 2025 11:55:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=TEFEUs
-	DUypMb0E06F+mIr6mms6VLi/ADn+g21sLTM6M=; b=HU3Eulheor5aaMA38MgqND
-	w5D0VsYZ9Y4ZQYJZvyu4WLwzk/lzISPX279vOi1rwp0OvImCElaqBmZ7yGv4GXtm
-	vKwEzqRIH6fu9psGCV1MCIKHOFAwC/4SQQ1AC5BtxaNM8wdtW+DAIciNpYPO6Ll6
-	rLdpqprshTa3IetrfZ8gd5phbjzubOZ9ML1FsMTvRNrN2rZkXWtL51/wIfyNRwsc
-	zmVXIeHDTR4Dx4SMQ7DiZQb0y62yBcOaIrAEugKNmaBRj2/WpqHifUmZzBe2/kuP
-	CAm9wsvyCG2SQnvkSXl/G1rirz7QoOVkinRwkhD5FGKGs504YPdGvBwjkZgyGuxw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442an2gx1u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jan 2025 11:55:23 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5097ss8u003572;
-	Thu, 9 Jan 2025 11:55:22 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yfatd4rc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jan 2025 11:55:22 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 509BtLqN63177092
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Jan 2025 11:55:21 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E2F272004B;
-	Thu,  9 Jan 2025 11:55:20 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 379C620043;
-	Thu,  9 Jan 2025 11:55:20 +0000 (GMT)
-Received: from osiris (unknown [9.152.212.60])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  9 Jan 2025 11:55:20 +0000 (GMT)
-Date: Thu, 9 Jan 2025 12:55:18 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Anna-Maria Behnsen <anna-maria@linutronix.de>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
-        Russell King <linux@armlinux.org.uk>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
-        loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>
-Subject: Re: [PATCH 10/17] s390/vdso: Switch to generic storage implementation
-Message-ID: <20250109115518.9731-A-hca@linux.ibm.com>
-References: <20241216-vdso-store-rng-v1-0-f7aed1bdb3b2@linutronix.de>
- <20241216-vdso-store-rng-v1-10-f7aed1bdb3b2@linutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qIJe2Xvw+mOS7rvrdi80Sv/gXAp31zlFKvDIQy5c5fyJNQFcAz5ldG0NQyxBMXcBTrdcrvMYQMN9I/eE2bWIYM+QzlIdelFO4DvoiDK7YJXQtTvYeFN6Yy76Dt33sgItPkKyaJ9ytcdBuVYG/4ehgBg5WNkoMPGg85C8EiZg1TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QTfkJrFR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736424339;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KxvKKIzlzclPZzGZDamCIT9TdR6k/Feb4jp3cOGYzmU=;
+	b=QTfkJrFRU/KEapP3MLZhFZqVGUfe9Z+gUNsZRuoCRKqFit40liJOKJ5mU84nQC8Cg3e3/L
+	yKU6lxJ647YWsZa/8QjMjgEjPjdyooaP0NKoB0M3ioubJVpi1GeoFFR/6HQBqCGDu8/gQl
+	g7q/Gcj4Zzf/Xu3RsBfO2DfKn7vvj3k=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-SzhSxQMxPJGF5wclok4rgw-1; Thu,
+ 09 Jan 2025 07:05:35 -0500
+X-MC-Unique: SzhSxQMxPJGF5wclok4rgw-1
+X-Mimecast-MFC-AGG-ID: SzhSxQMxPJGF5wclok4rgw
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7D06D1955DD1;
+	Thu,  9 Jan 2025 12:05:29 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.225.245])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id ACCCA19560AA;
+	Thu,  9 Jan 2025 12:05:19 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Thu,  9 Jan 2025 13:05:04 +0100 (CET)
+Date: Thu, 9 Jan 2025 13:04:53 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: "Dmitry V. Levin" <ldv@strace.io>
+Cc: Eugene Syromyatnikov <evgsyr@gmail.com>,
+	Mike Frysinger <vapier@gentoo.org>,
+	Renzo Davoli <renzo@cs.unibo.it>,
+	Davide Berardi <berardi.dav@gmail.com>,
+	strace-devel@lists.strace.io, Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>, linux-snps-arc@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org
+Subject: Re: [PATCH 2/6] syscall.h: add syscall_set_arguments() on remaining
+ HAVE_ARCH_TRACEHOOK arches
+Message-ID: <20250109120453.GC26424@redhat.com>
+References: <20250107230153.GA30560@strace.io>
+ <20250107230418.GB30633@strace.io>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241216-vdso-store-rng-v1-10-f7aed1bdb3b2@linutronix.de>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: lsyfqPho4h_myH3I0usc_uivjxmUZY2Q
-X-Proofpoint-ORIG-GUID: lsyfqPho4h_myH3I0usc_uivjxmUZY2Q
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 priorityscore=1501 spamscore=0 suspectscore=0
- clxscore=1011 impostorscore=0 mlxlogscore=354 phishscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501090091
+In-Reply-To: <20250107230418.GB30633@strace.io>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Mon, Dec 16, 2024 at 03:10:06PM +0100, Thomas Weiﬂschuh wrote:
-> The generic storage implementation provides the same features as the
-> custom one. However it can be shared between architectures, making
-> maintenance easier.
-> 
-> Co-developed-by: Nam Cao <namcao@linutronix.de>
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> ---
->  arch/s390/Kconfig                         |  1 +
->  arch/s390/include/asm/vdso.h              |  4 +-
->  arch/s390/include/asm/vdso/getrandom.h    | 12 ----
->  arch/s390/include/asm/vdso/gettimeofday.h | 15 +----
->  arch/s390/include/asm/vdso/vsyscall.h     | 20 -------
->  arch/s390/kernel/time.c                   |  6 +-
->  arch/s390/kernel/vdso.c                   | 97 ++-----------------------------
->  arch/s390/kernel/vdso32/vdso32.lds.S      |  7 +--
->  arch/s390/kernel/vdso64/vdso64.lds.S      |  8 +--
->  9 files changed, 17 insertions(+), 153 deletions(-)
+On 01/08, Dmitry V. Levin wrote:
+>
+>  arch/arc/include/asm/syscall.h       | 14 +++++++++
+>  arch/arm/include/asm/syscall.h       | 13 ++++++++
+>  arch/arm64/include/asm/syscall.h     | 13 ++++++++
+>  arch/csky/include/asm/syscall.h      | 13 ++++++++
+>  arch/hexagon/include/asm/syscall.h   |  7 +++++
+>  arch/loongarch/include/asm/syscall.h |  8 +++++
+>  arch/mips/include/asm/syscall.h      | 46 ++++++++++++++++++++++++++++
+>  arch/parisc/include/asm/syscall.h    | 12 ++++++++
 
-Looks good to me and works.
+Confused... arch/x86 needs syscall_set_arguments() too ?
 
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Oleg.
+
 
