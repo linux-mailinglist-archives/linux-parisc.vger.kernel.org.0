@@ -1,151 +1,155 @@
-Return-Path: <linux-parisc+bounces-3140-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3141-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B9C5A06387
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jan 2025 18:34:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCBBA07521
+	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jan 2025 12:55:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 585A03A702B
-	for <lists+linux-parisc@lfdr.de>; Wed,  8 Jan 2025 17:33:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A231166B8E
+	for <lists+linux-parisc@lfdr.de>; Thu,  9 Jan 2025 11:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF6E1FF7D5;
-	Wed,  8 Jan 2025 17:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787E3216616;
+	Thu,  9 Jan 2025 11:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="IRhIFb4x"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HU3Eulhe"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D656919F41C
-	for <linux-parisc@vger.kernel.org>; Wed,  8 Jan 2025 17:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FA41A23B0;
+	Thu,  9 Jan 2025 11:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736357633; cv=none; b=jfW3Fliw1ZHA7sOLc9xhaOnSbCciIv42FoiPdKpVr2MOK5lStwDqyEmoIkr5XBODyQlM5D0fgHjv0xZ/llRajSuyy8M10bYcPBSqsH+CFfLZbXbCMM2akO77feI03MlCto3y+Jr2mjXaqwsgrm/PaFXSEfm3nr67bpV6zp+9T9M=
+	t=1736423726; cv=none; b=aWndq0gcDUU65xO56qSdH+7NDJrdnujP8fv4muu/K11JxwjN9j1qqv39+W5jv360aslShcaox+PZXpNfNZWbrVKwMQlfaUZRtPDlxTo2KiweW0MtyE87vF0Rvl/67P0gfPfbzpZYM4TEjEJL4vpzGeOWUtPWFC19A+ujlSNnJB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736357633; c=relaxed/simple;
-	bh=uFSUfP1qtRuzGaG+XFGpp6Zt99NNZ4zrYvsYvHahhsA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cqo2NyJTV0ebQAhDemVgslSyD2lD8xNdjHjWAamNioDut0ufpech84idXi+BWjyZM1zIA36bT8JoU7pmXDO9CA8uHb7mc3Tlfd32ZyTOtZEo3cMtbals0WCYag/JYwVaTKnC1fyJ3n2GymuCCzIrMOyX1FVofg9fxpAk7yhd06Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=IRhIFb4x; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aa67333f7d2so15985066b.0
-        for <linux-parisc@vger.kernel.org>; Wed, 08 Jan 2025 09:33:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1736357630; x=1736962430; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uFSUfP1qtRuzGaG+XFGpp6Zt99NNZ4zrYvsYvHahhsA=;
-        b=IRhIFb4xBIugA+grUTjaDX7MVjUnaSmG8AvZLziDRmFlJaqLIifhVdjAJMJwC3hANX
-         Lqvjw+Yl+sq3LEZFBcDEWHczL7/31IFXOeACj1EbEeuGK/RQ323+lZI1M+VisRq6X1A7
-         mY4AKyecdje860r97F5Zp6iRvlJfrzrXebZJE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736357630; x=1736962430;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uFSUfP1qtRuzGaG+XFGpp6Zt99NNZ4zrYvsYvHahhsA=;
-        b=reVZVw40Q5KFmnD6vY6scT9MBNtLa6o+K+dvuBVB1jkoO/QzOrIVKME2w7MqTCQsy/
-         OWH9LfX+D8d0CDjXg2aHD1ss4aTVwX3X2HG3wpiPi3Jcqb/A7p09rDOyoOWzkfa1VyLp
-         xgpg2OukrvJ11rmf092L7WsFY1lgaRd5/ou649mkupmu+rsDzBA3EMMtJ876ytvBE9l1
-         Fq5/Ecf5ex8sb6vYYO4BYd6OPM+PIzZ8gDPADFKJab3jW2+U4qgDe+bMayG8xLkdUxnw
-         Z8ncKGpRpOy8wgjNvwNrlW3kvNl5UA1sgsIphU67tVm3lSTXx4z9uaEf3fKaryakx2Ju
-         R3zg==
-X-Forwarded-Encrypted: i=1; AJvYcCXaTRN0x+FaOA5fh6l8c814hzvW11r8djrP56fXgl3FX+Bz9gJas5eDnZBO0OH/XnILs4OcNog+979xNx0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyo6gyj7m5w4cYu0UfRowQuedev3ZVlbg3wy2+bCOIsYS4y8k34
-	Hxkk0A2aINoMM6h7lQ5SKl67X15UNy13Wf2SfZruXlkDrHYbACrC8HxIy8qtUwfAEX7a2FfRBEn
-	w3VlY
-X-Gm-Gg: ASbGncvDEpIEvX8/iHy6BeHkvWE/z/ENDJ5zE5fF6E/cL/WQOkzIFqRO/3EWZwK+eps
-	obyOYD1P2E/hB0eQatI5KtdKvc2FDCUyoWfH4dMYFMEmecvKdHeEQlCa65PZVebOmqxI5WoVHxg
-	Di5G1chtu2xgivQfHHTcYe4zFHmdMKB2zdBCejA8KP3ryoY5dKFqFBvivzqxfTixRp+ayeV9ZZe
-	3mcKsRz8+RnSBwgrjrJH8Pv9zoa6bkEmrDXszw4GYff78QGYG5poXjb8IAOKOGHkPL+TblgXg7D
-	QP1t8GZ/gPQdMT04yfAX
-X-Google-Smtp-Source: AGHT+IEMYq9Owct2BHp/98WlxAGFJ9PRwBP2O1vFHwnGtyoziyNbmqjUi5ZdlAhpSdQboOqE7t7KRw==
-X-Received: by 2002:a05:6402:5188:b0:5d2:7396:b0ca with SMTP id 4fb4d7f45d1cf-5d972e08141mr3073909a12.12.1736357629819;
-        Wed, 08 Jan 2025 09:33:49 -0800 (PST)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com. [209.85.128.54])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d806fedbd0sm26254327a12.55.2025.01.08.09.33.49
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jan 2025 09:33:49 -0800 (PST)
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4364a37a1d7so767585e9.3
-        for <linux-parisc@vger.kernel.org>; Wed, 08 Jan 2025 09:33:49 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWs3aTngkXvs9jcWxQKfZb5XNA6FeYo3e0vt4DTi5LGH1xe/eRdnkdBg5q+Um41p2rGeNDbVOphZzm2TrE=@vger.kernel.org
-X-Received: by 2002:a05:6512:2354:b0:540:21f1:e9e7 with SMTP id
- 2adb3069b0e04-542845b9b94mr1068026e87.16.1736357249082; Wed, 08 Jan 2025
- 09:27:29 -0800 (PST)
+	s=arc-20240116; t=1736423726; c=relaxed/simple;
+	bh=D3sA98W32+zngVbnalNpt0EtP/yVNDM4WQtJkKd3srk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dF77KBIbKasAvH7fpDo0SvI4qzE3z38ESan405k4ds1KYyZ1Y8kS6ydrXMMnSvq+aMRJ7sVi9Y+VOnlON5kBiLNhlCqf7SgAFiCic4G9ZRna1ucg5dDnhprQhBgo0r0VH5JBwfDW7posBI06j89SA1u7tzZG/oqBlLpXj+eIp/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HU3Eulhe; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 509864T9022893;
+	Thu, 9 Jan 2025 11:55:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=TEFEUs
+	DUypMb0E06F+mIr6mms6VLi/ADn+g21sLTM6M=; b=HU3Eulheor5aaMA38MgqND
+	w5D0VsYZ9Y4ZQYJZvyu4WLwzk/lzISPX279vOi1rwp0OvImCElaqBmZ7yGv4GXtm
+	vKwEzqRIH6fu9psGCV1MCIKHOFAwC/4SQQ1AC5BtxaNM8wdtW+DAIciNpYPO6Ll6
+	rLdpqprshTa3IetrfZ8gd5phbjzubOZ9ML1FsMTvRNrN2rZkXWtL51/wIfyNRwsc
+	zmVXIeHDTR4Dx4SMQ7DiZQb0y62yBcOaIrAEugKNmaBRj2/WpqHifUmZzBe2/kuP
+	CAm9wsvyCG2SQnvkSXl/G1rirz7QoOVkinRwkhD5FGKGs504YPdGvBwjkZgyGuxw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442an2gx1u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 11:55:23 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5097ss8u003572;
+	Thu, 9 Jan 2025 11:55:22 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yfatd4rc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 11:55:22 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 509BtLqN63177092
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jan 2025 11:55:21 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2F272004B;
+	Thu,  9 Jan 2025 11:55:20 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 379C620043;
+	Thu,  9 Jan 2025 11:55:20 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.60])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  9 Jan 2025 11:55:20 +0000 (GMT)
+Date: Thu, 9 Jan 2025 12:55:18 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Anna-Maria Behnsen <anna-maria@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+        Russell King <linux@armlinux.org.uk>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
+        loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>
+Subject: Re: [PATCH 10/17] s390/vdso: Switch to generic storage implementation
+Message-ID: <20250109115518.9731-A-hca@linux.ibm.com>
+References: <20241216-vdso-store-rng-v1-0-f7aed1bdb3b2@linutronix.de>
+ <20241216-vdso-store-rng-v1-10-f7aed1bdb3b2@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAGXGE_JWtMo8Qs=hsH=NULkDRFoYKYorKHACpqvqpYiO3am8eQ@mail.gmail.com>
-In-Reply-To: <CAGXGE_JWtMo8Qs=hsH=NULkDRFoYKYorKHACpqvqpYiO3am8eQ@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 8 Jan 2025 09:27:17 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=VOjzdBvyx9-g=Mvv6SJvur5ogtUbRfR3oCFpQoQ4VK3w@mail.gmail.com>
-X-Gm-Features: AbW1kvZ7WHp39ciL3QA7T0aXBTFHS6WcSbmLSDiGkRPVgTELV5ossj5Zmm_Z_6A
-Message-ID: <CAD=FV=VOjzdBvyx9-g=Mvv6SJvur5ogtUbRfR3oCFpQoQ4VK3w@mail.gmail.com>
-Subject: Re: watchdog: BUG: soft lockup
-To: wzs <wangzhengshu39@gmail.com>
-Cc: tglx@linutronix.de, liusong@linux.alibaba.com, akpm@linux-foundation.org, 
-	pmladek@suse.com, kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com, 
-	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
-	jan.kiszka@siemens.com, linux-kernel@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, yaoma@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241216-vdso-store-rng-v1-10-f7aed1bdb3b2@linutronix.de>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: lsyfqPho4h_myH3I0usc_uivjxmUZY2Q
+X-Proofpoint-ORIG-GUID: lsyfqPho4h_myH3I0usc_uivjxmUZY2Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ lowpriorityscore=0 priorityscore=1501 spamscore=0 suspectscore=0
+ clxscore=1011 impostorscore=0 mlxlogscore=354 phishscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501090091
 
-Hi,
+On Mon, Dec 16, 2024 at 03:10:06PM +0100, Thomas Weiﬂschuh wrote:
+> The generic storage implementation provides the same features as the
+> custom one. However it can be shared between architectures, making
+> maintenance easier.
+> 
+> Co-developed-by: Nam Cao <namcao@linutronix.de>
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> ---
+>  arch/s390/Kconfig                         |  1 +
+>  arch/s390/include/asm/vdso.h              |  4 +-
+>  arch/s390/include/asm/vdso/getrandom.h    | 12 ----
+>  arch/s390/include/asm/vdso/gettimeofday.h | 15 +----
+>  arch/s390/include/asm/vdso/vsyscall.h     | 20 -------
+>  arch/s390/kernel/time.c                   |  6 +-
+>  arch/s390/kernel/vdso.c                   | 97 ++-----------------------------
+>  arch/s390/kernel/vdso32/vdso32.lds.S      |  7 +--
+>  arch/s390/kernel/vdso64/vdso64.lds.S      |  8 +--
+>  9 files changed, 17 insertions(+), 153 deletions(-)
 
-On Sun, Dec 22, 2024 at 10:32=E2=80=AFPM wzs <wangzhengshu39@gmail.com> wro=
-te:
->
-> Hello,
-> when fuzzing the Linux kernel,
-> I triggered many "watch: BUG: soft lockup" warnings.
-> I am not sure whether this is an issue with the kernel or with the
-> fuzzing program I ran.
-> (The same fuzzing program, when tested on kernel versions from
-> Linux-6.7.0 to 6.12.0, triggers the 'watchdog: BUG: soft lockup'
-> warning on some versions, while others do not. Linux 6.12.0 is the
-> latest stable release where this error occurs.)
->
-> The bug information I provided below is from the Linux-6.12.0 kernel.
-> If you need bug information from other versions, I would be happy to prov=
-ide it.
->
-> kernel config :https://pastebin.com/i4LPXNAN
-> console output :https://pastebin.com/uKVpvJ78
+Looks good to me and works.
 
-IMO it's nearly always a bug if userspace can cause the kernel to soft
-lockup. I'd expect this isn't a bug in the soft lockup detector but a
-problem in whatever part of the kernel you're fuzzing. For some
-details of the soft lockup detector, see
-`Documentation/admin-guide/lockup-watchdogs.rst`.
-
-Presumably you're fuzzing the kernel in a way that causes it to enter
-a big loop while preemption is disabled, or something like that.
-Presumably the kernel should be detecting something invalid that
-userspace did and that would keep it from looping so long.
-
-I tried looking at your pastebin and probably what's going on is
-somewhere hidden in there, but unfortunately the beginning of the logs
-are a bit jumbled since it looks like the RCU warning and the soft
-lockup warning happened at about the same time and their stuff is
-jumbled. There's also a lot of tasks to go through. Honestly, it's
-probably less work just to look at whatever you were trying to fuzz to
-help you pinpoint the problem.
-
-I'll also note that you seem to be using KASAN and are running in a
-virtual machine. It's not inconceivable that's contributing to your
-problems. KASAN makes things _a lot_ slower and a VM may be getting
-its time stolen by the host.
-
--Doug
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
 
