@@ -1,141 +1,273 @@
-Return-Path: <linux-parisc+bounces-3148-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3149-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C69A08CD5
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Jan 2025 10:50:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E9BA0950D
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Jan 2025 16:24:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5250B3ABE3F
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Jan 2025 09:47:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 817DB1656E3
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Jan 2025 15:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C56120C02F;
-	Fri, 10 Jan 2025 09:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF842116E8;
+	Fri, 10 Jan 2025 15:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OpFonKHK"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uY/ax7AL";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E/9rzHba"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEA9209F59
-	for <linux-parisc@vger.kernel.org>; Fri, 10 Jan 2025 09:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D701B20E035;
+	Fri, 10 Jan 2025 15:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736502299; cv=none; b=iPyVhY63a4CNbtE8fnORNXprTJ3p5QEp41iF6hu8VOVC/lQPKGA6AX9gA/82N10/G3whv/60pnBER2u5581u8wfmenJQpa/Wt4wxJOccIskn/W5+SMmpNAhbkZM1uLvWgi5JXP31qTLtly4izervQiUGqFKYrUJp+b5KJugsuiU=
+	t=1736522636; cv=none; b=puPVqOwIPfT3XYzQwh9fi5M/EncaGmIQ3A0mLLPrCSBtpNGsiQoXs2qLV9vNSV5GxZQPijyy4AP+sNIJ15oRQvyeqZpWh/DKi3VcLiO9jUM/Vk2J0B1ICCesvkGy5MwU1osEsqDBflGVctI2Q5LdeRMmOrj4PNGWZqMdRP88YqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736502299; c=relaxed/simple;
-	bh=ENLLV/0PrVWHZJnSd10hwquS1U8BMVZB3K1bFjotxyc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yoo6BShGSmTHfxcKWnojgilay5TBsHB0/OnjQ6H1FqIza9oXJIf/7aerpHB4NG02hgqW3pqCbpPZDyH6qIp/7nJRCgWjv1EyT9QNGGKNqN8pUkXcAVNBiVIQhBrrCA9mDoGER7tl9tFxbWnDuVpYaJ7iJKtZDm0Abbcw38KUlGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OpFonKHK; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736502296;
+	s=arc-20240116; t=1736522636; c=relaxed/simple;
+	bh=gHW/zEEmiS5AuvJBD42Grk7gAg6JiH501MsDcMhU8a8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=vFEEdaUa+6nbMB8jNzE9mwaloiDLI2/hlEXA/nuOI6VrLgLL8dXSKqBH2p/rkY8JH/7b3/4Bv5H6sd8DqUihcC//LuUDjJfj2lNN3Xj6lZ0RjkEL9ndUvcb8A1mRjQd6Smj23wAhZ2e/O1J7BFvP2TbDg88eKWV/lzy7o2EPuIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uY/ax7AL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E/9rzHba; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1736522631;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A4Kw1qoNYerqhNjh25Dgp7jdmE++mW9Fl3ZiJ8T3co8=;
-	b=OpFonKHK4rsGIFf7HSuUlaFhBRRdsLlK1R0arRX8Qgj5U/1r5D9F44B4TYsKgwx49xHb+n
-	5vBk4tEV8CbMFGi4NRmAKUmHTkpEW8Vd0dtx1wt9VRXgkCiiKSc63/ZnsFhVqgMtiikhQ6
-	B6aTnOhYbqo/Q402brHq8KN6vSuJqMs=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-H1Vbp-6DNMSisqtHsJcujA-1; Fri, 10 Jan 2025 04:44:54 -0500
-X-MC-Unique: H1Vbp-6DNMSisqtHsJcujA-1
-X-Mimecast-MFC-AGG-ID: H1Vbp-6DNMSisqtHsJcujA
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-385dcae001fso783578f8f.1
-        for <linux-parisc@vger.kernel.org>; Fri, 10 Jan 2025 01:44:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736502293; x=1737107093;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A4Kw1qoNYerqhNjh25Dgp7jdmE++mW9Fl3ZiJ8T3co8=;
-        b=iSRyfGCLRTq3M+X4II9/9Ni6Nna6+RDE6ZH7Ejpx90eOVQpxn63IhkD7lz7TmYRjbg
-         zGea1Wlk+2ZVez6Rd0rw1YCkFq5YL+1rx7pi1atPZhcpQOKpMRRWed3tyOvTEazjopLP
-         hZfSImiu3jKanIMv98P6fI4ciZwKHXQf2LDoQXlq35ir2vLoKe5eqxa7G3651Iyn1uwc
-         HwIdrHy0H7l1DEUNYMmYKiFdV693B+PFrVayu0KV5IEnMo7pwGheIP7kG+ozZ2YWHrn8
-         oqZ84hWEO6EBE4oDt8Jkq9yIz2YqeLmdtUUR2lq9i4QLVHZq4lj7x9OMppRC2+DumL/l
-         1Y/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXgbL11Ja7OanOT4ScQLa+H/LVg3rrtP/dRRna11VUWoJPwKF3sJyB4MrQKzLcrQ8Hrm2q71aB4DTARdY4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8+mWlusH98wEHOtjJ6GOujfdrJFt0yu24nIu0LO6wAJec4r9N
-	2bmIvUHAoSN0X7tYA1t5DL1VjtU5iuaKBRTtIuOeWUn+D2L8uXMhQsREN50tsIUEZ0QnhZNREM1
-	c9X/XQL0lY6oa1i6OVqf6MejHrXq0c2/6gtQl0iId74T5hwa1GVXYXswjdn0s
-X-Gm-Gg: ASbGncvAZfy9dVhuwk9iJLD8UyQPEq/6dlAkP3DiwlPDSEJ7j4HTVELtBx6br1tGyiS
-	qFwdBwS/ROw9w+85KBHfemisST2RM1MPJx0vRFDyxb5iHaKTEPM/dS9E7Qh5naJCJrSEhQGNZHD
-	3ybBTv+xM2MZ6SYYXO13g2iAhfyjdjFc3hILMqmrSuXjGUSqoTqiQ7/D5motgCdijEOWtv6qIr5
-	bSyqK3TlXEmX+bi6UMSsBR/hZh3aSNKTlO7Nm+SCo31UQstqOW7pTIN+uNjnkpfD83UEz7bjfvS
-X-Received: by 2002:a05:6000:709:b0:386:3803:bbd5 with SMTP id ffacd0b85a97d-38a8733a1f9mr9910090f8f.45.1736502293458;
-        Fri, 10 Jan 2025 01:44:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWMxVaNXeUTe+wjdV2pCbQXCctILb5vVg9f3+psJOjGS23Sr767uuQBsbyCemBlGukLyZjgw==
-X-Received: by 2002:a05:6000:709:b0:386:3803:bbd5 with SMTP id ffacd0b85a97d-38a8733a1f9mr9910059f8f.45.1736502293124;
-        Fri, 10 Jan 2025 01:44:53 -0800 (PST)
-Received: from thinky (ip-217-030-074-039.aim-net.cz. [217.30.74.39])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e383965sm4140444f8f.31.2025.01.10.01.44.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 01:44:52 -0800 (PST)
-Date: Fri, 10 Jan 2025 10:44:51 +0100
-From: Andrey Albershteyn <aalbersh@redhat.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org, 
-	Michal Simek <monstr@monstr.eu>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	chris@zankel.net, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH] fs: introduce getfsxattrat and setfsxattrat syscalls
-Message-ID: <4ad35w4mrxb4likkqijkivrkom5rpfdja6klb5uoufdjdyjioq@ksxubq4xb7ei>
-References: <20250109174540.893098-1-aalbersh@kernel.org>
- <e7deabf6-8bba-45d7-a0f4-395bc8e5aabe@app.fastmail.com>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UI7XVJHwyBBPQMiPL+ZamFg3pb9rD7DgDNZEm6y13nA=;
+	b=uY/ax7AL7Plx4ur9D/Yp2YdgMZ61KuqsU8wMKpwGRge3O2jVFI0Z3t9dX7gU6IQXJsUJA1
+	ugdrWlHNISgjE4+Hhq6goOTvD9ASfrQGoJUMBS5P+h+WbJsPpZ0psPlr9r16pR3800n3k0
+	b/dkZNI8LbC1PryxZqGBIXMGRYIKjFZHh+B2VvLOEfVTWVY4FG3kkQ6D+cv7wqr12ii2o4
+	CI7LGNlt7G5l4qJc0R5F41H0f/Sdg1V1TSqK1ePP8loNWbtBX/z1JB96qRAmv9/jU+yPC+
+	7D/X1OHtbEzIQ/QXcERVbejzF7kMjtLVdnl+2f7yRYSupLUNPSAsplGsPFwnpQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1736522631;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UI7XVJHwyBBPQMiPL+ZamFg3pb9rD7DgDNZEm6y13nA=;
+	b=E/9rzHbalg8TqlnMyHo4JH/y16nchoJm56KUN1rXmB0MXD6E0TNwmPoDZrCfP7giNrWyGB
+	of7HGIQWEzooasCA==
+Subject: [PATCH v2 00/18] vDSO: Introduce generic data storage
+Date: Fri, 10 Jan 2025 16:23:39 +0100
+Message-Id: <20250110-vdso-store-rng-v2-0-350c9179bbf1@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e7deabf6-8bba-45d7-a0f4-395bc8e5aabe@app.fastmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAHw7gWcC/13MwQ6CMAzG8VchPVuzDoXgifcwHIAVaGI2s+GCI
+ Xt3B0eP/6bfb4fAXjjAo9jBc5QgzubQlwLGpbczo5jcoJW+qYYIowkOw+o8o7czVqruSzM2rO4
+ K8ujteZLtBJ9d7kWO3+/pRzquJ0Waqn8qEiqc6p4NDWYoB92+xH5W76xsV8PQpZR+f1NTK7AAA
+ AA=
+X-Change-ID: 20240911-vdso-store-rng-607a3dc9e050
+To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ Russell King <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>, 
+ Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Guo Ren <guoren@kernel.org>
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
+ loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ linux-csky@vger.kernel.org
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1736522629; l=9279;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=gHW/zEEmiS5AuvJBD42Grk7gAg6JiH501MsDcMhU8a8=;
+ b=ZiIr16RiQfjdFdicYH3uLXIHVrt2Mk4E5DqIKDdiPYFwiRGM5J08v4FNlMJIgrpRpL1kM0aSg
+ tJm8A7ZCaa0BZVnMfK0zy2WggTs4ngbNYpeobNqgVuWNovXsc8ixb2s
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-On 2025-01-09 20:59:45, Arnd Bergmann wrote:
-> On Thu, Jan 9, 2025, at 18:45, Andrey Albershteyn wrote:
-> >
-> >  arch/alpha/kernel/syscalls/syscall.tbl      |   2 +
-> >  arch/m68k/kernel/syscalls/syscall.tbl       |   2 +
-> >  arch/microblaze/kernel/syscalls/syscall.tbl |   2 +
-> >  arch/parisc/kernel/syscalls/syscall.tbl     |   2 +
-> >  arch/powerpc/kernel/syscalls/syscall.tbl    |   2 +
-> >  arch/s390/kernel/syscalls/syscall.tbl       |   2 +
-> >  arch/sh/kernel/syscalls/syscall.tbl         |   2 +
-> >  arch/sparc/kernel/syscalls/syscall.tbl      |   2 +
-> >  arch/x86/entry/syscalls/syscall_32.tbl      |   2 +
-> >  arch/x86/entry/syscalls/syscall_64.tbl      |   2 +
-> >  arch/xtensa/kernel/syscalls/syscall.tbl     |   2 +
-> 
-> You seem to be missing a couple of files here: 
-> 
-> arch/arm/tools/syscall.tbl
-> arch/arm64/tools/syscall_32.tbl
-> arch/mips/kernel/syscalls/syscall_n32.tbl
-> arch/mips/kernel/syscalls/syscall_n64.tbl
-> arch/mips/kernel/syscalls/syscall_o32.tbl
-> 
->        Arnd
-> 
+Currently each architecture defines the setup of the vDSO data page on
+its own, mostly through copy-and-paste from some other architecture.
+Extend the existing generic vDSO implementation to also provide generic
+data storage.
+This removes duplicated code and paves the way for further changes to
+the generic vDSO implementation without having to go through a lot of
+per-architecture changes.
 
-Thanks! Added
+Based on v6.13-rc1 and intended to be merged through the tip tree.
 
+This also provides the basis for some generic vDSO reworks.
+The commits from this series and the upcoming reworks can be seen at:
+https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linux.git/log/?h=vdso/store
+
+---
+Changes in v2:
+- Drop __arch_get_vdso_u_timens_data() (Christophe)
+- Move to lib/vdso/ (Christophe)
+- Rename __ppc_get_vdso_u_timens_data() to
+  __arch_get_vdso_u_timens_data(), same for other hooks
+  (Christophe)
+- Fix build for architectures with time-less vDSO, like riscv32. (Conor)
+- Explicitly fix bug around x86 vclock pages
+- Link to v1: https://lore.kernel.org/r/20241216-vdso-store-rng-v1-0-f7aed1bdb3b2@linutronix.de
+
+---
+Thomas Weißschuh (18):
+      x86/vdso: Fix latent bug in vclock_pages calculation
+      parisc: Remove unused symbol vdso_data
+      vdso: Introduce vdso/align.h
+      vdso: Rename included Makefile
+      vdso: Add generic time data storage
+      vdso: Add generic random data storage
+      vdso: Add generic architecture-specific data storage
+      arm64: vdso: Switch to generic storage implementation
+      riscv: vdso: Switch to generic storage implementation
+      LoongArch: vDSO: Switch to generic storage implementation
+      arm: vdso: Switch to generic storage implementation
+      s390/vdso: Switch to generic storage implementation
+      MIPS: vdso: Switch to generic storage implementation
+      powerpc/vdso: Switch to generic storage implementation
+      x86/vdso: Switch to generic storage implementation
+      x86/vdso/vdso2c: Remove page handling
+      vdso: Remove remnants of architecture-specific random state storage
+      vdso: Remove remnants of architecture-specific time storage
+
+ arch/Kconfig                                       |   4 +
+ arch/arm/include/asm/vdso.h                        |   2 +
+ arch/arm/include/asm/vdso/gettimeofday.h           |   7 +-
+ arch/arm/include/asm/vdso/vsyscall.h               |  12 +-
+ arch/arm/kernel/asm-offsets.c                      |   4 -
+ arch/arm/kernel/vdso.c                             |  34 ++----
+ arch/arm/mm/Kconfig                                |   1 +
+ arch/arm/vdso/Makefile                             |   2 +-
+ arch/arm/vdso/vdso.lds.S                           |   4 +-
+ arch/arm64/Kconfig                                 |   1 +
+ arch/arm64/include/asm/vdso.h                      |   2 +-
+ arch/arm64/include/asm/vdso/compat_gettimeofday.h  |  36 ++----
+ arch/arm64/include/asm/vdso/getrandom.h            |  12 --
+ arch/arm64/include/asm/vdso/gettimeofday.h         |  16 +--
+ arch/arm64/include/asm/vdso/vsyscall.h             |  25 +---
+ arch/arm64/kernel/vdso.c                           |  90 +-------------
+ arch/arm64/kernel/vdso/Makefile                    |   2 +-
+ arch/arm64/kernel/vdso/vdso.lds.S                  |   7 +-
+ arch/arm64/kernel/vdso32/Makefile                  |   2 +-
+ arch/arm64/kernel/vdso32/vdso.lds.S                |   7 +-
+ arch/csky/kernel/vdso/Makefile                     |   2 +-
+ arch/loongarch/Kconfig                             |   2 +
+ arch/loongarch/include/asm/vdso.h                  |   1 -
+ arch/loongarch/include/asm/vdso/arch_data.h        |  25 ++++
+ arch/loongarch/include/asm/vdso/getrandom.h        |   5 -
+ arch/loongarch/include/asm/vdso/gettimeofday.h     |  14 +--
+ arch/loongarch/include/asm/vdso/vdso.h             |  38 +-----
+ arch/loongarch/include/asm/vdso/vsyscall.h         |  17 ---
+ arch/loongarch/kernel/asm-offsets.c                |   2 +-
+ arch/loongarch/kernel/vdso.c                       |  92 +--------------
+ arch/loongarch/vdso/Makefile                       |   2 +-
+ arch/loongarch/vdso/vdso.lds.S                     |   8 +-
+ arch/loongarch/vdso/vgetcpu.c                      |  12 +-
+ arch/mips/Kconfig                                  |   1 +
+ arch/mips/include/asm/vdso/gettimeofday.h          |   9 +-
+ arch/mips/include/asm/vdso/vdso.h                  |  19 ++-
+ arch/mips/include/asm/vdso/vsyscall.h              |  14 +--
+ arch/mips/kernel/vdso.c                            |  47 +++-----
+ arch/mips/vdso/Makefile                            |   2 +-
+ arch/mips/vdso/vdso.lds.S                          |   5 +-
+ arch/parisc/include/asm/vdso.h                     |   2 -
+ arch/parisc/kernel/vdso32/Makefile                 |   2 +-
+ arch/parisc/kernel/vdso64/Makefile                 |   2 +-
+ arch/powerpc/Kconfig                               |   2 +
+ arch/powerpc/include/asm/vdso.h                    |   1 +
+ arch/powerpc/include/asm/vdso/arch_data.h          |  37 ++++++
+ arch/powerpc/include/asm/vdso/getrandom.h          |  11 +-
+ arch/powerpc/include/asm/vdso/gettimeofday.h       |  29 ++---
+ arch/powerpc/include/asm/vdso/vsyscall.h           |  13 ---
+ arch/powerpc/include/asm/vdso_datapage.h           |  44 +------
+ arch/powerpc/kernel/asm-offsets.c                  |   1 -
+ arch/powerpc/kernel/time.c                         |   2 +-
+ arch/powerpc/kernel/vdso.c                         | 115 ++----------------
+ arch/powerpc/kernel/vdso/Makefile                  |   2 +-
+ arch/powerpc/kernel/vdso/cacheflush.S              |   2 +-
+ arch/powerpc/kernel/vdso/datapage.S                |   4 +-
+ arch/powerpc/kernel/vdso/gettimeofday.S            |   4 +-
+ arch/powerpc/kernel/vdso/vdso32.lds.S              |   4 +-
+ arch/powerpc/kernel/vdso/vdso64.lds.S              |   4 +-
+ arch/powerpc/kernel/vdso/vgettimeofday.c           |  14 +--
+ arch/riscv/Kconfig                                 |   3 +-
+ arch/riscv/include/asm/vdso.h                      |   2 +-
+ .../include/asm/vdso/{time_data.h => arch_data.h}  |   8 +-
+ arch/riscv/include/asm/vdso/gettimeofday.h         |  14 +--
+ arch/riscv/include/asm/vdso/vsyscall.h             |   9 --
+ arch/riscv/kernel/sys_hwprobe.c                    |   3 +-
+ arch/riscv/kernel/vdso.c                           |  90 +-------------
+ arch/riscv/kernel/vdso/Makefile                    |   2 +-
+ arch/riscv/kernel/vdso/hwprobe.c                   |   6 +-
+ arch/riscv/kernel/vdso/vdso.lds.S                  |   7 +-
+ arch/s390/Kconfig                                  |   1 +
+ arch/s390/include/asm/vdso.h                       |   4 +-
+ arch/s390/include/asm/vdso/getrandom.h             |  12 --
+ arch/s390/include/asm/vdso/gettimeofday.h          |  15 +--
+ arch/s390/include/asm/vdso/vsyscall.h              |  20 ----
+ arch/s390/kernel/time.c                            |   6 +-
+ arch/s390/kernel/vdso.c                            |  97 +---------------
+ arch/s390/kernel/vdso32/Makefile                   |   2 +-
+ arch/s390/kernel/vdso32/vdso32.lds.S               |   7 +-
+ arch/s390/kernel/vdso64/Makefile                   |   2 +-
+ arch/s390/kernel/vdso64/vdso64.lds.S               |   8 +-
+ arch/x86/Kconfig                                   |   1 +
+ arch/x86/entry/vdso/Makefile                       |   2 +-
+ arch/x86/entry/vdso/vdso-layout.lds.S              |  10 +-
+ arch/x86/entry/vdso/vdso2c.c                       |  21 ----
+ arch/x86/entry/vdso/vdso2c.h                       |  20 ----
+ arch/x86/entry/vdso/vma.c                          | 125 ++------------------
+ arch/x86/include/asm/vdso.h                        |   6 -
+ arch/x86/include/asm/vdso/getrandom.h              |  10 --
+ arch/x86/include/asm/vdso/gettimeofday.h           |  25 +---
+ arch/x86/include/asm/vdso/vsyscall.h               |  23 +---
+ drivers/char/random.c                              |   6 +-
+ include/asm-generic/vdso/vsyscall.h                |  23 ++--
+ include/linux/align.h                              |  10 +-
+ include/linux/time_namespace.h                     |   2 -
+ include/linux/vdso_datastore.h                     |  10 ++
+ include/vdso/align.h                               |  15 +++
+ include/vdso/datapage.h                            |  75 +++++++++---
+ include/vdso/helpers.h                             |   8 +-
+ kernel/time/namespace.c                            |  12 +-
+ kernel/time/vsyscall.c                             |  19 ++-
+ lib/Makefile                                       |   2 +-
+ lib/vdso/Kconfig                                   |   5 +
+ lib/vdso/Makefile                                  |  19 +--
+ lib/vdso/Makefile.include                          |  18 +++
+ lib/vdso/datastore.c                               | 129 +++++++++++++++++++++
+ lib/vdso/getrandom.c                               |   8 +-
+ lib/vdso/gettimeofday.c                            |  74 +++++++-----
+ 108 files changed, 602 insertions(+), 1276 deletions(-)
+---
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+change-id: 20240911-vdso-store-rng-607a3dc9e050
+
+Best regards,
 -- 
-- Andrey
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
