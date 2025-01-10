@@ -1,70 +1,70 @@
-Return-Path: <linux-parisc+bounces-3194-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3192-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED780A09B7E
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Jan 2025 20:04:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5CFA09B20
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Jan 2025 19:58:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21C457A1FF6
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Jan 2025 19:04:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C94D3168860
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Jan 2025 18:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD1B28DB17;
-	Fri, 10 Jan 2025 18:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA19223310;
+	Fri, 10 Jan 2025 18:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aAuwYjkP"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4qXm0akH"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB6E28DB0E
-	for <linux-parisc@vger.kernel.org>; Fri, 10 Jan 2025 18:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAF6224B00
+	for <linux-parisc@vger.kernel.org>; Fri, 10 Jan 2025 18:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736534816; cv=none; b=UHKovsVL1QO4K6YyaKZ/cZrakcsrkLdDTIETZD6P7mZuHnNnrVtetDwgHXNwbpiJroA7HCnv5S08X9KerBCrYq3VF8Us25iy2EElaUbr6/STGQxfDWd+2CI37ghKogy9G7Jbif5OIta6SFvBl0K6DD3Wgic667kqLTlqKaI9bIg=
+	t=1736534545; cv=none; b=XsKt7TK1n0uFHnMoNXq8IUJH6z0ze9JOdmOGeA7bbCTaS5vd7EAzXZ7RPsfGw8zafK3JB4bUMqo4lvtBfOvGXpQsPG1r183iW7F+W/fJSzUyHqKVL+b6qL0mgm7VdQmztFNibwMQZo55lWJDd8w6MDunPXZUhvv2dKakUZKzK6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736534816; c=relaxed/simple;
-	bh=gGBo/k79fltK/LiW8yEcfC3C6FkuDBayaBiJeug/v8c=;
+	s=arc-20240116; t=1736534545; c=relaxed/simple;
+	bh=yFE2RvhsdHiuE5lhdo52Dzo1ojzSWSiC8Ss1voWwr0o=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JSsHX/OFBthJ0JD8mfi3PXL/1p/inJH5IbZEgA8oI1pIFq7R6c39HoZTiQfku5F6MD9q2/LDBc0UJWPhNpSeZewhfgqaiKoWOK095GfvJpUqKcxMMSRFhydXRlL9UMu7cl4moNZXUw1UTiLhoF4vfH/5VGl/x52jnTsFqYdPQfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aAuwYjkP; arc=none smtp.client-ip=209.85.167.73
+	 To:Cc:Content-Type; b=oOD5CgTFznyPD5i3jgqHkbBGfvvzvYIuQDyM3WJqz7vJWB0rKyjbgIamQrydGg9oifKbTfB78OF8fOF2jBJxSyDhok2ypNFXSfFP88ZW0UTu279bHakyimHrOiteL9bI3hQagHfOuqgIOCmcK5wIiX51emSV5z7PlcofHaEUDn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4qXm0akH; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
-Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-5400e88b7a4so1811653e87.3
-        for <linux-parisc@vger.kernel.org>; Fri, 10 Jan 2025 10:46:54 -0800 (PST)
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3862be3bfc9so1407897f8f.3
+        for <linux-parisc@vger.kernel.org>; Fri, 10 Jan 2025 10:41:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736534813; x=1737139613; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1736534511; x=1737139311; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=49F9KmkByYRspQkaSYzsGBFq+GnQYA+RnfOGnAD1TNs=;
-        b=aAuwYjkPXRsQGBjRUE9wOqIKWx803RZKLPLeFjC0tYX3cmLVsk7KwVokFzEtu2Unpx
-         +Rx/5QCuv4+Np6jm+IrS2ErMCNPaBHRZn6O0gcMU0KOf5+MUj0yo93xVdyFW0WdoY7yE
-         shIrwuPVoPK7xmPvKU2SEwVXPK6QKW+keA/0cparmxf/yNAEmFOvsaO9sJO53jSRVatq
-         nwEwFlTPvOdDZSOBfilZyKwlag8C8gY3TYASJYEeuaiZdacHq/8mf9Z4fsEX3MN7F+yh
-         0MykYjxCfmjh4z2gPkEcbNIVZMnn98KTp6PMY2gDJQfdiOw3Ki0kEtFx/ewsA+N9XFmX
-         8IOA==
+        bh=t56obMWOlMyKyO7q6Si1cnEbfn2qyXwrpnzxR+4ONcI=;
+        b=4qXm0akHB0cuC/EDQ8VuOoCpDXwtoPfxrekyuf3Jr5mxf6WGp7rbhmhHeDIXklqxd6
+         T9lxWQyVYIV47B5OJUReQPTb2cO2OVBUtcNSPlShJjCRvFudrMBkxkEdOt7YD8B8s+2v
+         Xr3EQaZc/p07fpcwbTqNiK+qV7HY0Toaji/thgJjB5yEeJhTxg1FeoYSHEY8Jfy2/8EZ
+         jiZa5Ti+Lb8moW5SGa97W3jyG6bI8MyoEEfqB2DFyV9BFxFzztzkYfBsUkAjDJ+UDd9H
+         nFSU4xK+FYnLvbOSILO7311XYQqvF516GEImEec3eyOp+/ymIWgUdw/GtFKY2TxOmoyN
+         vLJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736534813; x=1737139613;
+        d=1e100.net; s=20230601; t=1736534511; x=1737139311;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=49F9KmkByYRspQkaSYzsGBFq+GnQYA+RnfOGnAD1TNs=;
-        b=fcKxpvBvrVkjWo6KZOsKEmGSDiTrdKZeKXczyeFSsPimCPOsu976U3dFCN6dobtk03
-         0FlgQHAVXHY3eFB3GIo9TDIFaaS8QW8Qs3arwd1GeOp8HgRHzJUb0Jq9QP08I1Op2XsM
-         o45b2+5C0C9909yVPNHXAEbXz5QdgpsKCn2SNiHhOXaY5HAPq6TcuOQ84DeNo45JO4DR
-         j/HjNmh93mOoyCiYf8Unp3S2Cma3jb5n8brQoGdi7pFCD1t+BYpI70GcHSOksj/ZQZxO
-         cHeoy5Y/Q7gnPlCMX/t3qj0UO0AvVQNb/LycODNgXkaG/xmZ0OG6T0qHN40lkDswru6u
-         rJpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVaG+4JVnptnKtDWG+h49MVkblC1L/H5YBjp7L7M5LoVlUqV6r8MzEst9/pR0eFx995T3pIdVP++cXN6xc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfPbZoFxcr4B3oN3GNAuLashZPvilr+OJiiOM3U8LlAshI7Ax3
-	w2jhrdmilYWIiGsLUCg8jh1z+HkVaaB5wZFXaIV9UrPzVHbKtfSXVtGz10oFBaXfxuuhBAwWWpk
-	vblXFGfyq8Q==
-X-Google-Smtp-Source: AGHT+IFKWz0raFavEVPdqLi0m3c/SgK/uJNRKjAz6M2EuA2Ei6coxzOA0we1XFhGSIskVPMsumh+r4On/rf0kg==
-X-Received: from wmrn35.prod.google.com ([2002:a05:600c:5023:b0:434:f2eb:aa72])
+        bh=t56obMWOlMyKyO7q6Si1cnEbfn2qyXwrpnzxR+4ONcI=;
+        b=ahe8VOyvHiHbCFUH5RuWDP22L8ZW9XEOv627cE1DuhJaNRQoSFskqoE8WPus2iyw0M
+         WUEMTGJf/OhTwyiYioZX8YlsgH1MltcFQld3a3wBjKMXt1osLK2uBvn7LE/oIPSNnGCe
+         AUjXDLclVKqPejJfTt/8bCUWwBK3xnTdxXhaI0SLQQSKEjqfeAiuWgQts6+RlhnPTRlu
+         Qms+FRTrTu3EjTbSElQdAH47NOrL98FRrjTfxNo2JICVTCUDwZuXQ8O3zsTEZRBScK0/
+         hIAuEO579mUpKzGNgnimj3fA0gPHr+CPuAQikAsoHENU78v+GC05GG+FBPzn+s6hCo+c
+         0PYg==
+X-Forwarded-Encrypted: i=1; AJvYcCViKHfgZFWqR2xmgRMr7UuCUSZyEmkuu2azM3zYg6iolDgyQkYOqexslDw3xfQOyhzZyckI1s/l6RIOpFg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOgmhi7M/J9HnkZbMs4ZGx3skPNov3v+5Xq6pR4axPe2jRrncj
+	izYq4PHpMaZJP3kyM8U+aJlH6FONrElB+XzoeLSHEPTtjzwTq4Xhe9hfD1iW7Gg0JyORKsYjNM/
+	v/ZVnJ+4tog==
+X-Google-Smtp-Source: AGHT+IHNze04KHr3mNrPu4oWzk1uJr6kUgfUG8uUPvBwU8SZTj2uxyjbDaOwELGdGilpgEGrHE3bExV1JNVQyA==
+X-Received: from wmba16.prod.google.com ([2002:a05:600c:6dd0:b0:434:f350:9fc])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d07:b0:434:fa73:a907 with SMTP id 5b1f17b1804b1-436e269a5f5mr112362055e9.13.1736534508901;
- Fri, 10 Jan 2025 10:41:48 -0800 (PST)
-Date: Fri, 10 Jan 2025 18:40:54 +0000
+ 2002:a05:6000:70a:b0:38a:4184:1519 with SMTP id ffacd0b85a97d-38a873051e1mr10550801f8f.23.1736534511095;
+ Fri, 10 Jan 2025 10:41:51 -0800 (PST)
+Date: Fri, 10 Jan 2025 18:40:55 +0000
 In-Reply-To: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
@@ -74,8 +74,8 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
 X-Mailer: b4 0.15-dev
-Message-ID: <20250110-asi-rfc-v2-v2-28-8419288bc805@google.com>
-Subject: [PATCH RFC v2 28/29] x86/pti: Disable PTI when ASI is on
+Message-ID: <20250110-asi-rfc-v2-v2-29-8419288bc805@google.com>
+Subject: [PATCH RFC v2 29/29] mm: asi: Stop ignoring asi=on cmdline flag
 From: Brendan Jackman <jackmanb@google.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
@@ -129,95 +129,35 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
 	Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Now that ASI has support for sandboxing userspace, although userspace
-now has much more mapped than it would under KPTI, in theory none of
-that data is important to protect.
-
-Note that one particular impact of this is it makes locally defeating
-KASLR easier. I don't think this is a great loss given [1] etc.
-
-Why do we pass in an argument instead of just having
-pti_check_boottime_disable() check boot_cpu_has(X86_FEATURE_ASI)? Just
-for clarity: I wanted it to be at least _sort of_ visible that it would
-break if you reordered asi_check_boottime_disable() afterwards.
-
-[1]:  https://gruss.cc/files/prefetch.pdf
-      and https://dl.acm.org/doi/pdf/10.1145/3623652.3623669
+At this point the minimum requirements are in place for the kernel to
+operate correctly with ASI enabled.
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/x86/include/asm/pti.h |  6 ++++--
- arch/x86/mm/init.c         |  2 +-
- arch/x86/mm/pti.c          | 14 +++++++++++++-
- 3 files changed, 18 insertions(+), 4 deletions(-)
+ arch/x86/mm/asi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/pti.h b/arch/x86/include/asm/pti.h
-index ab167c96b9ab474b33d778453db0bb550f42b0ac..79b9ba927db9b76ac3cc72cdda6f8b5fc413d352 100644
---- a/arch/x86/include/asm/pti.h
-+++ b/arch/x86/include/asm/pti.h
-@@ -3,12 +3,14 @@
- #define _ASM_X86_PTI_H
- #ifndef __ASSEMBLY__
- 
-+#include <linux/types.h>
-+
- #ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
- extern void pti_init(void);
--extern void pti_check_boottime_disable(void);
-+extern void pti_check_boottime_disable(bool asi_enabled);
- extern void pti_finalize(void);
- #else
--static inline void pti_check_boottime_disable(void) { }
-+static inline void pti_check_boottime_disable(bool asi_enabled) { }
- #endif
- 
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index ded3a47f2a9c1f554824d4ad19f3b48bce271274..4ccf6d60705652805342abefc5e71cd00c563207 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -754,8 +754,8 @@ void __init init_mem_mapping(void)
- {
- 	unsigned long end;
- 
--	pti_check_boottime_disable();
- 	asi_check_boottime_disable();
-+	pti_check_boottime_disable(boot_cpu_has(X86_FEATURE_ASI));
- 	probe_page_size_mask();
- 	setup_pcid();
- 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 851ec8f1363a8b389ea4579cc68bf3300a4df27c..b7132080d3c9b6962a0252383190335e171bafa6 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -76,7 +76,7 @@ static enum pti_mode {
- 	PTI_FORCE_ON
- } pti_mode;
- 
--void __init pti_check_boottime_disable(void)
-+void __init pti_check_boottime_disable(bool asi_enabled)
- {
- 	if (hypervisor_is_type(X86_HYPER_XEN_PV)) {
- 		pti_mode = PTI_FORCE_OFF;
-@@ -91,6 +91,18 @@ void __init pti_check_boottime_disable(void)
- 		return;
+diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
+index f10f6614b26148e5ba423d8a44f640674573ee40..3e3956326936ea8550308ad004dbbb3738546f9f 100644
+--- a/arch/x86/mm/asi.c
++++ b/arch/x86/mm/asi.c
+@@ -207,14 +207,14 @@ void __init asi_check_boottime_disable(void)
+ 		pr_info("ASI disabled through kernel command line.\n");
+ 	} else if (ret == 2 && !strncmp(arg, "on", 2)) {
+ 		enabled = true;
+-		pr_info("Ignoring asi=on param while ASI implementation is incomplete.\n");
++		pr_info("ASI enabled through kernel command line.\n");
+ 	} else {
+ 		pr_info("ASI %s by default.\n",
+ 			enabled ? "enabled" : "disabled");
  	}
  
-+	if (asi_enabled) {
-+		/*
-+		 * Having both ASI and PTI enabled is not a totally ridiculous
-+		 * thing to do; if you want ASI but you are not confident in the
-+		 * sensitivity annotations then it provides useful
-+		 * defence-in-depth. But, the implementation doesn't support it.
-+		 */
-+		if (pti_mode != PTI_FORCE_OFF)
-+			pti_print_if_insecure("disabled by ASI");
-+		return;
-+	}
-+
- 	if (pti_mode == PTI_FORCE_ON)
- 		pti_print_if_secure("force enabled on command line.");
+ 	if (enabled)
+-		pr_info("ASI enablement ignored due to incomplete implementation.\n");
++		setup_force_cpu_cap(X86_FEATURE_ASI);
+ }
  
+ /*
 
 -- 
 2.47.1.613.gc27f4b7a9f-goog
