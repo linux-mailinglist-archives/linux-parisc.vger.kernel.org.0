@@ -1,145 +1,271 @@
-Return-Path: <linux-parisc+bounces-3203-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3204-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 167F6A0B113
-	for <lists+linux-parisc@lfdr.de>; Mon, 13 Jan 2025 09:27:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9E8A0B54D
+	for <lists+linux-parisc@lfdr.de>; Mon, 13 Jan 2025 12:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D836C16613F
-	for <lists+linux-parisc@lfdr.de>; Mon, 13 Jan 2025 08:27:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBBA218873FB
+	for <lists+linux-parisc@lfdr.de>; Mon, 13 Jan 2025 11:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4266233140;
-	Mon, 13 Jan 2025 08:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED01522F162;
+	Mon, 13 Jan 2025 11:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K867550L"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sbvzz2FT";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="I5CE8/zy";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sbvzz2FT";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="I5CE8/zy"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED0C233146;
-	Mon, 13 Jan 2025 08:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C070B22F158;
+	Mon, 13 Jan 2025 11:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736756836; cv=none; b=TLGcKROZjoW/dibhaedyOydiLynEjDR8qmIWqgofw4VBw/3s7KMXvltxXYwUjUvGi6fe1SCj1ux/SECi8LKkac0pH17hfMZNsOvUmK/w8HpXotHBOnvsdIGvrdep2GSZzIHBJqnPqDCxffynZktzOlIcjPgsQeWfd1C9O27Do4M=
+	t=1736767185; cv=none; b=dzPNmPRKO5UJ6TcHgYD229iax17TwazJytOPOTPnp66GPfMKaEhstQi3LrMRRM2PHBehmXoCsIXwgnO6rQMbiaLHCePQL1lOZyV53GufXWQP0ktp0tsLrGWtPzfJ957NjvpNb3WHdTCqj3xsLxoupkM52kK3PejlAxVR8ypcQnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736756836; c=relaxed/simple;
-	bh=m7czTCt5DgRu7CfYHHHSqcATvcfKa0xxPZ0cCCGUQX8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I97PEbr4OIE/sIO9e5/7f64nsfGwj2JsL2XRAUnBcFTZyikT4gBZUdJrA3RwYFR2KFUQCU/PIiCHBo4piGU6gV6R8gHsqLUpbtEVbspT+uniJT4omAmlEjuxRT6CpqipeDBnIcylxjswq1XOx23sCQVmMsgQIO3vpFA7T+JvHzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K867550L; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30613037309so13925961fa.3;
-        Mon, 13 Jan 2025 00:27:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736756833; x=1737361633; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m7czTCt5DgRu7CfYHHHSqcATvcfKa0xxPZ0cCCGUQX8=;
-        b=K867550LjvOFDmP5OshC4v4C2xfB7CjXjGpsSM3gRYleLlgBNZBjk/Qx/RyU4ZhWLQ
-         dUFn2+53Qjnae2MOeCFvt464/6JJjp6QbSXK42mH7CZC77J0d5DV5KHZqdqaZLYtTzjU
-         2QDwpajGeY4UuzbajBJuRbxXrEzldPTYCXj8WGfZuxix2eUc6zJUeAp/E2eKbngYBgMy
-         Un6ZdSP4bXM3xD2G0TiGowdC4kQptyR7Mj3j/yw75G6AAo2Vy2rTtG+UwoSmpRz4sebH
-         q5FcUGHyQ71pr8eIpBPA2Cfoog2KroTBBj1kU62Qy/IIb4iv4Ni3Sa9yog6SbkSVZ5ps
-         z3Ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736756833; x=1737361633;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=m7czTCt5DgRu7CfYHHHSqcATvcfKa0xxPZ0cCCGUQX8=;
-        b=pz8oatH+xuh07GhsJ2pCk3gmg4PiX9dXxvspqgHw1+e67Gj2hboiKE4t7WJVfC46Zc
-         YaqPwaYA1p6Wlz8CAQZ0xsAEKJAiSsNCyXdkmN94r0stTv+vy2hfXxl13pOfCCqKOoKk
-         Q7c7Gvq43bb1PZB9TaruzZ0KqgIijp/c6YMkmw/UdK+yDfhs2lItrNcs/Dilc/P55ujn
-         yYdX0Xqqj6TjoaRLJM3B0H1FTcQ0ou/O+diTb7pzjYqbVLeiyBYlHQPUKKebeouortlS
-         tUpa0/1F13on3hLOQvoXjfS+LWBrKp/lD/ORDydZK/3PzmWmr0tjM4zDnj0SA7NLYMqN
-         tVzA==
-X-Forwarded-Encrypted: i=1; AJvYcCU072DaC0I9tMwEAYDFt3wLeXwjM6Jojoc7Wdi8iei9ArpOA3/nNRSZhx6KSg+H4p76DCizwZ3U/OWy8kM=@vger.kernel.org, AJvYcCUXaOQeS3L+GabD5kljMbQREUL4HDKki5Y06t79O4GGkmucgZPjS7wYHSX+2eOCdrMkVSHuU3dtasItMtlo@vger.kernel.org, AJvYcCUusGUdtaLXDZIZEUmE5P+yNH84MTLgmAmSal+z31xrNmLXFlDsG9KM9VoDutQtxj2ga7NIUMRwO2l6WQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz44uBroLIrr7pqPzYdg02j4Cz64OR2U6zU9bIbwLgolgJB6gS5
-	A19SPhHPT5fI46KQ0WE6vXiA7XfIDU8Zx8myGSKGb2Dt7I1hAgKq+Y1bFA05NJOw7TRd+oFS4vF
-	xyrdgRmL41Sj6DYXxzjm2u19oM/7+QNTp
-X-Gm-Gg: ASbGncssgfiqbTaptHwepaFke3PI3+7Bje1syxn7UWq4V5HsHV0BMuAN3maNAK/inw7
-	N29m7jS2NQlxdZgRYBOn+LrOtOcui6Upe3qLJ
-X-Google-Smtp-Source: AGHT+IHbnPn6i9h7YBUlLi8m5aMfqWXK89UzEp3V6TTJV5vWAk5yvS0/3N9anCOG7Usk3SgfvFBd5HW9NsEBwWHSpx4=
-X-Received: by 2002:a2e:a716:0:b0:300:4362:40 with SMTP id 38308e7fff4ca-305f463cf58mr41312191fa.36.1736756831112;
- Mon, 13 Jan 2025 00:27:11 -0800 (PST)
+	s=arc-20240116; t=1736767185; c=relaxed/simple;
+	bh=mLZrY9jaadQOj6v1sLTVW5BUTvxh6DhZBdhO7Fv+MdM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SI3UJsYndRW5u8WT5g+BCnM3IbOeWyiJ/V+WQag3wgZDLtB1rgqFTlZdbCAXBgw4ybDQw7PMjOrn3nlVA+i0as3mmw2fsq5DWbrsByXpE2ZZdZA7SB2xW4nbehMOR/kzkqNXtuaQ0O6jAoVaD0R2OtKyHSCQF2HRo6cOUiII8ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sbvzz2FT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=I5CE8/zy; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sbvzz2FT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=I5CE8/zy; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0E0921F37C;
+	Mon, 13 Jan 2025 11:19:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1736767181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UMT0laOUJ9M1D5IjkCfV/ptVZnIKmdTg97voNpSS9nc=;
+	b=sbvzz2FTVbbUucp+7/XWFQYGw/ubL6oc54Y0aCoBgLwAMxHZH9mZhIeJfvTiKWc4VcC2JO
+	l+UMj7p5mfLWHg9krKVR39faX+FPBAMRkMx/Ow55N06zImCiaNspp4+jOWfIccNDP4Fs4q
+	8bzTsiBD0EcouzCTYfDLnpqr5pi1yPo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1736767181;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UMT0laOUJ9M1D5IjkCfV/ptVZnIKmdTg97voNpSS9nc=;
+	b=I5CE8/zyZTUYGcz4iD65P68ucesjsl655fmMQDmJCAELfC2H42QzzaWLknR2tQCevbMAOh
+	yyKGu24FeQTdSrDg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1736767181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UMT0laOUJ9M1D5IjkCfV/ptVZnIKmdTg97voNpSS9nc=;
+	b=sbvzz2FTVbbUucp+7/XWFQYGw/ubL6oc54Y0aCoBgLwAMxHZH9mZhIeJfvTiKWc4VcC2JO
+	l+UMj7p5mfLWHg9krKVR39faX+FPBAMRkMx/Ow55N06zImCiaNspp4+jOWfIccNDP4Fs4q
+	8bzTsiBD0EcouzCTYfDLnpqr5pi1yPo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1736767181;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UMT0laOUJ9M1D5IjkCfV/ptVZnIKmdTg97voNpSS9nc=;
+	b=I5CE8/zyZTUYGcz4iD65P68ucesjsl655fmMQDmJCAELfC2H42QzzaWLknR2tQCevbMAOh
+	yyKGu24FeQTdSrDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E8E1613876;
+	Mon, 13 Jan 2025 11:19:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id AoDXOMz2hGd8egAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 13 Jan 2025 11:19:40 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id A1B81A08E2; Mon, 13 Jan 2025 12:19:36 +0100 (CET)
+Date: Mon, 13 Jan 2025 12:19:36 +0100
+From: Jan Kara <jack@suse.cz>
+To: Andrey Albershteyn <aalbersh@redhat.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org, 
+	monstr@monstr.eu, mpe@ellerman.id.au, npiggin@gmail.com, 
+	christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com, luto@kernel.org, 
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, 
+	x86@kernel.org, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, arnd@arndb.de, 
+	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH] fs: introduce getfsxattrat and setfsxattrat syscalls
+Message-ID: <doha6zamxgmqapwx4r6ehzbatzar4dcep33zehunonqforjzf5@lxpidn37tdjh>
+References: <20250109174540.893098-1-aalbersh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAGXGE_JWtMo8Qs=hsH=NULkDRFoYKYorKHACpqvqpYiO3am8eQ@mail.gmail.com>
- <CAD=FV=VOjzdBvyx9-g=Mvv6SJvur5ogtUbRfR3oCFpQoQ4VK3w@mail.gmail.com>
-In-Reply-To: <CAD=FV=VOjzdBvyx9-g=Mvv6SJvur5ogtUbRfR3oCFpQoQ4VK3w@mail.gmail.com>
-From: wzs <wangzhengshu39@gmail.com>
-Date: Mon, 13 Jan 2025 16:27:00 +0800
-X-Gm-Features: AbW1kvaZRDwF8NRC6pRwpBV01fZRcE__7p5mkdq9ZI2BSDV4bxbnWk5RbAlBpYo
-Message-ID: <CAGXGE_JaVxfpsGh4qqJ4zb3smaV3EFYPggtF9cEQvv_BtBR+Cw@mail.gmail.com>
-Subject: Re: watchdog: BUG: soft lockup
-To: Doug Anderson <dianders@chromium.org>
-Cc: tglx@linutronix.de, liusong@linux.alibaba.com, akpm@linux-foundation.org, 
-	pmladek@suse.com, kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com, 
-	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
-	jan.kiszka@siemens.com, linux-kernel@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, yaoma@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250109174540.893098-1-aalbersh@kernel.org>
+X-Spam-Score: -3.80
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_TWELVE(0.00)[32];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,monstr.eu,ellerman.id.au,gmail.com,csgroup.eu,kernel.org,linux.ibm.com,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,zankel.net,zeniv.linux.org.uk,suse.cz,arndb.de,lists.linux-m68k.org,lists.ozlabs.org];
+	R_RATELIMIT(0.00)[to_ip_from(RLyerg7kx5bdf6cnfzf33td54o)];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-Thanks for the tip!
+On Thu 09-01-25 18:45:40, Andrey Albershteyn wrote:
+> From: Andrey Albershteyn <aalbersh@redhat.com>
+> 
+> Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
+> extended attributes/flags. The syscalls take parent directory FD and
+> path to the child together with struct fsxattr.
+> 
+> This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
+> that file don't need to be open. By having this we can manipulated
+> inode extended attributes not only on normal files but also on
+> special ones. This is not possible with FS_IOC_FSSETXATTR ioctl as
+> opening special files returns VFS special inode instead of
+> underlying filesystem one.
+> 
+> This patch adds two new syscalls which allows userspace to set
+> extended inode attributes on special files by using parent directory
+> to open FS inode.
+> 
+> Also, as vfs_fileattr_set() is now will be called on special files
+> too, let's forbid any other attributes except projid and nextents
+> (symlink can have an extent).
+> 
+> CC: linux-api@vger.kernel.org
+> Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
 
-Doug Anderson <dianders@chromium.org> =E4=BA=8E2025=E5=B9=B41=E6=9C=889=E6=
-=97=A5=E5=91=A8=E5=9B=9B 01:33=E5=86=99=E9=81=93=EF=BC=9A
->
-> Hi,
->
-> On Sun, Dec 22, 2024 at 10:32=E2=80=AFPM wzs <wangzhengshu39@gmail.com> w=
-rote:
-> >
-> > Hello,
-> > when fuzzing the Linux kernel,
-> > I triggered many "watch: BUG: soft lockup" warnings.
-> > I am not sure whether this is an issue with the kernel or with the
-> > fuzzing program I ran.
-> > (The same fuzzing program, when tested on kernel versions from
-> > Linux-6.7.0 to 6.12.0, triggers the 'watchdog: BUG: soft lockup'
-> > warning on some versions, while others do not. Linux 6.12.0 is the
-> > latest stable release where this error occurs.)
-> >
-> > The bug information I provided below is from the Linux-6.12.0 kernel.
-> > If you need bug information from other versions, I would be happy to pr=
-ovide it.
-> >
-> > kernel config :https://pastebin.com/i4LPXNAN
-> > console output :https://pastebin.com/uKVpvJ78
->
-> IMO it's nearly always a bug if userspace can cause the kernel to soft
-> lockup. I'd expect this isn't a bug in the soft lockup detector but a
-> problem in whatever part of the kernel you're fuzzing. For some
-> details of the soft lockup detector, see
-> `Documentation/admin-guide/lockup-watchdogs.rst`.
->
-> Presumably you're fuzzing the kernel in a way that causes it to enter
-> a big loop while preemption is disabled, or something like that.
-> Presumably the kernel should be detecting something invalid that
-> userspace did and that would keep it from looping so long.
->
-> I tried looking at your pastebin and probably what's going on is
-> somewhere hidden in there, but unfortunately the beginning of the logs
-> are a bit jumbled since it looks like the RCU warning and the soft
-> lockup warning happened at about the same time and their stuff is
-> jumbled. There's also a lot of tasks to go through. Honestly, it's
-> probably less work just to look at whatever you were trying to fuzz to
-> help you pinpoint the problem.
->
-> I'll also note that you seem to be using KASAN and are running in a
-> virtual machine. It's not inconceivable that's contributing to your
-> problems. KASAN makes things _a lot_ slower and a VM may be getting
-> its time stolen by the host.
->
-> -Doug
+Couple of comments below:
+
+> @@ -2953,3 +2956,105 @@ umode_t mode_strip_sgid(struct mnt_idmap *idmap,
+>  	return mode & ~S_ISGID;
+>  }
+>  EXPORT_SYMBOL(mode_strip_sgid);
+> +
+> +SYSCALL_DEFINE4(getfsxattrat, int, dfd, const char __user *, filename,
+> +		struct fsxattr *, fsx, int, at_flags)
+				       ^^^ at_flags should be probably
+unsigned - at least they seem to be for other syscalls.
+
+> +{
+> +	struct fd dir;
+> +	struct fileattr fa;
+> +	struct path filepath;
+> +	struct inode *inode;
+> +	int error;
+> +
+> +	if (at_flags)
+> +		return -EINVAL;
+
+Shouldn't we support basic path resolve flags like AT_SYMLINK_NOFOLLOW or
+AT_EMPTY_PATH? I didn't put too much thought to this but intuitively I'd say
+we should follow what path_setxattrat() does.
+
+> +
+> +	if (!capable(CAP_FOWNER))
+> +		return -EPERM;
+
+Why? Firstly this does not handle user namespaces at all, secondly it
+doesn't match the check done during ioctl, and thirdly vfs_fileattr_get()
+should do all the needed checks?
+
+> +
+> +	dir = fdget(dfd);
+> +	if (!fd_file(dir))
+> +		return -EBADF;
+> +
+> +	if (!S_ISDIR(file_inode(fd_file(dir))->i_mode)) {
+> +		error = -EBADF;
+> +		goto out;
+> +	}
+> +
+> +	error = user_path_at(dfd, filename, at_flags, &filepath);
+> +	if (error)
+> +		goto out;
+
+I guess this is OK for now but allowing full flexibility of the "_at"
+syscall (e.g. like setxattrat() does) would be preferred. Mostly so that
+userspace programmer doesn't have to read manpage in detail and think
+whether the particular combination of path arguments is supported by a
+particular syscall. Admittedly VFS could make this a bit simpler. Currently
+the boilerplate code that's needed in path_setxattrat() &
+filename_setxattr() / file_setxattr() is offputting.
+
+> +
+> +	inode = filepath.dentry->d_inode;
+> +	if (file_inode(fd_file(dir))->i_sb->s_magic != inode->i_sb->s_magic) {
+> +		error = -EBADF;
+> +		goto out_path;
+> +	}
+
+What's the motivation for this check?
+
+> +
+> +	error = vfs_fileattr_get(filepath.dentry, &fa);
+> +	if (error)
+> +		goto out_path;
+> +
+> +	if (copy_fsxattr_to_user(&fa, fsx))
+> +		error = -EFAULT;
+> +
+> +out_path:
+> +	path_put(&filepath);
+> +out:
+> +	fdput(dir);
+> +	return error;
+> +}
+> +
+> +SYSCALL_DEFINE4(setfsxattrat, int, dfd, const char __user *, filename,
+> +		struct fsxattr *, fsx, int, at_flags)
+> +{
+
+Same comments as for getfsxattrat() apply here as well.
+
+> -static int copy_fsxattr_from_user(struct fileattr *fa,
+> -				  struct fsxattr __user *ufa)
+> +int copy_fsxattr_from_user(struct fileattr *fa, struct fsxattr __user *ufa)
+>  {
+>  	struct fsxattr xfa;
+>  
+> @@ -574,6 +573,7 @@ static int copy_fsxattr_from_user(struct fileattr *fa,
+>  
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL(copy_fsxattr_from_user);
+
+I guess no need to export this function? The code you call it from cannot
+be compiled as a module.
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
