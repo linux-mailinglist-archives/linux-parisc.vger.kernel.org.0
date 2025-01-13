@@ -1,187 +1,145 @@
-Return-Path: <linux-parisc+bounces-3202-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3203-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D5CA0ADE1
-	for <lists+linux-parisc@lfdr.de>; Mon, 13 Jan 2025 04:25:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 167F6A0B113
+	for <lists+linux-parisc@lfdr.de>; Mon, 13 Jan 2025 09:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 033F27A3599
-	for <lists+linux-parisc@lfdr.de>; Mon, 13 Jan 2025 03:25:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D836C16613F
+	for <lists+linux-parisc@lfdr.de>; Mon, 13 Jan 2025 08:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558B814658B;
-	Mon, 13 Jan 2025 03:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4266233140;
+	Mon, 13 Jan 2025 08:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bSRWhzay"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K867550L"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1246F1420DD;
-	Mon, 13 Jan 2025 03:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED0C233146;
+	Mon, 13 Jan 2025 08:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736738745; cv=none; b=qyUNzz/5awqBpGs9fC6mrLNQvNUJzrp1MLP3K8dUn6HGWXirM7QUVGhduAy8ugl1LQEGi6WcdcJ/pIXT8Z16WmWojABxDSKCvjukUjA0TqmDqC78rQZjv0ZwTPo7RIcVePUvUT2h5DqE5Io9HtpafnWkG18NtbhN7zq7layku3E=
+	t=1736756836; cv=none; b=TLGcKROZjoW/dibhaedyOydiLynEjDR8qmIWqgofw4VBw/3s7KMXvltxXYwUjUvGi6fe1SCj1ux/SECi8LKkac0pH17hfMZNsOvUmK/w8HpXotHBOnvsdIGvrdep2GSZzIHBJqnPqDCxffynZktzOlIcjPgsQeWfd1C9O27Do4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736738745; c=relaxed/simple;
-	bh=kDvnC74Lo6EZ1n3L3aZwXkWsD4GwjpMEPT/wHL2YzN4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Polb2I9JXmwgvdRR0sZs8qULzCINJuQHOPCD0EzeQJCt1GPpFn4q/90VCq2rHjCVCRVUjIymjEEj7uyGnAQWN8SsvZsplb9IUCWsWZoS/sHpAFVleCxsuhw8Xj9SunIVHIuhwn+Ndup3hcKNKB/Xti+h6Gr4w8RZ3RQQs45qQPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bSRWhzay; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736738743; x=1768274743;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kDvnC74Lo6EZ1n3L3aZwXkWsD4GwjpMEPT/wHL2YzN4=;
-  b=bSRWhzayo+3BVU64Q2ou3pz2apkIzEWoisoV91Qya9Dv09XZmkWO/loo
-   2EOfrujz+Zg0JRVHHy6damYgkMU5cge7KpddDJJvTixfEdEpGaWAUGrfl
-   VnpkHLSrofMoJiN7mH04FGsk11WeOXdJARfZy6s1RR4/BvEa4Vu57oSpi
-   QNpWL+Idd9ihCWUZv1q8qjioGGa9eqR6/r+bohc1PhCK4xbXc1+2uDxZ4
-   U4MgPyvPsn0a8w+LaAd8OjdRRvznJjor4mYHd0cb7EYBrYIrQTItzev8t
-   1lLhHIH7ybbULgeE7G6eERgNLhatQp49PzHiyYkILyM8KjUys14vQBnhB
-   A==;
-X-CSE-ConnectionGUID: i0zYZppWQRujwTVEPA3C3A==
-X-CSE-MsgGUID: tJywnziMS6OUFfNoACaTAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11313"; a="48399183"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="48399183"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2025 19:25:42 -0800
-X-CSE-ConnectionGUID: pGeiW06QRgC2unHlctenaQ==
-X-CSE-MsgGUID: cNe1mltgTL6TwFBhawgDIA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="104496936"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 12 Jan 2025 19:25:35 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tXB53-000Mfv-1I;
-	Mon, 13 Jan 2025 03:25:33 +0000
-Date: Mon, 13 Jan 2025 11:25:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrey Albershteyn <aalbersh@redhat.com>, linux-fsdevel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Andrey Albershteyn <aalbersh@redhat.com>,
-	linux-api@vger.kernel.org, monstr@monstr.eu, mpe@ellerman.id.au,
-	npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
-	maddy@linux.ibm.com, luto@kernel.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-	arnd@arndb.de, linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org
-Subject: Re: [PATCH] fs: introduce getfsxattrat and setfsxattrat syscalls
-Message-ID: <202501131033.KKMmoHBV-lkp@intel.com>
-References: <20250109174540.893098-1-aalbersh@kernel.org>
+	s=arc-20240116; t=1736756836; c=relaxed/simple;
+	bh=m7czTCt5DgRu7CfYHHHSqcATvcfKa0xxPZ0cCCGUQX8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I97PEbr4OIE/sIO9e5/7f64nsfGwj2JsL2XRAUnBcFTZyikT4gBZUdJrA3RwYFR2KFUQCU/PIiCHBo4piGU6gV6R8gHsqLUpbtEVbspT+uniJT4omAmlEjuxRT6CpqipeDBnIcylxjswq1XOx23sCQVmMsgQIO3vpFA7T+JvHzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K867550L; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-30613037309so13925961fa.3;
+        Mon, 13 Jan 2025 00:27:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736756833; x=1737361633; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m7czTCt5DgRu7CfYHHHSqcATvcfKa0xxPZ0cCCGUQX8=;
+        b=K867550LjvOFDmP5OshC4v4C2xfB7CjXjGpsSM3gRYleLlgBNZBjk/Qx/RyU4ZhWLQ
+         dUFn2+53Qjnae2MOeCFvt464/6JJjp6QbSXK42mH7CZC77J0d5DV5KHZqdqaZLYtTzjU
+         2QDwpajGeY4UuzbajBJuRbxXrEzldPTYCXj8WGfZuxix2eUc6zJUeAp/E2eKbngYBgMy
+         Un6ZdSP4bXM3xD2G0TiGowdC4kQptyR7Mj3j/yw75G6AAo2Vy2rTtG+UwoSmpRz4sebH
+         q5FcUGHyQ71pr8eIpBPA2Cfoog2KroTBBj1kU62Qy/IIb4iv4Ni3Sa9yog6SbkSVZ5ps
+         z3Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736756833; x=1737361633;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m7czTCt5DgRu7CfYHHHSqcATvcfKa0xxPZ0cCCGUQX8=;
+        b=pz8oatH+xuh07GhsJ2pCk3gmg4PiX9dXxvspqgHw1+e67Gj2hboiKE4t7WJVfC46Zc
+         YaqPwaYA1p6Wlz8CAQZ0xsAEKJAiSsNCyXdkmN94r0stTv+vy2hfXxl13pOfCCqKOoKk
+         Q7c7Gvq43bb1PZB9TaruzZ0KqgIijp/c6YMkmw/UdK+yDfhs2lItrNcs/Dilc/P55ujn
+         yYdX0Xqqj6TjoaRLJM3B0H1FTcQ0ou/O+diTb7pzjYqbVLeiyBYlHQPUKKebeouortlS
+         tUpa0/1F13on3hLOQvoXjfS+LWBrKp/lD/ORDydZK/3PzmWmr0tjM4zDnj0SA7NLYMqN
+         tVzA==
+X-Forwarded-Encrypted: i=1; AJvYcCU072DaC0I9tMwEAYDFt3wLeXwjM6Jojoc7Wdi8iei9ArpOA3/nNRSZhx6KSg+H4p76DCizwZ3U/OWy8kM=@vger.kernel.org, AJvYcCUXaOQeS3L+GabD5kljMbQREUL4HDKki5Y06t79O4GGkmucgZPjS7wYHSX+2eOCdrMkVSHuU3dtasItMtlo@vger.kernel.org, AJvYcCUusGUdtaLXDZIZEUmE5P+yNH84MTLgmAmSal+z31xrNmLXFlDsG9KM9VoDutQtxj2ga7NIUMRwO2l6WQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz44uBroLIrr7pqPzYdg02j4Cz64OR2U6zU9bIbwLgolgJB6gS5
+	A19SPhHPT5fI46KQ0WE6vXiA7XfIDU8Zx8myGSKGb2Dt7I1hAgKq+Y1bFA05NJOw7TRd+oFS4vF
+	xyrdgRmL41Sj6DYXxzjm2u19oM/7+QNTp
+X-Gm-Gg: ASbGncssgfiqbTaptHwepaFke3PI3+7Bje1syxn7UWq4V5HsHV0BMuAN3maNAK/inw7
+	N29m7jS2NQlxdZgRYBOn+LrOtOcui6Upe3qLJ
+X-Google-Smtp-Source: AGHT+IHbnPn6i9h7YBUlLi8m5aMfqWXK89UzEp3V6TTJV5vWAk5yvS0/3N9anCOG7Usk3SgfvFBd5HW9NsEBwWHSpx4=
+X-Received: by 2002:a2e:a716:0:b0:300:4362:40 with SMTP id 38308e7fff4ca-305f463cf58mr41312191fa.36.1736756831112;
+ Mon, 13 Jan 2025 00:27:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109174540.893098-1-aalbersh@kernel.org>
+References: <CAGXGE_JWtMo8Qs=hsH=NULkDRFoYKYorKHACpqvqpYiO3am8eQ@mail.gmail.com>
+ <CAD=FV=VOjzdBvyx9-g=Mvv6SJvur5ogtUbRfR3oCFpQoQ4VK3w@mail.gmail.com>
+In-Reply-To: <CAD=FV=VOjzdBvyx9-g=Mvv6SJvur5ogtUbRfR3oCFpQoQ4VK3w@mail.gmail.com>
+From: wzs <wangzhengshu39@gmail.com>
+Date: Mon, 13 Jan 2025 16:27:00 +0800
+X-Gm-Features: AbW1kvaZRDwF8NRC6pRwpBV01fZRcE__7p5mkdq9ZI2BSDV4bxbnWk5RbAlBpYo
+Message-ID: <CAGXGE_JaVxfpsGh4qqJ4zb3smaV3EFYPggtF9cEQvv_BtBR+Cw@mail.gmail.com>
+Subject: Re: watchdog: BUG: soft lockup
+To: Doug Anderson <dianders@chromium.org>
+Cc: tglx@linutronix.de, liusong@linux.alibaba.com, akpm@linux-foundation.org, 
+	pmladek@suse.com, kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com, 
+	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
+	jan.kiszka@siemens.com, linux-kernel@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, yaoma@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Andrey,
+Thanks for the tip!
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on brauner-vfs/vfs.all]
-[also build test WARNING on geert-m68k/for-next powerpc/next powerpc/fixes s390/features linus/master v6.13-rc6 next-20250110]
-[cannot apply to geert-m68k/for-linus deller-parisc/for-next jcmvbkbc-xtensa/xtensa-for-next arnd-asm-generic/master tip/x86/asm]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrey-Albershteyn/fs-introduce-getfsxattrat-and-setfsxattrat-syscalls/20250110-014739
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
-patch link:    https://lore.kernel.org/r/20250109174540.893098-1-aalbersh%40kernel.org
-patch subject: [PATCH] fs: introduce getfsxattrat and setfsxattrat syscalls
-config: m68k-randconfig-r122-20250111 (https://download.01.org/0day-ci/archive/20250113/202501131033.KKMmoHBV-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 14.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20250113/202501131033.KKMmoHBV-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501131033.KKMmoHBV-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
-   fs/inode.c:957:24: sparse: sparse: context imbalance in 'inode_lru_isolate' - wrong count at exit
-   fs/inode.c:1058:9: sparse: sparse: context imbalance in 'find_inode' - different lock contexts for basic block
-   fs/inode.c:1099:9: sparse: sparse: context imbalance in 'find_inode_fast' - different lock contexts for basic block
-   fs/inode.c:1829:5: sparse: sparse: context imbalance in 'insert_inode_locked' - wrong count at exit
-   fs/inode.c:1947:20: sparse: sparse: context imbalance in 'iput_final' - unexpected unlock
-   fs/inode.c:1961:6: sparse: sparse: context imbalance in 'iput' - wrong count at exit
-   fs/inode.c:2494:17: sparse: sparse: context imbalance in '__wait_on_freeing_inode' - unexpected unlock
->> fs/inode.c:2998:39: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct fsxattr [noderef] __user *ufa @@     got struct fsxattr *fsx @@
-   fs/inode.c:2998:39: sparse:     expected struct fsxattr [noderef] __user *ufa
-   fs/inode.c:2998:39: sparse:     got struct fsxattr *fsx
-   fs/inode.c:3032:41: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct fsxattr [noderef] __user *ufa @@     got struct fsxattr *fsx @@
-   fs/inode.c:3032:41: sparse:     expected struct fsxattr [noderef] __user *ufa
-   fs/inode.c:3032:41: sparse:     got struct fsxattr *fsx
-
-vim +2998 fs/inode.c
-
-  2959	
-  2960	SYSCALL_DEFINE4(getfsxattrat, int, dfd, const char __user *, filename,
-  2961			struct fsxattr *, fsx, int, at_flags)
-  2962	{
-  2963		struct fd dir;
-  2964		struct fileattr fa;
-  2965		struct path filepath;
-  2966		struct inode *inode;
-  2967		int error;
-  2968	
-  2969		if (at_flags)
-  2970			return -EINVAL;
-  2971	
-  2972		if (!capable(CAP_FOWNER))
-  2973			return -EPERM;
-  2974	
-  2975		dir = fdget(dfd);
-  2976		if (!fd_file(dir))
-  2977			return -EBADF;
-  2978	
-  2979		if (!S_ISDIR(file_inode(fd_file(dir))->i_mode)) {
-  2980			error = -EBADF;
-  2981			goto out;
-  2982		}
-  2983	
-  2984		error = user_path_at(dfd, filename, at_flags, &filepath);
-  2985		if (error)
-  2986			goto out;
-  2987	
-  2988		inode = filepath.dentry->d_inode;
-  2989		if (file_inode(fd_file(dir))->i_sb->s_magic != inode->i_sb->s_magic) {
-  2990			error = -EBADF;
-  2991			goto out_path;
-  2992		}
-  2993	
-  2994		error = vfs_fileattr_get(filepath.dentry, &fa);
-  2995		if (error)
-  2996			goto out_path;
-  2997	
-> 2998		if (copy_fsxattr_to_user(&fa, fsx))
-  2999			error = -EFAULT;
-  3000	
-  3001	out_path:
-  3002		path_put(&filepath);
-  3003	out:
-  3004		fdput(dir);
-  3005		return error;
-  3006	}
-  3007	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Doug Anderson <dianders@chromium.org> =E4=BA=8E2025=E5=B9=B41=E6=9C=889=E6=
+=97=A5=E5=91=A8=E5=9B=9B 01:33=E5=86=99=E9=81=93=EF=BC=9A
+>
+> Hi,
+>
+> On Sun, Dec 22, 2024 at 10:32=E2=80=AFPM wzs <wangzhengshu39@gmail.com> w=
+rote:
+> >
+> > Hello,
+> > when fuzzing the Linux kernel,
+> > I triggered many "watch: BUG: soft lockup" warnings.
+> > I am not sure whether this is an issue with the kernel or with the
+> > fuzzing program I ran.
+> > (The same fuzzing program, when tested on kernel versions from
+> > Linux-6.7.0 to 6.12.0, triggers the 'watchdog: BUG: soft lockup'
+> > warning on some versions, while others do not. Linux 6.12.0 is the
+> > latest stable release where this error occurs.)
+> >
+> > The bug information I provided below is from the Linux-6.12.0 kernel.
+> > If you need bug information from other versions, I would be happy to pr=
+ovide it.
+> >
+> > kernel config :https://pastebin.com/i4LPXNAN
+> > console output :https://pastebin.com/uKVpvJ78
+>
+> IMO it's nearly always a bug if userspace can cause the kernel to soft
+> lockup. I'd expect this isn't a bug in the soft lockup detector but a
+> problem in whatever part of the kernel you're fuzzing. For some
+> details of the soft lockup detector, see
+> `Documentation/admin-guide/lockup-watchdogs.rst`.
+>
+> Presumably you're fuzzing the kernel in a way that causes it to enter
+> a big loop while preemption is disabled, or something like that.
+> Presumably the kernel should be detecting something invalid that
+> userspace did and that would keep it from looping so long.
+>
+> I tried looking at your pastebin and probably what's going on is
+> somewhere hidden in there, but unfortunately the beginning of the logs
+> are a bit jumbled since it looks like the RCU warning and the soft
+> lockup warning happened at about the same time and their stuff is
+> jumbled. There's also a lot of tasks to go through. Honestly, it's
+> probably less work just to look at whatever you were trying to fuzz to
+> help you pinpoint the problem.
+>
+> I'll also note that you seem to be using KASAN and are running in a
+> virtual machine. It's not inconceivable that's contributing to your
+> problems. KASAN makes things _a lot_ slower and a VM may be getting
+> its time stolen by the host.
+>
+> -Doug
 
