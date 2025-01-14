@@ -1,149 +1,181 @@
-Return-Path: <linux-parisc+bounces-3211-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3212-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C05A1043B
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 Jan 2025 11:34:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAD2A10F85
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 Jan 2025 19:13:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAD3118855B6
-	for <lists+linux-parisc@lfdr.de>; Tue, 14 Jan 2025 10:34:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFB3160F22
+	for <lists+linux-parisc@lfdr.de>; Tue, 14 Jan 2025 18:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCD81EE7C5;
-	Tue, 14 Jan 2025 10:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DFD1FC0EF;
+	Tue, 14 Jan 2025 18:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AxTH1TVO"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A5jQRptb"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D47A1D47B4;
-	Tue, 14 Jan 2025 10:34:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75651F9ABE
+	for <linux-parisc@vger.kernel.org>; Tue, 14 Jan 2025 18:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736850845; cv=none; b=TUOb1GXeafX3qljifWGD73m/wdUokJ188rHbMWdcVF8NWW2qWRwOk+XhiyQ30dCSQoadX3Wjhww6Uo58QouZCpsibHUMfp/0IvxdqB+wtwnFhgxrZ6T8SUx0PEe8A1lfC9pGqgh5IOaigXobLR47gkhfXz+ZWkz05ObimLeqULo=
+	t=1736878065; cv=none; b=ARDlNoKuXM9Ucb7oQzjThwlkDNmEmYrtgthyu6a6U5EAgM22sRVECLSXCFqD1KPiWzmp4OTcSj5RfC45nFR6OZDsUXgRYyaC3VXMfld7i2Gb1mvk+qsMNWGOE6oZ4EoEGeR2Q6XjTaQ2XTMHKP2k+X8WLzpMlXM/AMNoPH7Nano=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736850845; c=relaxed/simple;
-	bh=PPBTXcmZ9FTKLOavDTSaaCxS+I83L8XKDLxpo1k4qF8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vDITmQRZk0j1ZoL1te8W1k1LUUa/sekHDnbfFE9NDXA8rySc8WaPBlrqOHJ9gO5KH9hs4dUx8MjhdOTZ2LWKMfqrzRwW0A+djVVuHuwo6rzje9QHu354eYH0yKfrAbrKSWfRtkY2DKUo3rdfRnSUUUmOPeoYFMUIHzBHE/Zoyyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AxTH1TVO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310DFC4CEE0;
-	Tue, 14 Jan 2025 10:33:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736850844;
-	bh=PPBTXcmZ9FTKLOavDTSaaCxS+I83L8XKDLxpo1k4qF8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AxTH1TVOByRyemy5vzP15NHxHuJlYlyl1hQLGDalk4R7LH2WyA/2gx/XtNbKHP6IE
-	 BdijOVzI31N04UC33BwkWxuWMPpjOqJk4YPBcZWpHmsEzVSlAn6n8H3SvPSKjRt4Km
-	 MmpAYcYGmR2n+9td9dyxGX+GBgzUR73o9ZemtBsDbfqnix+wupk/YAt26zv5Z/Nt2Q
-	 YW8X2WGphjiIh5L1lDgafPSMz5AIFm6Q1aPh8ln+BKEZNUtlb11WMWugcnXi6M0GO3
-	 AVtW7Uph3adO04TefpnPeJyGrUuc2ovvVgVBTVrDhbVONzJzNVIc1qvOPiQR3KVK67
-	 Hr4Mh5R5VIq3w==
-Date: Tue, 14 Jan 2025 10:33:53 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Guo Ren <guoren@kernel.org>, linux-parisc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
-	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arch@vger.kernel.org,
-	Nam Cao <namcao@linutronix.de>, linux-csky@vger.kernel.org
-Subject: Re: [PATCH v2 09/18] riscv: vdso: Switch to generic storage
- implementation
-Message-ID: <20250114-lustily-nuttiness-3bb7646515d5@spud>
-References: <20250110-vdso-store-rng-v2-0-350c9179bbf1@linutronix.de>
- <20250110-vdso-store-rng-v2-9-350c9179bbf1@linutronix.de>
- <20250113-kissable-monstrous-aace0cf7182e@spud>
- <20250114093609-6cb25835-f912-4f64-9ba7-54c67d4e2904@linutronix.de>
+	s=arc-20240116; t=1736878065; c=relaxed/simple;
+	bh=OeJp5LYk/nKjtL8S3iJvmhpCxQW0wW3ln/Cx8rgKLWE=;
+	h=Date:From:To:cc:Subject:Message-ID:MIME-Version:Content-Type; b=noyl5eAyUpsjRLJkQDp+Sbe+fCun2kio10qdml7pN4R81umjp9PpPwFae82l24IoRUT5iSZzAfLPh2NsD81KedGZB2tn0yeJhp7RHLr90vLBgjhUYH8EplKQf737TOApa0styTgDToDOuoJbOJihM0jDl9FzpqcQTrgtVs7Eu8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A5jQRptb; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736878062;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=PXEJPnam5sKLBm4gC/JbVd11Ubf3i60g5D7nHHLsTbc=;
+	b=A5jQRptbeOkoQlFa71i0CPvfimo+8ZhxD1BV5Zf1eySif+sjPPxQyGKlUO+EsGVNQDp6za
+	hFdp6vmCiN17XV7thBgI/AILJxMhjsiGk8LS7vi9k+QyvmiIwy6KqYR7QM6Itx+eHKkT2g
+	S4eSsnUmqS0WW72KI2csk4uBhBf6KhQ=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-397-1CfPXEUqNZGUSs9jbafS3g-1; Tue,
+ 14 Jan 2025 13:07:39 -0500
+X-MC-Unique: 1CfPXEUqNZGUSs9jbafS3g-1
+X-Mimecast-MFC-AGG-ID: 1CfPXEUqNZGUSs9jbafS3g
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7ED3C1955DC9;
+	Tue, 14 Jan 2025 18:07:37 +0000 (UTC)
+Received: from [10.45.224.117] (unknown [10.45.224.117])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6B65B19560A3;
+	Tue, 14 Jan 2025 18:07:34 +0000 (UTC)
+Date: Tue, 14 Jan 2025 19:07:30 +0100 (CET)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+    Sami Tolvanen <samitolvanen@google.com>, 
+    Daniel Gomez <da.gomez@samsung.com>
+cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+    Helge Deller <deller@gmx.de>, linux-modules@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: Unaligned accesses when loading modules
+Message-ID: <1665d54c-178f-ff72-e627-776e7c76798b@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="jwGvJ1ZaVXfjr5LT"
-Content-Disposition: inline
-In-Reply-To: <20250114093609-6cb25835-f912-4f64-9ba7-54c67d4e2904@linutronix.de>
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+
+Hi
+
+On PA-RISC, with the kernel 6.12.9, I get unaligned pointer warnings when 
+a module is loaded. The warnings are caused by the fact that the 
+.gnu.linkonce.this_module section is not aligned to the appropriate 
+boundary. If I dump the module content with "objdump -h configs.ko", I get 
+this. Note that the .gnu.linkonce.this_module has "File off 000042d2" and 
+"Algn 2**4".
+
+On x86-64, the same misalignment can be seen, but it doesn't cause 
+warnings because unaligned pointers are handled in hardware.
+
+This seems to be a bug in the linker, because when I compile an old kernel 
+with a new linker, I also get the misalignment. Do you have an idea how to 
+work around this bug?
+
+Mikulas
 
 
---jwGvJ1ZaVXfjr5LT
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+kernel-6.12.9, binutils from Debian ports:
 
-On Tue, Jan 14, 2025 at 09:40:11AM +0100, Thomas Wei=DFschuh wrote:
-> On Mon, Jan 13, 2025 at 07:48:15PM +0000, Conor Dooley wrote:
-> > On Fri, Jan 10, 2025 at 04:23:48PM +0100, Thomas Wei=DFschuh wrote:
-> > > The generic storage implementation provides the same features as the
-> > > custom one. However it can be shared between architectures, making
-> > > maintenance easier.
-> > >=20
-> > > Co-developed-by: Nam Cao <namcao@linutronix.de>
-> > > Signed-off-by: Nam Cao <namcao@linutronix.de>
-> > > Signed-off-by: Thomas Wei=DFschuh <thomas.weissschuh@linutronix.de>
-> >=20
-> > For rv64, nommu:
-> >   LD      vmlinux
-> > ld.lld: error: undefined symbol: vmf_insert_pfn
-> > >>> referenced by datastore.c
-> > >>>               lib/vdso/datastore.o:(vvar_fault) in archive vmlinux.a
-> >=20
-> > ld.lld: error: undefined symbol: _install_special_mapping
-> > >>> referenced by datastore.c
-> > >>>               lib/vdso/datastore.o:(vdso_install_vvar_mapping) in a=
-rchive vmlinux.a
-> >=20
-> > Later patches in the series don't make it build again.
-> > rv32 builds now though, so thanks for fixing that.
->=20
-> Thanks for the report.
-> Can you try to diff below?
+configs.ko:     file format elf64-hppa-linux
 
-Ye, that resolved it. Thanks!
+Sections:
+Idx Name          Size      VMA               LMA               File off  Algn
+  0 .text         00000040  0000000000000000  0000000000000000  00000040  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .init.text    00000070  0000000000000000  0000000000000000  00000080  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  2 .exit.text    00000028  0000000000000000  0000000000000000  000000f0  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  3 .rodata       00004015  0000000000000000  0000000000000000  00000118  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  4 .rodata.str1.8 00000010  0000000000000000  0000000000000000  0000412d  2**3
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  5 .PARISC.unwind 00000030  0000000000000000  0000000000000000  0000413d  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+  6 .modinfo      000000a1  0000000000000000  0000000000000000  0000416d  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .note.gnu.build-id 00000024  0000000000000000  0000000000000000  0000420e  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  8 .note.Linux   00000030  0000000000000000  0000000000000000  00004232  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  9 .data         00000000  0000000000000030  0000000000000030  00004262  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+ 10 .exit.data    00000008  0000000000000000  0000000000000000  00004262  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 11 .init.data    00000008  0000000000000000  0000000000000000  0000426a  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 12 .data.rel.ro  00000060  0000000000000000  0000000000000000  00004272  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 13 .gnu.linkonce.this_module 000002d0  0000000000000000  0000000000000000  000042d2  2**4
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA, LINK_ONCE_DISCARD
+ 14 .bss          00000000  0000000000000000  0000000000000000  000045a2  2**0
+                  ALLOC
+ 15 .comment      00000039  0000000000000000  0000000000000000  000045a2  2**0
+                  CONTENTS, READONLY
+ 16 .note.GNU-stack 00000000  0000000000000000  0000000000000000  000045db  2**0
+                  CONTENTS, READONLY
 
---jwGvJ1ZaVXfjr5LT
-Content-Type: application/pgp-signature; name="signature.asc"
+With the kernel 6.10, I get this - the ".gnu.linkonce.this_module" 
+sections has "File off 00004210" and "Algn 2**4" - so, it is properly 
+aligned.
 
------BEGIN PGP SIGNATURE-----
+kernel 6.10, older binutils:
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ4Y9kQAKCRB4tDGHoIJi
-0oHDAP9Da+NrCNJE56DtkPFciL+LH3SKSSwOWQ6oFB2bu8GWRQEA9RJt/Is3QV+w
-+n+t05VKvIADKDk9hc4FHnNawF8GUgg=
-=tDst
------END PGP SIGNATURE-----
+configs.ko:     file format elf64-hppa-linux
 
---jwGvJ1ZaVXfjr5LT--
+Sections:
+Idx Name          Size      VMA               LMA               File off  Algn
+  0 .note.gnu.build-id 00000024  0000000000000000  0000000000000000  00000040  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .note.Linux   00000030  0000000000000000  0000000000000000  00000064  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  2 .text         00000040  0000000000000000  0000000000000000  00000098  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  3 .init.text    00000070  0000000000000000  0000000000000000  000000d8  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  4 .exit.text    00000028  0000000000000000  0000000000000000  00000148  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  5 .rodata       00003f45  0000000000000000  0000000000000000  00000170  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  6 .rodata.str1.8 00000010  0000000000000000  0000000000000000  000040b8  2**3
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .PARISC.unwind 00000030  0000000000000000  0000000000000000  000040c8  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+  8 .modinfo      000000a1  0000000000000000  0000000000000000  000040f8  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  9 .data         00000007  00000000000000a1  00000000000000a1  00004199  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+ 10 .exit.data    00000008  0000000000000000  0000000000000000  000041a0  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 11 .init.data    00000008  0000000000000000  0000000000000000  000041a8  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 12 .data.rel.ro  00000060  0000000000000000  0000000000000000  000041b0  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
+ 13 .gnu.linkonce.this_module 000002d0  0000000000000000  0000000000000000  00004210  2**4
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA, LINK_ONCE_DISCARD
+ 14 .bss          00000000  0000000000000000  0000000000000000  000044e0  2**0
+                  ALLOC
+ 15 .comment      00000026  0000000000000000  0000000000000000  000044e0  2**0
+                  CONTENTS, READONLY
+ 16 .note.GNU-stack 00000000  0000000000000000  0000000000000000  00004506  2**0
+                  CONTENTS, READONLY
+
 
