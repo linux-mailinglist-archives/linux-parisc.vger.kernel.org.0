@@ -1,194 +1,133 @@
-Return-Path: <linux-parisc+bounces-3225-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3226-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC685A13FC2
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jan 2025 17:45:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88241A142F0
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jan 2025 21:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 029DB188C73B
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jan 2025 16:45:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E09EF1882D52
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jan 2025 20:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6289022D4FF;
-	Thu, 16 Jan 2025 16:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C6926AEC;
+	Thu, 16 Jan 2025 20:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Ii/k/+mE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KQJgYc7m"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E061DE4F8;
-	Thu, 16 Jan 2025 16:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751CB24A7EE
+	for <linux-parisc@vger.kernel.org>; Thu, 16 Jan 2025 20:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737045905; cv=none; b=dkWP4G1bxj/w1Wrys3Mvkw/s/SqC0OFY7Twp1ont1Byy0qqY/0IfauoeDtljB6jIYm93CZ8cX9AFp3bEs/RtcoMXSdwwwiBWstbucS35KBHY/k6Hn2HEXB/exwiFoHEaArURTT1Wgz6wwNTyNDu5mJmSbXAqqBUA4nEejN9xbrc=
+	t=1737058671; cv=none; b=c9gIjQJTvJiTeCP0pNCyIQqsID/pxLG/XnfnoUWhOdMID3J35hyOsTOBdP52FgMFDi9v82Tab4DerC20WqLh3/SytfkOavpcOWSC+UpFL9BXi9LzmYxmDlSIPa+Dc9bMYpYbIyHWyrGIXkyrhELnARUGpiMXtnfvhub15K61Scg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737045905; c=relaxed/simple;
-	bh=gzIeXtvT+o21ai8GfLNJEIL4JMGkaC8ofbxalttfEtY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dIQTDhq6U+vpRTL5z0aD0cgX5hjE82nuBHEoLulj6kIgMTNRRovdF7uzUaqwyBvd6qHfvZOQKXPd3FuenpFqT1IQyUOq9RTWffAoHLRmLFwqo0qAovZ+9BUfKfyausvBGSysfSnPfGxpu63TSjcTwNGNdnbfoLHQOVEZVu9QoDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Ii/k/+mE; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CA9C340E015F;
-	Thu, 16 Jan 2025 16:44:59 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id w_qUMcx4OXut; Thu, 16 Jan 2025 16:44:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1737045896; bh=WgoKIzz0OYQgA951gA+dXClPJUSxVjM8SRERMxXCGDE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ii/k/+mEQxhvi2cUq/OXag0RZzqM3+5gAKnmstJm1M3emqPqpm+FuBuTOkVG6z7Xf
-	 jK+idKpC77Q5Bb60bZEBETOeIYeybsV/OSz+HtCJkvQFCOANvCv50k0v7NDa6SMX+M
-	 eW8d/Kr6ZqmS72pz22a2f/+VjuvWRZi/DggF/7WWes5sPk2G2kgdDpbQuINvEg40Bw
-	 N23oo0oWrzyrbeWzAdiyVuD5Yw3mo37WXbbioRprWVaR2YxBJ0EXK+Gl4VR5xC9PZr
-	 OEgpLDhSThdeD7i1O5+lXsNAoSSCiqPlPw+UuhcmOIMMGEIbCewfQxWy1tU8HF3OLo
-	 971HvVXWqqaYqOUXF6C1rkTZJSjg6i1KL8jPchO1X57XYToTkMPLyPzCkyoYJKp2F/
-	 Q31hRdIdEbLaR8cpz5o5mXbI7I5fBMqVNSBbod4oBwfFPYgChEyFgfhZOsoRk9Bs8B
-	 Mq20gwUu5GXJt+hzn0MH9j0zSLA7eW0zjtMDtDIwaj3DW5gUm514gGFeEzI1eUM7E8
-	 OlSpl1gBnv9+jHVUT6Im6NNIQMxUYvTlP22zuE4gO60oYZW58v76F1ovgaGaD+UBVR
-	 WxxI3+3u6J2jlTd3rFkC2SVxOeTNpyK1mHsXzhJ+es/K1LUAYRL+ghsyJTRL2GcbTo
-	 vQ/6kTLCL9KspKSVn+JOGlao=
-Received: from zn.tnic (p200300ea971f934f329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971f:934f:329c:23ff:fea6:a903])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AF48840E0286;
-	Thu, 16 Jan 2025 16:43:11 +0000 (UTC)
-Date: Thu, 16 Jan 2025 17:43:05 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, Junaid Shahid <junaids@google.com>
-Subject: Re: [PATCH RFC v2 02/29] x86: Create
- CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
-Message-ID: <20250116164305.GEZ4k3Gd2IoJpJzEIl@fat_crate.local>
-References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
- <20250110-asi-rfc-v2-v2-2-8419288bc805@google.com>
+	s=arc-20240116; t=1737058671; c=relaxed/simple;
+	bh=2fVJYrDJrauo1neOiFmFxwwLv59IEEgq1ktcQl4XkkM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Q+cIYnGuUZ/xRF1d97iZM4HoiYQ8KP1hmduBtq175piFsdkReLXaQKOJgqC7DXv1G9st/0Fte4vrRJje6UKtSTHDfWjOun+IA1+kf3AdQYgLUZ9LegPc0xicp19e8E009yljsyGw7HWGEADfG4BSuzan3SvosPeiPJ3L7+s3nqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KQJgYc7m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B860C4CED6;
+	Thu, 16 Jan 2025 20:17:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737058671;
+	bh=2fVJYrDJrauo1neOiFmFxwwLv59IEEgq1ktcQl4XkkM=;
+	h=Date:From:To:Cc:Subject:From;
+	b=KQJgYc7mwLRvxjLJJLY1pMRVjbrYpvzxgLWInG9xKrNIMzGIMdBm7NEFs/IUFJc6m
+	 5YphhZJ4T2njxqoHkV3Q6J3zCrpKfyGMWj/mpJz91YNP0f01PB196CW1w9sPi8mT65
+	 YFvBGpHC2ooPBMFERk8PyAQcaGGFc8xk7uhJOjPM2fKFl4QyyTHatHjtwQcDYF0Qqj
+	 VgMkfYN308KyI2CX+IhsIP7u3t4/HmKWz8gQqYf9qtXVQC6GOgjC5H1qXvO1LEfNDs
+	 pqBKQiyLa9JJuEf9gjLjyv104534WRl8dSxpZmrpBbXUysHvelxiyK5wPMWrryIBNK
+	 fc6d3KzBe4F5Q==
+Date: Thu, 16 Jan 2025 21:17:47 +0100
+From: Helge Deller <deller@kernel.org>
+To: linux-parisc@vger.kernel.org
+Cc: Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH] parisc: Temporarily disable jump label support
+Message-ID: <Z4lpa9qoJClb6X7Z@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250110-asi-rfc-v2-v2-2-8419288bc805@google.com>
 
-On Fri, Jan 10, 2025 at 06:40:28PM +0000, Brendan Jackman wrote:
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 7b9a7e8f39acc8e9aeb7d4213e87d71047865f5c..5a50582eb210e9d1309856a737d32b76fa1bfc85 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -2519,6 +2519,20 @@ config MITIGATION_PAGE_TABLE_ISOLATION
->  
->  	  See Documentation/arch/x86/pti.rst for more details.
->  
-> +config MITIGATION_ADDRESS_SPACE_ISOLATION
-> +	bool "Allow code to run with a reduced kernel address space"
-> +	default n
-> +	depends on X86_64 && !PARAVIRT && !UML
-> +	help
-> +	  This feature provides the ability to run some kernel code
+The 32-bit Debian kernel 6.12 fails to boot and crashes like this:
 
-s/This feature provide/Provide/
+ init (pid 65): Protection id trap (code 7)
+ CPU: 0 UID: 0 PID: 65 Comm: init Not tainted 6.12.9 #2
+ Hardware name: 9000/778/B160L
 
-> +	  with a reduced kernel address space. This can be used to
-> +	  mitigate some speculative execution attacks.
-> +
-> +	  The !PARAVIRT dependency is only because of lack of testing; in theory
-> +	  the code is written to work under paravirtualization. In practice
-> +	  there are likely to be unhandled cases, in particular concerning TLB
-> +	  flushes.
+      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+ PSW: 00000000000001000000000000001111 Not tainted
+ r00-03  0004000f 110d39d0 109a6558 12974400
+ r04-07  12a810e0 12a810e0 00000000 12a81144
+ r08-11  12a81174 00000007 00000000 00000002
+ r12-15  f8c55c08 0000006c 00000001 f8c55c08
+ r16-19  00000002 f8c58620 002da3a8 0000004e
+ r20-23  00001a46 0000000f 10754f84 00000000
+ r24-27  00000000 00000003 12ae6980 1127b9d0
+ r28-31  00000000 00000000 12974440 109a6558
+ sr00-03  00000000 00000000 00000000 00000010
+ sr04-07  00000000 00000000 00000000 00000000
 
-Right, this paragraph should be under the "---" line too until PARAVIRT gets
-tested, ofc.
+ IASQ: 00000000 00000000 IAOQ: 110d39d0 110d39d4
+  IIR: baadf00d    ISR: 00000000  IOR: 110d39d0
+  CPU:        0   CR30: 128740c0 CR31: 00000000
+  ORIG_R28: 000003f3
+  IAOQ[0]: 0x110d39d0
+  IAOQ[1]: 0x110d39d4
+  RP(r2): security_sk_free+0x70/0x1a4
+ Backtrace:
+  [<10d8c844>] __sk_destruct+0x2bc/0x378
+  [<10d8e33c>] sk_destruct+0x68/0x8c
+  [<10d8e3dc>] __sk_free+0x7c/0x148
+  [<10d8e560>] sk_free+0xb8/0xf0
+  [<10f6420c>] unix_release_sock+0x3ac/0x50c
+  [<10f643b8>] unix_release+0x4c/0x7c
+  [<10d832f8>] __sock_release+0x5c/0xf8
+  [<10d833b4>] sock_close+0x20/0x44
+  [<107ba52c>] __fput+0xf8/0x468
+  [<107baa08>] __fput_sync+0xb4/0xd4
+  [<107b471c>] sys_close+0x44/0x94
+  [<10405334>] syscall_exit+0x0/0x10
 
-Thx.
+Bisecting points to this commit which triggers the issue:
+	commit  417c5643cd67a55f424b203b492082035d0236c3
+	Author: KP Singh <kpsingh@kernel.org>
+	Date:   Fri Aug 16 17:43:07 2024 +0200
+	        lsm: replace indirect LSM hook calls with static calls
 
--- 
-Regards/Gruss,
-    Boris.
+After more analysis it seems that we don't fully implement the static calls
+and jump tables yet. Additionally the functions which mark kernel memory
+read-only or read-write-executable needs to be further enhanced to be able to
+fully support static calls.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+CONFIG_SECURITY_YAMA=y was one option to trigger the issue.
+
+As a temporary solution disable JUMP_LABEL functionality to
+avoid the crashes.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: Guenter Roeck <linux@roeck-us.net>
+
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index aa6a3cad275d..fcc5973f7519 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -60,8 +60,8 @@ config PARISC
+ 	select HAVE_ARCH_MMAP_RND_BITS
+ 	select HAVE_ARCH_AUDITSYSCALL
+ 	select HAVE_ARCH_HASH
+-	select HAVE_ARCH_JUMP_LABEL
+-	select HAVE_ARCH_JUMP_LABEL_RELATIVE
++	# select HAVE_ARCH_JUMP_LABEL
++	# select HAVE_ARCH_JUMP_LABEL_RELATIVE
+ 	select HAVE_ARCH_KFENCE
+ 	select HAVE_ARCH_SECCOMP_FILTER
+ 	select HAVE_ARCH_TRACEHOOK
 
