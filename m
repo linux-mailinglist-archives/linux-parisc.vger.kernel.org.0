@@ -1,206 +1,168 @@
-Return-Path: <linux-parisc+bounces-3222-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3223-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D12A13BA0
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jan 2025 15:05:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE7EA13DA2
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jan 2025 16:30:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE04F165366
-	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jan 2025 14:05:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D66188C9AF
+	for <lists+linux-parisc@lfdr.de>; Thu, 16 Jan 2025 15:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D6322B581;
-	Thu, 16 Jan 2025 14:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836C622B8CF;
+	Thu, 16 Jan 2025 15:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AoUcPN70"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Yr8ZoAae"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0752D1DE8AC;
-	Thu, 16 Jan 2025 14:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5425522B8B9
+	for <linux-parisc@vger.kernel.org>; Thu, 16 Jan 2025 15:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737036299; cv=none; b=fYfD3JLSuqVO5Yu0wx2Zz1Ib203/xKe/go/NTe5+t2mU1Lm+fIEMfz1vUQxNjrbOOQFNRXDlBEkXwkDoWumYNH9HaUhzLTCxT/E41G8m/KzUaffhUbnrEvnid52F1sX1/vrUruuzIZd02wx6TO1hNmBqw88TQlhcQWyVdLGxXDk=
+	t=1737041408; cv=none; b=VhBqL+Z+uzKSWE2StaXX+s7k7rrHylMIUSpRH5Kr/TwicYVNZuZ0l3cq4bu+o815tfWYuq/ugw3FwafMRvdiHTQutsVCaSxndOxYHcwn/tj1bbx5LcLF30d2vvMb1GOUZg9q5EIh5yMtX4HKq6wuiLuh3Fuv0pJqtPTmUMnrOro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737036299; c=relaxed/simple;
-	bh=hNyknZwTpS4igQ+b6Q471Clo7jLNR8MSLrznRv+goc8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RAPMQmtGvZPqnPyfHSSBetv1bu8un6SIimDWFgH1grLafK3aqPL5xT+FZxfWXPEU6v2FPpm8NZdKSTJOq1SqPaIwp5VaYZpLBEu9/3AKLSAyU9o1RkMJe5X3k1aH3t5B6B1V04OSYpN54ASf79I1xdbSUvHemEMCzv2r+K2VXus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AoUcPN70; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 64DEC40E0288;
-	Thu, 16 Jan 2025 14:04:47 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 2AjLmPaIv3rS; Thu, 16 Jan 2025 14:04:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1737036284; bh=ugKrbojVRwTBmPMKkHUcaS2aDcqRv9OqaSevzpXMYOg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AoUcPN70r71GRskEbBjwKB5t2IpKoOvWroHj7Gj+yh3TXIQq4jAaeXsAtKetsP+we
-	 7U42EJbMPBRZdphzKgKJnl1FaXd4+NOPdDL1SkgOkJuvHbUXMBGkSPz+3v8h7dNhmT
-	 Hnpwxe9r0qX772w6Op3rP2iEyZS27E/nwn39RIAvFhrt8U3AgFlwZ1zghfPHzcZ8zO
-	 c/4ymjaW+0fTU8jpLPb236iMCAWdJa4hZ/QKzL2ReUqqUBynyzdljxfL49TuGZKsUK
-	 HuZUYY0mmrBW4uLQ4YxKMwtuKAzOBBOTZPyqnz4H81TmMZX9A3znFZ3JT09PpbLLCS
-	 Ia6e5nKvzD4mq+MXsOmJ3+GXejTE4cvNoC5h043TIg2mzfveb9shxPPW6gBlFTA53E
-	 7jgElnzIfinsMoQwVSg6i18FLDzY50+kqVz9+zbr5gpiPs5LeCwLYM/Aq1u2fGPpZ0
-	 0Ls41+wYzo1pfh0OpM+GBydt5tkuWtf+9452THH3PFkEdzhwGbhRprrYvj75bnToTh
-	 nRx4uZELom9gJdmd+ZcYZKN5oNcUaiz0Ijo4hBEtkfRieSbS8RUd1mN91KKgO2qVid
-	 d+CXJjbRpPfJbO67fm64t8fRGqM3v/OqRo/Z09m5/2qMM0veqGpRWUhNKQ3qXXaJz4
-	 pfAh9T0l+/f8chSy2nlAbhlU=
-Received: from zn.tnic (p200300ea971f934f329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971f:934f:329c:23ff:fea6:a903])
+	s=arc-20240116; t=1737041408; c=relaxed/simple;
+	bh=sj0Yk4R4Cn4AeEwULOafwSAY5++4IddS9XZdeLDoyyk=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=qiZ95kdSxqhEmHzoaZ6o7LBHOBckWOxqrK8JuJYwmHAQstibVRxwnKJktsNdVkN5UNtzcwNTHZ0xGoBuvQIGfj0gJCPuffyW6Pv7yr8oR7PQpa/r/2L+ZlGquuJccWWWCvgu3ZelXejZVi+wEVt2MoFUNZN/Vx22ZlWmIEI2iHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Yr8ZoAae; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1737041405;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zEZB3oUMEGAnbbLJjY6iG6Vdp9wcrmp6p6+l59nQrbo=;
+	b=Yr8ZoAaeRwns7Mv8HQxNcxptGTVj9/vayLL35ySP3+O2l19AgoR3UhD4A+rcgkg9jcYAbc
+	cXK9x5HtfMYDAiTdVdmks4gu334TKZ0ixfTDjm7DiLkmc5C89x6kR+qnL9BbIVDRkaKnIS
+	gUNujxNKGMe8PKN9PjR2L1CVv54TZnU=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-396-dQEdoyvfNSGQPpXF6Stagg-1; Thu,
+ 16 Jan 2025 10:30:00 -0500
+X-MC-Unique: dQEdoyvfNSGQPpXF6Stagg-1
+X-Mimecast-MFC-AGG-ID: dQEdoyvfNSGQPpXF6Stagg
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B67F640E0286;
-	Thu, 16 Jan 2025 14:03:01 +0000 (UTC)
-Date: Thu, 16 Jan 2025 15:02:58 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: Re: [PATCH RFC v2 01/29] mm: asi: Make some utility functions
- noinstr compatible
-Message-ID: <20250116140258.GDZ4kRkvEGYovA_J5u@fat_crate.local>
-References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
- <20250110-asi-rfc-v2-v2-1-8419288bc805@google.com>
- <20250116001858.GDZ4hQctZe_PFvJ0AJ@fat_crate.local>
- <20250116102747.GAZ4jfI9HG3K-PW7nf@fat_crate.local>
- <CA+i-1C1sXC1tbo9ytuex0eBD3gUbQwnNP8rvOhCv=JV+oSHo1g@mail.gmail.com>
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E06F61955DC0;
+	Thu, 16 Jan 2025 15:29:58 +0000 (UTC)
+Received: from [10.45.224.57] (unknown [10.45.224.57])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0432819560AE;
+	Thu, 16 Jan 2025 15:29:54 +0000 (UTC)
+Date: Thu, 16 Jan 2025 16:29:51 +0100 (CET)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Jan Beulich <jbeulich@suse.com>
+cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+    Daniel Gomez <da.gomez@samsung.com>, 
+    "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+    Helge Deller <deller@gmx.de>, linux-modules@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
+    Sami Tolvanen <samitolvanen@google.com>
+Subject: Re: Unaligned accesses when loading modules
+In-Reply-To: <16bf04b0-64ad-4614-957e-2971f053949d@suse.com>
+Message-ID: <0144332b-be9c-2f6d-81bc-a18f13990d65@redhat.com>
+References: <1665d54c-178f-ff72-e627-776e7c76798b@redhat.com> <CABCJKud9RCJzVZ2VuTRoaBavOC9bnyTv_W_-AC3mGOy9AY7dWA@mail.gmail.com> <aedcb0fd-040b-0dcc-8c28-34a0b07d5a7e@redhat.com> <16bf04b0-64ad-4614-957e-2971f053949d@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CA+i-1C1sXC1tbo9ytuex0eBD3gUbQwnNP8rvOhCv=JV+oSHo1g@mail.gmail.com>
+Content-Type: multipart/mixed; boundary="-1463811712-1062778216-1737041398=:159087"
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Thu, Jan 16, 2025 at 02:22:42PM +0100, Brendan Jackman wrote:
-> Sure. I'm actually not even sure that for a [PATCH]-quality thing this
-> cross-cutting commit even makes sense - once we've decided on the
-> general way to solve this problem, perhaps the changes should just be
-> part of the commit that needs them?
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Right, that sounds better.
+---1463811712-1062778216-1737041398=:159087
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-> It feels messy to have a patch that "does multiple things", but on the
-> other hand it might be annoying to review a patch that says "make a
-> load of random changes across the kernel, which are needed at various
-> points in various upcoming patches, trust me".
+
+
+On Thu, 16 Jan 2025, Jan Beulich wrote:
+
+> On 15.01.2025 19:02, Mikulas Patocka wrote:
+> > On Tue, 14 Jan 2025, Sami Tolvanen wrote:
+> >> On Tue, Jan 14, 2025 at 6:07 PM Mikulas Patocka <mpatocka@redhat.com> wrote:
+> >>> On PA-RISC, with the kernel 6.12.9, I get unaligned pointer warnings when
+> >>> a module is loaded. The warnings are caused by the fact that the
+> >>> .gnu.linkonce.this_module section is not aligned to the appropriate
+> >>> boundary. If I dump the module content with "objdump -h configs.ko", I get
+> >>> this. Note that the .gnu.linkonce.this_module has "File off 000042d2" and
+> >>> "Algn 2**4".
+> >>>
+> >>> On x86-64, the same misalignment can be seen, but it doesn't cause
+> >>> warnings because unaligned pointers are handled in hardware.
+> >>>
+> >>> This seems to be a bug in the linker, because when I compile an old kernel
+> >>> with a new linker, I also get the misalignment. Do you have an idea how to
+> >>> work around this bug?
+> >>
+> >> Does explicitly specifying section alignment in the module linker
+> >> script fix this by any chance?
+> >>
+> >>> kernel-6.12.9, binutils from Debian ports:
+> >>> [...]
+> >>> kernel 6.10, older binutils:
+> >>
+> >> Which exact versions of binutils were used here? I don't see the
+> >> alignment issue with binutils 2.42 on either x86_64 or parisc64, so I
+> >> assume you're testing with something newer?
+> >>
+> >> $ hppa64-linux-gnu-ld.bfd --version
+> >> GNU ld (GNU Binutils for Debian) 2.42.50.20240625
+> >>
+> >> $ hppa64-linux-gnu-objdump -h configs.ko | grep -E '(format|this_module)'
+> >> configs.ko:     file format elf64-hppa-linux
+> >>  17 .gnu.linkonce.this_module 00000300  0000000000000000
+> >> 0000000000000000  00005c50  2**4
+> >>
+> >> Sami
+> > 
+> > Hi
+> > 
+> > I use version "GNU ld (GNU Binutils for Debian) 2.43.50.20250108".
+> > 
+> > It was broken in the commit 1f1b5e506bf0d9bffef8525eb9bee19646713eb6 in 
+> > the binutils-gdb git and partially fixed in the commit 
+> > d41df13ab36b224a622c0bdf28a96a0dee79db77 - the section is still not 
+> > aligned at their specified boundary (16), but at least it is aligned on 8 
+> > bytes, which avoids the warnings.
 > 
-> Do you have any opinion on that?
+> When you say "broken", can you please explain what it is that is _broken_?
+> Things have changed, yes, but the produced ELF is - afaict - still within
+> spec. The "partial fix" as you call it wasn't really a fix, but a band-aid
+> for some broken consumers of ELF. Plus modpost, being one such example,
+> was supposedly corrected already (Linux commit 8fe1a63d3d99). Said "partial
+> fix" was also confirmed to help modpost [1] - are you saying that wasn't
+> quite true?
+> 
+> Jan
 
-You're absolutely right - we do things when we need them and not before.
-Otherwise, often times things get done preemptively and then forgotten only
-for someone to notice way later and undo them again.
+By "broken" I mean that the file offset is not aligned to the section's 
+alignment.
 
-> (BTW, since a comment you made on another series (can't find it on
-> Lore...), I've changed my writing style to avoid stuff like this in
-> comments & commit messages in general, but this text all predates
-> that. I'll do my best to sort all that stuff out before I send
-> anything as a [PATCH].)
+By "partial fix" I mean that the file offset is aligned to 8 bytes, but 
+the section's alignment is 16.
 
-Thanks!
+When Linux loads a module, it takes the .gnu.linkonce.this_module section 
+from the module file and points a pointer to "struct module *" to it (see 
+"info->mod = (void *)info->hdr + info->sechdrs[info->index.mod].sh_offset;").
+So, if the section is misaligned, you get warnings about kernel accesses 
+to unaligned memory.
 
-Btw, good and funny way to use "[PATCH]-quality" to mean non-RFC. :-P
+That commit 8fe1a63d3d99 should have been ported to the stable kernels (I 
+used the kernel 6.12.9 which lacks it), I'll post it there.
 
-> Oh, I didn't notice your update until now. But yeah I also couldn't
-> reproduce it on a Sapphire Rapids machine and on QEMU with this patch
-> applied on top of tip/master (37bc915c6ad0f).
+Mikulas
+---1463811712-1062778216-1737041398=:159087--
 
-Yeah, it feels like toolchain-related but I can't put my finger on it yet.
-We'll see if and when this thing will re-surface its ugly head...
-
-:-)
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
