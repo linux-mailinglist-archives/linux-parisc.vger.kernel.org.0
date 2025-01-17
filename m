@@ -1,150 +1,148 @@
-Return-Path: <linux-parisc+bounces-3229-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3230-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6BBAA14E6C
-	for <lists+linux-parisc@lfdr.de>; Fri, 17 Jan 2025 12:24:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA64A1530C
+	for <lists+linux-parisc@lfdr.de>; Fri, 17 Jan 2025 16:44:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15B763A8457
-	for <lists+linux-parisc@lfdr.de>; Fri, 17 Jan 2025 11:23:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F3F13A2FC3
+	for <lists+linux-parisc@lfdr.de>; Fri, 17 Jan 2025 15:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081EF1FE478;
-	Fri, 17 Jan 2025 11:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85316198851;
+	Fri, 17 Jan 2025 15:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PPorRLND"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SJsPsA6N"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56DCC1FBEBF
-	for <linux-parisc@vger.kernel.org>; Fri, 17 Jan 2025 11:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBA01422A8;
+	Fri, 17 Jan 2025 15:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737113025; cv=none; b=HVRAFvwWzXJHVGHlNL0G7Q/C/13UZVa12ffhTPapN6ZcajEGAueFOGtxBcEwikV9FzTT+wgU+5+y03wJTEuZb98+dUyvZaKPv4KTA52qi2/p/3mYzZTmRY3tOzzlQA5fH20Mz+KnJ4wxw5TeV97ZvVxNnR6siZ9SLLvOdmwPDgw=
+	t=1737128686; cv=none; b=HR/mw65jw9g9laJetQaIFV4kGW2Pkmda/M5dezeSn/nZY9PV9w92IUC+rOoAiSLW9KsyjmbxmKsf6gfjC/3FmA5GTbrMxijePH0ksRlnjU9CZu9TbgWNPo9eOtd/EjIJjZWLY1FFF1okOoLO0/u8UynZl36qLsvL9exIHCwLjeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737113025; c=relaxed/simple;
-	bh=0MfAagGyPmBC90JAAVPekQyRC26SLFPBltnUGhYKIEU=;
+	s=arc-20240116; t=1737128686; c=relaxed/simple;
+	bh=2eYFLaWM2SV5SCMr09KRtCDPcssaE0WkpCl80N1bTio=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FzBM2m50yJj3gYPYM7RB7G11pFsGS8EqALwMBmYQcEx56BQW+lVcHNDJ+10+II55IQj7MrhBpCUCttlowEGegkaHXmpmWNuKwq3P/evNfIYP7weZ9G3iPtorsaPCUWLBfaWnQvj8h9tfWlhFj8awizciALQRZaW92RtzrQfzCwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PPorRLND; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4678c9310afso165331cf.1
-        for <linux-parisc@vger.kernel.org>; Fri, 17 Jan 2025 03:23:42 -0800 (PST)
+	 To:Cc:Content-Type; b=JuaRNIehX3J6WrCfKuO2fAL79XxcHTKU0WMsmU6ae/jZXTjZ2sHw02u8qjcBp18OrtWhfB22IVQprbyWIDDY6PqHaeE/NCN+QsO9W170V6YSkJY9oDXmPfl9KR8KbxUOjGXgusfiHGJrNDB9V2eRJHgTYQNC4N8PxHCx5Nn93yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SJsPsA6N; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2ef28f07dbaso3235422a91.2;
+        Fri, 17 Jan 2025 07:44:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1737113021; x=1737717821; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FIGX2U5Y620ytLuHZv9C2YKRXU6LkFVVh5lOzeeXil4=;
-        b=PPorRLNDV4AQ8MwiqGru7nqq+V+H31WOvwoUgITsCd2kWqUJXQ0yhvhLdOXY3jfgdF
-         kETx2BTwW1SrvyNs7aMKDcPh46hEYuh5pnW244DN+cgalqppCtqW9PT0LC1W+QxhOxKx
-         wxdp9Wrw9hFlF2qqvRkZd+n+iIcj1M7gaV74qABa+iFHX6R0UklI/TNVU/cfq9IfCDgw
-         R10IA7qqGnPlp7ySFSWytN+wNZX1iv50lOGLAQrK/1DZGVuVUOGRbSwrtFAH2dAer5jT
-         h71ju9UbgO4pg4KHLkbvEdA1Br7PcZVKcBZSvZyJs1f8UMptW8QFmgjCjegxSvlO9U/r
-         Tc1A==
+        d=gmail.com; s=20230601; t=1737128683; x=1737733483; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=whHgpC9NdP83/YfvPy6m/Zm1/eSoIWGpN2YA1mG9PX0=;
+        b=SJsPsA6NgpdpQU3sHawKFIkhbEkgjc0popnkz6r9alKNiKe1JYWIb/111hQATcV+M8
+         LQUU0DL1TvzNwEBLahOpJEbHCGaQ2SopmuFfV41VpllRDcusoj+CuXcL9kNk0BxeOfhc
+         cfBLX0XRBEIglW59nUq7Anj4LQSqVkJlFZAWgKA11OHD+2W1M5QKR5cMyMaEmX8M2Ejz
+         Is3nNS8x/0U6ULvix3mXdeUxPCgycjLvKIvfxvSt3EpMnsm+1OaO+CgHXr835lG6POGz
+         7TKvTseqJBod4EsSICmdUA3x5KK8pgjeADcl0IzSLr/ykqw6hr4ZJFj1KkKvZBuRTVxr
+         4dSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737113021; x=1737717821;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FIGX2U5Y620ytLuHZv9C2YKRXU6LkFVVh5lOzeeXil4=;
-        b=hab9zp6rLIWflYMUZD3WkiUKaaPzBa0iae212VKssMoN0YGPlgn550lW+0+P+s435b
-         RDmAiP2qHF6g3H5UQTnrQEOG/dFeQrwJsCQnaupFbuLWGMCYTY//DC7bt2GBZ2m+vxI4
-         CFJMfO5ayqd89kqZerHTHI5C+lVwZPfg1+mnCCwpqMOijT4rdOnjxvgVKkKasIUWue8n
-         k3iGlAaUghdXnFMM83Xz4Ti//5+pj3t345VmsipKw6dEEMgTDJhiuy/HR1zKG9s59yCw
-         h3EYWbbOiySk/lqDgesc4pUYU4eA/CVZ8p01h/JfUMKDPZBHlMtZrpZKtxRq0EMfXc0l
-         8oBg==
-X-Forwarded-Encrypted: i=1; AJvYcCVedt301/gdhcfdT11fbbniecNeyE8tKIbt4FwZhy+EUDaOdF3HDPiLtNiXR+f09sAi8AN1wLPixDQH4HQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6bgqEoyTvJv9/JE7jrHch4cgG4aRBH1oD5uj2Th290HdXp2U7
-	GojZRcwuCp/jfEEeX6S93d3CIV98L0LzVWjTD09zVlnYtE0n/GtLveQJgfjcz26xzbxG+3DOatw
-	FJFDcfht5CPCvuKPY5xeIJvOPlycGkyKHrd4h
-X-Gm-Gg: ASbGnct0kro3+Yt8yeKzBDByTS4EJ1NlZbOZxWi5IDq7VNT88CiE34L4HOADrelhxz/
-	YOAM8MgTC0yk6jo9hxkiKly1uUFc7tj66mffMye7pCFG2XCwd2H1EbSePe6yERgBkQQnc
-X-Google-Smtp-Source: AGHT+IGncYyjy1GhHnzrsXOo74WzCLmIKZegqTWM730ikUDOlazbTaQH35QB0zgmvzL1yJ283cNPWINqKuKsZStNP0A=
-X-Received: by 2002:a05:622a:1997:b0:466:923f:a749 with SMTP id
- d75a77b69052e-46e130af265mr2539121cf.15.1737113021050; Fri, 17 Jan 2025
- 03:23:41 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737128683; x=1737733483;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=whHgpC9NdP83/YfvPy6m/Zm1/eSoIWGpN2YA1mG9PX0=;
+        b=T37RjqaH5Rd17lv5zCNwBP5LcjBPCcEyq9h80Y1titSHjSYv/4a7h8cWu4J1NiUo2Q
+         tnfBnd2KAs9CuAXOJ1aBFmDYgYepA7m+Keg5kdZSTlxaejL17caFIQ+lQ6H3XH4NFJcD
+         mFmlTc7FOCCcWWiMFcnk7UQwdQwDOLFIDWxdxJ1JdfGGp8xyhFNwcFjW0gu0GAwpJzXb
+         7NmZTw3p4xaL6gsfI9X8Iol8WBlymKQr7st/lVPk7EMBKiSXCXlK6Gm7jvvriR4dYYLv
+         5rHth/v4H5MNr4dlp4r4RymQf/gt0aowPdvfTxnHEYvJ+FB+7vrSCqKammcmwaJTe306
+         Vhfw==
+X-Forwarded-Encrypted: i=1; AJvYcCU70I2gQ2SFoZv3Kg+aov4x4BW9kPLVneyb/P4hsrzBaRlm5fKqaQ6qC9Bg7okLhUoOBvbHpnzK9zW9Vg==@vger.kernel.org, AJvYcCUZazsjiuOiyAUPV5bzm+ntw4fi5NuFubZ3BFtFPvkjqRb38cBU65ymtHlTjZM/FlmZ2MsYGcy0kkKM@vger.kernel.org, AJvYcCUbgA+SSN34RQanuTDgfOAxh6mlGreuQ4VnDGDp4xMQ3StuenZLccta+QfsGqelnZdQ7dTl6xmkPnYCaR9g@vger.kernel.org, AJvYcCV/kRprDnsSj8ps8e5fiZv1l86Dfs3ZF+Zkpn79ZyOcngcSLZPKeD8dVYv1wdJtm6G+LB05J/cy14I=@vger.kernel.org, AJvYcCVNR88sbLW53SxyNsxLRSURsnP8inp8tohuiWuzQpN/eFQVchoBhlhaWpm3nTZDf6qjsAHgHOaM6P8jR99d@vger.kernel.org, AJvYcCVYF4GCf6zNaxB+Hl6DRqsTfsv1yl8MOImykBK2w4fM7ItXri1RGlIUuB/Zqzvumnuw1qhBYtu6zPrKTg==@vger.kernel.org, AJvYcCWtooy5fbe9IcUMxJp4g0VEVwoQ0CvJbFvu71vDJczDgrSyjPUTqyHIhJJGhMG6FU9Gbq8yHwTuMXIkzA==@vger.kernel.org, AJvYcCX3YoU2aE9cHQGrKRpqtky8uYClPZFCN/zJosSBAdf2puD+MFbDHOut2RfkEF2spIeb6LSojVR72/1S120LrW8=@vger.kernel.org, AJvYcCXBcwk5KBcG1ZwLpuGxVydqChlq7dc/QaUwDbPvHeGuc6XA+YeRSz+jdi1g4+e2cc2tEUuUc0WFMKA5WuEsYA==@vger.kernel.org, AJvYcCXc8OPlmz+I
+ vG7XZp/3EJi3/hiycCBVTym15hIYCI9+ni3qRdcLyBfh40hVg0kMJrWdvn1xNisk74jL7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGkkL2XHUD5n4K7KaKGXXeK1VdHlT4X7MewsNjgfmHUbTnUEu2
+	BGPPWQDa4cD6a1H2WWTw8KGd7Aj1IW53Zr8GbKOMD/MHNcBtS1n+auS2pEhRlwyQ3/PD6mSwVGS
+	UlXvmft4PFUll1Yd+fOeIQVH4m1c=
+X-Gm-Gg: ASbGncvRVEtDcs117AgCd6rqHNz3XV9CAc6TqzY69AS4alZGQTIvmjB+ZJ1Z/4gWPaJ
+	x9IlzopbSWq3vf3Y0n7FXrGBljdNGEPOaq8geyA==
+X-Google-Smtp-Source: AGHT+IE6c+RDPkVhdYpGhwJjY3swM/Kqbs9TiZQ1EhehCnKjqU+fLUq40RYGPSLu28v4p+m1VfknK3ci2deVkxFc/zo=
+X-Received: by 2002:a17:90b:54cb:b0:2ee:df57:b194 with SMTP id
+ 98e67ed59e1d1-2f782cc011fmr4009658a91.21.1737128683175; Fri, 17 Jan 2025
+ 07:44:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com> <20250110-asi-rfc-v2-v2-16-8419288bc805@google.com>
-In-Reply-To: <20250110-asi-rfc-v2-v2-16-8419288bc805@google.com>
-From: Brendan Jackman <jackmanb@google.com>
-Date: Fri, 17 Jan 2025 12:23:30 +0100
-X-Gm-Features: AbW1kvZ_KaymUoc5jGYX-groCnX_p-Tg9PrSiJ2rBOnB_iSLYbhJZulsHf6-rd0
-Message-ID: <CA+i-1C1JKEd43vtyGO6RLCQQA8qVCvALjm+q1oVTGMLtjo64iw@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 16/29] mm: asi: Map kernel text and static data as nonsensitive
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
+References: <20250113170925.GA392@strace.io> <20250113171140.GC589@strace.io>
+ <Z4hs0X8RhGTuevnn@ghost> <eecada37-9d0e-4e3c-9b70-fefb990835b2@zytor.com>
+In-Reply-To: <eecada37-9d0e-4e3c-9b70-fefb990835b2@zytor.com>
+From: Eugene Syromyatnikov <evgsyr@gmail.com>
+Date: Fri, 17 Jan 2025 16:45:02 +0100
+X-Gm-Features: AbW1kvb78AU_0HrrHV0OtjwO2uAvukZ8DnSGASVo_9Ya8_h5NunDjjnSIP4voz8
+Message-ID: <CACGkJdtAmtxsPiKYUzLLmfNGf6oJ9YS-25ZY9VvEEWhz37Qx6Q@mail.gmail.com>
+Subject: Re: [PATCH v2 3/7] syscall.h: add syscall_set_arguments() and syscall_set_return_value()
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Charlie Jenkins <charlie@rivosinc.com>, "Dmitry V. Levin" <ldv@strace.io>, Oleg Nesterov <oleg@redhat.com>, 
+	Mike Frysinger <vapier@gentoo.org>, Renzo Davoli <renzo@cs.unibo.it>, 
+	Davide Berardi <berardi.dav@gmail.com>, strace-devel@lists.strace.io, 
+	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, Will Deacon <will@kernel.org>, 
+	Guo Ren <guoren@kernel.org>, Brian Cain <bcain@quicinc.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Jonas Bonn <jonas@southpole.se>, 
 	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
 	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
 	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
 	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
 	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Christoph Hellwig <hch@infradead.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Mike Rapoport <rppt@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.osdn.me>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
 	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
 	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
 	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
 	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-efi@vger.kernel.org
+	linux-um@lists.infradead.org, linux-arch@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 10 Jan 2025 at 19:41, Brendan Jackman <jackmanb@google.com> wrote:
-> +       asi_clone_pgd(asi_global_nonsensitive_pgd, init_mm.pgd, VMEMMAP_START);
-> +       asi_clone_pgd(asi_global_nonsensitive_pgd, init_mm.pgd,
-> +                     VMEMMAP_START + (1UL << PGDIR_SHIFT));
+On Fri, Jan 17, 2025 at 2:03=E2=80=AFAM H. Peter Anvin <hpa@zytor.com> wrot=
+e:
+>
+> I link the concept of this patchset, but *please* make it clear in the
+> comments that this does not solve the issue of 64-bit kernel arguments
+> on 32-bit systems being ABI specific.
 
-There's a bug here that Yosry has fixed in our internal version, I
-neglected to incorporate that here.
+Sorry, but I don't see how this is relevant; each architecture has its
+own ABI with its own set of peculiarities, and there's a lot of
+(completely unrelated) work needed in order to make an ABI that is
+architecture-agnostic.  All this patch set does is provides a
+consistent way to manipulate scno and args across architectures;  it
+doesn't address the fact that some architectures have mmap2/mmap_pgoff
+syscall, or that some have fadvise64_64 in addition to fadvise64, or
+the existence of clone2, or socketcall, or ipc; or that some
+architectures don't have open or stat;  or that scnos on different
+architectures or even different bit-widths within the "same"
+architecture are different.
 
-Under KASLR, vmemmap is not necessarily exactly 2 PGDs like this is
-assuming. In fact it can share a PGD entry with the vmalloc area. So
-to be correct this cloning logic needs to actually look at the
-alignment and then navigate the page table hierarchy appropriately.
+> This isn't unique to this patch in any way; the only way to handle it is
+> by keeping track of each ABI.
 
-To be fixed for the next version.
+That's true, but this patch doesn't even try to address that.
 
-As Yosry noted internally we also need to think about vmmemap getting
-updated under memory hotplug.
+--=20
+Eugene Syromyatnikov
+mailto:evgsyr@gmail.com
+xmpp:esyr@jabber.{ru|org}
 
