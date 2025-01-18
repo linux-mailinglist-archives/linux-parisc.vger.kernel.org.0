@@ -1,54 +1,56 @@
-Return-Path: <linux-parisc+bounces-3232-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3233-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37BBA15ECC
-	for <lists+linux-parisc@lfdr.de>; Sat, 18 Jan 2025 21:36:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F2AA15EE9
+	for <lists+linux-parisc@lfdr.de>; Sat, 18 Jan 2025 22:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED2A1165EF7
-	for <lists+linux-parisc@lfdr.de>; Sat, 18 Jan 2025 20:36:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08DB318865FE
+	for <lists+linux-parisc@lfdr.de>; Sat, 18 Jan 2025 21:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E67A1ACEC7;
-	Sat, 18 Jan 2025 20:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5473139CF2;
+	Sat, 18 Jan 2025 21:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="juXNIEil"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="NW7xM/SN"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D412A3398B
-	for <linux-parisc@vger.kernel.org>; Sat, 18 Jan 2025 20:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7351F95E;
+	Sat, 18 Jan 2025 21:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737232605; cv=none; b=OUWxGkFf8U8nqnY8YiLYf4q4avJV2azghqnXWmEjOz3kWqzaJn0fsaHUXXyOkyOwqb22RF45gQ907jgfX71M2jLL3zlDfwb9XnFFRkACK3gzrdUJA4m+TAZLABsbRLR3KswGWbuL12IqBoExsMKa3oo8W3+JqVl5WddEetZI0FY=
+	t=1737235900; cv=none; b=aKv3uxAp9Ft6bgZmUqO+KDHexSJQBJF6hKNXK2UFx1HjVn+YRDhT26amVVQ3dVddGgQ+MWbE1GnqBgWqViLFNMks3dhDVl4MnNSYZQUZdMgw+lxk/rozdyLyEpGeLtgpB23IY0HFHkDNLjyihfR1YKRXr1+IWqBDkEHw03wrffM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737232605; c=relaxed/simple;
-	bh=gB3vM12JrgmQ23Fv6PaaVuZpfdhmwH7+NGaDRUvp03M=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=lAT7V5paNzVP/PR7ZDQmoUE92+FDwAQuz87uyAl/N4AEfzwathVNUvwycjVWh00Om8YGSPC6ZkhTzkkUGyPFeUtls1cZrGzvudNIoLVNQgOJ0ln7XU6087KCi/c2r7xDZISxdETZ0/0x2H6sWifGy3Jda7283PUOrxAeQkbCbtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=juXNIEil; arc=none smtp.client-ip=212.227.15.15
+	s=arc-20240116; t=1737235900; c=relaxed/simple;
+	bh=AoRQla70eJcGYrHXvueEFBICy/EKopC8cOWVBukGTxg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q4BvphrfzafrZUPTaffHBbIUqUxWPlbwPwsfSIsiIWeN4tJkwMvJkfsptSZq1qoeMMXxwsvojnWynWoMMJIUB/5vch/MiJRxuNMCED2RRe4QNfNfDokKpZbqyaaelJciVue/uLeEuETve4UGYxR+jVXs1LRIQb0x4/TtqC7ZzoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=NW7xM/SN; arc=none smtp.client-ip=212.227.15.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1737232600; x=1737837400; i=deller@gmx.de;
-	bh=gB3vM12JrgmQ23Fv6PaaVuZpfdhmwH7+NGaDRUvp03M=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:From:Subject:
-	 Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=juXNIEilIi9oGWHF7JLabiC0Dmk2l7yFe6l0vuUzBtutVn0xZdhVzHUTgvr7Seo5
-	 ZRDDbrwbmxuvZQhbLgOrsH6RceDwF8jg3naK10kbJogNTZBgG6aJVvDkMyzSgwfA1
-	 TkjzNsb6fSKmVvaCgbp3Bq/hlQ+vd0Npqu1XUGvmsfyJ1s//k2DZ5Hi/Qzfqi2Ee6
-	 cFr/oLoEWwOa2BontsLJABSnoIVLXivEyCXSY7IqnVxv/04176oyMtsLQwy666v+m
-	 fa2K0EmzgCTM0nbGNXfzt80+8Q9DBFIv1VwuHEadHOpV3Wpzmtg35WGo1rInePikh
-	 eRR2OLzGjSIr2Wsz3g==
+	s=s31663417; t=1737235896; x=1737840696; i=deller@gmx.de;
+	bh=7CMs+OeYt8TC8Oerj/fG7ypoBLHYZA5UpQ9aC+/A5Gs=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=NW7xM/SN8gaQlVaH9/2PitqjsVqZyD8LceSQu3Z2flhOctvDa5JXPqmQwN2baUw+
+	 NDBW2xzf+rjjEtqq/mTK7Q5Dzh/uqDJ6/F8n/CMu8nwz151M4yzeiLllavdf0OKLm
+	 15i/7BJgGiAfCdkE87v8/G4nF89FXdPb6StlCF5B2oJ4aH4NuP2iAtJcHx65KWdOr
+	 nQvFHhCKfUttJPVpcbl5aYVhzojMWzNi6Kkgy8wB+RK4XCF/wVRLccoGRg1XO94Zj
+	 FHsUCtNTNDASAoejKn+moJg2hbWs0pG/OkOcXSlPyydJcK0oVqEXW6lE1sN/nQTyA
+	 aLonzEArxu1lOyHkzA==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.172] ([109.250.63.6]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N63Vi-1tSsim2YQq-00tgpI; Sat, 18
- Jan 2025 21:36:40 +0100
-Message-ID: <9bd2f73d-3aab-4bc6-9b2f-f50129ea7d43@gmx.de>
-Date: Sat, 18 Jan 2025 21:36:40 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N6KUd-1tT9W23SAr-00tx5I; Sat, 18
+ Jan 2025 22:31:35 +0100
+Message-ID: <fc71c8f8-dd4f-4b84-94a8-cecb16ba5352@gmx.de>
+Date: Sat, 18 Jan 2025 22:31:34 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -56,11 +58,14 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] parisc: add vdso linker script to 'targets' instead of
+ extra-y
+To: Masahiro Yamada <masahiroy@kernel.org>, linux-parisc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+References: <20241221061631.328327-1-masahiroy@kernel.org>
 Content-Language: en-US
-To: linux-parisc <linux-parisc@vger.kernel.org>,
- HPPA porters <debian-hppa@lists.debian.org>
 From: Helge Deller <deller@gmx.de>
-Subject: Debian HPPA Installation CD-ROM available
 Autocrypt: addr=deller@gmx.de; keydata=
  xsFNBF3Ia3MBEAD3nmWzMgQByYAWnb9cNqspnkb2GLVKzhoH2QD4eRpyDLA/3smlClbeKkWT
  HLnjgkbPFDmcmCz5V0Wv1mKYRClAHPCIBIJgyICqqUZo2qGmKstUx3pFAiztlXBANpRECgwJ
@@ -104,40 +109,86 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
+In-Reply-To: <20241221061631.328327-1-masahiroy@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:HPu1O5RHf2ucs3yEaZ6Gp7sSWMSliBBY4LOqs9f54yNss/T7Cm0
- B9SIUhUqqnIKnvHaXhGy4d/YZ57LHU12SZhxhXIVVxFsOQ4F3/d2/2xeXXRcpzi1BQisMKs
- ICgfwXqpqzGfBbCPXai3r7MXAQoVVnYBxt7Dw0pIia6pi5rXSe1aiiUXGGlfh46hvx7Lxnl
- heweJgjrW3/P+Vx7dsnzA==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:hQ1QlB9GCPJ2FynHK68Mo2bD2jyrRGZRD9QkvsoAgcFEpFNBct6
+ PlAWfJQ0MIW+z276H31RP/PIuzPzsHR+97/0fbvGuNOkg2hc+P6G94V+DPIJCFZnTG7wEZc
+ xqUbeMJtzIXCd+8bBRqr92Z1se1SxLMFMQdrDirR3bo7dtbLl/6WIOesRtsiFmkefqz6hOS
+ Dt7/VR+Rs9a9rujXEZZnQ==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:nBpmy/B6JkU=;Bngyn3xQTueCsf0CP6GTOZt2F2T
- gWLg7TkiRkzqBJvyk8k43I9pwOzCYvNhZkrX4nLKqbOvHZ7Fg/M2QtP/QDmQF1e+dOJfU5BqY
- pPr8voY77ruLCeolxh2VMOvcHKe5nc5CTfXXrk6cgoAHAMhRHyLd8hRcEyJoQoxmaCLuv2UM8
- +FtjaPmA7bo9XgNZR+Tf84ycm8CQd6JDNpEdz+E/vOVmzNPzGDbcZJ62L+5U+pwWRUMzgm8HA
- qam2gO2x9MFxS97RHYkFTbmAG0MlAKkA9kugmAbGfdqbdwo/6V2rjKJ9KCuf4ldWqj0KombOF
- ntcHxv2DdRLeHT/yUWp01plFbSlmecso5MLY+ZMvAiTqx6x10T5Is6KxcD6Bf9cDA6fntFSBv
- 3pSSILqeeBVsuGjt9Nms7SOzoZ0EnsnlwHzn3NxuGYK06RH/I254o9rrovELfKqGhgG9scKMP
- IjtgxYtOi/3ZAbNlBEj3wV1YPy+qlrg0JSWy4v0bNBumt/HaH6f7IOEuY3MbkugeP1eEg5FdB
- 0ulIf/v4Ma3Sr0L5q3j4orDbQqe0wtKB2/Qr16gfwDR97C01Dc3t9lC7a2BmmloleM5UI1NJH
- z+RgIJStsaeC4YcUjfRizV5c7+UP12ubDR2HYQpmZ/BvkNMPQK9CUCjVKE+HLII2mVtvajj4R
- MazkBXc8ufTiZcOaVoI91BxwqY/BL7Ce7gyWmIODFjhoEKYU4s9bQf/PYa+RAEccyYMmjZddj
- uj6x6jyHFfkJicmIiy2JcuJ+ngjLAe+oZ5ch1u75qDM7e4oQDD+HDIKq8T/lpFa1zaXqvd1KP
- 0nhjTjMARGpVGmURtSWmXGJu+8t70S13dX4BfVFybrXzZcWV7SsmDaMTdd76Ql2L1/iVw0Og8
- WH7jW2QphcKIoxGiJuZ1EOE8N1IcCH3MPDYOFMa4COIrZFDU9qUx1r6JTE/vNVqz2ZqzbKyQD
- RZxy/P/D3iym/OgWf9MsqyfEZ7TNM12qMkYKvG9go09jPCAkIpcZUemElU401cRhDyc75sH4L
- T3LzP4F6LmZ8YM2FyqZ+MK2zJaBVQfV50o9nODDFWTHFOh4HSdNhsF4rNrrt3SOIqoTrLFXc5
- NgylZ8JW/Vb/o6vQ3A1qIQVR94o1ZHPdoYr7vL1tkV6kxSe+O1ZCmnPdujXyS9U0cyxSnJ3+n
- aIQkL9UGjgSI1+RTENDtvxOZP1l+skYprDJBieMYK5Q==
+UI-OutboundReport: notjunk:1;M01:P0:Kx6F5d8ZoQ0=;l7DeZBH9bbqpGpzFREFR10OUXaY
+ OUd2nrUOww5Yq7uXVBV7ux8YeWSW+qNVsrmpnDxKdiCTKYjKYHzN03272mEBcgsQlC/DDAOe6
+ gh+87hZayfNw8IQmelCmlFN/tgLg+vDTDFXkuB8z1OA60hK93pVLThWBYxsCop6D8VqxfQDMk
+ wUgJG9vN9C1gK24v3zappkW4N4hF22Dmv2ocV6LSvkCRo4h4zJ3vuub3xNScIrr7qNAUmZ6dj
+ gZBba+XiWT8cDm1XVNQ7NA2XZlEdvPMniRnXEB0ZVfxs3YmD5+hR4RVWfcJo754xcpElZmvxG
+ 6tERbX49V6bYna2xRxnkjIakcaMMWCUGCWg/1ubNqukVyjy1RxIHyKcCepUHFO7TEXIO3gkf7
+ Qk1buh/NsV3UKeLGa73y28lxm6gi58enX5zVBm3nMmhks6O4OUrqU5UBivdi47Ug/RjPooKOm
+ ssDYaMAVMBz6Q+0j9kGC0z6i+GhDMXALZ221lexTyw1LN8N4+n3LFXQ3mKY+dgKwaT+6cM752
+ JW77y77+o3+kdvF3rhJDtu2Y1PcYAyOY3+QVw7zu0+1tPS7R403duLUeVGpSAzWXnpe7XtkdX
+ Rn5RU18TG5sFWiNP8fgpbwXdQlXFDmDTJa5W+s1nN++uqQuZ/AuLvt094tIpYBGoxy3kmwDTa
+ rnPscDMTzyvNvGRgreYh3fhSIw+o7iJznAJHHsmtpJlbtUR2r/aUJ1nvMZ3SbaV+axXQbS3Zy
+ nIypsiB1qoDyRu9slonWSptx1hMKptAmEBRaw4eu8UskUU1jYjtQeePFTSkzGYAW94V6UVH5T
+ jh6lOtxJuABGf9edfREI/zHz0baOMa4TKwupaZh1tqZiA5zBTL9a3qwnab1ADZAFy6o9TMGUh
+ XmcrJRfrCWomDSHHop/aj5wiahel/kiDA1n/K/1RG7HtWjj5MJ0FAV3f2mFihMV6V+VhiA2xX
+ EUr0XzkEiqe4IeFFMRrbwuoP6iVHZ8VdX8ZsQNGBaM0hbIyywfiFKqX36NL9vXz3ixZxgoXRV
+ 6pmsD58dhNr0qDC4nakSyuHUiHopJdUk3kVTH5wSYoV5cCSnL7h5xaoChBD5NCEB1QTLi/+lF
+ yE888NYTEpZwm2giJ08OIyrOzf8GLqkP+ZgmpoDWp6Vp+qOXB+lwDmmF83j90wMONy0soczTD
+ +qnVWYMh/hfkq/OxYHJ4egggDLq8ge4xsCjCsbSSKEQ==
 
-Dear HP-PARISC fans,
+On 12/21/24 07:16, Masahiro Yamada wrote:
+> The vdso linker script is preprocessed on demand.
+> Adding it to 'targets' is enough to include the .cmd file.
+>
+> This commit applies the previous change to parisc, which added the
+> vdso support after commit 887af6d7c99e ("arch: vdso: add vdso linker
+> script to 'targets' instead of extra-y").
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-I've uploaded a new Debian Installation CD-ROM image at:
-http://ftp.parisc-linux.org/debian-cd/debian-12/debian-2025-01-hppa-CD.iso
+Acked-by: Helge Deller <deller@gmx.de>
 
-I've tested this CD-image on 32-bit (Qemu) and 64-bit machines (C8000).
-Please read the INSTALLATION NOTES first before using the image:
-http://ftp.parisc-linux.org/debian-cd/debian-12/README-hppa
+I've applied this patch to the parisc git tree.
+Let me know if you take it yourself...
 
 Helge
+
+
+> ---
+>
+>   arch/parisc/kernel/vdso32/Makefile | 2 +-
+>   arch/parisc/kernel/vdso64/Makefile | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/parisc/kernel/vdso32/Makefile b/arch/parisc/kernel/vds=
+o32/Makefile
+> index 2b36d25ada6e..288f8b85978f 100644
+> --- a/arch/parisc/kernel/vdso32/Makefile
+> +++ b/arch/parisc/kernel/vdso32/Makefile
+> @@ -33,7 +33,7 @@ KBUILD_CFLAGS +=3D -DBUILD_VDSO -DDISABLE_BRANCH_PROFI=
+LING
+>   VDSO_LIBGCC :=3D $(shell $(CROSS32CC) -print-libgcc-file-name)
+>
+>   obj-y +=3D vdso32_wrapper.o
+> -extra-y +=3D vdso32.lds
+> +targets +=3D vdso32.lds
+>   CPPFLAGS_vdso32.lds +=3D -P -C  #  -U$(ARCH)
+>
+>   $(obj)/vdso32_wrapper.o : $(obj)/vdso32.so FORCE
+> diff --git a/arch/parisc/kernel/vdso64/Makefile b/arch/parisc/kernel/vds=
+o64/Makefile
+> index bd87bd6a6659..bc5d9553f311 100644
+> --- a/arch/parisc/kernel/vdso64/Makefile
+> +++ b/arch/parisc/kernel/vdso64/Makefile
+> @@ -32,7 +32,7 @@ KBUILD_CFLAGS +=3D -DBUILD_VDSO -DDISABLE_BRANCH_PROFI=
+LING
+>   VDSO_LIBGCC :=3D $(shell $(CC) -print-libgcc-file-name)
+>
+>   obj-y +=3D vdso64_wrapper.o
+> -extra-y +=3D vdso64.lds
+> +targets +=3D vdso64.lds
+>   CPPFLAGS_vdso64.lds +=3D -P -C -U$(ARCH)
+>
+>   $(obj)/vdso64_wrapper.o : $(obj)/vdso64.so FORCE
+
 
