@@ -1,79 +1,114 @@
-Return-Path: <linux-parisc+bounces-3245-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3246-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA86A1BD1F
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 Jan 2025 21:05:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C058AA1C6A9
+	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jan 2025 08:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F81D167F11
-	for <lists+linux-parisc@lfdr.de>; Fri, 24 Jan 2025 20:05:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DE4C7A2D3E
+	for <lists+linux-parisc@lfdr.de>; Sun, 26 Jan 2025 07:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAEE02248BB;
-	Fri, 24 Jan 2025 20:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE29373451;
+	Sun, 26 Jan 2025 07:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aiDEtmwI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fDMhzUy4"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91250155726;
-	Fri, 24 Jan 2025 20:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA403FBA5;
+	Sun, 26 Jan 2025 07:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737749125; cv=none; b=ZgvgDro3w+H/9SnAxrbMr493TOZn/OlEOLm8s877KmAqGXF2TH5ExV4w2+/J3vHwaBonK8MhYm9y4DNINaTIbDlwl8819XuZ5nU/I6w/BDmzGW9SmAy2g26TgFmJWHplC2K0hly8c5TT6A0XkoynzIVh0rWOpfqmTilWtzsZimg=
+	t=1737877041; cv=none; b=uXMuIzLPLGwAVbzfD34hLgElyM27kGzWnzyBLp3AXi9tudBoLvMYfOTC7bJXK0HhKuTij7GwUpBrT9T19t6yNOnBZ4oIfbLgwqxp0dFe16yZ1kJfUL6BhVl0bEbLjgnpfmDKqftdQwgxPI5Guzn+sUnTdi/06gsOm4BAgowfToM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737749125; c=relaxed/simple;
-	bh=Eg6rmXWMxJicRidNRX+YdDvrX6uGhpGKzJkzwwOiSj0=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=h3rpNPI7aQzWBD0B8FTyrUXMt60mG/N5y0ApXeHJczcttqqM3PFu23ppwZrCEMfJRnpQIrA83wQuFiKTR/MW7pxqPV1Ufu1fVt2LCdVcjMkJhIwa6/uUlTIaQ8rsSVvKyRIRpMhC99Vq7bcKsOSeMEHGSR960ouND/rNiwqm6oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aiDEtmwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C565C4CED2;
-	Fri, 24 Jan 2025 20:05:25 +0000 (UTC)
+	s=arc-20240116; t=1737877041; c=relaxed/simple;
+	bh=hsuP3lMHAHCIvgNzl5etaHwARXM+wLd5H8eaZyn3jdA=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=oIsLUPPl1gTcaA4xAqPfNl+4SDG0QkT62w1qaTtizkkJZaxRVBFzbe0wFEnhmGpH9OPrUbyvv3hG6tUmng74bWKyZfrpucEj5l2arZhasTHpiMkYnSy274Tgfjr333lrdYzrPZFb10e//wZlgoyy9JqaMY0lhSyeoKKJ8m20FsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fDMhzUy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD0FC4CED3;
+	Sun, 26 Jan 2025 07:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737749125;
-	bh=Eg6rmXWMxJicRidNRX+YdDvrX6uGhpGKzJkzwwOiSj0=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=aiDEtmwIn36It9+l6dZtLws1VvR6jATLKJTJA774XerNWC1qowqX1axCimwg3D1ZV
-	 YVT1stqYHB0ol6GPVt+Faqn/cYTaT8l3OvRZLYlJ73aFRaCkSga4dIU/p7WuFaM1jz
-	 PQ8CYdb1oJtu/348COnjgXd90t9nBpp/GzICQESt+BZ6ijp8CRfn04sYNbYtnKdbgi
-	 GCEmM5nJkelDFiIPrX6/F6jMVNt4T67W7/tHvNn4BmD+JkONq8hRdBOta8eiBlwagy
-	 rMdWBesBlOH/GF7T6QtKQ1nduxt1Y+laxJjdJrqDgfGTEo7kGjwpfxzzQMvT435Q+t
-	 KMh7eqcbrEayw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C38380AA79;
-	Fri, 24 Jan 2025 20:05:51 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture fixes and updates for v6.14-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <Z5Jx15b2n2JworTb@p100>
-References: <Z5Jx15b2n2JworTb@p100>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <Z5Jx15b2n2JworTb@p100>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.14-rc1
-X-PR-Tracked-Commit-Id: 3599bae489d86fbabe039f9a2ab5472ffb04f7f1
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 47d65738b9752d6bf0ed694c3c829a06a1c460ac
-Message-Id: <173774914981.2152159.117615076498347496.pr-tracker-bot@kernel.org>
-Date: Fri, 24 Jan 2025 20:05:49 +0000
-To: Helge Deller <deller@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, John David Anglin <dave.anglin@bell.net>
+	s=k20201202; t=1737877040;
+	bh=hsuP3lMHAHCIvgNzl5etaHwARXM+wLd5H8eaZyn3jdA=;
+	h=Date:From:To:Subject:From;
+	b=fDMhzUy4tr9ykNJ+11no0dn0dMRe1yr+C5qEJPczzjkksnlIv9py90OUALZ8dEI2L
+	 kWwl6gPuJqaiESpJdsxdEcYYjUkOQekuUBZ1fRpHUdsmh5tdDwRlS1cFJOvXlT1w+e
+	 UwyYfHxtj4SIP+sM1yJGB2Qcpl2HgPVr/pDLexCnX9vJOgEojhNgR4MCsl5lNkAqqi
+	 si7/fd07oIg1Klz3AcDpY9fdy5wP5uPvkCGsKsm8jkenvSv+bb28saYS9Ltcm3s1UP
+	 Hn4dXLQOqsu650PPya3O6ShsOa65tfz1vtl5CMvMCTiTiylzODIU0AhlsmnpUafj5e
+	 FK8HZlgHHmgpw==
+Date: Sun, 26 Jan 2025 08:37:16 +0100
+From: Helge Deller <deller@kernel.org>
+To: linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org
+Subject: [PATCH] serial: 8250_pci: Fix Warning at drivers/pci/devres.c:603
+ pcim_add_mapping_to_legacy_table
+Message-ID: <Z5XmLKzhKpLAlzHt@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The pull request you sent on Thu, 23 Jan 2025 17:44:07 +0100:
+Some PA-RISC servers have BMC management cards (Diva) with up to 5 serial
+UARTS per memory PCI bar. This triggers since at least kernel 6.12 for each of
+the UARTS (beside the first one) the following warning in devres.c:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.14-rc1
+ 0000:00:02.0: ttyS2 at MMIO 0xf0822000 (irq = 21, base_baud = 115200) is a 16550A
+ 0000:00:02.0: ttyS3 at MMIO 0xf0822010 (irq = 21, base_baud = 115200) is a 16550A
+ ------------[ cut here ]------------
+ WARNING: CPU: 1 PID: 1 at drivers/pci/devres.c:603 pcim_add_mapping_to_legacy_table+0x5c/0x8c
+ CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.11+ #2621
+ Hardware name: 9000/778/B160L
+ 
+  IAOQ[0]: pcim_add_mapping_to_legacy_table+0x5c/0x8c
+  IAOQ[1]: pcim_add_mapping_to_legacy_table+0x60/0x8c
+  RP(r2): pcim_add_mapping_to_legacy_table+0x4c/0x8c
+ Backtrace:
+  [<10c1eb10>] pcim_iomap+0xd4/0x10c
+  [<10ca8784>] serial8250_pci_setup_port+0xa8/0x11c
+  [<10ca9a34>] pci_hp_diva_setup+0x6c/0xc4
+  [<10cab134>] pciserial_init_ports+0x150/0x324
+  [<10cab470>] pciserial_init_one+0xfc/0x20c
+  [<10c14780>] pci_device_probe+0xc0/0x190
+  ...
+ ---[ end trace 0000000000000000 ]---
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/47d65738b9752d6bf0ed694c3c829a06a1c460ac
+I see three options to avoid this warning:
+a) drop the WARNING() from devrec.c,
+b) modify pcim_iomap() to return an existing mapping if it exists
+   instead of creating a new mapping, or
+c) change serial8250_pci_setup_port() to only create a new mapping
+   if none exists yet.
 
-Thank you!
+This patch implements option c).
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org> # v6.12+
+
+
+diff --git a/drivers/tty/serial/8250/8250_pcilib.c b/drivers/tty/serial/8250/8250_pcilib.c
+index ea906d721b2c..fc024bf86c1f 100644
+--- a/drivers/tty/serial/8250/8250_pcilib.c
++++ b/drivers/tty/serial/8250/8250_pcilib.c
+@@ -19,7 +19,9 @@ int serial8250_pci_setup_port(struct pci_dev *dev, struct uart_8250_port *port,
+ 		return -EINVAL;
+ 
+ 	if (pci_resource_flags(dev, bar) & IORESOURCE_MEM) {
+-		if (!pcim_iomap(dev, bar, 0) && !pcim_iomap_table(dev))
++		/* might have been mapped already with other offset */
++		if (!pcim_iomap_table(dev) || !pcim_iomap_table(dev)[bar] ||
++			!pcim_iomap(dev, bar, 0))
+ 			return -ENOMEM;
+ 
+ 		port->port.iotype = UPIO_MEM;
 
