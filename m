@@ -1,247 +1,307 @@
-Return-Path: <linux-parisc+bounces-3259-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3260-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0404A22C9E
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Jan 2025 12:38:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8A3A22E32
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 Jan 2025 14:49:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C85E73A9AA1
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Jan 2025 11:38:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71A7618831F3
+	for <lists+linux-parisc@lfdr.de>; Thu, 30 Jan 2025 13:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE12D1DDC39;
-	Thu, 30 Jan 2025 11:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E120E1EBFFF;
+	Thu, 30 Jan 2025 13:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="py0si/7i"
+	dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="j+TSI10D";
+	dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="Gwst9t6X"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.160])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08FC51AB507;
-	Thu, 30 Jan 2025 11:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738237125; cv=none; b=MFmy5Qm5UPUqK+6pfIIjlRvuPdoionzD1jMSusVQFLZW0qKFMt8ylz5wbt3S9Qg8Csa7wHysfw00E8p8/S4ZXyrIwHv3vo4Uvqu4wrZ916G5buB9v8RxeGvUQA087+3D795AHZShc7rkuroAh/m5aGp7J2tTKC1rJX+Q6svxjLY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738237125; c=relaxed/simple;
-	bh=jmiaRDktbJa4wMJVa0qU3LftfvlPnAN8/Soy8xz+2dw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Q5h28uomGtKf9LzkYrpXFn9xJT4asW1MUj4lbYhCt1/YX7d3P+1oS+riLsMoVjiip1IQVKoHnK3h+WByLMDFuMO0Bvz0t/q+qf4efkCpVFasf10otOqkzUrK/KzPeZzoG5DdMe637HHJ42Z3W2HsDrj/ZT9z0n7uIGuaWicuJVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=py0si/7i; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50U3S03G009805;
-	Thu, 30 Jan 2025 11:36:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=BpEfUaBr1Cw8QWsiOsJ1W6pndXsaAO
-	xt2vlVbbXMbZU=; b=py0si/7i7sYpYpgY+Cd85pkVNtrLlOqwSMEhmRUcKRZj7F
-	AdWm9g97BBEh/k1QMz1gyW8k5eUcYgkXR7GTOMktSJAFpG3LMbyg98XYXGPU8sUo
-	eqeaQ4p53wCU0NhpBpfouxy1ummA3PnohqoCPPT9kZK6xXqL8bMd1HPK3stTNTCc
-	i9hgrzpbOa8Oy7fd/8G+IJIcqiisWNhctW460864Z4NJPiiQN3G8K0UqP+6d4dzH
-	cmzmA7ITybYy/TOKFRbQlq2Z27a5FDfLohiHJU8VcETS6330kiMTctNfd+g/5c0g
-	zhFPjq0jgTlDsz9Dp+ySr7XDG4pHCTnnLQrHeZDw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44fq5tvqhw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jan 2025 11:36:36 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50UBWjRY023426;
-	Thu, 30 Jan 2025 11:36:35 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44fq5tvqhs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jan 2025 11:36:35 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50U947Bm022193;
-	Thu, 30 Jan 2025 11:36:34 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44dcgjwkcf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jan 2025 11:36:34 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50UBaU8D29491780
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Jan 2025 11:36:30 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B3743200BB;
-	Thu, 30 Jan 2025 11:36:30 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2B194200BC;
-	Thu, 30 Jan 2025 11:36:30 +0000 (GMT)
-Received: from tuxmaker.linux.ibm.com (unknown [9.152.85.9])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 30 Jan 2025 11:36:30 +0000 (GMT)
-From: Sven Schnelle <svens@linux.ibm.com>
-To: "Dmitry V. Levin" <ldv@strace.io>
-Cc: linux-snps-arc@lists.infradead.org, Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andreas Larsson
- <andreas@gaisler.com>,
-        John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>,
-        x86@kernel.org, Arnd Bergmann
- <arnd@arndb.de>,
-        linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>,
-        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, WANG Xuerui
- <kernel@xen0n.name>,
-        Will Deacon <will@kernel.org>,
-        Eugene Syromyatnikov
- <evgsyr@gmail.com>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
-        Alexander
- Gordeev <agordeev@linux.ibm.com>,
-        Madhavan Srinivasan
- <maddy@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Yoshinori Sato
- <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
-        Michael Ellerman
- <mpe@ellerman.id.au>, Helge Deller <deller@gmx.de>,
-        Huacai Chen
- <chenhuacai@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen
- <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Vineet
- Gupta <vgupta@kernel.org>,
-        Christian Borntraeger
- <borntraeger@linux.ibm.com>,
-        strace-devel@lists.strace.io, linux-arch@vger.kernel.org,
-        Albert Ou <aou@eecs.berkeley.edu>, Mike
- Frysinger <vapier@gentoo.org>,
-        Davide Berardi <berardi.dav@gmail.com>,
-        Renzo Davoli <renzo@cs.unibo.it>, linux-um@lists.infradead.org,
-        Heiko
- Carstens <hca@linux.ibm.com>,
-        Charlie Jenkins <charlie@rivosinc.com>,
-        Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Borislav Petkov
- <bp@alien8.de>, loongarch@lists.linux.dev,
-        Paul Walmsley
- <paul.walmsley@sifive.com>,
-        Stafford Horne <shorne@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, Brian Cain <bcain@quicinc.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Oleg
- Nesterov <oleg@redhat.com>, Dinh Nguyen <dinguyen@kernel.org>,
-        linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>,
-        Richard Weinberger <richard@nod.at>,
-        Johannes Berg
- <johannes@sipsolutions.net>,
-        Alexey Gladkov <legion@kernel.org>,
-        "David
- S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v3 2/6] syscall.h: add syscall_set_arguments() and
- syscall_set_return_value()
-In-Reply-To: <20250130112207.GA6617@strace.io> (Dmitry V. Levin's message of
-	"Thu, 30 Jan 2025 13:22:07 +0200")
-References: <20250128091626.GB8601@strace.io> <yt9dwmecya4g.fsf@linux.ibm.com>
-	<20250130112207.GA6617@strace.io>
-Date: Thu, 30 Jan 2025 12:36:29 +0100
-Message-ID: <yt9dsep0y1mq.fsf@linux.ibm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9E21E9B25;
+	Thu, 30 Jan 2025 13:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.160
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738244909; cv=pass; b=uN1vgxOZ1czQeVNNuvj/EmbDh+9EyrG15Onj28ehYCEcuBjY8T5IWvmhn/SXmyV/hR8LlIWYy7hNihVALWNrR77+8YdX7Y7PXXD8e5W/UaPsnl+lYjQ5zoOlAqOvzQcF5a8tUx6gb2Y5c8ryEGmNLC0LTfgHjiUN6pzs+17c/5M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738244909; c=relaxed/simple;
+	bh=O28Xp5/hr8kz3i+uHUB7UlDUVQIlr7Q6epSQ0icw/ak=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=iHigSpIerMqWrWL3j+5r8b5Z+DaQndXmVUIAqT7uDoJ1z440KYvhdmrtac/GXCDq5I1Ck1cGtBT/EH8ImwaC3+A7Mo8vhfoW8tGGBpURZlgkZXoKoNhFl8ehFbEM/FnfnjXW3uT+LQHVJ49E58GT9Fi+nxoRJAxwfmhnhnEyFn8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org; spf=none smtp.mailfrom=outer-limits.org; dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=j+TSI10D; dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=Gwst9t6X; arc=pass smtp.client-ip=81.169.146.160
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=outer-limits.org
+ARC-Seal: i=1; a=rsa-sha256; t=1738244897; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=sGgACecIZcRVX3bcDw/bZSBitQ+IBqZizTasPRtF2S/S30JB62E3bdh1AzH7pd7HxA
+    bnAfvOmNJCIR2oCxOpii+RScsIUkpOEKtFxQ44HDqwBMucu+gx03FoBXY0bOii5+8tvD
+    BA7f6KFPPOgRpxqyJqIgGJFAMDnNHUWQc6SxB3rI4EPvRtcixNrGb2fHMx3gLDmDHpTI
+    btHUPAlDDKV6VXOsPOru/+EFcYTxrlfNoNkanlVqOzrwqyIRdZT9iiQUKzXPUyFuVyuv
+    pu+S6X86fVkhylLHbU9FyqqgrBc7FrvP1GqDcWs5bj3VEyNYswR+LSq7ZXK4efd6flPQ
+    00Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1738244897;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=8ubQkok/u+8Ovmps6+YWTZkwKMZsIDIPh23npdZdhBI=;
+    b=oyVfmbvFLC9RAcG8FoZw7gdu6ehXIxp6Zz4k1Etw9S+WWupOiyBavrO8oXmdcPO+kW
+    rf6sHXZjM7IxEwK2Q6EMjn3xhasYA954gv8vs6VNoOoxaEwdKdY/QtMgx3TbDD4Ul5g/
+    +DNf28Exdtr1UCoaDZ+u8BYXCSl4BQIUxTtHyC7CUIfitnjTkdUwYx4Xx1E4SpD3ACh7
+    H2DY6tSjsSwI2+9ZCrFPwwzOhVhzn5oN+uhMDerV8ec63qBo+zkAHiiJEWLDHIjr1K2k
+    DL3dYh8JT1OlBueAlK6K3A+RaJIe/yNRkWE3tKmU/POwp0DTIBaFrtTCXvzgyUmGSwzo
+    W90Q==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1738244897;
+    s=strato-dkim-0002; d=outer-limits.org;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=8ubQkok/u+8Ovmps6+YWTZkwKMZsIDIPh23npdZdhBI=;
+    b=j+TSI10DfM393C2lzu91uW8UqLvg7D5aUxhj1kSrT2MQ3ZL5RtoqADkTcNiCgCFkc3
+    k0USuyB2cWYX+wkO4oDeFat99t8jmCSSxmqQPaHSTJdjkX+l8hlcSvWNSeOmDekZno9M
+    VZN/FUOT2Rb+QRm1hLh+Eyc6WyV8xX3ukxxh6oZWZJW4LfBHeNZQePEtOt3ie6yxzrSK
+    Vpf0OwMj3DzKumCK7AmE3yIXKqISBcHS9En0cbl33L1Us/dcpI06iCjVSeAGswrfOjVQ
+    JF9zKwCVeejca+oejcHTgbi05j2Gr51MJ3BRw2yCsqwVL+SqGYRKtWf73qDvqUYcklKR
+    LsAA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1738244897;
+    s=strato-dkim-0003; d=outer-limits.org;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=8ubQkok/u+8Ovmps6+YWTZkwKMZsIDIPh23npdZdhBI=;
+    b=Gwst9t6XgXwb1qkz7dFnea9ryJTYuyra4CnoStyYlBXpjhO6kXlB4yVYw64QbRo8uq
+    j+C8eElQ3T/QJKKpCUCg==
+X-RZG-AUTH: ":JnkIfEGmW/AMJS6HttH4FbRVwc4dHlPLCp4e/IoHo8zEMMHAgwTfqBEHcVJSv9P5mRTGd2ImeA=="
+Received: from ws2104.lan.kalrayinc.com
+    by smtp.strato.de (RZmta 51.2.17 AUTH)
+    with ESMTPSA id J1a25110UDmGUA8
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Thu, 30 Jan 2025 14:48:16 +0100 (CET)
+From: Julian Vetter <julian@outer-limits.org>
+To: Arnd Bergmann <arnd@arndb.de>,
+	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Julian Vetter <julian@outer-limits.org>
+Subject: [PATCH] parisc: Fix formatting errors in io.c
+Date: Thu, 30 Jan 2025 14:48:10 +0100
+Message-Id: <20250130134810.2646219-1-julian@outer-limits.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3aUZNse446PGQfVafhK1HcR2G4gnMUaQ
-X-Proofpoint-ORIG-GUID: 64WUIlsja2UYCCT0QvJj0Ow022g8u5FP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-30_06,2025-01-30_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=982 lowpriorityscore=0 impostorscore=0 phishscore=0
- adultscore=0 priorityscore=1501 clxscore=1015 mlxscore=0 malwarescore=0
- spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501300089
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
 
-"Dmitry V. Levin" <ldv@strace.io> writes:
+Mutliple lines in the file contain tabs in lines where there is no
+code. Just remove them.
 
-> On Thu, Jan 30, 2025 at 09:33:03AM +0100, Sven Schnelle wrote:
->> "Dmitry V. Levin" <ldv@strace.io> writes:
->> 
->> > These functions are going to be needed on all HAVE_ARCH_TRACEHOOK
->> > architectures to implement PTRACE_SET_SYSCALL_INFO API.
->> >
->> > This partially reverts commit 7962c2eddbfe ("arch: remove unused
->> > function syscall_set_arguments()") by reusing some of old
->> > syscall_set_arguments() implementations.
->> >
->> > Signed-off-by: Dmitry V. Levin <ldv@strace.io>
->> > Tested-by: Charlie Jenkins <charlie@rivosinc.com>
->> > Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
->> > ---
->> >  arch/arc/include/asm/syscall.h        | 14 +++++++++++
->> >  arch/arm/include/asm/syscall.h        | 13 ++++++++++
->> >  arch/arm64/include/asm/syscall.h      | 13 ++++++++++
->> >  arch/csky/include/asm/syscall.h       | 13 ++++++++++
->> >  arch/hexagon/include/asm/syscall.h    | 14 +++++++++++
->> >  arch/loongarch/include/asm/syscall.h  |  8 ++++++
->> >  arch/mips/include/asm/syscall.h       | 32 ++++++++++++++++++++++++
->> >  arch/nios2/include/asm/syscall.h      | 11 ++++++++
->> >  arch/openrisc/include/asm/syscall.h   |  7 ++++++
->> >  arch/parisc/include/asm/syscall.h     | 12 +++++++++
->> >  arch/powerpc/include/asm/syscall.h    | 10 ++++++++
->> >  arch/riscv/include/asm/syscall.h      |  9 +++++++
->> >  arch/s390/include/asm/syscall.h       | 12 +++++++++
->> >  arch/sh/include/asm/syscall_32.h      | 12 +++++++++
->> >  arch/sparc/include/asm/syscall.h      | 10 ++++++++
->> >  arch/um/include/asm/syscall-generic.h | 14 +++++++++++
->> >  arch/x86/include/asm/syscall.h        | 36 +++++++++++++++++++++++++++
->> >  arch/xtensa/include/asm/syscall.h     | 11 ++++++++
->> >  include/asm-generic/syscall.h         | 16 ++++++++++++
->> >  19 files changed, 267 insertions(+)
->> >
->> > diff --git a/arch/s390/include/asm/syscall.h b/arch/s390/include/asm/syscall.h
->> > index 27e3d804b311..b3dd883699e7 100644
->> > --- a/arch/s390/include/asm/syscall.h
->> > +++ b/arch/s390/include/asm/syscall.h
->> > @@ -78,6 +78,18 @@ static inline void syscall_get_arguments(struct task_struct *task,
->> >  	args[0] = regs->orig_gpr2 & mask;
->> >  }
->> >  
->> > +static inline void syscall_set_arguments(struct task_struct *task,
->> > +					 struct pt_regs *regs,
->> > +					 const unsigned long *args)
->> > +{
->> > +	unsigned int n = 6;
->> > +
->> > +	while (n-- > 0)
->> > +		if (n > 0)
->> > +			regs->gprs[2 + n] = args[n];
->> > +	regs->orig_gpr2 = args[0];
->> > +}
->> 
->> Could that be changed to something like:
->> 
->> for (int n = 1; n < 6; n++)
->>         regs->gprs[2 + n] = args[n];
->> regs->orig_gpr2 = args[0];
->> 
->> I think this is way easier to parse.
->
-> I don't mind changing syscall_set_arguments() this way, but it just
-> mirrors syscall_get_arguments(), so I think it would be better if these
-> two functions were written in the same style.  Would you like to change
-> syscall_get_arguments() as well?
+Signed-off-by: Julian Vetter <julian@outer-limits.org>
+---
+ arch/parisc/lib/io.c | 58 ++++++++++++++++++++++----------------------
+ 1 file changed, 29 insertions(+), 29 deletions(-)
 
-Oh. I'll prepare a patch for syscall_get_arguments(), wasn't aware
-that this function looks the same. I'll send this via the s390 tree, so
-it's independent of your patch series. Thanks!
+diff --git a/arch/parisc/lib/io.c b/arch/parisc/lib/io.c
+index 7461366a65c9..6e81200dc87a 100644
+--- a/arch/parisc/lib/io.c
++++ b/arch/parisc/lib/io.c
+@@ -123,15 +123,15 @@ void insw (unsigned long port, void *dst, unsigned long count)
+ 	unsigned char *p;
+ 
+ 	p = (unsigned char *)dst;
+-	
++
+ 	if (!count)
+ 		return;
+-	
++
+ 	switch (((unsigned long)p) & 0x3)
+ 	{
+ 	 case 0x00:			/* Buffer 32-bit aligned */
+ 		while (count>=2) {
+-			
++
+ 			count -= 2;
+ 			l = cpu_to_le16(inw(port)) << 16;
+ 			l |= cpu_to_le16(inw(port));
+@@ -142,13 +142,13 @@ void insw (unsigned long port, void *dst, unsigned long count)
+ 			*(unsigned short *)p = cpu_to_le16(inw(port));
+ 		}
+ 		break;
+-	
++
+ 	 case 0x02:			/* Buffer 16-bit aligned */
+ 		*(unsigned short *)p = cpu_to_le16(inw(port));
+ 		p += 2;
+ 		count--;
+ 		while (count>=2) {
+-			
++
+ 			count -= 2;
+ 			l = cpu_to_le16(inw(port)) << 16;
+ 			l |= cpu_to_le16(inw(port));
+@@ -159,13 +159,13 @@ void insw (unsigned long port, void *dst, unsigned long count)
+ 			*(unsigned short *)p = cpu_to_le16(inw(port));
+ 		}
+ 		break;
+-		
++
+ 	 case 0x01:			/* Buffer 8-bit aligned */
+ 	 case 0x03:
+ 		/* I don't bother with 32bit transfers
+ 		 * in this case, 16bit will have to do -- DE */
+ 		--count;
+-		
++
+ 		l = cpu_to_le16(inw(port));
+ 		*p = l >> 8;
+ 		p++;
+@@ -195,10 +195,10 @@ void insl (unsigned long port, void *dst, unsigned long count)
+ 	unsigned char *p;
+ 
+ 	p = (unsigned char *)dst;
+-	
++
+ 	if (!count)
+ 		return;
+-	
++
+ 	switch (((unsigned long) dst) & 0x3)
+ 	{
+ 	 case 0x00:			/* Buffer 32-bit aligned */
+@@ -208,14 +208,14 @@ void insl (unsigned long port, void *dst, unsigned long count)
+ 			p += 4;
+ 		}
+ 		break;
+-	
++
+ 	 case 0x02:			/* Buffer 16-bit aligned */
+ 		--count;
+-		
++
+ 		l = cpu_to_le32(inl(port));
+ 		*(unsigned short *)p = l >> 16;
+ 		p += 2;
+-		
++
+ 		while (count--)
+ 		{
+ 			l2 = cpu_to_le32(inl(port));
+@@ -227,7 +227,7 @@ void insl (unsigned long port, void *dst, unsigned long count)
+ 		break;
+ 	 case 0x01:			/* Buffer 8-bit aligned */
+ 		--count;
+-		
++
+ 		l = cpu_to_le32(inl(port));
+ 		*(unsigned char *)p = l >> 24;
+ 		p++;
+@@ -244,7 +244,7 @@ void insl (unsigned long port, void *dst, unsigned long count)
+ 		break;
+ 	 case 0x03:			/* Buffer 8-bit aligned */
+ 		--count;
+-		
++
+ 		l = cpu_to_le32(inl(port));
+ 		*p = l >> 24;
+ 		p++;
+@@ -293,10 +293,10 @@ void outsw (unsigned long port, const void *src, unsigned long count)
+ 	const unsigned char *p;
+ 
+ 	p = (const unsigned char *)src;
+-	
++
+ 	if (!count)
+ 		return;
+-	
++
+ 	switch (((unsigned long)p) & 0x3)
+ 	{
+ 	 case 0x00:			/* Buffer 32-bit aligned */
+@@ -311,13 +311,13 @@ void outsw (unsigned long port, const void *src, unsigned long count)
+ 			outw(le16_to_cpu(*(unsigned short*)p), port);
+ 		}
+ 		break;
+-	
++
+ 	 case 0x02:			/* Buffer 16-bit aligned */
+-		
++
+ 		outw(le16_to_cpu(*(unsigned short*)p), port);
+ 		p += 2;
+ 		count--;
+-		
++
+ 		while (count>=2) {
+ 			count -= 2;
+ 			l = *(unsigned int *)p;
+@@ -329,11 +329,11 @@ void outsw (unsigned long port, const void *src, unsigned long count)
+ 			outw(le16_to_cpu(*(unsigned short *)p), port);
+ 		}
+ 		break;
+-		
+-	 case 0x01:			/* Buffer 8-bit aligned */	
++
++	 case 0x01:			/* Buffer 8-bit aligned */
+ 		/* I don't bother with 32bit transfers
+ 		 * in this case, 16bit will have to do -- DE */
+-		
++
+ 		l  = *p << 8;
+ 		p++;
+ 		count--;
+@@ -348,7 +348,7 @@ void outsw (unsigned long port, const void *src, unsigned long count)
+ 		l2 = *(unsigned char *)p;
+ 		outw (le16_to_cpu(l | l2>>8), port);
+ 		break;
+-	
++
+ 	}
+ }
+ 
+@@ -365,10 +365,10 @@ void outsl (unsigned long port, const void *src, unsigned long count)
+ 	const unsigned char *p;
+ 
+ 	p = (const unsigned char *)src;
+-	
++
+ 	if (!count)
+ 		return;
+-	
++
+ 	switch (((unsigned long)p) & 0x3)
+ 	{
+ 	 case 0x00:			/* Buffer 32-bit aligned */
+@@ -378,13 +378,13 @@ void outsl (unsigned long port, const void *src, unsigned long count)
+ 			p += 4;
+ 		}
+ 		break;
+-	
++
+ 	 case 0x02:			/* Buffer 16-bit aligned */
+ 		--count;
+-		
++
+ 		l = *(unsigned short *)p;
+ 		p += 2;
+-		
++
+ 		while (count--)
+ 		{
+ 			l2 = *(unsigned int *)p;
+@@ -415,7 +415,7 @@ void outsl (unsigned long port, const void *src, unsigned long count)
+ 		break;
+ 	 case 0x03:			/* Buffer 8-bit aligned */
+ 		--count;
+-		
++
+ 		l = *p << 24;
+ 		p++;
+ 
+-- 
+2.34.1
+
 
