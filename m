@@ -1,215 +1,135 @@
-Return-Path: <linux-parisc+bounces-3261-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3262-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45EA2A22E39
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Jan 2025 14:51:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A1AA23A21
+	for <lists+linux-parisc@lfdr.de>; Fri, 31 Jan 2025 08:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 241363A9475
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Jan 2025 13:50:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67C937A0418
+	for <lists+linux-parisc@lfdr.de>; Fri, 31 Jan 2025 07:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2801E8855;
-	Thu, 30 Jan 2025 13:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE9413A3ED;
+	Fri, 31 Jan 2025 07:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="a2KEv3V9";
-	dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b="iPk2tVIM"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Vxqz71MV";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="zGjsRWJY"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0501E8837;
-	Thu, 30 Jan 2025 13:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738244921; cv=pass; b=XAAzYojxBF06G52hUYeNXfq1hkWSYqOOLz01ElbE/RabzAmsJcDhBIDm07YG7Dn9LQXn4ZCaJmADRdo4/o9tNG/trys0ydBsiJmDYAGe/leW5UOD7fxVXhG5r/jH5Jga449uVm9jl8ehJiq+Rp8sc10+0bNJiHcIS/ba7t3GpOA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738244921; c=relaxed/simple;
-	bh=fBqXAtzs6QN6quiaF3KRms23QJNKKNCTBt/bJH8nRmY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=silNlw4Z9tJorzQuKM3/KTRhQz2aJUdfRa0sfvDjpXuGbU/FfNAaIit6c4ebzGPwkMDaJgz9O2rjZWPpuGVKyXyVxTslyzuRkeexKiJrJhes3gBVSKK0IEqgkOGnzYcro9GQVmKY0NNj/sHTjJTBT26aEiPXq+6Ik1vAodhF0Q8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org; spf=none smtp.mailfrom=outer-limits.org; dkim=pass (2048-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=a2KEv3V9; dkim=permerror (0-bit key) header.d=outer-limits.org header.i=@outer-limits.org header.b=iPk2tVIM; arc=pass smtp.client-ip=85.215.255.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=outer-limits.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=outer-limits.org
-ARC-Seal: i=1; a=rsa-sha256; t=1738244911; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=TIA63vBT7rKpG1G6VzBLcSdE0xESa59hIW2U8WVyWG6v7KkUF3X14NmnwrnwJeBEJ3
-    7u9u/cDPR6HXdMrWV26FmCZe36tTyMXNmHKl7vELXdBKlNOdj8BoLjYw2KnFcpcCa2hq
-    VW8gX6ZvLHLB7+LFTJVg6aN4Itr4dw+Ej5Qz0ni61AlwwZaNtFoLCjVVEqlIui7Cbb4j
-    IjU3fDqhu6wrOm1iAn3L8fU0SZrk5FPW5/gtdkpKtRYx9vlsdLC4KK/iBbN0evs7pL4L
-    wyUTR4cZRaohdZUXnXN8NHp6rGC29oY1iZgP/QjdBfLVvbBxGRvhiGz27DyMzUjdGVS0
-    4pOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1738244911;
-    s=strato-dkim-0002; d=strato.com;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=c+pct5eTLJu+tDVO/h4Oy3MGmLbc1PWBsbBsTWtZMZY=;
-    b=CVC3nLYN9A5VrrCJpgXuNj9a9roUbyillEOOlVjcGNCMWqdo1tlK9PtlnS1siXMzgX
-    lcet5px9Vyy+b06jkLn7+U8ZVewzZYYVc0vmLAMEc1LONc/HNhy2v4VQUXhcQssFVwZl
-    aXbsnM7+/ln0mU0vKs2JdcJOS0UB4k4aSbejZYIyTN5J+ImJnEW24zi8Jc7X0yejf1Xh
-    19K4XdKl5FIqVkmi991WkiLPWk11vmZnq6J8l1d++ZYP9d0ZnaAlib99bJqMNuID8p5m
-    N5yfYiwtASUR/sKTVyatBeEz34wF+HlvcuN89VJS3yDv6MteiuC6UPpjJq2DD+fZYsxm
-    tDaQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1738244911;
-    s=strato-dkim-0002; d=outer-limits.org;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=c+pct5eTLJu+tDVO/h4Oy3MGmLbc1PWBsbBsTWtZMZY=;
-    b=a2KEv3V9cjlt8c1PaeQl28oOU6hLMvb44keABbdOvSrZscOzfFjlfrd8gj4Jst2dUU
-    tb4lEQaISSF5dScLwzqkJKiJJxUgDN0hz6d+p/JXGRcA5+3NXJLV6pKdoEgMBeTQh6hN
-    lovkT2ucdFQ82eDmdPXrs1t4PFZyKoWvQvPXtPGE0nsv4F84tpnMKHAoHTorDC6fv2fG
-    o79F+sA8NhQ/ie4oxGeqZ63JtTR2ScFsdfveOwMTZHVg7nkJbPH1T5AWDikX0+WotKIi
-    1ju0GZIEU3r5KfFy83wS3lWJlFW+p8JKeqlaCzrEUq60/O+Fcoer9BFm0+kp6NYZ4AVF
-    ucVw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1738244911;
-    s=strato-dkim-0003; d=outer-limits.org;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=c+pct5eTLJu+tDVO/h4Oy3MGmLbc1PWBsbBsTWtZMZY=;
-    b=iPk2tVIMW8k1y90oZDfVB6ANkeA1OKhOKk9dMgq96zkcAiZw32fYVUq7jMgQon4lHy
-    z6UtNyzsen2RUP5fQLDA==
-X-RZG-AUTH: ":JnkIfEGmW/AMJS6HttH4FbRVwc4dHlPLCp4e/IoHo8zEMMHAgwTfqBEHcVJSv9P5mRTGd2ImeA=="
-Received: from ws2104.lan.kalrayinc.com
-    by smtp.strato.de (RZmta 51.2.17 AUTH)
-    with ESMTPSA id J1a25110UDmVUAO
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 30 Jan 2025 14:48:31 +0100 (CET)
-From: Julian Vetter <julian@outer-limits.org>
-To: Arnd Bergmann <arnd@arndb.de>,
-	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Julian Vetter <julian@outer-limits.org>
-Subject: [PATCH] parisc: Remove memcpy_fromio
-Date: Thu, 30 Jan 2025 14:48:25 +0100
-Message-Id: <20250130134825.2646380-1-julian@outer-limits.org>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624A79463;
+	Fri, 31 Jan 2025 07:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738308548; cv=none; b=U4eLdkux8DjqhmpJC2ol8ippUFAQzpmYmAOvXTjgnqZ6dNGtLuHrYH+P8lGWIHrNM6YeCvssQ/KPiwhhuQAw71Vr1UT2BImWVoAOU4dzlVB6xcSIhceNnEp0GwlfZ75gPvzIa8rOq2Gd1doIpWGtlEiVOvUrSxZ7VKv7kUNPRh0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738308548; c=relaxed/simple;
+	bh=n1e0P8AWdOYfLOZrT8Fuz1IQgDTJjovT6OSuGagtroU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Zax057F02BIDZFwO3Mec1UvilIMA04KJCI9m6tSmq3NXpztLSCNsO7WI5EaClAtqRlGIMSA6awoQqUg9lKrZY/udWF1seX+P0Bre5S3UCpLFX4fYOtaQfC2nVT5ZCW/XTB/ZuzFaSDoAk6htV6Qf/GI1Qhu+e3y8FWiiZ5QgAyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Vxqz71MV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=zGjsRWJY; arc=none smtp.client-ip=103.168.172.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 67F7811401B7;
+	Fri, 31 Jan 2025 02:29:05 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Fri, 31 Jan 2025 02:29:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1738308545;
+	 x=1738394945; bh=H6OFu2gyiy12pYSxQBaXN//26LfwCcvIWXXGaq2MhNA=; b=
+	Vxqz71MV9C/pofJNczthGOKhdj1IH5NPxjUNJ3jO3vNkaDscjsiqEYqHXZBaE/9l
+	a3uEItjZZB2qpeap99MMtVrL2wxXsvOxPdf+C1btefCfc+qade0BzdJPqR7TfZCY
+	tJhXJOu2VlkshqVjTw+CgkbsPibtK41ZUdtvl5mVmTECJRDlTUSeo5UDu6okNVBv
+	ik1ZMXwF34axm/d/o50Yk0X4IRZ1zhrsEfws9LteJ1OW77Tq5uX8lHOTqGT7ddrA
+	oQ7sJAwalJZ3M3A7WJwN1BCV3SaMBjw/9BI8yMA0bnVoIWhFjqsDohygrkB4AImF
+	WF23TeRMTDCc4MMnTxruCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1738308545; x=
+	1738394945; bh=H6OFu2gyiy12pYSxQBaXN//26LfwCcvIWXXGaq2MhNA=; b=z
+	GjsRWJY8Vgg93NmMU/4mfYcQsw5BNx8XT+oxWbTsOKnEMnEe858eBgJnO5IE29NY
+	e5k7XU8loUM8GgzSusqNRrhDb3NwTd7mpxFC81dZBshR6Ur984lxwk0/KI8j+3Pe
+	QNxOBwJ+baYxqddycNCmSGSl6Zu1SCLCqtAQNCj0LbMFRIWxrWdLSAqofRqTtXhE
+	n+8fruPxBEl0s9i2xWMfCSDnqUMeT4UDiYCS54OPRvrdWiyfcl0hr3mxjKB3riB/
+	NFPV5d+ozQSe2Bf8YHPhHigh2clyKdNplLG0pQNXt6XNQVzw9eLc5snaaQhSJzDW
+	fbLu3NrYwisrDYU+wVkcQ==
+X-ME-Sender: <xms:t3ucZ-PMr7ydazt0rmfJfw2ELUz7LTSiyUVLB2gLNMSaB45Gz9PyFw>
+    <xme:t3ucZ89KKEyHQHsG94B-jtLXEyrAyi8o5L7zu-cPKuIjhGc0m4t28sgQXskO0vRSC
+    pA_B-DLZQR9R51hPvI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekudehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohephedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggvlhhlvghrsehgmhigrdguvgdprh
+    gtphhtthhopehjrghmvghsrdgsohhtthhomhhlvgihsehhrghnshgvnhhprghrthhnvghr
+    shhhihhprdgtohhmpdhrtghpthhtohepjhhulhhirghnsehouhhtvghrqdhlihhmihhtsh
+    drohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhprghrihhstgesvhhgvghrrdhkvghrnh
+    gvlhdrohhrgh
+X-ME-Proxy: <xmx:t3ucZ1QskhCosPDBr4GPBAez-Awm6kNNoQ-VKUMahZdvvVTLJ3nMVQ>
+    <xmx:t3ucZ-vDY1wTSHGA53xPo-OutVL2Ke61SInuTHPOqyxUUBBbWD_qGQ>
+    <xmx:t3ucZ2dRZ5ssJ4-28hDuCJ5ngrvuP795K5cwQTALUHbfERI23cJEnw>
+    <xmx:t3ucZy3P-ts9Z0i4ZjO7T26656k7_a-74dKhgYsb5MfA11vvO45PIQ>
+    <xmx:wXucZ6FB2UA0xJUQasmrfaTgQ26ARAt4vEq0cKzmNgEnFtvjkgi7w577>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 2512F2220072; Fri, 31 Jan 2025 02:28:55 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
+Date: Fri, 31 Jan 2025 08:28:33 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Julian Vetter" <julian@outer-limits.org>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Helge Deller" <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-Id: <543bd0f6-b25d-48b4-8039-496b8ddd10ce@app.fastmail.com>
+In-Reply-To: <20250130134825.2646380-1-julian@outer-limits.org>
+References: <20250130134825.2646380-1-julian@outer-limits.org>
+Subject: Re: [PATCH] parisc: Remove memcpy_fromio
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Fully migrate parisc to the IO functions from lib/iomem_copy.c. In a
-recent patch the functions memset_io and memcpy_toio were removed, but
-the memcpy_fromio was kept, because for very short sequences it does
-half word accesses, whereas the functions in lib/iomem_copy.c do byte
-accesses until the memory is naturally aligned and then do machine word
-accesses. But I don't think the single half-word access merits keeping
-the arch specific implementation, so, remove it as well.
+On Thu, Jan 30, 2025, at 14:48, Julian Vetter wrote:
+> Fully migrate parisc to the IO functions from lib/iomem_copy.c. In a
+> recent patch the functions memset_io and memcpy_toio were removed, but
+> the memcpy_fromio was kept, because for very short sequences it does
+> half word accesses, whereas the functions in lib/iomem_copy.c do byte
+> accesses until the memory is naturally aligned and then do machine word
+> accesses. But I don't think the single half-word access merits keeping
+> the arch specific implementation, so, remove it as well.
+>
+> Signed-off-by: Julian Vetter <julian@outer-limits.org>
 
-Signed-off-by: Julian Vetter <julian@outer-limits.org>
----
- arch/parisc/include/asm/io.h      |  3 --
- arch/parisc/kernel/parisc_ksyms.c |  1 -
- arch/parisc/lib/io.c              | 61 -------------------------------
- 3 files changed, 65 deletions(-)
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index 3143cf29ce27..61173a2b38e4 100644
---- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -135,9 +135,6 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
- 
- #define pci_iounmap			pci_iounmap
- 
--void memcpy_fromio(void *dst, const volatile void __iomem *src, int count);
--#define memcpy_fromio memcpy_fromio
--
- /* Port-space IO */
- 
- #define inb_p inb
-diff --git a/arch/parisc/kernel/parisc_ksyms.c b/arch/parisc/kernel/parisc_ksyms.c
-index 1c366b0d3134..509146a52725 100644
---- a/arch/parisc/kernel/parisc_ksyms.c
-+++ b/arch/parisc/kernel/parisc_ksyms.c
-@@ -43,7 +43,6 @@ EXPORT_SYMBOL($global$);
- #endif
- 
- #include <asm/io.h>
--EXPORT_SYMBOL(memcpy_fromio);
- 
- extern void $$divI(void);
- extern void $$divU(void);
-diff --git a/arch/parisc/lib/io.c b/arch/parisc/lib/io.c
-index 6e81200dc87a..3c7e617f5a93 100644
---- a/arch/parisc/lib/io.c
-+++ b/arch/parisc/lib/io.c
-@@ -12,67 +12,6 @@
- #include <linux/module.h>
- #include <asm/io.h>
- 
--/*
--** Copies a block of memory from a device in an efficient manner.
--** Assumes the device can cope with 32-bit transfers.  If it can't,
--** don't use this function.
--**
--** CR16 counts on C3000 reading 256 bytes from Symbios 896 RAM:
--**	27341/64    = 427 cyc per int
--**	61311/128   = 478 cyc per short
--**	122637/256  = 479 cyc per byte
--** Ergo bus latencies dominant (not transfer size).
--**      Minimize total number of transfers at cost of CPU cycles.
--**	TODO: only look at src alignment and adjust the stores to dest.
--*/
--void memcpy_fromio(void *dst, const volatile void __iomem *src, int count)
--{
--	/* first compare alignment of src/dst */ 
--	if ( (((unsigned long)dst ^ (unsigned long)src) & 1) || (count < 2) )
--		goto bytecopy;
--
--	if ( (((unsigned long)dst ^ (unsigned long)src) & 2) || (count < 4) )
--		goto shortcopy;
--
--	/* Then check for misaligned start address */
--	if ((unsigned long)src & 1) {
--		*(u8 *)dst = readb(src);
--		src++;
--		dst++;
--		count--;
--		if (count < 2) goto bytecopy;
--	}
--
--	if ((unsigned long)src & 2) {
--		*(u16 *)dst = __raw_readw(src);
--		src += 2;
--		dst += 2;
--		count -= 2;
--	}
--
--	while (count > 3) {
--		*(u32 *)dst = __raw_readl(src);
--		dst += 4;
--		src += 4;
--		count -= 4;
--	}
--
-- shortcopy:
--	while (count > 1) {
--		*(u16 *)dst = __raw_readw(src);
--		src += 2;
--		dst += 2;
--		count -= 2;
--	}
--
-- bytecopy:
--	while (count--) {
--		*(char *)dst = readb(src);
--		src++;
--		dst++;
--	}
--}
--
- /*
-  * Read COUNT 8-bit bytes from port PORT into memory starting at
-  * SRC.
--- 
-2.34.1
+This one looks fairly obvious. It might be nice to also
+clean up the {in,out}s{b,w,l} helper functions in the same
+file, but I don't understand why those are special
+in the first place.
 
+Those functions have been unchanged since before the git
+history and there are some comments that I don't find helpful.
+One thing they do is to deal with unaligned memory buffers,
+which the generic ones don't, but that could be easily added
+using get_unaligned/put_unaligned, expecting the compiler
+to optimize the memory side of the transfer.
+
+     Arnd
 
