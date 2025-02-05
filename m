@@ -1,53 +1,52 @@
-Return-Path: <linux-parisc+bounces-3297-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3298-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851B4A295B1
-	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 17:07:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 203B7A29853
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 19:04:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A953C18826DF
-	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 16:07:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 649E33A574A
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 18:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E601192B90;
-	Wed,  5 Feb 2025 16:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB001A83ED;
+	Wed,  5 Feb 2025 18:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rmJCzdWS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZb41hsV"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BDD190052;
-	Wed,  5 Feb 2025 16:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68C51FCD07;
+	Wed,  5 Feb 2025 18:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738771620; cv=none; b=nDhNy7n63RYs/Q4uVh9EF+CteK4hA1PhdxbUT2NSzsT/o8i+QxQtYcH70Bj4YufjV1nqe2frD0tPYFMBvgjKs9wkK6saysgaXu6iKJgbJT7yGPJrOwRN0G5vRvx3zDsUZrE2jdWc+dxPJWsqWDyjyhD7NuBu7DVey2VGylSA8/E=
+	t=1738778645; cv=none; b=Ym7Yr0vPYRbWpt8DQS0PeJkMvCa9M6Fr2BenIWSy1ZiPkmpoSdNrb7WuEnKGUCjcGxRORbTBqjkwrRQGQivh0W5Y+bl05N9P04S9x0F5F3q0Ju6V9ht115GiihlNpxg8ZTB/WHLTmShIo+7WaxCSnpoP4MpGh7bzCuboq5xH2jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738771620; c=relaxed/simple;
-	bh=fdaBYMhNywx3SBQczSGppmG5pefI/VXyodeBWOMusZI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=fDRMhw9rlLiGCnheUqtFBfk7qSYjCtTorkEufjOjbMZUuuTsaEjyk+3c75gZgIQqWbyW7TI4lwBlLN1agUoiwVzJtjXRqEOdS1q+BdzCmXVgqUicJbCTA2pzeGoH30Hr/Mn56uVLpldRVDS+7wn5GcyK6K37UpVzCMXCSDWWyeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rmJCzdWS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025E6C4CEDD;
-	Wed,  5 Feb 2025 16:06:58 +0000 (UTC)
+	s=arc-20240116; t=1738778645; c=relaxed/simple;
+	bh=b/S0S4ms8ZtF26zFZfnCQQsbI1iT5ddXsOUo6Ul5rI4=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=RAuan5kUs41pK9aX35kli8QZH6UGY5hEDjmlIB1dtUTwqF0XUpnCWBn7ctwb5RHCAOto5S5gPnlFTk0uuPKNwtPS/aeE/rM0qAIgDMtV2EwFSWuR1d/xk/FqsCmk307LUqNloDzxXVnYYHIHZDNEqzSX/nqiKLiZTqJH7et82r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZb41hsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA2CC4CED1;
+	Wed,  5 Feb 2025 18:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738771620;
-	bh=fdaBYMhNywx3SBQczSGppmG5pefI/VXyodeBWOMusZI=;
-	h=Date:From:To:Cc:Subject:From;
-	b=rmJCzdWSdeO/MZyuaGwpd3jRF4Q7jUka+PZeP49a22TpzZIKQBxOWeNTrxRVzF71r
-	 V8cJdZ9EWOL1BmPdt2MwvMKLkjtM7JwRiP5Gf9yKXTCLQi/XGNgf/u2TrHWnCZekMs
-	 KcnR/4aFUNtySkDVs/QdAPjDdL4eOJD+qPlLcdju2mvIxQZvlapbjwGmQsPKFtP/DT
-	 j2CkRdt+yuULeZ7J0auOX45nDI4eIN4QBns9+uFaj5ZTCnVUJ1pc4TPoJEUQqvAxJD
-	 mrB4B9L1UmziRtJnfUOKo+FV7ymUCTH4T7WcVd9qGBuOvdhKT6IBEsdMgfbN3AIA3S
-	 CTy3ep8u3Pyeg==
-Date: Wed, 5 Feb 2025 17:06:56 +0100
+	s=k20201202; t=1738778645;
+	bh=b/S0S4ms8ZtF26zFZfnCQQsbI1iT5ddXsOUo6Ul5rI4=;
+	h=Date:From:To:Subject:From;
+	b=jZb41hsVjPVpDNEf3EhWP0M7DWzXhFUSMVoo2pKjPvAWZonwjRjEzNcjyT8a1Kggh
+	 1TPu8adyQ8q8oyv/l6GoVQKNTfjeNdW/E09agnqHwbAbJuMDkzd8qn378hd7Ft1Yi2
+	 BEhXzg6wAg1mXoeNRZpA9hMKFq9SAEEzhOQAnGOeBpG6cw2wvqyoZt3ZjOt2KCtF8f
+	 x/zW4GnR45edqSv8tNEohs/5QFs1hPFaq+XjANZso+02vwz0ahCzxvQAwc97rHmRTi
+	 W5l46M6SUTa3JPwyBemgJ5xx8maoxSKww1iJNXS80rVGLgM9cGOWRlsTsojQOZRxdf
+	 5CRHc9xiZy04w==
+Date: Wed, 5 Feb 2025 19:04:02 +0100
 From: Helge Deller <deller@kernel.org>
-To: Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Sven Schnelle <svens@stackframe.org>, linux-parisc@vger.kernel.org
-Subject: [PATCH] kexec_elf: Fix some trivial kerneldoc warnings
-Message-ID: <Z6OMoCQridWMs0at@p100>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: [PATCH] Input: gscps2 - Describe missing function parameters
+Message-ID: <Z6OoEnJFW118IuP0@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -57,104 +56,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Document missing parameters of various functions to avoid warnings
-when compiling with W=1.
+Avoid compiler warnings when building with W=1 by adding documentation for
+the missing function parameters.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502051744.Bjxxm10L-lkp@intel.com/
-Cc: Sven Schnelle <svens@stackframe.org>
 Signed-off-by: Helge Deller <deller@gmx.de>
 
-diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
-index d3689632e8b9..f71448ac27c6 100644
---- a/kernel/kexec_elf.c
-+++ b/kernel/kexec_elf.c
-@@ -58,6 +58,7 @@ static uint16_t elf16_to_cpu(const struct elfhdr *ehdr, uint16_t value)
+diff --git a/drivers/input/serio/gscps2.c b/drivers/input/serio/gscps2.c
+index 4fada5bc2a38..9c6ff04c46cf 100644
+--- a/drivers/input/serio/gscps2.c
++++ b/drivers/input/serio/gscps2.c
+@@ -251,6 +251,8 @@ static bool gscps2_report_data(struct gscps2port *ps2port)
  
  /**
-  * elf_is_ehdr_sane - check that it is safe to use the ELF header
-+ * @ehdr:	pointer to ELF header to be checked.
-  * @buf_len:	size of the buffer in which the ELF file is loaded.
-  */
- static bool elf_is_ehdr_sane(const struct elfhdr *ehdr, size_t buf_len)
-@@ -180,7 +181,8 @@ static int elf_read_ehdr(const char *buf, size_t len, struct elfhdr *ehdr)
- 
- /**
-  * elf_is_phdr_sane - check that it is safe to use the program header
-- * @buf_len:	size of the buffer in which the ELF file is loaded.
-+ * @phdr:	pointer to elf_phdr struct to be checked
-+ * @buf_len:	size of the buffer in which the ELF file was loaded
-  */
- static bool elf_is_phdr_sane(const struct elf_phdr *phdr, size_t buf_len)
- {
-@@ -244,6 +246,9 @@ static int elf_read_phdr(const char *buf, size_t len,
- 
- /**
-  * elf_read_phdrs - read the program headers from the buffer
-+ * @buf:	buffer to read ELF file from
-+ * @len:	size of @buf
-+ * @elf_info:	pointer to existing kexec_elf_info struct which will be populated
+  * gscps2_interrupt() - Interruption service routine
++ * @irq: interrupt number which triggered (unused)
++ * @dev: device pointer (unused)
   *
-  * This function assumes that the program header table was checked for sanity.
-  * Use elf_is_ehdr_sane() if it wasn't.
-@@ -280,10 +285,10 @@ static int elf_read_phdrs(const char *buf, size_t len,
+  * This function reads received PS/2 bytes and processes them on
+  * all interfaces.
+@@ -329,6 +331,8 @@ static void gscps2_close(struct serio *port)
  
  /**
-  * elf_read_from_buffer - read ELF file and sets up ELF header and ELF info
-- * @buf:	Buffer to read ELF file from.
-- * @len:	Size of @buf.
-- * @ehdr:	Pointer to existing struct which will be populated.
-- * @elf_info:	Pointer to existing struct which will be populated.
-+ * @buf:	buffer to read ELF file from
-+ * @len:	size of @buf
-+ * @ehdr:	pointer to existing elfhdr struct which will be populated
-+ * @elf_info:	pointer to existing kexec_elf_info struct which will be populated
-  *
-  * This function allows reading ELF files with different byte order than
-  * the kernel, byte-swapping the fields as needed.
-@@ -315,6 +320,8 @@ static int elf_read_from_buffer(const char *buf, size_t len,
- 
- /**
-  * kexec_free_elf_info - free memory allocated by elf_read_from_buffer
-+ * @elf_info:	pointer to existing kexec_elf_info struct which will be freed
-+ *		and zeroed.
-  */
- void kexec_free_elf_info(struct kexec_elf_info *elf_info)
- {
-@@ -322,7 +329,15 @@ void kexec_free_elf_info(struct kexec_elf_info *elf_info)
- 	memset(elf_info, 0, sizeof(*elf_info));
- }
- /**
-- * kexec_build_elf_info - read ELF executable and check that we can use it
-+ * kexec_build_elf_info - read ELF executable headers from buffer and
-+ *		check that we can use them
-+ * @buf:	buffer to read ELF file from
-+ * @len:	size of @buf
-+ * @ehdr:	pointer to existing elfhdr struct which will be populated
-+ * @elf_info:	pointer to existing kexec_elf_info struct which will be populated
+  * gscps2_probe() - Probes PS2 devices
++ * @dev: pointer to parisc_device struct which will be probed
 + *
-+ * Return:
-+ * 0 on success, negative value on failure.
+  * @return: success/error report
   */
- int kexec_build_elf_info(const char *buf, size_t len, struct elfhdr *ehdr,
- 			       struct kexec_elf_info *elf_info)
-@@ -378,9 +393,15 @@ int kexec_elf_probe(const char *buf, unsigned long len)
- }
+ 
+@@ -420,6 +424,8 @@ static int __init gscps2_probe(struct parisc_device *dev)
  
  /**
-- * kexec_elf_load - load ELF executable image
-- * @lowest_load_addr:	On return, will be the address where the first PT_LOAD
-- *			section will be loaded in memory.
-+ * kexec_elf_load - load an ELF executable image
-+ * @image:		pointer to kimage struct of file to be loaded
-+ * @ehdr:		pointer to the ELF header of file to be loaded
-+ * @elf_info:		pointer to kexec_elf_info struct of file to be loaded
-+ * @kbuf:		pointer to kexec_buf struct which will be used to
-+ *			load the ELF file
-+ * @lowest_load_addr:	when the kernel was successfully loaded, the address
-+ *			where the first PT_LOAD section was loaded is stored
-+ *			in the variable pointed to by this pointer
-  *
-  * Return:
-  * 0 on success, negative value on failure.
+  * gscps2_remove() - Removes PS2 devices
++ * @dev: pointer to parisc_device which shall be removed
++ *
+  * @return: success/error report
+  */
+ 
 
