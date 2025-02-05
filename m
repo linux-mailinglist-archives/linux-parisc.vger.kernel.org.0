@@ -1,638 +1,407 @@
-Return-Path: <linux-parisc+bounces-3291-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3292-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0B2A27175
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 Feb 2025 13:12:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E413BA28423
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 07:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AA747A12E5
-	for <lists+linux-parisc@lfdr.de>; Tue,  4 Feb 2025 12:11:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 709B616349A
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 06:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD34215F5F;
-	Tue,  4 Feb 2025 12:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ADCC227B98;
+	Wed,  5 Feb 2025 06:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="A3KQjj7F";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NnSSJe0H"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bc5kMGlt"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C5D20D4F7;
-	Tue,  4 Feb 2025 12:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738670784; cv=none; b=NDQ+aewTPiqcmHOczwhE1zKJwXWPJ82y7dCj3M9zcw84uRwm5KwQPNWj5RzlXfb0h3DPkjIfPVEoJyPsf5HxLlrAx3FNQKAdbR/FnN/JWOt09c1cg4FjvKkxneorvyD/PE6jKHSqrUds78QZik/shvGFHqTvPtouM4rzTdjZ2Dc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738670784; c=relaxed/simple;
-	bh=Mn4plfh6miiiQwOwjuqlkuZn2mXyEfEFTkWg4rVIUvk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jm7u84ZtAhU44CfHhLeLXrfz/iFpzmGX1bN7/yJDfwtDQGziTIpEnHGEkssU625YXPL//rqN2iccjvchdigk6BquEoc5Zm1pUB2aIG/2A9Pe3CdwB/E6yVYTrsWcPXy3hDYf1jestjVKY7ycvr4LBAsSXEMOSbwZHfRKX3OMfJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=A3KQjj7F; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NnSSJe0H; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1738670777;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uJev7qc7WdPVC3bh+c7TDU1+3X+PYPS1LUdYMSm0CD8=;
-	b=A3KQjj7Fwe7wakZDkLehTYhSC5nkWkEHH0hhtsjbB+r9k97rQn3FwydvMCGd6BbAyLMRzf
-	KV4TZbxNW5cCrbObFgsrggESO2EKMlOH9qWxzSZxl6V6LptgThlQyuwtBQE2qUx0aVWT8t
-	g3uI+nj89ANucwU1tBLcX4CoQOKuL5t9d7NGX0b0z+c6qqh/NjmmwXa1RJwXIKhgp7IJ52
-	UTHQk8l92CQ9+0bJ1ETfl2BrV26qq9LoSmmgft2BkWduHq0kSVD2X1xTbGXtzXQco5dMSm
-	r7z4iMpkrisO6PTs8TOU3P4CI/+R2ABAZf54eIHRtiEgbdtabKIjhWtV8IAjpQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1738670777;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uJev7qc7WdPVC3bh+c7TDU1+3X+PYPS1LUdYMSm0CD8=;
-	b=NnSSJe0HiScvZ2Gv9ROIRuD3jYq64XJ1NHoDd9K7TMRzfkV6+7Sxivt4+v21CwncIpJpgC
-	uduhfAtv6MELApBw==
-Date: Tue, 04 Feb 2025 13:05:50 +0100
-Subject: [PATCH v3 18/18] vdso: Remove remnants of architecture-specific
- time storage
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF71825A644;
+	Wed,  5 Feb 2025 06:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738736062; cv=fail; b=rllYEezL5GwZQm7uH3EIY5iDWU6UiqQF6IFu+APuezWT43r2/P9ZONyMEhXsXkhyf04QKMBJuxamzoqub9F9rylzAYTVIbNW0wHpHU2tLElc4v6DOKZaxzzv14shK0FA4TbCX62dzUnu8u1y5YztwTByorHGBDOjy8++SPKviRg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738736062; c=relaxed/simple;
+	bh=fdMzKEHwM9+ksucGuF84+5O+H5vWCz/Uka3Uw2xtnVY=;
+	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
+	 Content-Disposition:MIME-Version; b=nTJBuTd17A6H9jTK2hvRuI3IitKuO748N7dCqJBM5YKokv2K9e8IooUEyfRNyZBxd2x7s1XU7acfIYlfd2Y7iauOJ8zcscfEdU2biI+XvlT1sKdm1gcvHHnRgS6yh9oQ/c6so1z1bsG8FkpqS4lH2h4//Fr5WoB/mPekoUC/tqA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bc5kMGlt; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738736060; x=1770272060;
+  h=date:from:to:cc:subject:message-id:
+   content-transfer-encoding:mime-version;
+  bh=fdMzKEHwM9+ksucGuF84+5O+H5vWCz/Uka3Uw2xtnVY=;
+  b=bc5kMGltuUHoJPzF3Gi9q3zGuml8TRWj+WwArvcgiYs6+uAlmXvxyZR1
+   dE+oMEZsavK01m/joeQjwoIOQXHeVqoh9cFvOtV0UqajSbX+RSOMSvac1
+   JJlOU1eUMRtQ6kZVnm/YN+wqNICYgeranTqUMsww6fmJg5F3PyQ76Shen
+   OsUyY2PyNss53ZTkO6sdwf5uxQOgudEOtnBwfuZvgHTR3MwQIKIUF39dW
+   aR3MsTi3kiBMWHfFa0wNAXAG7JsJBY9LQvZ3Jtbez7Uthyr7R3M+YM5Yz
+   nhDKPVbt6h1ormxIieliVCARoe9v8EAf5h4j+UPnDeEZK/stCKwvh1wvL
+   w==;
+X-CSE-ConnectionGUID: +unNXDwBSyGrpAy/PomgXw==
+X-CSE-MsgGUID: vzDcbgSOThyvJ+08hvIAgg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="56822053"
+X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
+   d="scan'208";a="56822053"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2025 22:14:19 -0800
+X-CSE-ConnectionGUID: 9n2Qp2TXQXyFKfpA76si/w==
+X-CSE-MsgGUID: aBPhlWE8S4q2MNCJAF6pZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,260,1732608000"; 
+   d="scan'208";a="110695616"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 04 Feb 2025 22:14:19 -0800
+Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Tue, 4 Feb 2025 22:14:18 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Tue, 4 Feb 2025 22:14:18 -0800
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Tue, 4 Feb 2025 22:14:15 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bo4zUNu+BPCkbu3YevJzhsovbIYaxEhOTyNGXaqoFTACF0d3SG+KaOXEP57q2gzY6rqgfL+DrC94ZryVVuaFRGbAyf+2CKj4zCZNYm1M69ZdOBSMOtWzUijKVO2+lKYuMNZowUfPxHmFjwlBpzHc4Pup8JSWlRgi0S/QihyEpu9cdX5XJRpddfGnPmGy+HQj0LRi+0d8j+2nsz+wLqRtnFgs47h+46CQpPvLLuASaeLkfyHRsw7274xGSvm6Ezgzsse66sO4lqGYOri2RWl6z88cw8bh7xyaXYx82/99Z7hr+cRvQO9dQQ6JRbhnVxBicJUVBo7AXAKgW9ruGL5bdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HgVdpC390ejkH2EST8BydzPMZv8zWafnPRMCe1wJHqU=;
+ b=ABaxUbZd29NCqbjix7GI3e7LfTDe2OnGydeLYDslpM1DELw/gh6Z7K1qM4P3Og0OcF5eMRMeYs+YQutwnSaT32+hoo7BEe2ti51gYOKcQ5WFDVJ+4q5V4D3tK8Dqibe+ZtaJPhHLxOcUzCT+E7W6GlqecjovMiGMYZtaGYum0rbC8ijHW7MJNRZSkpehAJ+QUQx9uZ4eh7d6xCH8jUVct3m2BYKfHT4DSIMy7XqhM0ak+JlIP5hx4FNuzFE8Y//FGdGclXRTWGad+uM6dVjbLeYxgNNZeXJ6r49CQeiKkXfofWIPBSPfSGyQwwxfMGYTqm0qLPp3NcodgQZGiHFi0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by CO1PR11MB4820.namprd11.prod.outlook.com (2603:10b6:303:6f::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.11; Wed, 5 Feb
+ 2025 06:13:59 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::4622:29cf:32b:7e5c%3]) with mapi id 15.20.8398.025; Wed, 5 Feb 2025
+ 06:13:59 +0000
+Date: Wed, 5 Feb 2025 14:13:48 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: Vadim Fedorenko <vadfed@meta.com>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, <linux-kernel@vger.kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Willem de Bruijn <willemb@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>, <netdev@vger.kernel.org>,
+	<linux-alpha@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+	<linux-parisc@vger.kernel.org>, <sparclinux@vger.kernel.org>,
+	<linux-arch@vger.kernel.org>, <oliver.sang@intel.com>
+Subject: [linus:master] [net_tstamp]  4aecca4c76:
+ redis.get_total_throughput_rps 1.5% improvement
+Message-ID: <202502051330.4d2f403b-lkp@intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI2PR01CA0043.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:193::12) To LV3PR11MB8603.namprd11.prod.outlook.com
+ (2603:10b6:408:1b6::9)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250204-vdso-store-rng-v3-18-13a4669dfc8c@linutronix.de>
-References: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
-In-Reply-To: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
-To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- Helge Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Russell King <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>, 
- Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, 
- Guo Ren <guoren@kernel.org>
-Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
- loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
- linux-csky@vger.kernel.org
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738670761; l=19961;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=Mn4plfh6miiiQwOwjuqlkuZn2mXyEfEFTkWg4rVIUvk=;
- b=9k3ySPEmjAbpr2ATbvTSurlSePqoJ4TQiU/CWBgKiO0hwreklF4CY++q17CLxw3qPdu9xG1sy
- AaBFFBPGqobDQeWAdeeAGUIJXJih23jdit0P2NNBW0hzdHU2P+nmdPZ
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|CO1PR11MB4820:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3f9a637-3f63-4568-19ed-08dd45ac4771
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?YuridmflQj7rADobsu+cKS20UCYXWLt17Y9yRiJjAw12JrD5eSlyCYmo0W?=
+ =?iso-8859-1?Q?1w6c66V+Hv2cC54InFA3rKGT9CERm50EMg1pgCaS4BphhDu2N4ECNMYkNZ?=
+ =?iso-8859-1?Q?ODxm/msOwu9uSofNhTP/h0x9phCcwgrkDuB3BOGThaqQl5rVxlrbTIQmnd?=
+ =?iso-8859-1?Q?4QxAFdxLbZxvxKEz0POFbT5eesKybbWdushUMP3M3eRbSoWo4x3x8ZDV4V?=
+ =?iso-8859-1?Q?oy46LdI2gLhcbibhx8AxC6SShd4hdcnowO7CKOF71C/Za7NgpUeqMSSVni?=
+ =?iso-8859-1?Q?6XvJOWf451PKx+HMvOuzNGYRnxfn/WP6D9OkX77LtXNUDX6eLV95b826l3?=
+ =?iso-8859-1?Q?8BMlBM6MIDPqDsAazfd8HWwhvpONS9XYQOUaeP5nAVcvfNopYPMW2xcCiV?=
+ =?iso-8859-1?Q?TK24syIBmqT5hJOS3nN3PyBMXF+dbpBiuD1CnMX4e/siU5Dv0vhOJLkSWq?=
+ =?iso-8859-1?Q?w3SjOlNg5J3YepLypQ1ieuStjRdZXh1R9vuzmC5IGy/D4FSx065XLy4LG2?=
+ =?iso-8859-1?Q?2F+kGvP6zg8AFhjKr5fpV1efHgzEabArqp08deG+zBx7wna+HOtVvfZjDi?=
+ =?iso-8859-1?Q?VITn8ICHY09FGxRyFUCJIzMG+8wqHZ/e95c/IQph1InvbEYog7uQwUAMiF?=
+ =?iso-8859-1?Q?cY+sysyhsr5bg5UOrIT/A0c25gxhs/Ybgymkh4hvedTY94e/33cud0Oawy?=
+ =?iso-8859-1?Q?bpaJjWEr3SLWB3exuPIkRKp2aLUVnl950QmocC6A2MtGtlMHDMg1VAWpcS?=
+ =?iso-8859-1?Q?ZqIC9pDUtOie/BV+mLCzj1nM8PPlpwUmfAQt9rwSm/7pUdoqGklfhQjWBl?=
+ =?iso-8859-1?Q?2d7jJv7y1ymj4QflLdAkn+PxEHY/4aqewVjXEIvZZ+Auks/GneEC5cC6/C?=
+ =?iso-8859-1?Q?bDCN+ITdLUH68hQyRS2v3XznQ04DFETHhF1C9NM9uR9mSiMtvbGz+qO0us?=
+ =?iso-8859-1?Q?gzNGTF5sqZgyttDAwnFl9o2h6+4A/wKaY5AZCeOSBsf8lUgmC4lGAiOP/g?=
+ =?iso-8859-1?Q?mhTi/syvISyCjwccG+qVO/lr0HzJ9/v95rQMfB9Mt4jz0u3xAlv+9QGRW9?=
+ =?iso-8859-1?Q?xjkN/gq2anL48oC8O9f99Y7HWJy65aw7lgqkgdA6zZuMZZshRf9X1kTaFW?=
+ =?iso-8859-1?Q?R8bgmREwSB+fD0asGuY2ZY2r7yb/HIzdpGeZdYJg/xvhb0VjgoUwnngXGh?=
+ =?iso-8859-1?Q?ZYcgRboUT4RfvM65CBOCkFpaFztBMTELirxeZv/g7HyJvBe3pbuRxEfcK8?=
+ =?iso-8859-1?Q?heF2YRxbe26lnb8+EhJduSzYW+dA5wxN4LTtGRJYmHzPtL3XJEF/4VsH/l?=
+ =?iso-8859-1?Q?VRLm7YurjWSDARtXUCngyAoBzk7YaF5X1iOjRILffah7N8j0NLDMdkOhbA?=
+ =?iso-8859-1?Q?CGKQE5+0SVHZxbR7lm/GISvD4vOtOSzA=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?6q4ksXm4ujZ9qQmiJ1nQNDa0hh3idpE7LOSvMTlYmEbf+nDr/GLQx5bpN2?=
+ =?iso-8859-1?Q?XUWnq85rbsbzLi/gjy3IFqt9Lj4JcFvTJnJjp/xn5jqnWfpc6RfmAp2BS6?=
+ =?iso-8859-1?Q?fXh+OdmUoYJMxXT7UBhJ1j8SCt2jfGB8nZ332NERw3RGfyu11x9xCeiyXL?=
+ =?iso-8859-1?Q?R7F73r1LGIm011XUiMb+0R/1/uGPjRhhDAaVck76jVpb/f0HJ0rd8pRe7/?=
+ =?iso-8859-1?Q?85zoPTNIuP6w2GFnH1C8x5kmB54irvPTZ/hs7pjz9ZDGABFY8qAZk8DEDl?=
+ =?iso-8859-1?Q?up2YXI6RmYFg6SuQeMhkSjFfPGKlVK9elj41/nScSxeSl/vvbel1vo04Ro?=
+ =?iso-8859-1?Q?Y0NVXtzPoo5/b589cyGLo6QCEffoMMzMoROAOr85c5tKnfrNK9ZpveKWva?=
+ =?iso-8859-1?Q?LTAnIFxfeZrSyu/XyB/9j7jiCyX7UczjWdWXJknZQUU+j1Th9YR/mWrNeF?=
+ =?iso-8859-1?Q?zUch4rVVGZ0nm0XTeR3TMcYl6hfrU8g3hqbmx1wfbu95baFMb9PtcIE+km?=
+ =?iso-8859-1?Q?gCkWwszJvNrzSNUzrTlSCWVOOezeA8mGo0/xTvoYvhylotif+YBogvbMv+?=
+ =?iso-8859-1?Q?WX9vUq+jO8hFOaHIn0xKRqNWjFpYdzi8wV50mn9RsrDDGV1YB63pBHT+EH?=
+ =?iso-8859-1?Q?BEjbzXhmpDBTZv5JYlnGHEXjjqsEZHNHj5KyBFc7FqSwuqV62RzUpV+VOY?=
+ =?iso-8859-1?Q?WSdexCHwNnAljild0SLx1c3IyMqP0OHnZU1u2IXBj7RmN+usBBmHRjkxG8?=
+ =?iso-8859-1?Q?P9ymC6bYMUVoVKBAVWurkEe/vjqVtN6MT6Zga+HCRlII39MQf3cUs/oYBk?=
+ =?iso-8859-1?Q?21F9ahf29uxxITVn7y+cTS6hmePYci4scFbAxjEmzcZFAdZSgjgN+SON3t?=
+ =?iso-8859-1?Q?9lF3AnF+CEXAsVJYkM0fh9yCPLDqH/4ESlaHfVCDNy0N9UjN3wrHs3GM/I?=
+ =?iso-8859-1?Q?mqXVd8v0chq+8lO/wO86raf1uFPO3dxNsVSU/6pcDla+lN/iX8ordkGETJ?=
+ =?iso-8859-1?Q?enNiSwIpLvLF/4pQObygjwQ79l5h5xuwhZdWpYXMMrcByG7Sm+2I/QPhyM?=
+ =?iso-8859-1?Q?u3H0tcvzeQB/tDRfDk0wfh4PAiszrHOfKuDL4sqy4XFDhL6JLnJl9zqdNj?=
+ =?iso-8859-1?Q?Vg57jCVkguPDYNML9SU/Cks7mW3Yw9M9vJGONuuM4vJX+LDcAXZ0q31Z5W?=
+ =?iso-8859-1?Q?oY0pk34eyQSvdmd6pM+FJSaZ66o0bUXmaGGerN5N2aer9TEs7VsifKV9u8?=
+ =?iso-8859-1?Q?bc4edLihHllEG3eUdJENIPr1kHgaf8FhO2lxM4fS8xxlmX67X1LIQezXwx?=
+ =?iso-8859-1?Q?mdAs0gxsCkTP0ZikZCMWYv7T+uEZYPM3jsOMqR/0dt3ZdVOfsz4/uTfInv?=
+ =?iso-8859-1?Q?gy+qqUdrNy+uL5BcRE7g0uY8hqGGepobEbqnPY/eaDYTcUVGwKeXCi9B3t?=
+ =?iso-8859-1?Q?D0IqlTI+8rT3EIAAcO54Z0BR58/o/PdalhD2EhtIubLHvUm/ltUy57J73k?=
+ =?iso-8859-1?Q?WTAYwxA6/OT/Xa9JMXUQeHXA1jVQtiWDJZaRcuJRUldzXAzaTDlcZSNQ1H?=
+ =?iso-8859-1?Q?K6E9CL1VdFmZjhZUwVbJAM5Gj89swl4MM4UyqSV4tfAkgC8m6KK51hho6E?=
+ =?iso-8859-1?Q?zti2NlYedHUteA0LXNSeSGwq6kvwdNytuvPsVZ5zqfOcs+WeqR//8Lhg?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3f9a637-3f63-4568-19ed-08dd45ac4771
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2025 06:13:59.2742
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: naDAWKJ9unNpIAvC0aEpwM51dr3gKm5vrvXu6n4u0FJH0qJBEndGntbGu2H8H75hKwiJvpxMNfMjMQqKTWDvKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4820
+X-OriginatorOrg: intel.com
 
-All users of the random vDSO are using the generic storage
-implementation. Remove the now unnecessary compatibility accessor
-functions and symbols.
 
-Co-developed-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Signed-off-by: Thomas Wei√üschuh <thomas.weissschuh@linutronix.de>
----
- include/asm-generic/vdso/vsyscall.h | 20 +++------------
- include/linux/time_namespace.h      |  3 ---
- include/vdso/datapage.h             | 19 +-------------
- include/vdso/helpers.h              |  8 +++---
- kernel/time/namespace.c             | 12 ++++-----
- kernel/time/vsyscall.c              | 19 +++++++-------
- lib/vdso/datastore.c                | 10 +++-----
- lib/vdso/gettimeofday.c             | 51 ++++++++++++++++++-------------------
- 8 files changed, 53 insertions(+), 89 deletions(-)
+Hello,
 
-diff --git a/include/asm-generic/vdso/vsyscall.h b/include/asm-generic/vdso/vsyscall.h
-index 13e2ac3736ee9b4aea6800117997ee165a7e2b9d..1fb3000f50364feeaaa9348d438b3ab8091bb265 100644
---- a/include/asm-generic/vdso/vsyscall.h
-+++ b/include/asm-generic/vdso/vsyscall.h
-@@ -20,31 +20,19 @@ static __always_inline const struct vdso_rng_data *__arch_get_vdso_u_rng_data(vo
- }
- #endif
- 
--#else  /* !CONFIG_GENERIC_VDSO_DATA_STORE */
--
--#ifndef __arch_get_k_vdso_data
--static __always_inline struct vdso_data *__arch_get_k_vdso_data(void)
--{
--	return NULL;
--}
--#endif /* __arch_get_k_vdso_data */
--#define vdso_k_time_data __arch_get_k_vdso_data()
--
--#define __arch_get_vdso_u_time_data __arch_get_vdso_data
--
- #endif /* CONFIG_GENERIC_VDSO_DATA_STORE */
- 
- #ifndef __arch_update_vsyscall
--static __always_inline void __arch_update_vsyscall(struct vdso_data *vdata)
-+static __always_inline void __arch_update_vsyscall(struct vdso_time_data *vdata)
- {
- }
- #endif /* __arch_update_vsyscall */
- 
--#ifndef __arch_sync_vdso_data
--static __always_inline void __arch_sync_vdso_data(struct vdso_data *vdata)
-+#ifndef __arch_sync_vdso_time_data
-+static __always_inline void __arch_sync_vdso_time_data(struct vdso_time_data *vdata)
- {
- }
--#endif /* __arch_sync_vdso_data */
-+#endif /* __arch_sync_vdso_time_data */
- 
- #endif /* !__ASSEMBLY__ */
- 
-diff --git a/include/linux/time_namespace.h b/include/linux/time_namespace.h
-index 4b81db223f5450218dfaf553b24195be9ba97c08..0b8b32bf0655109d368c5dacc23ca5efcbb5aa80 100644
---- a/include/linux/time_namespace.h
-+++ b/include/linux/time_namespace.h
-@@ -8,7 +8,6 @@
- #include <linux/ns_common.h>
- #include <linux/err.h>
- #include <linux/time64.h>
--#include <vdso/datapage.h>
- 
- struct user_namespace;
- extern struct user_namespace init_user_ns;
-@@ -166,6 +165,4 @@ static inline ktime_t timens_ktime_to_host(clockid_t clockid, ktime_t tim)
- }
- #endif
- 
--struct vdso_data *arch_get_vdso_data(void *vvar_page);
--
- #endif /* _LINUX_TIMENS_H */
-diff --git a/include/vdso/datapage.h b/include/vdso/datapage.h
-index 497907c3aa11fcae913f62ef7373bbe6a1026bd6..ed4fb4c06e3ee6423fe68ccb476565213f234863 100644
---- a/include/vdso/datapage.h
-+++ b/include/vdso/datapage.h
-@@ -128,8 +128,6 @@ struct vdso_time_data {
- 	struct arch_vdso_time_data arch_data;
- };
- 
--#define vdso_data vdso_time_data
--
- /**
-  * struct vdso_rng_data - vdso RNG state information
-  * @generation:	counter representing the number of RNG reseeds
-@@ -149,10 +147,7 @@ struct vdso_rng_data {
-  * With the hidden visibility, the compiler simply generates a PC-relative
-  * relocation, and this is what we need.
-  */
--#ifndef CONFIG_GENERIC_VDSO_DATA_STORE
--extern struct vdso_time_data _vdso_data[CS_BASES] __attribute__((visibility("hidden")));
--extern struct vdso_time_data _timens_data[CS_BASES] __attribute__((visibility("hidden")));
--#else
-+#ifdef CONFIG_GENERIC_VDSO_DATA_STORE
- extern struct vdso_time_data vdso_u_time_data[CS_BASES] __attribute__((visibility("hidden")));
- extern struct vdso_rng_data vdso_u_rng_data __attribute__((visibility("hidden")));
- extern struct vdso_arch_data vdso_u_arch_data __attribute__((visibility("hidden")));
-@@ -160,17 +155,6 @@ extern struct vdso_arch_data vdso_u_arch_data __attribute__((visibility("hidden"
- extern struct vdso_time_data *vdso_k_time_data;
- extern struct vdso_rng_data *vdso_k_rng_data;
- extern struct vdso_arch_data *vdso_k_arch_data;
--#endif
--
--/**
-- * union vdso_data_store - Generic vDSO data page
-- */
--union vdso_data_store {
--	struct vdso_time_data	data[CS_BASES];
--	u8			page[1U << CONFIG_PAGE_SHIFT];
--};
--
--#ifdef CONFIG_GENERIC_VDSO_DATA_STORE
- 
- #define VDSO_ARCH_DATA_SIZE ALIGN(sizeof(struct vdso_arch_data), PAGE_SIZE)
- #define VDSO_ARCH_DATA_PAGES (VDSO_ARCH_DATA_SIZE >> PAGE_SHIFT)
-@@ -189,7 +173,6 @@ enum vdso_pages {
- /*
-  * The generic vDSO implementation requires that gettimeofday.h
-  * provides:
-- * - __arch_get_vdso_data(): to get the vdso datapage.
-  * - __arch_get_hw_counter(): to get the hw counter based on the
-  *   clock_mode.
-  * - gettimeofday_fallback(): fallback for gettimeofday.
-diff --git a/include/vdso/helpers.h b/include/vdso/helpers.h
-index 3ddb03bb05cbeefc110adf0e672c2cd68848a0ae..41c3087070c7ab21d7adec04e6cd30c4b32ea221 100644
---- a/include/vdso/helpers.h
-+++ b/include/vdso/helpers.h
-@@ -7,7 +7,7 @@
- #include <asm/barrier.h>
- #include <vdso/datapage.h>
- 
--static __always_inline u32 vdso_read_begin(const struct vdso_data *vd)
-+static __always_inline u32 vdso_read_begin(const struct vdso_time_data *vd)
- {
- 	u32 seq;
- 
-@@ -18,7 +18,7 @@ static __always_inline u32 vdso_read_begin(const struct vdso_data *vd)
- 	return seq;
- }
- 
--static __always_inline u32 vdso_read_retry(const struct vdso_data *vd,
-+static __always_inline u32 vdso_read_retry(const struct vdso_time_data *vd,
- 					   u32 start)
- {
- 	u32 seq;
-@@ -28,7 +28,7 @@ static __always_inline u32 vdso_read_retry(const struct vdso_data *vd,
- 	return seq != start;
- }
- 
--static __always_inline void vdso_write_begin(struct vdso_data *vd)
-+static __always_inline void vdso_write_begin(struct vdso_time_data *vd)
- {
- 	/*
- 	 * WRITE_ONCE() is required otherwise the compiler can validly tear
-@@ -40,7 +40,7 @@ static __always_inline void vdso_write_begin(struct vdso_data *vd)
- 	smp_wmb();
- }
- 
--static __always_inline void vdso_write_end(struct vdso_data *vd)
-+static __always_inline void vdso_write_end(struct vdso_time_data *vd)
- {
- 	smp_wmb();
- 	/*
-diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
-index 0775b9ec952af9639480db9480d06d12293d1ceb..12f55aa539adbc11cce4055f519dbeca8a73320c 100644
---- a/kernel/time/namespace.c
-+++ b/kernel/time/namespace.c
-@@ -165,18 +165,18 @@ static struct timens_offset offset_from_ts(struct timespec64 off)
-  *     HVCLOCK
-  *     VVAR
-  *
-- * The check for vdso_data->clock_mode is in the unlikely path of
-+ * The check for vdso_time_data->clock_mode is in the unlikely path of
-  * the seq begin magic. So for the non-timens case most of the time
-  * 'seq' is even, so the branch is not taken.
-  *
-  * If 'seq' is odd, i.e. a concurrent update is in progress, the extra check
-- * for vdso_data->clock_mode is a non-issue. The task is spin waiting for the
-+ * for vdso_time_data->clock_mode is a non-issue. The task is spin waiting for the
-  * update to finish and for 'seq' to become even anyway.
-  *
-- * Timens page has vdso_data->clock_mode set to VDSO_CLOCKMODE_TIMENS which
-+ * Timens page has vdso_time_data->clock_mode set to VDSO_CLOCKMODE_TIMENS which
-  * enforces the time namespace handling path.
-  */
--static void timens_setup_vdso_data(struct vdso_data *vdata,
-+static void timens_setup_vdso_data(struct vdso_time_data *vdata,
- 				   struct time_namespace *ns)
- {
- 	struct timens_offset *offset = vdata->offset;
-@@ -219,7 +219,7 @@ static DEFINE_MUTEX(offset_lock);
- static void timens_set_vvar_page(struct task_struct *task,
- 				struct time_namespace *ns)
- {
--	struct vdso_data *vdata;
-+	struct vdso_time_data *vdata;
- 	unsigned int i;
- 
- 	if (ns == &init_time_ns)
-@@ -235,7 +235,7 @@ static void timens_set_vvar_page(struct task_struct *task,
- 		goto out;
- 
- 	ns->frozen_offsets = true;
--	vdata = arch_get_vdso_data(page_address(ns->vvar_page));
-+	vdata = page_address(ns->vvar_page);
- 
- 	for (i = 0; i < CS_BASES; i++)
- 		timens_setup_vdso_data(&vdata[i], ns);
-diff --git a/kernel/time/vsyscall.c b/kernel/time/vsyscall.c
-index 09c1e39a6dd8e24aa161982c04078e78d52fa737..418192296ef7dd3c1772d50f129e7838883cf00c 100644
---- a/kernel/time/vsyscall.c
-+++ b/kernel/time/vsyscall.c
-@@ -15,8 +15,7 @@
- 
- #include "timekeeping_internal.h"
- 
--static inline void update_vdso_data(struct vdso_data *vdata,
--				    struct timekeeper *tk)
-+static inline void update_vdso_time_data(struct vdso_time_data *vdata, struct timekeeper *tk)
- {
- 	struct vdso_timestamp *vdso_ts;
- 	u64 nsec, sec;
-@@ -77,7 +76,7 @@ static inline void update_vdso_data(struct vdso_data *vdata,
- 
- void update_vsyscall(struct timekeeper *tk)
- {
--	struct vdso_data *vdata = vdso_k_time_data;
-+	struct vdso_time_data *vdata = vdso_k_time_data;
- 	struct vdso_timestamp *vdso_ts;
- 	s32 clock_mode;
- 	u64 nsec;
-@@ -117,23 +116,23 @@ void update_vsyscall(struct timekeeper *tk)
- 	 * update of the high resolution parts.
- 	 */
- 	if (clock_mode != VDSO_CLOCKMODE_NONE)
--		update_vdso_data(vdata, tk);
-+		update_vdso_time_data(vdata, tk);
- 
- 	__arch_update_vsyscall(vdata);
- 
- 	vdso_write_end(vdata);
- 
--	__arch_sync_vdso_data(vdata);
-+	__arch_sync_vdso_time_data(vdata);
- }
- 
- void update_vsyscall_tz(void)
- {
--	struct vdso_data *vdata = vdso_k_time_data;
-+	struct vdso_time_data *vdata = vdso_k_time_data;
- 
- 	vdata[CS_HRES_COARSE].tz_minuteswest = sys_tz.tz_minuteswest;
- 	vdata[CS_HRES_COARSE].tz_dsttime = sys_tz.tz_dsttime;
- 
--	__arch_sync_vdso_data(vdata);
-+	__arch_sync_vdso_time_data(vdata);
- }
- 
- /**
-@@ -150,7 +149,7 @@ void update_vsyscall_tz(void)
-  */
- unsigned long vdso_update_begin(void)
- {
--	struct vdso_data *vdata = vdso_k_time_data;
-+	struct vdso_time_data *vdata = vdso_k_time_data;
- 	unsigned long flags = timekeeper_lock_irqsave();
- 
- 	vdso_write_begin(vdata);
-@@ -167,9 +166,9 @@ unsigned long vdso_update_begin(void)
-  */
- void vdso_update_end(unsigned long flags)
- {
--	struct vdso_data *vdata = vdso_k_time_data;
-+	struct vdso_time_data *vdata = vdso_k_time_data;
- 
- 	vdso_write_end(vdata);
--	__arch_sync_vdso_data(vdata);
-+	__arch_sync_vdso_time_data(vdata);
- 	timekeeper_unlock_irqrestore(flags);
- }
-diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
-index 0959d62d78586ef458eb5f7c1e152f6b5d4cbf85..e227fbbcb79694f9a40606ac864f52cf1fdbfcf4 100644
---- a/lib/vdso/datastore.c
-+++ b/lib/vdso/datastore.c
-@@ -12,7 +12,10 @@
-  * The vDSO data page.
-  */
- #ifdef CONFIG_HAVE_GENERIC_VDSO
--static union vdso_data_store vdso_time_data_store __page_aligned_data;
-+static union {
-+	struct vdso_time_data	data[CS_BASES];
-+	u8			page[PAGE_SIZE];
-+} vdso_time_data_store __page_aligned_data;
- struct vdso_time_data *vdso_k_time_data = vdso_time_data_store.data;
- static_assert(sizeof(vdso_time_data_store) == PAGE_SIZE);
- #endif /* CONFIG_HAVE_GENERIC_VDSO */
-@@ -123,9 +126,4 @@ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
- 
- 	return 0;
- }
--
--struct vdso_time_data *arch_get_vdso_data(void *vvar_page)
--{
--	return (struct vdso_time_data *)vvar_page;
--}
- #endif
-diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-index 20c5b8752fcc81d9a044169b9a3ae534d840ef91..299f027116ee0e50a69c5a8a17218004e4af0ea1 100644
---- a/lib/vdso/gettimeofday.c
-+++ b/lib/vdso/gettimeofday.c
-@@ -17,12 +17,12 @@
- #endif
- 
- #ifdef CONFIG_GENERIC_VDSO_OVERFLOW_PROTECT
--static __always_inline bool vdso_delta_ok(const struct vdso_data *vd, u64 delta)
-+static __always_inline bool vdso_delta_ok(const struct vdso_time_data *vd, u64 delta)
- {
- 	return delta < vd->max_cycles;
- }
- #else
--static __always_inline bool vdso_delta_ok(const struct vdso_data *vd, u64 delta)
-+static __always_inline bool vdso_delta_ok(const struct vdso_time_data *vd, u64 delta)
- {
- 	return true;
- }
-@@ -39,7 +39,7 @@ static __always_inline u64 vdso_shift_ns(u64 ns, u32 shift)
-  * Default implementation which works for all sane clocksources. That
-  * obviously excludes x86/TSC.
-  */
--static __always_inline u64 vdso_calc_ns(const struct vdso_data *vd, u64 cycles, u64 base)
-+static __always_inline u64 vdso_calc_ns(const struct vdso_time_data *vd, u64 cycles, u64 base)
- {
- 	u64 delta = (cycles - vd->cycle_last) & VDSO_DELTA_MASK(vd);
- 
-@@ -58,7 +58,7 @@ static inline bool __arch_vdso_hres_capable(void)
- #endif
- 
- #ifndef vdso_clocksource_ok
--static inline bool vdso_clocksource_ok(const struct vdso_data *vd)
-+static inline bool vdso_clocksource_ok(const struct vdso_time_data *vd)
- {
- 	return vd->clock_mode != VDSO_CLOCKMODE_NONE;
- }
-@@ -79,21 +79,20 @@ const struct vdso_time_data *__arch_get_vdso_u_timens_data(const struct vdso_tim
- {
- 	return (void *)vd + PAGE_SIZE;
- }
--#define __arch_get_timens_vdso_data(vd) __arch_get_vdso_u_timens_data(vd)
- #endif /* CONFIG_GENERIC_VDSO_DATA_STORE */
- 
--static __always_inline int do_hres_timens(const struct vdso_data *vdns, clockid_t clk,
-+static __always_inline int do_hres_timens(const struct vdso_time_data *vdns, clockid_t clk,
- 					  struct __kernel_timespec *ts)
- {
- 	const struct timens_offset *offs = &vdns->offset[clk];
- 	const struct vdso_timestamp *vdso_ts;
--	const struct vdso_data *vd;
-+	const struct vdso_time_data *vd;
- 	u64 cycles, ns;
- 	u32 seq;
- 	s64 sec;
- 
- 	vd = vdns - (clk == CLOCK_MONOTONIC_RAW ? CS_RAW : CS_HRES_COARSE);
--	vd = __arch_get_timens_vdso_data(vd);
-+	vd = __arch_get_vdso_u_timens_data(vd);
- 	if (clk != CLOCK_MONOTONIC_RAW)
- 		vd = &vd[CS_HRES_COARSE];
- 	else
-@@ -128,19 +127,19 @@ static __always_inline int do_hres_timens(const struct vdso_data *vdns, clockid_
- }
- #else
- static __always_inline
--const struct vdso_data *__arch_get_timens_vdso_data(const struct vdso_data *vd)
-+const struct vdso_time_data *__arch_get_vdso_u_timens_data(const struct vdso_time_data *vd)
- {
- 	return NULL;
- }
- 
--static __always_inline int do_hres_timens(const struct vdso_data *vdns, clockid_t clk,
-+static __always_inline int do_hres_timens(const struct vdso_time_data *vdns, clockid_t clk,
- 					  struct __kernel_timespec *ts)
- {
- 	return -EINVAL;
- }
- #endif
- 
--static __always_inline int do_hres(const struct vdso_data *vd, clockid_t clk,
-+static __always_inline int do_hres(const struct vdso_time_data *vd, clockid_t clk,
- 				   struct __kernel_timespec *ts)
- {
- 	const struct vdso_timestamp *vdso_ts = &vd->basetime[clk];
-@@ -192,10 +191,10 @@ static __always_inline int do_hres(const struct vdso_data *vd, clockid_t clk,
- }
- 
- #ifdef CONFIG_TIME_NS
--static __always_inline int do_coarse_timens(const struct vdso_data *vdns, clockid_t clk,
-+static __always_inline int do_coarse_timens(const struct vdso_time_data *vdns, clockid_t clk,
- 					    struct __kernel_timespec *ts)
- {
--	const struct vdso_data *vd = __arch_get_timens_vdso_data(vdns);
-+	const struct vdso_time_data *vd = __arch_get_vdso_u_timens_data(vdns);
- 	const struct vdso_timestamp *vdso_ts = &vd->basetime[clk];
- 	const struct timens_offset *offs = &vdns->offset[clk];
- 	u64 nsec;
-@@ -221,14 +220,14 @@ static __always_inline int do_coarse_timens(const struct vdso_data *vdns, clocki
- 	return 0;
- }
- #else
--static __always_inline int do_coarse_timens(const struct vdso_data *vdns, clockid_t clk,
-+static __always_inline int do_coarse_timens(const struct vdso_time_data *vdns, clockid_t clk,
- 					    struct __kernel_timespec *ts)
- {
- 	return -1;
- }
- #endif
- 
--static __always_inline int do_coarse(const struct vdso_data *vd, clockid_t clk,
-+static __always_inline int do_coarse(const struct vdso_time_data *vd, clockid_t clk,
- 				     struct __kernel_timespec *ts)
- {
- 	const struct vdso_timestamp *vdso_ts = &vd->basetime[clk];
-@@ -255,7 +254,7 @@ static __always_inline int do_coarse(const struct vdso_data *vd, clockid_t clk,
- }
- 
- static __always_inline int
--__cvdso_clock_gettime_common(const struct vdso_data *vd, clockid_t clock,
-+__cvdso_clock_gettime_common(const struct vdso_time_data *vd, clockid_t clock,
- 			     struct __kernel_timespec *ts)
- {
- 	u32 msk;
-@@ -282,7 +281,7 @@ __cvdso_clock_gettime_common(const struct vdso_data *vd, clockid_t clock,
- }
- 
- static __maybe_unused int
--__cvdso_clock_gettime_data(const struct vdso_data *vd, clockid_t clock,
-+__cvdso_clock_gettime_data(const struct vdso_time_data *vd, clockid_t clock,
- 			   struct __kernel_timespec *ts)
- {
- 	int ret = __cvdso_clock_gettime_common(vd, clock, ts);
-@@ -300,7 +299,7 @@ __cvdso_clock_gettime(clockid_t clock, struct __kernel_timespec *ts)
- 
- #ifdef BUILD_VDSO32
- static __maybe_unused int
--__cvdso_clock_gettime32_data(const struct vdso_data *vd, clockid_t clock,
-+__cvdso_clock_gettime32_data(const struct vdso_time_data *vd, clockid_t clock,
- 			     struct old_timespec32 *res)
- {
- 	struct __kernel_timespec ts;
-@@ -326,7 +325,7 @@ __cvdso_clock_gettime32(clockid_t clock, struct old_timespec32 *res)
- #endif /* BUILD_VDSO32 */
- 
- static __maybe_unused int
--__cvdso_gettimeofday_data(const struct vdso_data *vd,
-+__cvdso_gettimeofday_data(const struct vdso_time_data *vd,
- 			  struct __kernel_old_timeval *tv, struct timezone *tz)
- {
- 
-@@ -343,7 +342,7 @@ __cvdso_gettimeofday_data(const struct vdso_data *vd,
- 	if (unlikely(tz != NULL)) {
- 		if (IS_ENABLED(CONFIG_TIME_NS) &&
- 		    vd->clock_mode == VDSO_CLOCKMODE_TIMENS)
--			vd = __arch_get_timens_vdso_data(vd);
-+			vd = __arch_get_vdso_u_timens_data(vd);
- 
- 		tz->tz_minuteswest = vd[CS_HRES_COARSE].tz_minuteswest;
- 		tz->tz_dsttime = vd[CS_HRES_COARSE].tz_dsttime;
-@@ -360,13 +359,13 @@ __cvdso_gettimeofday(struct __kernel_old_timeval *tv, struct timezone *tz)
- 
- #ifdef VDSO_HAS_TIME
- static __maybe_unused __kernel_old_time_t
--__cvdso_time_data(const struct vdso_data *vd, __kernel_old_time_t *time)
-+__cvdso_time_data(const struct vdso_time_data *vd, __kernel_old_time_t *time)
- {
- 	__kernel_old_time_t t;
- 
- 	if (IS_ENABLED(CONFIG_TIME_NS) &&
- 	    vd->clock_mode == VDSO_CLOCKMODE_TIMENS)
--		vd = __arch_get_timens_vdso_data(vd);
-+		vd = __arch_get_vdso_u_timens_data(vd);
- 
- 	t = READ_ONCE(vd[CS_HRES_COARSE].basetime[CLOCK_REALTIME].sec);
- 
-@@ -384,7 +383,7 @@ static __maybe_unused __kernel_old_time_t __cvdso_time(__kernel_old_time_t *time
- 
- #ifdef VDSO_HAS_CLOCK_GETRES
- static __maybe_unused
--int __cvdso_clock_getres_common(const struct vdso_data *vd, clockid_t clock,
-+int __cvdso_clock_getres_common(const struct vdso_time_data *vd, clockid_t clock,
- 				struct __kernel_timespec *res)
- {
- 	u32 msk;
-@@ -396,7 +395,7 @@ int __cvdso_clock_getres_common(const struct vdso_data *vd, clockid_t clock,
- 
- 	if (IS_ENABLED(CONFIG_TIME_NS) &&
- 	    vd->clock_mode == VDSO_CLOCKMODE_TIMENS)
--		vd = __arch_get_timens_vdso_data(vd);
-+		vd = __arch_get_vdso_u_timens_data(vd);
- 
- 	/*
- 	 * Convert the clockid to a bitmask and use it to check which
-@@ -425,7 +424,7 @@ int __cvdso_clock_getres_common(const struct vdso_data *vd, clockid_t clock,
- }
- 
- static __maybe_unused
--int __cvdso_clock_getres_data(const struct vdso_data *vd, clockid_t clock,
-+int __cvdso_clock_getres_data(const struct vdso_time_data *vd, clockid_t clock,
- 			      struct __kernel_timespec *res)
- {
- 	int ret = __cvdso_clock_getres_common(vd, clock, res);
-@@ -443,7 +442,7 @@ int __cvdso_clock_getres(clockid_t clock, struct __kernel_timespec *res)
- 
- #ifdef BUILD_VDSO32
- static __maybe_unused int
--__cvdso_clock_getres_time32_data(const struct vdso_data *vd, clockid_t clock,
-+__cvdso_clock_getres_time32_data(const struct vdso_time_data *vd, clockid_t clock,
- 				 struct old_timespec32 *res)
- {
- 	struct __kernel_timespec ts;
+kernel test robot noticed a 1.5% improvement of redis.get_total_throughput_rps on:
+
+
+commit: 4aecca4c76808f3736056d18ff510df80424bc9f ("net_tstamp: add SCM_TS_OPT_ID to provide OPT_ID in control message")
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+
+
+testcase: redis
+config: x86_64-rhel-9.4
+compiler: gcc-12
+test machine: 64 threads 2 sockets Intel(R) Xeon(R) Gold 6346 CPU @ 3.10GHz (Ice Lake) with 256G memory
+parameters:
+
+	all: 1
+	sc_overcommit_memory: 1
+	sc_somaxconn: 65535
+	thp_enabled: never
+	thp_defrag: never
+	cluster: cs-localhost
+	cpu_node_bind: even
+	nr_processes: 4
+	test: set,get
+	data_size: 1024
+	n_client: 5
+	requests: 68000000
+	n_pipeline: 3
+	key_len: 68000000
+	cpufreq_governor: performance
+
+
+
+
+
+
+Details are as below:
+-------------------------------------------------------------------------------------------------->
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20250205/202502051330.4d2f403b-lkp@intel.com
+
+=========================================================================================
+all/cluster/compiler/cpu_node_bind/cpufreq_governor/data_size/kconfig/key_len/n_client/n_pipeline/nr_processes/requests/rootfs/sc_overcommit_memory/sc_somaxconn/tbox_group/test/testcase/thp_defrag/thp_enabled:
+  1/cs-localhost/gcc-12/even/performance/1024/x86_64-rhel-9.4/68000000/5/3/4/68000000/debian-12-x86_64-20240206.cgz/1/65535/lkp-icl-2sp7/set,get/redis/never/never
+
+commit: 
+  34ea1df802 ("Merge branch 'net-mlx5-hw-counters-refactor'")
+  4aecca4c76 ("net_tstamp: add SCM_TS_OPT_ID to provide OPT_ID in control message")
+
+34ea1df802f79d44 4aecca4c76808f3736056d18ff5 
+---------------- --------------------------- 
+         %stddev     %change         %stddev
+             \          |                \  
+  18491785            +2.1%   18880098        proc-vmstat.numa_hint_faults
+  18483590            +2.0%   18850441        proc-vmstat.numa_hint_faults_local
+      8589 ± 97%    +255.7%      30553 ± 17%  proc-vmstat.numa_pages_migrated
+  21039386            +2.2%   21505792        proc-vmstat.numa_pte_updates
+      8589 ± 97%    +255.7%      30553 ± 17%  proc-vmstat.pgmigrate_success
+     25696 ± 12%     +14.4%      29397        proc-vmstat.pgreuse
+    252371            +1.5%     256108        redis.get_avg_throughput_rps
+     67.36            -1.5%      66.38        redis.get_avg_time_sec
+   1009486            +1.5%    1024432        redis.get_total_throughput_rps
+    269.45            -1.5%     265.52        redis.get_total_time_sec
+    257.67            -1.1%     254.83        redis.time.percent_of_cpu_this_job_got
+    337.27            -2.4%     329.05        redis.time.system_time
+ 3.957e+09            +1.3%  4.008e+09        perf-stat.i.branch-instructions
+  38469227            +1.6%   39070923        perf-stat.i.branch-misses
+     32.20            +0.8       33.01        perf-stat.i.cache-miss-rate%
+    136208            +1.2%     137857        perf-stat.i.context-switches
+      1.34            -1.0%       1.32        perf-stat.i.cpi
+ 1.948e+10            +1.3%  1.974e+10        perf-stat.i.instructions
+      9.12            +2.2%       9.32        perf-stat.i.metric.K/sec
+    224090            +2.5%     229667        perf-stat.i.minor-faults
+    224090            +2.5%     229667        perf-stat.i.page-faults
+      1.33           -34.1%       0.88 ± 70%  perf-stat.overall.cpi
+    714.76           -33.9%     472.47 ± 70%  perf-stat.overall.cycles-between-cache-misses
+ 1.095e+08           -34.2%   72001076 ± 70%  perf-stat.ps.cache-references
+     15.93            -0.8       15.15        perf-profile.calltrace.cycles-pp.tcp_write_xmit.__tcp_push_pending_frames.tcp_sendmsg_locked.tcp_sendmsg.sock_write_iter
+     15.95            -0.7       15.22        perf-profile.calltrace.cycles-pp.__tcp_push_pending_frames.tcp_sendmsg_locked.tcp_sendmsg.sock_write_iter.vfs_write
+     14.40            -0.7       13.72        perf-profile.calltrace.cycles-pp.tcp_write_xmit.__tcp_push_pending_frames.tcp_sendmsg_locked.tcp_sendmsg.__sys_sendto
+     14.43            -0.6       13.79        perf-profile.calltrace.cycles-pp.__tcp_push_pending_frames.tcp_sendmsg_locked.tcp_sendmsg.__sys_sendto.__x64_sys_sendto
+     21.35            -0.6       20.74        perf-profile.calltrace.cycles-pp.tcp_sendmsg_locked.tcp_sendmsg.sock_write_iter.vfs_write.ksys_write
+     21.50            -0.5       20.96        perf-profile.calltrace.cycles-pp.tcp_sendmsg.sock_write_iter.vfs_write.ksys_write.do_syscall_64
+     16.98            -0.5       16.44        perf-profile.calltrace.cycles-pp.tcp_sendmsg_locked.tcp_sendmsg.__sys_sendto.__x64_sys_sendto.do_syscall_64
+     17.15            -0.5       16.66        perf-profile.calltrace.cycles-pp.tcp_sendmsg.__sys_sendto.__x64_sys_sendto.do_syscall_64.entry_SYSCALL_64_after_hwframe
+     21.61            -0.5       21.14        perf-profile.calltrace.cycles-pp.sock_write_iter.vfs_write.ksys_write.do_syscall_64.entry_SYSCALL_64_after_hwframe
+     22.26            -0.4       21.84        perf-profile.calltrace.cycles-pp.entry_SYSCALL_64_after_hwframe.write
+     21.76            -0.4       21.34        perf-profile.calltrace.cycles-pp.vfs_write.ksys_write.do_syscall_64.entry_SYSCALL_64_after_hwframe.write
+     22.24            -0.4       21.82        perf-profile.calltrace.cycles-pp.do_syscall_64.entry_SYSCALL_64_after_hwframe.write
+     21.95            -0.4       21.53        perf-profile.calltrace.cycles-pp.ksys_write.do_syscall_64.entry_SYSCALL_64_after_hwframe.write
+     22.65            -0.4       22.24        perf-profile.calltrace.cycles-pp.write
+     17.28            -0.4       16.87        perf-profile.calltrace.cycles-pp.__sys_sendto.__x64_sys_sendto.do_syscall_64.entry_SYSCALL_64_after_hwframe.__send
+     17.30            -0.4       16.92        perf-profile.calltrace.cycles-pp.__x64_sys_sendto.do_syscall_64.entry_SYSCALL_64_after_hwframe.__send
+     17.49            -0.4       17.12        perf-profile.calltrace.cycles-pp.do_syscall_64.entry_SYSCALL_64_after_hwframe.__send
+     17.51            -0.4       17.14        perf-profile.calltrace.cycles-pp.entry_SYSCALL_64_after_hwframe.__send
+     17.92            -0.4       17.57        perf-profile.calltrace.cycles-pp.__send
+      0.57            +0.0        0.62 ±  3%  perf-profile.calltrace.cycles-pp.skb_do_copy_data_nocache.tcp_sendmsg_locked.tcp_sendmsg.sock_write_iter.vfs_write
+      0.74 ±  2%      +0.1        0.79 ±  3%  perf-profile.calltrace.cycles-pp.tcp_stream_alloc_skb.tcp_sendmsg_locked.tcp_sendmsg.__sys_sendto.__x64_sys_sendto
+      1.34            +0.1        1.40        perf-profile.calltrace.cycles-pp.__inet_lookup_skb.tcp_v4_rcv.ip_protocol_deliver_rcu.ip_local_deliver_finish.__netif_receive_skb_one_core
+      3.85            +0.1        3.94        perf-profile.calltrace.cycles-pp.cpuidle_idle_call.do_idle.cpu_startup_entry.start_secondary.common_startup_64
+      1.87 ±  3%      +0.1        1.97        perf-profile.calltrace.cycles-pp.intel_idle.cpuidle_enter_state.cpuidle_enter.cpuidle_idle_call.do_idle
+      5.14            +0.1        5.24        perf-profile.calltrace.cycles-pp.cpu_startup_entry.start_secondary.common_startup_64
+      5.14            +0.1        5.25        perf-profile.calltrace.cycles-pp.start_secondary.common_startup_64
+      5.54            +0.1        5.64        perf-profile.calltrace.cycles-pp.common_startup_64
+      5.13            +0.1        5.24        perf-profile.calltrace.cycles-pp.do_idle.cpu_startup_entry.start_secondary.common_startup_64
+     10.08            +0.1       10.20        perf-profile.calltrace.cycles-pp.do_epoll_ctl.__x64_sys_epoll_ctl.do_syscall_64.entry_SYSCALL_64_after_hwframe.epoll_ctl
+     10.48            +0.1       10.61        perf-profile.calltrace.cycles-pp.__x64_sys_epoll_ctl.do_syscall_64.entry_SYSCALL_64_after_hwframe.epoll_ctl
+     11.15            +0.1       11.28        perf-profile.calltrace.cycles-pp.entry_SYSCALL_64_after_hwframe.epoll_ctl
+     11.03            +0.1       11.18        perf-profile.calltrace.cycles-pp.do_syscall_64.entry_SYSCALL_64_after_hwframe.epoll_ctl
+      6.79            +0.2        6.95        perf-profile.calltrace.cycles-pp.dictFind
+     12.44            +0.2       12.62        perf-profile.calltrace.cycles-pp.epoll_ctl
+     15.91            +0.2       16.10        perf-profile.calltrace.cycles-pp.tcp_v4_rcv.ip_protocol_deliver_rcu.ip_local_deliver_finish.__netif_receive_skb_one_core.process_backlog
+     16.00            +0.2       16.21        perf-profile.calltrace.cycles-pp.ip_protocol_deliver_rcu.ip_local_deliver_finish.__netif_receive_skb_one_core.process_backlog.__napi_poll
+     16.03            +0.2       16.24        perf-profile.calltrace.cycles-pp.ip_local_deliver_finish.__netif_receive_skb_one_core.process_backlog.__napi_poll.net_rx_action
+     16.78            +0.2       17.01        perf-profile.calltrace.cycles-pp.process_backlog.__napi_poll.net_rx_action.handle_softirqs.do_softirq
+     16.54            +0.2       16.78        perf-profile.calltrace.cycles-pp.__netif_receive_skb_one_core.process_backlog.__napi_poll.net_rx_action.handle_softirqs
+     16.80            +0.2       17.04        perf-profile.calltrace.cycles-pp.__napi_poll.net_rx_action.handle_softirqs.do_softirq.__local_bh_enable_ip
+     20.70            +0.3       20.96        perf-profile.calltrace.cycles-pp.net_rx_action.handle_softirqs.do_softirq.__local_bh_enable_ip.__dev_queue_xmit
+     21.08            +0.3       21.34        perf-profile.calltrace.cycles-pp.handle_softirqs.do_softirq.__local_bh_enable_ip.__dev_queue_xmit.ip_finish_output2
+     21.15            +0.3       21.42        perf-profile.calltrace.cycles-pp.do_softirq.__local_bh_enable_ip.__dev_queue_xmit.ip_finish_output2.__ip_queue_xmit
+     21.23            +0.3       21.50        perf-profile.calltrace.cycles-pp.__local_bh_enable_ip.__dev_queue_xmit.ip_finish_output2.__ip_queue_xmit.__tcp_transmit_skb
+     22.73            +0.3       23.03        perf-profile.calltrace.cycles-pp.__dev_queue_xmit.ip_finish_output2.__ip_queue_xmit.__tcp_transmit_skb.tcp_write_xmit
+     23.44            +0.3       23.77        perf-profile.calltrace.cycles-pp.__ip_queue_xmit.__tcp_transmit_skb.tcp_write_xmit.__tcp_push_pending_frames.tcp_sendmsg_locked
+     22.94            +0.3       23.28        perf-profile.calltrace.cycles-pp.ip_finish_output2.__ip_queue_xmit.__tcp_transmit_skb.tcp_write_xmit.__tcp_push_pending_frames
+     26.32            +0.4       26.68        perf-profile.calltrace.cycles-pp.__tcp_transmit_skb.tcp_write_xmit.__tcp_push_pending_frames.tcp_sendmsg_locked.tcp_sendmsg
+     30.37            -1.5       28.92        perf-profile.children.cycles-pp.tcp_write_xmit
+     30.39            -1.4       29.03        perf-profile.children.cycles-pp.__tcp_push_pending_frames
+     38.37            -1.1       37.23        perf-profile.children.cycles-pp.tcp_sendmsg_locked
+     38.66            -1.0       37.67        perf-profile.children.cycles-pp.tcp_sendmsg
+      1.32            -0.9        0.38 ±  2%  perf-profile.children.cycles-pp.tcp_event_new_data_sent
+      1.80 ±  2%      -0.9        0.88 ±  2%  perf-profile.children.cycles-pp.tcp_check_space
+      1.19 ±  2%      -0.9        0.27 ±  4%  perf-profile.children.cycles-pp.__mod_timer
+      1.22 ±  2%      -0.9        0.30 ±  3%  perf-profile.children.cycles-pp.sk_reset_timer
+     66.87            -0.5       66.34        perf-profile.children.cycles-pp.do_syscall_64
+     67.19            -0.5       66.67        perf-profile.children.cycles-pp.entry_SYSCALL_64_after_hwframe
+     21.61            -0.5       21.15        perf-profile.children.cycles-pp.sock_write_iter
+     21.82            -0.4       21.39        perf-profile.children.cycles-pp.vfs_write
+     22.02            -0.4       21.60        perf-profile.children.cycles-pp.ksys_write
+     17.29            -0.4       16.88        perf-profile.children.cycles-pp.__sys_sendto
+     22.78            -0.4       22.37        perf-profile.children.cycles-pp.write
+     17.31            -0.4       16.94        perf-profile.children.cycles-pp.__x64_sys_sendto
+     18.00            -0.4       17.65        perf-profile.children.cycles-pp.__send
+      0.23 ±  5%      -0.1        0.16 ±  6%  perf-profile.children.cycles-pp.tcp_event_data_recv
+      0.12 ±  4%      +0.0        0.13 ±  3%  perf-profile.children.cycles-pp.validate_xmit_skb
+      0.38 ±  2%      +0.0        0.40 ±  3%  perf-profile.children.cycles-pp.syscall_return_via_sysret
+      0.30 ±  4%      +0.0        0.32 ±  3%  perf-profile.children.cycles-pp.pick_next_task_fair
+      0.51 ±  2%      +0.0        0.54 ±  2%  perf-profile.children.cycles-pp._copy_from_iter
+      0.18 ±  5%      +0.0        0.21 ±  2%  perf-profile.children.cycles-pp.tcp_schedule_loss_probe
+      1.35            +0.1        1.40        perf-profile.children.cycles-pp.__inet_lookup_skb
+      1.49            +0.1        1.56        perf-profile.children.cycles-pp.tcp_stream_alloc_skb
+      0.76            +0.1        0.83        perf-profile.children.cycles-pp.skb_do_copy_data_nocache
+      4.02            +0.1        4.09        perf-profile.children.cycles-pp.cpuidle_enter
+      4.00            +0.1        4.07        perf-profile.children.cycles-pp.cpuidle_enter_state
+      0.24 ±  5%      +0.1        0.32 ±  5%  perf-profile.children.cycles-pp.release_sock
+      4.22            +0.1        4.32        perf-profile.children.cycles-pp.cpuidle_idle_call
+      1.93 ±  2%      +0.1        2.03        perf-profile.children.cycles-pp.intel_idle
+      5.53            +0.1        5.63        perf-profile.children.cycles-pp.do_idle
+      5.14            +0.1        5.25        perf-profile.children.cycles-pp.start_secondary
+      5.54            +0.1        5.64        perf-profile.children.cycles-pp.common_startup_64
+      5.54            +0.1        5.64        perf-profile.children.cycles-pp.cpu_startup_entry
+     10.12            +0.1       10.24        perf-profile.children.cycles-pp.do_epoll_ctl
+     10.50            +0.1       10.63        perf-profile.children.cycles-pp.__x64_sys_epoll_ctl
+     12.76            +0.2       12.93        perf-profile.children.cycles-pp.epoll_ctl
+      6.88            +0.2        7.05        perf-profile.children.cycles-pp.dictFind
+     15.94            +0.2       16.13        perf-profile.children.cycles-pp.tcp_v4_rcv
+     16.04            +0.2       16.25        perf-profile.children.cycles-pp.ip_local_deliver_finish
+     16.02            +0.2       16.23        perf-profile.children.cycles-pp.ip_protocol_deliver_rcu
+     16.55            +0.2       16.78        perf-profile.children.cycles-pp.__netif_receive_skb_one_core
+     16.81            +0.2       17.05        perf-profile.children.cycles-pp.__napi_poll
+     16.78            +0.2       17.02        perf-profile.children.cycles-pp.process_backlog
+     21.54            +0.3       21.79        perf-profile.children.cycles-pp.handle_softirqs
+     20.72            +0.3       20.98        perf-profile.children.cycles-pp.net_rx_action
+     21.16            +0.3       21.43        perf-profile.children.cycles-pp.do_softirq
+     21.31            +0.3       21.60        perf-profile.children.cycles-pp.__local_bh_enable_ip
+     22.76            +0.3       23.06        perf-profile.children.cycles-pp.__dev_queue_xmit
+     22.96            +0.3       23.29        perf-profile.children.cycles-pp.ip_finish_output2
+     23.46            +0.3       23.80        perf-profile.children.cycles-pp.__ip_queue_xmit
+     26.38            +0.3       26.72        perf-profile.children.cycles-pp.__tcp_transmit_skb
+      1.13 ±  2%      -1.0        0.18 ±  3%  perf-profile.self.cycles-pp.__mod_timer
+      1.79 ±  2%      -0.9        0.87 ±  2%  perf-profile.self.cycles-pp.tcp_check_space
+      0.22 ±  6%      -0.1        0.15 ±  7%  perf-profile.self.cycles-pp.tcp_event_data_recv
+      0.48            +0.0        0.50 ±  2%  perf-profile.self.cycles-pp.mod_objcg_state
+      0.32 ±  2%      +0.0        0.34        perf-profile.self.cycles-pp.call
+      0.50 ±  2%      +0.0        0.52 ±  2%  perf-profile.self.cycles-pp._copy_from_iter
+      0.17 ±  4%      +0.0        0.19 ±  3%  perf-profile.self.cycles-pp.ip_finish_output2
+      0.11 ±  9%      +0.0        0.14 ±  3%  perf-profile.self.cycles-pp.tcp_event_new_data_sent
+      0.27 ±  4%      +0.0        0.30 ±  3%  perf-profile.self.cycles-pp.__alloc_skb
+      0.21            +0.0        0.24 ±  3%  perf-profile.self.cycles-pp.kfree_skbmem
+      0.36 ±  3%      +0.0        0.40        perf-profile.self.cycles-pp._raw_spin_lock_bh
+      0.56 ±  2%      +0.0        0.60 ±  2%  perf-profile.self.cycles-pp.kmem_cache_free
+      0.13 ±  5%      +0.0        0.17 ±  5%  perf-profile.self.cycles-pp.vfs_write
+      0.00            +0.1        0.06 ±  9%  perf-profile.self.cycles-pp.__x64_sys_sendto
+      0.08 ±  8%      +0.1        0.14 ±  4%  perf-profile.self.cycles-pp.sock_write_iter
+      0.02 ± 99%      +0.1        0.09 ± 11%  perf-profile.self.cycles-pp.__sys_sendto
+      3.40            +0.1        3.50        perf-profile.self.cycles-pp.tcp_sendmsg_locked
+      1.93 ±  2%      +0.1        2.03        perf-profile.self.cycles-pp.intel_idle
+      0.00            +0.1        0.11 ±  5%  perf-profile.self.cycles-pp.__tcp_push_pending_frames
+      6.66            +0.1        6.78        perf-profile.self.cycles-pp.dictFind
+      0.00            +0.1        0.13 ±  2%  perf-profile.self.cycles-pp.tcp_sendmsg
+
+
+
+
+Disclaimer:
+Results have been estimated based on internal Intel analysis and are provided
+for informational purposes only. Any difference in system hardware or software
+design or configuration may affect actual performance.
+
 
 -- 
-2.48.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
