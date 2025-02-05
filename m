@@ -1,43 +1,43 @@
-Return-Path: <linux-parisc+bounces-3296-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3294-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C691A293C9
-	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 16:16:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA28A29013
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 15:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F60F188AE31
-	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 15:06:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6D763A23A9
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 14:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C6435946;
-	Wed,  5 Feb 2025 15:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74DC70825;
+	Wed,  5 Feb 2025 14:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oR3Ejf0+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9d+FXZr"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378231519B4;
-	Wed,  5 Feb 2025 15:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4051519AF;
+	Wed,  5 Feb 2025 14:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738768004; cv=none; b=lWYvm9cAxrKoowOJHFMxK5xZt9y456lxKG4I6MgtL3Px+yWd2c+y1Uua9vZMH8kFAJ3bPbCSHK152ScIxxAVg9wDk0CZae8EVA8RD1xrKGdgpY/hi8+SbkGDK1Fp0DCwHtq4wtfvwHiUb8+591igSpoPO5BQcBT+tws0XuDbpY0=
+	t=1738765887; cv=none; b=jx0kQ27mgkyHN8jDOKXAPx+mpr5na+5XHvqbOq2ipMTA28O8l5cEAH1hPsaUp2Ygqqql9pSoT8n/TkKk3szbgkHqh31r3QbkyTCTpz6pPgxB7fDIWVB8LXCgIdfEsQnNWdettpCMCkhux3HqnBkJacRTJKiUS+j6PPpuKJSR6Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738768004; c=relaxed/simple;
-	bh=TLf4tgFsYIjoKgXw3qzkxj9YcjKyTRxmAjutopU04iI=;
+	s=arc-20240116; t=1738765887; c=relaxed/simple;
+	bh=nSU1N/H7Kbw4NWQWtDGR2D+RngV5y/67tsTzqxG2RQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HENAJ0Pz6f/phF++TvaNOX/NEw6sYff0ERhfGLsSkBLW/awJuUdMybwzksgrk5/+BYSSeXWK++V6wuw5w/4cWwErE0/BVa22VmHCUgFKCg4lg2qWjyXm9SuL855CJjc/IckAg2Qlo51j4ZH7zPeYd/jvEGHXPPyeBY2eT7nhTBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oR3Ejf0+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6857DC4CED1;
-	Wed,  5 Feb 2025 15:06:43 +0000 (UTC)
+	 MIME-Version; b=qRHZT2U9G3/nuoqbKWN56Zi0t3Y9mdFbrniyt5u1BvTtjZKqYOn7LWfG/cFTUZerb4dv7xdxqxT4X036eAB1NGPD0sJslOrngqistlkjGu2zjH1UK3msOYOSAVi7/BEDv/x/HfXrcPskvwDKpVWgZX1AuvsT9NPuucO9H5uFTu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9d+FXZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6C0C4CED1;
+	Wed,  5 Feb 2025 14:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738768004;
-	bh=TLf4tgFsYIjoKgXw3qzkxj9YcjKyTRxmAjutopU04iI=;
+	s=korg; t=1738765887;
+	bh=nSU1N/H7Kbw4NWQWtDGR2D+RngV5y/67tsTzqxG2RQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oR3Ejf0+wdpBvEMpYdg0aCM0wHxZKGOUmXlFu5e/+pNq/wciGs2NIF1LoyRNpRaXq
-	 B48Y+E5/Fccx25wyXer06W5rS9eoU+vGBcLqilDjl/DoJvwpecI/kPFzqGPiDF7nU0
-	 ENETZ66jfeZCGMTOYEv/+/sLo4jCYKuw1Oyz0um0=
+	b=X9d+FXZrRh8SRtZt5l77axtbpK/UpnirP/YGmW0VcLN2Fv+YZ3+9tRA36J+yXg93J
+	 rXyZB58EAMg4VnA+S2j2kuwcOpVjkM7gq9tKAqVVThOWQSPrfzppAIGWEcgT+YQdND
+	 UARy21Y+KJqlr6P5jt1/e8RqDYEzrxjbbxFDuJ+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -57,12 +57,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Petr Pavlu <petr.pavlu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 483/623] module: Extend the preempt disabled section in dereference_symbol_descriptor().
-Date: Wed,  5 Feb 2025 14:43:45 +0100
-Message-ID: <20250205134514.696049230@linuxfoundation.org>
+Subject: [PATCH 6.6 309/393] module: Extend the preempt disabled section in dereference_symbol_descriptor().
+Date: Wed,  5 Feb 2025 14:43:48 +0100
+Message-ID: <20250205134432.131530756@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,7 +74,7 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
