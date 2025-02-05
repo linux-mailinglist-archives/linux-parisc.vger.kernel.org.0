@@ -1,136 +1,160 @@
-Return-Path: <linux-parisc+bounces-3294-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3297-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA28A29013
-	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 15:32:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851B4A295B1
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 17:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6D763A23A9
-	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 14:31:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A953C18826DF
+	for <lists+linux-parisc@lfdr.de>; Wed,  5 Feb 2025 16:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74DC70825;
-	Wed,  5 Feb 2025 14:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E601192B90;
+	Wed,  5 Feb 2025 16:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9d+FXZr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rmJCzdWS"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4051519AF;
-	Wed,  5 Feb 2025 14:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BDD190052;
+	Wed,  5 Feb 2025 16:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738765887; cv=none; b=jx0kQ27mgkyHN8jDOKXAPx+mpr5na+5XHvqbOq2ipMTA28O8l5cEAH1hPsaUp2Ygqqql9pSoT8n/TkKk3szbgkHqh31r3QbkyTCTpz6pPgxB7fDIWVB8LXCgIdfEsQnNWdettpCMCkhux3HqnBkJacRTJKiUS+j6PPpuKJSR6Qg=
+	t=1738771620; cv=none; b=nDhNy7n63RYs/Q4uVh9EF+CteK4hA1PhdxbUT2NSzsT/o8i+QxQtYcH70Bj4YufjV1nqe2frD0tPYFMBvgjKs9wkK6saysgaXu6iKJgbJT7yGPJrOwRN0G5vRvx3zDsUZrE2jdWc+dxPJWsqWDyjyhD7NuBu7DVey2VGylSA8/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738765887; c=relaxed/simple;
-	bh=nSU1N/H7Kbw4NWQWtDGR2D+RngV5y/67tsTzqxG2RQQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qRHZT2U9G3/nuoqbKWN56Zi0t3Y9mdFbrniyt5u1BvTtjZKqYOn7LWfG/cFTUZerb4dv7xdxqxT4X036eAB1NGPD0sJslOrngqistlkjGu2zjH1UK3msOYOSAVi7/BEDv/x/HfXrcPskvwDKpVWgZX1AuvsT9NPuucO9H5uFTu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9d+FXZr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6C0C4CED1;
-	Wed,  5 Feb 2025 14:31:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765887;
-	bh=nSU1N/H7Kbw4NWQWtDGR2D+RngV5y/67tsTzqxG2RQQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9d+FXZrRh8SRtZt5l77axtbpK/UpnirP/YGmW0VcLN2Fv+YZ3+9tRA36J+yXg93J
-	 rXyZB58EAMg4VnA+S2j2kuwcOpVjkM7gq9tKAqVVThOWQSPrfzppAIGWEcgT+YQdND
-	 UARy21Y+KJqlr6P5jt1/e8RqDYEzrxjbbxFDuJ+Y=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 309/393] module: Extend the preempt disabled section in dereference_symbol_descriptor().
-Date: Wed,  5 Feb 2025 14:43:48 +0100
-Message-ID: <20250205134432.131530756@linuxfoundation.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
-References: <20250205134420.279368572@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1738771620; c=relaxed/simple;
+	bh=fdaBYMhNywx3SBQczSGppmG5pefI/VXyodeBWOMusZI=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=fDRMhw9rlLiGCnheUqtFBfk7qSYjCtTorkEufjOjbMZUuuTsaEjyk+3c75gZgIQqWbyW7TI4lwBlLN1agUoiwVzJtjXRqEOdS1q+BdzCmXVgqUicJbCTA2pzeGoH30Hr/Mn56uVLpldRVDS+7wn5GcyK6K37UpVzCMXCSDWWyeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rmJCzdWS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025E6C4CEDD;
+	Wed,  5 Feb 2025 16:06:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738771620;
+	bh=fdaBYMhNywx3SBQczSGppmG5pefI/VXyodeBWOMusZI=;
+	h=Date:From:To:Cc:Subject:From;
+	b=rmJCzdWSdeO/MZyuaGwpd3jRF4Q7jUka+PZeP49a22TpzZIKQBxOWeNTrxRVzF71r
+	 V8cJdZ9EWOL1BmPdt2MwvMKLkjtM7JwRiP5Gf9yKXTCLQi/XGNgf/u2TrHWnCZekMs
+	 KcnR/4aFUNtySkDVs/QdAPjDdL4eOJD+qPlLcdju2mvIxQZvlapbjwGmQsPKFtP/DT
+	 j2CkRdt+yuULeZ7J0auOX45nDI4eIN4QBns9+uFaj5ZTCnVUJ1pc4TPoJEUQqvAxJD
+	 mrB4B9L1UmziRtJnfUOKo+FV7ymUCTH4T7WcVd9qGBuOvdhKT6IBEsdMgfbN3AIA3S
+	 CTy3ep8u3Pyeg==
+Date: Wed, 5 Feb 2025 17:06:56 +0100
+From: Helge Deller <deller@kernel.org>
+To: Eric Biederman <ebiederm@xmission.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Sven Schnelle <svens@stackframe.org>, linux-parisc@vger.kernel.org
+Subject: [PATCH] kexec_elf: Fix some trivial kerneldoc warnings
+Message-ID: <Z6OMoCQridWMs0at@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+Document missing parameters of various functions to avoid warnings
+when compiling with W=1.
 
-------------------
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502051744.Bjxxm10L-lkp@intel.com/
+Cc: Sven Schnelle <svens@stackframe.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-
-[ Upstream commit a145c848d69f9c6f32008d8319edaa133360dd74 ]
-
-dereference_symbol_descriptor() needs to obtain the module pointer
-belonging to pointer in order to resolve that pointer.
-The returned mod pointer is obtained under RCU-sched/ preempt_disable()
-guarantees and needs to be used within this section to ensure that the
-module is not removed in the meantime.
-
-Extend the preempt_disable() section to also cover
-dereference_module_function_descriptor().
-
-Fixes: 04b8eb7a4ccd9 ("symbol lookup: introduce dereference_symbol_descriptor()")
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250108090457.512198-2-bigeasy@linutronix.de
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/linux/kallsyms.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index c3f075e8f60cb..1c6a6c1704d8d 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -57,10 +57,10 @@ static inline void *dereference_symbol_descriptor(void *ptr)
+diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
+index d3689632e8b9..f71448ac27c6 100644
+--- a/kernel/kexec_elf.c
++++ b/kernel/kexec_elf.c
+@@ -58,6 +58,7 @@ static uint16_t elf16_to_cpu(const struct elfhdr *ehdr, uint16_t value)
  
- 	preempt_disable();
- 	mod = __module_address((unsigned long)ptr);
--	preempt_enable();
+ /**
+  * elf_is_ehdr_sane - check that it is safe to use the ELF header
++ * @ehdr:	pointer to ELF header to be checked.
+  * @buf_len:	size of the buffer in which the ELF file is loaded.
+  */
+ static bool elf_is_ehdr_sane(const struct elfhdr *ehdr, size_t buf_len)
+@@ -180,7 +181,8 @@ static int elf_read_ehdr(const char *buf, size_t len, struct elfhdr *ehdr)
  
- 	if (mod)
- 		ptr = dereference_module_function_descriptor(mod, ptr);
-+	preempt_enable();
- #endif
- 	return ptr;
+ /**
+  * elf_is_phdr_sane - check that it is safe to use the program header
+- * @buf_len:	size of the buffer in which the ELF file is loaded.
++ * @phdr:	pointer to elf_phdr struct to be checked
++ * @buf_len:	size of the buffer in which the ELF file was loaded
+  */
+ static bool elf_is_phdr_sane(const struct elf_phdr *phdr, size_t buf_len)
+ {
+@@ -244,6 +246,9 @@ static int elf_read_phdr(const char *buf, size_t len,
+ 
+ /**
+  * elf_read_phdrs - read the program headers from the buffer
++ * @buf:	buffer to read ELF file from
++ * @len:	size of @buf
++ * @elf_info:	pointer to existing kexec_elf_info struct which will be populated
+  *
+  * This function assumes that the program header table was checked for sanity.
+  * Use elf_is_ehdr_sane() if it wasn't.
+@@ -280,10 +285,10 @@ static int elf_read_phdrs(const char *buf, size_t len,
+ 
+ /**
+  * elf_read_from_buffer - read ELF file and sets up ELF header and ELF info
+- * @buf:	Buffer to read ELF file from.
+- * @len:	Size of @buf.
+- * @ehdr:	Pointer to existing struct which will be populated.
+- * @elf_info:	Pointer to existing struct which will be populated.
++ * @buf:	buffer to read ELF file from
++ * @len:	size of @buf
++ * @ehdr:	pointer to existing elfhdr struct which will be populated
++ * @elf_info:	pointer to existing kexec_elf_info struct which will be populated
+  *
+  * This function allows reading ELF files with different byte order than
+  * the kernel, byte-swapping the fields as needed.
+@@ -315,6 +320,8 @@ static int elf_read_from_buffer(const char *buf, size_t len,
+ 
+ /**
+  * kexec_free_elf_info - free memory allocated by elf_read_from_buffer
++ * @elf_info:	pointer to existing kexec_elf_info struct which will be freed
++ *		and zeroed.
+  */
+ void kexec_free_elf_info(struct kexec_elf_info *elf_info)
+ {
+@@ -322,7 +329,15 @@ void kexec_free_elf_info(struct kexec_elf_info *elf_info)
+ 	memset(elf_info, 0, sizeof(*elf_info));
  }
--- 
-2.39.5
-
-
-
+ /**
+- * kexec_build_elf_info - read ELF executable and check that we can use it
++ * kexec_build_elf_info - read ELF executable headers from buffer and
++ *		check that we can use them
++ * @buf:	buffer to read ELF file from
++ * @len:	size of @buf
++ * @ehdr:	pointer to existing elfhdr struct which will be populated
++ * @elf_info:	pointer to existing kexec_elf_info struct which will be populated
++ *
++ * Return:
++ * 0 on success, negative value on failure.
+  */
+ int kexec_build_elf_info(const char *buf, size_t len, struct elfhdr *ehdr,
+ 			       struct kexec_elf_info *elf_info)
+@@ -378,9 +393,15 @@ int kexec_elf_probe(const char *buf, unsigned long len)
+ }
+ 
+ /**
+- * kexec_elf_load - load ELF executable image
+- * @lowest_load_addr:	On return, will be the address where the first PT_LOAD
+- *			section will be loaded in memory.
++ * kexec_elf_load - load an ELF executable image
++ * @image:		pointer to kimage struct of file to be loaded
++ * @ehdr:		pointer to the ELF header of file to be loaded
++ * @elf_info:		pointer to kexec_elf_info struct of file to be loaded
++ * @kbuf:		pointer to kexec_buf struct which will be used to
++ *			load the ELF file
++ * @lowest_load_addr:	when the kernel was successfully loaded, the address
++ *			where the first PT_LOAD section was loaded is stored
++ *			in the variable pointed to by this pointer
+  *
+  * Return:
+  * 0 on success, negative value on failure.
 
