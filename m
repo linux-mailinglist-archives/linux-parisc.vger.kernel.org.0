@@ -1,190 +1,282 @@
-Return-Path: <linux-parisc+bounces-3302-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3303-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE71A2AB83
-	for <lists+linux-parisc@lfdr.de>; Thu,  6 Feb 2025 15:36:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 213E7A2C04E
+	for <lists+linux-parisc@lfdr.de>; Fri,  7 Feb 2025 11:16:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E04EB1889DA7
-	for <lists+linux-parisc@lfdr.de>; Thu,  6 Feb 2025 14:36:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5F481678B9
+	for <lists+linux-parisc@lfdr.de>; Fri,  7 Feb 2025 10:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA17236441;
-	Thu,  6 Feb 2025 14:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29036197A76;
+	Fri,  7 Feb 2025 10:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hITuI10I"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JQrCMHr2"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19E2236433
-	for <linux-parisc@vger.kernel.org>; Thu,  6 Feb 2025 14:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E291624ED;
+	Fri,  7 Feb 2025 10:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738852568; cv=none; b=BWNPxLxtLKSnh2yGoPoIu7ujpNGNREye+5F+tNsfjQEctHiX/+dni+khjqOcxqQ7OSgL6V6d84jkeqWo1bonk76s1h6Brqb9p39g1LO7L4ama+jfB8amcbMJKWAKXYzYp+cU1/1V992AbUJvj85jSwN5rUPsxRHlyqfu/nX1LLY=
+	t=1738923411; cv=none; b=G8J/i2ZSkeke7Tw0Xr8WMJvM+7ie17x2veVsGIZJl/aotM1VT2qpG9bHPsZcOFL+AYvA8ew7m4KSB7/NBMZn30jYJaSR9oIvQMlVnjFSNp6d10nPUzMWfmokyxVcaH5jTXZysNMNXDvZgySyyS1PFLz9ClhNsz/4QbND7mT0Y5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738852568; c=relaxed/simple;
-	bh=iO43D0PL+o1QdnLJZ0VQ/BtvTi+SA72B/I1+koMgHj8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Mk66C2Geq1PYNZXwaIjvaV9pka4q1vmMcJycHvzql/piJdkVoIT8NXF+aApJxi2nAxQd19Yvhp0ANBMn2gO+rPflnAdaCpSJcoibWWE4QLOikJ8TNAt4bhkapKLVfm6PY2y1zbOzANCpyX170clJJFWp8x7CYuo6+vsM2YHsLlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hITuI10I; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738852565;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yQmwnNYhVl7y4z+j+mWJ9koQSChBra4hwvud7jF7bEM=;
-	b=hITuI10IsrhRa2eEBKY8eKW8HOK8cdZpCVHLcb4dg5NWeOOd723mvUzVgQK5u8OKzbjVQA
-	/Uel2q4qirWlvTj4mZApHMbT1ABXx16mV5kGpUwZOubyHJFTq85/q3TKY84c7sPmSeCEHd
-	6sw2TI3XkG9kAbtB12t16kcrs5TB8D8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-187-vONUF2SNO-m0hIG_rpfBLw-1; Thu, 06 Feb 2025 09:36:02 -0500
-X-MC-Unique: vONUF2SNO-m0hIG_rpfBLw-1
-X-Mimecast-MFC-AGG-ID: vONUF2SNO-m0hIG_rpfBLw
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-38c24ac3706so654926f8f.0
-        for <linux-parisc@vger.kernel.org>; Thu, 06 Feb 2025 06:36:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738852561; x=1739457361;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yQmwnNYhVl7y4z+j+mWJ9koQSChBra4hwvud7jF7bEM=;
-        b=bdZ8z5D+C8haW5o0tJvaYNK5Mo268UaiDIqjffcMBxugerfROSdljZymZl6iTM11ov
-         9dEp4Pf3O3i2Oal7iwmzdIzavijO5k25mPBX0cAtho/5IGgYfaOtPlNrsGvxGuPO9Fz9
-         ps3TplxxZkL8eVCWsZw09Fp6gWhTfZMy020EDA28FyfeuY8KGwr8HsBK7MN8QaTnKPPG
-         IfDVLJPSyukQa1MvFCb0/xOyT27m1FsE54o7kU3LyUvv7E6yD3b3yIjYQZTFThNYl9AQ
-         5LiSt/lGs9TggxgnQb+W6XLgVrS0RbVN8BMniZKL6ZoMw3TnZYKLmpBYn2mD6tDztl/U
-         QHGw==
-X-Forwarded-Encrypted: i=1; AJvYcCVk3K5YXvc37GdA1lSbTTEwM9p6wbVjSc5+9zdqqoxgA1uLlzHih8Qs2HRt3C+0FjI3vclTg56iNFiUgq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzID3ffFKDmOK+FNbV3eeYIk2ttAxFjp0GmOs6goVS3grAIHqq1
-	lu+jdW4lrDoG6zYixd79oy2O2EvfpnCOn2oCmPhkTqpJa+l4tgUf4Dsltg6koGtG5dzsVf7f32j
-	nVKcerfP671lUDx34ykpy4uCvbaPMWOOxie9FRPjErSZHajSgVBS++K1obTuEXA==
-X-Gm-Gg: ASbGnctWJD7QY/Ci78ENrg6yH/ESbBMy0wgZdsHdaLixSQivQQ8ybfHTJrMtK242321
-	1oEDhe1a1jEMUkdixkEApcNbrEyl4Cg58xtdyHOX659HGILjNoq6TzcEOwHB3lRhjvOmrBTSs8o
-	3o+cDgscqamTfpaccBgzigG5neM+3MJkMtDG47KOcga/s+XQlCExLVbpkaw5XU0XTLXQa+iJcMu
-	DchiYN4h6rLbr9+PMskcrLIjEHcVwE4KZYfoxB+e7nFRCJPNPb6n3hj98hEbqZcxtUenPP6RVUG
-	RtvFZXOiPpV03f8i1YlGmj3Knzw/a9oSx+OmmLC6V2sqn5lC0Yb6EfusD4/NPE6ni2PWY4JlmIh
-	4+yUX2cyaFTQk/Dv1ARAeGBRERe32GguUcMeUj38=
-X-Received: by 2002:adf:f9ce:0:b0:386:3835:9fec with SMTP id ffacd0b85a97d-38db492a155mr5075620f8f.44.1738852560942;
-        Thu, 06 Feb 2025 06:36:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEWL+AzOHE6y1/ZV3p8MQR6Ck4yDVM/9HbJTRC8drQg9XkPqYLMfOUri6+TKbLHY9CtZKzhGw==
-X-Received: by 2002:adf:f9ce:0:b0:386:3835:9fec with SMTP id ffacd0b85a97d-38db492a155mr5075602f8f.44.1738852560598;
-        Thu, 06 Feb 2025 06:36:00 -0800 (PST)
-Received: from ?IPv6:2001:16b8:2d3c:3d00:a7b1:b563:1454:3233? (200116b82d3c3d00a7b1b56314543233.dip.versatel-1u1.de. [2001:16b8:2d3c:3d00:a7b1:b563:1454:3233])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4390d94d7c7sm56422415e9.14.2025.02.06.06.35.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 06:36:00 -0800 (PST)
-Message-ID: <7547778507b5e98e103c0cb54e7705b9d65f93e3.camel@redhat.com>
-Subject: Re: [PATCH] serial: 8250_pci: Fix Warning at
- drivers/pci/devres.c:603 pcim_add_mapping_to_legacy_table
-From: Philipp Stanner <pstanner@redhat.com>
-To: Helge Deller <deller@kernel.org>, linux-kernel@vger.kernel.org, 
- linux-parisc@vger.kernel.org, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  Jiri Slaby <jirislaby@kernel.org>, Bjorn
- Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org
-Date: Thu, 06 Feb 2025 15:35:59 +0100
-In-Reply-To: <Z5XmLKzhKpLAlzHt@p100>
-References: <Z5XmLKzhKpLAlzHt@p100>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1738923411; c=relaxed/simple;
+	bh=zVqX9Hq16/SBdTp2H/rBCvE55Od/Y0deJt0gh/PTA4k=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ITburXgrMS2Cbx5vev5S2mZqisgnBPQzO3Ox9aSktHwMpMAHNpNXNEcCLid5CDUZ+HstoOHlxMM39Pn6j5awmIjwHzqL0Ai4sHqSK/w47m2RBbWoVw1Pn/MNXNiRBkCRid7rXuHK0Fs7wR26PtVWsJ4xZ9L6I+X0Z6etqPv/s/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JQrCMHr2; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=zVqX9Hq16/SBdTp2H/rBCvE55Od/Y0deJt0gh/PTA4k=; b=JQrCMHr2BdrjS4NKrzUQ4brppT
+	UggDTJnj1TCbsw8d6uS/TP1LXzuCYCRpzvxXY3M1Udn1/rpXKT+D2yISKc9EHbbjlk1JMiwjezT0w
+	G/g1Rm0utnZUcDsOAhllHICdtEJxIYMJw/XeRN/mslhRg1XxSlNHhBbjnLxUXcGhEAIUycfIHwyAz
+	ItWZqc3X+RpAaZKfd7tucO6DvzefcQn0FPMOPsZAyCKizC/2AjVKxERO5/VgZ3Cnr4Chc1uCRoERY
+	AxTesLAbLLvoSEfjxsUL7zWXl8QA3C30qYHv/EpdvBIOHqKBDnTg+VDWbD2Y+xZaag8m8LicEjrBB
+	LIoBs9Rw==;
+Received: from 54-240-197-238.amazon.com ([54.240.197.238] helo=freeip.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tgLOp-00000007cdM-31OR;
+	Fri, 07 Feb 2025 10:15:52 +0000
+Message-ID: <0a6b88c0edd85a2ae0886e5454afea09cfcd3a24.camel@infradead.org>
+Subject: Re: [PATCH v3 00/18] vDSO: Introduce generic data storage
+From: David Woodhouse <dwmw2@infradead.org>
+To: Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge
+ Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner
+ <tglx@linutronix.de>,  Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker
+ <frederic@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Theodore
+ Ts'o <tytso@mit.edu>,  "Jason A. Donenfeld" <Jason@zx2c4.com>, Paul
+ Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, Russell King <linux@armlinux.org.uk>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,  Arnd Bergmann
+ <arnd@arndb.de>, Guo Ren <guoren@kernel.org>, linux-parisc@vger.kernel.org,
+  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
+ linux-s390@vger.kernel.org, linux-mips@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-arch@vger.kernel.org, Nam Cao
+ <namcao@linutronix.de>, linux-csky@vger.kernel.org, "Ridoux, Julien"
+ <ridouxj@amazon.com>, "Luu, Ryan" <rluu@amazon.com>, kvm
+ <kvm@vger.kernel.org>
+Date: Fri, 07 Feb 2025 10:15:49 +0000
+In-Reply-To: <20250206110648-ec4cf3d0-0aef-4feb-a859-c69e53ab110c@linutronix.de>
+References: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
+	 <ff83dc5c91b4e46bcf2d99680ec6af250fb05b27.camel@infradead.org>
+	 <20250206110648-ec4cf3d0-0aef-4feb-a859-c69e53ab110c@linutronix.de>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-Hn9nn97uh7ZrvK5eTG4M"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Sun, 2025-01-26 at 08:37 +0100, Helge Deller wrote:
-> Some PA-RISC servers have BMC management cards (Diva) with up to 5
-> serial
-> UARTS per memory PCI bar. This triggers since at least kernel 6.12
-> for each of
-> the UARTS (beside the first one) the following warning in devres.c:
+
+--=-Hn9nn97uh7ZrvK5eTG4M
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, 2025-02-06 at 11:59 +0100, Thomas Wei=C3=9Fschuh wrote:
+> On Thu, Feb 06, 2025 at 09:31:42AM +0000, David Woodhouse wrote:
+> > On Tue, 2025-02-04 at 13:05 +0100, Thomas Wei=C3=9Fschuh wrote:
+> > > Currently each architecture defines the setup of the vDSO data page o=
+n
+> > > its own, mostly through copy-and-paste from some other architecture.
+> > > Extend the existing generic vDSO implementation to also provide gener=
+ic
+> > > data storage.
+> > > This removes duplicated code and paves the way for further changes to
+> > > the generic vDSO implementation without having to go through a lot of
+> > > per-architecture changes.
+> > >=20
+> > > Based on v6.14-rc1 and intended to be merged through the tip tree.
 >=20
-> =C2=A00000:00:02.0: ttyS2 at MMIO 0xf0822000 (irq =3D 21, base_baud =3D
-> 115200) is a 16550A
-> =C2=A00000:00:02.0: ttyS3 at MMIO 0xf0822010 (irq =3D 21, base_baud =3D
-> 115200) is a 16550A
-> =C2=A0------------[ cut here ]------------
-> =C2=A0WARNING: CPU: 1 PID: 1 at drivers/pci/devres.c:603
-> pcim_add_mapping_to_legacy_table+0x5c/0x8c
-> =C2=A0CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.11+ #2621
-> =C2=A0Hardware name: 9000/778/B160L
-> =C2=A0
-> =C2=A0 IAOQ[0]: pcim_add_mapping_to_legacy_table+0x5c/0x8c
-> =C2=A0 IAOQ[1]: pcim_add_mapping_to_legacy_table+0x60/0x8c
-> =C2=A0 RP(r2): pcim_add_mapping_to_legacy_table+0x4c/0x8c
-> =C2=A0Backtrace:
-> =C2=A0 [<10c1eb10>] pcim_iomap+0xd4/0x10c
-> =C2=A0 [<10ca8784>] serial8250_pci_setup_port+0xa8/0x11c
-> =C2=A0 [<10ca9a34>] pci_hp_diva_setup+0x6c/0xc4
-> =C2=A0 [<10cab134>] pciserial_init_ports+0x150/0x324
-> =C2=A0 [<10cab470>] pciserial_init_one+0xfc/0x20c
-> =C2=A0 [<10c14780>] pci_device_probe+0xc0/0x190
-> =C2=A0 ...
-> =C2=A0---[ end trace 0000000000000000 ]---
+> Note: The real answer will need to come from the timekeeping
+> maintainers, my personal two cents below.
 >=20
-> I see three options to avoid this warning:
-> a) drop the WARNING() from devrec.c,
-> b) modify pcim_iomap() to return an existing mapping if it exists
-> =C2=A0=C2=A0 instead of creating a new mapping, or
-> c) change serial8250_pci_setup_port() to only create a new mapping
-> =C2=A0=C2=A0 if none exists yet.
+> > Thanks for working on this. Is there a plan to expose the time data
+> > directly to userspace in a form which is usable *other* than by
+> > function calls which get the value of the clock at a given moment?
 >=20
-> This patch implements option c).
+> There are no current plans that I am aware of.
 >=20
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Cc: <stable@vger.kernel.org> # v6.12+
+> > For populating the vmclock device=C2=B9 we need to know the actual
+> > relationship between the hardware counter (TSC, arch timer, etc.) and
+> > real time in order to propagate that to the guest.
+> >=20
+> > I see two options for doing this:
+> >=20
+> > =C2=A01. Via userspace, exposing the vdso time data (and a notification=
+ when
+> > =C2=A0=C2=A0=C2=A0 it changes?) and letting the userspace VMM populate =
+the vmclock.
+> > =C2=A0=C2=A0=C2=A0 This is complex for x86 because of TSC scaling; in f=
+act userspace
+> > =C2=A0=C2=A0=C2=A0 doesn't currently know the precise scaling from host=
+ to guest TSC
+> > =C2=A0=C2=A0=C2=A0 so we'd have to be able to extract that from KVM.
 >=20
+> Exposing the raw vdso time data is problematic as it precludes any
+> evolution to its datastructures, like the one we are currently doing.
 >=20
-> diff --git a/drivers/tty/serial/8250/8250_pcilib.c
-> b/drivers/tty/serial/8250/8250_pcilib.c
-> index ea906d721b2c..fc024bf86c1f 100644
-> --- a/drivers/tty/serial/8250/8250_pcilib.c
-> +++ b/drivers/tty/serial/8250/8250_pcilib.c
-> @@ -19,7 +19,9 @@ int serial8250_pci_setup_port(struct pci_dev *dev,
-> struct uart_8250_port *port,
-> =C2=A0		return -EINVAL;
-> =C2=A0
-> =C2=A0	if (pci_resource_flags(dev, bar) & IORESOURCE_MEM) {
-> -		if (!pcim_iomap(dev, bar, 0) &&
-> !pcim_iomap_table(dev))
-> +		/* might have been mapped already with other offset
-> */
-> +		if (!pcim_iomap_table(dev) ||
-> !pcim_iomap_table(dev)[bar] ||
-> +			!pcim_iomap(dev, bar, 0))
-> =C2=A0			return -ENOMEM;
-> =C2=A0
-> =C2=A0		port->port.iotype =3D UPIO_MEM;
+> An additional, trimmed down and stable data structure could be used.
+> But I don't think it makes sense. The vDSO is all about a stable
+> highlevel function interface on top of an unstable data interface.
+> However the vmclock needs the lowlevel data to populate its own
+> datastructure, wrapping raw data access in function calls is unnecessary.
+> If no functions are involved then the vDSO is not needed. The data can
+> be maintained separately in any other place in the kernel and accessed
+> or mapped by userspace from there.
+> Also the vDSO does not have an active notification mechanism, this would
+> probably be implemented through a filedescriptor, but then the data
+> can also be mapped through exactly that fd.
 >=20
+> > =C2=A02. In kernel, asking KVM to populate the vmclock structure much l=
+ike
+> > =C2=A0=C2=A0=C2=A0 it does other pvclocks shared with the guest. KVM/x8=
+6 already uses
+> > =C2=A0=C2=A0=C2=A0 pvclock_gtod_register_notifier() to hook changes; sh=
+ould we expand
+> > =C2=A0=C2=A0=C2=A0 on that? The problem with that notifier is that it s=
+eems to be
+> > =C2=A0=C2=A0=C2=A0 called far more frequently than I'd expect.
+>=20
+> This sounds better, especially as any custom ABI from the host kernel to
+> the VMM would look a lot like the vmclock structure anyways.
+>=20
+> Timekeeper updates are indeed very frequent, but what are the concrete
+> issues? That frequency is fine for regular vDSO data page updates,
+> updating the vmclock data page should be very similar.
+> The timekeeper core can pass context to the notifier callbacks, maybe
+> this can be used to skip some expensive steps where possible.
 
-[Answering despite the ignore-hint to provide some tips for a v2]
+In the context of a hypervisor with lots of guests running, that's a
+lot of pointless steal time. But it isn't just that; ISTR the result
+was also *inaccurate*.
 
-Alright, so this worked before 6.12 because pcim_iomap() just silently
-returned NULL if a mapping already existed. Which it still does, but
-with a warning.
+I need to go back and reproduce the testing, but I think it was
+constantly adjusting the apparent rate even with no changed inputs from
+NTP. Where the number of clock counts per jiffy wasn't an integer, the
+notification would be constantly changing, for example to report 333333
+counts per jiffy for most of the time, and occasionally 333334 counts
+for a single jiffy before flipping back again. Or something like that.
 
-If you have to rework 8250_pcilib.c anyways, would be good to get rid
-of pcim_iomap_table() as you're at it, because it's deprecated and
-problematic.
+--=-Hn9nn97uh7ZrvK5eTG4M
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-It seems to me that this driver would be best of it could store in its
-state (uart_8250_port) whether that BAR has already been mapped, and if
-yes, take the existing addr and add the offset as needed for your new
-addr.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDIwNzEwMTU0
+OVowLwYJKoZIhvcNAQkEMSIEIERXi00+3GDk2E/p6131tegJ6jUhnrs0V9vxaiV5oZ2XMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIASTyZ34SddFoE
+ocWSro73fUQgm5VHgrWVDJcQemFDotkX4gb22kx5AhMW01xylurQU2KXW1YBEOQIrP3o8Unp//jv
+n1kL/lZCEQLr0AVvHWzJz+r9T8YOOPqhuYjKTYH7bNJRf4JCovNzSXRbz6r0HtGf8/T5L+H4YdVg
+cEvCs/NnayU/HPIJEpncwWHDx+AuOts+aQ0/GnEI0Q+xZwDfCjrAZkrlMsSDd7WAdz0wwEt2uOEL
+eIBW+5nm/AhsNZfMrvIvoMNGudPj9RQuIQkl0bIB4TTBXEeHkyyqJKn7BDoChI/IyhAo43sGyeUx
+arvfQRzzlDeynusz+WVmgHFGQuiYr5BCqxvXomKqLaBMwv1kL//ffVhlw70jvv93NcISjRnvGgyJ
+QZZ0xxvfNid8xUMEnTAG0qXP77EBjLtcRC5ZCc1XO4Td6yRL1F3/zGUrERW7Zh+hOCtXW+GBOiOQ
+NidHrdr1VlFHbRv3/Q2TLePMD1j5WZp1sViLkBGiEsPa90DkKH0Si/t+h0ah+3+ONkNPMmhF5M+l
+7U+enM1hpdV4KIKxun/YRp3rWBOan4WThApe5yvo3ZJj6+4/qUOP9olIeBZwkGhv9gvyDBOtmkcm
+east0DnR7g7xSW1IhsmWjlSxM5cXw+ENzQ9+gYLa/jGq/5j6aCTvGXjG+71FaQEAAAAAAAA=
 
-Feel free to reach out if I can provide further tips
 
-
-Greetings
-P.
-
+--=-Hn9nn97uh7ZrvK5eTG4M--
 
