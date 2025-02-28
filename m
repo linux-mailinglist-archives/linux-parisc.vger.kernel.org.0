@@ -1,326 +1,164 @@
-Return-Path: <linux-parisc+bounces-3349-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3350-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA597A47CFD
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Feb 2025 13:10:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8507FA491DB
+	for <lists+linux-parisc@lfdr.de>; Fri, 28 Feb 2025 08:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDFCE3B28B6
-	for <lists+linux-parisc@lfdr.de>; Thu, 27 Feb 2025 12:09:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4957B3AE8F4
+	for <lists+linux-parisc@lfdr.de>; Fri, 28 Feb 2025 07:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1ED22F16F;
-	Thu, 27 Feb 2025 12:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8CA1BD9DB;
+	Fri, 28 Feb 2025 07:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="BMe+FVpY"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="TkOEstEI"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD3022E3F0;
-	Thu, 27 Feb 2025 12:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D142A748F;
+	Fri, 28 Feb 2025 07:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740658087; cv=none; b=lSuHMcKubXcdhajbNoOBuUuBmkTd8GDw8C3UuNDi4fgvXL1SsITRtc5aIozNhGH4tnaKrFJfVoU2mveJwNwOfzBgt5rXG6QRYGumfWM9R9S00i0RLAH3T93HJKDA6YIRGxn89QCoYPxMwisxvYrHp6UWpBU5EFB7p8kFs2EVVDI=
+	t=1740726320; cv=none; b=uW1EugQ2DdeN3g7aaJWMIJeefFSHLGOf3Z7DRHj/t0Abz9WosLq94C1/QgahdoHtSLpWyS0O4tM49L0LZZyRHSBh3j1Gvn4EN4vLp3QKCiF9G7M+1xlmG2QwYaDLxdYp4hI3uNLNHgsY4dTKIo2v6ww+8lo8EDvNOByxQzZsQVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740658087; c=relaxed/simple;
-	bh=T0a5obLc4j2fbIOEajzfIFERecp2iIvOq4FtVxjBxXU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nMnNr9qLX8MXl5Y5fGXNOv55tsXlwAhZQ6Yg3Iz39sl6IPKGRFnNBSheAf6OhkR8cDSSoXM7686EFSS0Mgz+dElGkXirYVHNI5Rkv6J0+IrE+gg8aqn2+gE/qWX/jefJqUlmkYAiHGnss7U+wV1capU11mET9MCV0xYE43IFMFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=BMe+FVpY; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1CEF740E0202;
-	Thu, 27 Feb 2025 12:08:01 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id iN0oCAlGWdj8; Thu, 27 Feb 2025 12:07:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1740658078; bh=klXDwLNu+GdgxiSQ4cKCu+o7Hgj9jWo4+xGGDdoiKyM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BMe+FVpYcnybJXXM2DdS37JwfSoPjAjvLDkEei7ZnqXysLs4iK+doGH7m/kT0gYh7
-	 ++DAAp3QJBrwYKZDWMkcrgrTUol6djyrM3PAJLTG5gwHcjuWEVB8zNoukan/C/PQ11
-	 VBeOyvhKkj6uHDj32a7Vl0dKvIogDTdExZn6ec3gXiNFsTi+RwX2Vi4pQDzZVNTgHZ
-	 ZxQKdTlmVprEPa0V7BJX6GypLd04/lkwSOyDPqwnLOi4ISZjn0WbRawbQ+HbKLji+v
-	 2nr/ZmneryOruZtGuC9hKOSlT8Qmj0ks+9xX+oUwgVHadfc6UNYe9EDSWRKyFsmqcQ
-	 fH5+662Bb9j7+crgFmGFms2EFfEwKBW416LJ3uC/q8CeBjMKIWr+A4nt6CzMP9lOXn
-	 Z02/yORitAPE040Sg3gv+PjB2rD2WmrOLlcsTWfgfRltYkWm3z7o52Hn5LPPVQ4JVo
-	 in/A7jJlP3/Z1XOb8F5WC/dnYg1y0mm5oNrg7k3EtHqcOn4Yfs2XAscnEr0T+ky2O1
-	 Nap2xfrlYXyJvYDw5LNMmUSVqYjSMSWbxCSUtNERR+0ekVMQKOKCsJ6Q+8F8HrrIqr
-	 7ubOOnDQNwweaU76vvfKs8TK4hKox8lItZKO9Nh3aofHkBlHoJzNjbCoK3ke/kT4xj
-	 A0pA8X13r5RWpUZJZYjU738s=
-Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3CE2240E01AE;
-	Thu, 27 Feb 2025 12:06:13 +0000 (UTC)
-Date: Thu, 27 Feb 2025 13:06:07 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, Ofir Weisse <oweisse@google.com>,
-	Junaid Shahid <junaids@google.com>
-Subject: Re: [PATCH RFC v2 03/29] mm: asi: Introduce ASI core API
-Message-ID: <20250227120607.GPZ8BVL2762we1j3uE@fat_crate.local>
-References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
- <20250110-asi-rfc-v2-v2-3-8419288bc805@google.com>
- <20250219105503.GKZ7W4h6QW1CNj48U9@fat_crate.local>
- <CA+i-1C2xK8hzMQ8Y-=-7iYy+27nnouQZu1NdWG0qa35t+OQLqw@mail.gmail.com>
+	s=arc-20240116; t=1740726320; c=relaxed/simple;
+	bh=bGa95YOPkKi8fj8E1CkS0c3ZJVvnqOpy6nKf8kuoB/w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eLXt4ci8W7wggSsqk2pMlt2RC3RBB2rIRXMxxqMLg1Xr+o7XrMowI85G1SWhHSerdOlWOLGw7nkISgRofd/PGgbkAAd8Svc/Koc1c8TiwfW69Ryh6CRQqUPUchpzr6Hf3umyAUEl46IXnar6CUFzFKWafHGPU1+EhIRLAwu4/7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=TkOEstEI; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1740726314; x=1741331114; i=deller@gmx.de;
+	bh=ENfaXkamSI2ybRPJwBq1VOHuIvly4CjY5OwL1Vv9PQc=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=TkOEstEIDgPC8vDcW9c5ac9ZmyRsKAvbVyLerHY9YETYsciltV9D/P4AGIW71wBj
+	 iRfPw1dAtvynQqCfFUBcbWrPez7c49RFZC1jorXPCzfXZFdEzqve+jXZtCin8Sa82
+	 +TeeFqkYlKUAK/7tL4fZAUux9WJ0NbQG5R2g2ebMp1ruVEnoZgl/k4yFpY/ApIhZK
+	 njJV4tvKFUj91ZhNnG1uiCT2W3Kh7Q/CNsZlsFcJN5cc4LPr7gSeJYiNM8FFx+NRV
+	 HLESHVgIXHPga1N4178TcpvdYiaou3Ar6SDzwExX3NcUaLG8nipFA4rUzd6dfQbfA
+	 cI/C6sxsPJfwWg1LAw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.173] ([109.250.63.121]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M9Wuk-1ttQkQ398O-00CHf6; Fri, 28
+ Feb 2025 08:05:14 +0100
+Message-ID: <5fca72b9-fd7f-4e37-ae5f-1afcb0362c6d@gmx.de>
+Date: Fri, 28 Feb 2025 08:05:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CA+i-1C2xK8hzMQ8Y-=-7iYy+27nnouQZu1NdWG0qa35t+OQLqw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] parisc: PDT: Fix missing prototype warning
+To: Yu-Chun Lin <eleanor15x@gmail.com>, James.Bottomley@HansenPartnership.com
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ jserv@ccns.ncku.edu.tw, visitorckw@gmail.com,
+ kernel test robot <lkp@intel.com>
+References: <20250208174304.2627078-1-eleanor15x@gmail.com>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20250208174304.2627078-1-eleanor15x@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:E0AhFQsLQ53R1JNUWyzibdyTR65cfPU/VIJyrphg5EqDdIFSTNu
+ JP+J3f4pKXXoJHNCLSsio975S47eIv7yRDNWUrrR8gH0L29bKlHJt4+NVhQ/WXggY6w3lPA
+ 8RGc/QOFXiMUmdHmp4yKZwafOeqWr1y99Fn6DSTvwafoScwp6SUJDvPDuY6sumY16pLoWML
+ X3Pr2q5Y1mOOhg1fBEmLA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:vjnR1tcXoPU=;rw60KGteRkljfm0psQ3XUsu8Yqy
+ ld6+prApGitv1fKDVpRP63IiYr54P/e2l1D9e4eOKlxnqUGFzGwqnbAJ0ky2Z9cPdYT6/cjnG
+ p6UnINMA9FawRz/cl1d8YbOSoqKqpKsmYp0iIaoQB1fV5oVy7TfADvNYxDTAzDgFFVv1WBGnq
+ M3GJHzGJAxSFvbjoIbddDV465jnUJHmsTPmlZcoyHCBNSJcKCzEl3MSb74ZuWRUHuXln7GXkS
+ G2VfbzhVQ+yDFXp79I6un8p1QdqE7r14kz1NItZkgfOR3Nj5uKk22iOokDiV0x2BghOXtH7oj
+ iqOe/+tez1ALTeN/lZC6Rc/CGWlXCLwDPirInWXUKpKARucXeVTlFL4QBrikCNm72h/kqe7fU
+ KvL1vLf/jGB0an0egEfCMA0Wjj41IfICPfP1dfBIEjlvtPESvcqqZBn9kQM0qMhINCiH5AE6O
+ y34V+2kApprgWpAJkje3jM26RBEIu4trLoa2qQ3ZiBdSwFkxqKbQFPJNRuwpQRqlYBZunHwup
+ PlVeFvgZ21yUEAKsYbec0YkBeVNZr2QxEgt+UetBILLDX5PwW4qi12q/yzp5jsGf/+HhpquKn
+ jb8cgP+P3Rm3ohclNn7EGMF+cYB5E5PIk8h9IqPrqcVVTbKsJVrew8FzeP0zvGYZ+neq38bLm
+ vjhmkS3C2gvE8GibKoxhcRZv68Vx1cQ+F3gnoPAGopQEC2ik5PovGvyeoLJys3Nr6iIJ1PHB9
+ MFq1o0uS+gfYhfdqVMPaH+NkRj/eb4ZlmRBCbtLFMOWv5yLpnYtBb+3DPQgB6DA9pJQL1fYMT
+ Sx07XRc98dlxtlcPXpoFk2kzqGC0V9Eec2/D9gn2EA1Fku1PgSNByKH3WfXouSz+QH5PtJM15
+ aKw3JRsEtyJGWVlNJNPi/sVtQez9v6DQPWnCtUgwVlos9UmlXf9cASq5nqf6/1riF4dCt5yjd
+ R73UVg3zd2/SAGaC0oyIGB0Ut4QWc9K8Q/461bBuoFAhHjxRolOq0fx0i1jl4sGCpzC0CczkY
+ IVAtSIaxL3rGP0Dzbm7uCdlsPDSYSab7CD3d5RHN2I1QJy9ZALxTnEf9Hhn+pwhDxgzq+rYcl
+ rDKf1vMhlVcO/+4ZcMYYTvljQAcK8rQ1XPxjv9NRJni6j4YWwERqn1Pgv5wx6ZhGnwRZGahc1
+ T5GdWt5q4sfz7HJYwTfgX/Q+D8hz+61/oC7xgvNPCi+GgWKgYY6MtFvEAMkLPxvwdEXK8z0gF
+ fBPHlvJFq6mYTTPFVX2ii3AjFDU3zk3JXoSGgBPCnOBhlYr4qnkltdCPuucglMMPQy2ylAfKf
+ P0/xzgEZXV82wTxEWuR1zeZjM+7IGCa3hS58bZ/J+AjAPSxrnkL+fK5qbeAiuMkqT/DcMqMY7
+ a3u8OFf1C9f4o3LkaKHvWsQPuI3AQXn8rftHymZss+3VPqZV5OaQs2NmJ7VPEDuMgElahX0fE
+ 29/Ydow==
 
-On Wed, Feb 19, 2025 at 02:53:03PM +0100, Brendan Jackman wrote:
-> Argh, sorry, GMail switched back to HTML mode somehow. Maybe I have to
-> get a proper mail client after all.
+On 2/8/25 18:43, Yu-Chun Lin wrote:
+> As reported by the kernel test robot, the following error occurs:
+>
+> arch/parisc/kernel/pdt.c:65:6: warning: no previous prototype for 'arch_=
+report_meminfo' [-Wmissing-prototypes]
+>        65 | void arch_report_meminfo(struct seq_file *m)
+>           |      ^~~~~~~~~~~~~~~~~~~
+>
+> arch_report_meminfo() is declared in include/linux/proc_fs.h and only
+> defined when CONFIG_PROC_FS is enabled. Wrap its definition in #ifdef
+> CONFIG_PROC_FS to fix the -Wmissing-prototypes warning.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202502082315.IPaHaTyM-lkp@=
+intel.com/
+> Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
 
-Yap, wouldn't be such a bad idea. And yes, it ain't easy - we have a whole doc
-about it:
+applied.
 
-Documentation/process/email-clients.rst
-
-> OK, sounds like I need to rewrite this explanation! It's only been
-> read before by people who already knew how this thing worked so this
-> might take a few attempts to make it clear.
-> 
-> Maybe the best way to make it clear is to explain this with reference
-> to KVM. At a super high level, That looks like:
-> 
-> ioctl(KVM_RUN) {
->     enter_from_user_mode()
->     while !need_userspace_handling() {
->         asi_enter();  // part 1
->         vmenter();  // part 2
->         asi_relax(); // part 3
->     }
->     asi _exit(); // part 4b
->     exit_to_user_mode()
-> }
-> 
-> So part 4a is just referring to continuation of the loop.
-> 
-> This explanation was written when that was the only user of this API
-> so it was probably clearer, now we have userspace it seems a bit odd.
-> 
-> With my pseudocode above, does it make more sense? If so I'll try to
-> think of a better way to explain it.
-
-Well, it is still confusing. I would expect to see:
-
-ioctl(KVM_RUN) {
-    enter_from_user_mode()
-    while !need_userspace_handling() {
-        asi_enter();  // part 1
-        vmenter();  // part 2
-        asi_exit(); // part 3
-    }
-    asi_switch(); // part 4b
-    exit_to_user_mode()
-}
-
-Because then it is ballanced: you enter the restricted address space, do stuff
-and then you exit it without switching address space. But then you need to
-switch address space so you have to do asi_exit or asi_switch or wnatnot. And
-that's still unbalanced.
-
-So from *only* looking at the usage, it'd be a lot more balanced if all calls
-were paired:
-
-ioctl(KVM_RUN) {
-    enter_from_user_mode()
-    asi_switch_to();			<-------+
-    while !need_userspace_handling() {		|
-        asi_enter();  // part 1		<---+	|
-        vmenter();  // part 2		    |	|
-        asi_exit(); // part 3		<---+	|
-    }						|
-    asi_switch_back(); // part 4b	<-------+
-    exit_to_user_mode()
-}
-
-(look at me doing ascii paintint :-P)
-
-Naming is awful but it should illustrate what I mean:
-
-	asi_switch_to
-	  asi_enter
-	  asi_exit
-	asi_switch_back
-
-Does that make more sense?
-
-> asi_enter() is actually balanced with asi_relax(). The comment says
-> "if we are in it" because technically if you call this asi_relax()
-> outside of the critical section, it's a nop. But, there's no reason to
-> do that, so we could definitely change the comment and WARN if that
-> happens.
-
-See above.
-
-> 
-> >
-> > > +#define ASI_TAINT_OTHER_MM_CONTROL   ((asi_taints_t)BIT(6))
-> > > +#define ASI_NUM_TAINTS                       6
-> > > +static_assert(BITS_PER_BYTE * sizeof(asi_taints_t) >= ASI_NUM_TAINTS);
-> >
-> > Why is this a typedef at all to make the code more unreadable than it needs to
-> > be? Why not a simple unsigned int or char or whatever you need?
-> 
-> 
-> My thinking was just that it's nicer to see asi_taints_t and know that
-> it means "it holds taint flags and it's big enough" instead of having
-> to remember the space needed for these flags. But yeah I'm fine with
-> making it a raw integer type.
-
-You're thinking of some of those rules here perhaps?
-
-https://kernel.org/doc/html/latest/process/coding-style.html#typedefs
-
-Probably but then you're using casts (asi_taints_t) to put in integers in it.
-Does it matter then?
-
-Might as well use a plain int and avoid the casts, no? Unless there's a real
-good reason to have a special type and it is really really good this way...?
-
-> Well it needs to be disambiguated from the field below (currently
-> protect_data) but it could be control_to_flush (and data_to_flush).
-> 
-> The downside of that is that having one say "prevent" and one say
-> "protect" is quite meaningful. prevent_control is describing things we
-> need to do to protect the system from this domain, protect_data is
-> about protecting the domain from the system. However, while that
-> difference is meaningful it might not actually be helpful for the
-> reader of the code so I'm not wed to it.
-> 
-> Also worth noting that we could just combine these fields. At present
-> they should have disjoint bits set. But, they're used in separate
-> contexts and have separate (although conceptually very similar)
-> meanings, so I think that would reduce clarity.
-
-Ok, I guess it'll tell us what is better once we stare at that code more. :)
-
-> Ack, I've set up a local thingy to spellcheck all my commits so
-> hopefully you should encounter less of that noise in future.
-
-Yeah, I use the default vim spellchecker and it simply works.
- 
-> For the pronouns stuff I will do my best but you might still spot
-> violations in older text, sorry about that.
-
-No worries.
-
-> What this field is describing is: when we run the untrusted code, what
-> happens? I don't mean "what does the kernel do" but what physically
-> happens on the CPU from an exploit point of view.
-> 
-> For example setting ASI_TAINT_USER_DATA in this field means "when we
-> run the untrusted code (i.e. userspace), userspace data gets left
-> behind in sidechannels".
-> 
-> "Should be set" in the comment means "this field should be set to
-> record that a thing has happened" not "this field being set is a
-> requirement for some API" or something. So I don't think "required" is
-> right but this is hard to name.
-> 
-> That commentary should also be expanded I think, since "should be set"
-> is pretty ambiguous. And maybe if we called it "to_set" it would be
-> more obvious that "set" is a verb? I'm very open to suggestions.
-
-I think the explanations you give here should be condensed into comments over
-those things. They're really helpful.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks!
+Helge
 
