@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-3351-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3352-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE16A491E2
-	for <lists+linux-parisc@lfdr.de>; Fri, 28 Feb 2025 08:08:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A672A49214
+	for <lists+linux-parisc@lfdr.de>; Fri, 28 Feb 2025 08:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CFCE3B58EB
-	for <lists+linux-parisc@lfdr.de>; Fri, 28 Feb 2025 07:08:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73A727A1638
+	for <lists+linux-parisc@lfdr.de>; Fri, 28 Feb 2025 07:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435C51BD9DE;
-	Fri, 28 Feb 2025 07:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DAF1BC09F;
+	Fri, 28 Feb 2025 07:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="jVOOip/Y"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="hGIdlekG"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C175748F;
-	Fri, 28 Feb 2025 07:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30675276D12;
+	Fri, 28 Feb 2025 07:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740726496; cv=none; b=hEvH+RsIJhDp8m9FLcQTTwY83IMhQDiljJIKcn65k52qkTrGDWWh72QMww+qrKLk2S7It+U8JDmxLIJ//Nj9LB/ECzbXnKGTWDWg44QsKp2JRA31nKoS64aG//RP1Qpop99o5sSO0G7LTnR2tUNtQFIS2b8TXxL9taXpsfwYrjs=
+	t=1740727341; cv=none; b=dUshtsqmhYz1TaVRpUe6+u+0WSeYsX+WMIKpW3zflRHGGGdUhcJ78+dObYllrCuMnNNOqTfWimjh6V4iJZFeBdM/uNhSZEEy0bkRF5YOWxR8B+SUA1bvC3xp2ZetAl7escDKvgL9sfh8n/kfZDluwHb/vF392ZyXcNM9VZsufI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740726496; c=relaxed/simple;
-	bh=0oGIPqR+xuqa+ZlC9cONFUewcTC04CZzgeAG8DnAtc8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S7qQe7jcDej47KAv6orqws6578cem6jZuijIoOitxsKqOUdzpKZzHaNe+vKzUBTDvZe7Ei2g7dhiV2GRkeBdar2iFI1/+bjts1wJHeAj9Qink/BN1gjNviLalIqII2o0Kyn2rsojje+iSXRX/YVp1xfyiOFV5UNkGl1gGbVRwFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=jVOOip/Y; arc=none smtp.client-ip=212.227.15.18
+	s=arc-20240116; t=1740727341; c=relaxed/simple;
+	bh=O1UELFem+xAKU6acI/EuW6IpzMVq/eUkwgIorgnqyKs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Z4aFJYF8aEqXr5qHB4xUpqPxVy0o3NK7rYHDrpeoF3ec7GsQit3Hf9fPb+NlCnLpYHSwxHj+0goHWm1d8+smWTxgkSe1J8Fj8f8dhVWT+SzP92i/y6KeFFjVbarZreczUC47qS3ai5cuJvdKZzKrIMylSeSHjGJ3GSaLt8IPA5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=hGIdlekG; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1740726479; x=1741331279; i=deller@gmx.de;
-	bh=SJrxyvd0RMUdwD95V90OXSdYyZ64YxQkPT3C5/xOCZ8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	s=s31663417; t=1740727335; x=1741332135; i=deller@gmx.de;
+	bh=O1UELFem+xAKU6acI/EuW6IpzMVq/eUkwgIorgnqyKs=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=jVOOip/YOsf+yuQHlaBM176G+lBzi1avdFl05GWGN2h06Bx+9qwqwJOp3oLi6iko
-	 RAPin/nnWj7vQl72CuRzZswDVu/Pry5TJUrDmQyCU5Eqr0NBJXDPbFDJ4BxMFnO2N
-	 Njxh7/UyG8/dmtyl5lxDu18I5yvv3DCuKcHeOzMfZBcG/Dt5ydScwVI0TEAymDxR9
-	 LiYq8i/7aU3CoURRCZiBL+2vWUvWDtur4+NaZ6CvWkgROqFKiReZ8T7Hu2wJ9Erih
-	 HQlmlA6Nt16VP1hCQxb0mGYJNqczhAIh0ScL8bShznCEvymTrK7EMRpa/8RmSP1AD
-	 SnuRfJTmECdFO3BAnA==
+	b=hGIdlekG7kiSS5Znl1SU4rzIVJgy/1+jcO3+WOF/LrUkZxj99R0w/E+wXRVr7V9M
+	 GJFPkCzynmKlWYOz115YdTTyn2PQXgOGwQZp8Dw8uLdBzCth+9wNSyBrEfTk8x4id
+	 nv9Li5V3dxO0OIfRH/OXIW4Gh8Fro9XrP/3aOuOc3ZCfKWEPdbiOzHwHg9Z/clN5h
+	 jZRVjdO/n3lKbtSRAgpu75M105GHmQoK1sJA27b7c/uecUEDjP+HAdiiaFD1s8Jwc
+	 4iDo5+oaHhMgMz3/Ct3c6qkrAFjZ9pryqY13HcermQS/ieoT62N//7L944NJs6Z7c
+	 n7tkambKEjPHp+NI+A==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.173] ([109.250.63.121]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MMofW-1tXLWl0A8i-00Pvq6; Fri, 28
- Feb 2025 08:07:59 +0100
-Message-ID: <2f0e2785-564d-44e2-ba45-d43dd2df0114@gmx.de>
-Date: Fri, 28 Feb 2025 08:07:54 +0100
+Received: from [192.168.20.173] ([109.250.63.121]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MatVh-1tHLAa0TCl-00nI0J; Fri, 28
+ Feb 2025 08:22:15 +0100
+Message-ID: <b493660d-c1ad-407f-8457-bb3c45d3c69e@gmx.de>
+Date: Fri, 28 Feb 2025 08:22:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,13 +58,11 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: perf: use named initializers for struct
- miscdevice
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-dev@igalia.com
-References: <20250226-parisc-perf-miscdev-v1-1-8d541ac2092d@igalia.com>
+Subject: Re: [PATCH] Input: gscps2 - Describe missing function parameters
+To: Helge Deller <deller@kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-input@vger.kernel.org,
+ linux-parisc@vger.kernel.org
+References: <Z6OoEnJFW118IuP0@p100>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -110,48 +108,44 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20250226-parisc-perf-miscdev-v1-1-8d541ac2092d@igalia.com>
+In-Reply-To: <Z6OoEnJFW118IuP0@p100>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6+f08gppdEDj9RqWb8LEurILt/xQ+5A7T3ToGF3bF3ksaZ7TK2m
- 96EXYDvG6WhlwdLWI4E0495QbksOPa6zlaeEBftSxbrwp4Ajh7nj/F0kpfbmNTrtFgQEKrY
- oVArveqGlH/Pyvad3vlNuLCxk4cng03slDeAya15TsAr5giwurExG76xBMzh/XkaxbQEM0K
- WgA10n9HNAuVJHk5V7nUQ==
+X-Provags-ID: V03:K1:9kZMlvrRK6NVqBx9PRaw5pgntW/7HVjha/HSLjgwDndDUOxBckD
+ KZkDSn5YzGke6HNg5sj7kBBrYhPACWiyAiumE2EWP6y6qBExTfUJHk/rSycjcO8Xh7hSs1W
+ il7opJWHJuHae9262U/iETXzrrWSVmL7La/O8WjVg9lPFIJXECC4VQpeMmM8xSZxGeqoVp3
+ OYbR9p1Eoq4ToTHw+fCig==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:fl0SXF0K0Dk=;1Y6pa2rPrhCAYGORXjRkyN6M9iM
- os2osMAHFaCaPBaZRd5s2BdtFs5JBaQtSsLPqeGql/AfBWC1eVKFZuVBbgx8mmfbP5o6OLrnR
- UTp+l9zgDVD3C1V8fFI13L3wiU2ca4F9y1zogR+otlL124Gk3GYvvat1aHms0yVsxM8ZblpqC
- nwCbOcGbU9LvYXmpR6YaM4vBjHnw10B2oG6Mu09n7ILF4XEvkXwdkpRAPiNxmwhgCAOTsIa5x
- fMpJvvanfc1jEfUMAKe9HQUrdYWzpl8iCKUqDieGmJV1pljITvBG0Rl6S96xuhHl9s/9MIuW0
- CkTDtByCQY2qtEg42aJY9GIGHWtRaqjNCBsUMB7DJB3XarBcVlt/g5rkJvzCWRRYiQ3kuggN3
- BNSvIVBVuL1h4KM2nxXwheDN/+qQXl5ZO9r72WevRprYS/rhBQUT4Big3Izj75aUCPtkhlQJ9
- MNPl+CW2hnB8DAE2x/xX2b/qW63eKmFpVRS1kgb7OHmAGEAE9qqrxQDCDNvg+LCnoPbMRT9BB
- OwzytE6CJJaAMr2eBJAPzMfJiFREhcE8Zlhz4WWQVkogAcYjjTH4lqo0WdSNwrZjlmAv7idRT
- 5NpY6hP+xsSzlf1NwDQNvYXXCKblFrpQnpedAyarXg04wRJpIhlFIn9nyu4fRAN08WfjZl3dB
- N0EnUyKR0hcYQOyIhip1vlDNrmSGi3bQVx8aVBJvb7P2E5I6Wunf1pN9D+aPLZBNqqFYko9Wu
- EAmYIqysNj8hGv3gCKc0E1s5M+CzZlhNPsp+j1nrmS2aXjsjsGGebF9WPOcGPkWSKdGKNOSo/
- X+IuUrzAEsD++A7nGClo4/jzG0LjfITyHc7P6h8NfWIOWsRTd5MdJx8geoPK+YKmuEs2cTbL6
- p4t1LvYyu9rOVkWasHpAX5WUTJCnBsDFJgwKsYvQ0F5jn1mmbMfB90hMuG8W0DsgkfDCBEUS1
- 3Fxa1IjtOloj4f4C62jeSSoBKnkWbNN/vK4XakuFOzzxH/PtOveUMM6U6AMDMd00DQEn4//VK
- f8pBLtSyPzXurYzgwolw2ZDip8PdzUVvxyL2aYEk9eN/NzqcEpPqmEvyHjtcBQcMw5Bt20AmH
- HsxfpzZ/3fA4Nmny6NxRpLyW97brL2CAGeefFHvfq0jNPmfQx/AnIdGHJOOKoQ6SxZWPxVKrL
- sYs1QiJGJYXp+7ygkneaKDsa0MKmjC7wLOyKK0j/zOBz8JQVBuC15xyVyl9F5v0s53SdItXS1
- UqSb2w3qiSjxKO7xvsMpJDI5qAHbt/CQchTEOa5aZz3oyg4COB7A6t1Hg/hF1cjmY7Law5b8M
- 2EFNFeezDkJs8RMX4xuUIUfWnRjTuXzglRtB5LZB9qgKPOuVzbjEPRKcvZpyEdvPzM9Ssf7gj
- Q/WFYoPLDsp/7SvOnIwHMHLxEOLrNQW2ERE0FoDTgNXMBt07ciAVbVE4nHpsiIJVPS+Q0fAOv
- EFZNy7w==
+UI-OutboundReport: notjunk:1;M01:P0:rPfm7a1Eh+E=;8ddvAPnvLh9zwN7VRBiBENkNG6k
+ vmsc2SYRt5AbKDWq470VuTwe+MOYiLRbAiOkBx+3YZoxTx2s3Hy26cscW5qpHXMFy1hk9xvh7
+ cP6YB70hpCWFR0S30HApDqhjFiP5WUHE32qxSAsHHBvvsyic2CXWjYfvW3jyd2VGncKXr4qtU
+ BaWnKafeEc6wL6tc5ZyjbiEqcG4jKxAM3TWOPFJIPow+AdaUdLRkb6HqZIk7zhb6fetqB+CNY
+ v5LpvScC1BDxZzQCSUU0q6VgooD3+JGbHTRwBKqZJedXhGhbOYKEagcpnr9KE5zZOu0coOj2F
+ Pc/+YQbloElf8+YKgV4pgfUv8LRkbLAOZL9ZXLPQ32LlBk15zXp1BgF320rvcvZPDtVeXgi8T
+ StTcABTTkV1TWrlHftleN3Xr1Chfm/8GOPg70LnzAxkQNpjOR3rPS7R7aFQL5ZcfYE9rRUcsG
+ 9ebNFsfNbfiUmW3byFOqJRcL6jaHPS9ei9rlKmaBTLUHI8MikPojH5JOz+HTFBFg0CXeZNCFM
+ 8wMJT53/Km4PbPvQluFCCBmbtDzZcpJ7Uzw3fmLcHBvp+E1TCfYlHkbdIe5fDf18c8GVC6vUL
+ EYZ38v44TgHzcDgcu5jE9pzar8Z94fC/9H/kILbdl85XBOCL7+s9Y+PqXUjz9RTCpBNMJ5sRz
+ 1DFsXxUYQsh0QGT6OSiFxJJj+8YalpbOCrXJUZuv83Awrd2a1YoR1MvhcA1c45Beey+VhGomx
+ i8ODI6VjaYD9NcmDMR4jKWEsjqw51G2GyGTgf5NnyEJg4GR6OfL7Lgn8C210fRz58PxUoUzUa
+ T4dbr36dXwMPqta+E1kf7v6zOk/Gu0GDkw1l64mXJhNYr2uuA4UO72c2r3JtvG9kr/mdSewsg
+ 16QJkutmIxJTnpmJrj/o8ii3bwELFhh4j3dFQlRNsu25XwyUnSLeWZEuj4CvPVel/fyTm3MKw
+ uAKre7DKNEDWj4FKRRfntW3tOQ9DTHxGF2Th53JKE+5Jt1YcFKggwEV4NtjfdH6jO9QhVMNLb
+ BHx9AdN9yp8UGQRkrUR6hzfchVuv9w3V73jguRLGwDwKXEf5UDPQMbAVhy/AmF4RPTKkcftwu
+ 6LkFCiyJsosMpK2vI5YOyJjBb0whVTYyCK0k+dMFYqfY0WuvrrgK4iqO4Ufck/Eila7ikewsM
+ MVYY+TeOOiGOAAuU1ezpivu+LqS79Lj74ksMuqY4gJ5pYz2nRGpeVlABTBskvCh+J2lFBg5wD
+ 50uMA+rEsPnr+PHm+Qdr18zXUS4k8sXgsA4/KC0oD3Ajo46+uAvRShf8Wb9E1IRIdzQPM7Pqv
+ PGLQ5uE2xYLcmx7e28GUySGD7AT9alk+FKmq9xUxR2AKHsXReS178sL899EmdZ7KfVxDtwkT2
+ fZyXSRvnasT0+Qk96UOJERuUSLag+oLXRWT1Wz2qkkI8MBWBJMJDzgAQ+4
 
-On 2/26/25 19:09, Thadeu Lima de Souza Cascardo wrote:
-> Though struct miscdevice has hardly changed over the years, this is good
-> practice and also makes the core more readable.
+On 2/5/25 19:04, Helge Deller wrote:
+> Avoid compiler warnings when building with W=3D1 by adding documentation=
+ for
+> the missing function parameters.
 >
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> ---
->   arch/parisc/kernel/perf.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+> Signed-off-by: Helge Deller <deller@gmx.de>
 
-applied.
+applied to parisc git tree.
 
-Thanks!
 Helge
 
