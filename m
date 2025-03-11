@@ -1,136 +1,161 @@
-Return-Path: <linux-parisc+bounces-3383-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3384-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7637A5A0A1
-	for <lists+linux-parisc@lfdr.de>; Mon, 10 Mar 2025 18:52:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A21FA5B8C2
+	for <lists+linux-parisc@lfdr.de>; Tue, 11 Mar 2025 06:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31C02172B88
-	for <lists+linux-parisc@lfdr.de>; Mon, 10 Mar 2025 17:52:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0544C18916AD
+	for <lists+linux-parisc@lfdr.de>; Tue, 11 Mar 2025 05:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1D222FAF8;
-	Mon, 10 Mar 2025 17:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA6822156F;
+	Tue, 11 Mar 2025 05:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VjVgSea9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f48a7jPd"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D7A17CA12;
-	Mon, 10 Mar 2025 17:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F592206AC;
+	Tue, 11 Mar 2025 05:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741629121; cv=none; b=lNRx7D2z+aZaW3+AsRwqakNqGCK6Vr1mUkqv8guAR0E72qWSH7HS4T+e3PAm/bjGUTwHNnR7O1fvtjyvpYNv2ZBj3sNYT6BjF8f5FXxyo3RQ1rKUKS/7itPYwmzqya5BdRrBE8LPfVytxJbndbG3a7jGrhnwKjggRjDkLV5bDRk=
+	t=1741672583; cv=none; b=Q0nXobcy0CJ2+bpffJOwAtWiE45GEZuE8AxS2FvvwEvxUL+Kh2NOdl5fvL6kPLY4icR6C8kRcOgdO4HlL2QCMo9noq/xt4/nxSQVXAvh1TyY9JOEuzIAFXnybE7fmEBZDpBQDREG49ZjdEafU1gfg4nA9Jxbpc6sAC2GeVaoP/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741629121; c=relaxed/simple;
-	bh=N2V31bh7gpu64eKY1HB6O+qJjlQOufIsfaFh1DeRKBI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXoCpsoFKU2RpPS2XI+yaJ3HSi/D7AnptVu3jtro0UZwncYSRqzKyTQ1o5/HJAf1PAqGba7hxTC8P8m5xwevnVWXKmoisgvlt6RbPcpGYPLqt63APC5KIiHcxx/qGTKLmO55NZr/VeKScQUDHLdUK64lzwkt8cNTB3dVSbcs7S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjVgSea9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F64FC4CEE5;
-	Mon, 10 Mar 2025 17:52:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741629120;
-	bh=N2V31bh7gpu64eKY1HB6O+qJjlQOufIsfaFh1DeRKBI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VjVgSea9kYxA86vQyOj0wjDpKqv2b27tXO+ksrKudUT1JnqGPUjvLDuen6OZo5sMq
-	 q0x30d5GKG+SLj/ahBHwpGhv5l37GaSsiEwiQU7xHImgYeE2g9T5ZeN/csrDI8VFBh
-	 oqGaaEE2fKEcm6yZpzrEh9AYj2N5qj5c8f+Z62zU=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Helge Deller <deller@gmx.de>,
+	s=arc-20240116; t=1741672583; c=relaxed/simple;
+	bh=JR5aE1/6W9bEsH29C5z708XdvBh3y3whu03ldRN1cT0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hU0+zGxmR+1dvfB9rJa8exxG+NFisG20MyrrgeeAN8gIL1ukYsp5JwU7+YmcpX1V/kf6K7ozA+kuoncPDeJsXZZ8m9pF7VfWHlozLinUEsc710EUAqjoVpmUb5rvz6L/hmTPlAml9IuuJPuSy8DNm1x22+snG0nxSWHFyNGAk4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f48a7jPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D93EC4CEED;
+	Tue, 11 Mar 2025 05:56:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741672582;
+	bh=JR5aE1/6W9bEsH29C5z708XdvBh3y3whu03ldRN1cT0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f48a7jPdRs+4CFxnOQTPCHsm75344xXl4kGcXGjsNF7CXHD6rakA6cXBClsJrVEtn
+	 WMcp4MDOS6ujAbPjNce+g3L+xfZC5vi4RqizMWw2e621BlT1F9Ay/Loxsxa26BilyR
+	 V3RuJvI1gFKwfV3U+Q95PUC/u4Gy4+xVTdXkrb9dHTeavvebfTfgzz2yhmQ89ydU2G
+	 kiwkfL2BapKmKWzCToyXgMHRmDr7W8auvyr26g/1+MWMbdjrYYGY9Pgy3JpC8H5B/G
+	 ocFRu6iz+c47Alu4XK27RyF2DFlSe0JprTDW9yyHuXhbUMDy3L4Bzl+ZBGVJfIovu1
+	 qQCLqsddFmhPA==
+Date: Tue, 11 Mar 2025 07:55:55 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 153/620] module: Extend the preempt disabled section in dereference_symbol_descriptor().
-Date: Mon, 10 Mar 2025 17:59:59 +0100
-Message-ID: <20250310170551.643802978@linuxfoundation.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
-References: <20250310170545.553361750@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	Michal Simek <monstr@monstr.eu>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+	Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH 07/13] s390: make setup_zero_pages() use memblock
+Message-ID: <Z8_Qawg0dGtZdys7@kernel.org>
+References: <20250306185124.3147510-1-rppt@kernel.org>
+ <20250306185124.3147510-8-rppt@kernel.org>
+ <20250307152815.9880Gbd-hca@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250307152815.9880Gbd-hca@linux.ibm.com>
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+On Fri, Mar 07, 2025 at 04:28:15PM +0100, Heiko Carstens wrote:
+> On Thu, Mar 06, 2025 at 08:51:17PM +0200, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > Allocating the zero pages from memblock is simpler because the memory is
+> > already reserved.
+> > 
+> > This will also help with pulling out memblock_free_all() to the generic
+> > code and reducing code duplication in arch::mem_init().
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  arch/s390/mm/init.c | 14 +++-----------
+> >  1 file changed, 3 insertions(+), 11 deletions(-)
+> 
+> Acked-by: Heiko Carstens <hca@linux.ibm.com>
+> 
+> > -	empty_zero_page = __get_free_pages(GFP_KERNEL | __GFP_ZERO, order);
+> > +	empty_zero_page = (unsigned long)memblock_alloc(PAGE_SIZE << order, order);
+> >  	if (!empty_zero_page)
+> >  		panic("Out of memory in setup_zero_pages");
+> 
+> This could have been converted to memblock_alloc_or_panic(), but I
+> guess this can also be done at a later point in time.
 
-------------------
+Duh, I should have remembered about memblock_alloc_or_panic() :)
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+@Andrew, can you please pick this as a fixup?
 
-[ Upstream commit a145c848d69f9c6f32008d8319edaa133360dd74 ]
+From 344fec8519e5152c25809c9277b54a68f9cde0e9 Mon Sep 17 00:00:00 2001
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Tue, 11 Mar 2025 07:51:27 +0200
+Subject: [PATCH] s390: use memblock_alloc_or_panic() in setup_zero_page()
 
-dereference_symbol_descriptor() needs to obtain the module pointer
-belonging to pointer in order to resolve that pointer.
-The returned mod pointer is obtained under RCU-sched/ preempt_disable()
-guarantees and needs to be used within this section to ensure that the
-module is not removed in the meantime.
-
-Extend the preempt_disable() section to also cover
-dereference_module_function_descriptor().
-
-Fixes: 04b8eb7a4ccd9 ("symbol lookup: introduce dereference_symbol_descriptor()")
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250108090457.512198-2-bigeasy@linutronix.de
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- include/linux/kallsyms.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/mm/init.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index eae9f423bd648..0f73f69e64035 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -66,10 +66,10 @@ static inline void *dereference_symbol_descriptor(void *ptr)
+diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
+index ab8ece3c41f1..c6a97329d7e7 100644
+--- a/arch/s390/mm/init.c
++++ b/arch/s390/mm/init.c
+@@ -81,9 +81,7 @@ static void __init setup_zero_pages(void)
+ 	while (order > 2 && (total_pages >> 10) < (1UL << order))
+ 		order--;
  
- 	preempt_disable();
- 	mod = __module_address((unsigned long)ptr);
--	preempt_enable();
+-	empty_zero_page = (unsigned long)memblock_alloc(PAGE_SIZE << order, order);
+-	if (!empty_zero_page)
+-		panic("Out of memory in setup_zero_pages");
++	empty_zero_page = (unsigned long)memblock_alloc_or_panic(PAGE_SIZE << order, order);
  
- 	if (mod)
- 		ptr = dereference_module_function_descriptor(mod, ptr);
-+	preempt_enable();
- #endif
- 	return ptr;
+ 	zero_page_mask = ((PAGE_SIZE << order) - 1) & PAGE_MASK;
  }
 -- 
-2.39.5
+2.47.2
 
 
-
+-- 
+Sincerely yours,
+Mike.
 
