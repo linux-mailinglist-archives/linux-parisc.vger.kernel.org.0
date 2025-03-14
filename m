@@ -1,101 +1,146 @@
-Return-Path: <linux-parisc+bounces-3442-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3443-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE13A603E6
-	for <lists+linux-parisc@lfdr.de>; Thu, 13 Mar 2025 23:05:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 867B2A609BC
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Mar 2025 08:17:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76F463BA1F3
-	for <lists+linux-parisc@lfdr.de>; Thu, 13 Mar 2025 22:05:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E31B5881911
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Mar 2025 07:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E16E1F5435;
-	Thu, 13 Mar 2025 22:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A8D1F03E6;
+	Fri, 14 Mar 2025 07:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vNslcPvd"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DDq5JXn+"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABD41F461C;
-	Thu, 13 Mar 2025 22:05:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBAB1F3FF1
+	for <linux-parisc@vger.kernel.org>; Fri, 14 Mar 2025 07:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741903507; cv=none; b=ncaL53BSyPj3adE7I3N0RsDA23UNBeWRjb4XthZpJJqyQHaJfdDe1I7gwT8mW0EI9RB3pQzcQ9zjQKxePULdDVMZNfbPmL5dqRpQI5OPj+GZ4kLmIEX+idLGPTgTs7bwcC56GcsXKaI5HCx8GBVLENf/nZeKgua0AyLwrILVdos=
+	t=1741936335; cv=none; b=AxV26bWt+Q+P9RC9S0+8tVDH+1KVK6yiUhhk60TjIEndW4UDXp5ZQYRgdV1VBHRLno3uRDitmqW1lKzpIykaHgdzT0WmDDCRfNouukOALpANa1bRjjB0iWN+KvU6wQjkPYyuuXRULdiAkDjTjKkAXCd3PV385fxU9Om0rwI887Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741903507; c=relaxed/simple;
-	bh=GxNzFgXlCVEFcpDf3VLptEglWoUTczleCr4VuzyQIr4=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=bM6b1vDwiwZCyuulZaq9A3/GVreeojBgyeGdU3lhESOmjWp57ZfnL6/C9N0J2hvd3q6ar9I0EDctkbMkFdPntl7rNUtLkENKiY//qb69xdws1tgM7QGQafGP5WM1eOuXSA3GlvlG50nt6Rgv4fXiC14j2WCMHL1hoSbsZ+uQee8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vNslcPvd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6615C4CEE5;
-	Thu, 13 Mar 2025 22:05:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1741903506;
-	bh=GxNzFgXlCVEFcpDf3VLptEglWoUTczleCr4VuzyQIr4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vNslcPvdVPNB7E9fplso2uwQWydxF0LuafyC8Ekj6LJ17WeoKPzAu1lWUeLyq4wyx
-	 YSG2VtnirdV4PAoDW58QNKBURHFBXAkymAmOjx0cdlO9qH75IKZQbVpmmhcAjZ7EP7
-	 0n/ABlCGS0sNpOunuAQvLiC/vVhLZ4IVMsVmABVs=
-Date: Thu, 13 Mar 2025 15:05:05 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Maxime Ripard <mripard@kernel.org>, Kees Cook <kees@kernel.org>,
- Alessandro Carminati <acarmina@redhat.com>,
- linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>, Arnd
- Bergmann <arnd@arndb.de>, =?ISO-8859-1?Q?Ma=EDra?= Canal
- <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, Daniel Diaz
- <daniel.diaz@linaro.org>, David Gow <davidgow@google.com>, Arthur Grillo
- <arthurgrillo@riseup.net>, Brendan Higgins <brendan.higgins@linux.dev>,
- Naresh Kamboju <naresh.kamboju@linaro.org>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Ville =?ISO-8859-1?Q?Syrj=E4l=E4?=
- <ville.syrjala@linux.intel.com>, Daniel Vetter <daniel@ffwll.ch>, Thomas
- Zimmermann <tzimmermann@suse.de>, Alessandro Carminati
- <alessandro.carminati@gmail.com>, Jani Nikula <jani.nikula@intel.com>,
- dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, loongarch@lists.linux.dev, x86@kernel.org
-Subject: Re: [PATCH v4 00/14] Add support for suppressing warning backtraces
-Message-Id: <20250313150505.cf1568bf7197a52a8ab302e6@linux-foundation.org>
-In-Reply-To: <c8287bde-fa1c-4113-af22-4701d40d386e@roeck-us.net>
-References: <20250313114329.284104-1-acarmina@redhat.com>
-	<202503131016.5DCEAEC945@keescook>
-	<20250313-abiding-vivid-robin-159dfa@houat>
-	<c8287bde-fa1c-4113-af22-4701d40d386e@roeck-us.net>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1741936335; c=relaxed/simple;
+	bh=24nIigKqUR5/mpE/nuVav2M2yUc/68lKrirfCRGqyYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OBfmem73kn1KDpSQYzdOAyo/V3yFneEAqx/AX1ll75yJttIYPiRNQu46eXSq1vAihlVYXWMT9+f2rd3x5+GGV6E+Gl7PCC83rAwkUcJMDWJQv/eXWi4uZa7369gCqx1yTIHQG9YMIuaQhKXxUJYIhZY0h1DDgYZLJ7ODF2UvMho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DDq5JXn+; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741936332;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1J6uZ7xQ2adwV3Pj81tSTlKA4+Ihx+BomOCjD/knIB8=;
+	b=DDq5JXn+OAvlBhKTzrUdUhBwqy+2v9KluaAIFLy5e++lRcqKjJN6bFVkmkfCr2APfTaG+a
+	pkS5XEoHYum2kQ9m83dJfIRx5qPevQKvyFe48auvaVZ2fDOUODmFM5nun9Edy3T1iBuUUl
+	Izw3ZLZa+xhzf7WVDhcF8rGZh15FNJM=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-121-G7Fg5QNmOUCuDk0l_fRNrA-1; Fri,
+ 14 Mar 2025 03:12:09 -0400
+X-MC-Unique: G7Fg5QNmOUCuDk0l_fRNrA-1
+X-Mimecast-MFC-AGG-ID: G7Fg5QNmOUCuDk0l_fRNrA_1741936328
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 39AF41801A12;
+	Fri, 14 Mar 2025 07:12:08 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.44.32.82])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D82DF18001D4;
+	Fri, 14 Mar 2025 07:12:04 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	linux-arch@vger.kernel.org,
+	Thomas Huth <thuth@redhat.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH 24/41] parisc: Replace __ASSEMBLY__ with __ASSEMBLER__ in uapi headers
+Date: Fri, 14 Mar 2025 08:09:55 +0100
+Message-ID: <20250314071013.1575167-25-thuth@redhat.com>
+In-Reply-To: <20250314071013.1575167-1-thuth@redhat.com>
+References: <20250314071013.1575167-1-thuth@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Thu, 13 Mar 2025 11:31:12 -0700 Guenter Roeck <linux@roeck-us.net> wrote:
+__ASSEMBLY__ is only defined by the Makefile of the kernel, so
+this is not really useful for uapi headers (unless the userspace
+Makefile defines it, too). Let's switch to __ASSEMBLER__ which
+gets set automatically by the compiler when compiling assembly
+code.
 
-> On Thu, Mar 13, 2025 at 06:24:25PM +0100, Maxime Ripard wrote:
-> > > 
-> > > Yeah, as with my prior review, I'm a fan of this. It makes a bunch of my
-> > > very noisy tests much easier to deal with.
-> > 
-> > And for the record, we're also affected by this in DRM and would very
-> > much like to get it merged in one shape or another.
-> > 
-> 
-> I was unable to get maintainers of major architectures interested enough
-> to provide feedback, and did not see a path forward. Maybe Alessandro
-> has more success than me.
+This is almost a completely mechanical patch (done with a simple
+"sed -i" statement), except for a manual change in the file
+arch/parisc/include/uapi/asm/signal.h (where a comment was missing
+some underscores).
 
-I'll put them into mm.git, to advance things a bit.
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ arch/parisc/include/uapi/asm/pdc.h    | 4 ++--
+ arch/parisc/include/uapi/asm/signal.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-If someone wants to merge via a different tree, please speak up.
-
-Hopefully the various arch maintainers will review at least their parts
-of the series.
+diff --git a/arch/parisc/include/uapi/asm/pdc.h b/arch/parisc/include/uapi/asm/pdc.h
+index fef4f2e961601..65031ddf83720 100644
+--- a/arch/parisc/include/uapi/asm/pdc.h
++++ b/arch/parisc/include/uapi/asm/pdc.h
+@@ -361,7 +361,7 @@
+ /* size of the pdc_result buffer for firmware.c */
+ #define NUM_PDC_RESULT	32
+ 
+-#if !defined(__ASSEMBLY__)
++#if !defined(__ASSEMBLER__)
+ 
+ /* flags for hardware_path */
+ #define	PF_AUTOBOOT	0x80
+@@ -741,6 +741,6 @@ struct pdc_firm_test_get_rtn_block {   /* PDC_MODEL/PDC_FIRM_TEST_GET */
+ #define PIRANHA_CPU_ID		0x13
+ #define MAKO_CPU_ID		0x14
+ 
+-#endif /* !defined(__ASSEMBLY__) */
++#endif /* !defined(__ASSEMBLER__) */
+ 
+ #endif /* _UAPI_PARISC_PDC_H */
+diff --git a/arch/parisc/include/uapi/asm/signal.h b/arch/parisc/include/uapi/asm/signal.h
+index 40d7a574c5dd1..d99accf37341b 100644
+--- a/arch/parisc/include/uapi/asm/signal.h
++++ b/arch/parisc/include/uapi/asm/signal.h
+@@ -61,7 +61,7 @@
+ #define _NSIG_BPW	(sizeof(unsigned long) * 8)
+ #define _NSIG_WORDS	(_NSIG / _NSIG_BPW)
+ 
+-# ifndef __ASSEMBLY__
++# ifndef __ASSEMBLER__
+ 
+ #  include <linux/types.h>
+ 
+@@ -80,5 +80,5 @@ typedef struct sigaltstack {
+ 	__kernel_size_t ss_size;
+ } stack_t;
+ 
+-#endif /* !__ASSEMBLY */
++#endif /* !__ASSEMBLER__ */
+ #endif /* _UAPI_ASM_PARISC_SIGNAL_H */
+-- 
+2.48.1
 
 
