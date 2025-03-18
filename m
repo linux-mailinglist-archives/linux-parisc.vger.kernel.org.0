@@ -1,132 +1,153 @@
-Return-Path: <linux-parisc+bounces-3456-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3457-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF01A675A2
-	for <lists+linux-parisc@lfdr.de>; Tue, 18 Mar 2025 14:55:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 495E2A67895
+	for <lists+linux-parisc@lfdr.de>; Tue, 18 Mar 2025 17:00:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FAC617D526
-	for <lists+linux-parisc@lfdr.de>; Tue, 18 Mar 2025 13:54:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 764763A4587
+	for <lists+linux-parisc@lfdr.de>; Tue, 18 Mar 2025 15:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481C120D519;
-	Tue, 18 Mar 2025 13:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF2920FAA8;
+	Tue, 18 Mar 2025 15:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kw3vspTL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WVHlHUak"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD8020D4FE;
-	Tue, 18 Mar 2025 13:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C1C20E6FA;
+	Tue, 18 Mar 2025 15:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742306056; cv=none; b=l2n62RPfjqqeotsHvX0QJZolZNEcWTLH6giU/SgHTQ7Eqzk/Fl5DiVpxtkTFDRqcztkQh8j6nOLSprfPH7FoCRqF3svNhWnnuXfrOkvGdrdMcnStKAmhqcAkQI4/7OeXz0tkr4yA1ftwmASFtnAghBob6hYmEm3dycRkq69rVjo=
+	t=1742313596; cv=none; b=oeS/Mand7Jxau2tE7KN0QjTULTOje8cy4jkTkTRSbwgjXMdjJVRJDlyvyZ8ZWusVS7TC6ZSVEmjp1+X5iz0jwAHSlHIhO2/VGCTqLAAsOgtu/5gM9ugBowfPmutJb8Kk78yeT6njuLVdeE+rPl+aGm6/S9eE0qRs+9TlxBSLQp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742306056; c=relaxed/simple;
-	bh=MQJNg6mROFDZ7aRUJyj8+ib7C6toJaNGkiuTO74TuVs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pF0PljLy5o50ZdHYFuwK41JYYsGgoo+MqmxLh3dGAgQLptQJSVx8jz1dgz050YTUQJkGD7BDEtt8LnnxI77peJLbCKfa2sxS7LC5Jrn3oxAV9D4c3090C49FH+6kuWec5flZ6doYgu1Xy50sEFsZLjIjs9UjJzISR631WzwmIfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kw3vspTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160E1C4CEE3;
-	Tue, 18 Mar 2025 13:54:13 +0000 (UTC)
+	s=arc-20240116; t=1742313596; c=relaxed/simple;
+	bh=wnqlTyxAgZ8CuVhXT9duPOO4NgjQBjimZKlWtsOUGPY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rtNuxbEvsVojzW+7QvI93xBrqK3voNzfEGfkR3KtDUInYvUpBBq1aSF4wLJuRPQj0dePFNL+uDuqbEJwQso12VjNFc/tMypWHZORL2C34DxQBfoMRU4cECQo1rMSPOTt2wSTx13hsD6oQY2+NdGL24MCI4no+22mDotXMgSNrnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WVHlHUak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FD2C4CEDD;
+	Tue, 18 Mar 2025 15:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742306055;
-	bh=MQJNg6mROFDZ7aRUJyj8+ib7C6toJaNGkiuTO74TuVs=;
-	h=From:Date:Subject:To:Cc:From;
-	b=kw3vspTLYcuBLz+iPQk+dJ4KMTcNmA3+xP7dYcNp8M+DQP5rpmuxJPQjoLWF+bx+B
-	 vZLHezaDIuJvUeYzG2EVwBQH8Xjq6GCCbHm3uSrV5FvXyH9UUpBL732JJf53sIubJw
-	 bfGzVNY/qidjvHrJwB1nXWtbTMa+Zrzd0emXl/FKowoifTvxcUHmAOrHZZg0KLaiLj
-	 +a3lUANpcFLeAGzoUUuxn41W/dC/IPpvhhXzj53evIjW+FTqxbouJ5ngyDzvgqOqAk
-	 +9qizX8kUlvLBTb6+/p/bDgXy3zS4Ln9Ko69BIZNEVqAND21ngPpYnLvkk218QsgcI
-	 WGLTJAR81ByGg==
-From: Simon Horman <horms@kernel.org>
-Date: Tue, 18 Mar 2025 13:53:34 +0000
-Subject: [PATCH net-next v3] net: tulip: avoid unused variable warning
+	s=k20201202; t=1742313596;
+	bh=wnqlTyxAgZ8CuVhXT9duPOO4NgjQBjimZKlWtsOUGPY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WVHlHUakLlfN9xeuBYO1EJf+5CyU+WJKRkilNy467a1BnupPF2HSzG6De1fpXKFV+
+	 ix9jYHBoyySgyb6uel1Y6KTQEzU4+Rwm0HghzRyuSjF71hbCSnTEGnernC5xUEtu10
+	 +UeOIc/V5TKw7+jkC51H/NeBuaIOzIXiqjJlwYzUGV3n3dFHQ9MxYqNWDakJi0E6hg
+	 3eBuUyUh9Yz/C8EPNMpPnQhIe07ID+3WJ5N3wJyQiVpq4Skm6z+pxWjAjp5DobEjiB
+	 6Jrg3x/R+DiIvD5NG4zUjWrrB/2tNu1hT+SvmfpVy3qQGAt9drIa3KhZDqAUmDABl/
+	 j7eCAm37AJZIQ==
+Date: Tue, 18 Mar 2025 15:59:47 +0000
+From: Will Deacon <will@kernel.org>
+To: Alessandro Carminati <acarmina@redhat.com>
+Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kees Cook <keescook@chromium.org>,
+	Daniel Diaz <daniel.diaz@linaro.org>,
+	David Gow <davidgow@google.com>,
+	Arthur Grillo <arthurgrillo@riseup.net>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Alessandro Carminati <alessandro.carminati@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org, loongarch@lists.linux.dev, x86@kernel.org,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH v4 07/14] arm64: Add support for suppressing warning
+ backtraces
+Message-ID: <20250318155946.GC13829@willie-the-truck>
+References: <20250313114329.284104-1-acarmina@redhat.com>
+ <20250313114329.284104-8-acarmina@redhat.com>
+ <20250313122503.GA7438@willie-the-truck>
+ <CAGegRW5r3V2-_44-X353vS-GZwDYG=SVwc6MzSGE8GdFQuFoKA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250318-tulip-w1-v3-1-a813fadd164d@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAN162WcC/2WNQQqDMBBFryKz7pSYVMWueo/iIpiJDpUoSWotk
- rs3ZNvl433ePyGQZwpwr07wtHPg1WVQlwrGWbuJkE1mkEI2QtUK43vhDT81Umd1c9OmbbsR8nz
- zZPkoqSc4iujoiDBkM3OIq/+Wj10W/5/bJdYo9SiMMr3obf94kXe0XFc/wZBS+gEN5fRPqwAAA
- A==
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Helge Deller <deller@gmx.de>, netdev@vger.kernel.org, 
- linux-parisc@vger.kernel.org
-X-Mailer: b4 0.14.0
+In-Reply-To: <CAGegRW5r3V2-_44-X353vS-GZwDYG=SVwc6MzSGE8GdFQuFoKA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-There is an effort to achieve W=1 kernel builds without warnings.
-As part of that effort Helge Deller highlighted the following warnings
-in the tulip driver when compiling with W=1 and CONFIG_TULIP_MWI=n:
+On Thu, Mar 13, 2025 at 05:40:59PM +0100, Alessandro Carminati wrote:
+> On Thu, Mar 13, 2025 at 1:25 PM Will Deacon <will@kernel.org> wrote:
+> >
+> > On Thu, Mar 13, 2025 at 11:43:22AM +0000, Alessandro Carminati wrote:
+> > > diff --git a/arch/arm64/include/asm/bug.h b/arch/arm64/include/asm/bug.h
+> > > index 28be048db3f6..044c5e24a17d 100644
+> > > --- a/arch/arm64/include/asm/bug.h
+> > > +++ b/arch/arm64/include/asm/bug.h
+> > > @@ -11,8 +11,14 @@
+> > >
+> > >  #include <asm/asm-bug.h>
+> > >
+> > > +#ifdef HAVE_BUG_FUNCTION
+> > > +# define __BUG_FUNC  __func__
+> > > +#else
+> > > +# define __BUG_FUNC  NULL
+> > > +#endif
+> > > +
+> > >  #define __BUG_FLAGS(flags)                           \
+> > > -     asm volatile (__stringify(ASM_BUG_FLAGS(flags)));
+> > > +     asm volatile (__stringify(ASM_BUG_FLAGS(flags, %c0)) : : "i" (__BUG_FUNC));
+> >
+> > Why is 'i' the right asm constraint to use here? It seems a bit odd to
+> > use that for a pointer.
+> 
+> I received this code as legacy from a previous version.
+> In my review, I considered the case when HAVE_BUG_FUNCTION is defined:
+> Here, __BUG_FUNC is defined as __func__, which is the name of the
+> current function as a string literal.
+> Using the constraint "i" seems appropriate to me in this case.
+> 
+> However, when HAVE_BUG_FUNCTION is not defined:
+> __BUG_FUNC is defined as NULL. Initially, I considered it literal 0,
+> but after investigating your concern, I found:
+> 
+> ```
+> $ echo -E "#include <stdio.h>\n#include <stddef.h>\nint main()
+> {\nreturn 0;\n}" | aarch64-linux-gnu-gcc -E -dM - | grep NULL
+> #define NULL ((void *)0)
+> ```
+> 
+> I realized that NULL is actually a pointer that is not a link time
+> symbol, and using the "i" constraint with NULL may result in undefined
+> behavior.
+> 
+> Would the following alternative definition for __BUG_FUNC be more convincing?
+> 
+> ```
+> #ifdef HAVE_BUG_FUNCTION
+>     #define __BUG_FUNC __func__
+> #else
+>     #define __BUG_FUNC (uintptr_t)0
+> #endif
+> ```
+> Let me know your thoughts.
 
-  .../tulip_core.c: In function ‘tulip_init_one’:
-  .../tulip_core.c:1309:22: warning: variable ‘force_csr0’ set but not used
+Thanks for the analysis; I hadn't noticed this specific issue, it just
+smelled a bit fishy. Anyway, the diff above looks better, thanks.
 
-This patch addresses that problem using IS_ENABLED(). This approach has
-the added benefit of reducing conditionally compiled code. And thus
-increasing compile coverage. E.g. for allmodconfig builds which enable
-CONFIG_TULIP_MWI.
-
-Compile tested only.
-No run-time effect intended.
-
-Acked-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Simon Horman <horms@kernel.org>
----
-Changes in v3:
-- Fix mangled commit message
-- Link to v2: https://lore.kernel.org/r/20250313-tulip-w1-v2-1-2ac0d3d909f9@kernel.org
-
-Changes in v2:
-- Use IS_ENABLED rather than __maybe_unused
-- Link to v1: https://lore.kernel.org/netdev/20250309214238.66155-1-deller@kernel.org/
-
-Note about v1:
-- Original patch by Helge Deller
----
- drivers/net/ethernet/dec/tulip/tulip_core.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/dec/tulip/tulip_core.c b/drivers/net/ethernet/dec/tulip/tulip_core.c
-index 27e01d780cd0..75eac18ff246 100644
---- a/drivers/net/ethernet/dec/tulip/tulip_core.c
-+++ b/drivers/net/ethernet/dec/tulip/tulip_core.c
-@@ -1177,7 +1177,6 @@ static void set_rx_mode(struct net_device *dev)
- 	iowrite32(csr6, ioaddr + CSR6);
- }
- 
--#ifdef CONFIG_TULIP_MWI
- static void tulip_mwi_config(struct pci_dev *pdev, struct net_device *dev)
- {
- 	struct tulip_private *tp = netdev_priv(dev);
-@@ -1251,7 +1250,6 @@ static void tulip_mwi_config(struct pci_dev *pdev, struct net_device *dev)
- 		netdev_dbg(dev, "MWI config cacheline=%d, csr0=%08x\n",
- 			   cache, csr0);
- }
--#endif
- 
- /*
-  *	Chips that have the MRM/reserved bit quirk and the burst quirk. That
-@@ -1463,10 +1461,9 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	INIT_WORK(&tp->media_work, tulip_tbl[tp->chip_id].media_task);
- 
--#ifdef CONFIG_TULIP_MWI
--	if (!force_csr0 && (tp->flags & HAS_PCI_MWI))
-+	if (IS_ENABLED(CONFIG_TULIP_MWI) && !force_csr0 &&
-+	    (tp->flags & HAS_PCI_MWI))
- 		tulip_mwi_config (pdev, dev);
--#endif
- 
- 	/* Stop the chip's Tx and Rx processes. */
- 	tulip_stop_rxtx(tp);
-
+Will
 
