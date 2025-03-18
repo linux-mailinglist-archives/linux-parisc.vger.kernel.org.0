@@ -1,137 +1,132 @@
-Return-Path: <linux-parisc+bounces-3455-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3456-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59380A64F5B
-	for <lists+linux-parisc@lfdr.de>; Mon, 17 Mar 2025 13:40:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF01A675A2
+	for <lists+linux-parisc@lfdr.de>; Tue, 18 Mar 2025 14:55:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E663188F979
-	for <lists+linux-parisc@lfdr.de>; Mon, 17 Mar 2025 12:40:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FAC617D526
+	for <lists+linux-parisc@lfdr.de>; Tue, 18 Mar 2025 13:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA9F23BCE6;
-	Mon, 17 Mar 2025 12:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481C120D519;
+	Tue, 18 Mar 2025 13:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E7Ar7yyZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kw3vspTL"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2DF18BC3D;
-	Mon, 17 Mar 2025 12:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD8020D4FE;
+	Tue, 18 Mar 2025 13:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742215226; cv=none; b=J3E9sKDuBUf4wzyXx272Izo7ldHZ5D6rxLBG4sEc3xoZU+bEy1yUBBxDUWVQqoHbfHUKe3hauj9XCNEtvu0E5z4LNuTh+wTyXNStQvjWj97pPu7/mao0bt03pmwv/ET48+yF58GERfkbPDHtpg7UWNnn1maXp4gL4mVY0D96yX0=
+	t=1742306056; cv=none; b=l2n62RPfjqqeotsHvX0QJZolZNEcWTLH6giU/SgHTQ7Eqzk/Fl5DiVpxtkTFDRqcztkQh8j6nOLSprfPH7FoCRqF3svNhWnnuXfrOkvGdrdMcnStKAmhqcAkQI4/7OeXz0tkr4yA1ftwmASFtnAghBob6hYmEm3dycRkq69rVjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742215226; c=relaxed/simple;
-	bh=Qm34pbxAa6RjHCc2A1aXJ4qBOugE70Km6ONzqhDGMKA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NbXfT+CrxcTqYHciP/HJrGLlKbDsA3OTDjozsfD7Ji2ELgjvAKzTnsJeMnz5Y4+bMi596LHbuef/j0E1RoTNTyEHDan+1tyTfxC8twSQ/IBmsD97aOu3y+BnGpXGuEtHplNIs0iXOaLzF4sbe2aS/eVzPrppEFWVoCpwPOLWSs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E7Ar7yyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A338C4CEE9;
-	Mon, 17 Mar 2025 12:40:21 +0000 (UTC)
+	s=arc-20240116; t=1742306056; c=relaxed/simple;
+	bh=MQJNg6mROFDZ7aRUJyj8+ib7C6toJaNGkiuTO74TuVs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pF0PljLy5o50ZdHYFuwK41JYYsGgoo+MqmxLh3dGAgQLptQJSVx8jz1dgz050YTUQJkGD7BDEtt8LnnxI77peJLbCKfa2sxS7LC5Jrn3oxAV9D4c3090C49FH+6kuWec5flZ6doYgu1Xy50sEFsZLjIjs9UjJzISR631WzwmIfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kw3vspTL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160E1C4CEE3;
+	Tue, 18 Mar 2025 13:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742215225;
-	bh=Qm34pbxAa6RjHCc2A1aXJ4qBOugE70Km6ONzqhDGMKA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=E7Ar7yyZci/sFoCidNgE8WXrHkJCdBUtC5+SBI7ElJU6LgZqLiSvRPlv1xqMCdR+2
-	 JdSknt+r47jh4J64JDHOV3bC2f8CCEHU9CwoE9ISsT1r2OFEQaCkooFpGyY2cq0AUS
-	 8BJqKWvVNVKmYaiENoybfTCks4OV2Hujobg04vepdZYEAJYEHgTYSVQtuBbCiU49Wg
-	 w4Y7etNdGOWGUdqy5s7jSxyR/7rnszsVQfJoCdbVmwcu/WQyL4uucGKWINrXNoVXHO
-	 5i4vQUYMXA8gu7KzsUBsrs+oDW3h+voixjT+nCGjato5WHQworTVVXnwjAQoo5sK7c
-	 ZdFal0K6UlYKw==
-Message-ID: <e3dfe753-fb5f-4f2f-9d24-da8a4f01be19@kernel.org>
-Date: Mon, 17 Mar 2025 07:40:20 -0500
+	s=k20201202; t=1742306055;
+	bh=MQJNg6mROFDZ7aRUJyj8+ib7C6toJaNGkiuTO74TuVs=;
+	h=From:Date:Subject:To:Cc:From;
+	b=kw3vspTLYcuBLz+iPQk+dJ4KMTcNmA3+xP7dYcNp8M+DQP5rpmuxJPQjoLWF+bx+B
+	 vZLHezaDIuJvUeYzG2EVwBQH8Xjq6GCCbHm3uSrV5FvXyH9UUpBL732JJf53sIubJw
+	 bfGzVNY/qidjvHrJwB1nXWtbTMa+Zrzd0emXl/FKowoifTvxcUHmAOrHZZg0KLaiLj
+	 +a3lUANpcFLeAGzoUUuxn41W/dC/IPpvhhXzj53evIjW+FTqxbouJ5ngyDzvgqOqAk
+	 +9qizX8kUlvLBTb6+/p/bDgXy3zS4Ln9Ko69BIZNEVqAND21ngPpYnLvkk218QsgcI
+	 WGLTJAR81ByGg==
+From: Simon Horman <horms@kernel.org>
+Date: Tue, 18 Mar 2025 13:53:34 +0000
+Subject: [PATCH net-next v3] net: tulip: avoid unused variable warning
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/13] nios2: move pr_debug() about memory start and
- end to setup_arch()
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>,
- Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Guo Ren
- <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Mark Brown <broonie@kernel.org>,
- Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <monstr@monstr.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>,
- Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
- Stafford Horne <shorne@gmail.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
- Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
- linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-mm@kvack.org, x86@kernel.org
-References: <20250313135003.836600-1-rppt@kernel.org>
- <20250313135003.836600-7-rppt@kernel.org>
-Content-Language: en-US
-From: Dinh Nguyen <dinguyen@kernel.org>
-In-Reply-To: <20250313135003.836600-7-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250318-tulip-w1-v3-1-a813fadd164d@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAN162WcC/2WNQQqDMBBFryKz7pSYVMWueo/iIpiJDpUoSWotk
+ rs3ZNvl433ePyGQZwpwr07wtHPg1WVQlwrGWbuJkE1mkEI2QtUK43vhDT81Umd1c9OmbbsR8nz
+ zZPkoqSc4iujoiDBkM3OIq/+Wj10W/5/bJdYo9SiMMr3obf94kXe0XFc/wZBS+gEN5fRPqwAAA
+ A==
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Helge Deller <deller@gmx.de>, netdev@vger.kernel.org, 
+ linux-parisc@vger.kernel.org
+X-Mailer: b4 0.14.0
 
-On 3/13/25 08:49, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> This will help with pulling out memblock_free_all() to the generic
-> code and reducing code duplication in arch::mem_init().
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   arch/nios2/kernel/setup.c | 2 ++
->   arch/nios2/mm/init.c      | 2 --
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/nios2/kernel/setup.c b/arch/nios2/kernel/setup.c
-> index da122a5fa43b..a4cffbfc1399 100644
-> --- a/arch/nios2/kernel/setup.c
-> +++ b/arch/nios2/kernel/setup.c
-> @@ -149,6 +149,8 @@ void __init setup_arch(char **cmdline_p)
->   	memory_start = memblock_start_of_DRAM();
->   	memory_end = memblock_end_of_DRAM();
->   
-> +	pr_debug("%s: start=%lx, end=%lx\n", __func__, memory_start, memory_end);
-> +
->   	setup_initial_init_mm(_stext, _etext, _edata, _end);
->   	init_task.thread.kregs = &fake_regs;
->   
-> diff --git a/arch/nios2/mm/init.c b/arch/nios2/mm/init.c
-> index a2278485de19..aa692ad30044 100644
-> --- a/arch/nios2/mm/init.c
-> +++ b/arch/nios2/mm/init.c
-> @@ -65,8 +65,6 @@ void __init mem_init(void)
->   	unsigned long end_mem   = memory_end; /* this must not include
->   						kernel stack at top */
->   
-> -	pr_debug("mem_init: start=%lx, end=%lx\n", memory_start, memory_end);
-> -
->   	end_mem &= PAGE_MASK;
->   	high_memory = __va(end_mem);
->   
+There is an effort to achieve W=1 kernel builds without warnings.
+As part of that effort Helge Deller highlighted the following warnings
+in the tulip driver when compiling with W=1 and CONFIG_TULIP_MWI=n:
 
-Acked-By: Dinh Nguyen <dinguyen@kernel.org>
+  .../tulip_core.c: In function ‘tulip_init_one’:
+  .../tulip_core.c:1309:22: warning: variable ‘force_csr0’ set but not used
+
+This patch addresses that problem using IS_ENABLED(). This approach has
+the added benefit of reducing conditionally compiled code. And thus
+increasing compile coverage. E.g. for allmodconfig builds which enable
+CONFIG_TULIP_MWI.
+
+Compile tested only.
+No run-time effect intended.
+
+Acked-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Simon Horman <horms@kernel.org>
+---
+Changes in v3:
+- Fix mangled commit message
+- Link to v2: https://lore.kernel.org/r/20250313-tulip-w1-v2-1-2ac0d3d909f9@kernel.org
+
+Changes in v2:
+- Use IS_ENABLED rather than __maybe_unused
+- Link to v1: https://lore.kernel.org/netdev/20250309214238.66155-1-deller@kernel.org/
+
+Note about v1:
+- Original patch by Helge Deller
+---
+ drivers/net/ethernet/dec/tulip/tulip_core.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/ethernet/dec/tulip/tulip_core.c b/drivers/net/ethernet/dec/tulip/tulip_core.c
+index 27e01d780cd0..75eac18ff246 100644
+--- a/drivers/net/ethernet/dec/tulip/tulip_core.c
++++ b/drivers/net/ethernet/dec/tulip/tulip_core.c
+@@ -1177,7 +1177,6 @@ static void set_rx_mode(struct net_device *dev)
+ 	iowrite32(csr6, ioaddr + CSR6);
+ }
+ 
+-#ifdef CONFIG_TULIP_MWI
+ static void tulip_mwi_config(struct pci_dev *pdev, struct net_device *dev)
+ {
+ 	struct tulip_private *tp = netdev_priv(dev);
+@@ -1251,7 +1250,6 @@ static void tulip_mwi_config(struct pci_dev *pdev, struct net_device *dev)
+ 		netdev_dbg(dev, "MWI config cacheline=%d, csr0=%08x\n",
+ 			   cache, csr0);
+ }
+-#endif
+ 
+ /*
+  *	Chips that have the MRM/reserved bit quirk and the burst quirk. That
+@@ -1463,10 +1461,9 @@ static int tulip_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	INIT_WORK(&tp->media_work, tulip_tbl[tp->chip_id].media_task);
+ 
+-#ifdef CONFIG_TULIP_MWI
+-	if (!force_csr0 && (tp->flags & HAS_PCI_MWI))
++	if (IS_ENABLED(CONFIG_TULIP_MWI) && !force_csr0 &&
++	    (tp->flags & HAS_PCI_MWI))
+ 		tulip_mwi_config (pdev, dev);
+-#endif
+ 
+ 	/* Stop the chip's Tx and Rx processes. */
+ 	tulip_stop_rxtx(tp);
+
 
