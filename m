@@ -1,248 +1,422 @@
-Return-Path: <linux-parisc+bounces-3463-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3465-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960E5A68D79
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Mar 2025 14:11:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94474A69686
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Mar 2025 18:32:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44F917A2DFE
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Mar 2025 13:10:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 746C219C4354
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Mar 2025 17:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC5A2561D9;
-	Wed, 19 Mar 2025 13:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECB81F09BB;
+	Wed, 19 Mar 2025 17:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lYkmuEQ8"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="OPuKnj8n"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AEF255241;
-	Wed, 19 Mar 2025 13:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAB21DE884;
+	Wed, 19 Mar 2025 17:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742389893; cv=none; b=IlN79BWTjoX6BI6ncao+GcXrBdePOiBqRfeqwzESJHzmsZobzr5E2IIhRiIubO4AAEqx7IBlcvm5zpD9mdi/hqJw7SxlarTiNx6tPbxLiQ7Sc6xJDK8xgct4aLOZxWr5ZTa+3i0t2+QsD1JXtULJEN2+UCZfKW4wW8ciFDWhWM8=
+	t=1742405500; cv=none; b=kBPqAOOn9dIyW9KOYMF4FLq3KQxmbf/5RK7wKcZ+k/+GcwJ+yj+55snO7WX97gv5/W5VNPKTH/B/ZxkZVHsthPZxbKD8UGjpIWcCtepWVZVDCoTwwW5lSI71s2PRUCL3tqA3c82xZLL/k/nwjU0cmKw/TmT1+oERurpVCteuqyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742389893; c=relaxed/simple;
-	bh=7z2QeMdxOzSLIrBnl1x85KA6hGxJO1bQRKSWgGeuNPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kHa+jktQsEXzH4jMyPE/5xwu7MuMEe0OYfXupnGA966KeJ55XvSCRWrqnyP+aj2fZ1i0vQ1zyDjlTdtIZLfQVJE6f40pVqVDK6M48OemE20c6pXJXtQCX9R4OJoqHSlFanhsnPODjFhW/vWm8Kc2QT8eIZpEBukLtItuQXVLCN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lYkmuEQ8; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-225b5448519so129846215ad.0;
-        Wed, 19 Mar 2025 06:11:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742389891; x=1742994691; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=/CKiUxIsp+RiAjt+4CW+mXa9kqAZnMY4uY5XJZebADk=;
-        b=lYkmuEQ8CEZI6JXXHtorSYZXxt9Ut2R1PEpbpXU1Ww2yK6p5GHOlJlZB4RBDPf29ch
-         de58a79TsN2XlwmlFBZfCZluZPs5Ft/AMhqa9QshhjopFHGvbdkVHLjQ6+XZFD7mkxj1
-         xctmlt9ytGKTOPSVa2fxu3diZrgr24rTYF6+Mexcu2YFCYpQ+zWEu4JyviJIa9lNTcB8
-         JekgjqMyKsG3l1CEJv7ouUqK1sD0/BoxSoqPpGHqIw8lv9CeS8v2pitzP7N757+PjfWm
-         /h6qBlHWZL8AIFf5fgikKy90L/dKv/ZDj4eLhOzj/OTSdIbsF/mL9ucIGfYVMlAqhu6i
-         VaHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742389891; x=1742994691;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/CKiUxIsp+RiAjt+4CW+mXa9kqAZnMY4uY5XJZebADk=;
-        b=YhYSJOzUsDEsFmBReA2dq8toJtPImagDk+X/HyzvZ/xJxTTw53TO9nJhSLo06GS2KX
-         tx5zHThJkli+hEC+B3LDD+Mhd1ruft5AU7KnagXbF1+twIFD4gpUFYuVcVwjwH9ViZnP
-         akYomnB8oVIQTFPcL/HPfYujDPAxxh9DPZy86NLQ3KBsz8aKlcRAkmETvdR4UeBvIz8v
-         qdsS9MPN1NP6zkVxSfcP2d20rc/1pPVKl3qP3hhTedCuWAzL2+4qb8yGXl/ixVnRx45Q
-         +a498PTir8I/uln8fbMAhG747by/WrqKr9UVwS7K6pzbeuLg0xIGE3Tc/g3bCJIzcRPu
-         C3yg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3gxdscukephkn1jklkrLZw5XU5OdxTb3szaAdztN/bN3yPsGcshgbf5rWbuNPtbIlnQeOIBAPZLQYW2li@vger.kernel.org, AJvYcCV6ZYrnkS9mh5kJGisEoLgdQUsVb3hs7RDLph4yFLerFpoSuf5FTyJ5n0eIdKGAVF1/HBWLjcSC6j8=@vger.kernel.org, AJvYcCVQL+VOhV0HUk7cj5ZYHBB+ZVbKG/CWdINS4ZluyFMtaf/XuMkJOpa1j9R6k2lqeYwlWdYIVyLzXUEpsA==@vger.kernel.org, AJvYcCVXqlgTOa57XG9b8zVX/9O+PYrAO6kN3k3DSePMy072kN/kmSv2wNGyLTKZT1JWFHnB1CrlS6zw7c2+@vger.kernel.org, AJvYcCWWegHkOdQRrEvN5eB7s7fQVvYrzjYDe7Ktfb1InySdtND6s8Yyg/pDkrlhwGgkHLdYzLixRz/0ZRLY@vger.kernel.org, AJvYcCXGy5RKjnjMhrLfgiCB7g5JPj6Z1Uulo+JLvnYo+ub4BtbTrEwwudIs5/WT2YPlL7CY92NahenKHTq4tyKC@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGzWgvjbfMCS8rF4v9kYtdMHOu0RIC6EhioanqjX9G3+zEM8Xf
-	9b582tIQrmMf6C4ZPRmZdYbmn5fwjYFwIC4E4NFw7GLgYUPof3J5
-X-Gm-Gg: ASbGncthkRo9Tl1Q6LAbVCLknRGZ9RDj7jS+QuSxacFSCbeof8NjpItztrt+yXqy/M+
-	ZjAoMlm2Kwgub1nJmENJlDlntpzejKEUV1tWR3luOldphZPHWNebvsOaRST7C68NBkIBQVsYr6o
-	LpBKIat0KvTh3eNWm0iexTY1msZ/YN7yIjOHSElWRfh6aulXBk6igmYH3s+5YFNudWksjdXq9hZ
-	Pbd/KELj9zW7esswGfLfvm5J+z0Uxuds7GwNsTvYl3r8UC0jHTU1KB13MyaolTtYKSU4dHcnsA6
-	FXCqSajhx0dKaeUN6JN9UG2Mfo6m4HNealyCVN79n/88aeEYMQH+DyNxXO3eJqm06adyA9xOpbL
-	4HZpVygDeZI9x5rqE5A==
-X-Google-Smtp-Source: AGHT+IEioVgtuSEfAYuAE8IAAYiDjsUn61PAgb/S9UQkSNM/19B6DRuSeEADVUHZxIm2XFZUlNalCg==
-X-Received: by 2002:a05:6a21:6e48:b0:1f5:839e:ece8 with SMTP id adf61e73a8af0-1fbeb1854bcmr4348609637.2.1742389891204;
-        Wed, 19 Mar 2025 06:11:31 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7371157369bsm11469895b3a.75.2025.03.19.06.11.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Mar 2025 06:11:30 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <9030a298-fcb6-48ea-a941-ad6916bf9fa7@roeck-us.net>
-Date: Wed, 19 Mar 2025 06:11:28 -0700
+	s=arc-20240116; t=1742405500; c=relaxed/simple;
+	bh=1krTOqoQmK+AUaaMBs+P36+1kPk82EwrMREbbAaX5hA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JqTcL/IiImOau7Q/O8iD8Zntdz3P0pydCGhtlpAjnozWRaiZMbkycIUcXfQHAl0clWlB2viOve6pbq9lYTYE0Gx4SSTw2mKBzynQFPC8I0AM3VLbcquX7a0agUQ1ls7CpISweCyz4VxV66eCpFepiMWQ7+eSwH+nX6EBVKRaVaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=OPuKnj8n; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 033E640E01D1;
+	Wed, 19 Mar 2025 17:31:33 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id EOIBCM-ZWxOR; Wed, 19 Mar 2025 17:31:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1742405488; bh=y4IueNFhKFDuJLhg35AaumVxylQHY1jpwsFPITe81G8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OPuKnj8nSqrVhz24YDL81CfCg2gKR9pIWbtbaHWonnfkdzAOYbC52VlJf5R+D42NL
+	 p+FEyIidvNStF1js+JfxT0C7rZGoAMoejdM1WgsnqZOgssxdFq7zcrdehkdBOhwBCf
+	 6qn9py1y7c1kbXSMeviUQDURN49OG5fv/WjXQdW5IkqHVFOA0DbDKfAETmttIs75Qp
+	 okPexPU9CehnEmaY3d7p6wh5PbiGuNMNTVx27sDHmdjIb3Dtjbu4HRwbY4Q14i4bwJ
+	 dsbkbZltr+kVU6ilR9D0zZyxFpO/sh1scDlcoWBs6e/bo71ONMVPvUCTlG7i2ceeA5
+	 wLaaxTPNfgLMm+60LsvQKf3f4DtxJ37YimbXvOnTV9Uiwo+mADi/UxAjzpM0rP7ZL9
+	 wo6QkkCKHUim+f+duFQ3p6m3NNZfUI/OdPhNo3Vh4zPkc4ReJUxDq/sHn7PoTceDKC
+	 dFHviztK56ka7KdDhZc4xg9gEecFpX/b8YeeHYnRAAy42UF9NNurT+CJRgEvMwDn9o
+	 EmwYWflsznK/wu6GRntJJGeTc65/wswB2vmGe19QbC0B8PxXLmDLJ6Gvkm3RlzDUX4
+	 /qN979SHOM73h+ayNLsjM9Jni661c+WpiCH3Ao/36bsD+FjghQdcQsWiSHsw8vbL4o
+	 RjebWhOYASgWk0sBPvsbIbnY=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 73B2040E015E;
+	Wed, 19 Mar 2025 17:29:43 +0000 (UTC)
+Date: Wed, 19 Mar 2025 18:29:35 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Michal Simek <monstr@monstr.eu>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, Junaid Shahid <junaids@google.com>,
+	Yosry Ahmed <yosryahmed@google.com>
+Subject: Re: [PATCH RFC v2 04/29] mm: asi: Add infrastructure for boot-time
+ enablement
+Message-ID: <20250319172935.GMZ9r-_zzXhyhHBLfj@fat_crate.local>
+References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
+ <20250110-asi-rfc-v2-v2-4-8419288bc805@google.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/14] arm64: Add support for suppressing warning
- backtraces
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Will Deacon <will@kernel.org>, Alessandro Carminati <acarmina@redhat.com>
-Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
- <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>,
- Kees Cook <keescook@chromium.org>, Daniel Diaz <daniel.diaz@linaro.org>,
- David Gow <davidgow@google.com>, Arthur Grillo <arthurgrillo@riseup.net>,
- Brendan Higgins <brendan.higgins@linux.dev>,
- Naresh Kamboju <naresh.kamboju@linaro.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Maxime Ripard
- <mripard@kernel.org>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>, Daniel Vetter <daniel@ffwll.ch>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Alessandro Carminati <alessandro.carminati@gmail.com>,
- Jani Nikula <jani.nikula@intel.com>, dri-devel@lists.freedesktop.org,
- kunit-dev@googlegroups.com, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- loongarch@lists.linux.dev, x86@kernel.org,
- Linux Kernel Functional Testing <lkft@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>
-References: <20250313114329.284104-1-acarmina@redhat.com>
- <20250313114329.284104-8-acarmina@redhat.com>
- <20250313122503.GA7438@willie-the-truck>
- <CAGegRW5r3V2-_44-X353vS-GZwDYG=SVwc6MzSGE8GdFQuFoKA@mail.gmail.com>
- <20250318155946.GC13829@willie-the-truck>
- <a64bf821-ea90-4fd9-92ec-13bf7b7a3067@csgroup.eu>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <a64bf821-ea90-4fd9-92ec-13bf7b7a3067@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250110-asi-rfc-v2-v2-4-8419288bc805@google.com>
 
-On 3/19/25 01:05, Christophe Leroy wrote:
+On Fri, Jan 10, 2025 at 06:40:30PM +0000, Brendan Jackman wrote:
+> Add a boot time parameter to control the newly added X86_FEATURE_ASI.
+> "asi=on" or "asi=off" can be used in the kernel command line to enable
+> or disable ASI at boot time. If not specified, ASI enablement depends
+> on CONFIG_ADDRESS_SPACE_ISOLATION_DEFAULT_ON, which is off by default.
+
+I don't know yet why we need this default-on thing...
+
+> asi_check_boottime_disable() is modeled after
+> pti_check_boottime_disable().
 > 
+> The boot parameter is currently ignored until ASI is fully functional.
 > 
-> Le 18/03/2025 à 16:59, Will Deacon a écrit :
->> On Thu, Mar 13, 2025 at 05:40:59PM +0100, Alessandro Carminati wrote:
->>> On Thu, Mar 13, 2025 at 1:25 PM Will Deacon <will@kernel.org> wrote:
->>>>
->>>> On Thu, Mar 13, 2025 at 11:43:22AM +0000, Alessandro Carminati wrote:
->>>>> diff --git a/arch/arm64/include/asm/bug.h b/arch/arm64/include/asm/bug.h
->>>>> index 28be048db3f6..044c5e24a17d 100644
->>>>> --- a/arch/arm64/include/asm/bug.h
->>>>> +++ b/arch/arm64/include/asm/bug.h
->>>>> @@ -11,8 +11,14 @@
->>>>>
->>>>>   #include <asm/asm-bug.h>
->>>>>
->>>>> +#ifdef HAVE_BUG_FUNCTION
->>>>> +# define __BUG_FUNC  __func__
->>>>> +#else
->>>>> +# define __BUG_FUNC  NULL
->>>>> +#endif
->>>>> +
->>>>>   #define __BUG_FLAGS(flags)                           \
->>>>> -     asm volatile (__stringify(ASM_BUG_FLAGS(flags)));
->>>>> +     asm volatile (__stringify(ASM_BUG_FLAGS(flags, %c0)) : : "i" (__BUG_FUNC));
->>>>
->>>> Why is 'i' the right asm constraint to use here? It seems a bit odd to
->>>> use that for a pointer.
->>>
->>> I received this code as legacy from a previous version.
->>> In my review, I considered the case when HAVE_BUG_FUNCTION is defined:
->>> Here, __BUG_FUNC is defined as __func__, which is the name of the
->>> current function as a string literal.
->>> Using the constraint "i" seems appropriate to me in this case.
->>>
->>> However, when HAVE_BUG_FUNCTION is not defined:
->>> __BUG_FUNC is defined as NULL. Initially, I considered it literal 0,
->>> but after investigating your concern, I found:
->>>
->>> ```
->>> $ echo -E "#include <stdio.h>\n#include <stddef.h>\nint main()
->>> {\nreturn 0;\n}" | aarch64-linux-gnu-gcc -E -dM - | grep NULL
->>> #define NULL ((void *)0)
->>> ```
->>>
->>> I realized that NULL is actually a pointer that is not a link time
->>> symbol, and using the "i" constraint with NULL may result in undefined
->>> behavior.
->>>
->>> Would the following alternative definition for __BUG_FUNC be more convincing?
->>>
->>> ```
->>> #ifdef HAVE_BUG_FUNCTION
->>>      #define __BUG_FUNC __func__
->>> #else
->>>      #define __BUG_FUNC (uintptr_t)0
->>> #endif
->>> ```
->>> Let me know your thoughts.
->>
->> Thanks for the analysis; I hadn't noticed this specific issue, it just
->> smelled a bit fishy. Anyway, the diff above looks better, thanks.
+> Once we have a set of ASI features checked in that we have actually
+> tested, we will stop ignoring the flag. But for now let's just add the
+> infrastructure so we can implement the usage code.
 > 
-> That propably deserves a comment.
-> 
-> Doesn't sparse and/or checkpatch complain about 0 being used in lieu of NULL ?
-> 
+> Ignoring checkpatch.pl CONFIG_DESCRIPTION because the _DEFAULT_ON
+> Kconfig is trivial to explain.
 
-__BUG_FUNC is only used as parameter to asm code, not as pointer.
+Those last two paragraphs go...
 
- From the diff:
+> Checkpatch-args: --ignore CONFIG_DESCRIPTION
+> Co-developed-by: Junaid Shahid <junaids@google.com>
+> Signed-off-by: Junaid Shahid <junaids@google.com>
+> Co-developed-by: Yosry Ahmed <yosryahmed@google.com>
+> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
 
--                    : : "i" (__FILE__), "i" (__LINE__),                \
-+                    : : "i" (__FILE__), "i" (__BUG_FUNC), "i" (__LINE__),\
+... here as that's text not really pertaining to the contents of the patch.
 
-The use is quite similar to __FILE__ and __LINE__. It might even be possible
-and appropriate to just define __BUG_FUNC as 0 if HAVE_BUG_FUNCTION is not defined.
+>  arch/x86/Kconfig                         |  9 +++++
+>  arch/x86/include/asm/asi.h               | 19 ++++++++--
+>  arch/x86/include/asm/cpufeatures.h       |  1 +
+>  arch/x86/include/asm/disabled-features.h |  8 ++++-
+>  arch/x86/mm/asi.c                        | 61 +++++++++++++++++++++++++++-----
+>  arch/x86/mm/init.c                       |  4 ++-
+>  include/asm-generic/asi.h                |  4 +++
+>  7 files changed, 92 insertions(+), 14 deletions(-)
 
-Guenter
+...
 
+>   * the N ASI classes.
+>   */
+>  
+> +#define static_asi_enabled() cpu_feature_enabled(X86_FEATURE_ASI)
+
+Yeah, as already mentioned somewhere else, whack that thing pls.
+
+> +
+>  /*
+>   * ASI uses a per-CPU tainting model to track what mitigation actions are
+>   * required on domain transitions. Taints exist along two dimensions:
+> @@ -131,6 +134,8 @@ struct asi {
+>  
+>  DECLARE_PER_CPU_ALIGNED(struct asi *, curr_asi);
+>  
+> +void asi_check_boottime_disable(void);
+> +
+>  void asi_init_mm_state(struct mm_struct *mm);
+>  
+>  int asi_init_class(enum asi_class_id class_id, struct asi_taint_policy *taint_policy);
+> @@ -155,7 +160,9 @@ void asi_exit(void);
+>  /* The target is the domain we'll enter when returning to process context. */
+>  static __always_inline struct asi *asi_get_target(struct task_struct *p)
+>  {
+> -	return p->thread.asi_state.target;
+> +	return static_asi_enabled()
+> +	       ? p->thread.asi_state.target
+> +	       : NULL;
+
+Waaay too fancy for old people:
+
+	if ()
+		return...
+	else
+		return NULL;
+
+:-)
+
+The others too pls.
+
+>  static __always_inline void asi_set_target(struct task_struct *p,
+> @@ -166,7 +173,9 @@ static __always_inline void asi_set_target(struct task_struct *p,
+>  
+>  static __always_inline struct asi *asi_get_current(void)
+>  {
+> -	return this_cpu_read(curr_asi);
+> +	return static_asi_enabled()
+> +	       ? this_cpu_read(curr_asi)
+> +	       : NULL;
+>  }
+>  
+>  /* Are we currently in a restricted address space? */
+> @@ -175,7 +184,11 @@ static __always_inline bool asi_is_restricted(void)
+>  	return (bool)asi_get_current();
+>  }
+>  
+> -/* If we exit/have exited, can we stay that way until the next asi_enter? */
+> +/*
+> + * If we exit/have exited, can we stay that way until the next asi_enter?
+
+What is that supposed to mean here?
+
+> + *
+> + * When ASI is disabled, this returns true.
+> + */
+>  static __always_inline bool asi_is_relaxed(void)
+>  {
+>  	return !asi_get_target(current);
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index 913fd3a7bac6506141de65f33b9ee61c615c7d7d..d6a808d10c3b8900d190ea01c66fc248863f05e2 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -474,6 +474,7 @@
+>  #define X86_FEATURE_CLEAR_BHB_HW	(21*32+ 3) /* BHI_DIS_S HW control enabled */
+>  #define X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT (21*32+ 4) /* Clear branch history at vmexit using SW loop */
+>  #define X86_FEATURE_FAST_CPPC		(21*32 + 5) /* AMD Fast CPPC */
+> +#define X86_FEATURE_ASI			(21*32+6) /* Kernel Address Space Isolation */
+>  
+>  /*
+>   * BUG word(s)
+> diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
+> index c492bdc97b0595ec77f89dc9b0cefe5e3e64be41..c7964ed4fef8b9441e1c0453da587787d8008d9d 100644
+> --- a/arch/x86/include/asm/disabled-features.h
+> +++ b/arch/x86/include/asm/disabled-features.h
+> @@ -50,6 +50,12 @@
+>  # define DISABLE_PTI		(1 << (X86_FEATURE_PTI & 31))
+>  #endif
+>  
+> +#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
+> +# define DISABLE_ASI		0
+> +#else
+> +# define DISABLE_ASI		(1 << (X86_FEATURE_ASI & 31))
+> +#endif
+> +
+>  #ifdef CONFIG_MITIGATION_RETPOLINE
+>  # define DISABLE_RETPOLINE	0
+>  #else
+> @@ -154,7 +160,7 @@
+>  #define DISABLED_MASK17	0
+>  #define DISABLED_MASK18	(DISABLE_IBT)
+>  #define DISABLED_MASK19	(DISABLE_SEV_SNP)
+> -#define DISABLED_MASK20	0
+> +#define DISABLED_MASK20	(DISABLE_ASI)
+>  #define DISABLED_MASK21	0
+>  #define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
+>  
+
+Right, that hunk is done this way now:
+
+diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
+index e12d5b7e39a2..f219eaf664fb 100644
+--- a/arch/x86/Kconfig.cpufeatures
++++ b/arch/x86/Kconfig.cpufeatures
+@@ -199,3 +199,7 @@ config X86_DISABLED_FEATURE_SEV_SNP
+ config X86_DISABLED_FEATURE_INVLPGB
+ 	def_bool y
+ 	depends on !BROADCAST_TLB_FLUSH
++
++config X86_DISABLED_FEATURE_ASI
++	def_bool y
++	depends on !MITIGATION_ADDRESS_SPACE_ISOLATION
+
+
+> diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
+> index 105cd8b43eaf5c20acc80d4916b761559fb95d74..5baf563a078f5b3a6cd4b9f5e92baaf81b0774c4 100644
+> --- a/arch/x86/mm/asi.c
+> +++ b/arch/x86/mm/asi.c
+> @@ -4,6 +4,7 @@
+>  #include <linux/percpu.h>
+>  #include <linux/spinlock.h>
+>  
+> +#include <linux/init.h>
+>  #include <asm/asi.h>
+>  #include <asm/cmdline.h>
+>  #include <asm/cpufeature.h>
+> @@ -29,6 +30,9 @@ static inline bool asi_class_id_valid(enum asi_class_id class_id)
+>  
+>  static inline bool asi_class_initialized(enum asi_class_id class_id)
+>  {
+> +	if (!boot_cpu_has(X86_FEATURE_ASI))
+
+check_for_deprecated_apis: WARNING: arch/x86/mm/asi.c:33: Do not use boot_cpu_has() - use cpu_feature_enabled() instead.
+
+Check your whole set pls.
+
+> +		return 0;
+> +
+>  	if (WARN_ON(!asi_class_id_valid(class_id)))
+>  		return false;
+>  
+> @@ -51,6 +55,9 @@ EXPORT_SYMBOL_GPL(asi_init_class);
+>  
+>  void asi_uninit_class(enum asi_class_id class_id)
+>  {
+> +	if (!boot_cpu_has(X86_FEATURE_ASI))
+> +		return;
+> +
+>  	if (!asi_class_initialized(class_id))
+>  		return;
+>  
+> @@ -66,10 +73,36 @@ const char *asi_class_name(enum asi_class_id class_id)
+>  	return asi_class_names[class_id];
+>  }
+>  
+> +void __init asi_check_boottime_disable(void)
+> +{
+> +	bool enabled = IS_ENABLED(CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION_DEFAULT_ON);
+> +	char arg[4];
+> +	int ret;
+> +
+> +	ret = cmdline_find_option(boot_command_line, "asi", arg, sizeof(arg));
+> +	if (ret == 3 && !strncmp(arg, "off", 3)) {
+> +		enabled = false;
+> +		pr_info("ASI disabled through kernel command line.\n");
+> +	} else if (ret == 2 && !strncmp(arg, "on", 2)) {
+> +		enabled = true;
+> +		pr_info("Ignoring asi=on param while ASI implementation is incomplete.\n");
+> +	} else {
+> +		pr_info("ASI %s by default.\n",
+> +			enabled ? "enabled" : "disabled");
+> +	}
+> +
+> +	if (enabled)
+> +		pr_info("ASI enablement ignored due to incomplete implementation.\n");
+
+Incomplete how?
+
+> +}
+> +
+>  static void __asi_destroy(struct asi *asi)
+>  {
+> -	lockdep_assert_held(&asi->mm->asi_init_lock);
+> +	WARN_ON_ONCE(asi->ref_count <= 0);
+> +	if (--(asi->ref_count) > 0)
+
+Switch that to
+
+include/linux/kref.h
+
+It gives you a sanity-checking functionality too so you don't need the WARN...
+
+> +		return;
+>  
+> +	free_pages((ulong)asi->pgd, PGD_ALLOCATION_ORDER);
+> +	memset(asi, 0, sizeof(struct asi));
+
+And then you can do:
+
+	if (kref_put())
+		free_pages...
+
+and so on.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
