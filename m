@@ -1,259 +1,167 @@
-Return-Path: <linux-parisc+bounces-3460-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3461-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D1AA67E84
-	for <lists+linux-parisc@lfdr.de>; Tue, 18 Mar 2025 22:14:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B31A68694
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Mar 2025 09:20:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E6773BB966
-	for <lists+linux-parisc@lfdr.de>; Tue, 18 Mar 2025 21:13:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 990047A4287
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Mar 2025 08:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D706620B20D;
-	Tue, 18 Mar 2025 21:14:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="dFI2VrSs";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mQ/4TodD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F316D2512D4;
+	Wed, 19 Mar 2025 08:20:06 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7737E1;
-	Tue, 18 Mar 2025 21:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A53C250BF6;
+	Wed, 19 Mar 2025 08:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742332445; cv=none; b=HGTXiaR2SLJjNdHNZKM64MEePs0t6pZTKnAGmTs9JspnrPjMQ2GFBguEsDRrfDGfjoyhZEM26m7brkd0F6BFHHADhmFEgaS19DX8I18fWUoBMSYiFthox1fnxHSjN9Eti2ZWSdm19mppQBZoLQdGCsertgnMJlUM2mugjTMdGts=
+	t=1742372406; cv=none; b=ny9fw6RmHy/pgwviwLs9LDxYKL8YYHB2XvZzOllM4ipdXUSw1UQGb7HaOcSEAefNCJMbR5HS0eLpi4vb1jyGRmJiyJGdP1hv3pRlmn+kJutOyU3XnFZFnrmMhn6igENy5KeCLNSihus0YpP0igameG5Fx4E9qi0iKYCMH/YKwCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742332445; c=relaxed/simple;
-	bh=GB0MKorwfNVgHASjmfnIgFFRgN0GQO0DS1Q/f1fURzE=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=HMpjT2bTi787HyqmJ9TuAs2VR3pEEqg6FACQrg4j8gLzl+lFZmc4l6jt4rE696kU816C/gS+s7HPC1bLnJV7LCkmucaCyeF/gGtTjDQXzAQfxdyFtTmGjziuFinv11XQvvAl4+My4jrhwdLbK9lQfi6wInm33ySL3NfNW+lGXA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=dFI2VrSs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mQ/4TodD; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 9B9911140098;
-	Tue, 18 Mar 2025 17:14:01 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-07.internal (MEProxy); Tue, 18 Mar 2025 17:14:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1742332441;
-	 x=1742418841; bh=6Wnno4ANVKxueaFjx6I4DVJGzAoa07LKkIYejE1OybM=; b=
-	dFI2VrSsmJvKZXQEWv0b+6lLs6h2rrXpBXnD1WDs/tjYgHOrEPqjQWYfpgJLJ6Dz
-	0uDpMTiYauSbiQ4w2sPcdGkd+qAIZWKppygqbk/wfeUy/5S3ligXhQnU0UPnPamc
-	bMnZNv6U/QohqSlf4tad3QFXfd4U1AKDR7poUyd+1pJ8gXBV9d6Bb9QjJlapLC1t
-	L6Z5wDmWa1pm8yDStkhgRHlWgUQ3Niz8m597DS0xsI8YtDvYLdJyqscOVqMvw+LZ
-	hArMs2YXZ8HI8A61ETHkr8uZL+3lzuAJPMVGi3NUeWSmci/NXyfy/ISbdCjh1fb0
-	anJmKVtYQJFh0/k9ChTKyA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1742332441; x=
-	1742418841; bh=6Wnno4ANVKxueaFjx6I4DVJGzAoa07LKkIYejE1OybM=; b=m
-	Q/4TodDV8ABnaVLbk4J9v4V2dkLG+MvRKig12GI7AQAb9/7YOBqOyG3ROJb+rr5d
-	cHKzOapNwmhS7uGqA9TEOIa4fTT9tWJhEFIUwYJptXONDrOnkYzF0pIZ7nPtP3hC
-	+rKCCB/jOvJ4vRY86cSe6324xoxM3LCh2Pa8gn4Zbg5TyDwdyPYNaIOjAGvwnSzr
-	FetD+Tyn4ZBnH0mVXa0Cke3SEYdYO0pMR/KIjeKNAP1pYyGHJrQtlvJGxlJVs+Of
-	rs0V6sz1QQHX+/1G7GvCuJu/qx61R2ofEcLYus0wSVWAmhbajW+aAC/F5vkG2s4R
-	/FYA+2ozaAXrAOXwmKv7g==
-X-ME-Sender: <xms:F-LZZy9i0AVgHg-YAxTpb124c99eTBx38tHM1-Qg2LszbHeO1h4RUQ>
-    <xme:F-LZZyskOj8tXApOtq1mDy3oRBPQp9YoKEYYnrbImc_SZkPjIwH4UaD9XJBdVucmL
-    9sQE7_nZuFAQ2MGioo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeefgeelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
-    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
-    vdejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtshgsohhgvghnugesrghlph
-    hhrgdrfhhrrghnkhgvnhdruggvpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghr
-    ohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrih
-    gurdgruhdprhgtphhtthhopehmrghtthhsthekkeesghhmrghilhdrtghomhdprhgtphht
-    thhopehnphhighhgihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhlvghrse
-    hgmhigrdguvgdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhr
-    tghpthhtohepjhgrmhgvshdrsghothhtohhmlhgvhieshhgrnhhsvghnphgrrhhtnhgvrh
-    hshhhiphdrtghomhdprhgtphhtthhopegrrhhnugeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:F-LZZ4BgRMG0eAxsIote5hKKvCoaN4SXRlCZ_otOdfFFvz7XHT5_Ig>
-    <xmx:F-LZZ6eCs_NZ5WlasQgWvDs0mRuVxgDQ-EqMCMskWnEdubX_9LcrWQ>
-    <xmx:F-LZZ3NvCIv8H_n97d6jL42SkKKWBkml4iYZkXFnXNXQIBGxCj9UZw>
-    <xmx:F-LZZ0lio7_8obwVeZUmRWtis46Jpxj8QNkQYa_yPycLplbdyZZcrg>
-    <xmx:GeLZZ6iI2zTTRi4-1WdYuNqLi26yaA5Xh5sDeCMxyU0p-pxYSjTiEUKV>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1A2B82220072; Tue, 18 Mar 2025 17:13:58 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1742372406; c=relaxed/simple;
+	bh=9OlvM4XUWWvrHJOd2iYbZSXPoeKrvur3cTL1QmV2LNQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jGPJqRUmdTHdWfAUsr7ntxP/W8arq3G/Iffg08MrASUp/VinXPonljuAYzkK09NwFa5LW256RcQKiQlbpa3nO9gVg/akVdb+kbdE6zGg2iHxeMZU/vNdIWv3DZnmvfggYrbvm7+1mN8FpBwV1uXHo4CO0bx/W3CS98Eh0Msc7N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4ZHh8p3p47z9sSY;
+	Wed, 19 Mar 2025 09:05:30 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 5Pdv_1f5SWZW; Wed, 19 Mar 2025 09:05:30 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4ZHh8p2Mb8z9sSX;
+	Wed, 19 Mar 2025 09:05:30 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2617E8B78F;
+	Wed, 19 Mar 2025 09:05:30 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id K6S1MuFrSThd; Wed, 19 Mar 2025 09:05:30 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 585CB8B763;
+	Wed, 19 Mar 2025 09:05:28 +0100 (CET)
+Message-ID: <a64bf821-ea90-4fd9-92ec-13bf7b7a3067@csgroup.eu>
+Date: Wed, 19 Mar 2025 09:05:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: T334a9a9a7e89e162
-Date: Tue, 18 Mar 2025 22:13:35 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Nathan Chancellor" <nathan@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>,
- "Richard Henderson" <richard.henderson@linaro.org>,
- "Matt Turner" <mattst88@gmail.com>,
- "Geert Uytterhoeven" <geert@linux-m68k.org>,
- "Greg Ungerer" <gerg@linux-m68k.org>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Helge Deller" <deller@gmx.de>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Naveen N Rao" <naveen@kernel.org>,
- "Yoshinori Sato" <ysato@users.sourceforge.jp>,
- "Rich Felker" <dalias@libc.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- "Julian Vetter" <julian@outer-limits.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-Message-Id: <5b2779f8-573d-401e-817e-979e02f811d3@app.fastmail.com>
-In-Reply-To: <20250318203906.GA4089579@ax162>
-References: <20250315105907.1275012-1-arnd@kernel.org>
- <20250315105907.1275012-6-arnd@kernel.org> <20250318203906.GA4089579@ax162>
-Subject: Re: [PATCH 5/6] mips: drop GENERIC_IOMAP wrapper
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/14] arm64: Add support for suppressing warning
+ backtraces
+To: Will Deacon <will@kernel.org>, Alessandro Carminati <acarmina@redhat.com>
+Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
+ Arnd Bergmann <arnd@arndb.de>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
+ <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>,
+ Kees Cook <keescook@chromium.org>, Daniel Diaz <daniel.diaz@linaro.org>,
+ David Gow <davidgow@google.com>, Arthur Grillo <arthurgrillo@riseup.net>,
+ Brendan Higgins <brendan.higgins@linux.dev>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Maxime Ripard
+ <mripard@kernel.org>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?=
+ <ville.syrjala@linux.intel.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Guenter Roeck <linux@roeck-us.net>,
+ Alessandro Carminati <alessandro.carminati@gmail.com>,
+ Jani Nikula <jani.nikula@intel.com>, dri-devel@lists.freedesktop.org,
+ kunit-dev@googlegroups.com, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ loongarch@lists.linux.dev, x86@kernel.org,
+ Linux Kernel Functional Testing <lkft@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>
+References: <20250313114329.284104-1-acarmina@redhat.com>
+ <20250313114329.284104-8-acarmina@redhat.com>
+ <20250313122503.GA7438@willie-the-truck>
+ <CAGegRW5r3V2-_44-X353vS-GZwDYG=SVwc6MzSGE8GdFQuFoKA@mail.gmail.com>
+ <20250318155946.GC13829@willie-the-truck>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20250318155946.GC13829@willie-the-truck>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 18, 2025, at 21:39, Nathan Chancellor wrote:
-> On Sat, Mar 15, 2025 at 11:59:06AM +0100, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
 
->>  void __ioread64_copy(void *to, const void __iomem *from, size_t count);
->>  
->> +#ifdef CONFIG_PCI_DRIVERS_LEGACY
->> +struct pci_dev;
->> +void pci_iounmap(struct pci_dev *dev, void __iomem *addr);
->> +#define pci_iounmap pci_iounmap
->> +#endif
->> +
->>  #include <asm-generic/io.h>
->>  
->>  static inline void *isa_bus_to_virt(unsigned long address)
->> diff --git a/arch/mips/lib/iomap-pci.c b/arch/mips/lib/iomap-pci.c
->> index a9cb28813f0b..2f82c776c6d0 100644
->> --- a/arch/mips/lib/iomap-pci.c
->> +++ b/arch/mips/lib/iomap-pci.c
->> @@ -43,4 +43,13 @@ void __iomem *__pci_ioport_map(struct pci_dev *dev,
->>  	return (void __iomem *) (ctrl->io_map_base + port);
->>  }
->>  
->> +void pci_iounmap(struct pci_dev *dev, void __iomem *addr)
->> +{
->> +	struct pci_controller *ctrl = dev->bus->sysdata;
->> +	void __iomem *base = (void __iomem *)ctrl->io_map_base;
->> +
->> +	if (addr < base || addr > (base + resource_size(ctrl->io_resource)))
->> +		iounmap(addr);
->> +}
->> +
->>  #endif /* CONFIG_PCI_DRIVERS_LEGACY */
->> -- 
->> 2.39.5
->> 
->
-> This change as commit 976bf3aec388 ("mips: drop GENERIC_IOMAP wrapper") in
-> -next introduces new instances of -Wnull-pointer-arithmetic when building
-> certain mips configurations with clang.
->
 
-Thanks for the report, I missed that the generic ioport_map() function
-is missing the PCI_IOBASE macro, we should probably remove that from
-the asm-generic/io.h header and require architectures to define it
-themselves, since the NULL fallback is pretty much always wrong.
+Le 18/03/2025 à 16:59, Will Deacon a écrit :
+> On Thu, Mar 13, 2025 at 05:40:59PM +0100, Alessandro Carminati wrote:
+>> On Thu, Mar 13, 2025 at 1:25 PM Will Deacon <will@kernel.org> wrote:
+>>>
+>>> On Thu, Mar 13, 2025 at 11:43:22AM +0000, Alessandro Carminati wrote:
+>>>> diff --git a/arch/arm64/include/asm/bug.h b/arch/arm64/include/asm/bug.h
+>>>> index 28be048db3f6..044c5e24a17d 100644
+>>>> --- a/arch/arm64/include/asm/bug.h
+>>>> +++ b/arch/arm64/include/asm/bug.h
+>>>> @@ -11,8 +11,14 @@
+>>>>
+>>>>   #include <asm/asm-bug.h>
+>>>>
+>>>> +#ifdef HAVE_BUG_FUNCTION
+>>>> +# define __BUG_FUNC  __func__
+>>>> +#else
+>>>> +# define __BUG_FUNC  NULL
+>>>> +#endif
+>>>> +
+>>>>   #define __BUG_FLAGS(flags)                           \
+>>>> -     asm volatile (__stringify(ASM_BUG_FLAGS(flags)));
+>>>> +     asm volatile (__stringify(ASM_BUG_FLAGS(flags, %c0)) : : "i" (__BUG_FUNC));
+>>>
+>>> Why is 'i' the right asm constraint to use here? It seems a bit odd to
+>>> use that for a pointer.
+>>
+>> I received this code as legacy from a previous version.
+>> In my review, I considered the case when HAVE_BUG_FUNCTION is defined:
+>> Here, __BUG_FUNC is defined as __func__, which is the name of the
+>> current function as a string literal.
+>> Using the constraint "i" seems appropriate to me in this case.
+>>
+>> However, when HAVE_BUG_FUNCTION is not defined:
+>> __BUG_FUNC is defined as NULL. Initially, I considered it literal 0,
+>> but after investigating your concern, I found:
+>>
+>> ```
+>> $ echo -E "#include <stdio.h>\n#include <stddef.h>\nint main()
+>> {\nreturn 0;\n}" | aarch64-linux-gnu-gcc -E -dM - | grep NULL
+>> #define NULL ((void *)0)
+>> ```
+>>
+>> I realized that NULL is actually a pointer that is not a link time
+>> symbol, and using the "i" constraint with NULL may result in undefined
+>> behavior.
+>>
+>> Would the following alternative definition for __BUG_FUNC be more convincing?
+>>
+>> ```
+>> #ifdef HAVE_BUG_FUNCTION
+>>      #define __BUG_FUNC __func__
+>> #else
+>>      #define __BUG_FUNC (uintptr_t)0
+>> #endif
+>> ```
+>> Let me know your thoughts.
+> 
+> Thanks for the analysis; I hadn't noticed this specific issue, it just
+> smelled a bit fishy. Anyway, the diff above looks better, thanks.
 
-There is also a type mismatch between the MIPS
-PCI_IOBASE/mips_io_port_base and the one that asm-generic/io.h
-expects, so I had to add a couple of extra typecasts, which
-makes it rather ugly, but the change below seems to work.
+That propably deserves a comment.
 
-     Arnd
+Doesn't sparse and/or checkpatch complain about 0 being used in lieu of 
+NULL ?
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 1fe56d1870a6..78c6573f91f2 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -544,12 +544,16 @@ extern void (*_dma_cache_inv)(unsigned long start, unsigned long size);
- 
- void __ioread64_copy(void *to, const void __iomem *from, size_t count);
- 
--#ifdef CONFIG_PCI_DRIVERS_LEGACY
-+#if defined(CONFIG_PCI) && defined(CONFIG_PCI_DRIVERS_LEGACY)
- struct pci_dev;
- void pci_iounmap(struct pci_dev *dev, void __iomem *addr);
- #define pci_iounmap pci_iounmap
- #endif
- 
-+#ifndef PCI_IOBASE
-+#define PCI_IOBASE ((void __iomem *)mips_io_port_base)
-+#endif
-+
- #include <asm-generic/io.h>
- 
- static inline void *isa_bus_to_virt(unsigned long address)
-diff --git a/arch/mips/include/asm/mach-loongson64/spaces.h b/arch/mips/include/asm/mach-loongson64/spaces.h
-index ce04e998a37b..dbd26db5f2c5 100644
---- a/arch/mips/include/asm/mach-loongson64/spaces.h
-+++ b/arch/mips/include/asm/mach-loongson64/spaces.h
-@@ -7,9 +7,10 @@
- #endif /* CONFIG_64BIT */
- 
- /* Skip 128k to trap NULL pointer dereferences */
--#define PCI_IOBASE	_AC(0xc000000000000000 + SZ_128K, UL)
-+#define PCI_PORT_BASE	_AC(0xc000000000000000 + SZ_128K, UL)
-+#define PCI_IOBASE	(void __iomem *)PCI_PORT_BASE
- #define PCI_IOSIZE	SZ_16M
--#define MAP_BASE	(PCI_IOBASE + PCI_IOSIZE)
-+#define MAP_BASE	(PCI_PORT_BASE + PCI_IOSIZE)
- 
- #define IO_SPACE_LIMIT  (PCI_IOSIZE - 1)
- 
-diff --git a/arch/mips/include/asm/mach-ralink/spaces.h b/arch/mips/include/asm/mach-ralink/spaces.h
-index a9f0570d0f04..a63d106c89c6 100644
---- a/arch/mips/include/asm/mach-ralink/spaces.h
-+++ b/arch/mips/include/asm/mach-ralink/spaces.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_MACH_RALINK_SPACES_H_
- #define __ASM_MACH_RALINK_SPACES_H_
- 
--#define PCI_IOBASE	mips_io_port_base
-+#define PCI_IOBASE	(void __iomem *)mips_io_port_base
- #define PCI_IOSIZE	SZ_64K
- #define IO_SPACE_LIMIT	(PCI_IOSIZE - 1)
- 
-diff --git a/arch/mips/loongson64/init.c b/arch/mips/loongson64/init.c
-index a35dd7311795..b9f90f33fc9a 100644
---- a/arch/mips/loongson64/init.c
-+++ b/arch/mips/loongson64/init.c
-@@ -128,7 +128,7 @@ void __init prom_init(void)
- 	}
- 
- 	/* init base address of io space */
--	set_io_port_base(PCI_IOBASE);
-+	set_io_port_base((unsigned long)PCI_IOBASE);
- 
- 	if (loongson_sysconf.early_config)
- 		loongson_sysconf.early_config();
-@@ -178,7 +178,7 @@ static int __init add_legacy_isa_io(struct fwnode_handle *fwnode, resource_size_
- 		return -EINVAL;
- 	}
- 
--	vaddr = PCI_IOBASE + range->io_start;
-+	vaddr = (unsigned long)PCI_IOBASE + range->io_start;
- 
- 	vmap_page_range(vaddr, vaddr + size, hw_start, pgprot_device(PAGE_KERNEL));
+By the way I had similar problem in the past with GCC not seeing NULL as 
+a __builtin_constant_p(), refer commit 1d8f739b07bd ("powerpc/kuap: Fix 
+set direction in allow/prevent_user_access()")
+
+Christophe
 
