@@ -1,204 +1,134 @@
-Return-Path: <linux-parisc+bounces-3468-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3469-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9471A6A3EE
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Mar 2025 11:45:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2EEA6B8E3
+	for <lists+linux-parisc@lfdr.de>; Fri, 21 Mar 2025 11:39:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F278042362A
-	for <lists+linux-parisc@lfdr.de>; Thu, 20 Mar 2025 10:44:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9178A3AE3C5
+	for <lists+linux-parisc@lfdr.de>; Fri, 21 Mar 2025 10:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C11224AED;
-	Thu, 20 Mar 2025 10:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E2B21579C;
+	Fri, 21 Mar 2025 10:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kdj3JpaA"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OmPDfar7"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71B32248BF
-	for <linux-parisc@vger.kernel.org>; Thu, 20 Mar 2025 10:44:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E557020DD4E
+	for <linux-parisc@vger.kernel.org>; Fri, 21 Mar 2025 10:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742467485; cv=none; b=a0RIonvIdqqA9lJpqsDHUpWxyS49Bib4hfZxFl0yGHqoOKQUQmDASam9JqI+H+rNNCOQatuu5MtaiRr+v9cH4+MVsNgKwB5L/xpnkslf/+0QUJn23SytR1sm5BN9VTuQdLXNZV94Ugx3joFYYUxgBUA46zW0+lbCzU65ZndZIJo=
+	t=1742553536; cv=none; b=epmewotU1iygn67y+LWpXoIua/vT0BYUdRudnFc+bwlwRUG5nTQeIkWd7ZiYx6618PAgzubs6RDrZVv3+Ei2BgDqxADPWk97Bg/014wBLynE1+lE/LHfe2x/bNLRaXikFXWyojOI/4XEQsOWaPLDvUIhsdvQK4/b8Qq5843J4IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742467485; c=relaxed/simple;
-	bh=O8zyyL1p84aMCSSYT842uw6SFy2rTfsgAblLzeFkCR0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N0+X74Zu+SI+fksYt0sDMezki4xZg/osUhykjCICLsQSxQTSTa9SNHmGIKew1jgDdy7BcuGW2aHVBEKOUiK1ADfvIQm1DkU4MoySBUGTB0pjcMdOqxYFQc5oO3XD1i5mVa+AW6zRnAOkHWUym/LfqR7zKhuezlqruj9TsYqCcn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kdj3JpaA; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1742553536; c=relaxed/simple;
+	bh=MTWqH0QQeN8BAJKCv6QLRpebs5XpSpSjpTCrE8UCWOQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=I2xRXxAumD8gEfdW8earfeGpJ86+/zIX0TTu4YpTmDFCd03b+7p6Os6ARDBrTztIavFyXJueXqCwHGNX24f0kOw+OiWSwAWsUAs8c0FMMN+tsNp5OpY7zgWc2ETd0D5Fb2/9OBli2GRFYCzQpm5hk1hWJ7uUggooZkJ1JrqQaJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--praan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OmPDfar7; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43d3b211d0eso9419155e9.1
-        for <linux-parisc@vger.kernel.org>; Thu, 20 Mar 2025 03:44:41 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--praan.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-224192ff68bso26017405ad.1
+        for <linux-parisc@vger.kernel.org>; Fri, 21 Mar 2025 03:38:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742467480; x=1743072280; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j11DFSETqOLtc+vMOz1k4rHgXFA118EedepjEdU8Zqw=;
-        b=Kdj3JpaAcTMsJX0fWv0whfnlnrjaZjQkUoIxaVNNWymywgQ1lxYjwO8r7iq1JNp6QM
-         Ojbu13PJrvGpih/A3lZ8h//bm+lQo87tlhkP9QV9OC12v7CPJ6kEgjQXJce0C5ni+hLc
-         WK8hRYGR3L0Fg1Ms6LVwx4HmFLLx967l5J71fKJh2+DS8uT7oCIJlhzicsDfSOQYSkWF
-         sHWVXfORZG9aTGDrruW97o37vT+nFRgMDzAibG+h4BCecMAJVWL9zR8i+Q2//u9V8cvF
-         qTDTgtuLxb6b7EYFGNlNI/IdDW+67sG2wCaCd7GvxlgTKp/aIF7rCtp1mbYDuCw4iql2
-         FLfw==
+        d=google.com; s=20230601; t=1742553534; x=1743158334; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wTXIzt5fOwRSNBhSHeFNg/2q6INGK9Me+w4LkNIlpHM=;
+        b=OmPDfar7Id/sf/HUm8xmG5XOpl0bVf+pb7TUeB5wUwX+HR81y6a1K8qJWzBk0fNltd
+         OXyQ72W7ywtnlWjySErK4a9Q7+X3gryRu/ueKXBTCS9brxEdCRAOtudzyV3C/FH+Vgq2
+         BpGV0Z62QV2x1cxdB6Oa0pHoQm9InHcek8HzppuVuqrwYe6xzGwWLcqzspXa8AjoZhaO
+         0zKPULRGgct/fJM5kyharxMUr4D78qsP/CkLpTESWHIO2sXFPSfFamC8pWn3LbzQJoRo
+         HQY+DMdnuUlcXIMbu8HduoGSDW60NxO4Adcn+uv2oP8iJo65UQgUlHWq/w2R5lbuHF4D
+         siKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742467480; x=1743072280;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j11DFSETqOLtc+vMOz1k4rHgXFA118EedepjEdU8Zqw=;
-        b=jZs2WI4Ty60b0fU3umKtKqrztb85JV7L9L6WnbRxexKJG1ui5fRWOVR3FnYBjm+f+D
-         qHeGrRWnnCIJUc666QXsv1tiGtLGgArsr1mTVa06Ts6L/6lxxRVE9j1nsTKcQEl4cvJq
-         0WdBYAOCv6LVYCpUJnFz7erOzZIjWfwJwyl19AMZuJyEJvKlVIkCgroSbEu2EIvn6lhG
-         zwhPTi6mU7+4b0HwshVHyRa4VU80dzMpjuKR8Ny8n2wmtgFxlHs4i/YVcaaeKufvnAKx
-         Qe0zrEOTq9+dH2MNBIin1v5739TQJ51To1e2OpgoRDhtncYN+S+dhyKErXH2KY3gcoSn
-         jjZA==
-X-Forwarded-Encrypted: i=1; AJvYcCUIAyA0LDbjesCo/4AzUMSgGnmBQJq2KdX0NsdxY4nHS1rXpkxwMhcOuTh8QHHaC5bml/ReZ8Y2qsQYP38=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5fEEvvkkLQlLNoyhtz4m0oQ0ynJIaPBQxZcZMIpNRbD9yt7hl
-	a78dYYxKyOMUxUtvfIyTmEqO3Oohr98hFhlZgvqbJNIntInNlLq22CHov1u4sx9dqv0EOqYfU73
-	MXujq6/qLng==
-X-Google-Smtp-Source: AGHT+IHmhdHTuCMOMffmpvyIMCzJObzjHJotMPvb7/CKZriBN1WJ2Qe2CHVhTxdEuiWThlixsbw8H9oOiShQMA==
-X-Received: from wmgg15.prod.google.com ([2002:a05:600d:f:b0:43b:c450:ea70])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1da2:b0:439:5f04:4f8d with SMTP id 5b1f17b1804b1-43d49187ba9mr20806165e9.12.1742467480075;
- Thu, 20 Mar 2025 03:44:40 -0700 (PDT)
-Date: Thu, 20 Mar 2025 10:44:38 +0000
-In-Reply-To: <Z9sRQ0cK0rupEiT-@google.com>
+        d=1e100.net; s=20230601; t=1742553534; x=1743158334;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wTXIzt5fOwRSNBhSHeFNg/2q6INGK9Me+w4LkNIlpHM=;
+        b=gJ5sfrg7MblfT1bYFjkb3nGUYYx8uGAxOcK0sl4Wbz4CoXGDqE7ZFJVL5QWDTT89oh
+         UDoc1wMX6elkkhHTABbVYf5UFGAjnr/rjdJmbltfiQbY0kV5w8HIMO8t9Qn9JglORk9n
+         afpmLRtUMjtv0MWerXUv45iCK4qpyxF7FAXYp1+Il52qtqllAIJcuqtsiTvG7PxHqklc
+         u8LP0dkFOGinnteT9t9kqewCW1EAk9iXBPolRhJBdeejYxWK57gUQS4pUQtgmfGFz1Ne
+         yl9V9af4GWcbkCZT4/fucj7dzZNTDmND1v4FH5FAFi6ejBNFRVKHDVRk0iz3tGfrZYYP
+         CCCg==
+X-Forwarded-Encrypted: i=1; AJvYcCXDuFYj0lKM7LImRz7+Daf9zzwAwp9ut6NqzsRGmcHWPJBNJzEkJTIZ9PYQvhe18sAraFPdbbwf9jww3Ao=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwviYKpuNZSYsaJveUa21p8+/+tz/wwr2OciyWaPsNJ1Z+yvi1Y
+	liFlKz3b6NAXq+Y/yTtTCEP/2Yf+AMpK1hWlj2WB/DnLocyCzL7Fx0A3lqFrQp1o22QT/J0VpQ=
+	=
+X-Google-Smtp-Source: AGHT+IFBrPoh2xXBTLa37t7TLzk40CglNhwirrSlQoobmf2JjKUeSxL1XGZLKhnam/vZlx/gaxOnf/h6yA==
+X-Received: from plky1.prod.google.com ([2002:a17:902:7001:b0:223:4e55:d29a])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:46d0:b0:220:fe50:5b44
+ with SMTP id d9443c01a7336-22780da4559mr46020505ad.31.1742553534138; Fri, 21
+ Mar 2025 03:38:54 -0700 (PDT)
+Date: Fri, 21 Mar 2025 10:38:48 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
- <20250110-asi-rfc-v2-v2-4-8419288bc805@google.com> <20250319172935.GMZ9r-_zzXhyhHBLfj@fat_crate.local>
- <Z9sRQ0cK0rupEiT-@google.com>
-X-Mailer: aerc 0.18.2
-Message-ID: <D8L164U8HBTB.G5MS86AIISLM@google.com>
-Subject: Re: [PATCH RFC v2 04/29] mm: asi: Add infrastructure for boot-time enablement
-From: Brendan Jackman <jackmanb@google.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>, Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-	<x86@kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-alpha@vger.kernel.org>, <linux-snps-arc@lists.infradead.org>, 
-	<linux-arm-kernel@lists.infradead.org>, <linux-csky@vger.kernel.org>, 
-	<linux-hexagon@vger.kernel.org>, <loongarch@lists.linux.dev>, 
-	<linux-m68k@lists.linux-m68k.org>, <linux-mips@vger.kernel.org>, 
-	<linux-openrisc@vger.kernel.org>, <linux-parisc@vger.kernel.org>, 
-	<linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>, 
-	<linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>, 
-	<sparclinux@vger.kernel.org>, <linux-um@lists.infradead.org>, 
-	<linux-arch@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<linux-trace-kernel@vger.kernel.org>, <linux-perf-users@vger.kernel.org>, 
-	<kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>, 
-	Junaid Shahid <junaids@google.com>
+X-Mailer: git-send-email 2.49.0.395.g12beb8f557-goog
+Message-ID: <20250321103848.550689-1-praan@google.com>
+Subject: [PATCH] net: Fix the devmem sock opts and msgs for parisc
+From: Pranjal Shrivastava <praan@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	Willem de Bruijn <willemb@google.com>, Mina Almasry <almasrymina@google.com>, 
+	Pranjal Shrivastava <praan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed Mar 19, 2025 at 6:47 PM UTC, Yosry Ahmed wrote:
-> On Wed, Mar 19, 2025 at 06:29:35PM +0100, Borislav Petkov wrote:
-> > On Fri, Jan 10, 2025 at 06:40:30PM +0000, Brendan Jackman wrote:
-> > > Add a boot time parameter to control the newly added X86_FEATURE_ASI.
-> > > "asi=on" or "asi=off" can be used in the kernel command line to enable
-> > > or disable ASI at boot time. If not specified, ASI enablement depends
-> > > on CONFIG_ADDRESS_SPACE_ISOLATION_DEFAULT_ON, which is off by default.
-> > 
-> > I don't know yet why we need this default-on thing...
->
-> It's a convenience to avoid needing to set asi=on if you want ASI to be
-> on by default. It's similar to HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON
-> or ZSWAP_DEFAULT_ON.
->
-> [..]
-> > > @@ -175,7 +184,11 @@ static __always_inline bool asi_is_restricted(void)
-> > >  	return (bool)asi_get_current();
-> > >  }
-> > >  
-> > > -/* If we exit/have exited, can we stay that way until the next asi_enter? */
-> > > +/*
-> > > + * If we exit/have exited, can we stay that way until the next asi_enter?
-> > 
-> > What is that supposed to mean here?
->
-> asi_is_relaxed() checks if the thread is outside an ASI critical
-> section.
->
-> I say "the thread" because it will also return true if we are executing
-> an interrupt that arrived during the critical section, even though the
-> interrupt handler is not technically part of the critical section.
->
-> Now the reason it says "if we exit we stay that way" is probably
-> referring to the fact that an asi_exit() when interrupting a critical
-> section will be undone in the interrupt epilogue by re-entering ASI.
->
-> I agree the wording here is confusing. We should probably describe this
-> more explicitly and probably rename the function after the API
-> discussions you had in the previous patch.
+The devmem socket options and socket control message definitions
+introduced in the TCP devmem series[1] incorrectly continued the socket
+definitions for arch/parisc.
 
-Yeah, this is confusing. It's trying to very concisely define the
-concept of "relaxed" but now I see it through Boris' eyes I realise
-it's really unhelpful to try and do that. And yeah we should probably
-just rework the terminology/API.
+The UAPI change seems safe as there are currently no drivers that
+declare support for devmem TCP RX via PP_FLAG_ALLOW_UNREADABLE_NETMEM.
+Hence, fixing this UAPI should be safe.
 
-To re-iterate what Yosry said, aside from my too-clever comment style
-the more fundamental thing that's confusing here is that, using the
-terminology currently in the code there are two concepts at play:
+Fix the devmem socket options and socket control message definitions to
+reflect the series followed by arch/parisc.
 
-- The critical section: this is the path from asi_enter() to
-  asi_relax(). The critical section can be interrupted, and code
-  running in those interupts is not said to be "in the critical
-  section".
+[1]
+https://lore.kernel.org/lkml/20240910171458.219195-10-almasrymina@google.com/
 
-- Being "tense" vs "relaxed". Being "tense" means the _task_ is in a
-  critical section, but the current code might not be.
+Fixes: 8f0b3cc9a4c10 ("tcp: RX path for devmem TCP")
+Signed-off-by: Pranjal Shrivastava <praan@google.com>
+---
+ arch/parisc/include/uapi/asm/socket.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-This distinction is theoretically relevant because e.g. it's a bug to
-access sensitive data in a critical section, but it's OK to access it
-while in the tense state (we will switch to the restricted address
-space, but this is OK because we will have a chance to asi_enter()
-again before we get back to the untrusted code). 
+diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/uapi/asm/socket.h
+index aa9cd4b951fe..96831c988606 100644
+--- a/arch/parisc/include/uapi/asm/socket.h
++++ b/arch/parisc/include/uapi/asm/socket.h
+@@ -132,16 +132,16 @@
+ #define SO_PASSPIDFD		0x404A
+ #define SO_PEERPIDFD		0x404B
+ 
+-#define SO_DEVMEM_LINEAR	78
+-#define SCM_DEVMEM_LINEAR	SO_DEVMEM_LINEAR
+-#define SO_DEVMEM_DMABUF	79
+-#define SCM_DEVMEM_DMABUF	SO_DEVMEM_DMABUF
+-#define SO_DEVMEM_DONTNEED	80
+-
+ #define SCM_TS_OPT_ID		0x404C
+ 
+ #define SO_RCVPRIORITY		0x404D
+ 
++#define SO_DEVMEM_LINEAR	0x404E
++#define SCM_DEVMEM_LINEAR	SO_DEVMEM_LINEAR
++#define SO_DEVMEM_DMABUF	0x404F
++#define SCM_DEVMEM_DMABUF	SO_DEVMEM_DMABUF
++#define SO_DEVMEM_DONTNEED	0x4050
++
+ #if !defined(__KERNEL__)
+ 
+ #if __BITS_PER_LONG == 64
+-- 
+2.49.0.395.g12beb8f557-goog
 
-BTW, just to be clear:
-
-1. Both of these are only relevant to code that's pretty deeply aware
-   of ASI. (TLB flushing code, entry code, stuff like that).
-
-2. To be honest whenever you write:
-
-     if (asi_in_critical_section())
-
-   You probably mean:
-
-     if (WARN_ON(asi_in_critical_section()))
-
-   For example if we try to flush the TLB in the critical section,
-   there's a thing we can do to handle it. But that really shouldn't
-   be necessary.  We want the critical section code to be very small
-   and straight-line code.
-
-   And indeed in the present code we don't use
-   asi_in_critical_section() for anything bur WARNing.
-
-> asi_is_relaxed() checks if the thread is outside an ASI critical
-> section.
-
-Now I see it written this way, this is probably the best way to
-conceptualise it. Instead of having two concepts "tense/relaxed" vs
-"ASI critical section" we could just say "the task is in a critical
-section" vs "the CPU is in a critical section". So we could have
-something like:
-
-bool asi_task_critical(void);
-bool asi_cpu_critical(void);
-
-(They could also accept an argument for the task/CPU, but I can't see
-any reason why you'd peek at another context like that).
-
---
-
-For everything else, Ack to Boris or +1 to Yosry respectively.
 
