@@ -1,159 +1,225 @@
-Return-Path: <linux-parisc+bounces-3471-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3472-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4890DA6BFB0
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Mar 2025 17:21:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CA0A6C0D3
+	for <lists+linux-parisc@lfdr.de>; Fri, 21 Mar 2025 18:06:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 314F37AA312
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Mar 2025 16:17:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8B2318981F0
+	for <lists+linux-parisc@lfdr.de>; Fri, 21 Mar 2025 17:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A0C22CBF1;
-	Fri, 21 Mar 2025 16:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0907F22B8CF;
+	Fri, 21 Mar 2025 17:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ag7J/jkj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iYngl1c/"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836D022CBDC;
-	Fri, 21 Mar 2025 16:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220102F43;
+	Fri, 21 Mar 2025 17:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742573859; cv=none; b=q4JZ3YUJLWdoGc+Bd1tTZX2PEcD1tnHBYCx2I9yoC9yrgCo1yQqfyZpTjuyQ4qnEyGvi6n6CODQInGiGfp6Hw4hL1hLTfth2WfcUzK21fg0e5nU8gqwlfUDnqqckuEhFAyLp1WRDp9B8vQeFbqBbltGhjF71tFFZ9ivVGi7O7p0=
+	t=1742576763; cv=none; b=nh2JPmM7AEK5d63GrGTYX8D8vAhklhb1xwE/DnrS9NR1u4IPmwU1jkKfxRqtMLahN0T7Whx40Z81sjqxNikMM/GfCEcT6RXuey1chjGEWPSGQcIggTdEgY9GjgcfDHx1Rl3dYzpXNISWzKw/KQcHr/18WHt2FsKFzLGHTzIL3IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742573859; c=relaxed/simple;
-	bh=K7QVaDnAGXLmGEUEBzanuOP8h9JUI6CUFV+cdqqmN/o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mT6rsutZgiQ5fHKLBUJYT6C38W3alafnZN+YVU0kkfSIa354VN/xKiYsl/fUgXBAS/mWJo4Kg/pxttLsx/MdGwdUVhRTMc8yjw7uNCeiKppwRiHzs6DPZWFdw+oiVPnDS9UImV3OCPquT6JQbmXZi2kHIX6ZplBYEbr9zuU16Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ag7J/jkj; arc=none smtp.client-ip=209.85.166.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1742576763; c=relaxed/simple;
+	bh=n9/WVuTJiRxEQG1Hl0uQJuC2jaPbsPAQvGluwkYAflA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K9s76l3pugIlq90oyMt61Ksxym72sKYVLhd7ryYKPz8m+/qeCyGB3JGD15R4xkGnwjv+QzGo+8gqoisYj8nfG6VGSJV1aiyPIvf4sBb6VEEJ/1+XW6RriYYklK+fz3gjP+cd4jdAQOCN3aJ52JSTDHMoKGTurtsIRWa6EC6Vm0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iYngl1c/; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3d445a722b9so10883155ab.3;
-        Fri, 21 Mar 2025 09:17:37 -0700 (PDT)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-223f4c06e9fso38313515ad.1;
+        Fri, 21 Mar 2025 10:06:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742573856; x=1743178656; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JB2LddsMl//YUnKCjcOJrbsbuFk6pwEh4cQ45Dr5HRc=;
-        b=ag7J/jkjRpZNwaooJCx7zfI3uEEtOn7/IPcDFfF8Xkok2UMZu1cm/2RDmi/86syeTk
-         EanM2338tqRw42MalzuthMKegV4ERonWtWLZn3HZBPkr0ozzVlUF+lxArbYHWWrqfp/T
-         0xyDX3C4ghduSnUO0XKQCET+zEp2h5vtycLyuKo9WvmkCtuOz8fhOxco4G+DOg6Ga9Gr
-         t3fOzxpRY4AguesHhQgE/FPOA6d/j2DW7HabLzMk530urFSx95ekX49WcILF1x8hUL5y
-         QqexIF2kMAntdmPFmzZ4WZrNyYlccx7Q/q7o100zu9En6EAQgt4glwSMJ2/Ut5CHI3e8
-         jXNw==
+        d=gmail.com; s=20230601; t=1742576760; x=1743181560; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=DGn88oPkGY52kMYyELFbKZ2t+jeQDt845yU5wPNCV7I=;
+        b=iYngl1c/lGFAzAEOcU53oOWcjgSzio2s1pdT3JmGra8iE8li0NDHJRZrwiDvLHCRjs
+         nvI0zNmwSO5lnZj0wCqjTAQLCLd1+TeEa+o2qh6jOsNsQXLZDIovvDImvVlf+MJ+ai19
+         GWZ/ZFVRcd8RKt4ftjczzm7UKsOG+22CARGS8A6zJ0ngfa78NPQydduamJXYPwSH9EZ6
+         9003bTONlp/qhWwRDTcEJopGbGFTuM5qrUuQVKlTuh0712ogzMcqJ5NvKRfbO463wZxZ
+         xZmMJj8M+jJ3GWUQgOtQAbNWXYsZnrUZugxLhrp62HOPh+g2BGMMq+dL36zkG/rr7hPw
+         DS3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742573856; x=1743178656;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JB2LddsMl//YUnKCjcOJrbsbuFk6pwEh4cQ45Dr5HRc=;
-        b=sJmqu1xIi+4WWkSkcwddLjUhfLnSv7PkGM9dot4EaMlculE5LzAgG/nDqm0MOQ9sud
-         473qnlwRPbx8EHvPYzZMz9e7F0YLg9qn/I7NMLOoLOtVH6YKdpqrr43TLuKgHvYTlI1Y
-         e8WvyFCrEKkAaT4NUkWmPnrQJFdPZW/Au5SXK1CbAs3QccvygzHrSsT65ApVbr121iqh
-         z/96eTFVcD6v1/5eI2nTmqS1wqBr657NPF3Q5SvbZzTQOBXEsdWexwHCIkyRurPXpUzT
-         r5CiEHswTZc5JXuZKsLEPexRLUjf0YEIRkD0FuLEk/gJ6JBC5JDUJDdYneemJqfDEzs0
-         HqWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUEDzZIaNkvahXth2HjX8qzR245VW3Dj8VHIbkOe1npA4NQOQI468BXMtzwjVcZMOUTU9qiHX/08Abzm94=@vger.kernel.org, AJvYcCX3rpP/VhrSrMwMYOTzswppBoffzvEI4/QGn8uJfQRV9we8kk87IrCbSr5+HdLywQKg+DO7ShjU@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq1mJiFk0prlnzMBilhLwvBMY0v1g5i2c9pn3U3dLvpNdD4FYI
-	xzqCBw9fgs89cuOgwQf7QnnAwnh3oI3vz8xl03Hs8Hz4nWPXJ6+Z+BbxwSeR5zh/d5pQRaWwX7r
-	/MY2gIhPHuULCtJCVM24AnvsuXro=
-X-Gm-Gg: ASbGncuwuxDDZveHCJfoqDEys2vvSkVm+MojPbIQ+g0vSFrumcOHKidyOhv38iM2f26
-	X6ug/QGRNFsLbzYbycS0CVi0OQLI71ZNnHCjxkK1oXU7fwFx54ysckkzJi3NkWR+UvUaO87vP7K
-	LhLIcxuNmDgElEDUcP9yLsHHq8Z/coUC1RnXIl5A==
-X-Google-Smtp-Source: AGHT+IF/cTwa/Ayq5CoNHqC35AhWyYP5kDowB9jCEl7LGxlA43AUsug/c0VuT+er56UZPSwPE7unIoT/6An3lvz8EGw=
-X-Received: by 2002:a05:6e02:1fe2:b0:3d3:faad:7c6f with SMTP id
- e9e14a558f8ab-3d5960cd064mr37698385ab.5.1742573856023; Fri, 21 Mar 2025
- 09:17:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742576760; x=1743181560;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DGn88oPkGY52kMYyELFbKZ2t+jeQDt845yU5wPNCV7I=;
+        b=gny9UOCFPHO59n9ix1l8nWdSEi5Sh69DwAuKugCFcOlP+WoVUTxKlkxfMZsLQbUUJX
+         tLRDNq0Q+tp3NJVudkCHFxoSVdLgw6ScfCYh/2FWBPQ+rZj3XFP+GTjunNPZs3vzFrcU
+         A/z5HJykxM2XhGVhal/GZAwiiwougnFDT+EKRuPqTPcuBXg136zmETmkNTNIEbLfeC17
+         f2YSnwVGD0U9kITXwcHIjrOCnDHyWJuWs2zJ1RV5Ed8RwreaUg0ZvpJvsEr8wAbaq1EX
+         JqUQnzzSFXFThaSd3CmW3kSDkL2qcIMoEDDwwyCVee5YJsSe6BgtIu4yx52zXdOp/IKX
+         OkPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOuVXnCc41j2VPEQ5iYx5r5k1g0IqSBNCtL6Y/0+xbyfdN6zZXcWygUR6lcpM66MG6RVsHN5j+4QiqeO31@vger.kernel.org, AJvYcCUzQeHKKJ+Effu/08oXMwMCwFiGWwnJTONemos4xwypZnLfs23H57Rmc3MdAzcLBCKrnioCTyNvY8Qp8OovhR3C@vger.kernel.org, AJvYcCUzhu/GB8vfREJptOfRWSYLzDnjyT1el4YRof/WsItv7R0N4CSEEcOHF2fm0cpJNi0ATcjhDB6sAJ4E@vger.kernel.org, AJvYcCV3fjalcH0vHDcE+5fQVUnMvX6Puxo0gmpO+y4rKm8s7uEDXTcB4oBVUDYwPCdBdjN8Q2+nDrXw7r1Zdw==@vger.kernel.org, AJvYcCW9/ydJlAw+Mu7t4kyv6aezLeteosn9p+7O/ygo8m9tHn7WPzm5EgurmbOHeEy0iVlrAUkJfV8AAgrqdvs5@vger.kernel.org, AJvYcCXZeXtzt7kVNpIvLL6pLEZSgHqXd3DNQvy9QDX8b7TegQs1zt9L4VOti2+TGg73gTKZ/NUckbx/0RE=@vger.kernel.org, AJvYcCXiIuS+Ueyz0g3sOubfDqN/xh/IGox3TI0pTIwmuoTksGN5kspMqzJzNe5rLGY8tU5Hhf7vG6ZYXYzR@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPLDThGOy6wSz5n0QCJhWa1iQOdDbv78UNV7x9bRQE+q3LRBTx
+	y29AA9Ii/QX6d4Sm0jfURwC2WMmxoLTli8G6qPqU6zYDYf4Rtpjz
+X-Gm-Gg: ASbGncsQf/H2A7/bucwuS8q5IdPsJmyV7y8E1XSYD1mZBD/6KjTh70GyNbt4adeYxBI
+	vGfGcPAYqjXuzSxB765411on0f6gZ5JQZaG8M3ylBvFEu4qj5q7FfING1Zr9K8cqe1YzSuUdVIS
+	JWfTZFX/ac5D4zokNy0QrlUHJv/rFsW2m0y5BP6MhO94kp1Am9FZpY2bWSekXLjhir7nkuZw2LD
+	humKf864SVqaF9B/U2Ctm6trjZYm06fhNsKdLRGqhl+F96YvMhjbOYGmoYXfIrz9GfTK9OUnu7w
+	4Eg586jMb49s6kbPrMlriaY59B6Bz/yxM/qneyyYwvM+zUMTWTtGF6x48kNd5vXEgEfmV1xd9JU
+	OY3l4RPoIVyFk0T2aGQ==
+X-Google-Smtp-Source: AGHT+IGlJ+Z2e1+BqNuKZjJeYaVTSO5uEIrxfNDx54p4mNFYbbGfGIs11ZjWWb6jUGSm+z6+aHdutQ==
+X-Received: by 2002:a17:902:ce84:b0:223:fb95:b019 with SMTP id d9443c01a7336-2265e7a1b2emr136230625ad.24.1742576760001;
+        Fri, 21 Mar 2025 10:06:00 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22780f45879sm19661595ad.65.2025.03.21.10.05.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 21 Mar 2025 10:05:59 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <b6bb68f0-7e93-4db2-9fe6-f615f06ddeb1@roeck-us.net>
+Date: Fri, 21 Mar 2025 10:05:55 -0700
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250321103848.550689-1-praan@google.com>
-In-Reply-To: <20250321103848.550689-1-praan@google.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Fri, 21 Mar 2025 23:16:59 +0700
-X-Gm-Features: AQ5f1JqjM4GK6CzHqw2vIfkX6OSsc016A653q3dy7QXb9gXqPTROO7S1fob5YLM
-Message-ID: <CAL+tcoBhKBhXxN0H0dmZVuD5x=cnUaZH0ZMhb2WM9ndDsqJsuQ@mail.gmail.com>
-Subject: Re: [PATCH] net: Fix the devmem sock opts and msgs for parisc
-To: Pranjal Shrivastava <praan@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	Willem de Bruijn <willemb@google.com>, Mina Almasry <almasrymina@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/14] s390: Add support for suppressing warning
+ backtraces
+To: Alessandro Carminati <acarmina@redhat.com>,
+ linux-kselftest@vger.kernel.org
+Cc: David Airlie <airlied@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>, Kees Cook <keescook@chromium.org>,
+ Daniel Diaz <daniel.diaz@linaro.org>, David Gow <davidgow@google.com>,
+ Arthur Grillo <arthurgrillo@riseup.net>,
+ Brendan Higgins <brendan.higgins@linux.dev>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Maxime Ripard
+ <mripard@kernel.org>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?=
+ <ville.syrjala@linux.intel.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ Alessandro Carminati <alessandro.carminati@gmail.com>,
+ Jani Nikula <jani.nikula@intel.com>, dri-devel@lists.freedesktop.org,
+ kunit-dev@googlegroups.com, linux-arch@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ loongarch@lists.linux.dev, x86@kernel.org,
+ Linux Kernel Functional Testing <lkft@linaro.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+References: <20250313114329.284104-1-acarmina@redhat.com>
+ <20250313114329.284104-11-acarmina@redhat.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20250313114329.284104-11-acarmina@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 21, 2025 at 5:39=E2=80=AFPM Pranjal Shrivastava <praan@google.c=
-om> wrote:
->
-> The devmem socket options and socket control message definitions
-> introduced in the TCP devmem series[1] incorrectly continued the socket
-> definitions for arch/parisc.
->
-> The UAPI change seems safe as there are currently no drivers that
-> declare support for devmem TCP RX via PP_FLAG_ALLOW_UNREADABLE_NETMEM.
-> Hence, fixing this UAPI should be safe.
->
-> Fix the devmem socket options and socket control message definitions to
-> reflect the series followed by arch/parisc.
->
-> [1]
-> https://lore.kernel.org/lkml/20240910171458.219195-10-almasrymina@google.=
-com/
->
-> Fixes: 8f0b3cc9a4c10 ("tcp: RX path for devmem TCP")
-> Signed-off-by: Pranjal Shrivastava <praan@google.com>
-
-When I did the review for [1], I noticed that. Regarding to the patch
-itself, feel free to add my tag in the next revision:
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-
-[1]: https://web.git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/com=
-mit/?id=3D23b763302ce0
-
-Thanks,
-Jason
-
-
+On 3/13/25 04:43, Alessandro Carminati wrote:
+> From: Guenter Roeck <linux@roeck-us.net>
+> 
+> Add name of functions triggering warning backtraces to the __bug_table
+> object section to enable support for suppressing WARNING backtraces.
+> 
+> To limit image size impact, the pointer to the function name is only added
+> to the __bug_table section if both CONFIG_KUNIT_SUPPRESS_BACKTRACE and
+> CONFIG_DEBUG_BUGVERBOSE are enabled. Otherwise, the __func__ assembly
+> parameter is replaced with a (dummy) NULL parameter to avoid an image size
+> increase due to unused __func__ entries (this is necessary because
+> __func__ is not a define but a virtual variable).
+> 
+> Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Cc: Heiko Carstens <hca@linux.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
 > ---
->  arch/parisc/include/uapi/asm/socket.h | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/parisc/include/uapi/asm/socket.h b/arch/parisc/include/=
-uapi/asm/socket.h
-> index aa9cd4b951fe..96831c988606 100644
-> --- a/arch/parisc/include/uapi/asm/socket.h
-> +++ b/arch/parisc/include/uapi/asm/socket.h
-> @@ -132,16 +132,16 @@
->  #define SO_PASSPIDFD           0x404A
->  #define SO_PEERPIDFD           0x404B
->
-> -#define SO_DEVMEM_LINEAR       78
-> -#define SCM_DEVMEM_LINEAR      SO_DEVMEM_LINEAR
-> -#define SO_DEVMEM_DMABUF       79
-> -#define SCM_DEVMEM_DMABUF      SO_DEVMEM_DMABUF
-> -#define SO_DEVMEM_DONTNEED     80
-> -
->  #define SCM_TS_OPT_ID          0x404C
->
->  #define SO_RCVPRIORITY         0x404D
->
-> +#define SO_DEVMEM_LINEAR       0x404E
-> +#define SCM_DEVMEM_LINEAR      SO_DEVMEM_LINEAR
-> +#define SO_DEVMEM_DMABUF       0x404F
-> +#define SCM_DEVMEM_DMABUF      SO_DEVMEM_DMABUF
-> +#define SO_DEVMEM_DONTNEED     0x4050
-> +
->  #if !defined(__KERNEL__)
->
->  #if __BITS_PER_LONG =3D=3D 64
-> --
-> 2.49.0.395.g12beb8f557-goog
->
->
+>   arch/s390/include/asm/bug.h | 17 ++++++++++++++---
+>   1 file changed, 14 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/s390/include/asm/bug.h b/arch/s390/include/asm/bug.h
+> index c500d45fb465..44d4e9f24ae0 100644
+> --- a/arch/s390/include/asm/bug.h
+> +++ b/arch/s390/include/asm/bug.h
+> @@ -8,6 +8,15 @@
+>   
+>   #ifdef CONFIG_DEBUG_BUGVERBOSE
+>   
+> +#ifdef CONFIG_KUNIT_SUPPRESS_BACKTRACE
+> +# define HAVE_BUG_FUNCTION
+> +# define __BUG_FUNC_PTR	"	.long	%0-.\n"
+> +# define __BUG_FUNC	__func__
+
+gcc 7.5.0 on s390 barfs; it doesn't like the use of "__func__" with "%0-."
+
+drivers/gpu/drm/bridge/analogix/analogix-i2c-dptx.c: In function 'anx_dp_aux_transfer':
+././include/linux/compiler_types.h:492:20: warning: asm operand 0 probably doesn't match constraints
+
+I was unable to find an alternate constraint that the compiler would accept.
+
+I don't know if the same problem is seen with older compilers on other architectures,
+or if the problem is relevant in the first place.
+
+gcc 10.3.0 and later do not have this problem. I also tried s390 builds with gcc 9.4
+and 9.5 but they both crash for unrelated reasons.
+
+If this is a concern, the best idea I have is to make KUNIT_SUPPRESS_BACKTRACE
+depend on, say,
+	depends on CC_IS_CLANG || (CC_IS_GCC && GCC_VERSION >= 100300)
+
+A more complex solution might be to define an architecture flag such
+as HAVE_SUPPRESS_BACKTRACE, make that conditional on the gcc version
+for s390 only, and make KUNIT_SUPPRESS_BACKTRACE depend on it.
+
+Guenter
+
 
