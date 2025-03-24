@@ -1,220 +1,164 @@
-Return-Path: <linux-parisc+bounces-3486-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3487-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08084A6D5B9
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Mar 2025 09:03:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ABA0A6D8A1
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Mar 2025 11:50:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B84E189083B
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Mar 2025 08:03:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB8E93B42A1
+	for <lists+linux-parisc@lfdr.de>; Mon, 24 Mar 2025 10:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203E525C6E9;
-	Mon, 24 Mar 2025 08:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8801A25DB1F;
+	Mon, 24 Mar 2025 10:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="jQ02LsMk";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JU2xrRaX"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DqSoWvn2"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EEE18B470;
-	Mon, 24 Mar 2025 08:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0066122339;
+	Mon, 24 Mar 2025 10:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742803377; cv=none; b=E/CWVjYJIFIcJp7gXI2jYzeHx8nJNBXY2EpcWcU26RwJd4nx753qbGD1spiE8kmUIrkJQuobtlU+B+WEl8K7ToBfcLtY7NDU1QxEqjlRL7sV+1T8RaH8h65WrggiR3ZJPho6Sy1Eeq22pZdb+VEloyqs9EkrcPIfc6RS36CeBJA=
+	t=1742813299; cv=none; b=K938wWY4WcZ4k36GtCuJijgWnIWMIuU80hnsjweqryP62qO+JQYYCSF1b6GnqMLgWwyDsBpS/6xbM9/YzkiLRILUELjUn079p5gZ2lpHhqK3WCQIznWM5BvxY9nXm0gY7Q8lHNY/wMrolkfFCHgeZomNXrtaatJf1MlSxBV+jT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742803377; c=relaxed/simple;
-	bh=WnEWpX2LEQgbBaMp8eYL6YPucjJVn5f6DVzd6dzKvos=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=fH9F/kFYUCkcjAq/AMYgFJphMXmt1sQvDaUCg8k1fS7jvIPY9toAIOCyeOSh8KLrfnIC0wZ+m/TW8Ik/0le23h3vWIQIqP7KVJIXKmPld33ffUnUrB4BxB3XXFsiYu9UjSKEMRPDN/Y9XqBDqtuW4PjOZ4M45zlEmShVkIUBaFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=jQ02LsMk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JU2xrRaX; arc=none smtp.client-ip=103.168.172.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfout.phl.internal (Postfix) with ESMTP id 3D00E1382CB7;
-	Mon, 24 Mar 2025 04:02:52 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-07.internal (MEProxy); Mon, 24 Mar 2025 04:02:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1742803372;
-	 x=1742889772; bh=adzYBEKh/yqg4YHIRxasSNX+4SOl9DvVZEEHKyF6Ds8=; b=
-	jQ02LsMkYJca5oAbaoAVP9lOqKesMFcf3kY1L6937OmT0RIMP+pgHl3L1dJmtUZ8
-	k/oIPSTiyQ63s1qafFQcIgJXOkEbpOEkyaeRaLFkKhMuTpd2ME/ehnGtpsZq2LIa
-	lpXEtmbFSyOUzqSiGPeg73gqBUgXtcSonD1R3oxGhMyfFs8reSVN3ADa/cs0UxKe
-	hHhGQBg2Q7y9RA+D9FFyTHXaKxZqmWb7X8+bHjpTuBuzrSQXYWUXziOyqusCCB4Y
-	/tuOVhPSnytMqzpEhYM0RiZc3Vt/xDu56HS/aG+GjGl7Ri+BfUg8IAszXw8zFtHM
-	ZQxdQh4FTxF3iidupy0y6g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1742803372; x=
-	1742889772; bh=adzYBEKh/yqg4YHIRxasSNX+4SOl9DvVZEEHKyF6Ds8=; b=J
-	U2xrRaX/2LY9S62Ap4tyti7bpdYWu0788m1xv1Us5AaoSlmFtSZV7NG0KkHcL850
-	NSIGgD4FiBjJjEe/JcbULMR/iPeuzj7WF1BpZnjwJQBBibEGIhDfh62ARqhPryuH
-	8biIOKbipOqu/tWA6bMysxa/KaMd2yGqyqP/F6XRwI3wY5AUJWE73/mf57kWJQB0
-	C7aXariz+LeW6Grl9nOvLiCsU2Wh87i/eFPfl9aJGty1Ln4CPQegQeRwwJZRb5VW
-	8bUzUnJJErGClA1KJkUhWhQjENriuRIYIhYOFnNQx9gUX41bwanzHuUfNldnR/+r
-	yi93+pyZPYrSlPDFdR1Hw==
-X-ME-Sender: <xms:qhHhZ5nZTPn4CkOVtKO4if16jD0npIjwWI7yBFV-Iz-38wrU7BOfPQ>
-    <xme:qhHhZ004OsA2BUHO9qMmzdirvPjc7MWwko5173S1rvweRDQsG4L5GO_itGAGnl9_R
-    q9SSvL7-OXbP3s4E0I>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduheelvdegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
-    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
-    vdeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtshgsohhgvghnugesrghlph
-    hhrgdrfhhrrghnkhgvnhdruggvpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghr
-    ohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrih
-    gurdgruhdprhgtphhtthhopehmrghtthhsthekkeesghhmrghilhdrtghomhdprhgtphht
-    thhopehnphhighhgihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhlvghrse
-    hgmhigrdguvgdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhr
-    tghpthhtohepjhgrmhgvshdrsghothhtohhmlhgvhieshhgrnhhsvghnphgrrhhtnhgvrh
-    hshhhiphdrtghomhdprhgtphhtthhopegrrhhnugeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:qhHhZ_p-u8s5pl3YM_1-PsEN9wBfKfwXvrHdL61Q-nhZDSolr_K7Mw>
-    <xmx:qhHhZ5kYRVJdV1MObn5MTFlxn9WLq1qINYV8-8l2m2E4SAKKl83-Ww>
-    <xmx:qhHhZ32z1LJiorBkFoyg-aZNO0xESpHo-jDwSf5gWXDLEZ3-2Qp6VA>
-    <xmx:qhHhZ4tW9ZugFEiuVqPqdmmqi1kNe-aZmABnfDMdIQSnpAO8aZjmsw>
-    <xmx:rBHhZwffwYjZf1CcOqvx81hevZ9WxdyiSnJ2x_cAQyFRDDuaiwyi10Yb>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id E60322220073; Mon, 24 Mar 2025 04:02:49 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1742813299; c=relaxed/simple;
+	bh=KKpN7ifW0FwxjJpOhtFmsCId4QhbQ/vnhrEMIbMuqjo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N/M583F3bFLBRbgvNC6CsoWSCzPDFJSzTP7SQG5SN9QyCW7SfRpH1nNs4vNWEIPxwze2XaBc9g6gZBdpEIA/jwcQXC5mD4MSmRQPlIqs426tsjOk2rjlEd3VVQjNNP4NObmAvwoP916Am3ZHl+aYqkvOwqfkxo6v0MRf0yUt7Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DqSoWvn2; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52O9ptko016767;
+	Mon, 24 Mar 2025 10:47:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=VIga+xvQk4RxwLl37s8roD8US+RxZH
+	6wgAnN7cz6dUM=; b=DqSoWvn2hNYTALQxMlD7ZFoi+4zq0N1yWuxe53qPbwlofS
+	11EDXetv8BM4utLmdlLw0MYgxwUAi5gSGHNoREjNHy90tDmAWBicdY3u5OsLqFNm
+	FswP8lh4U8KL0Z+kmbDMnrfazqs0pMLjoe8sYQPDDhg+bESIKfnjQkeT2J5kZ8gZ
+	uTpBQo4JY573uCvrEvB6/7EY+71e5v7MwS2GmtATqmPLrQY+OFUtee+p4N29MFed
+	yMLrXbyFZsn7mGVDVNB3gW9NBCAPa3n7ktStYlAB993VUD+ET9ZqifqLhNy/ADTm
+	3QJgYd+LcjsIPnDPueY9NsSPBS5ASB0qja99r70Q==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45jkqp44qf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Mar 2025 10:47:11 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52OAlA92022659;
+	Mon, 24 Mar 2025 10:47:10 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45jkqp44qc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Mar 2025 10:47:10 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52O77iAg025489;
+	Mon, 24 Mar 2025 10:47:09 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45j7wywy1a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Mar 2025 10:47:09 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52OAl5LT16187800
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Mar 2025 10:47:05 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 694862004B;
+	Mon, 24 Mar 2025 10:47:05 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CD8DB20040;
+	Mon, 24 Mar 2025 10:47:03 +0000 (GMT)
+Received: from osiris (unknown [9.179.14.66])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 24 Mar 2025 10:47:03 +0000 (GMT)
+Date: Mon, 24 Mar 2025 11:47:02 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Alessandro Carminati <acarmina@redhat.com>
+Cc: Guenter Roeck <linux@roeck-us.net>, linux-kselftest@vger.kernel.org,
+        David Airlie <airlied@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        =?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Daniel Diaz <daniel.diaz@linaro.org>, David Gow <davidgow@google.com>,
+        Arthur Grillo <arthurgrillo@riseup.net>,
+        Brendan Higgins <brendan.higgins@linux.dev>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Alessandro Carminati <alessandro.carminati@gmail.com>,
+        Jani Nikula <jani.nikula@intel.com>, dri-devel@lists.freedesktop.org,
+        kunit-dev@googlegroups.com, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        loongarch@lists.linux.dev, x86@kernel.org,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: Re: [PATCH v4 10/14] s390: Add support for suppressing warning
+ backtraces
+Message-ID: <20250324104702.12139E73-hca@linux.ibm.com>
+References: <20250313114329.284104-1-acarmina@redhat.com>
+ <20250313114329.284104-11-acarmina@redhat.com>
+ <b6bb68f0-7e93-4db2-9fe6-f615f06ddeb1@roeck-us.net>
+ <CAGegRW4GinPmsav5=VBfjXBKy4cUEs5FWv-ixXODk7ajZ69vYg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: T53f4a10e7512c522
-Date: Mon, 24 Mar 2025 09:02:28 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Greg Ungerer" <gerg@linux-m68k.org>, "Arnd Bergmann" <arnd@kernel.org>,
- Linux-Arch <linux-arch@vger.kernel.org>
-Cc: "Richard Henderson" <richard.henderson@linaro.org>,
- "Matt Turner" <mattst88@gmail.com>,
- "Geert Uytterhoeven" <geert@linux-m68k.org>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Helge Deller" <deller@gmx.de>, "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Naveen N Rao" <naveen@kernel.org>,
- "Yoshinori Sato" <ysato@users.sourceforge.jp>,
- "Rich Felker" <dalias@libc.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- "Julian Vetter" <julian@outer-limits.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-Message-Id: <4a31c6a8-7c99-4d8f-8248-92e0e52b8db6@app.fastmail.com>
-In-Reply-To: <64f226e5-7931-40ba-878a-a28688da82fd@linux-m68k.org>
-References: <20250315105907.1275012-1-arnd@kernel.org>
- <20250315105907.1275012-7-arnd@kernel.org>
- <64f226e5-7931-40ba-878a-a28688da82fd@linux-m68k.org>
-Subject: Re: [PATCH 6/6] m68k/nommu: stop using GENERIC_IOMAP
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGegRW4GinPmsav5=VBfjXBKy4cUEs5FWv-ixXODk7ajZ69vYg@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: -BXK6qMXWLef6jiJ2R9hHCsaI_IjDOmx
+X-Proofpoint-ORIG-GUID: 40o9NRITvQhnDK-iPsw_sUFfSwFPyp4T
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-24_04,2025-03-21_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 spamscore=0 adultscore=0
+ mlxscore=0 mlxlogscore=810 clxscore=1011 malwarescore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503240076
 
-On Mon, Mar 24, 2025, at 02:33, Greg Ungerer wrote:
-> Hi Arnd,
->
-> On 15/3/25 20:59, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->> 
->> There is no need to go through the GENERIC_IOMAP wrapper for PIO on
->> nommu platforms, since these always come from PCI I/O space that is
->> itself memory mapped.
->> 
->> Instead, the generic ioport_map() can just return the MMIO location
->> of the ports directly by applying the PCI_IO_PA offset, while
->> ioread32/iowrite32 trivially turn into readl/writel as they do
->> on most other architectures.
->> 
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> With this applied this fails to build for me:
->
->    UPD     include/generated/utsversion.h
->    CC      init/version-timestamp.o
->    LD      vmlinux
-> m68k-linux-uclibc-ld: drivers/pci/quirks.o: in function 
-> `quirk_switchtec_ntb_dma_alias':
-> quirks.c:(.text+0x23e4): undefined reference to `pci_iomap'
-> m68k-linux-uclibc-ld: quirks.c:(.text+0x24fe): undefined reference to 
-> `pci_iounmap'
-> m68k-linux-uclibc-ld: drivers/pci/quirks.o: in function 
-> `disable_igfx_irq':
-> quirks.c:(.text+0x32f4): undefined reference to `pci_iomap'
-> m68k-linux-uclibc-ld: quirks.c:(.text+0x3348): undefined reference to 
-> `pci_iounmap'
+On Fri, Mar 21, 2025 at 10:05:42PM +0100, Alessandro Carminati wrote:
+> > > +#ifdef CONFIG_KUNIT_SUPPRESS_BACKTRACE
+> > > +# define HAVE_BUG_FUNCTION
+> > > +# define __BUG_FUNC_PTR      "       .long   %0-.\n"
+> > > +# define __BUG_FUNC  __func__
+> >
+> > gcc 7.5.0 on s390 barfs; it doesn't like the use of "__func__" with "%0-."
 
-Thanks for the report, I was able to reproduce the problem now
-and applied the fixup below. I had tested m5475evb_defconfig earlier,
-and that built cleanly with PCI enabled, but I had missed how
-that still used GENERIC_IOMAP because it has CONFIG_MMU enabled.
-
-Does this fixup work for you?
-
-On a related note, I'm curious about how the MCF54xx chips are
-used in practice, as I see that they are the only coldfire chips
-with PCI and they all have an MMU. Are there actual users of these
-chips that have PCI but choose not to use the MMU? 
-
-      Arnd
-
-8<-----
-From a36995e2a64711556c6773797367d165828f6705 Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 24 Mar 2025 07:53:47 +0100
-Subject: [PATCH] m68k: coldfire: select PCI_IOMAP for PCI
-
-After I dropped CONFIG_GENERIC_IOMAP, some PCI drivers started failing
-to link when CONFIG_MMU is disabled:
-
-ERROR: modpost: "pci_iounmap" [drivers/video/fbdev/i740fb.ko] undefined!
-ERROR: modpost: "pci_iounmap" [drivers/video/fbdev/vt8623fb.ko] undefined!
-ERROR: modpost: "pci_iomap_wc" [drivers/video/fbdev/vt8623fb.ko] undefined!
-ERROR: modpost: "pci_iomap" [drivers/video/fbdev/vt8623fb.ko] undefined!
-ERROR: modpost: "pci_iounmap" [drivers/video/fbdev/s3fb.ko] undefined!
 ...
 
-It turns out that there were two mistakes in my patch: on !MMU I forgot
-to enable CONFIG_GENERIC_PCI_IOMAP, and for Coldfire with MMU enabled,
-teh GENERIC_IOMAP was left in place but incorrectly configured.
+> GCC makes significant efforts to handle this, and for several
+> architectures, it manages to solve the problem.
+> However, this is not universally the case.
+> Additionally, -fPIC is not widely used in kernel code... I have only
+> seen it used for VDSO, the x86 boot piggyback decompressor, PowerPC
+> boot, and the s390x architecture.
+> 
+> That said, GCC has been mitigating this issue, allowing us to treat a
+> non-compile-time constant as if it were one.
+> A proof of this is that, at least since GCC 11, the s390x version of
+> GCC is able to build this code.
+> Before that... certainly in GCC 7.5 it couldn't.
+> 
+> A simple fix would be to restrict usage to GCC versions greater than
+> 11 for s390.
 
-Fixes: 9d48cc07d0d7 ("m68k/nommu: stop using GENERIC_IOMAP")
-Reported-by: Greg Ungerer <gerg@linux-m68k.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-
-diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-index b50c275fa94d..eb5bb6d36899 100644
---- a/arch/m68k/Kconfig
-+++ b/arch/m68k/Kconfig
-@@ -18,12 +18,13 @@ config M68K
- 	select DMA_DIRECT_REMAP if M68K_NONCOHERENT_DMA && !COLDFIRE
- 	select GENERIC_ATOMIC64
- 	select GENERIC_CPU_DEVICES
--	select GENERIC_IOMAP if HAS_IOPORT && MMU
-+	select GENERIC_IOMAP if HAS_IOPORT && MMU && !COLDFIRE
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_LIB_ASHLDI3
- 	select GENERIC_LIB_ASHRDI3
- 	select GENERIC_LIB_LSHRDI3
- 	select GENERIC_LIB_MULDI3
-+	select GENERIC_PCI_IOMAP if PCI
- 	select HAS_IOPORT if PCI || ISA || ATARI_ROM_ISA
- 	select HAVE_ARCH_LIBGCC_H
- 	select HAVE_ARCH_SECCOMP
+But please add that dependency only for this new feature for the time
+being. Right now I would not like to see that s390 is the only architecture
+(besides parisc) which requires a much higher minimum gcc level than every
+other architecture. Unless there are specific reasons.
 
