@@ -1,162 +1,92 @@
-Return-Path: <linux-parisc+bounces-3491-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3492-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FACA6E37A
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Mar 2025 20:27:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E102A6F464
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Mar 2025 12:40:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1B463AB3BE
-	for <lists+linux-parisc@lfdr.de>; Mon, 24 Mar 2025 19:27:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F176A16BC31
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Mar 2025 11:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E5319CC34;
-	Mon, 24 Mar 2025 19:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A3E2561C6;
+	Tue, 25 Mar 2025 11:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="ZHOurTVq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GyFp6Cvv"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp-1909.mail.infomaniak.ch (smtp-1909.mail.infomaniak.ch [185.125.25.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80CC1946C3;
-	Mon, 24 Mar 2025 19:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6852561BF;
+	Tue, 25 Mar 2025 11:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742844436; cv=none; b=AFpPr5tpqWaiACO7dK0fdWmblXc6f3tPmLJI0RU5nhTjC24BJCjqCDpmtPkf419tHz/9qUevjzxs/9G20HHQpu6+/E1/mmHPPydOL6cr9vt2TO6JRaEcnC3yQI8kK6JhS7f0wTdFyM214lEQxY5Z8IeVinkmsTS8vak+FwawhrU=
+	t=1742902800; cv=none; b=NbRrUlbcpXK/T55MwK0J9Li/V5EjHpcjYxoppiRQzxJGq6yWemtSL8LMbvT6vEWq1io5tba0wbZyYGzWVt6QtIIHm0rQI92iWrwICJPP33PwAYKbOSHkF8q687cJ7ZHJYFDmoYwHvyZa9ovATk+PSTVcrS67ukFFfZzgRcRaSe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742844436; c=relaxed/simple;
-	bh=P4P2z1eF/YNnOfLW8fBoOKbdAwyqWpJFO/rcNQNfqQo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KDkChI6jncu2zvmGkm8NEHE1qacfNW9Te+D/XibTAw2XAhrbYPTHhqJhgVKd14RdIcAZmDRx03ZCLZuNfzJSPeJNAh4f1JoOnnM40IrudtjMYWN7hh8dRCNWKbwen0RT8B8Ysea6M8HwQdqyMx4H888c16ezICAPw2ebwTwltvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=ZHOurTVq; arc=none smtp.client-ip=185.125.25.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
-Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10:40ca:feff:fe05:0])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4ZM32x2YZ7zdsP;
-	Mon, 24 Mar 2025 20:27:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1742844425;
-	bh=QBR/kecod01J1h193BKpllSnIdD5DJtmTOWxdGopk5I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZHOurTVqBYQHfSi3F6pdPowbpieWYs2igBgvPmtLeNtKh6bOX6LndXdRYsKY6jh9C
-	 KH3Sauy/1pIzJ/oIq5tcqOK2Grf+Vopzl7YTCM6Ps/dI4TzMQV42PBtmh1lSd4a4Ot
-	 uxKt6oeGXt0Fw5OGk8If/a4DunNXPqyIjb/UWnHQ=
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4ZM32v3B5vz9hp;
-	Mon, 24 Mar 2025 20:27:03 +0100 (CET)
-Date: Mon, 24 Mar 2025 20:27:02 +0100
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Andrey Albershteyn <aalbersh@redhat.com>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	selinux@vger.kernel.org, Andrey Albershteyn <aalbersh@kernel.org>
-Subject: Re: [PATCH v4 1/3] lsm: introduce new hooks for setting/getting
- inode  fsxattr
-Message-ID: <20250324.aThi9ioghiex@digikod.net>
-References: <20250321-xattrat-syscall-v4-1-3e82e6fb3264@kernel.org>
- <e2d5b27847fde03e0b4b9fc7a464fd87@paul-moore.com>
+	s=arc-20240116; t=1742902800; c=relaxed/simple;
+	bh=UJ3PR/aOzNTP/9EyaL5yfKfrM5PQAQcxIZh6cRaHv5o=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=MJ4lbz5uTzcbwXu2NDbhl284xMPMY/ZAb5taMBCQ2PqCi4t+F5PG0kUF7gScqvYslX+lhw8SzUrXo1sr3EbMYbk+TfYGPes1eqU42nuo2XaB3GkzVX4BmFLfi8KY3ofgKEQj626lz33zCcitVoyiJmd/tmNhoe1z3JhGx2CBP8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GyFp6Cvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2574C4CEE4;
+	Tue, 25 Mar 2025 11:39:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742902799;
+	bh=UJ3PR/aOzNTP/9EyaL5yfKfrM5PQAQcxIZh6cRaHv5o=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=GyFp6Cvvjiym38w/QOV2Q0F/Sd+TBFaHp5/hKLPOJPCGMV/izvygpSFlGA2dN2hB7
+	 rcQYhV1odBT2dTnW8FiDlUeoy9oFtEzD5TCIsKceMvJk3r6bnpE+Z9/KM0bi8Q1Sae
+	 rHXs9BLj5JLCUNChKPTSKOncVqX2hKq4GrmU9LHvdhzdBBeELz/DAIcg8q2GRlNZsy
+	 ZDfETDb3EQYEKp7YjfVBST1qAYK8CNyQqMO3Ub4vjDKV874i9FhBgoOX/LhuEM8mxh
+	 H5+erFp40Y56HGHYZqwU6JKgwQtnWL2beGXzcxHp1wz6ZErLNALNlcrytTm9x7B1+J
+	 HS4HFm4sJsrnQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33B96380CFE7;
+	Tue, 25 Mar 2025 11:40:37 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <e2d5b27847fde03e0b4b9fc7a464fd87@paul-moore.com>
-X-Infomaniak-Routing: alpha
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3] net: tulip: avoid unused variable warning
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174290283600.528269.2264732089213374671.git-patchwork-notify@kernel.org>
+Date: Tue, 25 Mar 2025 11:40:36 +0000
+References: <20250318-tulip-w1-v3-1-a813fadd164d@kernel.org>
+In-Reply-To: <20250318-tulip-w1-v3-1-a813fadd164d@kernel.org>
+To: Simon Horman <horms@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, deller@gmx.de, netdev@vger.kernel.org,
+ linux-parisc@vger.kernel.org
 
-On Fri, Mar 21, 2025 at 05:32:25PM -0400, Paul Moore wrote:
-> On Mar 21, 2025 Andrey Albershteyn <aalbersh@redhat.com> wrote:
-> > 
-> > Introduce new hooks for setting and getting filesystem extended
-> > attributes on inode (FS_IOC_FSGETXATTR).
-> > 
-> > Cc: selinux@vger.kernel.org
-> > Cc: Paul Moore <paul@paul-moore.com>
-> > 
-> > Signed-off-by: Andrey Albershteyn <aalbersh@kernel.org>
-> > ---
-> >  fs/ioctl.c                    |  7 ++++++-
-> >  include/linux/lsm_hook_defs.h |  4 ++++
-> >  include/linux/security.h      | 16 ++++++++++++++++
-> >  security/security.c           | 32 ++++++++++++++++++++++++++++++++
-> >  4 files changed, 58 insertions(+), 1 deletion(-)
-> 
-> Thanks Andrey, one small change below, but otherwise this looks pretty
-> good.  If you feel like trying to work up the SELinux implementation but
-> need some assitance please let me know, I'll be happy to help :)
-> 
-> > diff --git a/fs/ioctl.c b/fs/ioctl.c
-> > index 638a36be31c14afc66a7fd6eb237d9545e8ad997..4434c97bc5dff5a3e8635e28745cd99404ff353e 100644
-> > --- a/fs/ioctl.c
-> > +++ b/fs/ioctl.c
-> > @@ -525,10 +525,15 @@ EXPORT_SYMBOL(fileattr_fill_flags);
-> >  int vfs_fileattr_get(struct dentry *dentry, struct fileattr *fa)
-> >  {
-> >  	struct inode *inode = d_inode(dentry);
-> > +	int error;
-> >  
-> >  	if (!inode->i_op->fileattr_get)
-> >  		return -ENOIOCTLCMD;
-> >  
-> > +	error = security_inode_getfsxattr(inode, fa);
-> > +	if (error)
-> > +		return error;
-> > +
-> >  	return inode->i_op->fileattr_get(dentry, fa);
-> >  }
-> >  EXPORT_SYMBOL(vfs_fileattr_get);
-> > @@ -692,7 +697,7 @@ int vfs_fileattr_set(struct mnt_idmap *idmap, struct dentry *dentry,
-> >  			fa->flags |= old_ma.flags & ~FS_COMMON_FL;
-> >  		}
-> >  		err = fileattr_set_prepare(inode, &old_ma, fa);
-> > -		if (!err)
-> > +		if (!err && !security_inode_setfsxattr(inode, fa))
-> >  			err = inode->i_op->fileattr_set(idmap, dentry, fa);
-> >  	}
-> >  	inode_unlock(inode);
-> 
-> I don't believe we want to hide or otherwise drop the LSM return code as
-> that could lead to odd behavior, e.g. returning 0/success despite not
-> having executed the fileattr_set operation.
+Hello:
 
-Yes, this should look something like this:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
- 		err = fileattr_set_prepare(inode, &old_ma, fa);
- 		if (err)
- 			goto out;
- 		err = security_inode_setfsxattr(dentry, fa);
- 		if (err)
- 			goto out;
- 		err = inode->i_op->fileattr_set(idmap, dentry, fa);
- 		if (err)
- 			goto out;
+On Tue, 18 Mar 2025 13:53:34 +0000 you wrote:
+> There is an effort to achieve W=1 kernel builds without warnings.
+> As part of that effort Helge Deller highlighted the following warnings
+> in the tulip driver when compiling with W=1 and CONFIG_TULIP_MWI=n:
+> 
+>   .../tulip_core.c: In function ‘tulip_init_one’:
+>   .../tulip_core.c:1309:22: warning: variable ‘force_csr0’ set but not used
+> 
+> [...]
 
-> 
-> --
-> paul-moore.com
-> 
+Here is the summary with links:
+  - [net-next,v3] net: tulip: avoid unused variable warning
+    https://git.kernel.org/netdev/net-next/c/6165feda3d8c
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
