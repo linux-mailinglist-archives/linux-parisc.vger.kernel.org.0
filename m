@@ -1,54 +1,99 @@
-Return-Path: <linux-parisc+bounces-3540-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3541-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33308A7BC8C
-	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 14:21:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47ADBA7BE3E
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 15:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 361D7189E546
-	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 12:21:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1E5117771A
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 13:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1AE1F1927;
-	Fri,  4 Apr 2025 12:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34CA1EE7B1;
+	Fri,  4 Apr 2025 13:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DjbdX148"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XcOTpl7L";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="i1OMEcEa";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="XcOTpl7L";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="i1OMEcEa"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B411EEA33;
-	Fri,  4 Apr 2025 12:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5409C2E62C4
+	for <linux-parisc@vger.kernel.org>; Fri,  4 Apr 2025 13:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743769231; cv=none; b=fEdzHXmIl50bMQjH44tXP/OQw5B5j3uGLqLAs6MOYA0Eq+PUtDRbOB4JGNiE4dwtVF8WYsX6klBzwh34k5xLgyCXW7SVKoeCtrFLCA0h7+wTrjKxLYeuHMGL4iQcHHQeHJbfkTiktmhFxXTLQfbfJWlYX38vLgNjFrSygQ8Wq+w=
+	t=1743774434; cv=none; b=f/NHcY4c7axAG+j+7jl5xYyqr9P3gfDdbWtG2VK+5/gdHfeuVGqr56EwOEyNMBG7A7IKefKNYJEhgL+lMwjLZcOVQ4MfBJxjiMIjXy9kUAzC2uKaqdULJzOIje8NGX/AeuE6VKGdoL885FfvzA/Jid3PbaWN3XAsHE6Rdje1JBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743769231; c=relaxed/simple;
-	bh=hB8g06LHusju5aaSslcMI2Vmp9YyRR3BB0OcFs0BMkc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lX8s78g51Z3xUjNL3/NRnRjZ67XzepsRCEIjVCeB6AWLNEeOw0faznx3oYBXWcoTj8gNs85Cvisb15XMoLCB1N2N43gD/OqZLpzkKTd3QT0AoIOzebj59mABtreqL/e6u9aqVze0Yj1dNCZK0jOpDLfYjyOCyRBnJW411ZRcCv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DjbdX148; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC5EC4CEDD;
-	Fri,  4 Apr 2025 12:20:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743769230;
-	bh=hB8g06LHusju5aaSslcMI2Vmp9YyRR3BB0OcFs0BMkc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjbdX148Bl2eCI6bf9kX4v8EgXT2tJ/yA43dmcUsRp2j2MTp0ZWsbT81X8KknAZG6
-	 KgQrvt3K5im/Dtygesji+p5dRphOhfSkQDCjpHO3ou4DjKa0AL8N6OurJIr2jJgzNJ
-	 yAakodZl6QDHLqn1x6RfwV34+1Pc0eV8/Wri5haHvowd+zf1kg0Q4x/Aojs390SffF
-	 pSM9AeR6ljvsk/0DQZ/TkkrX6s8BwWwWj3L8+WaUNxTK1TD1kYG2V2jrsIYEStKhp+
-	 qixweR2Kxz9Q+eSArQ6h7kaStsTSKPHtkbhB8DgtngEtGuMe0hIHpslFghf5B4t60l
-	 bYGEiugosak/Q==
-From: Philipp Stanner <phasta@kernel.org>
-To: Jaroslav Kysela <perex@perex.cz>,
+	s=arc-20240116; t=1743774434; c=relaxed/simple;
+	bh=CZpvuo4PohJM4PSPuECEJnxRgWNQAAoHyWNbJ0KE9Lg=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B7BDXFxSr8GKhWyrCS25QkXArI13v2PBSfflORmUHJV3EbN011N8Hjzyv4yGS+j2rXXM9XhY8CNvKQlxpw6G9aRmax/mhtxl1g+m51Biad8MiOPSyii1bw2ULdvBC/rAvoTNF/u4JMYCcwuloRXaZTPFDcIfErQrN7O9upDjtm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XcOTpl7L; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=i1OMEcEa; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=XcOTpl7L; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=i1OMEcEa; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 922C221160;
+	Fri,  4 Apr 2025 13:47:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1743774431; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/ZpWpZchNBNZf7LZzUsmpGD1YvwOssy8MnclmriBsus=;
+	b=XcOTpl7L7N2bZ5cRDCB39AT+rOICpZbxHTjE54GD0yReiMYHS3WSWj0ORUT5HzjXDa8r1D
+	4UiVoZd7d8kmE618McRRZyWHtPl71eclT0KTnBvqYg08WXt4P9jutp5vkiYutln9uSiUZP
+	W5lLLJfEnUdqFvAfNxR1o81bKhhmUwE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1743774431;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/ZpWpZchNBNZf7LZzUsmpGD1YvwOssy8MnclmriBsus=;
+	b=i1OMEcEadeRvCAfdcNYjX8Oc7bKNORzUpQRhWMwadamwJGFONcmrTVygtz0YN6haAou188
+	bBfjZR2QDj/3uSAw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1743774431; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/ZpWpZchNBNZf7LZzUsmpGD1YvwOssy8MnclmriBsus=;
+	b=XcOTpl7L7N2bZ5cRDCB39AT+rOICpZbxHTjE54GD0yReiMYHS3WSWj0ORUT5HzjXDa8r1D
+	4UiVoZd7d8kmE618McRRZyWHtPl71eclT0KTnBvqYg08WXt4P9jutp5vkiYutln9uSiUZP
+	W5lLLJfEnUdqFvAfNxR1o81bKhhmUwE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1743774431;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/ZpWpZchNBNZf7LZzUsmpGD1YvwOssy8MnclmriBsus=;
+	b=i1OMEcEadeRvCAfdcNYjX8Oc7bKNORzUpQRhWMwadamwJGFONcmrTVygtz0YN6haAou188
+	bBfjZR2QDj/3uSAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1FA811364F;
+	Fri,  4 Apr 2025 13:47:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id H9pzBt/i72dzYgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 04 Apr 2025 13:47:11 +0000
+Date: Fri, 04 Apr 2025 15:47:10 +0200
+Message-ID: <87plhs2g4h.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Philipp Stanner <phasta@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>,
 	Takashi Iwai <tiwai@suse.com>,
 	Clemens Ladisch <clemens@ladisch.de>,
 	Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>,
 	Thorsten Blum <thorsten.blum@linux.dev>,
-	Philipp Stanner <phasta@kernel.org>,
 	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
 	Bard Liao <yung-chuan.liao@linux.intel.com>,
 	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
@@ -58,73 +103,63 @@ To: Jaroslav Kysela <perex@perex.cz>,
 	He Lugang <helugang@uniontech.com>,
 	Jerome Brunet <jbrunet@baylibre.com>,
 	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Tang Bin <tangbin@cmss.chinamobile.com>
-Cc: linux-parisc@vger.kernel.org,
+	Tang Bin <tangbin@cmss.chinamobile.com>,
+	linux-parisc@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 11/11] ASoC: loongson: Replace deprecated PCI functions
-Date: Fri,  4 Apr 2025 14:19:12 +0200
-Message-ID: <20250404121911.85277-13-phasta@kernel.org>
-X-Mailer: git-send-email 2.48.1
+Subject: Re: [PATCH 00/11] sound: Replace deprecated PCI functions
 In-Reply-To: <20250404121911.85277-2-phasta@kernel.org>
 References: <20250404121911.85277-2-phasta@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[perex.cz,suse.com,ladisch.de,gmail.com,kernel.org,linux.dev,linux.intel.com,renesas.com,uniontech.com,baylibre.com,loongson.cn,cmss.chinamobile.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Score: -3.30
+X-Spam-Flag: NO
 
-pcim_iomap_table() and pcim_iomap_regions() have been deprecated.
-Replace them with pcim_iomap_region().
+On Fri, 04 Apr 2025 14:19:01 +0200,
+Philipp Stanner wrote:
+> 
+> pcim_iomap_table() and pcim_iomap_regions() have been deprecated by the
+> PCI subsystem. In sound/, they can easily be replaced with
+> pcim_iomap_region().
+> 
+> This series was around some time in late summer last year as a single
+> patch. I lost track of it for a while, but Takashi Iwai (AFAIR)
+> requested that I split it by component.
+> 
+> So that's being done here. Feel free to squash the patches as you like.
 
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
----
- sound/soc/loongson/loongson_i2s_pci.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+Thanks for the patches.  I suppose those are no urgent fixes, and can
+be postponed for 6.16?  If so, I'll pick them up after 6.15-rc1 merge
+window is closed.
 
-diff --git a/sound/soc/loongson/loongson_i2s_pci.c b/sound/soc/loongson/loongson_i2s_pci.c
-index d2d0e5d8cac9..1ea5501a97f8 100644
---- a/sound/soc/loongson/loongson_i2s_pci.c
-+++ b/sound/soc/loongson/loongson_i2s_pci.c
-@@ -16,6 +16,8 @@
- #include "loongson_i2s.h"
- #include "loongson_dma.h"
- 
-+#define DRIVER_NAME "loongson-i2s-pci"
-+
- static bool loongson_i2s_wr_reg(struct device *dev, unsigned int reg)
- {
- 	switch (reg) {
-@@ -92,13 +94,12 @@ static int loongson_i2s_pci_probe(struct pci_dev *pdev,
- 	i2s->dev = dev;
- 	pci_set_drvdata(pdev, i2s);
- 
--	ret = pcim_iomap_regions(pdev, 1 << 0, dev_name(dev));
--	if (ret < 0) {
--		dev_err(dev, "iomap_regions failed\n");
--		return ret;
-+	i2s->reg_base = pcim_iomap_region(pdev, 0, DRIVER_NAME);
-+	if (IS_ERR(i2s->reg_base)) {
-+		dev_err(dev, "iomap_region failed\n");
-+		return PTR_ERR(i2s->reg_base);
- 	}
- 
--	i2s->reg_base = pcim_iomap_table(pdev)[0];
- 	i2s->regmap = devm_regmap_init_mmio(dev, i2s->reg_base,
- 					    &loongson_i2s_regmap_config);
- 	if (IS_ERR(i2s->regmap))
-@@ -147,7 +148,7 @@ static const struct pci_device_id loongson_i2s_ids[] = {
- MODULE_DEVICE_TABLE(pci, loongson_i2s_ids);
- 
- static struct pci_driver loongson_i2s_driver = {
--	.name = "loongson-i2s-pci",
-+	.name = DRIVER_NAME,
- 	.id_table = loongson_i2s_ids,
- 	.probe = loongson_i2s_pci_probe,
- 	.driver = {
--- 
-2.48.1
 
+Takashi
 
