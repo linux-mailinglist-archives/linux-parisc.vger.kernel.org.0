@@ -1,127 +1,116 @@
-Return-Path: <linux-parisc+bounces-3520-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3521-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12F3A78915
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Apr 2025 09:46:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73015A7B2F8
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 02:07:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04FFC3A7444
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Apr 2025 07:45:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1743A189B351
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 00:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C655231A2D;
-	Wed,  2 Apr 2025 07:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87CE1991D2;
+	Fri,  4 Apr 2025 00:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="K19W1GmQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdUm4e1e"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D9F1362;
-	Wed,  2 Apr 2025 07:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D30E199FB2;
+	Fri,  4 Apr 2025 00:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743579963; cv=none; b=huiAg6AEoawfsESFx4CqSwNaq2AAeaMcigFS6Kskot+mVceWQnfITwXupgDfxJf1uW9e0QdQWSHT2cw++4d0bnyQPBCxJ6KCbaSUx9nBT12hmOIbssSSXUdacHeh9zuUf1n2+579KmWriPIRru/nXoXXMw4v77g/1QKS+ihIT9M=
+	t=1743725071; cv=none; b=B2RDqNg8FjTl+mUtE4iTTx+oGEafnywyEebqKfg+NI2tcmqOtGsNrt2q2fW+f19ceGCooCGB2gSmoiApTletB+b6hKz2nusgH8F3fIz+SXNair3xjBaOgQDu3jfScuu6+yfPttlqpwd3JMDFr5PVeZ0vkTb1KN1zYSD89+lUzq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743579963; c=relaxed/simple;
-	bh=ebl2bB+TRFblGvdRbreoVEWpvVOOvApz34KbpVlc440=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e52R3ZJxBh19De5hXX5G4L+ISzcRL1URx/4qDgdSNG5Pt3oioZe7uS9ggHn4tKLAGnW0Wi1HAIT8O+ov+bcgatHhnCw6Hjk31+eROB08ZVC6zwZGh/I8WFkOka/h46wc3V4uvXv7+azl0qQSdYoXyE71ZNc37L4513mL7+aoh+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=K19W1GmQ; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=uIzWjvfJbyS7n54sJ+5shgly3p7L+Bq4hAOWNvm3+QQ=; b=K19W1GmQJKHEi4CglJlEuX8NWi
-	LthI2Z1LT4kdChvQwI3VZxL8k5hQ8dfV9NdzrOUMMX5Pj6OAhhEMS8GDkCXS2YpBQcPOH/Ls8WWAg
-	vt0plzI5MTrstT6vVlp7xwsZ0RSoiIMGP/bQXVfBeMRFvz9Ykq9JPtPXarpYwYT/LMNYgK0a0CjKi
-	kJJEWZJJLww9Gks/HsTl8JvWnlqFdUJ6xwagZ6hon/A/xb2B/diil2B0kL2IZ7+7EZgbibHMjzb7w
-	/qUr5UiptHJqHeN9jIzxomcDYiKG84dHAl9weULxWpIBCV33DZruujj7uy0w4xbjRcWo4+Gbycyy+
-	hIRGELoQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1tzsnH-00000006zJG-0AVp;
-	Wed, 02 Apr 2025 07:45:51 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 95EEB30049D; Wed,  2 Apr 2025 09:45:50 +0200 (CEST)
-Date: Wed, 2 Apr 2025 09:45:50 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Alessandro Carminati <acarmina@redhat.com>,
-	linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kees Cook <keescook@chromium.org>,
-	Daniel Diaz <daniel.diaz@linaro.org>,
-	David Gow <davidgow@google.com>,
-	Arthur Grillo <arthurgrillo@riseup.net>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Alessandro Carminati <alessandro.carminati@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org, loongarch@lists.linux.dev, x86@kernel.org,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v4 06/14] x86: Add support for suppressing warning
- backtraces
-Message-ID: <20250402074550.GQ5880@noisy.programming.kicks-ass.net>
-References: <20250313114329.284104-1-acarmina@redhat.com>
- <20250313114329.284104-7-acarmina@redhat.com>
- <20250401170829.GO5880@noisy.programming.kicks-ass.net>
- <ddc7939f-fb98-43af-aed1-0bc0594ecc41@roeck-us.net>
+	s=arc-20240116; t=1743725071; c=relaxed/simple;
+	bh=JeYzyS+9qEg8sDXUXVHebHJrZohuDT77IkPlS6VTL9g=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=F1UIXv55tZ9gDauJ+WIeyulPZJAdmvIAbg0c7XDU5lqLQhcGBo1EDlJR1ubZYVFTuzxuJuL3ub8zIb9SqMTJjr1CnzQXd1Vwc6lwLB2ciIl2LwNPdlzXQv/EX/Jk45uq5YgUGtnE1Kk1vkNV2pksrC/piOQxo3wb1qN0qc1HAyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdUm4e1e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C5BC4CEE3;
+	Fri,  4 Apr 2025 00:04:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743725071;
+	bh=JeYzyS+9qEg8sDXUXVHebHJrZohuDT77IkPlS6VTL9g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KdUm4e1e07WHU8VLs0mKTNrrydX688vYwoQvEK0YOP+eIBIRleBmZ/gWHvQElCQNn
+	 /mX2bnq3Vzz4/uj5UM8GXd8E3K+T2omlvsoPkw26p3aB6KSZ3P5FUQF1WqiRUzhNiy
+	 eMP0DLgeDTfS5tiB3TPiEQcLG9LrLF6cwEiFTzV4988cV5wutcZlkDucH0Dhws2enl
+	 CmqknQQ35pnX9c5/gKH4M8tUeKYtXdLpIsV7H78/rDkMmM5YahQkKWqjQwlET4gVM6
+	 0t8vesAPOxqPyIdVY2EpH0jyO6GzS8cTDaCM2MQCbWg4POChipuK0AhK+8peLKQOWB
+	 Vy3KoWUOW3znQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Yu-Chun Lin <eleanor15x@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>,
+	James.Bottomley@HansenPartnership.com,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 13/23] parisc: PDT: Fix missing prototype warning
+Date: Thu,  3 Apr 2025 20:03:50 -0400
+Message-Id: <20250404000402.2688049-13-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250404000402.2688049-1-sashal@kernel.org>
+References: <20250404000402.2688049-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ddc7939f-fb98-43af-aed1-0bc0594ecc41@roeck-us.net>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 01, 2025 at 10:53:46AM -0700, Guenter Roeck wrote:
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-> > >   #define _BUG_FLAGS(ins, flags, extra)					\
-> > >   do {									\
-> > >   	asm_inline volatile("1:\t" ins "\n"				\
-> > >   		     ".pushsection __bug_table,\"aw\"\n"		\
-> > >   		     "2:\t" __BUG_REL(1b) "\t# bug_entry::bug_addr\n"	\
-> > >   		     "\t"  __BUG_REL(%c0) "\t# bug_entry::file\n"	\
-> > > -		     "\t.word %c1"        "\t# bug_entry::line\n"	\
-> > > -		     "\t.word %c2"        "\t# bug_entry::flags\n"	\
-> > > -		     "\t.org 2b+%c3\n"					\
-> > > +		     "\t"  __BUG_FUNC_PTR "\t# bug_entry::function\n"	\
-> > > +		     "\t.word %c2"        "\t# bug_entry::line\n"	\
-> > > +		     "\t.word %c3"        "\t# bug_entry::flags\n"	\
-> > > +		     "\t.org 2b+%c4\n"					\
-> > >   		     ".popsection\n"					\
-> > >   		     extra						\
-> > > -		     : : "i" (__FILE__), "i" (__LINE__),		\
-> > > +		     : : "i" (__FILE__), "i" (__BUG_FUNC), "i" (__LINE__),\
-> > >   			 "i" (flags),					\
-> > >   			 "i" (sizeof(struct bug_entry)));		\
-> > >   } while (0)
+[ Upstream commit b899981750dcb958ceffa4462d903963ee494aa2 ]
 
-Also this, why do you need this extra function in the bug entry? Isn't
-that trivial from the trap site itself? symbol information should be
-able to get you the function from the trap ip.
+As reported by the kernel test robot, the following error occurs:
 
-None of this makes any sense.
+arch/parisc/kernel/pdt.c:65:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
+      65 | void arch_report_meminfo(struct seq_file *m)
+         |      ^~~~~~~~~~~~~~~~~~~
+
+arch_report_meminfo() is declared in include/linux/proc_fs.h and only
+defined when CONFIG_PROC_FS is enabled. Wrap its definition in #ifdef
+CONFIG_PROC_FS to fix the -Wmissing-prototypes warning.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502082315.IPaHaTyM-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/parisc/kernel/pdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
+index 0f9b3b5914cf6..b70b67adb855f 100644
+--- a/arch/parisc/kernel/pdt.c
++++ b/arch/parisc/kernel/pdt.c
+@@ -63,6 +63,7 @@ static unsigned long pdt_entry[MAX_PDT_ENTRIES] __page_aligned_bss;
+ #define PDT_ADDR_PERM_ERR	(pdt_type != PDT_PDC ? 2UL : 0UL)
+ #define PDT_ADDR_SINGLE_ERR	1UL
+ 
++#ifdef CONFIG_PROC_FS
+ /* report PDT entries via /proc/meminfo */
+ void arch_report_meminfo(struct seq_file *m)
+ {
+@@ -74,6 +75,7 @@ void arch_report_meminfo(struct seq_file *m)
+ 	seq_printf(m, "PDT_cur_entries: %7lu\n",
+ 			pdt_status.pdt_entries);
+ }
++#endif
+ 
+ static int get_info_pat_new(void)
+ {
+-- 
+2.39.5
+
 
