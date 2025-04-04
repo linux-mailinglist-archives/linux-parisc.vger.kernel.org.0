@@ -1,46 +1,46 @@
-Return-Path: <linux-parisc+bounces-3525-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3526-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B883A7B3D2
-	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 02:26:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC91EA7B400
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 02:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981AA3B54A6
-	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 00:25:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6ED7189BD09
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 00:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93C12066DE;
-	Fri,  4 Apr 2025 00:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AA7208990;
+	Fri,  4 Apr 2025 00:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZP9xrg7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mFjCXe0R"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16792066DD;
-	Fri,  4 Apr 2025 00:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3EF208960;
+	Fri,  4 Apr 2025 00:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725238; cv=none; b=hc4Y7QAkxs4+ePmdvv1SfpszydZ9DReJ3TUwGkKKVcyuRj5WPK1tEY+Ruh3ouQL1m73chEPszURFV012OuTNZSMYJLy32vJczuXAge8G2ZM0dH5tl67J8HILwaYGRGwL3RKIR722qS3SyqFUjgmBWFiBUs/LsufSJnzuDmlSGMs=
+	t=1743725263; cv=none; b=VprC4W7g60rAqGFeHcfyQMcpAeQQt1+44UyvJ8AV2ZHytnzld7iM+8Vt7wJBdhsuUeXXjvGZ0LdeLwBHjtpCwYt3YqfJs6vrnT9/0fzcCD52J9cJnlUMjzv62Kgz7Y46WMGXr14oeeo9VP0X96FPZRosW16vfytHucQlq9qxItA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725238; c=relaxed/simple;
-	bh=6eKsFR3Cj7BscP4StJYnGlYEqUNFzKdHa4LmC6vXErc=;
+	s=arc-20240116; t=1743725263; c=relaxed/simple;
+	bh=nSmKwwp59S7nEOH5NynrVjJBp3cMBzNpUxbYWxQ4bWo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sv61tSM0pEFSh8Vu+Wnea+fFxqMCc9bR8b2iNisQHXyIvpzESljRWbIrBAO3ryYSk2zBttXPsgKxu04qLqqfBQrg10OLmSkhs/bB68UCw6wxDDFC0e6yVopVAn8GUUIIilKg3/rH/mGsUO/VwotYVJgTyzw9IEIpEdCvwQXKqO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZP9xrg7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E2AC4CEE5;
-	Fri,  4 Apr 2025 00:07:17 +0000 (UTC)
+	 MIME-Version; b=BQOYlSYU+OnEYmBkYumISxxUM76+dLa/fzDtusPiqiUFWfdadetgBlBo1zZ5NHgQbj5NOK+TqE19vR6+MsIujxI9aPEJr/wg0qsjjnoznG5vUXe6yrjR1cKoV7fRI0GKchRsT44g9YCZhbRga3BZP8Mw/b5Kxy0va0O96Ls1uaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mFjCXe0R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04FFC4CEE3;
+	Fri,  4 Apr 2025 00:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725238;
-	bh=6eKsFR3Cj7BscP4StJYnGlYEqUNFzKdHa4LmC6vXErc=;
+	s=k20201202; t=1743725261;
+	bh=nSmKwwp59S7nEOH5NynrVjJBp3cMBzNpUxbYWxQ4bWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZP9xrg71/OMGfh3C6FngCwa17V3EW5BqDt233HcVg6dIccMrrw+oLPF/Vhe7ClsS
-	 YE+FWajfBvSZtFZTPtUyl2AnTbcWQoQpuhlEeyI7O6eEYFQOb9SE6LxbiOmqjzN8Qj
-	 bw69nl9A5w7w+uaTOCcMX0ivAwYoxCXNsjwUJtHujKQBb5zAvpEm96BWrXbj9jv1yD
-	 ONHtwae4p0x8W2Yg33SCZb9AX6BAcdzxRpDZ92U8x/MZELBz22OoEWiYWneTJR64di
-	 BNDXdBNWinckJBzYFBAGZe5xfl1CG42yijhui4d6tAVJBO8NNW8urkX8hdfIpkJdmF
-	 4VuhxRvFYeBDg==
+	b=mFjCXe0RQF38x/FR5ScL09n2UrKJkEBT29xmr0frppLK2ntXRPwTk7xa5Byaqg0EG
+	 hhheTZuta5ZGBx2Rr3GusoU1jJ2LVzZVdDioJcRL/AKxKckxPmtiADzABCUIc32XPC
+	 v6WP34fWQpO8WkXG3eEfP7aYzw0Tlsw45jLPm3Ckfp19yVh4uiM7MAAkl1O76QNhQE
+	 JWaHpupZKoISPVlj0F8CnPkrGuX8BHNfvd0PuPKj/pPvRLkIWkEe0SYWuJKjGAMssB
+	 LyhWAbMOIRMpxpwIEJFd6PEtDFxthE9ecQybYnkvQ3O1rhhCkxJTKihpXtRTyaSz4y
+	 g5FtwY0eG1PLw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,12 +50,12 @@ Cc: Yu-Chun Lin <eleanor15x@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
 	James.Bottomley@HansenPartnership.com,
 	linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 07/10] parisc: PDT: Fix missing prototype warning
-Date: Thu,  3 Apr 2025 20:06:57 -0400
-Message-Id: <20250404000700.2689158-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 5/8] parisc: PDT: Fix missing prototype warning
+Date: Thu,  3 Apr 2025 20:07:23 -0400
+Message-Id: <20250404000728.2689305-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250404000700.2689158-1-sashal@kernel.org>
-References: <20250404000700.2689158-1-sashal@kernel.org>
+In-Reply-To: <20250404000728.2689305-1-sashal@kernel.org>
+References: <20250404000728.2689305-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.132
+X-stable-base: Linux 5.15.179
 Content-Transfer-Encoding: 8bit
 
 From: Yu-Chun Lin <eleanor15x@gmail.com>
@@ -91,7 +91,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
-index e391b175f5ece..7dbb241a9fb77 100644
+index fcc761b0e11b9..d20e8283c5b8a 100644
 --- a/arch/parisc/kernel/pdt.c
 +++ b/arch/parisc/kernel/pdt.c
 @@ -62,6 +62,7 @@ static unsigned long pdt_entry[MAX_PDT_ENTRIES] __page_aligned_bss;
