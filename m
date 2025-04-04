@@ -1,116 +1,118 @@
-Return-Path: <linux-parisc+bounces-3528-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3529-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A174A7B42D
-	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 02:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 559A3A7BC7A
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 14:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06D5F7AA154
-	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 00:29:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B489E7A7567
+	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 12:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DEE21D581;
-	Fri,  4 Apr 2025 00:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A713419AD48;
+	Fri,  4 Apr 2025 12:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILCeU27G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="odSYmlS5"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEE221D3F4;
-	Fri,  4 Apr 2025 00:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E863FF1;
+	Fri,  4 Apr 2025 12:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743725302; cv=none; b=nze30omg5SCQ1pR8qxbMqILigKC4VpQuw4XUk0lpMAVzP+rclMtouI0WUtX7+6AkBqTq8d58ysUq4ws7f8Q5GgBgjQE8ZVx/gKZ1VhLStenu3HEhUHcPEjzr2A3rhbGf1jdA2rkDRkXoxW6QD9brIeezXNmpjqWvvOtpv72ieoo=
+	t=1743769176; cv=none; b=A4MoGk7DGh98xUAnkFLvM1U/maCgnlukmu7wfFosFH8UhSwg/MZ8ouQaflo1Y1iJ0TgN7J2FhWmYSKBkoHFggNJRd1NCWbc/b53aoPj+Q/xe7tdjvUyX4TEiHN/48tWCwklifFUa+8ECnc1KEyjjq3URlQZgYkI7OkNEDuScMag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743725302; c=relaxed/simple;
-	bh=C2aYYsrokTBwQEtyrgRYX4irSLiH2QgMYj8lqjuUA2I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=skh39AjqBNrBqznsY5cmfZhyIuBo+5pyM/qsc2Yj+RTy9UX599a3qoRQblcj2wtc/ldmNI0iN4T7vx9ovAIu69pGaAFUDx8f98x9VmryJ2nHJJSLnr4jklhs6DVJiMd277XaP3jj7QbigyOj6moGjVQ5k2BN1sjKn3UnqxSmKeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILCeU27G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A273C4CEE5;
-	Fri,  4 Apr 2025 00:08:21 +0000 (UTC)
+	s=arc-20240116; t=1743769176; c=relaxed/simple;
+	bh=qv2dfIayO3aajasouaLXJ1qNCkHSABufGFzjHyybaKo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t21iCX5TYFvBlCDu0TvXSCjW2bYxMa5aMDgjwwYONWYIw2Cp8RA3q+mNEoYZfZ24IEVcHLzTVHNRx8kSAAtZ+biU5B/XHyarepO/vxlDAvt6YeDrjN8Jf0hH7wHzEqSZVaZCX9ElEAAPs2Yf+zQioU2GlDIPS3kxjA3Eim05m90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=odSYmlS5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71264C4CEDD;
+	Fri,  4 Apr 2025 12:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725302;
-	bh=C2aYYsrokTBwQEtyrgRYX4irSLiH2QgMYj8lqjuUA2I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILCeU27GerhRIr6AaUVfh6M3Urb8eTU3XmnwGlLIo7kt70lVj/7d/CLHem9OEs4F0
-	 FIBltROg0Zx6mGRCdGGmbolGdqQKgndJFguqr6fOF9BLm3wJ7vX7xAP136oNW3KvID
-	 QrSF7qYK3Q/WKO7AgGCuuaOhfJCv8x6gnlQjuqrs4oFYpiBU1UeAndtW3rBZI1/YCw
-	 opH5nGeNYLjMU5gsxoqt9cjg5/adZOiW6r+NqPbKhlMoOvtcG8cThgAtZKCrH4z2tL
-	 P78PwZAVLU3rWmBylmy49J57q7YKULEL778OVfbHDScqFxKGN/H9JDGSdpt3Bjg5LM
-	 yiFCUqMqbawaQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Yu-Chun Lin <eleanor15x@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 5/6] parisc: PDT: Fix missing prototype warning
-Date: Thu,  3 Apr 2025 20:08:06 -0400
-Message-Id: <20250404000809.2689525-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250404000809.2689525-1-sashal@kernel.org>
-References: <20250404000809.2689525-1-sashal@kernel.org>
+	s=k20201202; t=1743769175;
+	bh=qv2dfIayO3aajasouaLXJ1qNCkHSABufGFzjHyybaKo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=odSYmlS5sIzx7pUqXvldeSEkr8R96hSEYv/xhez0bvjMjj8ACW1i+a1+3SsDIlpYV
+	 wEANMWo8+ZZtzm9kYhKAOLc/9xvFUIc8DZubUMGywzAFaJRJhp1l1zzvfeWGf/1eRl
+	 osVMTffTnnJ/F5wHrsn7NV373vVipk7+sfbUGDd5DAL0lzypdIMSn1R8xJ/w/Ocxnj
+	 6cxfqi/YQKgop03hc4aImm0GA+OluNSRAfCWn1ibZ9gTLxryX9b7y5iE+2fLio9+qj
+	 62Lj9FvVqZ1lNh+Xlio2FXEpBmFfLf3/zCEtP5gCvF1vj4FPldXQA5GewrWo/WbAz2
+	 350BDSMjqA3fA==
+From: Philipp Stanner <phasta@kernel.org>
+To: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Clemens Ladisch <clemens@ladisch.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Philipp Stanner <phasta@kernel.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Maxim Mikityanskiy <maxtram95@gmail.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	He Lugang <helugang@uniontech.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Tang Bin <tangbin@cmss.chinamobile.com>
+Cc: linux-parisc@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 00/11] sound: Replace deprecated PCI functions
+Date: Fri,  4 Apr 2025 14:19:01 +0200
+Message-ID: <20250404121911.85277-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.291
 Content-Transfer-Encoding: 8bit
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+pcim_iomap_table() and pcim_iomap_regions() have been deprecated by the
+PCI subsystem. In sound/, they can easily be replaced with
+pcim_iomap_region().
 
-[ Upstream commit b899981750dcb958ceffa4462d903963ee494aa2 ]
+This series was around some time in late summer last year as a single
+patch. I lost track of it for a while, but Takashi Iwai (AFAIR)
+requested that I split it by component.
 
-As reported by the kernel test robot, the following error occurs:
+So that's being done here. Feel free to squash the patches as you like.
 
-arch/parisc/kernel/pdt.c:65:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
-      65 | void arch_report_meminfo(struct seq_file *m)
-         |      ^~~~~~~~~~~~~~~~~~~
+P.
 
-arch_report_meminfo() is declared in include/linux/proc_fs.h and only
-defined when CONFIG_PROC_FS is enabled. Wrap its definition in #ifdef
-CONFIG_PROC_FS to fix the -Wmissing-prototypes warning.
+Philipp Stanner (11):
+  ALSA: ad1889: Replace deprecated PCI functions
+  ALSA: atiixp: Replace deprecated PCI functions
+  ALSA: au88x0: Replace deprecated PCI functions
+  ALSA: aw2: Replace deprecated PCI functions
+  ALSA: bt87x: Replace deprecated PCI functions
+  ALSA: cs4281: Replace deprecated PCI functions
+  ALSA: hda_intel: Replace deprecated PCI functions
+  ALSA: cs5530: Replace deprecated PCI functions
+  ALSA: lola: Replace deprecated PCI functions
+  ALSA: hdspm: Replace deprecated PCI functions
+  ASoC: loongson: Replace deprecated PCI functions
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502082315.IPaHaTyM-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/parisc/kernel/pdt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/ad1889.c                    |  7 +++----
+ sound/pci/atiixp.c                    |  7 +++----
+ sound/pci/atiixp_modem.c              |  7 +++----
+ sound/pci/au88x0/au88x0.c             |  7 +++----
+ sound/pci/aw2/aw2-alsa.c              |  7 +++----
+ sound/pci/bt87x.c                     |  7 +++----
+ sound/pci/cs4281.c                    | 13 +++++++------
+ sound/pci/cs5530.c                    |  7 +++----
+ sound/pci/hda/hda_intel.c             |  7 +++----
+ sound/pci/lola/lola.c                 | 16 +++++++++++-----
+ sound/pci/rme9652/hdspm.c             |  7 +++----
+ sound/soc/loongson/loongson_i2s_pci.c | 13 +++++++------
+ 12 files changed, 52 insertions(+), 53 deletions(-)
 
-diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
-index 36434d4da381a..d1c980900cdd4 100644
---- a/arch/parisc/kernel/pdt.c
-+++ b/arch/parisc/kernel/pdt.c
-@@ -60,6 +60,7 @@ static unsigned long pdt_entry[MAX_PDT_ENTRIES] __page_aligned_bss;
- #define PDT_ADDR_PERM_ERR	(pdt_type != PDT_PDC ? 2UL : 0UL)
- #define PDT_ADDR_SINGLE_ERR	1UL
- 
-+#ifdef CONFIG_PROC_FS
- /* report PDT entries via /proc/meminfo */
- void arch_report_meminfo(struct seq_file *m)
- {
-@@ -71,6 +72,7 @@ void arch_report_meminfo(struct seq_file *m)
- 	seq_printf(m, "PDT_cur_entries: %7lu\n",
- 			pdt_status.pdt_entries);
- }
-+#endif
- 
- static int get_info_pat_new(void)
- {
 -- 
-2.39.5
+2.48.1
 
 
