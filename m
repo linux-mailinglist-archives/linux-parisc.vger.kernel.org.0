@@ -1,115 +1,82 @@
-Return-Path: <linux-parisc+bounces-3542-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3543-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA1FAA7BE49
-	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 15:49:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F134A7CA77
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Apr 2025 19:09:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9855417737E
-	for <lists+linux-parisc@lfdr.de>; Fri,  4 Apr 2025 13:49:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7D3718981A4
+	for <lists+linux-parisc@lfdr.de>; Sat,  5 Apr 2025 17:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554531F1927;
-	Fri,  4 Apr 2025 13:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="RhF4dXXX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967C1191F8C;
+	Sat,  5 Apr 2025 17:09:21 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064D31B423D;
-	Fri,  4 Apr 2025 13:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D2B14B07A;
+	Sat,  5 Apr 2025 17:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743774588; cv=none; b=Et/xD3S/B6v2sYLKjd104vcnoxta7dPDTK1nFsXQnMTPUIKopAXfRnzaORbvfiGI+SaZ4aFk85o6n3jV3Fzyo7xsAxvBBJvhDxVTEo1eMc0touxhWz+iRZfic6xWSCBvEIeiCnBOdr3vwSAl+m/qpezL044ErKBhhe3jOj9XFgs=
+	t=1743872961; cv=none; b=Y1XT6Zjo4hqqDBWpyRrlsi72YUw3eT4kjzNGE4eSBOlpkqBpJ1REOM3vWFSCRUS+5m0fBtKBZjILF4G17n+VstCI8NchR2bkYQxaTJdcXcaxMtFfoYiZvsSN/+tzrLPcgwIi1qj6lPo8NgIfYNgeIW2APN6BB3zsbv9aiAt/hTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743774588; c=relaxed/simple;
-	bh=/dptjStSDMMJMudHNbgUWzi4jLWy8qr/uVmDB7rU88A=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kta4QUuGVHNi9upHGLkyZ5x9RYkapOrqrCEogLOxpXQsWo1ZZz311UGPulzYXIDzwKy6aLKsVf2gDoVRIn9L112cGqyeiZ7zJtgIpaQmNx6sJCeTVqNamT/caXdqR1FLSfLXb7Gaa0xPpLeLgod+5Kg0gzblkr7l6Nz+fW8jD3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=RhF4dXXX; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	s=arc-20240116; t=1743872961; c=relaxed/simple;
+	bh=tmIf37hkJseqnFO4ijvf4xA+K3JIaSwLPz9+OPSHUO4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HuaWonn4wOGF1Lodg+c2ZK9OU8iK9TsBHktj8nIIoACvFzt/Sn3nWCPMHULErFdt64+DTHDIq2DVSf9Wzf80NpR7R2K0T93I/RB4hALEZv3FIU4Q3JOP23ysOF37Gqw60XdEC2zj9sEZRVD8n1xFMkvWCajfrJY8gcrRal+ZRds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+Received: from mop.sam.mop (unknown [82.8.138.118])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4ZTg2Z0N5lz9t2j;
-	Fri,  4 Apr 2025 15:49:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1743774582; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/dptjStSDMMJMudHNbgUWzi4jLWy8qr/uVmDB7rU88A=;
-	b=RhF4dXXXAixla5UfN0PU+Crs4lP64BchwhmSeF00bXDPDh/L0RA5l+ybI9YZxuOc9pGe+t
-	rV8zVnTFz9cxa5DwsvLrMfcmM5tblaiLoEiguv+fGCD72outaDF/MgJZKxT/pucxRt0EUS
-	hZe7DawkDCVKZqZgDoMudfrjInBJQvOdM2KKt7UvPscuQk5WLfNgYsPTkpwLGMTcWNSlfX
-	nAkD3ePdNmdClkMleflvtYvHc3CywVhwCxY89Uv/0oLsBg7CUfpIQp6hzmfdZC5MdlfdAT
-	i4Vn+TpDjWAc0M5QXYWCdfSezvP/yL9ozY28dJEfF10WTyRRAGGkWN6MqXKPZA==
-Message-ID: <01627e70902d331f7a9e8c08bd5c78dc6991ea74.camel@mailbox.org>
-Subject: Re: [PATCH 00/11] sound: Replace deprecated PCI functions
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Takashi Iwai <tiwai@suse.de>, Philipp Stanner <phasta@kernel.org>
-Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Clemens
- Ladisch <clemens@ladisch.de>, Liam Girdwood <lgirdwood@gmail.com>, Mark
- Brown <broonie@kernel.org>,  Thorsten Blum <thorsten.blum@linux.dev>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Bard Liao
- <yung-chuan.liao@linux.intel.com>, Peter Ujfalusi
- <peter.ujfalusi@linux.intel.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Maxim Mikityanskiy <maxtram95@gmail.com>, Kuninori Morimoto
- <kuninori.morimoto.gx@renesas.com>,  He Lugang <helugang@uniontech.com>,
- Jerome Brunet <jbrunet@baylibre.com>, Binbin Zhou <zhoubinbin@loongson.cn>,
- Tang Bin <tangbin@cmss.chinamobile.com>,  linux-parisc@vger.kernel.org,
- linux-sound@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Fri, 04 Apr 2025 15:49:36 +0200
-In-Reply-To: <87plhs2g4h.wl-tiwai@suse.de>
-References: <20250404121911.85277-2-phasta@kernel.org>
-	 <87plhs2g4h.wl-tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	(Authenticated sender: sam)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id 5C1583430E5;
+	Sat, 05 Apr 2025 17:09:14 +0000 (UTC)
+From: Sam James <sam@gentoo.org>
+To: linmag7@gmail.com, Al Viro <viro@ftp.linux.org.uk>
+Cc: arnd@arndb.de, chris@zankel.net, dinguyen@kernel.org,
+ glaubitz@physik.fu-berlin.de, ink@unseen.parts, jcmvbkbc@gmail.com,
+ kees@kernel.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ loongarch@lists.linux.dev, mattst88@gmail.com, monstr@monstr.eu,
+ richard.henderson@linaro.org, sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v2 1/1] mm: pgtable: fix pte_swp_exclusive
+In-Reply-To: <87cyfejafj.fsf@gentoo.org>
+Organization: Gentoo
+References: <87cyfejafj.fsf@gentoo.org>
+User-Agent: mu4e 1.12.9; emacs 31.0.50
+Date: Sat, 05 Apr 2025 18:09:11 +0100
+Message-ID: <87v7rik020.fsf@gentoo.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: aymtz56nufw1qgqjcbqq8zxezp1rjtxk
-X-MBO-RS-ID: 820365da6c78a0c542e
+Content-Type: text/plain
 
-On Fri, 2025-04-04 at 15:47 +0200, Takashi Iwai wrote:
-> On Fri, 04 Apr 2025 14:19:01 +0200,
-> Philipp Stanner wrote:
-> >=20
-> > pcim_iomap_table() and pcim_iomap_regions() have been deprecated by
-> > the
-> > PCI subsystem. In sound/, they can easily be replaced with
-> > pcim_iomap_region().
-> >=20
-> > This series was around some time in late summer last year as a
-> > single
-> > patch. I lost track of it for a while, but Takashi Iwai (AFAIR)
-> > requested that I split it by component.
-> >=20
-> > So that's being done here. Feel free to squash the patches as you
-> > like.
->=20
-> Thanks for the patches.=C2=A0 I suppose those are no urgent fixes, and ca=
-n
-> be postponed for 6.16?=C2=A0 If so, I'll pick them up after 6.15-rc1 merg=
-e
-> window is closed.
+Sam James <sam@gentoo.org> writes:
 
-Sure, those are just improvements that aren't urgent.
+> Lovely cleanup and a great suggestion from Al.
+>
+> Reviewed-by: Sam James <sam@gentoo.org>
+>
+> I'd suggest adding a:
+> Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
 
-Thx,
-P.
+Al, were you planning on taking this through your tree?
 
->=20
->=20
-> Takashi
-
+>
+> thanks,
+> sam
 
