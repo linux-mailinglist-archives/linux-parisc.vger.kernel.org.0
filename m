@@ -1,115 +1,112 @@
-Return-Path: <linux-parisc+bounces-3550-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3551-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8553AA7F975
-	for <lists+linux-parisc@lfdr.de>; Tue,  8 Apr 2025 11:29:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06871A9092B
+	for <lists+linux-parisc@lfdr.de>; Wed, 16 Apr 2025 18:44:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1159189E901
-	for <lists+linux-parisc@lfdr.de>; Tue,  8 Apr 2025 09:27:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14ADC172041
+	for <lists+linux-parisc@lfdr.de>; Wed, 16 Apr 2025 16:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B2E264FB2;
-	Tue,  8 Apr 2025 09:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF9A21324F;
+	Wed, 16 Apr 2025 16:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a12E4Jn6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SpqKoQdO"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4650264F88;
-	Tue,  8 Apr 2025 09:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFF21FBEA9;
+	Wed, 16 Apr 2025 16:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744104418; cv=none; b=AGxoL4MwBdv5R0wMrt73yt/u1ig1ZmbV7djMUaEbztfUC+8CdmKO+9lOLqGiMFKKh6l+EclGi6ez4ozVZ4vLqmYlmiPBMaw2ZMnwrTSTeqc4bFAaYPMFB/It5hxeRG/qwA2s9JOegg/lk4J5xuJHIlot4R8AsEelC4xd8+h71Z8=
+	t=1744821867; cv=none; b=lN4Q/Cb7ygTV8eaVL0Y8P/P/ThxQpn73CYKZrYROf3fsl8Igs9fwjx3kTEEWOksT3FOTep2Cxqbe3ViI/vtwTN1S9OweiruKINhIl29zPoIPjYzUnL9cRDXiLRcwMIkkSXpTmNY8a6ieXmgFRtKf26ehiTdON8ahIYNdUbbl/DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744104418; c=relaxed/simple;
-	bh=KxpWyZFz7wM5ZEXNIX4IO/wpCr4Wh1XIQROm5nkLjUc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E58fJmW3WHiHW1hEIAS1W68ycsY2lvO5aKTTVVT9TNNiwcbj+cEDEj7DVMCHRL7hIZZoeP+J1BlmZ/N8qccU9oqML/kycWSzQVhfkV+3XbsMGH5z+V9sHfvyh5aNW9doc2U2kh0A42Fd28wodh53kwkTYl5SME2eoWE4Zhv5I3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a12E4Jn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEECC4CEE5;
-	Tue,  8 Apr 2025 09:26:54 +0000 (UTC)
+	s=arc-20240116; t=1744821867; c=relaxed/simple;
+	bh=iqPra9prVNMgodRRIcMCpxQAVaTQdicXu+5CN0hR31c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gq0AmSyRgxA46s69jh+DAayNkzDE9QbcSKXeeAkpKpkSRYHUzh6/+LK24/v7Vls3CPHm1sZJ0OtLjWsUmPSuEkQppFRx28TxoVnAQ564zmN71SB8+ceQA0OFOhvxyhiisu9fzlMXSxEg6V6HcE0TeFRc8YOJKrNR3wPjxW+L1o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SpqKoQdO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA187C4CEE2;
+	Wed, 16 Apr 2025 16:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744104418;
-	bh=KxpWyZFz7wM5ZEXNIX4IO/wpCr4Wh1XIQROm5nkLjUc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a12E4Jn66yAK7/bs+ifzBet60z5voWoclN9o2GiJKAaq33NrG1+tsOQnkPMNKaGHi
-	 VmRouwRxSBDitMnmVBWjMNfesDxlL5Qd5cOlIdl1UjzWzk+Kh9zovPtMZ2iqOU72Ql
-	 1i90T3n/laHkj/d+LD5LEDWcKY4qqxjSxD4OoFoO8N1f9eqv0JcFS0wQ8stYc39g3w
-	 5t8ZG0rNyPEWSUqj7THy05rtUv5L04JxdYYzk+M24xJVxjTTxdlr/zOsn1lzO/lN0i
-	 Hy+SUmo+FlPNrM0LeEqwDExN4fWCLlFbrJGgn1N2s9HzvaeaQilBAacpc+1EetbXNc
-	 UA31JdMQcUEEw==
-Date: Tue, 8 Apr 2025 10:26:51 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Clemens Ladisch <clemens@ladisch.de>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	s=k20201202; t=1744821867;
+	bh=iqPra9prVNMgodRRIcMCpxQAVaTQdicXu+5CN0hR31c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=SpqKoQdOC+Fzgwl+wMhWLB7uh0/azwveEtf4Y3rQcBKPzr7DUUoncxexeiqi8hI3e
+	 Hig6yo+Ev4QS0ps3fOhQC4bna5yzv1xljWW35iwz0g8F3fRXxpcXnt44tZz2zZ1P4s
+	 IPG8LqZE2h9m7zHKXdbjBhVh3C12f8MagiFp7SO4EgY3HTIhcvZzKOiLa+LNRuQxux
+	 TbS6h2mGWy0JSACTOYT/pfItaFtShDOEWTClzvzmfBTI6ZZHYIC3ckCyz2gZ4GB8Qw
+	 RkdvJJFSI+IyzO72thV42V8tD8CCpktgyeFS4bmGX8CnW0oHFI/zeXGRw1M7UWv5cy
+	 5Kjps87p3lyHg==
+From: Philipp Stanner <phasta@kernel.org>
+To: Sunil Goutham <sgoutham@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	hariprasad <hkelam@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Taras Chornyi <taras.chornyi@plvision.eu>,
+	Daniele Venzano <venza@brownhat.org>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
-	Maxim Mikityanskiy <maxtram95@gmail.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	He Lugang <helugang@uniontech.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Tang Bin <tangbin@cmss.chinamobile.com>,
-	Philipp Stanner <phasta@kernel.org>, linux-parisc@vger.kernel.org,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH 00/11] sound: Replace deprecated PCI functions
-Message-ID: <e1925b7f-1256-48c8-9457-c1662df4f8be@sirena.org.uk>
-References: <20250404121911.85277-2-phasta@kernel.org>
- <174406895437.1337819.1919250165088744285.b4-ty@kernel.org>
- <87tt6zb51t.wl-tiwai@suse.de>
+	Russell King <linux@armlinux.org.uk>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Philipp Stanner <phasta@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jacob Keller <jacob.e.keller@intel.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH 0/8] net: Phase out hybrid PCI devres API
+Date: Wed, 16 Apr 2025 18:44:00 +0200
+Message-ID: <20250416164407.127261-2-phasta@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="voYfjlaWt+OS0Y2f"
-Content-Disposition: inline
-In-Reply-To: <87tt6zb51t.wl-tiwai@suse.de>
-X-Cookie: Meester, do you vant to buy a duck?
+Content-Transfer-Encoding: 8bit
 
+Fixes a number of minor issues with the usage of the PCI API in net.
+Notbaly, it replaces calls to the sometimes-managed
+pci_request_regions() to the always-managed pcim_request_all_regions(),
+enabling us to remove that hybrid functionality from PCI.
 
---voYfjlaWt+OS0Y2f
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Philipp Stanner (8):
+  net: prestera: Use pure PCI devres API
+  net: octeontx2: Use pure PCI devres API
+  net: tulip: Use pure PCI devres API
+  net: ethernet: natsemi: Use pure PCI devres API
+  net: ethernet: sis900: Use pure PCI devres API
+  net: mdio: thunder: Use pure PCI devres API
+  net: thunder_bgx: Use pure PCI devres API
+  net: thunder_bgx: Don't disable PCI device manually
 
-On Tue, Apr 08, 2025 at 07:22:54AM +0200, Takashi Iwai wrote:
-> Mark Brown wrote:
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c  | 13 ++++---------
+ drivers/net/ethernet/dec/tulip/tulip_core.c        |  2 +-
+ drivers/net/ethernet/dec/tulip/winbond-840.c       |  2 +-
+ .../net/ethernet/marvell/octeontx2/nic/otx2_pf.c   | 14 ++++----------
+ .../net/ethernet/marvell/octeontx2/nic/otx2_vf.c   | 14 ++++----------
+ drivers/net/ethernet/marvell/octeontx2/nic/rep.c   |  4 +---
+ .../net/ethernet/marvell/prestera/prestera_pci.c   |  6 ++----
+ drivers/net/ethernet/natsemi/natsemi.c             |  2 +-
+ drivers/net/ethernet/sis/sis900.c                  |  2 +-
+ drivers/net/mdio/mdio-thunder.c                    | 10 +++-------
+ 10 files changed, 22 insertions(+), 47 deletions(-)
 
-> > [11/11] ASoC: loongson: Replace deprecated PCI functions
-> >         commit: 7288aa73e5cfb3f37ae93b55d7b7d63eca5140a8
+-- 
+2.48.1
 
-> Oh, I already applied this one blindly as a part of series to my
-> tree.  But it's a trivial fix and shouldn't be a big problem to apply
-> twice...
-
-Yeah, I saw you applied it after it was already well down the pipeline
-in a branch in my CI and thought it'd be fine if we ended up with two
-copies.
-
---voYfjlaWt+OS0Y2f
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmf069oACgkQJNaLcl1U
-h9CdpAf/bDQyxg51XaUBbS3SXbKfJJUOZ3pivQjL0IBOwGVMQBXeZ2ooqJtM34qo
-5Atpy0L85A3unh0uUxMTmTS6ozDtH65ejQlOrIwcsVvpC+HbNAaiTiS/3kYeXCiO
-NPtMo4WQCLrhV6HCB/dTx37VfFf54TTAUcTetCejIUz1yOkTKonoIkvVWOdgh7vg
-MT5BfYiL8kRxndq/Xi3NDUMEsbKZhTuOxw8fKcgSBI70qCxsWkMZq9ul0g9cKGVU
-8RdmViQ0p13+P5tG9aQCnxKRhrgm/T7PiwD7ZX/0BRNqJtwDh/Wcxbo++/413u7f
-Gx5dMvDrh10sTwu5xD31ZvSkv1iRig==
-=k3+a
------END PGP SIGNATURE-----
-
---voYfjlaWt+OS0Y2f--
 
