@@ -1,237 +1,225 @@
-Return-Path: <linux-parisc+bounces-3560-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3561-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23A1A909A4
-	for <lists+linux-parisc@lfdr.de>; Wed, 16 Apr 2025 19:10:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3894A96EFD
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Apr 2025 16:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07B3B177485
-	for <lists+linux-parisc@lfdr.de>; Wed, 16 Apr 2025 17:11:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 755391B636A8
+	for <lists+linux-parisc@lfdr.de>; Tue, 22 Apr 2025 14:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0A82153C2;
-	Wed, 16 Apr 2025 17:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1AA28C5BA;
+	Tue, 22 Apr 2025 14:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LeAfCe9x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qnKVP2qg"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FF71FB3;
-	Wed, 16 Apr 2025 17:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744823457; cv=fail; b=fCDPYgAUYFvVOr7WE6GE2goIP7CXdb38fgNGqTiShwl13CJEDYk7Ht9jlfh9d2dhgS6qudxBbh6mIxZh5ghqpxlkdo/z9fZurSMeUcwEDi2+D5hdmm/j3ni/WuDu0ToRbpRH7RVYsKznblocTxhF1w+sUeUmlqWX3qtCoigMKuo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744823457; c=relaxed/simple;
-	bh=dMHVJRdhcPfj0mkqIqBjIUkqCJ2/Q7pmKEmFOBFWQfo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=oY2H0tyyRtHZzmn5IChmBiph33o3iCgdAnPm3Th5YPFSqms+fK0vVqlPVuw8agFJYbO/Ll3wM7bRdrI0aX1E7Vlw6ErFrHMyZcVbd7fW2c9XX19yB7sxKYehjUqqpuvyyqO+ra6j5kLBQ4rAYhVCuEcf9vHVzEl7ibYOjUYET7M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LeAfCe9x; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744823455; x=1776359455;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=dMHVJRdhcPfj0mkqIqBjIUkqCJ2/Q7pmKEmFOBFWQfo=;
-  b=LeAfCe9xkI7GrlvtXPSP/+zZL4YwNurl/OUcWeu7fPUq8LYqmq3R3B50
-   f3AIRZSjlwMjGeCnzUX6xiUmjzpzhBn4AbhLfZdUsIPoFiitp0PBbiQqX
-   0rPHyvr2JgSmqyJczXClTopM3BYwwb+UnKz10mEbehU+eMimnUFUJIlMK
-   AGL5dVuuyinmID1RVr3vGVLM2HRe588GlY2Exks0yEE5ySE2UDeZZwsDa
-   XdCuNGYHEMxpNmTUEI1jLtyNAE1uEvsPwfeOsa5x2ONg0sBcsT0SYWcQQ
-   MdVcQjTDZze4ok6c9CPXsKLCL82XI/4nqOMyMZ10ojWzUyTCo70d1LUUC
-   Q==;
-X-CSE-ConnectionGUID: P3UsJG8JSuuukMMHXBT9eg==
-X-CSE-MsgGUID: JB1tRBgPS2OyYkWYGmxs4A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="68874850"
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
-   d="scan'208";a="68874850"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 10:10:54 -0700
-X-CSE-ConnectionGUID: DozbRtORSsi3ZkuqrT8wnQ==
-X-CSE-MsgGUID: 8o2qTaHyRa+/m7MNQnle+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,216,1739865600"; 
-   d="scan'208";a="161509314"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 10:10:54 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14; Wed, 16 Apr 2025 10:10:53 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.14 via Frontend Transport; Wed, 16 Apr 2025 10:10:53 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.41) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Wed, 16 Apr 2025 10:10:51 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ypMquZc8b/mWLqVRd+uKuYG69moXp0dOuIx27MwnENgLuZyrPl4dCAItsJ/l6ShwONvvNe07YdSyWPoveQQhjNogXW2ZYTF7O5e17GoTwU6pm6WZV+zbz31u1kRpZCDIt3HBy1BlDhFA5DRACW8eJ5Dpf/yqdUcyOTYRu0AB/C3e9x4bufmBev36kIB8aK2EkkoHNsU3r13BCPP2o+FgQ/s6kxw96TFha8Sbro6IO4x6V1+d4gOGv9Z+mXQc9QrX7TyMOJb9f1ezuRka485u6jmdWl5WOcxlPKyXd1/Ip2qhzmP3l8nkN3g0qTXv56uCKrf/Va1DU0q1rftw4Qlswg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dMHVJRdhcPfj0mkqIqBjIUkqCJ2/Q7pmKEmFOBFWQfo=;
- b=tL9POt7yfSg0tdpGUKHdj/HeINzfRftTYZkuwwNuWTZ6qTqnjA2OpuE9GVqf6rXAwD6RNVQbAc1iYpBQflBEezSlTzw5ltsoKmLmFJAAxgzfe2sAKPxpZ32ucWdNKhh+hi8KlnJ+zLTbttOMV01KUrdb9luxzIeLyi+b8FYmXpfSicOeumEruxayr3Kz+ygCcl5lOdaiqeRWQSnoN8LGayFOMDVpg3mnz99LcDYW8Mr5LlzC+X+5Wi/HmyPbXDmfVgG/g2ao0S0rgvJSlkvJAlOQrrKSUED9P3PmphKo4aRvrqiIJ1r7lf6AIaDJAZpqdEoJgmCGBR5ymEAfyp2gtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CO1PR11MB5089.namprd11.prod.outlook.com (2603:10b6:303:9b::16)
- by PH0PR11MB4920.namprd11.prod.outlook.com (2603:10b6:510:41::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.34; Wed, 16 Apr
- 2025 17:10:38 +0000
-Received: from CO1PR11MB5089.namprd11.prod.outlook.com
- ([fe80::7de8:e1b1:a3b:b8a8]) by CO1PR11MB5089.namprd11.prod.outlook.com
- ([fe80::7de8:e1b1:a3b:b8a8%4]) with mapi id 15.20.8632.025; Wed, 16 Apr 2025
- 17:10:38 +0000
-From: "Keller, Jacob E" <jacob.e.keller@intel.com>
-To: Philipp Stanner <phasta@kernel.org>, Sunil Goutham <sgoutham@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
-	"Dumazet, Eric" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>, hariprasad <hkelam@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>, Taras Chornyi
-	<taras.chornyi@plvision.eu>, Daniele Venzano <venza@brownhat.org>, "Heiner
- Kallweit" <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
-	Thomas Gleixner <tglx@linutronix.de>, Helge Deller <deller@gmx.de>, "Ingo
- Molnar" <mingo@kernel.org>, Simon Horman <horms@kernel.org>, Al Viro
-	<viro@zeniv.linux.org.uk>, Sabrina Dubroca <sd@queasysnail.net>
-CC: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-parisc@vger.kernel.org"
-	<linux-parisc@vger.kernel.org>
-Subject: RE: [PATCH 0/8] net: Phase out hybrid PCI devres API
-Thread-Topic: [PATCH 0/8] net: Phase out hybrid PCI devres API
-Thread-Index: AQHbru7bZvH76Wug30Wj8YBTGEadN7OmhurQ
-Date: Wed, 16 Apr 2025 17:10:38 +0000
-Message-ID: <CO1PR11MB5089309753FBA1EDE6C2D663D6BD2@CO1PR11MB5089.namprd11.prod.outlook.com>
-References: <20250416164407.127261-2-phasta@kernel.org>
-In-Reply-To: <20250416164407.127261-2-phasta@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO1PR11MB5089:EE_|PH0PR11MB4920:EE_
-x-ms-office365-filtering-correlation-id: 809b1a96-25c2-4a8f-5805-08dd7d099c0a
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|38070700018|921020;
-x-microsoft-antispam-message-info: =?us-ascii?Q?zyFPkOoKk++WfOrGbUG10yyHnjMbWoSUoMJqdG7PEuyFD/dp0J1i8PyYe8Cc?=
- =?us-ascii?Q?cIru+NKw2Op+f4ItYQCP67LJQDR9LCk7WwvnP/0xTjd5omdMYski7dk5t9zQ?=
- =?us-ascii?Q?M5mYhRyGKIJZYNi73qaIB+M6Vi8g9nb2xpDe1TvKGE0eC2fRz5OJm7QzxhGF?=
- =?us-ascii?Q?mpmpLHkq46kHp3RzUjDtUFjg2ZONitz9P6ocVqj+ggVKrWmZwHxyJvjyRR7k?=
- =?us-ascii?Q?ZMJXxKaPd628nQXOHYrdd2DqeX9RJmxfDZVkoyIIpk3TsQiY5106gfMgnImq?=
- =?us-ascii?Q?lwjcJONKIaWtIzyTGQvNVlDMhLR8Ud1hm8MgKstApi2yha2wthJbMt+ufzW6?=
- =?us-ascii?Q?mUhwblg6J8l35EPFi+k5ycOyUHqoDzuD9A3Ls5N74hCCtOPcf55+kQQSLqos?=
- =?us-ascii?Q?8ZzaE2yDZpGc3+s2JYJnxScuurWapO8uMYUpGN6zXIi6jG+NGxi4ssCxOSRm?=
- =?us-ascii?Q?TjDG7+A0Src5m4wcGxvffXz97lX4I2GIoVg45qbLK0YDgdBX7fT+zqty4ilk?=
- =?us-ascii?Q?VA0OAEW20fxvYHdip6ljliCyV1TTHQ/3giNg+B6kAwxn4VofLLZSKsfgIjVH?=
- =?us-ascii?Q?reNr1AZwos54seW18OZLh28Y1s4dMjQjoMhedzXj9FGs9enviusM9t0yXa3Q?=
- =?us-ascii?Q?73L5DlHpDjuW5J+8rP+ZEMzu+KYjPP38ZYOucfk0QY14AYPNx5i+InkqHQ2b?=
- =?us-ascii?Q?zdkTF+52Ef3hSFtPUp9bTPE01e0xjVcLgM8pZE/aJkNBRoNmq2xA1E35dIoi?=
- =?us-ascii?Q?QmE7EG4CX3K+1kTLONAk7Y29Vi1/1zxcrMxNTRWP/VvZ/E6ufp9J6xyvwv1H?=
- =?us-ascii?Q?a4RB+iVoWfCZQH3D7VNZ/JCWrty3QYRx/Wx914C6vKMaxyQU77Cuh6Sqv19d?=
- =?us-ascii?Q?O2M+fZbKJflEuyrlKq/ke4EKemQy7Cg6nIullZuXWrLU3GWlfnfs/mX8muqv?=
- =?us-ascii?Q?Fxmg/BP3CXtc7ys/Zd/PTOzmWucjRPQb0FzaamvpT1FdeT6bl81JxdhUxRqJ?=
- =?us-ascii?Q?Z6JDMBWuH5eQ+ZwGWDfNLhIacbqsivAaUYB3W0+9BLdXy2SSIzjgCcWOMNm8?=
- =?us-ascii?Q?RMoHgXtUk9ky2gcSTaH1UslrHCnMnHPfyTTTxJO16aGfv8Ori0d+byRkTH/X?=
- =?us-ascii?Q?OZXH6fT5PHjyIQK1zut2LMPcX1hoXAzcJpLLk8gZNQsR+fQAOjBSlS8hfD28?=
- =?us-ascii?Q?DVZCK60Mnkang+KvoW3zyi59m/NprV2vkBGS6ScfFzt/8Cbe5oeO2C7IjUfS?=
- =?us-ascii?Q?6lNV/suangJ0CUzEs6kovFxGeJ1uJ5xIoIIHkwRhhdWDULGKTmqfcCoNd9Va?=
- =?us-ascii?Q?DZnWmDH9F/2/wD+uvEZRh7Qp8y0UwLSV1dqqUPEfQnk37Hx+2iZFSILhxK/I?=
- =?us-ascii?Q?IT8aBbz1uYtPw0yToc03TGT/jzQx4K1S5ata8XvqQrV0Fei26jRLyLwcwVOq?=
- =?us-ascii?Q?bNU4RmR0MmEnJ8WgOhqE7lS25DmmP3vhrTZwwqPJYbhXR3CJ790oWLoppEyH?=
- =?us-ascii?Q?feENYCgmLjH4y7A=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB5089.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(38070700018)(921020);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Jt2B3mi96pvhgesotUKRG36lle8lX/ohkaVDE0PEdeA0xAiu49s7SUiit9f1?=
- =?us-ascii?Q?w7uo12AdUJHOtZEAC3FKSfzdf/wVJ9csH7d/7uYEiF+AM0NHh0e65QoSSfGq?=
- =?us-ascii?Q?p3f1HrOBLfDMka4QNqwwH/eybMdjG9c7xpLkWjlxKmA/SxX6Lo81PgZlCCF8?=
- =?us-ascii?Q?imhdLaYNAOf0kpVU0BZRR//tpSBCQGceZpQWhK/ahs1ws3TbLULWvy88u9TS?=
- =?us-ascii?Q?O/RsymLmLxSLoRDCM4cVq+KlcbkZBpcPMB2SRRpqEUwk+OyvY/p3bzLSOSL6?=
- =?us-ascii?Q?X1y6ahXppL98IqdhVckfMUkHChQ2zTcZgHjpR7zBvcd+ybeqffPghflHBFw9?=
- =?us-ascii?Q?04FYN9ogZ1FNN62BncWa0zSmGU5yGb1tAL6rc08xYaZ50PT+x61yIhtu6Mpu?=
- =?us-ascii?Q?WIV4L+/EIyjGRXYo/nApDkmga2R6mtW5sTh4OJdXJjPBLpD3Ukku50EfazF3?=
- =?us-ascii?Q?rFNvC9rGPwECIdlqaBAaqmSmaDwKyAnUS3KJRyT3EhVgoHDxFCWIq5xrS5X1?=
- =?us-ascii?Q?EtPTHoO+qGJIQAh75V7zAUXL8hF4izWX3NcOroWfiCy5zLzfcZtUMGPlKKzy?=
- =?us-ascii?Q?+OugraTSGWWix8bfbM9Nw45wRaQF+PobLT6EDio5/oc2kgh4m//W6UAUSW6E?=
- =?us-ascii?Q?E/Yln1nMsfQeOtdf0jKHqCgjzGSrWliWDigd/r9BxnbXpZSfkiOCXSsp0aZg?=
- =?us-ascii?Q?WRT/qsib5NR4BLUwSD2m6MPfdd5dcbRecHGgfmwcs+xHSWrQVrUv1EFu+EZW?=
- =?us-ascii?Q?M6Fst+POafLno+XZLH/QPmp47vGaYGh2S7rx9wo+cfmnoN89Lx4NgVuPAwhI?=
- =?us-ascii?Q?kAMUSSCa6EDxlriE/HFP5teRCz5J0Ihp8RjtsbuALXtaeIfHf6SvQeF9Sj+l?=
- =?us-ascii?Q?wIeCK0CyegyVEEYKkoVRA0/zPj6D3zdM480M7MvY2axqI3eGA0p44pl6M0Ha?=
- =?us-ascii?Q?1XqWNfSpgmn062S9Qwd0FVpxXM6WQbbnnM54uSQG96oB7t+uVfVS+0XEFEJp?=
- =?us-ascii?Q?p1S+0lZK5wmgOKijP0QtWg+J9jeelmXAru/Sybr+kPhPZVTH9/Vmaf6teR23?=
- =?us-ascii?Q?QF7PyFmoXR/zLy92cdX1eVDwGfoweySnT2JZh26fQE+EiampdEEp70NmmWvO?=
- =?us-ascii?Q?o+Lz0hbeNOlUPNjx0jJBhHf9Ht0FD1ZM7ChgeP0q2gW00OJ6cDFEjWlRepXO?=
- =?us-ascii?Q?tVxD3gN8xEhEq37A4oQmNFEjMrNMnnFVPmkxQketuKvrJVRujTqo6uRkCJBv?=
- =?us-ascii?Q?jpMWvzQsMU6qNwY0QfaG59SAxjOTDB8MOS9GMHUpTlhxlaD8TA3JdcJG6r/m?=
- =?us-ascii?Q?CzjgweJy4ySbv7I0LWnlroxEyoT3L1sET6i3hQxEPQ9xYPCVBrew0fEs9QQL?=
- =?us-ascii?Q?q+lRU3vz/Hf5FaqrCLUGZv2JVPcmuZT5DdmEkHR1xKGnTYZYWdXNWvchct8Q?=
- =?us-ascii?Q?01IdhSe7Gq5u5psGmP7Txah/Bp3mgfPFcRAZUSiaVaxZzP00FiUc688jU32U?=
- =?us-ascii?Q?sZx/d4fIGyw5b65oBP1WMu+OnFH9qg1HkwPv/GxzHyOW18XtrMAWLMQAbyxr?=
- =?us-ascii?Q?FejRGUwgaXvzBIeehGGplZ+UcpLr9hqj4IS2enIh?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976B35FB95;
+	Tue, 22 Apr 2025 14:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745332305; cv=none; b=C5GKsBdoudaRkL1mxOYa70B2qDFDKhDmeaorg8/TEkY+mymxtAAHyWnXeuB+I8VCSEnpYdiYsD/ryMtCYFrUPRDY1inb7YHgI3pkI4PHJqkJ1Y1zTNJMxtu/0kaoEEax3khtSxwJzFIIfVkN8rR9UtE7FERQ9+3kzebfIbViJw8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745332305; c=relaxed/simple;
+	bh=7UtTHz1OzXRKk72/53w5IsO8pN7dEsKHXzdKjN8mTNQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pwtipN35DR31NbGXj4fyhV6twckoziX1cYV1lH4S4XGM4+7nu77KvmMIFmplPGGxjXXvdFW6lOk/baTNSRxC5nKsIDy3m06DhSD6e3syWuiub3NhUAcME4LUXyrWHxoO9iMmLG8YwaEUVjEbc3lD1ygVgR8KUkm+YqNMBtBlsBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qnKVP2qg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90596C4CEE9;
+	Tue, 22 Apr 2025 14:31:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745332305;
+	bh=7UtTHz1OzXRKk72/53w5IsO8pN7dEsKHXzdKjN8mTNQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qnKVP2qgtO1hUN9mVrGyWaGTEWIq8jqpIHr3uY8inZjbNWCGzdRo0J9uDNoKMTac4
+	 CvbGZZEvU2voGPjIOxRzKnGAQMMUdB8rkinceS5Q35tVPiweTvYOfb6F69Hp5kz9RK
+	 Lxej1524mrJGhqPR5hjuNZxX40hVhV4VStcN7qi/M9g3RTAnXioB6T31JWdzgU+cxl
+	 ZN20HhqG8eyKJyUJyJ0AVBKGkmtN4NO4E0W6r32ChQHQMVDyzsJScxz2LDwusrLjqq
+	 KiNG5ZeX16W68bez2U3lfR+MKOHY4fO/OC1L6rAgNnvcTL+TCBgn7RKVCuDlfxb4RJ
+	 B9aAONV7LjjUQ==
+Date: Tue, 22 Apr 2025 16:31:29 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: Andrey Albershteyn <aalbersh@redhat.com>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] fs: introduce getfsxattrat and setfsxattrat
+ syscalls
+Message-ID: <20250422-suchen-filmpreis-3573a913457c@brauner>
+References: <20250321-xattrat-syscall-v4-0-3e82e6fb3264@kernel.org>
+ <20250321-xattrat-syscall-v4-3-3e82e6fb3264@kernel.org>
+ <CAOQ4uxj2Fqmc_pSD4bqqoQu7QjmgSVp2V15FbmBdTNqQ03aPGQ@mail.gmail.com>
+ <faqun3wrpvwrhwukql3niqvvauy5ngrpytx5bxbrv5xkounez3@m7j2znjuzapu>
+ <CAOQ4uxjs=Gg-ocwx_fkzc0gxQ_dHx-P9EAgz5ZwbdbrxV0T_EA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB5089.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 809b1a96-25c2-4a8f-5805-08dd7d099c0a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2025 17:10:38.2451
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: kLtokvThYj0Cz2H+Dk7GdxRihk7WbxDamzDSaLF4FRZEE3mYA6MMSBiaw9F+KwN1DmRw8xoSaj3vTFYP14+TJ0lwE+JP6FkM5NBZYBeWA50=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4920
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOQ4uxjs=Gg-ocwx_fkzc0gxQ_dHx-P9EAgz5ZwbdbrxV0T_EA@mail.gmail.com>
 
+On Thu, Mar 27, 2025 at 12:39:28PM +0100, Amir Goldstein wrote:
+> On Thu, Mar 27, 2025 at 10:33 AM Andrey Albershteyn <aalbersh@redhat.com> wrote:
+> >
+> > On 2025-03-23 09:56:25, Amir Goldstein wrote:
+> > > On Fri, Mar 21, 2025 at 8:49 PM Andrey Albershteyn <aalbersh@redhat.com> wrote:
+> > > >
+> > > > From: Andrey Albershteyn <aalbersh@redhat.com>
+> > > >
+> > > > Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
+> > > > extended attributes/flags. The syscalls take parent directory fd and
+> > > > path to the child together with struct fsxattr.
+> > > >
+> > > > This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
+> > > > that file don't need to be open as we can reference it with a path
+> > > > instead of fd. By having this we can manipulated inode extended
+> > > > attributes not only on regular files but also on special ones. This
+> > > > is not possible with FS_IOC_FSSETXATTR ioctl as with special files
+> > > > we can not call ioctl() directly on the filesystem inode using fd.
+> > > >
+> > > > This patch adds two new syscalls which allows userspace to get/set
+> > > > extended inode attributes on special files by using parent directory
+> > > > and a path - *at() like syscall.
+> > > >
+> > > > CC: linux-api@vger.kernel.org
+> > > > CC: linux-fsdevel@vger.kernel.org
+> > > > CC: linux-xfs@vger.kernel.org
+> > > > Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
+> > > > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> > > > ---
+> > > ...
+> > > > +SYSCALL_DEFINE5(setfsxattrat, int, dfd, const char __user *, filename,
+> > > > +               struct fsxattr __user *, ufsx, size_t, usize,
+> > > > +               unsigned int, at_flags)
+> > > > +{
+> > > > +       struct fileattr fa;
+> > > > +       struct path filepath;
+> > > > +       int error;
+> > > > +       unsigned int lookup_flags = 0;
+> > > > +       struct filename *name;
+> > > > +       struct mnt_idmap *idmap;.
+> > >
+> > > > +       struct dentry *dentry;
+> > > > +       struct vfsmount *mnt;
+> > > > +       struct fsxattr fsx = {};
+> > > > +
+> > > > +       BUILD_BUG_ON(sizeof(struct fsxattr) < FSXATTR_SIZE_VER0);
+> > > > +       BUILD_BUG_ON(sizeof(struct fsxattr) != FSXATTR_SIZE_LATEST);
+> > > > +
+> > > > +       if ((at_flags & ~(AT_SYMLINK_NOFOLLOW | AT_EMPTY_PATH)) != 0)
+> > > > +               return -EINVAL;
+> > > > +
+> > > > +       if (!(at_flags & AT_SYMLINK_NOFOLLOW))
+> > > > +               lookup_flags |= LOOKUP_FOLLOW;
+> > > > +
+> > > > +       if (at_flags & AT_EMPTY_PATH)
+> > > > +               lookup_flags |= LOOKUP_EMPTY;
+> > > > +
+> > > > +       if (usize > PAGE_SIZE)
+> > > > +               return -E2BIG;
+> > > > +
+> > > > +       if (usize < FSXATTR_SIZE_VER0)
+> > > > +               return -EINVAL;
+> > > > +
+> > > > +       error = copy_struct_from_user(&fsx, sizeof(struct fsxattr), ufsx, usize);
+> > > > +       if (error)
+> > > > +               return error;
+> > > > +
+> > > > +       fsxattr_to_fileattr(&fsx, &fa);
+> > > > +
+> > > > +       name = getname_maybe_null(filename, at_flags);
+> > > > +       if (!name) {
+> > > > +               CLASS(fd, f)(dfd);
+> > > > +
+> > > > +               if (fd_empty(f))
+> > > > +                       return -EBADF;
+> > > > +
+> > > > +               idmap = file_mnt_idmap(fd_file(f));
+> > > > +               dentry = file_dentry(fd_file(f));
+> > > > +               mnt = fd_file(f)->f_path.mnt;
+> > > > +       } else {
+> > > > +               error = filename_lookup(dfd, name, lookup_flags, &filepath,
+> > > > +                                       NULL);
+> > > > +               if (error)
+> > > > +                       return error;
+> > > > +
+> > > > +               idmap = mnt_idmap(filepath.mnt);
+> > > > +               dentry = filepath.dentry;
+> > > > +               mnt = filepath.mnt;
+> > > > +       }
+> > > > +
+> > > > +       error = mnt_want_write(mnt);
+> > > > +       if (!error) {
+> > > > +               error = vfs_fileattr_set(idmap, dentry, &fa);
+> > > > +               if (error == -ENOIOCTLCMD)
+> > > > +                       error = -EOPNOTSUPP;
+> > >
+> > > This is awkward.
+> > > vfs_fileattr_set() should return -EOPNOTSUPP.
+> > > ioctl_setflags() could maybe convert it to -ENOIOCTLCMD,
+> > > but looking at similar cases ioctl_fiemap(), ioctl_fsfreeze() the
+> > > ioctl returns -EOPNOTSUPP.
+> > >
+> > > I don't think it is necessarily a bad idea to start returning
+> > >  -EOPNOTSUPP instead of -ENOIOCTLCMD for the ioctl
+> > > because that really reflects the fact that the ioctl is now implemented
+> > > in vfs and not in the specific fs.
+> > >
+> > > and I think it would not be a bad idea at all to make that change
+> > > together with the merge of the syscalls as a sort of hint to userspace
+> > > that uses the ioctl, that the sycalls API exists.
+> > >
+> > > Thanks,
+> > > Amir.
+> > >
+> >
+> > Hmm, not sure what you're suggesting here. I see it as:
+> > - get/setfsxattrat should return EOPNOTSUPP as it make more sense
+> >   than ENOIOCTLCMD
+> > - ioctl_setflags returns ENOIOCTLCMD which also expected
+> >
+> > Don't really see a reason to change what vfs_fileattr_set() returns
+> > and then copying this if() to other places or start returning
+> > EOPNOTSUPP.
+> 
+> ENOIOCTLCMD conceptually means that the ioctl command is unknown
+> This is not the case since ->fileattr_[gs]et() became a vfs API
 
-
-> -----Original Message-----
-> From: Philipp Stanner <phasta@kernel.org>
-> Sent: Wednesday, April 16, 2025 9:44 AM
-> To: Sunil Goutham <sgoutham@marvell.com>; Andrew Lunn
-> <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Dumazet,
-> Eric <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> <pabeni@redhat.com>; Geetha sowjanya <gakula@marvell.com>; Subbaraya
-> Sundeep <sbhatta@marvell.com>; hariprasad <hkelam@marvell.com>; Bharat
-> Bhushan <bbhushan2@marvell.com>; Taras Chornyi
-> <taras.chornyi@plvision.eu>; Daniele Venzano <venza@brownhat.org>; Heiner
-> Kallweit <hkallweit1@gmail.com>; Russell King <linux@armlinux.org.uk>; Th=
-omas
-> Gleixner <tglx@linutronix.de>; Philipp Stanner <phasta@kernel.org>; Helge=
- Deller
-> <deller@gmx.de>; Ingo Molnar <mingo@kernel.org>; Simon Horman
-> <horms@kernel.org>; Al Viro <viro@zeniv.linux.org.uk>; Sabrina Dubroca
-> <sd@queasysnail.net>; Keller, Jacob E <jacob.e.keller@intel.com>
-> Cc: linux-arm-kernel@lists.infradead.org; netdev@vger.kernel.org; linux-
-> kernel@vger.kernel.org; linux-parisc@vger.kernel.org
-> Subject: [PATCH 0/8] net: Phase out hybrid PCI devres API
->=20
-> Fixes a number of minor issues with the usage of the PCI API in net.
-> Notbaly, it replaces calls to the sometimes-managed
-> pci_request_regions() to the always-managed pcim_request_all_regions(),
-> enabling us to remove that hybrid functionality from PCI.
->=20
-
-Removing the problematic "sometimes" behavior is good.
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-
+vfs_fileattr_{g,s}et() should not return ENOIOCTLCMD. Change the return
+code to EOPNOTSUPP and then make EOPNOTSUPP be translated to ENOTTY on
+on overlayfs and to ENOIOCTLCMD in ecryptfs and in fs/ioctl.c. This way
+we get a clean VFS api while retaining current behavior. Amir can do his
+cleanup based on that.
 
