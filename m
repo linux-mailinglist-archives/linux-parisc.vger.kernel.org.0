@@ -1,96 +1,164 @@
-Return-Path: <linux-parisc+bounces-3568-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3569-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02462A99B50
-	for <lists+linux-parisc@lfdr.de>; Thu, 24 Apr 2025 00:14:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E220A9A761
+	for <lists+linux-parisc@lfdr.de>; Thu, 24 Apr 2025 11:06:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ADAB5A6EF0
-	for <lists+linux-parisc@lfdr.de>; Wed, 23 Apr 2025 22:14:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DF733AD049
+	for <lists+linux-parisc@lfdr.de>; Thu, 24 Apr 2025 09:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26C01E32D9;
-	Wed, 23 Apr 2025 22:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E53215160;
+	Thu, 24 Apr 2025 09:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="riwSNAm/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qPzQ2EtO"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E741885B4;
-	Wed, 23 Apr 2025 22:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FED1210F5A;
+	Thu, 24 Apr 2025 09:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745446490; cv=none; b=ZAVWcbS7CmjLMpwlRgg85l7HvecH0DhTTMwvHLr9QkX/K9/TPkC3vsIZoOp0EGaVpBv6HWmeEl1CSy9J1VNJkbp5DW6naFjzQ2BH3kyCywwqIaDuGsGN1AEw2KTkk98/Pnr/ihV19enPYoa2PVK7nKHqIr0TWMtWSeHEaFa5MNY=
+	t=1745485582; cv=none; b=DVkg+p5KTiuu7hbo0J270jYBlHaaA5sQLXR2MSAqbbf+iPojEN1KXE5nz2m0KdlloqR3Az+1k9+n50cVr/PwRqHvIRZ1RbYGsAH3fm04jJxyDspoNijz+7xs78TCwjS2U1CfuvyqGHDmGgHf0RGHKchBbReRSXp1ioPk0m54Q/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745446490; c=relaxed/simple;
-	bh=yA5ENDOU6WR/6eoqizFm8BUxphmvVuGLV+xi0KRrHsc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l2JIO8ArVv1cQLV9gVjMqGvCnGabPkSSqAoJ5hOG+S6hODicdqA1+NZuShLW46AfRqIFlxixHYTYJmP5BBzlJmoZYFdUd+0yjhRhCM1HtPhbNPdetcadwflX4zb90ijdJR2dGglhjXCEGd0nUe4fAXARZ+p8f0lOOc11Ft0XhFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=riwSNAm/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14146C4CEE2;
-	Wed, 23 Apr 2025 22:14:49 +0000 (UTC)
+	s=arc-20240116; t=1745485582; c=relaxed/simple;
+	bh=g6bxeBGFz+ZfAiISf78nYF5d6OuqVi+zKYMYmkzuYww=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HK3T3zdIGDpGO/TCXAxWRf0iQ/zar0OLW4YFttAblOUqXirChYvfmI8uemjkoQnmB6Vb3JnpDDLRlHt/MQVAv4OdHrWLF9sIeVyQmLcJCpCAkh54AH3oLhumaQtjEc8H20yVMyUPIJyfy3E+2mYHzKTMOazaBeYbpRqxd4/g8Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qPzQ2EtO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF029C4CEEB;
+	Thu, 24 Apr 2025 09:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745446489;
-	bh=yA5ENDOU6WR/6eoqizFm8BUxphmvVuGLV+xi0KRrHsc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=riwSNAm/IP7hpOveudhoxer5Kf/aotbjwxCXUtk3nzygYvgSsL6ONNw1BRs54fBDb
-	 Yfe6SP7JqDLkwCMjTytT1pow9SxXz9vaO2aKzm8yShqTD9bkayFdWVmdJDO6+hFV5B
-	 QGr8wGMsp+Blk+SaETw9oSmG47z9ithxfSLJI2DoieZGg0QFXF7ZMH8ocXhpyy12Jv
-	 Cq5IFsSwbaEZFInLrNCnX0bm3FrKvXlRf6uny3iL0r80RC+Gk8vqTPZKoLiczx6s9f
-	 52JzTTWyJw45ekwLLIjoIUzt2xfez0G/unjv0b3jivQQO+Dtn2oDk32xFQECWPEXKz
-	 OADngvh80wKPQ==
-Date: Wed, 23 Apr 2025 15:14:48 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Philipp Stanner <phasta@mailbox.org>
-Cc: phasta@kernel.org, Sunil Goutham <sgoutham@marvell.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Geetha
- sowjanya <gakula@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>,
- hariprasad <hkelam@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>,
- Taras Chornyi <taras.chornyi@plvision.eu>, Daniele Venzano
- <venza@brownhat.org>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Thomas Gleixner <tglx@linutronix.de>, Helge Deller
- <deller@gmx.de>, Ingo Molnar <mingo@kernel.org>, Simon Horman
- <horms@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, Sabrina Dubroca
- <sd@queasysnail.net>, Jacob Keller <jacob.e.keller@intel.com>,
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH 2/8] net: octeontx2: Use pure PCI devres API
-Message-ID: <20250423151448.15a4a13e@kernel.org>
-In-Reply-To: <00189e0a036e1bc7af8f78cc9fa934f1ad23efba.camel@mailbox.org>
-References: <20250416164407.127261-2-phasta@kernel.org>
-	<20250416164407.127261-4-phasta@kernel.org>
-	<20250422174914.43329f7f@kernel.org>
-	<5e20b320cbbe492769c87ed60b591b22d5e8e264.camel@mailbox.org>
-	<00189e0a036e1bc7af8f78cc9fa934f1ad23efba.camel@mailbox.org>
+	s=k20201202; t=1745485581;
+	bh=g6bxeBGFz+ZfAiISf78nYF5d6OuqVi+zKYMYmkzuYww=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qPzQ2EtOhRHjvqeIqmfEs41n41+fPOpo5wVb0WXRA0Y64JK63Z0piOH/6q1TuKDwD
+	 WTI9c9BorspnKyVAu3DQkYsACDPHLJTqVVPTN6kTMVKEScUaCBv3GdtHESuUO5NqC6
+	 pqjqzGFZkOK5FpMLm1+UNv77/mYGep1Zag5d47x0b6vZpoHTEkoNH1VrlBp4U0AaKU
+	 qsF/Vn2vnRvvp1Kn7/YXcOkrtYa0w4Ynlqq5gkE0B8hjxnGwh/iyaywzNfxrIZA9z+
+	 2pzSBGKxX+TFKn8wOJih4WXcFzFXNu3Sjb1AkS/krSZea9kudjKkOe+16Pk7titbWK
+	 ch3/3zyDdzWnA==
+Date: Thu, 24 Apr 2025 11:06:07 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Andrey Albershteyn <aalbersh@redhat.com>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] fs: introduce getfsxattrat and setfsxattrat
+ syscalls
+Message-ID: <20250424-zuspielen-luxus-3d49b600c3bf@brauner>
+References: <20250321-xattrat-syscall-v4-0-3e82e6fb3264@kernel.org>
+ <20250321-xattrat-syscall-v4-3-3e82e6fb3264@kernel.org>
+ <20250422-abbekommen-begierde-bcf48dd74a2e@brauner>
+ <rbzlwvecvrp4xawwp5nywdq6wp5hgjhrtrabpszv74xmfqbj4f@x7v6eqfc5gcd>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <rbzlwvecvrp4xawwp5nywdq6wp5hgjhrtrabpszv74xmfqbj4f@x7v6eqfc5gcd>
 
-On Wed, 23 Apr 2025 10:38:01 +0200 Philipp Stanner wrote:
-> > > This error path should be renamed. Could you also apply your
-> > > conversion
-> > > to drivers/net/ethernet/marvell/octeontx2/af/ ?  
+On Wed, Apr 23, 2025 at 11:53:25AM +0200, Jan Kara wrote:
+> On Tue 22-04-25 16:59:02, Christian Brauner wrote:
+> > On Fri, Mar 21, 2025 at 08:48:42PM +0100, Andrey Albershteyn wrote:
+> > > From: Andrey Albershteyn <aalbersh@redhat.com>
+> > > 
+> > > Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
+> > > extended attributes/flags. The syscalls take parent directory fd and
+> > > path to the child together with struct fsxattr.
+> > > 
+> > > This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
+> > > that file don't need to be open as we can reference it with a path
+> > > instead of fd. By having this we can manipulated inode extended
+> > > attributes not only on regular files but also on special ones. This
+> > > is not possible with FS_IOC_FSSETXATTR ioctl as with special files
+> > > we can not call ioctl() directly on the filesystem inode using fd.
+> > > 
+> > > This patch adds two new syscalls which allows userspace to get/set
+> > > extended inode attributes on special files by using parent directory
+> > > and a path - *at() like syscall.
+> > > 
+> > > CC: linux-api@vger.kernel.org
+> > > CC: linux-fsdevel@vger.kernel.org
+> > > CC: linux-xfs@vger.kernel.org
+> > > Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
+> > > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> ...
+> > > +		struct fsxattr __user *, ufsx, size_t, usize,
+> > > +		unsigned int, at_flags)
+> > > +{
+> > > +	struct fileattr fa = {};
+> > > +	struct path filepath;
+> > > +	int error;
+> > > +	unsigned int lookup_flags = 0;
+> > > +	struct filename *name;
+> > > +	struct fsxattr fsx = {};
+> > > +
+> > > +	BUILD_BUG_ON(sizeof(struct fsxattr) < FSXATTR_SIZE_VER0);
+> > > +	BUILD_BUG_ON(sizeof(struct fsxattr) != FSXATTR_SIZE_LATEST);
+> > > +
+> > > +	if ((at_flags & ~(AT_SYMLINK_NOFOLLOW | AT_EMPTY_PATH)) != 0)
+> > > +		return -EINVAL;
+> > > +
+> > > +	if (!(at_flags & AT_SYMLINK_NOFOLLOW))
+> > > +		lookup_flags |= LOOKUP_FOLLOW;
+> > > +
+> > > +	if (at_flags & AT_EMPTY_PATH)
+> > > +		lookup_flags |= LOOKUP_EMPTY;
+> > > +
+> > > +	if (usize > PAGE_SIZE)
+> > > +		return -E2BIG;
+> > > +
+> > > +	if (usize < FSXATTR_SIZE_VER0)
+> > > +		return -EINVAL;
+> > > +
+> > > +	name = getname_maybe_null(filename, at_flags);
+> > > +	if (!name) {
 > > 
-> > Hm, those must have slipped me for some reason. Will reiterate with
-> > them and the error path.  
+> > This is broken as it doesn't handle AT_FDCWD correctly. You need:
+> > 
+> >         name = getname_maybe_null(filename, at_flags);
+> >         if (IS_ERR(name))
+> >                 return PTR_ERR(name);
+> > 
+> >         if (!name && dfd >= 0) {
+> > 		CLASS(fd, f)(dfd);
 > 
-> Wait, false alarm. I actually did look at them and those in af/ don't
-> seem to use the combination of pcim_enable_device() + pci_request_*
-> 
-> Only users of that combination have to be ported. Users of
-> pci_enable_device() + pcim_* functions and pcim_enable_device() +
-> pcim_* functions are fine.
-> 
-> Correct me if I missed the first mentioned combination up there.
+> Ah, you're indeed right that if dfd == AT_FDCWD and filename == NULL, the
+> we should operate on cwd but we'd bail with error here. I've missed that
+> during my review. But as far as I've checked the same bug is there in
+> path_setxattrat() and path_getxattrat() so we should fix this there as
+> well?
 
-I think you're right, there are apparently multiple but separate
-drivers in that directory.
+Yes, please!
 
