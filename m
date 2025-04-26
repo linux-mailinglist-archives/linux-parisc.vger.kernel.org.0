@@ -1,99 +1,112 @@
-Return-Path: <linux-parisc+bounces-3581-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3582-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED2FA9D742
-	for <lists+linux-parisc@lfdr.de>; Sat, 26 Apr 2025 04:32:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A65CA9DAC2
+	for <lists+linux-parisc@lfdr.de>; Sat, 26 Apr 2025 14:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D7571BC4F94
-	for <lists+linux-parisc@lfdr.de>; Sat, 26 Apr 2025 02:33:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8DC04A52A3
+	for <lists+linux-parisc@lfdr.de>; Sat, 26 Apr 2025 12:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85DA1FAC59;
-	Sat, 26 Apr 2025 02:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2354528EA;
+	Sat, 26 Apr 2025 12:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NV3HH5cT"
+	dkim=pass (1024-bit key) header.d=brownhat.org header.i=@brownhat.org header.b="ifFJmfEc"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-bc0d.mail.infomaniak.ch (smtp-bc0d.mail.infomaniak.ch [45.157.188.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1D31E834D;
-	Sat, 26 Apr 2025 02:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DAF2F24
+	for <linux-parisc@vger.kernel.org>; Sat, 26 Apr 2025 12:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745634771; cv=none; b=fs4VH7kMmRna2oWrUGntihuvxHH0D8Yjb6zviOFuxRpCrqyhixi0qSwIbZVUHWFycbQT1iNTtSqpENnvxOOo2uBo7MbZVqGPmA8tjDOV6FOpYI7uhX9eqg97w9JQyIe/yOPtFTY9Htw3vkq9jrxuZcUDVeXtyUqmqG2hdqwMgUQ=
+	t=1745671197; cv=none; b=DC8jZuLysa0tf7Fwv2E4XLPfd0LOVMM5pYQNifxS3FrsFS1Ke4DEpF3t7gPSKDa+ylNkgCasBo0uufFZJH/9BBTXGZ1Z8fLWbepwVsy1klqOX5lM+6nK5OlDCsFMt2X6dvRJj6gdboy0TXO6qCXi8H1JfRJau5kdkEQAUcR7Xe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745634771; c=relaxed/simple;
-	bh=+RUTWIt3VFeUueyp+/LHBU7OQa1nslQTo03DjgGapQA=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=KZvxPmMh8fPvildNUB50dIGBJOh8LKZJLnVSTVKpTdJ4cOpiDP+pD103TAmRuZBcFzw4AwWYju6Crsa6XeJC5itsK89tIFjfPRodca2poR43PFjNS65orNctStefg8eziXAakNIwZIX5yO3R5uabW7cEg7AvuLah223sBHxSBsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NV3HH5cT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B430EC4CEE4;
-	Sat, 26 Apr 2025 02:32:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1745634770;
-	bh=+RUTWIt3VFeUueyp+/LHBU7OQa1nslQTo03DjgGapQA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NV3HH5cTytNLqUSnhZu/e/1hOQv76j3RXu91ccBhnAZKPShm2ywlHlwxEmP2NFyJ8
-	 9mJGv0SrHBCtXVkieOdFVL+aj36B86SkAmVo+3g7zY7zwp1CWMsmr/ZbWtOT8bEZyr
-	 8NA5f5WhQqLgsoDwMQL/xkJ+DI4oOl2RlkHukU3w=
-Date: Fri, 25 Apr 2025 19:32:49 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Alessandro Carminati <acarmina@redhat.com>
-Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>, Arnd
- Bergmann <arnd@arndb.de>, =?ISO-8859-1?Q?Ma=EDra?= Canal
- <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, Kees Cook
- <keescook@chromium.org>, Daniel Diaz <daniel.diaz@linaro.org>, David Gow
- <davidgow@google.com>, Arthur Grillo <arthurgrillo@riseup.net>, Brendan
- Higgins <brendan.higgins@linux.dev>, Naresh Kamboju
- <naresh.kamboju@linaro.org>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Ville =?ISO-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>, Daniel
- Vetter <daniel@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>, Guenter
- Roeck <linux@roeck-us.net>, Alessandro Carminati
- <alessandro.carminati@gmail.com>, Jani Nikula <jani.nikula@intel.com>,
- dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, loongarch@lists.linux.dev, x86@kernel.org
-Subject: Re: [PATCH v4 00/14] Add support for suppressing warning backtraces
-Message-Id: <20250425193249.78b45d2589575c15f483c3d8@linux-foundation.org>
-In-Reply-To: <20250313114329.284104-1-acarmina@redhat.com>
-References: <20250313114329.284104-1-acarmina@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1745671197; c=relaxed/simple;
+	bh=pPjkIvAb973JIjC0KrnU484B3+Q0+y9rM7H88YyWnGo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ihg6aBOoPQ+UsFCh6t2N09CIf+dpixfN8R2Ib1019BKenvHzE4BCg6VkknwCJ92+czBCbZ5Q0i1la/2wK0qj65sSpdGlPigHvGC6xhkpNYOtQHTDka/Vfo9NYCyzJZCKG3v87dj5i/y+ikmljY6gs7prppr9wIJ1UWRlZ7GbrMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=brownhat.org; spf=pass smtp.mailfrom=brownhat.org; dkim=pass (1024-bit key) header.d=brownhat.org header.i=@brownhat.org header.b=ifFJmfEc; arc=none smtp.client-ip=45.157.188.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=brownhat.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=brownhat.org
+Received: from smtp-4-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10:40ca:feff:fe05:1])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Zl8Rg0h1yzYwb;
+	Sat, 26 Apr 2025 14:39:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=brownhat.org;
+	s=20191113; t=1745671182;
+	bh=Olfu3brFWDS51/0/ryjEK1Ts5wIML5vHhBtSBjeGn1M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ifFJmfEc1FOCIgKpJS3CmV/oFxLwNtEOuu3N1PglAJNIrXe4ppOjcGxlb++vl9DyK
+	 JbAw7/MiqXxys6UudQhbbmx9ZSnasJ8LrtZ+CBS0ghmiydCm9NiL/Ec2r0vl+5PFha
+	 SDEvQRap2v9uEdv6aOxSN5DtOwovM7031rbBrtN8=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Zl8Rc499kzDBB;
+	Sat, 26 Apr 2025 14:39:40 +0200 (CEST)
+Message-ID: <559370be-a366-4754-8baf-3a4b332be025@brownhat.org>
+Date: Sat, 26 Apr 2025 14:39:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/8] net: ethernet: sis900: Use pure PCI devres API
+To: Philipp Stanner <phasta@kernel.org>, Sunil Goutham
+ <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Geetha sowjanya <gakula@marvell.com>, Subbaraya Sundeep
+ <sbhatta@marvell.com>, hariprasad <hkelam@marvell.com>,
+ Bharat Bhushan <bbhushan2@marvell.com>,
+ Taras Chornyi <taras.chornyi@plvision.eu>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Helge Deller <deller@gmx.de>,
+ Simon Horman <horms@kernel.org>, Jacob Keller <jacob.e.keller@intel.com>,
+ Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Al Viro <viro@zeniv.linux.org.uk>, Shannon Nelson <shannon.nelson@amd.com>,
+ Sabrina Dubroca <sd@queasysnail.net>
+Cc: linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+References: <20250425085740.65304-2-phasta@kernel.org>
+ <20250425085740.65304-7-phasta@kernel.org>
+Content-Language: en-US
+From: Daniele Venzano <venza@brownhat.org>
+In-Reply-To: <20250425085740.65304-7-phasta@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Infomaniak-Routing: alpha
 
-On Thu, 13 Mar 2025 11:43:15 +0000 Alessandro Carminati <acarmina@redhat.com> wrote:
-
-> Some unit tests intentionally trigger warning backtraces by passing bad
-> parameters to kernel API functions. Such unit tests typically check the
-> return value from such calls, not the existence of the warning backtrace.
-
-I've had this series in mm.git's mm-new branch for a while.  I didn't
-send it up for 6.15-rc1 due to what I believe to be unresolved review
-issues.
-
-I'll drop this v4 series.  Please resend if/when suitable.
-
-Some notes I have taken are:
-
-https://lkml.kernel.org/r/202504190918.JLNuRGVb-lkp@intel.com
-https://lkml.kernel.org/r/20250402074550.GQ5880@noisy.programming.kicks-ass.net
-#arm64-add-support-for-suppressing-warning-backtraces.patch: check review
-
-Some fixes I had merged which presumably should be carried forward are
-https://lore.kernel.org/all/20250330212934.3F898C4CEDD@smtp.kernel.org/T/
-https://lkml.kernel.org/r/20250330212739.85827C4CEDD@smtp.kernel.org
-
-Thanks.
+On 25/04/2025 10:57, Philipp Stanner wrote:
+> The currently used function pci_request_regions() is one of the
+> problematic "hybrid devres" PCI functions, which are sometimes managed
+> through devres, and sometimes not (depending on whether
+> pci_enable_device() or pcim_enable_device() has been called before).
+>
+> The PCI subsystem wants to remove this behavior and, therefore, needs to
+> port all users to functions that don't have this problem.
+>
+> Replace pci_request_regions() with pcim_request_all_regions().
+>
+> Signed-off-by: Philipp Stanner <phasta@kernel.org>
+> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Acked-by: Daniele Venzano <venza@brownhat.org>
+> ---
+>   drivers/net/ethernet/sis/sis900.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/sis/sis900.c b/drivers/net/ethernet/sis/sis900.c
+> index 332cbd725900..df869f82cae8 100644
+> --- a/drivers/net/ethernet/sis/sis900.c
+> +++ b/drivers/net/ethernet/sis/sis900.c
+> @@ -468,7 +468,7 @@ static int sis900_probe(struct pci_dev *pci_dev,
+>   	SET_NETDEV_DEV(net_dev, &pci_dev->dev);
+>   
+>   	/* We do a request_region() to register /proc/ioports info. */
+> -	ret = pci_request_regions(pci_dev, "sis900");
+> +	ret = pcim_request_all_regions(pci_dev, "sis900");
+>   	if (ret)
+>   		goto err_out;
+>   
 
