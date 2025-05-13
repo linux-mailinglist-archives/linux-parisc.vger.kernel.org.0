@@ -1,129 +1,96 @@
-Return-Path: <linux-parisc+bounces-3645-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3646-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B952AB4D52
-	for <lists+linux-parisc@lfdr.de>; Tue, 13 May 2025 09:49:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86D7AB4DFF
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 May 2025 10:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A679617273E
-	for <lists+linux-parisc@lfdr.de>; Tue, 13 May 2025 07:49:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1421B40D61
+	for <lists+linux-parisc@lfdr.de>; Tue, 13 May 2025 08:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E641F1518;
-	Tue, 13 May 2025 07:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A60F204F9B;
+	Tue, 13 May 2025 08:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ICyfMrK8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pOsLeKXo"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAF41E5B94;
-	Tue, 13 May 2025 07:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7867E1F2C58;
+	Tue, 13 May 2025 08:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747122591; cv=none; b=URFxxIC+sV5NTM595YjVU8CxeE7/Cn0sU2fqnioetpItBnukas/xiypj+zGC62/T7Gdg8yqn5Q/01ZSqC7E8NDvS6oU+eHxu2ep91aX/UC1fGZjeu5jrWevkNU9Hk9bTPrP4aZwt88sF6ofittY3yi/JbNllTgKnnNpKn+Znqkk=
+	t=1747124684; cv=none; b=aYWiQvgKhDLmVjxNTlkuE9/wqsMXaj5vNtpjeinRFtYpFlcHS8B/+2gWlcBkQMnLQxIqGw80nEKtswFgJx0FXzN8fjrW7qY07n+0R8mhFcpQ5DZtgzrl3QzA1zNl4G9SnEeDfZbcfbcNppxkHqf62vpgxDrHZJkYOAD49kRQJQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747122591; c=relaxed/simple;
-	bh=z+XKwlKxvho0rlpEIn0bjoCqOXNrPIEWodnNK5WbJJI=;
+	s=arc-20240116; t=1747124684; c=relaxed/simple;
+	bh=YHA/wvWEDB8CgIoUnHtp7szR/abPgZrTVkvyNlmczCA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JYViPWda8p+NEHHCvzN5Yo8bR6JbL4Ii672Z9Z0pMn4FTV1XVG0Uxrv+PkVOotsqVM4yvlvEVuT6I5h3N+4JMBMTdZTMdIAOXrsGPfCtMmWuLBXjChnVjfTIYZbeJLOX5XdSwx6o4Hz1+wNrEs/F9ypg53zmL+9VhUETCKpw1uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ICyfMrK8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE39EC4CEE4;
-	Tue, 13 May 2025 07:49:49 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sh+Z3cYqoCRgLQqbc2OcKXCCcLpwyo14xuXElZp6vfkb/AKkPEYPDUcut/FLogVpu4sZP7M7OWRVviCmwsyHetVNMQ960UF4xIA6ltEPonZQ0GuKi//2jNpiC8RkC1szEYCrfDhUwPDjTibi2cQhZ/t21VVuSpqA7nodZG7/9jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pOsLeKXo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC30C4CEE4;
+	Tue, 13 May 2025 08:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747122590;
-	bh=z+XKwlKxvho0rlpEIn0bjoCqOXNrPIEWodnNK5WbJJI=;
+	s=k20201202; t=1747124682;
+	bh=YHA/wvWEDB8CgIoUnHtp7szR/abPgZrTVkvyNlmczCA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ICyfMrK8mhiA/OukQgVVroae9K1GoFJUvWMzgTt2E9VSNfkJVyx/BiJXh7hDwRupN
-	 vQugGeWqM/CZbN07jv+GX+v7HG44hoBoz7j1e/xSsj/MrkgkUaxC8Vw0zpZT6eeXFR
-	 5pDKYrmSzylrdVyA6z2oLJNWxwsu9Af9MqA46swDCjseS7ly4YQ6W7qzvB90G9vcKN
-	 gMPsr6tcbDpNY+sLEN8fVVA1Fe8zFmpd9TUPkKiRRjfBxBjA4oUQh/ABIb0I+ai1VE
-	 T6A0zExe59APk/1qaqjF8GO+BWLk9cBZFzQs2DCDYTAXkhKk1Slpx2OsT44RbP5ASH
-	 fZ8VPCWKfD5EQ==
-Date: Tue, 13 May 2025 09:49:43 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Frederic Weisbecker <frederic@kernel.org>, 
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes <joel@joelfernandes.org>, 
-	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang1211@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Jiri Slaby <jirislaby@kernel.org>, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org, 
-	linux-parisc@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH 07/12] Input: sysrq: mv sysrq into drivers/tty/sysrq.c
-Message-ID: <ddkgmitslawut5zmeinxvuiwsfzxx5ysn5gtuvruemnnrhicwn@lkpckufsinum>
-References: <20250509-jag-mv_ctltables_iter2-v1-0-d0ad83f5f4c3@kernel.org>
- <20250509-jag-mv_ctltables_iter2-v1-7-d0ad83f5f4c3@kernel.org>
- <202505091010.F2F8C676@keescook>
+	b=pOsLeKXoaJjDR7Uej2TlJeM6ZmoE7XJ1eY2NW6EWvVbEdYKdNoHifU2oYl1NCpNcj
+	 05cGqKrPBX7tyjVBdRbn+SzIcuKHPlRsbgqJK46eiiMZYYcMLDd0yoBzk0zcctZoT5
+	 88rkSUu8KWAF+m3PM71lYiXI9gs2yzOsFIA4FLyZ0jTr5Y8FLRYvi4dISD8QFo1ATr
+	 S8P/VCDjGSYzbJcqt8ZzQMjAuYW7D/ZCcdarVIO5Bue5AhTUxLrTClQ71Dn2txfTwz
+	 OstRPVaqa7P4ms/78eMW1q+EnE6838KH/802tcNklQ2fgt7QYGzRyfY/YjRkQZm0NM
+	 uPsFhWO1hBI/A==
+Date: Tue, 13 May 2025 10:24:27 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Andrey Albershteyn <aalbersh@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, 
+	Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Ondrej Mosnacek <omosnace@redhat.com>, Tyler Hicks <code@tyhicks.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>, linux-alpha@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	selinux@vger.kernel.org, ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, Andrey Albershteyn <aalbersh@kernel.org>
+Subject: Re: [PATCH v5 0/7] fs: introduce file_getattr and file_setattr
+ syscalls
+Message-ID: <20250513-wunden-tierzucht-0cd8fb32bb0e@brauner>
+References: <20250512-xattrat-syscall-v5-0-a88b20e37aae@kernel.org>
+ <vxjuophuvmvqloczajfyjd5jvvcbvcty2fpvfmcaz5xuh5vyqv@fxiymeww26mf>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4m4abidfdrbxi5yd"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <202505091010.F2F8C676@keescook>
+In-Reply-To: <vxjuophuvmvqloczajfyjd5jvvcbvcty2fpvfmcaz5xuh5vyqv@fxiymeww26mf>
 
+> Ignore please, somehow b4 crashed with timeout on gmail
 
---4m4abidfdrbxi5yd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, May 09, 2025 at 10:10:28AM -0700, Kees Cook wrote:
-> On Fri, May 09, 2025 at 02:54:11PM +0200, Joel Granados wrote:
-> > Move both sysrq ctl_table and supported sysrq_sysctl_handler helper
-> > function into drivers/tty/sysrq.c. Replaced the __do_proc_dointvec in
-> > helper function with do_proc_dointvec as the former is local to
-> > kernel/sysctl.c.
->=20
-> nit: do_proc_dointvec_minmax
-Thx. I even added a small comment to the commit message to clarify:
-```
-Move both sysrq ctl_table and supported sysrq_sysctl_handler helper
-function into drivers/tty/sysrq.c. Replaced the __do_proc_dointvec in
-helper function with do_proc_dointvec_minmax as the former is local to
-kernel/sysctl.c. Here we use the minmax version of do_proc_dointvec
-because do_proc_dointvec is static and calling do_proc_dointvec_minmax
-with a NULL min and max is the same as calling do_proc_dointvec.
-```
-
-I'll also put a comment in the code to make sure that a min max is not
-added by mistake.
-
-Best
-
---=20
-
-Joel Granados
-
---4m4abidfdrbxi5yd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmgi+ZcACgkQupfNUreW
-QU+v4Qv/efXaubw/UZ0/uYrlHOJZg+VxZvyldRdbiHjo3Ub408gh2trrRYtceCsY
-ICssy3kBVRggr7y+KLqjXZZOVoAz8/PVXR38X+6FozTLuSpwrtIY0vLeXeew7GU0
-kwYWrcn+MtqfBuo32INYySExZJs7/NoQLVqGwQrPIdRhuM/N/srMoe/uGeMwQnhl
-mLdzg3jlOdcYSxbKj6bdCMBg/2qHTWIv9iVQfdRNy3bALXOmvGJNlHBgd2qROsyg
-T7Y78uAfyz2h/mnTrRi0JxjssYLfjFQLoy2+Y/KBwonDdAyRRRQg6na93jB+DJWs
-Veq4CcLz5XA4OfxXNPosQYtrfzKUahzQSiwGvOq4F+fNhp2JrHf3jYmojoC2pPSN
-e0AV2jZBVk7Y+gkyeEkYgEF9A7AtHqFXLlCc5wovR/dYG8seSJWLuaVkphB0oXdC
-QK0b1e9pm6iy1k5xhRhP7KZCcoqynySk816gPhatZI0ARh0+5YJT8D2TEJYkCvJx
-IoAnZ+8h
-=dHUN
------END PGP SIGNATURE-----
-
---4m4abidfdrbxi5yd--
+Ok, no worries. I wondered why I didn't get all messages of that series.
 
