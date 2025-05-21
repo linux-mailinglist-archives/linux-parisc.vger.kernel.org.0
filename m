@@ -1,189 +1,276 @@
-Return-Path: <linux-parisc+bounces-3677-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3678-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59462ABDFD3
-	for <lists+linux-parisc@lfdr.de>; Tue, 20 May 2025 18:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DBEABEE85
+	for <lists+linux-parisc@lfdr.de>; Wed, 21 May 2025 10:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5004B3A3450
-	for <lists+linux-parisc@lfdr.de>; Tue, 20 May 2025 16:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF17A3B1C06
+	for <lists+linux-parisc@lfdr.de>; Wed, 21 May 2025 08:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9083A24E019;
-	Tue, 20 May 2025 16:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA1D238C36;
+	Wed, 21 May 2025 08:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="VIO0To7o"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RI8mkj+S"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A7D288A2;
-	Tue, 20 May 2025 16:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B350238143
+	for <linux-parisc@vger.kernel.org>; Wed, 21 May 2025 08:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747756909; cv=none; b=ox04wadpr+YeKtkY/k37A6wB2fsn1NZNL4aW132th7WZ4fyzu6jw9/PNVDJ/6VtPjKvek3rg3k1Df4l6W5XonxW2tCUUFfvJowP5N9KnFlkCK++BqB2YeDBmPU2gPmsT+tqvsWePgp73xwFuaQk/ek7q2tRwrtv/v5X36PChpnw=
+	t=1747817326; cv=none; b=u+4ZxzvrSwfloVlyL9eHtjMwO3p0AUcVhTbgtwztVlJFI1M5ISLVwHvmaJBD8J0Fwv/6MNJX8JWA88GnLCn4Ee3TV86o6YloL1079v+YMour9mE3+oFGmEqhsr+0aCoF4IiYZqq4oUYOUsRl0zkERIC0D1fdiiTTWHGL4w7s0B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747756909; c=relaxed/simple;
-	bh=IKXITva7/YjghlR4ZVT7/WJCzWQopHSqmbEBjvNw80o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l7LEdq7ybSMplpeoMXmyZgM9RgRJjQ8Jxvnw93tbnnFoJCtEQFsc4lUtCBaG8zR9P2rfz+57+7l4tJwNYSfRUyzE7eYQjsQCBAR0Ro/O5nSTEwcnU4Pz7/VKsVy80dUwSxuj3zJZSdWqEgF1ce77QvVamu8ydHYgktBRepP11uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=VIO0To7o; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1747756904; x=1748361704; i=deller@gmx.de;
-	bh=N5oy7CdZNTw3mP2yyf7QkYGg65zZPa4HL8zBeUx5BKA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=VIO0To7oOB0XzRDIOmz1F/j/MLwD6DIWQuILoDFBmsnMC2wf5LsDTUTiXBhF2r3r
-	 lRW8BGJJGds1hhr5GBf2QpUa0GYhBQZCXfsWLh5UXwMfZbl5gfDyxy1JH2aWlCIuw
-	 gomm4umIVpawNfaxGaiCmAFIr66jX7HdHEsH07Xr0f2x4k3XzzuNLmZxZ1sZ8MoS7
-	 HeUrSXe3whqkzql3sYOdU/piO/F0cktemVKmnKC59/lnZiF7nC9phy8RkILr22ZRq
-	 SHPHW5/cFvF6VAxRk2lCKe99iHZMlGQnXUAvOmUwqUHZPWWsVLzUbwcMHD8bXVg48
-	 ucLe9b8b9E/EHH1m6w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.173] ([109.250.63.181]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1N2E1G-1uwYUg25Wg-00sRoi; Tue, 20
- May 2025 18:01:44 +0200
-Message-ID: <36dcda92-340e-40d1-befc-ac488fd534ca@gmx.de>
-Date: Tue, 20 May 2025 18:01:43 +0200
+	s=arc-20240116; t=1747817326; c=relaxed/simple;
+	bh=oks16V55Al3cIwa3tzMhKIQg+6JISq/7X+SJWpAWNGk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XOSxa7FCmH8JbsOA2V59ZDB3+LC9MYdS8q8oRQPtvSqBW1T/DKs/HN+yICchbC92QuRF9fg951b34OTZE3CZ357LP3wDLxdzh4sBI0ruWyWgmUHQdJ/pZIsASYbjJxUTT+k/Fdw0WI1rf/aLw5rFUqg3P2sxZ/Jm8xmywliPo/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RI8mkj+S; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747817322;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UBrTKYMZkRkR/+obIFDmt3FxVCfGaAspFXfSUz2lNvE=;
+	b=RI8mkj+SS49vSOxzhHWQYBoO/VxdWCxWEPhFW/3bhoW9IakoXkLPED7RqN4XXJcRItZzon
+	W7uWh+7UeK4dfVAVORk9uPWvfTeVRvEAeqNCuDm3lwk3M4UzPqWLfRkQkM0yEbWaXVwQpi
+	BsyoCNqpmMGlXHZWoo8GUDN6IfafTkk=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-614-bYgHyVMcNAyC7sF2qJxz-g-1; Wed, 21 May 2025 04:48:41 -0400
+X-MC-Unique: bYgHyVMcNAyC7sF2qJxz-g-1
+X-Mimecast-MFC-AGG-ID: bYgHyVMcNAyC7sF2qJxz-g_1747817320
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-ac3e0c1336dso411320266b.3
+        for <linux-parisc@vger.kernel.org>; Wed, 21 May 2025 01:48:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747817320; x=1748422120;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UBrTKYMZkRkR/+obIFDmt3FxVCfGaAspFXfSUz2lNvE=;
+        b=LWLM2Vcn3scgHPAMm0BoXci/mB65fgoYcF589H2xduj4HVFrbmGi4QBio4xNb7weQ8
+         +xlQrIFgM43nkAwOKU1ODhT2m9SqKwQrZgOxi8HmVwtDtuqfTQHlcn5HX2wF3wjl/X/g
+         OOI7ngADBFr75WZht7sO4+DCr9i5ifthX7spIzfv0T40pIMxFr2YThy/6eo8ysozJ6aJ
+         vPhbXNzByOyRKMRhcsG25EeodsfjG/zouVQHm67I4jRcfcrA0MlJtiT18vtRIwxtVHtg
+         5tuLvuMiRYeVuJ18bTfquUUqXBCgmy1dgRzNhf2n9xSDpKND9N4J7LmtT2LVBxOGx+13
+         pjxw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3jgXwS1T0jbb/60KEFqnCs8pMYQcnw4dhioMCxGYDNqKWbQEL5pDZ0UhzOndl8cywalaebiAbLVoieXI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygHWorEnLvlOwh4lUVBi9tkdyTDVJkrUjmwE/I+uOY0GWH6Cky
+	FrcUoaDfdby8Zg0ytB1f/AgsfVqCWixxVK+YrPqFpur1IumJ6zTcTcz1T2sY3e3rSZSz2TMA3x9
+	9YR48YIAP6yAV2PD2nTBfzytgTFURXXEWtNy+RiUvI1ExJLlY9RkZ2GsyApvl6ugo
+X-Gm-Gg: ASbGnct3wvDnL72InyFQ7UMDDbw/vjHnidg/zcNFvY2wXPuZY4ZPLknIL3Gf6EMCoKO
+	mBi2TIwKu961B74xToJIUAycUvuJTGecz1fQ9ypNr1VR+H8v+LXp9iAxIv4k2WX/RQvNjpaZg+M
+	SaJXcTaLgMV83V0nr8o3E6bnE9qyVGE9ku7bZKP/M/vsJYzVzx3lOij50t113rE8yT4F4rBz18e
+	AHiz2FYGHpg/MB9EtZSKgrhItEIrVpcnpN2LvrCzOJT4DlP8QH6MjxLgYftFbZ94XjA4vQTJbnm
+	xQ==
+X-Received: by 2002:a17:907:96a1:b0:ad4:cfbd:efd0 with SMTP id a640c23a62f3a-ad536c1a813mr1851020566b.36.1747817319669;
+        Wed, 21 May 2025 01:48:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG4Uad4LLY/qbicMx/bjSP1amiyVw6y5+cI+R+l9yVSKq3rctv7sT91m06PC9V35nY4DdIi0w==
+X-Received: by 2002:a17:907:96a1:b0:ad4:cfbd:efd0 with SMTP id a640c23a62f3a-ad536c1a813mr1851012766b.36.1747817319102;
+        Wed, 21 May 2025 01:48:39 -0700 (PDT)
+Received: from thinky ([2a0e:fd87:a051:1:d224:1f1f:6cfc:763a])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad5505131f7sm659880666b.67.2025.05.21.01.48.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 May 2025 01:48:38 -0700 (PDT)
+Date: Wed, 21 May 2025 10:48:26 +0200
+From: Andrey Albershteyn <aalbersh@redhat.com>
+To: Dave Chinner <david@fromorbit.com>
+Cc: Amir Goldstein <amir73il@gmail.com>, 
+	Christian Brauner <brauner@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S . Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	Tyler Hicks <code@tyhicks.com>, Miklos Szeredi <miklos@szeredi.hu>, linux-alpha@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
+	Linux-Arch <linux-arch@vger.kernel.org>, selinux@vger.kernel.org, ecryptfs@vger.kernel.org, 
+	linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	Andrey Albershteyn <aalbersh@kernel.org>
+Subject: Re: [PATCH v5 0/7] fs: introduce file_getattr and file_setattr
+ syscalls
+Message-ID: <sfmrojifgnrpeilqxtixyqrdjj5uvvpbvirxmlju5yce7z72vi@ondnx7qbie4y>
+References: <20250513-xattrat-syscall-v5-0-22bb9c6c767f@kernel.org>
+ <399fdabb-74d3-4dd6-9eee-7884a986dab1@app.fastmail.com>
+ <20250515-bedarf-absagen-464773be3e72@brauner>
+ <CAOQ4uxicuEkOas2UR4mqfus9Q2RAeKKYTwbE2XrkcE_zp8oScQ@mail.gmail.com>
+ <aCsX4LTpAnGfFjHg@dread.disaster.area>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: fix building with gcc-15
-To: Arnd Bergmann <arnd@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250520090051.4058923-1-arnd@kernel.org>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20250520090051.4058923-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GHXPlDyH2MYPG9DJ8Vu0GnBw9TSk4jjkoubRr89fecbhrOwmC2h
- DEIgoIMC/dTw0LydEzkGHtSjrG9wirOI6JGQ9rX29BzxXPlYGBSKv9q2KwE8yr1JFxKwgYW
- qpD9saKIhczJrMHb+InziT8NPsfBRccLa9dzPVf3i13Lp7ZSGJY9QdG3LzydTjyTEA9hVA2
- QP6SWVTLj0nADhi9tAj7A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:J6Q3zKgrijg=;NQscuhJ1w6rtCTsz8qjQIZGzkxi
- tOqq5Y3Hp5Bak6JgvQ4R5/SyjcJwwR5fhNDTxrd7WNLCFymAR8SKpzZsv/fplNkqdovRBoiv8
- Qjko7CbVCU+FqeUomfIQlvGHt7gstUv/Tm7zeOoiusux4Ec36WQtfokkCfKWhLKCDryVANI6i
- gjmkAf1xM9aTFnCNKPc2v/t4180LYI1SsIYZY3gBU2+NuwuCbabuzrSantqhPlrz7kZ8xOcaV
- S6RwiRhs1oQLGWYTtIvgFvP5rgMjMn9oFLvlZ8KRBWzaietcLND/iktqwxd76jChc9a5+uGY6
- f2jbokM1DqoZk6thKsDNdk1R+hKgTZX6UIoCp7ePXCQoHDuezISUjp7MF5bJ7M+SWg2wh+/Q3
- Kf66vDF6ttaeQj1kv+jl89BpLF0rlkrzGk6LX0wjY/1E7sJhjVmeh/fcTD3Z+I5/8zbXuCG76
- 3i7MYJPd8BMYO3exlx0FR9JPHjJdihF8SA1wljR5Vz5dW2o1QDuFhji5sYigU3IquGVeo4JJk
- Dxf+7enFO/j5RMqRZUqe29KhC5EbR9DM5zh/Wh138Q8TgG/yGVkL0vwJQq9MI9xnozMDyyJHd
- n54GlSmYXzKyvpT1NeuD0iIcNb83lTKeURPx2dNjxmpxjkaKkSzQknXHamJ+Ov43sp0d0vmby
- PCOZoUr0N6u25uo31BYnh6xxWL8q4u94BLk85294w58ZP3W/B3FEK0l85VAJY4fn/HbU+JOAi
- egb8/mk7cU8QqDNrBBdynrydZoq5GyyN0IHC3dIWQ5iGsOgDFCOiyrYRZBS64cPgXu40rjXMW
- /BUrbhUQ779i2HGC6m8jkh9kUWcDNh9+uig3NFTJGWAkGX79SHLOTjZeKe03DBSX2lORGfpeq
- Hx5F91FRSVaS6zcMsBfSZzBgtDAhiUXNrPrQiHyM6QJf/yIdWsNtB8+jwMVCpUC5ByUO6f1S4
- C1bzpWUp803S7gx3OGAg7LwrJB9R/zRSX84HUsd4mnlKjE5XgPaJOJ2AkcCQbAbjKzZIJ7tJW
- +jrl5rRiXZPBhzGvulHVmf36Xun283mSt9xp0NMnRxeWcMcXkn+qdQTnoNYBJbd+XOlTTTyBt
- V1kUwq9A/rkFY9y29KfjWJMN3btPR/IEuxvDv0DU7L9EHXQooE8T/KVr8LGjTQDXmJeh4MTrD
- P0ActVgZhrROV9BO2AUSCQQ/NHyKRGIABbKPsDKY9+J2C29moukmwIFM0nXTIQSXcIzqjcBzk
- gllk9MoRTZLQ1O0r6eJVuX9VcLXbVUhZT6aGPUrKdh0TuWhPOuy7m/4zrBSGfoG3ZfZK3lu4a
- /ET9MVuRZj0LjxaDupiVYI1w0+sqiec8HFVW6+eJXeRWiYwLd1NmHrnEAW0giwm6QI/eot/du
- cdlHNgrY4KOjkOQgadZxc4933mkCoUyyhkyXvDCWkW19i1OT6g1NyzIdb2lhq+K9V9xSwNTCR
- QfwZjAihIdEJNCwsUpn/rTzVC0YD7xjZeD2SA6AJbwQxevuxYjZd+E3ypqAsjs0gaD7J4Ey46
- 2m0lFwaSvVEPWfV7vH7QjS9ANG0+aUvkCfrki6DOVWFNugi7AADZQy4DmZhnRuv+2iBm8ylHU
- 7AcjZUeLHxvuGEz+YKxSIP9U85BGnJEnsmtzloEffGPSQ5sCMk87uCdA7NVv90chnuJMqePs5
- ZEoFp0Ct9vMxwhqCPRMNNSjopn3/mBBPEVfIug5MiS2AuP2ohE6crnquTGGq3V3+mtZzgk7lc
- 2kuYZEnO4NwPO1tZ4v+TyY/9oX/2V2PNM7XmCvvxGdWvibr4QAiQs3YN15YnbMGa3u0BlJjJ8
- vKb5Z77gmwDdHYDeZ2oTn40yO3kApvdDWvzZq79dtsxykh0IHP0txPClFD4afvAWFSde6V/Y9
- mAIMiNH+xEDDDLg7DvSp7fgSpBhg4cqH2BeowcW4l3ndEfI7/rq63Y3HGA8qLBTz2iqPcCq/I
- 8iTpLA5brfG77Ji9e7BOVMzkT1QiqDEVzmMAq7buKedhuQxQdmz2tp/1iB6d14NwISn2U5+pc
- L401OjzCqKoEAsYE/uw9Ubz1HPxwfVyWQJ8xzlyiJjMoIkzpcjSOQFSDF762WYDagQEBNb1QL
- zDZlDIxIibeG60Ag9772PYzDbPhpe7CbHTd8VZlVjq7ao5LvIV/20Ky6GNMlHq9nXbZiJQZd2
- AgMZ097SwWSdauFvjDFq1UAyhpiuBv6IGbJu7DEtoIgY6WVf6tMcTDYI2pXZpbBHX5+fw9UgW
- mBGTPoaFcHjklNatvPC4thzUXJ9XYRkPlndqeJaqUyPt5MNhWb3jtUjhbKiZwf8kr0wnGfNxm
- B5wYYGsf538AfUqR8YdKA6mbaucShVRWL/RDHnGT9KsjaIXnVs5+2dXs6HsCpsTv2w3QtVHrb
- t4UxWV6wiZdvuFrMODdLPonGhe78vVYM8iK2nAm/NQ3O4FPcZuEKjK5UTMcnPGW5If0bDF4Vl
- kksTmEdkq0p4IBvuNKKoi4+icf6fU1WKkjqKiTzD8R9XpB/SrjAuHc/pSOBlEJajDLINu8MEG
- 7Ko/clZ/3OaAmJ/BLZk/hnhLwIcQfaZq3VwC9zzUBT4NUFwE7lNUoThaQKAmotW6Dit8qBA5v
- KtYJy42kYxtAJ9PTHHp4TexVn/Fvy3KkNmPpJrXlIZiA3R4MLpQm9z71B+4jS4IHorNKVNy8v
- szf+wftmXMdOE4ThuIlBBj4r1NpgSlvy2EaZ8yiWv1tj9bMzKP5W3BQA81u2sU/ZoxS9lLF+0
- p3HxKjBMuDZQy/2vKs1Ro9HEC65ShtpgYyOk5kttecWJCpYL7Xhq7mt+ohhBJkDPjLwS73/8u
- 9IZ95szBzqGIFBq6B91t3dfEzOYYhZLjSBVfRyN0cDTNiNvIaiDuH/tR+KleFvEwhTGtNc6G7
- aEIAKa7M38pdqCWRhi6a8KeoMxq5xuTChQRhY3qw7joKHpyDi9VpjyxthQ2y4SIzfKKwZYMNJ
- FyPoZvJxGFt2ewKoxsoAf8pZANcYLS6Uo2E7vFfAR+nIVwm02HMGRRsiwsL/wGZbKpz+mfO+v
- f8DMK9D1T4Iy63KjiNoTlpSNMW9q6XmkZRr/clyOvmy
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aCsX4LTpAnGfFjHg@dread.disaster.area>
 
-On 5/20/25 11:00, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->=20
-> The decompressor is built with the default C dialect, which is now gnu23
-> on gcc-15, and this clashes with the kernel's bool type definition:
->=20
-> In file included from include/uapi/linux/posix_types.h:5,
->                   from arch/parisc/boot/compressed/misc.c:7:
-> include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumer=
-ation constant
->     11 |         false   =3D 0,
->=20
-> Add the -std=3Dgnu11 argument here, as we do for all other architectures=
-.
->=20
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->   arch/parisc/boot/compressed/Makefile | 1 +
->   1 file changed, 1 insertion(+)
+On 2025-05-19 21:37:04, Dave Chinner wrote:
+> On Thu, May 15, 2025 at 12:33:31PM +0200, Amir Goldstein wrote:
+> > On Thu, May 15, 2025 at 11:02 AM Christian Brauner <brauner@kernel.org> wrote:
+> > >
+> > > On Tue, May 13, 2025 at 11:53:23AM +0200, Arnd Bergmann wrote:
+> > > > On Tue, May 13, 2025, at 11:17, Andrey Albershteyn wrote:
+> > > >
+> > > > >
+> > > > >     long syscall(SYS_file_getattr, int dirfd, const char *pathname,
+> > > > >             struct fsxattr *fsx, size_t size, unsigned int at_flags);
+> > > > >     long syscall(SYS_file_setattr, int dirfd, const char *pathname,
+> > > > >             struct fsxattr *fsx, size_t size, unsigned int at_flags);
+> > > >
+> > > > I don't think we can have both the "struct fsxattr" from the uapi
+> > > > headers, and a variable size as an additional argument. I would
+> > > > still prefer not having the extensible structure at all and just
+> > >
+> > > We're not going to add new interfaces that are fixed size unless for the
+> > > very basic cases. I don't care if we're doing that somewhere else in the
+> > > kernel but we're not doing that for vfs apis.
+> > >
+> > > > use fsxattr, but if you want to make it extensible in this way,
+> > > > it should use a different structure (name). Otherwise adding
+> > > > fields after fsx_pad[] would break the ioctl interface.
+> > >
+> > > Would that really be a problem? Just along the syscall simply add
+> > > something like:
+> > >
+> > > diff --git a/fs/ioctl.c b/fs/ioctl.c
+> > > index c91fd2b46a77..d3943805c4be 100644
+> > > --- a/fs/ioctl.c
+> > > +++ b/fs/ioctl.c
+> > > @@ -868,12 +868,6 @@ static int do_vfs_ioctl(struct file *filp, unsigned int fd,
+> > >         case FS_IOC_SETFLAGS:
+> > >                 return ioctl_setflags(filp, argp);
+> > >
+> > > -       case FS_IOC_FSGETXATTR:
+> > > -               return ioctl_fsgetxattr(filp, argp);
+> > > -
+> > > -       case FS_IOC_FSSETXATTR:
+> > > -               return ioctl_fssetxattr(filp, argp);
+> > > -
+> > >         case FS_IOC_GETFSUUID:
+> > >                 return ioctl_getfsuuid(filp, argp);
+> > >
+> > > @@ -886,6 +880,20 @@ static int do_vfs_ioctl(struct file *filp, unsigned int fd,
+> > >                 break;
+> > >         }
+> > >
+> > > +       switch (_IOC_NR(cmd)) {
+> > > +       case _IOC_NR(FS_IOC_FSGETXATTR):
+> > > +               if (WARN_ON_ONCE(_IOC_TYPE(cmd) != _IOC_TYPE(FS_IOC_FSGETXATTR)))
+> > > +                       return SOMETHING_SOMETHING;
+> > > +               /* Only handle original size. */
+> > > +               return ioctl_fsgetxattr(filp, argp);
+> > > +
+> > > +       case _IOC_NR(FFS_IOC_FSSETXATTR):
+> > > +               if (WARN_ON_ONCE(_IOC_TYPE(cmd) != _IOC_TYPE(FFS_IOC_FSSETXATTR)))
+> > > +                       return SOMETHING_SOMETHING;
+> > > +               /* Only handle original size. */
+> > > +               return ioctl_fssetxattr(filp, argp);
+> > > +       }
+> > > +
+> > 
+> > I think what Arnd means is that we will not be able to change struct
+> > sfxattr in uapi
+> > going forward, because we are not going to deprecate the ioctls and
+> 
+> There's no need to deprecate anything to rev an ioctl API.  We have
+> had to solve this "changing struct size" problem previously in XFS
+> ioctls. See XFS_IOC_FSGEOMETRY and the older XFS_IOC_FSGEOMETRY_V4
+> and XFS_IOC_FSGEOMETRY_V1 versions of the API/ABI.
+> 
+> If we need to increase the structure size, we can rename the existing
+> ioctl and struct to fix the version in the API, then use the
+> original name for the new ioctl and structure definition.
+> 
+> The only thing we have to make sure of is that the old and new
+> structures have exactly the same overlapping structure. i.e.
+> extension must always be done by appending new varibles, they can't
+> be put in the middle of the structure.
+> 
+> This way applications being rebuild will pick up the new definition
+> automatically when the system asserts that it is suppored, whilst
+> existing binaries will always still be supported by the kernel.
+> 
+> If the application wants/needs to support all possible kernels, then
+> if XFS_IOC_FSGEOMETRY is not supported, call XFS_IOC_FSGEOMETRY_V4,
+> and if that fails (only on really old irix!) or you only need
+> something in that original subset, call XFS_IOC_FSGEOMETRY_V1 which
+> will always succeed....
+> 
+> > Should we will need to depart from this struct definition and we might
+> > as well do it for the initial release of the syscall rather than later on, e.g.:
+> > 
+> > --- a/include/uapi/linux/fs.h
+> > +++ b/include/uapi/linux/fs.h
+> > @@ -148,6 +148,17 @@ struct fsxattr {
+> >         unsigned char   fsx_pad[8];
+> >  };
+> > 
+> > +/*
+> > + * Variable size structure for file_[sg]et_attr().
+> > + */
+> > +struct fsx_fileattr {
+> > +       __u32           fsx_xflags;     /* xflags field value (get/set) */
+> > +       __u32           fsx_extsize;    /* extsize field value (get/set)*/
+> > +       __u32           fsx_nextents;   /* nextents field value (get)   */
+> > +       __u32           fsx_projid;     /* project identifier (get/set) */
+> > +       __u32           fsx_cowextsize; /* CoW extsize field value (get/set)*/
+> > +};
+> > +
+> > +#define FSXATTR_SIZE_VER0 20
+> > +#define FSXATTR_SIZE_LATEST FSXATTR_SIZE_VER0
+> 
+> If all the structures overlap the same, all that is needed in the
+> code is to define the structure size that should be copied in and
+> parsed. i.e:
+> 
+> 	case FSXATTR..._V1:
+> 		return ioctl_fsxattr...(args, sizeof(fsx_fileattr_v1));
+> 	case FSXATTR..._V2:
+> 		return ioctl_fsxattr...(args, sizeof(fsx_fileattr_v2));
+> 	case FSXATTR...:
+> 		return ioctl_fsxattr...(args, sizeof(fsx_fileattr));
+> 
+> -Dave.
+> -- 
+> Dave Chinner
+> david@fromorbit.com
+> 
 
-applied.
-Thanks!
-Helge
+So, looks like there's at least two solutions to this concern.
+Considering also that we have a bit of space in fsxattr,
+'fsx_pad[8]', I think it's fine to stick with the current fsxattr
+for now.
+
+-- 
+- Andrey
+
 
