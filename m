@@ -1,335 +1,306 @@
-Return-Path: <linux-parisc+bounces-3683-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3684-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BEEABF1EB
-	for <lists+linux-parisc@lfdr.de>; Wed, 21 May 2025 12:44:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F014ABFC74
+	for <lists+linux-parisc@lfdr.de>; Wed, 21 May 2025 19:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0C404A47F3
-	for <lists+linux-parisc@lfdr.de>; Wed, 21 May 2025 10:44:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BFD93B2B76
+	for <lists+linux-parisc@lfdr.de>; Wed, 21 May 2025 17:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E400E25FA1D;
-	Wed, 21 May 2025 10:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F202289E10;
+	Wed, 21 May 2025 17:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fxr+lJOM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FtwhFJZm"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C65725FA07;
-	Wed, 21 May 2025 10:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CBB1A23AA;
+	Wed, 21 May 2025 17:42:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747824287; cv=none; b=stYi1LKk2hl1ZaB1qX+iJVUVBxDYmaj2fEVACF2uotquJEsJOjU/9iY1lr4yjr2NGFIVi6B7+PZoHdG+ZPZ1NpxbaD7o9+Rppf8QzwlpxKjvBm3wLmTaVHcJWWG82FJRy4MMM7rElA7supSDAZNEO5ltkuhY06ZTWK857MniLkw=
+	t=1747849327; cv=none; b=sUuzNTxsFShqcMS5vW4fNSM9iVlivu8exZ6Dd0dkWSzPGFM0t6dW17rjBgEFbpNyp3tECwZdEKIT5yjc9c26kYXBEy16fIz+skNCmq84CX+12Av1RK0vhxcU5WIP5Teb9Hg1KmJ6lfCnP7OdwL9ep0ZvsVIvJIZrTX8XdMhN1yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747824287; c=relaxed/simple;
-	bh=wdYyMOldSs5J7ZV607pnOvS2tgtojBPdZ8GgMIEtaqw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hGsbBqOCjxDDnfJZ2KR91axELJpA1fNP/wMuNe9LNz2pzV4iE3jmheIwQ0r+sRzs7QEaUtCZ3f7H6bhXb+KdX+8hND2GpoxT4EH/yW9Tw4q/RuRrYBhAyPoHhbjd3CdQNpJyYoG8fE3sdQFJ0DApv/caT8jTB1lbwPjyvBpzSss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fxr+lJOM; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ad5533c468cso610946766b.0;
-        Wed, 21 May 2025 03:44:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747824284; x=1748429084; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U7s86C99en4rKIGw3tj+5ymWyZfNfw27U2XEo8biwfc=;
-        b=Fxr+lJOMM2Dj/pu+FcHG2Snsq569dNIu5kfWdhVPrdZdJNwYlt4xtdenN5+TQ62299
-         jwoigc+cJnnO4qg6MZlZSl0MJODfh1cV+S8ccJIl++safjsjCX40siAHRmb9Hnnv8bdY
-         ma16oUfTiq3AOu8qVGPV60YmJIMT88BoNR/lC1C0rD9A3QJVmhl43qTeckROAPpC/zFE
-         ltpg5rtgOXg7OBoqltR0QjGtI3EGRdiRjtIIO0pEE4x/HdvfkgdaTF4kQ7n5DgUvd6jh
-         GkIIGgadHH+tslKze77rybI7BDQTzLh7z0oDvw8eJftjHIr4mdsoipc9laKvr7YMjPfi
-         o3Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747824284; x=1748429084;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U7s86C99en4rKIGw3tj+5ymWyZfNfw27U2XEo8biwfc=;
-        b=DX/l/wj5zcxuUCp7iEenK9AQXCZ3VGAQ9uamV9JGywliYQa6hqTLPMbvJQWnJ9J/2j
-         SBbz1YHB42GufOlOc35uFaeupK2MVj3v9OPew50FfB63dfti/jaHLklW3vniGoEqksrK
-         AK/0aLvTIY7ByMWTh+S3sho+kzYDtz/Js7sFS7CtR6wNgmtKPXBdKMSGXsNab3qO5XdT
-         KHXF682bdcb8HOzhEUbxDUDc5//pL+q5ZiBHOrYK5QkBxoe3ewQNUMiaTZKlcFssDJ7p
-         dzbK/qaJSFzc9h4OUIsKdVF8Y4DV+d6XWZWnxo1B/a0iOt1RZUKXwAYUJJJvHu06RDmS
-         4BRg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0+7jXcjs2H1E/XHhSTuwT2NqZiijO/uxHa1UPliW49hyQME2jHX1aTRFd/7VPTQapS/rbuuVBh/+vlw==@vger.kernel.org, AJvYcCU0FKD6LkY6oBPJLDVfYSoDObq5cMy3q8M4kyOg2JWmDgDMaJuYHEGkr99bi7MVTlEPmLMYzN2ROBJFethLAw==@vger.kernel.org, AJvYcCUXPUAzOn4sjQ+LIBgUgBblkW57jGU+iWABTCYRa5/5Q7td6bWvC600VeJoeSaqcpYXJA6ciR3HQBbmVInC@vger.kernel.org, AJvYcCUfSHrsyy9j1lWm0lnAEP6UxdjEnOFrseaxu37C6OflTmxLKZXY8xdZgL7i5xd0bqtKSPYj+08gOA==@vger.kernel.org, AJvYcCUgJQfS6rBm2s1cpofPbw4ravhgVmYh2gJBGxEGQPBbDnXaboo9yLnDphgG1VXZWIh8DTCRbR7rL2n+@vger.kernel.org, AJvYcCV8I2dkht/kFEkzhCg+vvUiEmLV7O6dt76Y7DMoP1y4e+KGxZb+eLvjJLMIFzhtzvBKTL/CUUN5hGIVyhKW@vger.kernel.org, AJvYcCVdiqVGO1ZB4aGxHyfgaCiOFZX1FgP6bXzkJJCpkSl9nN8uCa20I6mFfA68/x3/Q81/nNOKYLt7x7EgIg==@vger.kernel.org, AJvYcCVrFsm3DWnTZKw6eFtrOeUL/mWY9XIIfidMaUypXsHN/YUSU3kus+liMco+gFgqapSrgrlBalVvZLU8Xw==@vger.kernel.org, AJvYcCWLfwcrim/ew4rr3PkSW8STxkVJ1lEOXKXqgKDdpQswV1DLY9Jzk2hnUSigCIehskN8Ayvuz4KNCF0EVi5qpg==@vger.kernel.org, AJvYcCWkld2qZp2B
- 7uEOIYZQocLNXVafeGZHjfty89xAq3emLBtwopAj1wBxbPs+n5SaDiQY86fXe4J4nJFa@vger.kernel.org, AJvYcCWndX0BfQ670sixJpRei6Zw8NWzjdIqXjyPWdX2K7WFPd6MHmH6HRE2zRKHhzGbhHcl/xWG6jBrwCN5WIM=@vger.kernel.org, AJvYcCXRIi/ElYSmLckD8Qxd6hbKkhsiSgQrXHDo8MrZIJ6lDlg/HGRSiuG0wLNP7ANVUHBlAopJFZF5FhFj6w==@vger.kernel.org, AJvYcCXW+hg1lvlMf2W0bWuzwDFIc7NOl6ZeYqXS7SneA94cZv3gCLjYnb/gDFhdWyyPtEGGW9+jQ281cwK4vRXKf/ybxa1z/DGp@vger.kernel.org, AJvYcCXcJpHYDW94fVnOa+VxAu5Tg9r3s+V3v55odxXgLwuB7WcLRaGI9WfJLMxeBH5Qu3DYbO5OVOpiKQo=@vger.kernel.org, AJvYcCXjSJmQb59MExu3C+RHra9wKni8Gd9SmYbLW1A+tNIGv7tm3lPD3oSOXQn+VmycJbIuziyA5XVD0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4qYKRT5xb+WuCfdYzdysMAi3klDPsZnRUd6sCmEK2OtEB2fYQ
-	2mJcJvPNpVtz4E0G4E4Vq2RU/FzleXEZo2IcRb+fiDYkOX++G10x7qUgLBqeh18UClRbE5YPUkO
-	lBHtG9BPVeEtL+d46dh0CvnSM/gGfL8M=
-X-Gm-Gg: ASbGnct3SUalzdgTVriCGobDctZJ1azNRdnEs32RNrlIq6M13T1hGxbB0szMIV1gyX5
-	XH/I1kF+/lYNqcnwmO1skh3SXOjxEpkUNtaT2urUTsGAAJM185PSpY7ApJy08S4w1DhD7XopFj5
-	g5GyqcK+1QlGZCU24V5yk3zlicknBtqv+G
-X-Google-Smtp-Source: AGHT+IHjdKaldjnagUYeAkZaxVv0PKTrOg3dvgceCo3K5CfAqPJX4ttSEQJcVm5rFWRa63l5bGpXFWyRh6DbM0BJP0M=
-X-Received: by 2002:a17:906:8f8a:b0:ad2:1a66:a1ad with SMTP id
- a640c23a62f3a-ad536b7de17mr1674734766b.6.1747824283278; Wed, 21 May 2025
- 03:44:43 -0700 (PDT)
+	s=arc-20240116; t=1747849327; c=relaxed/simple;
+	bh=zILedU8aIBwOZV+2G1TrvBXeLPQ8UB3Yl8VhAYL566s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lCMoGJCgt1wld+DGwiTbyAF6seF5fC9yldc3VlsZiM9UkrDUvmgVMHhYSvRB8AmhkfzzMGDTgkv1fifZ88TK4atSWa3Pc9QiLpBtXKC+eJhK/UE0Hb+LeZ8R1jMPJ848vOIyicAeJ1lZUWQR4yB2IW9w2Uj2TOmS/9D43aTk4Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FtwhFJZm; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747849326; x=1779385326;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zILedU8aIBwOZV+2G1TrvBXeLPQ8UB3Yl8VhAYL566s=;
+  b=FtwhFJZmizfkTYmx5ga1Gax636pY2hH2eQf2yOQa3b7e8XcOGY5TXc0w
+   x1bVb/lO0k8NZQkG/MBBPHWE5c9ACJiMSkBwYNAEfWXzEZEnKoFOI+0xu
+   +7lLEAIZlyQLRbWTnz0BsYGW+FqpfxGF5F37en1L6wyJPTbmxXHz4Pq/2
+   j5mkz2HfpjQ7XRbCg/CmrUvmWqRPieDv3TXu+oVbJg+UUPmJt9mNJ55CS
+   UH0N/U5pbgfoyVrqyxNEjVGz9Mhqk7Ipk3dPm9kFFMhxcrC8RIwAihS4E
+   bCDAOTZWm/6TtLWVlD+EGLrEzIoyif2i9/ITZKMUP7Oiz1J7tB4U/5t2q
+   Q==;
+X-CSE-ConnectionGUID: 6VN/NANlS8OYM833FP+csA==
+X-CSE-MsgGUID: 79ZYpvL+Syy8i8fyd/ZSog==
+X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="61252110"
+X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; 
+   d="scan'208";a="61252110"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 10:42:04 -0700
+X-CSE-ConnectionGUID: qNbmyK/7TbGW6UT8eUGwcg==
+X-CSE-MsgGUID: ECERoRRvSN6yuz91U4AnZw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; 
+   d="scan'208";a="171042032"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa002.jf.intel.com with ESMTP; 21 May 2025 10:41:57 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id DC1DA368; Wed, 21 May 2025 20:41:55 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Ian Molton <spyro@f2s.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Denis Efremov <efremov@linux.com>
+Subject: [PATCH v1 1/1] floppy: Remove unused CROSS_64K() macro from arch/ code
+Date: Wed, 21 May 2025 20:41:52 +0300
+Message-ID: <20250521174152.1339379-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250513-xattrat-syscall-v5-0-22bb9c6c767f@kernel.org>
- <399fdabb-74d3-4dd6-9eee-7884a986dab1@app.fastmail.com> <20250515-bedarf-absagen-464773be3e72@brauner>
- <CAOQ4uxicuEkOas2UR4mqfus9Q2RAeKKYTwbE2XrkcE_zp8oScQ@mail.gmail.com>
- <aCsX4LTpAnGfFjHg@dread.disaster.area> <sfmrojifgnrpeilqxtixyqrdjj5uvvpbvirxmlju5yce7z72vi@ondnx7qbie4y>
- <CAOQ4uxiM+BBNODHfxu=v3XN2ezA-0k54qC5R4qdELbZW+W-xkg@mail.gmail.com> <mw2d36mqwzqoveguw5vlggrnw2wirsbhdxkox33z3fg7k6huz6@hj4ntgg3oj7p>
-In-Reply-To: <mw2d36mqwzqoveguw5vlggrnw2wirsbhdxkox33z3fg7k6huz6@hj4ntgg3oj7p>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Wed, 21 May 2025 12:44:30 +0200
-X-Gm-Features: AX0GCFtzhzw8HQOfKpcxXaUXYfRoIUIi0dE2W9yfpQHIc06WbddDr0-sckzPkGU
-Message-ID: <CAOQ4uxiOaYusURMrjozD_s24Swih2g0x5_nTTYXO=+=EPCYtjw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/7] fs: introduce file_getattr and file_setattr syscalls
-To: Andrey Albershteyn <aalbersh@redhat.com>
-Cc: pali@kernel.org, Dave Chinner <david@fromorbit.com>, 
-	Christian Brauner <brauner@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S . Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Ondrej Mosnacek <omosnace@redhat.com>, Tyler Hicks <code@tyhicks.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-alpha@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
-	Linux-Arch <linux-arch@vger.kernel.org>, selinux@vger.kernel.org, 
-	ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, Andrey Albershteyn <aalbersh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 21, 2025 at 12:06=E2=80=AFPM Andrey Albershteyn <aalbersh@redha=
-t.com> wrote:
->
-> On 2025-05-21 11:36:31, Amir Goldstein wrote:
-> > On Wed, May 21, 2025 at 10:48=E2=80=AFAM Andrey Albershteyn <aalbersh@r=
-edhat.com> wrote:
-> > >
-> > > On 2025-05-19 21:37:04, Dave Chinner wrote:
-> > > > On Thu, May 15, 2025 at 12:33:31PM +0200, Amir Goldstein wrote:
-> > > > > On Thu, May 15, 2025 at 11:02=E2=80=AFAM Christian Brauner <braun=
-er@kernel.org> wrote:
-> > > > > >
-> > > > > > On Tue, May 13, 2025 at 11:53:23AM +0200, Arnd Bergmann wrote:
-> > > > > > > On Tue, May 13, 2025, at 11:17, Andrey Albershteyn wrote:
-> > > > > > >
-> > > > > > > >
-> > > > > > > >     long syscall(SYS_file_getattr, int dirfd, const char *p=
-athname,
-> > > > > > > >             struct fsxattr *fsx, size_t size, unsigned int =
-at_flags);
-> > > > > > > >     long syscall(SYS_file_setattr, int dirfd, const char *p=
-athname,
-> > > > > > > >             struct fsxattr *fsx, size_t size, unsigned int =
-at_flags);
-> > > > > > >
-> > > > > > > I don't think we can have both the "struct fsxattr" from the =
-uapi
-> > > > > > > headers, and a variable size as an additional argument. I wou=
-ld
-> > > > > > > still prefer not having the extensible structure at all and j=
-ust
-> > > > > >
-> > > > > > We're not going to add new interfaces that are fixed size unles=
-s for the
-> > > > > > very basic cases. I don't care if we're doing that somewhere el=
-se in the
-> > > > > > kernel but we're not doing that for vfs apis.
-> > > > > >
-> > > > > > > use fsxattr, but if you want to make it extensible in this wa=
-y,
-> > > > > > > it should use a different structure (name). Otherwise adding
-> > > > > > > fields after fsx_pad[] would break the ioctl interface.
-> > > > > >
-> > > > > > Would that really be a problem? Just along the syscall simply a=
-dd
-> > > > > > something like:
-> > > > > >
-> > > > > > diff --git a/fs/ioctl.c b/fs/ioctl.c
-> > > > > > index c91fd2b46a77..d3943805c4be 100644
-> > > > > > --- a/fs/ioctl.c
-> > > > > > +++ b/fs/ioctl.c
-> > > > > > @@ -868,12 +868,6 @@ static int do_vfs_ioctl(struct file *filp,=
- unsigned int fd,
-> > > > > >         case FS_IOC_SETFLAGS:
-> > > > > >                 return ioctl_setflags(filp, argp);
-> > > > > >
-> > > > > > -       case FS_IOC_FSGETXATTR:
-> > > > > > -               return ioctl_fsgetxattr(filp, argp);
-> > > > > > -
-> > > > > > -       case FS_IOC_FSSETXATTR:
-> > > > > > -               return ioctl_fssetxattr(filp, argp);
-> > > > > > -
-> > > > > >         case FS_IOC_GETFSUUID:
-> > > > > >                 return ioctl_getfsuuid(filp, argp);
-> > > > > >
-> > > > > > @@ -886,6 +880,20 @@ static int do_vfs_ioctl(struct file *filp,=
- unsigned int fd,
-> > > > > >                 break;
-> > > > > >         }
-> > > > > >
-> > > > > > +       switch (_IOC_NR(cmd)) {
-> > > > > > +       case _IOC_NR(FS_IOC_FSGETXATTR):
-> > > > > > +               if (WARN_ON_ONCE(_IOC_TYPE(cmd) !=3D _IOC_TYPE(=
-FS_IOC_FSGETXATTR)))
-> > > > > > +                       return SOMETHING_SOMETHING;
-> > > > > > +               /* Only handle original size. */
-> > > > > > +               return ioctl_fsgetxattr(filp, argp);
-> > > > > > +
-> > > > > > +       case _IOC_NR(FFS_IOC_FSSETXATTR):
-> > > > > > +               if (WARN_ON_ONCE(_IOC_TYPE(cmd) !=3D _IOC_TYPE(=
-FFS_IOC_FSSETXATTR)))
-> > > > > > +                       return SOMETHING_SOMETHING;
-> > > > > > +               /* Only handle original size. */
-> > > > > > +               return ioctl_fssetxattr(filp, argp);
-> > > > > > +       }
-> > > > > > +
-> > > > >
-> > > > > I think what Arnd means is that we will not be able to change str=
-uct
-> > > > > sfxattr in uapi
-> > > > > going forward, because we are not going to deprecate the ioctls a=
-nd
-> > > >
-> > > > There's no need to deprecate anything to rev an ioctl API.  We have
-> > > > had to solve this "changing struct size" problem previously in XFS
-> > > > ioctls. See XFS_IOC_FSGEOMETRY and the older XFS_IOC_FSGEOMETRY_V4
-> > > > and XFS_IOC_FSGEOMETRY_V1 versions of the API/ABI.
-> > > >
-> > > > If we need to increase the structure size, we can rename the existi=
-ng
-> > > > ioctl and struct to fix the version in the API, then use the
-> > > > original name for the new ioctl and structure definition.
-> > > >
-> > > > The only thing we have to make sure of is that the old and new
-> > > > structures have exactly the same overlapping structure. i.e.
-> > > > extension must always be done by appending new varibles, they can't
-> > > > be put in the middle of the structure.
-> > > >
-> > > > This way applications being rebuild will pick up the new definition
-> > > > automatically when the system asserts that it is suppored, whilst
-> > > > existing binaries will always still be supported by the kernel.
-> > > >
-> > > > If the application wants/needs to support all possible kernels, the=
-n
-> > > > if XFS_IOC_FSGEOMETRY is not supported, call XFS_IOC_FSGEOMETRY_V4,
-> > > > and if that fails (only on really old irix!) or you only need
-> > > > something in that original subset, call XFS_IOC_FSGEOMETRY_V1 which
-> > > > will always succeed....
-> > > >
-> > > > > Should we will need to depart from this struct definition and we =
-might
-> > > > > as well do it for the initial release of the syscall rather than =
-later on, e.g.:
-> > > > >
-> > > > > --- a/include/uapi/linux/fs.h
-> > > > > +++ b/include/uapi/linux/fs.h
-> > > > > @@ -148,6 +148,17 @@ struct fsxattr {
-> > > > >         unsigned char   fsx_pad[8];
-> > > > >  };
-> > > > >
-> > > > > +/*
-> > > > > + * Variable size structure for file_[sg]et_attr().
-> > > > > + */
-> > > > > +struct fsx_fileattr {
-> > > > > +       __u32           fsx_xflags;     /* xflags field value (ge=
-t/set) */
-> > > > > +       __u32           fsx_extsize;    /* extsize field value (g=
-et/set)*/
-> > > > > +       __u32           fsx_nextents;   /* nextents field value (=
-get)   */
-> > > > > +       __u32           fsx_projid;     /* project identifier (ge=
-t/set) */
-> > > > > +       __u32           fsx_cowextsize; /* CoW extsize field valu=
-e (get/set)*/
-> > > > > +};
-> > > > > +
-> > > > > +#define FSXATTR_SIZE_VER0 20
-> > > > > +#define FSXATTR_SIZE_LATEST FSXATTR_SIZE_VER0
-> > > >
-> > > > If all the structures overlap the same, all that is needed in the
-> > > > code is to define the structure size that should be copied in and
-> > > > parsed. i.e:
-> > > >
-> > > >       case FSXATTR..._V1:
-> > > >               return ioctl_fsxattr...(args, sizeof(fsx_fileattr_v1)=
-);
-> > > >       case FSXATTR..._V2:
-> > > >               return ioctl_fsxattr...(args, sizeof(fsx_fileattr_v2)=
-);
-> > > >       case FSXATTR...:
-> > > >               return ioctl_fsxattr...(args, sizeof(fsx_fileattr));
-> > > >
-> > > > -Dave.
-> > > > --
-> > > > Dave Chinner
-> > > > david@fromorbit.com
-> > > >
-> > >
-> > > So, looks like there's at least two solutions to this concern.
-> > > Considering also that we have a bit of space in fsxattr,
-> > > 'fsx_pad[8]', I think it's fine to stick with the current fsxattr
-> > > for now.
-> >
-> > Not sure which two solutions you are referring to.
->
-> Suggested by Christian and Dave
->
+Since the commit 3d86739c6343 ("floppy: always use the track buffer")
+the CROSS_64K() is not used by the driver, remove the leftovers.
 
-IIUC, those are suggestions of how we could cope with changing
-struct fsxattr in the future, but it is easier not to have to do that.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ arch/alpha/include/asm/floppy.h    | 19 -------------------
+ arch/arm/include/asm/floppy.h      |  2 --
+ arch/m68k/include/asm/floppy.h     |  4 ----
+ arch/mips/include/asm/floppy.h     | 15 ---------------
+ arch/parisc/include/asm/floppy.h   |  6 +-----
+ arch/powerpc/include/asm/floppy.h  |  5 -----
+ arch/sparc/include/asm/floppy_32.h |  3 ---
+ arch/sparc/include/asm/floppy_64.h |  3 ---
+ arch/x86/include/asm/floppy.h      |  5 +----
+ 9 files changed, 2 insertions(+), 60 deletions(-)
 
-> >
-> > I proposed fsx_fileattr as what I think is the path of least resistance=
-.
-> > There are opinions that we may be able to avoid defining
-> > this struct, but I don't think there was any objection to adding it.
-> >
-> > So unless I am missing an objection that I did not understand
-> > define it and get over this hurdle?
->
-> I see, sure, I misinterpreted the communication :) no problems, I
-> will create 'struct fsx_fileattr' then.
->
-> Pali, ah sorry, I forgot that you will extend fsxattr right away
->
+diff --git a/arch/alpha/include/asm/floppy.h b/arch/alpha/include/asm/floppy.h
+index 64b42d9591fc..5a6239e65097 100644
+--- a/arch/alpha/include/asm/floppy.h
++++ b/arch/alpha/include/asm/floppy.h
+@@ -90,25 +90,6 @@ static int FDC2 = -1;
+ #define N_FDC 2
+ #define N_DRIVE 8
+ 
+-/*
+- * Most Alphas have no problems with floppy DMA crossing 64k borders,
+- * except for certain ones, like XL and RUFFIAN.
+- *
+- * However, the test is simple and fast, and this *is* floppy, after all,
+- * so we do it for all platforms, just to make sure.
+- *
+- * This is advantageous in other circumstances as well, as in moving
+- * about the PCI DMA windows and forcing the floppy to start doing
+- * scatter-gather when it never had before, and there *is* a problem
+- * on that platform... ;-}
+- */
+-
+-static inline unsigned long CROSS_64KB(void *a, unsigned long s)
+-{
+-	unsigned long p = (unsigned long)a;
+-	return ((p + s - 1) ^ p) & ~0xffffUL;
+-}
+-
+ #define EXTRA_FLOPPY_PARAMS
+ 
+ #endif /* __ASM_ALPHA_FLOPPY_H */
+diff --git a/arch/arm/include/asm/floppy.h b/arch/arm/include/asm/floppy.h
+index e1cb04ed5008..e579f77162e9 100644
+--- a/arch/arm/include/asm/floppy.h
++++ b/arch/arm/include/asm/floppy.h
+@@ -65,8 +65,6 @@ static unsigned char floppy_selects[4] = { 0x10, 0x21, 0x23, 0x33 };
+ #define N_FDC 1
+ #define N_DRIVE 4
+ 
+-#define CROSS_64KB(a,s) (0)
+-
+ /*
+  * This allows people to reverse the order of
+  * fd0 and fd1, in case their hardware is
+diff --git a/arch/m68k/include/asm/floppy.h b/arch/m68k/include/asm/floppy.h
+index a4d0fea47c6b..dea98bbc0932 100644
+--- a/arch/m68k/include/asm/floppy.h
++++ b/arch/m68k/include/asm/floppy.h
+@@ -107,13 +107,9 @@ static void fd_free_irq(void)
+ 
+ #define fd_free_dma()             /* nothing */
+ 
+-/* No 64k boundary crossing problems on Q40 - no DMA at all */
+-#define CROSS_64KB(a,s) (0)
+-
+ #define DMA_MODE_READ  0x44    /* i386 look-alike */
+ #define DMA_MODE_WRITE 0x48
+ 
+-
+ static int m68k_floppy_init(void)
+ {
+   use_virtual_dma =1;
+diff --git a/arch/mips/include/asm/floppy.h b/arch/mips/include/asm/floppy.h
+index 021d09ae5670..44da2ff91f65 100644
+--- a/arch/mips/include/asm/floppy.h
++++ b/arch/mips/include/asm/floppy.h
+@@ -34,21 +34,6 @@ static inline void fd_cacheflush(char * addr, long size)
+ #define N_FDC 1			/* do you *really* want a second controller? */
+ #define N_DRIVE 8
+ 
+-/*
+- * The DMA channel used by the floppy controller cannot access data at
+- * addresses >= 16MB
+- *
+- * Went back to the 1MB limit, as some people had problems with the floppy
+- * driver otherwise. It doesn't matter much for performance anyway, as most
+- * floppy accesses go through the track buffer.
+- *
+- * On MIPSes using vdma, this actually means that *all* transfers go thru
+- * the * track buffer since 0x1000000 is always smaller than KSEG0/1.
+- * Actually this needs to be a bit more complicated since the so much different
+- * hardware available with MIPS CPUs ...
+- */
+-#define CROSS_64KB(a, s) ((unsigned long)(a)/K_64 != ((unsigned long)(a) + (s) - 1) / K_64)
+-
+ #define EXTRA_FLOPPY_PARAMS
+ 
+ #include <floppy.h>
+diff --git a/arch/parisc/include/asm/floppy.h b/arch/parisc/include/asm/floppy.h
+index b318a7df52f6..df20dbef3ada 100644
+--- a/arch/parisc/include/asm/floppy.h
++++ b/arch/parisc/include/asm/floppy.h
+@@ -22,13 +22,9 @@
+ #define _CROSS_64KB(a,s,vdma) \
+ (!(vdma) && ((unsigned long)(a)/K_64 != ((unsigned long)(a) + (s) - 1) / K_64))
+ 
+-#define CROSS_64KB(a,s) _CROSS_64KB(a,s,use_virtual_dma & 1)
+-
+-
+ #define SW fd_routine[use_virtual_dma&1]
+ #define CSW fd_routine[can_use_virtual_dma & 1]
+ 
+-
+ #define fd_inb(base, reg)		readb((base) + (reg))
+ #define fd_outb(value, base, reg)	writeb(value, (base) + (reg))
+ 
+@@ -206,7 +202,7 @@ static int vdma_dma_setup(char *addr, unsigned long size, int mode, int io)
+ static int hard_dma_setup(char *addr, unsigned long size, int mode, int io)
+ {
+ #ifdef FLOPPY_SANITY_CHECK
+-	if (CROSS_64KB(addr, size)) {
++	if (_CROSS_64KB(addr, size, use_virtual_dma & 1)) {
+ 		printk("DMA crossing 64-K boundary %p-%p\n", addr, addr+size);
+ 		return -1;
+ 	}
+diff --git a/arch/powerpc/include/asm/floppy.h b/arch/powerpc/include/asm/floppy.h
+index f8ce178b43b7..048c0c5cdf30 100644
+--- a/arch/powerpc/include/asm/floppy.h
++++ b/arch/powerpc/include/asm/floppy.h
+@@ -203,11 +203,6 @@ static int FDC2 = -1;
+ #define N_FDC 2			/* Don't change this! */
+ #define N_DRIVE 8
+ 
+-/*
+- * The PowerPC has no problems with floppy DMA crossing 64k borders.
+- */
+-#define CROSS_64KB(a,s)	(0)
+-
+ #define EXTRA_FLOPPY_PARAMS
+ 
+ #endif /* __KERNEL__ */
+diff --git a/arch/sparc/include/asm/floppy_32.h b/arch/sparc/include/asm/floppy_32.h
+index 836f6575aa1d..7251d1fed7a4 100644
+--- a/arch/sparc/include/asm/floppy_32.h
++++ b/arch/sparc/include/asm/floppy_32.h
+@@ -96,9 +96,6 @@ static struct sun_floppy_ops sun_fdops;
+ #define N_FDC    1
+ #define N_DRIVE  8
+ 
+-/* No 64k boundary crossing problems on the Sparc. */
+-#define CROSS_64KB(a,s) (0)
+-
+ /* Routines unique to each controller type on a Sun. */
+ static void sun_set_dor(unsigned char value, int fdc_82077)
+ {
+diff --git a/arch/sparc/include/asm/floppy_64.h b/arch/sparc/include/asm/floppy_64.h
+index b0f633ce3518..135f9a49b6ba 100644
+--- a/arch/sparc/include/asm/floppy_64.h
++++ b/arch/sparc/include/asm/floppy_64.h
+@@ -95,9 +95,6 @@ static int sun_floppy_types[2] = { 0, 0 };
+ #define N_FDC    1
+ #define N_DRIVE  8
+ 
+-/* No 64k boundary crossing problems on the Sparc. */
+-#define CROSS_64KB(a,s) (0)
+-
+ static unsigned char sun_82077_fd_inb(unsigned long base, unsigned int reg)
+ {
+ 	udelay(5);
+diff --git a/arch/x86/include/asm/floppy.h b/arch/x86/include/asm/floppy.h
+index 6ec3fc969ad5..e76cb74bbed2 100644
+--- a/arch/x86/include/asm/floppy.h
++++ b/arch/x86/include/asm/floppy.h
+@@ -24,9 +24,6 @@
+ 	(!(vdma) &&							\
+ 	 ((unsigned long)(a)/K_64 != ((unsigned long)(a) + (s) - 1) / K_64))
+ 
+-#define CROSS_64KB(a, s) _CROSS_64KB(a, s, use_virtual_dma & 1)
+-
+-
+ #define SW fd_routine[use_virtual_dma & 1]
+ #define CSW fd_routine[can_use_virtual_dma & 1]
+ 
+@@ -206,7 +203,7 @@ static int vdma_dma_setup(char *addr, unsigned long size, int mode, int io)
+ static int hard_dma_setup(char *addr, unsigned long size, int mode, int io)
+ {
+ #ifdef FLOPPY_SANITY_CHECK
+-	if (CROSS_64KB(addr, size)) {
++	if (_CROSS_64KB(addr, size, use_virtual_dma & 1)) {
+ 		printk("DMA crossing 64-K boundary %p-%p\n", addr, addr+size);
+ 		return -1;
+ 	}
+-- 
+2.47.2
 
-Much less problems could be caused if fsxattr remain frozen in
-time along with the ioctls as we continue to extend the syscalls.
-
-Thanks,
-Amir.
-
-P.S. your CC list is a bit much.
-I wouldn't trust get_maintainer.pl output when it provides such a huge list
-it has some emails that bounce - not nice.
-
-When you are at v5 you should be able to have figured out who is
-participating in the review and for the rest, the public lists
-linux-fsdevel, linux-api and linux-xfs should be enough.
 
