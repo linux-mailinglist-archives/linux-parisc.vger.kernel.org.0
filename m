@@ -1,133 +1,186 @@
-Return-Path: <linux-parisc+bounces-3690-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3691-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E12BAC16C4
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 May 2025 00:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3DFAC9DE7
+	for <lists+linux-parisc@lfdr.de>; Sun,  1 Jun 2025 08:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5721B3A42F4
-	for <lists+linux-parisc@lfdr.de>; Thu, 22 May 2025 22:26:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B9EC3BB206
+	for <lists+linux-parisc@lfdr.de>; Sun,  1 Jun 2025 06:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863C8279799;
-	Thu, 22 May 2025 22:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0EA18A6A9;
+	Sun,  1 Jun 2025 06:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="ToVMF8Pc"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="ZUlNNePj"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31272741C5
-	for <linux-parisc@vger.kernel.org>; Thu, 22 May 2025 22:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDBE9460;
+	Sun,  1 Jun 2025 06:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747952773; cv=none; b=GGu1BF2RHyNUFX6MnVavkHiVLJIAs8U1Qf6eQGtPUsfAzVHqeSTQW0TFauCR6GKwZ2srzYPXkIWR3d5m0uVK4iZ5IHfl8r+5A3qNYp3FfLQHpIUIwBkDSWVL2MsblNFX/dd6nXbjhuCTO1OEVm7zcv0Nr/xCNWRuSlMWeMph+10=
+	t=1748760866; cv=none; b=Kb4XRgXChXg9Y738rMOmxS6HsvN0Y9Up4qesITm8Jss8LEbMW54uXLipSvlNdLh2RXHf/PO3A23kYtB4UxoJqkQwpo1f+t8iAPHsC6hPHTCf+f9fwBRy8vwUb4xfwrK39yUSW4J9ZNcS/EfjWT1xG8aRRXysCNLw8sc69cdRf2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747952773; c=relaxed/simple;
-	bh=ERIIFgKxrnPwjSVA6jXYtUfeYroUqJBM9v+L48OiIjw=;
-	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
-	 References:In-Reply-To; b=n/TYlbqhtAhHnNNN7y4e5fEz+enBoJliVs4c2u/6Df4ZqnrECK9/uZK2iYEwka++6WmswR48HzdRQDYr4KaFLfEK/2+d7CiMkcRVQoJ2ldyF2yRnFn09+P36PvlY6aPqvoJ+V1HdtEuUdwCJJ4AqpK4rFPcm9JGWiQLZtDFhw+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=ToVMF8Pc; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c5b2472969so897805585a.1
-        for <linux-parisc@vger.kernel.org>; Thu, 22 May 2025 15:26:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1747952768; x=1748557568; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yW4BwrWRPMGZw+m/ri6EFRKCjP4k+SeXSk6ZWrWvJiA=;
-        b=ToVMF8PcVy37DRcyydOqAzRtU8MIfxnsQYcyTujtaPP+6rNuh10GiSxHl8BpEOL7Vl
-         xP549yj/DsBJfMi3qCROE0CjVVteyRyHylhdLw04oGcxRiQntTqkGaj0qxDt91en7Yaf
-         k+SmxoaFBB+G/5sErCk+bkQleUrTH6XQJe2p+LIipbvb4fbPmu1wnSD2q+VMoi0xxJsW
-         gaMrvrcaiHSnHiky9rJUvXODz2114Xg3/bkQmKiZIEtphocJflv5aC1cQ1XzMR2q+5M1
-         e5C3pB8Uc+2bJywG7HLAABdlrHUZ45rP3ykqZkmL5ezlodK/YayNjCLBFI5pn3kcMbPH
-         Giow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747952768; x=1748557568;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :mime-version:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yW4BwrWRPMGZw+m/ri6EFRKCjP4k+SeXSk6ZWrWvJiA=;
-        b=bTILpqJiwfcKVSpNBUxssC5fUNv+RqhafZESTF9AT0MGkjwX7FbhZhoYRIvvAgiOq1
-         AxoVYPUo76JHzRIiSq8X0mALAs3Zq8+GgPINXMbvRvrJ8BeJd1I5I3BBTkkF3E/u/IUX
-         K6TfORnju67KoIVwTGfSiGRUZPRFpdGGLVbr24wjG6WSvz2UYn8uIiOsSs3UAc2N1cPZ
-         ucQ8AzGRVQcwNiC5HB72kuj7HdfifE8wcFxiyXh8OCFXomJNrKa33J2BtRW6Z0BufZ4P
-         ihYi5O0slAAfzMv79sQeIZEf77pfmj15wO1DClKKdkTlG569XC+IH8pTHIzkY41WA28b
-         Kobg==
-X-Forwarded-Encrypted: i=1; AJvYcCVSk4b/VKPvH3KNtwpxuUKxQPeNZvkad1lRy068S5kTgcOYOh5Femzyug6D+1qTgpJUOx3EK1Ew5hJ0EpE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXOliOHa/1Ts2XFTIz97uf+2BUV0oq2S6zZohY9WxH9mg/QVj3
-	MsDlz3WwoKyVEufr0lKuk0eyGqdeT78Ry2s2jTe3Q0kcAVn9QizbTVeZFCPBWhBrDQ==
-X-Gm-Gg: ASbGnctaoEmU7wKJVgW/3Z8IhD2iaYO98s57y6t6cjn781eJiSKmAqlCdyAm7yaBCHD
-	DW5n3H1SsHEHPcNQRPjnKLh025HjHsA94erfpIDtgukAXkcAR4xbKSRun6u7FGBz0LbN/5DoJ7Q
-	zQv6YYbc8klLh+jf6cCJKCBjNnjWzPMXmq1envUwi+7djwFKg6NUnZPM2qSEQO/coPKAtws5ytn
-	wxR0TYLSBer5wKrEzJJOdb+qBYIMkimEGjCqe3AK3LBx+/n8uc2t46mcryO9waOfWE4/JkpUcf1
-	Y94Jwybl6Hr7SZKzG3ZTu/cTti7DxtIJLR1tKqhvPki4F6mGRLqA+ufmuCxiukumgxEfNGloxT3
-	69t3AxzHnJbA9tHc6jfHz
-X-Google-Smtp-Source: AGHT+IHmIlyqjG6e3vdHM+wi0UqPbDaDdVTY/IdBlClNAbyXhci/B2Ul0PB2ozu0sL7+1EWeTaPM2w==
-X-Received: by 2002:a05:620a:408e:b0:7ce:d352:668f with SMTP id af79cd13be357-7ced352670emr1334278485a.47.1747952768087;
-        Thu, 22 May 2025 15:26:08 -0700 (PDT)
-Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7cd468b69dfsm1089029585a.79.2025.05.22.15.26.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 15:26:07 -0700 (PDT)
-Date: Thu, 22 May 2025 18:26:07 -0400
-Message-ID: <8bf36078ef8f3e884a1d3d8415834680@paul-moore.com>
+	s=arc-20240116; t=1748760866; c=relaxed/simple;
+	bh=F3oXdP3aGJdqdV9ToT9ZMcwFwuEYVxAdznWXmx05go4=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=jvonGgFdKS0ysTEZD9I63NI2XKRwVV/7dTtadJFilPSQzxXrwqKDV0OeTGw5xXhnHsmFpSmVibURdR/y50SJpsC6RhnZnZ1q42TZWcXaYYok4bGStX2719hY+FH3zvDwapA3zxFSwPjZXMolXrDKmo1ghuGQrAV0mPxszCw44O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=ZUlNNePj; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1748760861; x=1749365661; i=deller@gmx.de;
+	bh=sLgU7wMMAZhRNYBk/+571d7I3Sezhl/v9JsMnf0efxc=;
+	h=X-UI-Sender-Class:Date:From:To:Subject:Message-ID:MIME-Version:
+	 Content-Type:cc:content-transfer-encoding:content-type:date:from:
+	 message-id:mime-version:reply-to:subject:to;
+	b=ZUlNNePjP7IHnCJoC/N/NggZmt2Gp11jiMEPZcX446WtRd543fWVp37KqiRQd9ta
+	 HiWaalm55B/cs3TGoSlrL76Tq3W9oOsbCGdHZy2cJN66P9ZrHO0tPqUGg8ZGMULdO
+	 43J1nedGhNCIZrp+pJHvvzgiCNDasAyWHiVZ26NRqN4aYvJM6j+KxpPWiK5YpZeCd
+	 R6flUKqmjbpl3S8Vn7C+g06JTBOpwwvK7qbteJpFZ5iTX9Qys7ZDO7xqI8b3BUKu9
+	 wEgJJsXKgGClrDn9LnIkdkeyDeX5BqcakWPTphK2jvo0TiquukeYGkGeFv3zJ8OVl
+	 +fk1NZJIqT1dBZLR5A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from p100 ([109.250.63.171]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MacOW-1urvSp0b86-00bZd5; Sun, 01
+ Jun 2025 08:54:21 +0200
+Date: Sun, 1 Jun 2025 08:54:19 +0200
+From: Helge Deller <deller@gmx.de>
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: [GIT PULL] parisc architecture fixes and updates for v6.16-rc1
+Message-ID: <aDv5G-QGm102O5nO@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 
-Content-Type: text/plain; charset=UTF-8 
-Content-Transfer-Encoding: 8bit 
-X-Mailer: pstg-pwork:20250522_1740/pstg-lib:20250522_1730/pstg-pwork:20250522_1740
-From: Paul Moore <paul@paul-moore.com>
-To: Andrey Albershteyn <aalbersh@redhat.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
-	Tyler Hicks <code@tyhicks.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Amir Goldstein <amir73il@gmail.com>
-Cc: linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, selinux@vger.kernel.org, ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org, Andrey Albershteyn <aalbersh@kernel.org>
-Subject: Re: [PATCH v5 3/7] selinux: implement inode_file_[g|s]etattr hooks
-References: <20250513-xattrat-syscall-v5-3-22bb9c6c767f@kernel.org>
-In-Reply-To: <20250513-xattrat-syscall-v5-3-22bb9c6c767f@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Provags-ID: V03:K1:AOW/k/9GNYcnSuDIYhqT1SQZmXzfYzCUIc0rHMsQPqPOZlghcYe
+ ut7k56lAjqv9MHc2Kyi+xYs+Ye3Y/1Np/czEOes4VLFM3CIj5vpVyiMuRIhhlbgUhe8XJDD
+ TDaFukhu7SUBCd7/ERV243u/D2PfxLm13wE+zmC3nBaJhzv49mnoC864rSH468GqG+3KtdG
+ qHoe7wKRJnPfxluecNxLg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:DVVL+LGQTfE=;IVUVs3sppapO2C94T/OognzbP1f
+ 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
+ fbn1LfkUEStZ8KygjTFhXoxcZ
 
-On May 13, 2025 Andrey Albershteyn <aalbersh@redhat.com> wrote:
-> 
-> These hooks are called on inode extended attribute retrieval/change.
-> 
-> Cc: selinux@vger.kernel.org
-> Cc: Paul Moore <paul@paul-moore.com>
-> 
-> Signed-off-by: Andrey Albershteyn <aalbersh@kernel.org>
-> ---
->  security/selinux/hooks.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
+Hi Linus,
 
-Acked-by: Paul Moore <paul@paul-moore.com>
+Please pull the patches for the parisc architecture for this merge window.
+Nothing exiting this time:
+header cleanups, a printk formatting fix and enablement of building with gcc-15.
 
---
-paul-moore.com
+Thanks!
+Helge
+
+----------------------------------------------------------------
+The following changes since commit b4432656b36e5cc1d50a1f2dc15357543add530e:
+
+  Linux 6.15-rc4 (2025-04-27 15:19:23 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.16-rc1
+
+for you to fetch changes up to 213205889d5ffc19cb8df06aa6778b2d4724c887:
+
+  parisc/unaligned: Fix hex output to show 8 hex chars (2025-05-31 16:50:39 +0200)
+
+----------------------------------------------------------------
+parisc architecture updates for kernel v6.16-rc1:
+
+Fix building with gcc-15, formatting fix on unaligned warnings
+and replace __ASSEMBLY__ with __ASSEMBLER__ in headers.
+
+----------------------------------------------------------------
+Arnd Bergmann (1):
+      parisc: fix building with gcc-15
+
+Helge Deller (1):
+      parisc/unaligned: Fix hex output to show 8 hex chars
+
+Thomas Huth (2):
+      parisc: Replace __ASSEMBLY__ with __ASSEMBLER__ in uapi headers
+      parisc: Replace __ASSEMBLY__ with __ASSEMBLER__ in non-uapi headers
+
+ arch/parisc/boot/compressed/Makefile     | 1 +
+ arch/parisc/include/asm/alternative.h    | 4 ++--
+ arch/parisc/include/asm/assembly.h       | 4 ++--
+ arch/parisc/include/asm/barrier.h        | 4 ++--
+ arch/parisc/include/asm/cache.h          | 4 ++--
+ arch/parisc/include/asm/current.h        | 4 ++--
+ arch/parisc/include/asm/dwarf.h          | 4 ++--
+ arch/parisc/include/asm/fixmap.h         | 4 ++--
+ arch/parisc/include/asm/ftrace.h         | 4 ++--
+ arch/parisc/include/asm/jump_label.h     | 4 ++--
+ arch/parisc/include/asm/kexec.h          | 4 ++--
+ arch/parisc/include/asm/kgdb.h           | 2 +-
+ arch/parisc/include/asm/linkage.h        | 4 ++--
+ arch/parisc/include/asm/page.h           | 6 +++---
+ arch/parisc/include/asm/pdc.h            | 4 ++--
+ arch/parisc/include/asm/pdcpat.h         | 4 ++--
+ arch/parisc/include/asm/pgtable.h        | 8 ++++----
+ arch/parisc/include/asm/prefetch.h       | 4 ++--
+ arch/parisc/include/asm/processor.h      | 8 ++++----
+ arch/parisc/include/asm/psw.h            | 4 ++--
+ arch/parisc/include/asm/signal.h         | 4 ++--
+ arch/parisc/include/asm/smp.h            | 4 ++--
+ arch/parisc/include/asm/spinlock_types.h | 4 ++--
+ arch/parisc/include/asm/thread_info.h    | 4 ++--
+ arch/parisc/include/asm/traps.h          | 2 +-
+ arch/parisc/include/asm/unistd.h         | 4 ++--
+ arch/parisc/include/asm/vdso.h           | 4 ++--
+ arch/parisc/include/uapi/asm/pdc.h       | 4 ++--
+ arch/parisc/include/uapi/asm/signal.h    | 4 ++--
+ arch/parisc/kernel/unaligned.c           | 2 +-
+ 30 files changed, 61 insertions(+), 60 deletions(-)
 
