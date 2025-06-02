@@ -1,79 +1,138 @@
-Return-Path: <linux-parisc+bounces-3692-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3693-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A248AAC9F41
-	for <lists+linux-parisc@lfdr.de>; Sun,  1 Jun 2025 18:04:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4229CACA875
+	for <lists+linux-parisc@lfdr.de>; Mon,  2 Jun 2025 06:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6886A174706
-	for <lists+linux-parisc@lfdr.de>; Sun,  1 Jun 2025 16:04:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BAB63B9183
+	for <lists+linux-parisc@lfdr.de>; Mon,  2 Jun 2025 04:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE0C1B0412;
-	Sun,  1 Jun 2025 16:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5081487E1;
+	Mon,  2 Jun 2025 04:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cdvJMwI3"
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="cDLc7AG1"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58AC2D78A;
-	Sun,  1 Jun 2025 16:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ABA182B7;
+	Mon,  2 Jun 2025 04:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748793892; cv=none; b=QI7zPmZcVisAAEdssZ+HwAaGb27CyCXyFcfWsj4I/+XUTl16UTsAoqAWwn9RMofCyrv2D2Q+g+Nv65PryV/cdONEOv1OimdqbREd/PzMEMo6ajSP82P8wJ/SYPfic6+QFXWMAZ7vF8S17xt3ZcqWWtMc7TsfN7dwetDpPXJX/gI=
+	t=1748837490; cv=none; b=L37878dKjSGJWh6H7C3iiwwRaTn7cNAskkzzx0xVd5wP9g7N1gdxGryTUhSeC/VmEjqvS8Z7Jg47T8k9NMQrDArdt28wRSDapEJsr/MVSgXdsxL97gxjuja1UmieWoLtQSw4D8KXi6hR2h4MmBlCzPTYVABM4OaPlFlbQGD5RQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748793892; c=relaxed/simple;
-	bh=REd8+0zDQNAgzAtduffv2g2avquwAQ6hy2XjZB38oHQ=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=SvXUnDVD8HSuwIzO/nBq3M5OVBtMyB+MHok6icUPZ3s1d8gc+Ae347R0Ii6ssPHgF1mURnBPY7UAIyevAxeGTYnC1Ao4LUSRAGnxKLno9g9VumS79k0UctC9E4AOi2H134/ZQAKbKfYTX4dhH9upz9Aq2xvH7i4dvdjXhREd7jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cdvJMwI3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CA5C4CEE7;
-	Sun,  1 Jun 2025 16:04:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748793892;
-	bh=REd8+0zDQNAgzAtduffv2g2avquwAQ6hy2XjZB38oHQ=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=cdvJMwI31DbAxd7z1vAbSyidhdlFtQitAa6ZGBK/Fx0lXUZfi6Urn/C9SVQ8DKbCk
-	 EcyPh7oFc9QPHfCux1Z5Bp4+0hYVYLeQNAhaTNM7B8Q1hx6kjaQzVhgvxTUB12tdw9
-	 aqKp1MEMN84fOYSEWNpqYPwtlbCrh+tjqX41Lo3GUuQwTrlq+4bVF2Rc+OBf1ji0p+
-	 2OdjDMTxlDdL/ZFdizOdCYJWN0KGNsG8WsZt7H/J+Gf4sSXVf5/k6G+fmYxQuXuWfj
-	 F253dGmDJTX9SvqUxUir80hTJfoOBrfnuzGNLw/wCG18SeME1Wct/SBY5mvH8qxGlS
-	 ItxSbXoMzOMgA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE01A380AA7C;
-	Sun,  1 Jun 2025 16:05:26 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture fixes and updates for v6.16-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <aDv5G-QGm102O5nO@p100>
-References: <aDv5G-QGm102O5nO@p100>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <aDv5G-QGm102O5nO@p100>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.16-rc1
-X-PR-Tracked-Commit-Id: 213205889d5ffc19cb8df06aa6778b2d4724c887
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f563ba4ac68a4dfdfb37baa24ff1a4f917e9ffe7
-Message-Id: <174879392530.436212.829179203207556225.pr-tracker-bot@kernel.org>
-Date: Sun, 01 Jun 2025 16:05:25 +0000
-To: Helge Deller <deller@gmx.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
+	s=arc-20240116; t=1748837490; c=relaxed/simple;
+	bh=VNUqtAL1SHKb0pozQoeZywC6qZxi9oGNe5rRKbOsy4Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=biseBkn2Y23CItRRBVvCR4j8+4WkWsZP3wcAcZ9CKxU1Jm0DyzouZiMdZoEb1AEwAOybmqXY4GdbCBndC9f2dDedKD1tuNYeQpfbSaUxfgnhHHqtyrjHUuA9trfjY0Pwa6BD4jC6CZr4AJHmY2XDsriuUY2PzQ8aG5jYMHkp9H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=cDLc7AG1; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=iuH08HhCzFKCMOC8/O0swKDH+rpWOadfk7Rm4fI946Q=; b=cDLc7AG1xVeGrDIh1peeN0IWEk
+	zSPl9poJhEGT0YoB/3XnvH6rSM6bY3xjL0IUqjUntiObN7RMhtlCPHuD3A62GgdK0UEACC5R8vd1k
+	nGJkZRQS6J7IpGD5Cac8ckt2eGuQw0ldn0T1SIMMph5HBpFztRTyZBhVmy8+xkbQoA7OwVtDKj3OZ
+	76BRcTLzVJZLqbCzOHiBTXoFLI5gsn+T2zZ4MU1RCovTNxA1K7wQ4w3A4hqY1qW3qspeqQLRXJ12A
+	qO/+nks1w4qOwDF7mdiodEdOvdFTMW5W0MgrK6eRVtCQ084Z11K100prR+Fy/v0Uyq+f2T84t8Tki
+	2y66Yf/A==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uLwW6-0000000BUl8-1UDJ;
+	Mon, 02 Jun 2025 04:11:18 +0000
+Date: Mon, 2 Jun 2025 05:11:18 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linmag7@gmail.com, Al Viro <viro@ftp.linux.org.uk>, arnd@arndb.de,
+	chris@zankel.net, dinguyen@kernel.org, glaubitz@physik.fu-berlin.de,
+	ink@unseen.parts, jcmvbkbc@gmail.com, kees@kernel.org,
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	mattst88@gmail.com, monstr@monstr.eu, richard.henderson@linaro.org,
+	sparclinux@vger.kernel.org, x86@kernel.org,
+	Sam James <sam@gentoo.org>
+Subject: Re: [PATCH v2 1/1] mm: pgtable: fix pte_swp_exclusive
+Message-ID: <20250602041118.GA2675383@ZenIV>
+References: <87cyfejafj.fsf@gentoo.org>
+ <87v7rik020.fsf@gentoo.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v7rik020.fsf@gentoo.org>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-The pull request you sent on Sun, 1 Jun 2025 08:54:19 +0200:
+On Sat, Apr 05, 2025 at 06:09:11PM +0100, Sam James wrote:
+> Sam James <sam@gentoo.org> writes:
+> 
+> > Lovely cleanup and a great suggestion from Al.
+> >
+> > Reviewed-by: Sam James <sam@gentoo.org>
+> >
+> > I'd suggest adding a:
+> > Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+> 
+> Al, were you planning on taking this through your tree?
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.16-rc1
+FWIW, I expected it to get sent to Linus as "please, run this
+sed script before -rc1" kind of thing, script being something
+like
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f563ba4ac68a4dfdfb37baa24ff1a4f917e9ffe7
+sed -i -e 's/int pte_swp_exclusive/bool pte_swp_exclusive/' \
+	`git grep -l 'int pte_swp_exclusive'`
 
-Thank you!
+with suggested commit message...  It's absolutely regular and
+that kind of tree-wide change is easier handled that way.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+	Oh, well...  To restore the context: Magnus had spotted a fun
+bug on Alpha back in February - pte_swp_exclusive() there returned
+pte_val(pte) & _PAGE_SWP_EXCLUSIVE as int.  The problem is that
+_PAGE_SWP_EXCLUSIVE is 1UL<<39 there, with obvious results...
+
+	I looked at the originally posted patch and suggested to
+make pte_swp_exclusive() return bool instead of int.  All users
+are in explicitly boolean contexts:
+
+include/linux/swapops.h:        if (pte_swp_exclusive(pte))
+mm/debug_vm_pgtable.c:  WARN_ON(pte_swp_exclusive(pte));
+mm/debug_vm_pgtable.c:  WARN_ON(!pte_swp_exclusive(pte));
+mm/debug_vm_pgtable.c:  WARN_ON(pte_swp_exclusive(pte));
+mm/internal.h:  if (pte_swp_exclusive(pte))
+mm/memory.c:            if (pte_swp_exclusive(orig_pte)) {
+mm/memory.c:            exclusive = pte_swp_exclusive(vmf->orig_pte);
+mm/swapfile.c:          if (pte_swp_exclusive(old_pte))
+mm/userfaultfd.c:               if (!pte_swp_exclusive(orig_src_pte)) {
+
+	Magnus posted patch of that form (see
+https://lore.kernel.org/all/20250218175735.19882-2-linmag7@gmail.com/),
+got no serious objections and then it went nowhere.
+
+	Bug is real and fairly obvious, fix is entirely mechanical and
+affects one line in each asm/pgtable.h out there.  Linus, could you
+run that sed script just before -rc1?  Commit message from the patch refered
+above looks sane:
+
+mm: pgtable: fix pte_swp_exclusive
+
+Make pte_swp_exclusive return bool instead of int. This will better reflect
+how pte_swp_exclusive is actually used in the code. This fixes swap/swapoff
+problems on Alpha due pte_swp_exclusive not returning correct values when
+_PAGE_SWP_EXCLUSIVE bit resides in upper 32-bits of PTE (like on alpha).
+
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+
 
