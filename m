@@ -1,151 +1,135 @@
-Return-Path: <linux-parisc+bounces-3701-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3702-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF57AD11BB
-	for <lists+linux-parisc@lfdr.de>; Sun,  8 Jun 2025 11:44:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB91AD3EE4
+	for <lists+linux-parisc@lfdr.de>; Tue, 10 Jun 2025 18:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEA1A7A5A94
-	for <lists+linux-parisc@lfdr.de>; Sun,  8 Jun 2025 09:43:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8185A7ADB05
+	for <lists+linux-parisc@lfdr.de>; Tue, 10 Jun 2025 16:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74812202C3A;
-	Sun,  8 Jun 2025 09:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133F324503C;
+	Tue, 10 Jun 2025 16:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="XsF7RNTr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJ1f2Y7N"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3331A13C3CD;
-	Sun,  8 Jun 2025 09:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B8024166B;
+	Tue, 10 Jun 2025 16:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749375890; cv=none; b=KnWhYCEbExGnPNSAv86S7/7I2t7rDc1XlHJ1taaoI59NJofyZK2X9fCO242Fww0/QNC2ma5mjCD//adVq0vo4WRcCHLcGfxW+IpzJvHmv+XG2P7jdBw6xmz/r+lXPpKtQdtUVBG7j41o7jfXt7mg155dXU58EAVjFHq2BfngyRQ=
+	t=1749572889; cv=none; b=N3/2lJnIY02UVZgxjMqRzEHCY+RY4TTJ3LN+XhfnP3S6109zEamIbWOLmlfdmGgC7M2tm+VyPR60PazJpE83t2366uh0FwYVV2Xdt+3uLoVtd2AjAlaO4MNTTjYXB5C6lLkChM/mThOv2YabC1duX18SVSKS0ItHXSADx+jZydw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749375890; c=relaxed/simple;
-	bh=TCv1nBrubfIcsi4DlAa3/6ZRjyP5G7Lfpe6gnZZm6Ns=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HwvqU5A8W7/YUI7VttXS/0qiMBvv9TGQ6rjex7dpKedWW5kdf4rltyxjuyd3kML5k+KsFyii5O7E9wLOdVjXZ+omJ2rsxkii3qTPft7+Q2OKhZvf+qmtyIgOLMmWnNeRqL/6Tv/h+InH/tfVNHsI0NyGONsAvmJwLunPbz71S9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=XsF7RNTr; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=AvQSbwk0OMZgevNebkqyi44TEBQebr6htxrvwpOZR80=; t=1749375887; x=1749980687; 
-	b=XsF7RNTrY6leik/CR49OltCXmZ+nmg2YeysRu2zcT3ZmKZ0KTI/9vIHQTdvHBDPZp3uOGkhnj6N
-	CGsuW/loLdu/7d7QXyIejxsVUOJ5PMiCXJhGFrl+ZKN4kAlLdxfKImpeA3McLvcXXjbkOWTUY3psl
-	GA36G4WhvFEdjldstuPb8CW3OC8DU7Td7nb7iNs7LTulSoumtHmMfshUxYGOpHCo99BmQHlq3dTuI
-	YG+RY5Mn2MrLq5Q1ExJB8yEp+mdDxwbilTzu4iBErGwB6tFKXsUAEIwIn/+wcTtqaOWSdBrDojB54
-	OgV9BQHCiSqGo9gdI3Asy0s0I8f1n20+K3Zg==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.98)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1uOCZv-00000000rzo-33xN; Sun, 08 Jun 2025 11:44:35 +0200
-Received: from p57bd96d0.dip0.t-ipconnect.de ([87.189.150.208] helo=[192.168.178.61])
-          by inpost2.zedat.fu-berlin.de (Exim 4.98)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1uOCZv-00000001WdX-1muC; Sun, 08 Jun 2025 11:44:35 +0200
-Message-ID: <ea09adb64428a73b84cc0199c3b1efb09b9db23c.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH 2/6] sh: remove duplicate ioread/iowrite helpers
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Arnd Bergmann <arnd@kernel.org>, linux-arch@vger.kernel.org, Arnd
- Bergmann	 <arnd@arndb.de>, Richard Henderson
- <richard.henderson@linaro.org>, Matt Turner	 <mattst88@gmail.com>, Greg
- Ungerer <gerg@linux-m68k.org>, Thomas Bogendoerfer	
- <tsbogend@alpha.franken.de>, "James E.J. Bottomley"	
- <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
- Madhavan Srinivasan	 <maddy@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, Nicholas Piggin	 <npiggin@gmail.com>, Christophe
- Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker	
- <dalias@libc.org>, Julian Vetter <julian@outer-limits.org>, Bjorn Helgaas	
- <bhelgaas@google.com>, linux-alpha@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-Date: Sun, 08 Jun 2025 11:44:34 +0200
-In-Reply-To: <CAMuHMdXeTWSU64jQt+nybsSBOpBEu_zO0WmE5FK1PnA3YkALUQ@mail.gmail.com>
-References: <20250315105907.1275012-1-arnd@kernel.org>
-	 <20250315105907.1275012-3-arnd@kernel.org>
-	 <6c7770dd1c216410fcff3bf0758a45d5afcb5444.camel@physik.fu-berlin.de>
-	 <CAMuHMdXeTWSU64jQt+nybsSBOpBEu_zO0WmE5FK1PnA3YkALUQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 
+	s=arc-20240116; t=1749572889; c=relaxed/simple;
+	bh=VGaA2UjcATw5usDRARWAGHoyvA3nRCcXodZF/+d4fPQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=cRL7VOGtrA/8IooI67lQAjAprtTkDPiTx4O/41+GvUl8+VEw7vM6ER/AI6HbVFIkTa2jxIllHPB2aNTZ4Ce/JFppjOd657tuePT1QPUl+aBL1ETTcqyYKXnJxawLT859Tzm16ccrs0zdCq5AFXKKEHhbBfeuxuqSrqTm4YHYfZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJ1f2Y7N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E19C4CEF0;
+	Tue, 10 Jun 2025 16:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749572889;
+	bh=VGaA2UjcATw5usDRARWAGHoyvA3nRCcXodZF/+d4fPQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=JJ1f2Y7NQSd54tSszQLRiQIl7dD277rRFw5CD03cct8JsOIa9MeckGxwgeTNERJbY
+	 /Aq7k/QdxMobJHlLVMWLaBVYiO7WUz7b5oZF8aZHHmpn5SGMFxfrabCx4zi/NelVA7
+	 9tpmie/ZR7eRtm/GQUxR12kWA/MXW8KxThnLlIuGSON9FK96/TttZtzzrp91aMtCTf
+	 nkrgxszvlyVUm0gGo8/i60pLDKogQxJCIy6qqOtv6fYwtbh3P8fqWAcjVqLwJncDb0
+	 2wdFJTUv8YDSR+ksvQyqg1NCDe5af7sVQqmJb6cWow02fsajDICno0naOHZ+D1dFYd
+	 UMToThilj3zfw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D5B39D6540;
+	Tue, 10 Jun 2025 16:28:41 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 2/2] arch: use always-$(KBUILD_BUILTIN) for vmlinux.lds
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <174957291974.2454024.16546912662876416180.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Jun 2025 16:28:39 +0000
+References: <20250602181256.529033-2-masahiroy@kernel.org>
+In-Reply-To: <20250602181256.529033-2-masahiroy@kernel.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-riscv@lists.infradead.org, linux-kbuild@vger.kernel.org,
+ aou@eecs.berkeley.edu, agordeev@linux.ibm.com, alex@ghiti.fr,
+ andreas@gaisler.com, anton.ivanov@cambridgegreys.com, bp@alien8.de,
+ bcain@kernel.org, catalin.marinas@arm.com, chris@zankel.net,
+ borntraeger@linux.ibm.com, christophe.leroy@csgroup.eu,
+ dave.hansen@linux.intel.com, davem@davemloft.net, dinguyen@kernel.org,
+ geert@linux-m68k.org, guoren@kernel.org, hpa@zytor.com, hca@linux.ibm.com,
+ deller@gmx.de, chenhuacai@kernel.org, mingo@redhat.com,
+ James.Bottomley@HansenPartnership.com, johannes@sipsolutions.net,
+ glaubitz@physik.fu-berlin.de, jonas@southpole.se, maddy@linux.ibm.com,
+ mattst88@gmail.com, jcmvbkbc@gmail.com, mpe@ellerman.id.au, monstr@monstr.eu,
+ naveen@kernel.org, npiggin@gmail.com, palmer@dabbelt.com,
+ paul.walmsley@sifive.com, dalias@libc.org, richard.henderson@linaro.org,
+ richard@nod.at, linux@armlinux.org.uk, shorne@gmail.com,
+ stefan.kristiansson@saunalahti.fi, svens@linux.ibm.com,
+ tsbogend@alpha.franken.de, tglx@linutronix.de, gor@linux.ibm.com,
+ vgupta@kernel.org, kernel@xen0n.name, will@kernel.org,
+ ysato@users.sourceforge.jp, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org, x86@kernel.org
 
-Hello Geert,
+Hello:
 
-On Sun, 2025-06-08 at 11:39 +0200, Geert Uytterhoeven wrote:
-> Hi Adrian,
->=20
-> On Sat, 7 Jun 2025 at 14:08, John Paul Adrian Glaubitz
-> <glaubitz@physik.fu-berlin.de> wrote:
-> > On Sat, 2025-03-15 at 11:59 +0100, Arnd Bergmann wrote:
-> > > From: Arnd Bergmann <arnd@arndb.de>
-> > >=20
-> > > The ioread/iowrite functions on sh only do memory mapped I/O like the
-> > > generic verion, and never map onto non-MMIO inb/outb variants, so the=
-y
-> > > just add complexity. In particular, the use of asm-generic/iomap.h
-> > > ties the declaration to the x86 implementation.
-> > >=20
-> > > Remove the custom versions and use the architecture-independent fallb=
-ack
-> > > code instead. Some of the calling conventions on sh are different her=
-e,
-> > > so fix that by adding 'volatile' keywords where required by the gener=
-ic
-> > > implementation and change the cpg clock driver to no longer depend on
-> > > the interesting choice of return types for ioread8/ioread16/ioread32.
-> > >=20
-> > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->=20
-> > Those are quite a number of changes that I would like to test on real h=
-ardware
-> > first before merging them into the kernel.
-> >=20
-> > @Geert: Could you test it on your SH-7751 LANDISK board as well?
->=20
-> Already done for a while, as this patch is commit 2494fce26e434071 ("sh:
-> remove duplicate ioread/iowrite helpers") in v6.15-rc1 ;-)
+This patch was applied to riscv/linux.git (fixes)
+by Masahiro Yamada <masahiroy@kernel.org>:
 
-Well, there is no Tested-By from either of us, so this isn't optimal.
+On Tue,  3 Jun 2025 03:12:54 +0900 you wrote:
+> The extra-y syntax is deprecated. Instead, use always-$(KBUILD_BUILTIN),
+> which behaves equivalently.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>  arch/alpha/kernel/Makefile      | 2 +-
+>  arch/arc/kernel/Makefile        | 2 +-
+>  arch/arm/kernel/Makefile        | 2 +-
+>  arch/arm64/kernel/Makefile      | 2 +-
+>  arch/csky/kernel/Makefile       | 2 +-
+>  arch/hexagon/kernel/Makefile    | 2 +-
+>  arch/loongarch/kernel/Makefile  | 2 +-
+>  arch/m68k/kernel/Makefile       | 2 +-
+>  arch/microblaze/kernel/Makefile | 2 +-
+>  arch/mips/kernel/Makefile       | 2 +-
+>  arch/nios2/kernel/Makefile      | 2 +-
+>  arch/openrisc/kernel/Makefile   | 2 +-
+>  arch/parisc/kernel/Makefile     | 2 +-
+>  arch/powerpc/kernel/Makefile    | 2 +-
+>  arch/riscv/kernel/Makefile      | 2 +-
+>  arch/s390/kernel/Makefile       | 2 +-
+>  arch/sh/kernel/Makefile         | 2 +-
+>  arch/sparc/kernel/Makefile      | 2 +-
+>  arch/um/kernel/Makefile         | 2 +-
+>  arch/x86/kernel/Makefile        | 2 +-
+>  arch/xtensa/kernel/Makefile     | 2 +-
+>  21 files changed, 21 insertions(+), 21 deletions(-)
 
-I wished Arnd could have at least pinged me back regarding this. He knows I=
-'m
-actively maintaining arch/sh and I would like to properly test and review
-such changes.
+Here is the summary with links:
+  - [2/2] arch: use always-$(KBUILD_BUILTIN) for vmlinux.lds
+    https://git.kernel.org/riscv/c/e21efe833eae
 
-But I'm not doing this professionally, so I cannot be always there with 100=
-%
-capacity. Just pushing such changes in without any input from me defeats th=
-e
-purpose of a maintainer.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Adrian
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
