@@ -1,59 +1,59 @@
-Return-Path: <linux-parisc+bounces-3704-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3705-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752ECAE7889
-	for <lists+linux-parisc@lfdr.de>; Wed, 25 Jun 2025 09:31:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2F3AE78D8
+	for <lists+linux-parisc@lfdr.de>; Wed, 25 Jun 2025 09:40:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0ECE1798D6
-	for <lists+linux-parisc@lfdr.de>; Wed, 25 Jun 2025 07:31:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3640B3A7C02
+	for <lists+linux-parisc@lfdr.de>; Wed, 25 Jun 2025 07:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BBE20B1E8;
-	Wed, 25 Jun 2025 07:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054EA204C1A;
+	Wed, 25 Jun 2025 07:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="3WkfBPhe"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ShpEMViR"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF512207A26;
-	Wed, 25 Jun 2025 07:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4E42046BA;
+	Wed, 25 Jun 2025 07:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750836666; cv=none; b=HpblwgloKEVlN+dPlop1CjpRpd50cQbX8NhbU5wY+ljfehOiopsxXXtfPBboPxTs9JbLFyi/LdrfVUy0cICMGpJosokRAw7GaA6ACdJ1M0Dqe58PZleNaHJGT9KJ5c08U8riHvvpSi+EVU2h2owxZA6DQ3BnoEXI0808R/9WQ4s=
+	t=1750837180; cv=none; b=V/aRFupqCfowV8koEhJabHvZ2mdVfFraFZ02cHpi7mOSKuhNMxlta5BTjv/utkzFvDlTJ42a6BbYEi/03hHBVh7y1CEJaE+Ego8OMP74tBiqwIshKIUYUBOhV+NgRm8CkdgEg3Rh/2kAE9zNO/xUznSL3A2IEpG5Ns/8k+7xKUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750836666; c=relaxed/simple;
-	bh=I5YjVaDyYJlwhUGwIJgfS+e9ZtPvKsfTy/o54t8xkR8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ofjF8azYDM/3y8KWSDTEZgXr7g3JDwhl6iKn3l9Z3Yyz64pzj3DablHmXpZIqNOhleuBeqqKs8FTPBlQh/2Iy6IInb2VV/CSxvnkJr0E9nr1Js9T4Qk6sF1oMK7VCTdwWLYUMAI65aEEdtuKUPAafgMRXbQ6tf++QWDPXIfA+XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=3WkfBPhe; arc=none smtp.client-ip=198.137.202.133
+	s=arc-20240116; t=1750837180; c=relaxed/simple;
+	bh=ibFHFaye7nhoDwU6DP8XetT/PKnKtVB/YjYxCGffUno=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KJnr7pYZcCCNTp/F1RY9GHl+eQVgpij/hIhREo7VDr7e9c6hC/uQXHO+BruVpyNpQYhwk6zsuGTzHPKErSefMZxd6uNbFV9iQAwzzrh7oDrlZrj/Z21KAAnENTI3k0xdk/iY8uN8ZOSpjgXKsa1Q0ZFtjeYwbPtI1Wb/lHNzEoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ShpEMViR; arc=none smtp.client-ip=198.137.202.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:In-Reply-To:References;
-	bh=kvywP13RjHkv0zHBdKsF6aW9tz6A7tmRfS2gvQhbDh8=; b=3WkfBPhep6GzMhhzV+9YrONYUv
-	Vl6EfUQVLaQmzAjPH3gv9Anoi2ZhGAd+RMo1pA287S2jZGUGUHvwgv75Db5jncc+r8xOIi8Wo9nGB
-	4K4dezRLXgei7MZuy2AAQFmYwUgVWVM//3zg4JC8RdDPF6vr3bpqpgpsorG17YmkOF5YmNBmZsEfk
-	qSPIVmJPKnNGY541hsu8r+99rBMU77QV3Aw0uMHqDpZsiwzHRiYsMV+kSweNDG1CwQApq9jVoWE9E
-	x8kzAHxVAxVVEokdNR03sv0B/qzlNjwN+ocP29Tv7zTdym4x1ET+meT0RWQcO+/vk/+ZtXVl1ec1l
-	2GW9qilQ==;
+	bh=PqmkPiGf4iioMMmMVZgEGlkc7ISVXOpoJlsEOh58hH8=; b=ShpEMViR1QklzQ5FltYZykoVCz
+	55KoryGuwmqbb6wrerPsRph1OntIqKghs+Q7clpWfvMQP+i5uIs3WgMH6Hd8lt8EzRiiWJapEwwSV
+	zHjf6Sy9WazGNHvqLDctZ8xHDPkqn34cH/OiRa78xPgmc70Jy1EUYjKsSS/ir400N/72TJ5aZrBO8
+	4L6cEFTjMrPBHtiwGuoaRnxZvHZBeCov8h/enmKdOir5BweDltEbYJoZOIWtagg2ZmSJF98a9azAd
+	tp9hwYYPkpZAKg0ORzXJfaE8Tmc+pn0GxUFpsTENQ5L094kn0q9w1+tVP2t2CjXDCVqMWjcQ1TOS1
+	8FTupctw==;
 Received: from [50.53.25.54] (helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUKb1-00000007on9-262e;
-	Wed, 25 Jun 2025 07:31:03 +0000
+	id 1uUKjL-00000007qZN-0KzS;
+	Wed, 25 Jun 2025 07:39:39 +0000
 From: Randy Dunlap <rdunlap@infradead.org>
 To: linux-kernel@vger.kernel.org
 Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Masahiro Yamada <yamada.masahiro@socionext.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
 	Helge Deller <deller@gmx.de>,
 	linux-parisc@vger.kernel.org
-Subject: [PATCH] parisc: Makefile: fix a typo in palo.conf
-Date: Wed, 25 Jun 2025 00:31:02 -0700
-Message-ID: <20250625073102.804075-1-rdunlap@infradead.org>
+Subject: [PATCH v2] parisc: Makefile: fix a typo in palo.conf
+Date: Wed, 25 Jun 2025 00:39:33 -0700
+Message-ID: <20250625073933.910299-1-rdunlap@infradead.org>
 X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
@@ -67,11 +67,13 @@ Correct "objree" to "objtree". "objree" is not defined.
 
 Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
 Cc: Helge Deller <deller@gmx.de>
 Cc: linux-parisc@vger.kernel.org
 ---
+v2: correct email address for Masahiro
+
  arch/parisc/Makefile |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
