@@ -1,144 +1,253 @@
-Return-Path: <linux-parisc+bounces-3710-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3711-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAF0AEE50C
-	for <lists+linux-parisc@lfdr.de>; Mon, 30 Jun 2025 18:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB814AEFB47
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Jul 2025 15:56:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1624189D53A
-	for <lists+linux-parisc@lfdr.de>; Mon, 30 Jun 2025 16:54:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1BF81BC46E3
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Jul 2025 13:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A4517A30B;
-	Mon, 30 Jun 2025 16:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="SHaQFO1R"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8C2276026;
+	Tue,  1 Jul 2025 13:56:36 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D5A291C38
-	for <linux-parisc@vger.kernel.org>; Mon, 30 Jun 2025 16:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A017275B15;
+	Tue,  1 Jul 2025 13:56:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751302456; cv=none; b=egeq2LMJMxW5KY0ifQfqB5Cm2m50n94xBBoOs4GZxc8FzCefwRXKZOQQyb9xlWIY5wMUCfJszlbM9aQXN9Q9zm51vrjszdILFqzBcHI3j9Ml1GT+GPRSeO1MFqkanwYhukzdBjn+yywnH/VGAw5Pen4S//Vopnd9Xz2KLZm8wz4=
+	t=1751378196; cv=none; b=rbbe1W1yp4U1FG980YMDJI4llXN5Mfx+Ay7WfQVF7eK5vewN+oJ2hfidjF8FU0C+fDLHH4j3/ekssClsQzTpvxBWqybtTYdge259i7lfKgoUUWmExkP4L+Q4Pd6TSfb+goyDUgI2EbwgU9Kt3q7uOX8XOM+45BCSpk6b9T8Hvn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751302456; c=relaxed/simple;
-	bh=Bua19u83N4yQfBvV+FR0C6HCUTQZzUf1l8HOnCaYXbg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VelKQYynpNELCbM5Ovk9MXYzrog4udmOOezlibOl1pcjXTVAXKYW/EUJcFFD8LQjaz/w7UBxjgwsloHHDbZYfuwO75dG40301diYFpANl8Q8G6fcyO4ZrT10VicWzZoQTft3a+z9v0KjXXfblgONSQQszHQ0AFtkVZj+gY7UBJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=SHaQFO1R; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6097d144923so9898759a12.1
-        for <linux-parisc@vger.kernel.org>; Mon, 30 Jun 2025 09:54:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1751302452; x=1751907252; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AVlTKyPObX8xANSWlvUCIPQx70rBMPsGogAF60L6kB8=;
-        b=SHaQFO1RYTeCIVy9UxHJ847MWJ3cxmWJR0NQbISGSOhkk8KwTyrZtWl990ZBSTWQ/F
-         74gWfBS8wRLrGT/ACGj4x3Vgyg5C7TUql043fdLJ33WpYXewcvLV5ZSS2t4XMMiKZNQE
-         k5MOC8RxjlZ4PPeoZhTyzCT+XeqeB+WY8MJwTth+gANfcTqVsrCJeui0zDZGWwsb/BuU
-         Orw1ewzf3TO32K806AKry2FQnvscOeY5beitUS1oYMy+Od2Q+xMdgltvhpJ25UK+4blP
-         XYZIDq+k6dbWO3/BBzEq9R41omJq9n/UnoBcab+Dmx+vYwElsxgaJ7HaEPvJpY9QdmgD
-         zVNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751302452; x=1751907252;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AVlTKyPObX8xANSWlvUCIPQx70rBMPsGogAF60L6kB8=;
-        b=dD4+DRF0ViHZL5SCcM+Yz4MBtV4X1qm8R9tpN/gUkIslljklPUueEn+JDaP9mPiJrE
-         WVK89n1acvpPZxJTxrynY2IX6owcO7x//AGR11e1agamriFDNjGfUwCbcogPuEN5GRA3
-         CsuJn/9vk7Q/Wz5O2duB4sdWD4EYWQVNZr4GreqCf2/AjngvvsmszpFhncmyq7ISzWIM
-         ZHV6vdSnS7mhn1RkPfOXs7ENO0nOfn3BTdlvxGE/c4j9NLtU9wPpCKBq0WpKVpJbDbKn
-         twJ1QrCA74yHIljE6DUFSPr7gly3ZZB2JO2qIQcYTW2OecbNZY7dee6qtybAiN/H5tlp
-         hMtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCURzcunr0DPesTMOo1KjcmEzQvzKsk0pBv4F3ct0ghhOSnnm+cl136g6JKlO9Amqb4q/TBwyLAoMgTVyps=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzKitqcNrbiWZ29RqnO1mFVgkMoEEMUbEefRvpifcaGkcHrP7N
-	MXKVjCfoLiZErEo6yJWm2bs+0T8m0aI8y8p0n8CyNAYywCXS1YkJEVR5tZZkQelYuKU=
-X-Gm-Gg: ASbGncsQH3He9ScUP17qoJ9pcKFQSMJsStGW38WNXpBXYQI6JPVHCJ7a133Dwpztq9M
-	yM4Xol1u6gQZONiSJwwdfNt7MlEEfjfR1mEBbYCWVYw1Fek+GWpebvEAGTnmMPha10UYDIquVsG
-	kS9ZAAL7JNErLc4xO8Ubcj3iAWhik5jlEaHNG08M2+r3OAZXxBn/4eI/7uN1b+p2XRdY4gWYfcD
-	mj2zhuOaz4hRlUvc9HWID9Cerx/UWUdeFsNH6Ux1GPlRDzEL5SkQlT11r0CwiZCZ/ocI42aDErM
-	tvc3eEYE9UL9SP/Ih3HLt8+6GZvI/vB832bl8AfsrLj2yZ1s2EsKVi5kP29mFyrHEh/BvtvENXV
-	u54Tq/Q7AM5slMDaeGF4LZTcCH0CT
-X-Google-Smtp-Source: AGHT+IFoNMUIVI+EmRrZyQRvO9MnLGs5xGWA4zruF04k/04nMdTcPKgpKS/KKk1l0zHkMasXnYubpQ==
-X-Received: by 2002:a05:6402:34c7:b0:60c:5853:5b54 with SMTP id 4fb4d7f45d1cf-60e2e84e47bmr228282a12.14.1751302452287;
-        Mon, 30 Jun 2025 09:54:12 -0700 (PDT)
-Received: from localhost (p200300f65f06ab0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f06:ab04::1b9])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-60c831d25cdsm6228579a12.64.2025.06.30.09.54.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jun 2025 09:54:11 -0700 (PDT)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH v2 net-next] net: tulip: Rename PCI driver struct to end in _driver
-Date: Mon, 30 Jun 2025 18:54:03 +0200
-Message-ID: <20250627102220.1937649-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1751378196; c=relaxed/simple;
+	bh=OjzN30GIiPcplOAaeYUjDuVVavt00lwj5wf5fyxHSgE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hCjUhNlpOp+5G4Rpsg+7XNo5V/3hT+jckl75ilm5IAE0bnRT5YWFbJ3aDM/DZbtgoz9PX6H7l9qLde/feC2Vn+Gs0eWh9yxVvbIhA8qj2e4sRPzMg3vqqxkJH7Zxucpd29VXOA3QRgZEkKtDG3QyhM/wwtudzCIfr7u80kcaHIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4E7141713;
+	Tue,  1 Jul 2025 06:56:18 -0700 (PDT)
+Received: from e133380.cambridge.arm.com (e133380.arm.com [10.1.197.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE12C3F58B;
+	Tue,  1 Jul 2025 06:56:23 -0700 (PDT)
+From: Dave Martin <Dave.Martin@arm.com>
+To: linux-kernel@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chris Zankel <chris@zankel.net>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonas Bonn <jonas@southpole.se>,
+	Kees Cook <kees@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Rich Felker <dalias@libc.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org
+Subject: [PATCH 00/23] binfmt_elf,arch/*: Use elf.h for coredump note names
+Date: Tue,  1 Jul 2025 14:55:53 +0100
+Message-Id: <20250701135616.29630-1-Dave.Martin@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1699; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=Bua19u83N4yQfBvV+FR0C6HCUTQZzUf1l8HOnCaYXbg=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBoYsErsc2xrMhxvuAp3NDvoDSlWyc/9thZStGyk WAgYH+7KeSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaGLBKwAKCRCPgPtYfRL+ TiIeCAC6ugc0ToqGufz3eVqgUsyYI4Http0lUMNYc/NK8dwXURH+01xjxLktNgdDVNd7hTWwdmM 4L8Y7hg921vZSYXg0CrBulz8pM3p8kZDYF6r7cO/2UwyvMw5ps59FjODC3YnADFF0k+PqoSRlF3 Uq/pMzE7a+U6DWO3Lr3Dx+02uShT21AJc/fdZhQg3YbaxlVbZcW6r4HFnqZhfqH3lKr4evMoTnR Y/Get/oJw/n7Q7TrStT85v9OuRvMktFO3ujIVOT/zANpAPiIhCFsCMHg4fXTEwOHEu2YDIEeNYj o03fAYuGYKyDkLbMRgAjGGALnb5qG6w4Qs7YWbmun5aKpx+b
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-This is not only a cosmetic change because the section mismatch checks
-(implemented in scripts/mod/modpost.c) also depend on the name and for
-drivers the checks are stricter than for ops.
+This series aims to clean up an aspect of coredump generation:
 
-However xircom_driver also passes the stricter checks just fine, so no
-further changes needed.
+ELF coredumps contain a set of notes describing the state of machine
+registers and other information about the dumped process.
 
-The driver got this wrong for the longer than the kernel is tracked in
-git, so commit 1da177e4c3f4 ("Linux-2.6.12-rc2") was already wrong.
+Notes are identified by a numeric identifier n_type and a "name"
+string, although this terminology is somewhat misleading.  Officially,
+the "name" of a note is really an "originator" or namespace identifier
+that indicates how to interpret n_type [1], although in practice it is
+often used more loosely.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
-changes since implicit v1 (available at
-https://lore.kernel.org/netdev/20250627102220.1937649-2-u.kleine-koenig@baylibre.com):
+Either way, each kind of note needs _both_ a specific "name" string and
+a specific n_type to identify it robustly.
 
- - Improve commit log to explain in more detail the check
- - Mention the introducing commit in prose and not in a Fixes: line
- - Explicitly mark for net-next in the Subject line
+To centralise this knowledge in one place and avoid the need for ad-hoc
+code to guess the correct name for a given note, commit 7da8e4ad4df0
+("elf: Define note name macros") [2] added an explicit NN_<foo> #define
+in elf.h to give the name corresponding to each named note type
+NT_<foo>.
 
- drivers/net/ethernet/dec/tulip/xircom_cb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Now that the note name for each note is specified explicitly, the
+remaining guesswork for determining the note name for common and
+arch-specific regsets in ELF core dumps can be eliminated.
 
-diff --git a/drivers/net/ethernet/dec/tulip/xircom_cb.c b/drivers/net/ethernet/dec/tulip/xircom_cb.c
-index 8759f9f76b62..e5d2ede13845 100644
---- a/drivers/net/ethernet/dec/tulip/xircom_cb.c
-+++ b/drivers/net/ethernet/dec/tulip/xircom_cb.c
-@@ -143,7 +143,7 @@ static const struct pci_device_id xircom_pci_table[] = {
- };
- MODULE_DEVICE_TABLE(pci, xircom_pci_table);
- 
--static struct pci_driver xircom_ops = {
-+static struct pci_driver xircom_driver = {
- 	.name		= "xircom_cb",
- 	.id_table	= xircom_pci_table,
- 	.probe		= xircom_probe,
-@@ -1169,4 +1169,4 @@ investigate_write_descriptor(struct net_device *dev,
- 	}
- }
- 
--module_pci_driver(xircom_ops);
-+module_pci_driver(xircom_driver);
+This series aims to do just that:
 
-base-commit: e04c78d86a9699d136910cfc0bdcf01087e3267e
+ * Patch 2 adds a user_regset field to specify the note name, and a
+   helper macro to populate it correctly alongside the note type.
+
+ * Patch 3 ports away the ad-hoc note names in the common coredump
+   code.
+
+ * Patches 4-22 make the arch-specific changes.  (This is pretty
+   mechanical for most arches.)
+
+ * The final patch adds a WARN() when no note name is specified,
+   and simplifies the fallback guess.  This should only be applied
+   when all arches have ported across.
+
+See the individual patches for details.
+
+
+Testing:
+
+ * x86, arm64: Booted in a VM and triggered a core dump with no WARN(),
+   and verified that the dumped notes are the same.
+
+ * arm: Build-tested only (for now).
+
+ * Other arches: not tested yet
+
+Any help with testing is appreciated.  If the following generates the
+same notes (as dumped by readelf -n core) and doesn't trigger a WARN,
+then we are probably good.
+
+$ sleep 60 &
+$ kill -QUIT $!
+
+(Register content might differ between runs, but it should be safe to
+ignore that -- this series only deals with the note names and types.)
+
+Cheers
+---Dave
+
+
+[1] System V Application Binary Interface, Edition 4.1,
+Section 5 (Program Loading and Dynamic Linking) -> "Note Section"
+
+https://refspecs.linuxfoundation.org/elf/gabi41.pdf
+
+[2] elf: Define note name macros
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/uapi/linux/elf.h?id=7da8e4ad4df0dd12f37357af62ce1b63e75ae2e6
+
+
+Dave Martin (23):
+  regset: Fix kerneldoc for struct regset_get() in user_regset
+  regset: Add explicit core note name in struct user_regset
+  binfmt_elf: Dump non-arch notes with strictly matching name and type
+  ARC: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  ARM: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  arm64: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  csky: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  hexagon: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  LoongArch: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  m68k: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  MIPS: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  nios2: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  openrisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  parisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  powerpc/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  riscv: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  s390/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  sh: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  sparc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  x86/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  um: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  xtensa: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  binfmt_elf: Warn on missing or suspicious regset note names
+
+ arch/arc/kernel/ptrace.c                 |  4 +-
+ arch/arm/kernel/ptrace.c                 |  6 +-
+ arch/arm64/kernel/ptrace.c               | 52 ++++++++---------
+ arch/csky/kernel/ptrace.c                |  4 +-
+ arch/hexagon/kernel/ptrace.c             |  2 +-
+ arch/loongarch/kernel/ptrace.c           | 16 ++---
+ arch/m68k/kernel/ptrace.c                |  4 +-
+ arch/mips/kernel/ptrace.c                | 20 +++----
+ arch/nios2/kernel/ptrace.c               |  2 +-
+ arch/openrisc/kernel/ptrace.c            |  4 +-
+ arch/parisc/kernel/ptrace.c              |  8 +--
+ arch/powerpc/kernel/ptrace/ptrace-view.c | 74 ++++++++++++------------
+ arch/riscv/kernel/ptrace.c               | 12 ++--
+ arch/s390/kernel/ptrace.c                | 42 +++++++-------
+ arch/sh/kernel/ptrace_32.c               |  4 +-
+ arch/sparc/kernel/ptrace_32.c            |  4 +-
+ arch/sparc/kernel/ptrace_64.c            |  8 +--
+ arch/x86/kernel/ptrace.c                 | 22 +++----
+ arch/x86/um/ptrace.c                     | 10 ++--
+ arch/xtensa/kernel/ptrace.c              |  4 +-
+ fs/binfmt_elf.c                          | 36 +++++++-----
+ fs/binfmt_elf_fdpic.c                    | 17 +++---
+ include/linux/regset.h                   | 12 +++-
+ 23 files changed, 194 insertions(+), 173 deletions(-)
+
+
+base-commit: 86731a2a651e58953fc949573895f2fa6d456841
 -- 
-2.49.0
+2.34.1
 
 
