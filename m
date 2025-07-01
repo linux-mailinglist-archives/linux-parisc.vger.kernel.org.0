@@ -1,109 +1,135 @@
-Return-Path: <linux-parisc+bounces-3712-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3713-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90465AEFB63
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Jul 2025 16:00:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE4EAEFE20
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Jul 2025 17:26:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21C411BC6EB2
-	for <lists+linux-parisc@lfdr.de>; Tue,  1 Jul 2025 14:00:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2CA144604C
+	for <lists+linux-parisc@lfdr.de>; Tue,  1 Jul 2025 15:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D9B27A44C;
-	Tue,  1 Jul 2025 13:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD5D27CCCB;
+	Tue,  1 Jul 2025 15:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="e0VpmjOK"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE8C27510C;
-	Tue,  1 Jul 2025 13:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from outbound.pv.icloud.com (p-west1-cluster5-host8-snip4-4.eps.apple.com [57.103.66.245])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F4627A440
+	for <linux-parisc@vger.kernel.org>; Tue,  1 Jul 2025 15:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.66.245
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751378215; cv=none; b=t0It36bEeYyltlAxLctn1wzzj4cfUqgtcAtV+ULUXtPKeuU3tqAeOHfl/Flq5vXG2D9TkOLzD9VZ0WfKvcssb1td4nSIh15R32DA61wMlqw93iQSqKg8Xv60pmuKTxXtj5aDMaTTHF6aT6/dqQKZpEbEc7XYsMKp+rvQ/kjn6BI=
+	t=1751383541; cv=none; b=c6TekTgZ+lnyM/mu+kDxdOVe8jefNIZbUA+oOB4WAvEuSS54eG1QoWVXVKellw+WNAJaqLM3XVWr0aCXp6m/3b7syUgPhaMG+eOQdmeBrJvOMe2iBscG/z26kYH0LbEMltztW4t8JH2glJz9h5thNu4/wtxwtvHpDnjNybhsuws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751378215; c=relaxed/simple;
-	bh=ox6i9QWjKiCmOoFpS4FdQnJUmMqGX3zS4XFhykMKXZU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ccwypCdeH/Wu9MGOTW9j1sR2aPTewYSJ+cPyFGg1COg/W/kBXE4MH0Uod1zISmPrrc7F0hpeL4HgkDrt6z9J5x87wxrBQrjUh+/z/9sDPYhpIaI0tnYVqZu+6zjhA1DheluZSMa7p3ttiTgknxUrtH1TB8P8KQq6rwSPb/BouLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE9C32E91;
-	Tue,  1 Jul 2025 06:56:38 -0700 (PDT)
-Received: from e133380.cambridge.arm.com (e133380.arm.com [10.1.197.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C86C33F58B;
-	Tue,  1 Jul 2025 06:56:52 -0700 (PDT)
-From: Dave Martin <Dave.Martin@arm.com>
-To: linux-kernel@vger.kernel.org
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Akihiko Odaki <akihiko.odaki@daynix.com>,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH 14/23] parisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-Date: Tue,  1 Jul 2025 14:56:07 +0100
-Message-Id: <20250701135616.29630-15-Dave.Martin@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250701135616.29630-1-Dave.Martin@arm.com>
-References: <20250701135616.29630-1-Dave.Martin@arm.com>
+	s=arc-20240116; t=1751383541; c=relaxed/simple;
+	bh=/xiHoEfuz6/cTN5j+brnwCFPrNkucrnRkZA7gLvrw18=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qmTWCNO3gsEEcZE4TXFjuQ2buY4dhA2dGaB5X9B/r/MNvygcZp9qWRlZ+KVVlsVyOpBpoaC3FSTuc+ILg6dBf3o2c9G7WJmIXRzIswHRm8xNZ3zaVqVFmWij2uCAERQY/6j1t5WuA8YaoLTlXdEA7ksU+BANzNbqeOwMR/L7iJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=e0VpmjOK; arc=none smtp.client-ip=57.103.66.245
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; bh=3+n81dwkBafL//lMPlx4ETy4nA09EkZFH9IrMca4OF8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:x-icloud-hme;
+	b=e0VpmjOKWR/TtEwXMHglg+hPYtMAtkte96QbOmQI7JhVo0wEHenyk1SpZjEg5Vvs0
+	 VVdyrjCvjvLFDHaQdsHdUrsDYJEBH/Yp8uFUVK/fhZL0z8srsTnfkbXpReP3EsPDK+
+	 WQKSAdntCSlUBP90IUPpJi4NMEf5A8h17DiVmj4t3NnEzBwogHAH8J2itNh5y8EzTY
+	 9GLQYJJpgchEVmliGVkbA9SMaJgBbVOB9tBpvaJLGfydhe63kPXAbCQzISWDi2pA1k
+	 T2q8w/jM0SQVsx0gOVvW0ZijwSOdd6eXUb0SYxQMc5q5UPjmvO7/K7QSm5NIwd9mue
+	 wYiW1zGjIuCJg==
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by outbound.pv.icloud.com (Postfix) with ESMTPS id B4A001800310;
+	Tue,  1 Jul 2025 15:25:32 +0000 (UTC)
+Received: from [192.168.1.26] (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
+	by outbound.pv.icloud.com (Postfix) with ESMTPSA id E3D9D180017B;
+	Tue,  1 Jul 2025 15:25:17 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Subject: [PATCH v2 0/9] char: misc: Various cleanup for miscdevice
+Date: Tue, 01 Jul 2025 23:24:38 +0800
+Message-Id: <20250701-rfc_miscdev-v2-0-3eb22bf533be@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALf9Y2gC/1XMQQrCMBCF4auUWZsySYgFV95DRMLMxAZMo4kGo
+ fTuBjfi5sG3eP8KVUqUCodhhSIt1piXDrMbgGa/XEVF7gaDxuGEWpVAlxQrsTRlHbO1GmkihP6
+ 4Fwnx/a2dzt2h5KSecxH/a+wN/jWaVloF9saxQ+PtdMy1jo+Xv1FOaewD2/YBPLFDtacAAAA=
+X-Change-ID: 20250701-rfc_miscdev-35dd3310c7c0
+To: Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
+ Rudolf Marek <r.marek@assembler.cz>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
+ Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org, 
+ linux-hwmon@vger.kernel.org, linux-watchdog@vger.kernel.org, 
+ linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org, 
+ Zijun Hu <zijun.hu@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDEwMyBTYWx0ZWRfXw3vmlR/rz6EC
+ J7f+eSwcTCRJ3b44G6xnwHtcacUqVQgzWrLye/CE8vICli6tMq7httcE9yAVb2kmevlk56H2WOu
+ p3MrzrhJFQmQSSgBqutCO+8DMSPF9+WpWOP4FJgbtJwuDAzxcVKiiAibP5GUOF+B0L0fm2kJzlr
+ mnLOX1p1hPNYIIXUpiv1PbdH9p/KC+YROHpwiEhR5aIP3YcExOV9y54etMetqguF7DaYGGxsbcp
+ Ii3eIEuONZX+NaOIvaLood8HIbPUH8dEhlTL3ScS4XPhd3PIE3keDc+NjpmjgMY6Z9Q0QHLxI=
+X-Proofpoint-GUID: TAZS-eDz8OnWu2xISqFutSn1uKq1H9Li
+X-Proofpoint-ORIG-GUID: TAZS-eDz8OnWu2xISqFutSn1uKq1H9Li
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-01_02,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ spamscore=0 suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0
+ phishscore=0 clxscore=1011 mlxlogscore=973 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2506060001 definitions=main-2507010103
 
-Instead of having the core code guess the note name for each regset,
-use USER_REGSET_NOTE_TYPE() to pick the correct name from elf.h.
+This patch series is to do cleanup for:
 
-Signed-off-by: Dave Martin <Dave.Martin@arm.com>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: linux-parisc@vger.kernel.org
+- Miscdevice APIs
+- Miscdevice kunit test cases
+- Drivers which use miscdevice APIs
+
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
 ---
- arch/parisc/kernel/ptrace.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Previous discussion link:
+https://lore.kernel.org/all/20250620-rfc_miscdev-v1-1-fda25d502a37@oss.qualcomm.com
 
-diff --git a/arch/parisc/kernel/ptrace.c b/arch/parisc/kernel/ptrace.c
-index ceb45f51d52e..8a17ab7e6e0b 100644
---- a/arch/parisc/kernel/ptrace.c
-+++ b/arch/parisc/kernel/ptrace.c
-@@ -562,12 +562,12 @@ static int gpr_set(struct task_struct *target,
- 
- static const struct user_regset native_regsets[] = {
- 	[REGSET_GENERAL] = {
--		.core_note_type = NT_PRSTATUS, .n = ELF_NGREG,
-+		USER_REGSET_NOTE_TYPE(PRSTATUS), .n = ELF_NGREG,
- 		.size = sizeof(long), .align = sizeof(long),
- 		.regset_get = gpr_get, .set = gpr_set
- 	},
- 	[REGSET_FP] = {
--		.core_note_type = NT_PRFPREG, .n = ELF_NFPREG,
-+		USER_REGSET_NOTE_TYPE(PRFPREG), .n = ELF_NFPREG,
- 		.size = sizeof(__u64), .align = sizeof(__u64),
- 		.regset_get = fpr_get, .set = fpr_set
- 	}
-@@ -629,12 +629,12 @@ static int gpr32_set(struct task_struct *target,
-  */
- static const struct user_regset compat_regsets[] = {
- 	[REGSET_GENERAL] = {
--		.core_note_type = NT_PRSTATUS, .n = ELF_NGREG,
-+		USER_REGSET_NOTE_TYPE(PRSTATUS), .n = ELF_NGREG,
- 		.size = sizeof(compat_long_t), .align = sizeof(compat_long_t),
- 		.regset_get = gpr32_get, .set = gpr32_set
- 	},
- 	[REGSET_FP] = {
--		.core_note_type = NT_PRFPREG, .n = ELF_NFPREG,
-+		USER_REGSET_NOTE_TYPE(PRFPREG), .n = ELF_NFPREG,
- 		.size = sizeof(__u64), .align = sizeof(__u64),
- 		.regset_get = fpr_get, .set = fpr_set
- 	}
+---
+Zijun Hu (9):
+      char: misc: Move drivers/misc/misc_minor_kunit.c to drivers/char/
+      char: misc: Adapt and add test cases for simple minor space division
+      char: misc: Disallow registering miscdevice whose minor > MISC_DYNAMIC_MINOR
+      char: misc: Add a reentry test case for dynamic minor request
+      char: misc: Make registering dynamic device reentry
+      char: misc: Does not request module for miscdevice with dynamic minor
+      char: misc: Allocate 4 more fixed minors for watchdog
+      char: misc: Define fixed minor EISA_EEPROM_MINOR in linux/miscdevice.h
+      sparc: kernel: apc: Remove macro APC_MINOR defination
+
+ arch/sparc/kernel/apc.c                   |  3 +-
+ drivers/char/Makefile                     |  1 +
+ drivers/char/misc.c                       | 16 +++++-
+ drivers/{misc => char}/misc_minor_kunit.c | 95 +++++++++++++++++++++----------
+ drivers/hwmon/fschmd.c                    |  3 +-
+ drivers/hwmon/w83793.c                    |  3 +-
+ drivers/misc/Makefile                     |  1 -
+ drivers/parisc/eisa_eeprom.c              |  2 -
+ drivers/watchdog/cpwd.c                   |  6 +-
+ include/linux/miscdevice.h                | 13 +++++
+ 10 files changed, 100 insertions(+), 43 deletions(-)
+---
+base-commit: 626e89412dfb88766d90d842af4d9ec432d8526f
+change-id: 20250701-rfc_miscdev-35dd3310c7c0
+
+Best regards,
 -- 
-2.34.1
+Zijun Hu <zijun.hu@oss.qualcomm.com>
 
 
