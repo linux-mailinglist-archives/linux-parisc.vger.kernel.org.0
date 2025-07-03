@@ -1,264 +1,136 @@
-Return-Path: <linux-parisc+bounces-3740-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3741-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 380CAAF7C02
-	for <lists+linux-parisc@lfdr.de>; Thu,  3 Jul 2025 17:30:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7370AF815C
+	for <lists+linux-parisc@lfdr.de>; Thu,  3 Jul 2025 21:30:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC3DB560480
-	for <lists+linux-parisc@lfdr.de>; Thu,  3 Jul 2025 15:24:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 551341C83C77
+	for <lists+linux-parisc@lfdr.de>; Thu,  3 Jul 2025 19:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D22823A99E;
-	Thu,  3 Jul 2025 15:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFD52F5C47;
+	Thu,  3 Jul 2025 19:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkedZON1"
+	dkim=pass (2048-bit key) header.d=parisc-linux.org header.i=@parisc-linux.org header.b="hcfoXI62"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from paco.parisc-linux.org (paco.parisc-linux.org [62.169.29.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3B122B8AB;
-	Thu,  3 Jul 2025 15:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8331C2980A4
+	for <linux-parisc@vger.kernel.org>; Thu,  3 Jul 2025 19:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.169.29.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751556171; cv=none; b=e2CYRPRzycSpikIUMlrKzYMiY1KUthCSxFjWxuWBkx8uVy2wrrIa1T9gXbMusu81ToFYSmpqbldBbeRV80eBwk2laW63mGtPtpEJJ18uYYl13XEI4KRp+jI2pBl1aHGv5wvuMCImtqUc1oixv5+EL/x03nwuY26BewzsA/ExRZw=
+	t=1751571029; cv=none; b=cBlr1sy6GYGf4OzARay1YGqK2IgUOXlzhs4ETL3D5UV6WbjrTEW9EHBfumXtxgc6Q4CtOGl+LMGWcr2BSArzxF18BgBROSoUsFdFy6EYeqQxe3KDEuZShV3WCMNL2Tm50bLznXXP7SjyBZmSjLw9XGcTK2fwg27FflkDOPd8868=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751556171; c=relaxed/simple;
-	bh=G+d5zU5IK4v4xzlKuv/P65nXp+C3iKIWtkM/kXuegU4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIldz6kk4bOwZrf9zb9f4wFbEtpNO7IWtRFJvwrEHxyXPoepUEGi3QXLxVc3kpUDyprZCIIbMqPq5QFKgCa+szeP0ucLvezKYy2V4abksHMSokI/1FBA3eBWb59I7oALkX5EJEQMGetzgAqWI9meOsZMOh5+rveeFYUajm7vjZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkedZON1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AA3C4CEE3;
-	Thu,  3 Jul 2025 15:22:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751556170;
-	bh=G+d5zU5IK4v4xzlKuv/P65nXp+C3iKIWtkM/kXuegU4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkedZON16BHnf4mv+z6YsYVuW/y74ySPtSazqF/VFJoAFW+kxnn+IZ3C/bw1hhDVo
-	 EF9HCIZf6w5rnQuyhbzb4vHPCBwqjPrfd0X65NMK0JM0N0h129s1B2yKzV4te3uzCT
-	 CjELiXLoUCvEpuUJtxZz9xbeXYPhPVW4lS9Pi3eM=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Helge Deller <deller@gmx.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-parisc@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/132] tty: vt: make consw::con_switch() return a bool
-Date: Thu,  3 Jul 2025 16:42:36 +0200
-Message-ID: <20250703143942.044485578@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250703143939.370927276@linuxfoundation.org>
-References: <20250703143939.370927276@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1751571029; c=relaxed/simple;
+	bh=ugNujB1hxAbgeVz/9mAkjXRvmSlTH3R1OSY0fau+v/A=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:References:
+	 From:In-Reply-To; b=mdJdoYCtM+eOPL+tkPsModjCKdyVG24xXjgUfK+UrK3WTuHRlsW5Z1UTFF+XAZv1oxVnOXdB/WqGJzXXQvSEkiUMdsyfp76+21if4URqH9q+XzBj80fNt4i3Qdh0QY6oT85oyFD8qoFhzq/N0QIbNxtjT0y7hNYoNdh9MC9FiBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=parisc-linux.org; spf=pass smtp.mailfrom=parisc-linux.org; dkim=pass (2048-bit key) header.d=parisc-linux.org header.i=@parisc-linux.org header.b=hcfoXI62; arc=none smtp.client-ip=62.169.29.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=parisc-linux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=parisc-linux.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=parisc-linux.org;
+	s=2021; t=1751570559;
+	bh=ugNujB1hxAbgeVz/9mAkjXRvmSlTH3R1OSY0fau+v/A=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=hcfoXI62eToPgUtDvfP3uabMx0m2nEJi8pMlv635OlMuELukUZ/4PXde64lchTUFu
+	 VT6erutjyDgZAcKXabzR1UNLtJJFo8yBeTvKcmum7MHZPqN48nIiyRd/tl1Xi6t+a+
+	 WkGMp/0G/WOSSqHnjyMY6EdLPHMAY5ZMTe1aqKrfmBmtZmWem4UeOxmiI1o/8hvnYF
+	 PyhXwS7/9tC8ipGo2adnLEMCXregGmuEz1ZEzvYsmp9knTFPR+OmmZ8i+QM9pJq3Zc
+	 2fN0YpFyj6GMyCmwujqVRPmvDTe+0ISfDRkVg0vumrtLckjKk1znAlNB0jk+9O7skD
+	 tWdDWZ/ABlB2w==
+Received: from [192.168.2.49] (unknown [142.126.146.249])
+	by paco.parisc-linux.org (Postfix) with ESMTPSA id 3F30C17E0232;
+	Thu,  3 Jul 2025 19:22:39 +0000 (UTC)
+Content-Type: multipart/mixed; boundary="------------OiIP0rbjvssqFyapEEoSr4eE"
+Message-ID: <08ea1631-5c5f-4081-bbab-5feb38c19957@parisc-linux.org>
+Date: Thu, 3 Jul 2025 15:22:27 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: parisc kernel cache flush issue with mprotect()
+To: Helge Deller <deller@gmx.de>, linux-parisc <linux-parisc@vger.kernel.org>
+References: <1793f351-614b-489d-9c44-a044aec46eec@gmx.de>
+Content-Language: en-US
+From: Dave Anglin <dave@parisc-linux.org>
+In-Reply-To: <1793f351-614b-489d-9c44-a044aec46eec@gmx.de>
+
+This is a multi-part message in MIME format.
+--------------OiIP0rbjvssqFyapEEoSr4eE
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+On 2025-06-25 4:56 p.m., Helge Deller wrote:
+> While analyzing testcase failures in the libunwind package,
+> I found a parisc Linux kernel issue.
+>
+> The attached testcase initilizes a memory region, then
+> calls mprotect(PROT_NONE) on that region and thus effectively
+> should prevent userspace and kernel to access that memory.
+>
+> But on parisc it seems the CPU cache isn't flushed when
+> changing the protection of a memory region with mprotect().
+> So, the kernel will wrongly not fault when accessing this memory.
+>
+> I think we are missing to purge the data cache when changing
+> the protection.
+> Ideas?
+The attached patch fixes the test.  It also 
 
-------------------
+After a lot of study regarding our TLB handling, I realized that user pages can always be
+read by the kernel even when _PAGE_READ is dropped.  We need to use the probe instruction
+to determine whether a page is accessible in user mode or not.
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Probably, get_user needs a similar fix.
 
-[ Upstream commit 8d5cc8eed738e3202379722295c626cba0849785 ]
+I've wondered if _PAGE_WRITE pages should always be writable by kernel?  We could put
+_PAGE_WRITE in the most significant bit of PL2.  Access mode 0 is nominally for public pages
+as protection checking is disabled for it.  Maybe shouldn't use it?  Does _PAGE_WRITE imply
+_PAGE_READ on Linux?
 
-The non-zero (true) return value from consw::con_switch() means a redraw
-is needed. So make this return type a bool explicitly instead of int.
-The latter might imply that -Eerrors are expected. They are not.
+Dave
 
-And document the hook.
-
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-parisc@vger.kernel.org
-Tested-by: Helge Deller <deller@gmx.de> # parisc STI console
-Link: https://lore.kernel.org/r/20240122110401.7289-31-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/tty/vt/vt.c                 | 2 +-
- drivers/video/console/dummycon.c    | 4 ++--
- drivers/video/console/mdacon.c      | 4 ++--
- drivers/video/console/newport_con.c | 4 ++--
- drivers/video/console/sticon.c      | 4 ++--
- drivers/video/console/vgacon.c      | 4 ++--
- drivers/video/fbdev/core/fbcon.c    | 6 +++---
- include/linux/console.h             | 4 +++-
- 8 files changed, 17 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 609d2bac58d0b..ccfd9d93c10c5 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -1014,7 +1014,7 @@ void redraw_screen(struct vc_data *vc, int is_switch)
- 	}
- 
- 	if (redraw) {
--		int update;
-+		bool update;
- 		int old_was_color = vc->vc_can_do_color;
- 
- 		set_origin(vc);
-diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
-index 6918014b02408..d701f2b51f5b1 100644
---- a/drivers/video/console/dummycon.c
-+++ b/drivers/video/console/dummycon.c
-@@ -119,9 +119,9 @@ static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
- 	return false;
- }
- 
--static int dummycon_switch(struct vc_data *vc)
-+static bool dummycon_switch(struct vc_data *vc)
- {
--	return 0;
-+	return false;
- }
- 
- /*
-diff --git a/drivers/video/console/mdacon.c b/drivers/video/console/mdacon.c
-index 1ddbb6cd5b0ca..26b41a8f36c87 100644
---- a/drivers/video/console/mdacon.c
-+++ b/drivers/video/console/mdacon.c
-@@ -454,9 +454,9 @@ static void mdacon_clear(struct vc_data *c, unsigned int y, unsigned int x,
- 	scr_memsetw(dest, eattr, width * 2);
- }
- 
--static int mdacon_switch(struct vc_data *c)
-+static bool mdacon_switch(struct vc_data *c)
- {
--	return 1;	/* redrawing needed */
-+	return true;	/* redrawing needed */
- }
- 
- static int mdacon_blank(struct vc_data *c, int blank, int mode_switch)
-diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
-index 5dac00c825946..1ebb18bf10983 100644
---- a/drivers/video/console/newport_con.c
-+++ b/drivers/video/console/newport_con.c
-@@ -462,7 +462,7 @@ static void newport_cursor(struct vc_data *vc, int mode)
- 	}
- }
- 
--static int newport_switch(struct vc_data *vc)
-+static bool newport_switch(struct vc_data *vc)
- {
- 	static int logo_drawn = 0;
- 
-@@ -476,7 +476,7 @@ static int newport_switch(struct vc_data *vc)
- 		}
- 	}
- 
--	return 1;
-+	return true;
- }
- 
- static int newport_blank(struct vc_data *c, int blank, int mode_switch)
-diff --git a/drivers/video/console/sticon.c b/drivers/video/console/sticon.c
-index 58e983b18f1f4..6b82194a8ef36 100644
---- a/drivers/video/console/sticon.c
-+++ b/drivers/video/console/sticon.c
-@@ -309,9 +309,9 @@ static void sticon_clear(struct vc_data *conp, unsigned int sy, unsigned int sx,
- 	      conp->vc_video_erase_char, font_data[conp->vc_num]);
- }
- 
--static int sticon_switch(struct vc_data *conp)
-+static bool sticon_switch(struct vc_data *conp)
- {
--    return 1;	/* needs refreshing */
-+    return true;	/* needs refreshing */
- }
- 
- static int sticon_blank(struct vc_data *c, int blank, int mode_switch)
-diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
-index 6998e28441c97..81f27cd610271 100644
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -595,7 +595,7 @@ static int vgacon_doresize(struct vc_data *c,
- 	return 0;
- }
- 
--static int vgacon_switch(struct vc_data *c)
-+static bool vgacon_switch(struct vc_data *c)
- {
- 	int x = c->vc_cols * VGA_FONTWIDTH;
- 	int y = c->vc_rows * c->vc_cell_height;
-@@ -624,7 +624,7 @@ static int vgacon_switch(struct vc_data *c)
- 			vgacon_doresize(c, c->vc_cols, c->vc_rows);
- 	}
- 
--	return 0;		/* Redrawing not needed */
-+	return false;		/* Redrawing not needed */
- }
- 
- static void vga_set_palette(struct vc_data *vc, const unsigned char *table)
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 3fd76dc6010b4..1a17274187112 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2073,7 +2073,7 @@ static int fbcon_resize(struct vc_data *vc, unsigned int width,
- 	return 0;
- }
- 
--static int fbcon_switch(struct vc_data *vc)
-+static bool fbcon_switch(struct vc_data *vc)
- {
- 	struct fb_info *info, *old_info = NULL;
- 	struct fbcon_ops *ops;
-@@ -2195,9 +2195,9 @@ static int fbcon_switch(struct vc_data *vc)
- 			      vc->vc_origin + vc->vc_size_row * vc->vc_top,
- 			      vc->vc_size_row * (vc->vc_bottom -
- 						 vc->vc_top) / 2);
--		return 0;
-+		return false;
- 	}
--	return 1;
-+	return true;
- }
- 
- static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
-diff --git a/include/linux/console.h b/include/linux/console.h
-index d7b45c60cf02f..ab8b19f6affab 100644
---- a/include/linux/console.h
-+++ b/include/linux/console.h
-@@ -40,6 +40,8 @@ enum vc_intensity;
-  * @con_scroll: move lines from @top to @bottom in direction @dir by @lines.
-  *		Return true if no generic handling should be done.
-  *		Invoked by csi_M and printing to the console.
-+ * @con_switch: notifier about the console switch; it is supposed to return
-+ *		true if a redraw is needed.
-  * @con_set_palette: sets the palette of the console to @table (optional)
-  * @con_scrolldelta: the contents of the console should be scrolled by @lines.
-  *		     Invoked by user. (optional)
-@@ -58,7 +60,7 @@ struct consw {
- 	bool	(*con_scroll)(struct vc_data *vc, unsigned int top,
- 			unsigned int bottom, enum con_scroll dir,
- 			unsigned int lines);
--	int	(*con_switch)(struct vc_data *vc);
-+	bool	(*con_switch)(struct vc_data *vc);
- 	int	(*con_blank)(struct vc_data *vc, int blank, int mode_switch);
- 	int	(*con_font_set)(struct vc_data *vc, struct console_font *font,
- 			unsigned int flags);
 -- 
-2.39.5
+John David Anglin  dave@parisc-linux.org
 
+--------------OiIP0rbjvssqFyapEEoSr4eE
+Content-Type: text/plain; charset=UTF-8; name="check-user-read-access.txt"
+Content-Disposition: attachment; filename="check-user-read-access.txt"
+Content-Transfer-Encoding: base64
 
+ZGlmZiAtLWdpdCBhL2FyY2gvcGFyaXNjL2luY2x1ZGUvYXNtL3NwZWNpYWxfaW5zbnMuaCBi
+L2FyY2gvcGFyaXNjL2luY2x1ZGUvYXNtL3NwZWNpYWxfaW5zbnMuaAppbmRleCA1MWY0MGVh
+Zjc3ODAuLjNiZWM5YmMyMDc1YSAxMDA2NDQKLS0tIGEvYXJjaC9wYXJpc2MvaW5jbHVkZS9h
+c20vc3BlY2lhbF9pbnNucy5oCisrKyBiL2FyY2gvcGFyaXNjL2luY2x1ZGUvYXNtL3NwZWNp
+YWxfaW5zbnMuaApAQCAtMzIsNiArMzIsMjEgQEAKIAlwYTsJCQkJCQlcCiB9KQogCisjZGVm
+aW5lIHByb2Jlcl91c2VyKHZhKQkoewkJCQlcCisJdW5zaWduZWQgbG9uZyBwYTsJCQkJXAor
+CV9fYXNtX18gX192b2xhdGlsZV9fKAkJCQlcCisJCSJjb3B5ICUlcjAsJTBcbiIJCQlcCisJ
+CSI4Olx0cHJvYmVpLHIgKCUlc3IzLCUxKSwzLCUwXG4iCVwKKwkJIjk6XG4iCQkJCQlcCisJ
+CUFTTV9FWENFUFRJT05UQUJMRV9FTlRSWSg4YiwgOWIsCVwKKwkJCQkib3IgJSVyMCwlJXIw
+LCUlcjAiKQlcCisJCTogIj0mciIgKHBhKQkJCQlcCisJCTogInIiICh2YSkJCQkJXAorCQk6
+ICJtZW1vcnkiCQkJCVwKKwkpOwkJCQkJCVwKKwlwYTsJCQkJCQlcCit9KQorCiAjZGVmaW5l
+IENSX0VJRU0gMTUJLyogRXh0ZXJuYWwgSW50ZXJydXB0IEVuYWJsZSBNYXNrICovCiAjZGVm
+aW5lIENSX0NSMTYgMTYJLyogQ1IxNiBJbnRlcnZhbCBUaW1lciAqLwogI2RlZmluZSBDUl9F
+SVJSIDIzCS8qIEV4dGVybmFsIEludGVycnVwdCBSZXF1ZXN0IFJlZ2lzdGVyICovCmRpZmYg
+LS1naXQgYS9hcmNoL3BhcmlzYy9saWIvbWVtY3B5LmMgYi9hcmNoL3BhcmlzYy9saWIvbWVt
+Y3B5LmMKaW5kZXggNWZjMGM4NTJjODRjLi4yMTE2YjYwZDQwNzIgMTAwNjQ0Ci0tLSBhL2Fy
+Y2gvcGFyaXNjL2xpYi9tZW1jcHkuYworKysgYi9hcmNoL3BhcmlzYy9saWIvbWVtY3B5LmMK
+QEAgLTMyLDYgKzMyLDE1IEBAIEVYUE9SVF9TWU1CT0wocmF3X2NvcHlfdG9fdXNlcik7CiB1
+bnNpZ25lZCBsb25nIHJhd19jb3B5X2Zyb21fdXNlcih2b2lkICpkc3QsIGNvbnN0IHZvaWQg
+X191c2VyICpzcmMsCiAJCQkgICAgICAgdW5zaWduZWQgbG9uZyBsZW4pCiB7CisJdW5zaWdu
+ZWQgbG9uZyBzdGFydCA9ICh1bnNpZ25lZCBsb25nKSBzcmM7CisJdW5zaWduZWQgbG9uZyBl
+bmQgPSBzdGFydCArIGxlbjsKKworCS8qIENoZWNrIHJlZ2lvbiBpcyB1c2VyIGFjY2Vzc2li
+bGUgKi8KKwl3aGlsZSAoc3RhcnQgPCBlbmQpIHsKKwkJaWYgKCFwcm9iZXJfdXNlcihzcmMp
+KQorCQkJcmV0dXJuIGxlbjsKKwkJc3RhcnQgKz0gUEFHRV9TSVpFOworCX0KIAltdHNwKGdl
+dF91c2VyX3NwYWNlKCksIFNSX1RFTVAxKTsKIAltdHNwKGdldF9rZXJuZWxfc3BhY2UoKSwg
+U1JfVEVNUDIpOwogCXJldHVybiBwYV9tZW1jcHkoZHN0LCAodm9pZCBfX2ZvcmNlICopc3Jj
+LCBsZW4pOwo=
 
+--------------OiIP0rbjvssqFyapEEoSr4eE--
 
