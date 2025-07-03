@@ -1,126 +1,262 @@
-Return-Path: <linux-parisc+bounces-3734-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3735-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7E3AF1562
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Jul 2025 14:20:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 796CCAF7A91
+	for <lists+linux-parisc@lfdr.de>; Thu,  3 Jul 2025 17:15:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 481FB3B9E27
-	for <lists+linux-parisc@lfdr.de>; Wed,  2 Jul 2025 12:18:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DA7B7B3FCB
+	for <lists+linux-parisc@lfdr.de>; Thu,  3 Jul 2025 15:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14077272E46;
-	Wed,  2 Jul 2025 12:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8B52F0E32;
+	Thu,  3 Jul 2025 15:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="ygTm1hMl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ok3VSW0M"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from outbound.pv.icloud.com (p-west1-cluster5-host7-snip4-7.eps.apple.com [57.103.66.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E8B279DD5
-	for <linux-parisc@vger.kernel.org>; Wed,  2 Jul 2025 12:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.66.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE942EF9B7;
+	Thu,  3 Jul 2025 15:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751458595; cv=none; b=SG2EXPS8K9vRK0IxOIzPOGwWKhwikYc34JyIYo2S1rjpPWXUEQ26OpWuv6MrXiyHFvxEfcU3p+4Wl7XFx9N+7pndJnGo8IoBubBjMG26L+BonyqystLs/pMaIbJPct+lB8Lc8Q4SlXJyunYJjBjTdNNARHaiu/OS7OstY1mLyvY=
+	t=1751555582; cv=none; b=QRTHoclR5rlhqkj4nXUVRaY8ax5Y4hCFE8pShAwIn9Apf1jbX/tMni84kyS5fHX+09N00+4BkYnQPCwvzK78oE2c7/1puBBlnAXMYmqs72N/IazSI/uJJ66JDJdXww5R13G8j5aaVV4w4YWBty5Gx9SW98KGfct1f/fGEHvmzeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751458595; c=relaxed/simple;
-	bh=rUPc6HarIFgYCi5PCcb/6kreZya/jVbJye2++gX7mpw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LXETsWsGZeDc2UugrmAGa1JfcDcVslMpi55zV8MjhXRNlgX863SL0Clx947FIWgu5QpItalV0gAmvDkYqZlnWALYBTPcX7+3xXVIeNBcs9ztXKcJ6ImsmJGiK4SvMWkZ/LeeKwjYEN4ZVdXrBUWLWgA1V03urcRllCjbqfzujJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=ygTm1hMl; arc=none smtp.client-ip=57.103.66.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=MxR3vmUTXOypUpeb+mW6WO9zX6HevJTvOmfA6oc0iJM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme;
-	b=ygTm1hMlAgK3bOAbflYvbUoUF2HQHzhCEjMeszabytsCrEmSfEmfziaOzro5ljQql
-	 uzDm5mcmcHKZ2fTc6+2z7+qa1WIaNr5P78GZJ199ULDOjE1zeH6wK2zBQGcdbOkohI
-	 9CAtBvxUyp3nE1zjeo12EHEPodyHXYhnN0PaUNBFYmBOggHzzyD0mqGht5x6c03h2L
-	 VYvOj/xdR/XZaHs/rp3tl+pONK5M9e9NOi6Laxg3Q0SeKyVAyttB6bt+9tqjpaJn5s
-	 gkfWnnmBcxm5o+WygaZeiexTp//rCNU57ZKM4PLXC5qhFlklu9amr6g+RT7sfSy7dy
-	 Z+UvPYZ9AAyOw==
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by outbound.pv.icloud.com (Postfix) with ESMTPS id 83A96180030C;
-	Wed,  2 Jul 2025 12:16:29 +0000 (UTC)
-Received: from [192.168.1.26] (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
-	by outbound.pv.icloud.com (Postfix) with ESMTPSA id 5B86B18001DF;
-	Wed,  2 Jul 2025 12:16:25 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Wed, 02 Jul 2025 20:15:36 +0800
-Subject: [PATCH v3 8/8] sparc: kernel: apc: Remove macro APC_MINOR
- definition
+	s=arc-20240116; t=1751555582; c=relaxed/simple;
+	bh=vzucKv9OLK6FSLpMliQ1t2fHXdOiSUkCDqNgsgoQP+0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kRJj+BYtYsQSitPgS2CTlTwnzLYwkMeevPuSSCllGtTzOHQe5Ss1Axyzk0Xinb9RtT8vrVQVd1fgMSkOLp6WPyV+MWb04zBCqoh6SpyODsXGQEBGbs1OKuhHLJr9hIdGY8IiW4j64lUVQILuK8c0DUJifv927y1iCwIJDOrTTaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ok3VSW0M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F91C4CEE3;
+	Thu,  3 Jul 2025 15:13:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1751555582;
+	bh=vzucKv9OLK6FSLpMliQ1t2fHXdOiSUkCDqNgsgoQP+0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ok3VSW0MUJvOpHcdqJDoMZ5L72jEiWZCFGxlJ6PlR/IZZzbkwqBb6s8HKgZsi9Cuo
+	 Nl5sHfU+uZxORrIVO7HgWUQK1pbl8eeORXPwPUYOXpKCrcYokB5iiCr4+84wUzEpI0
+	 QEY1IcKHLI2zYj4ibOsS7ori90Z5d//2oOGC/D60=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-parisc@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 058/139] tty: vt: make init parameter of consw::con_init() a bool
+Date: Thu,  3 Jul 2025 16:42:01 +0200
+Message-ID: <20250703143943.435903829@linuxfoundation.org>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250703143941.182414597@linuxfoundation.org>
+References: <20250703143941.182414597@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250702-rfc_miscdev-v3-8-d8925de7893d@oss.qualcomm.com>
-References: <20250702-rfc_miscdev-v3-0-d8925de7893d@oss.qualcomm.com>
-In-Reply-To: <20250702-rfc_miscdev-v3-0-d8925de7893d@oss.qualcomm.com>
-To: Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- Helge Deller <deller@gmx.de>, "David S. Miller" <davem@davemloft.net>, 
- Andreas Larsson <andreas@gaisler.com>
-Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
- Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org, 
- linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org, 
- Zijun Hu <zijun.hu@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDA5OSBTYWx0ZWRfX7jPqGiP88Bvt
- Mrf1fBR0qVNhm09VK837cmQ4sdZUtGUMbl7z2TGTkB7cD60w3wvDQAT+wEGHIU93q8Y/LvtZ74T
- STWYXmjeCBLQBEc/KORCrdGkRxzZbpXMq5h+vDTEKUW9MSdAgW7IDWz0FhH4LEfP05a48Kah6ZS
- k7LB7SwLis2pH6s/Aa+1SXiFpornkcpKetRdbq8i5UDiX6ZEIjF4P/yICUcW5tnx6TfsBWmoOvo
- MInE3+vN5yM4z/fATQUbKCPvcCt5AaEA918+QilAkz4b9j8se7Bz1HnIhoEU1XtIqj1hJALBg=
-X-Proofpoint-GUID: peyGdAL9Mvibq29xXykg2jRsJePrf_mP
-X-Proofpoint-ORIG-GUID: peyGdAL9Mvibq29xXykg2jRsJePrf_mP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-02_01,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- mlxscore=0 clxscore=1015 suspectscore=0 bulkscore=0 phishscore=0
- mlxlogscore=999 spamscore=0 malwarescore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.22.0-2506060001 definitions=main-2507020099
+Content-Transfer-Encoding: 8bit
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
-Macro APC_MINOR is defined as MISC_DYNAMIC_MINOR to request dynamic
-minor, but its name 'APC_MINOR' looks like fixed minor.
+------------------
 
-Remove the macro definition and directly use MISC_DYNAMIC_MINOR instead.
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+[ Upstream commit dae3e6b6180f1a2394b984c596d39ed2c57d25fe ]
+
+The 'init' parameter of consw::con_init() is true for the first call of
+the hook on a particular console. So make the parameter a bool.
+
+And document the hook.
+
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-parisc@vger.kernel.org
+Tested-by: Helge Deller <deller@gmx.de> # parisc STI console
+Link: https://lore.kernel.org/r/20240122110401.7289-21-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/kernel/apc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/tty/vt/vt.c                 | 8 ++++----
+ drivers/video/console/dummycon.c    | 2 +-
+ drivers/video/console/mdacon.c      | 2 +-
+ drivers/video/console/newport_con.c | 2 +-
+ drivers/video/console/sticon.c      | 2 +-
+ drivers/video/console/vgacon.c      | 4 ++--
+ drivers/video/fbdev/core/fbcon.c    | 2 +-
+ include/linux/console.h             | 4 +++-
+ 8 files changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/arch/sparc/kernel/apc.c b/arch/sparc/kernel/apc.c
-index d44725d37e30f388bf8cf19d72baf720f94da084..849db20e7165cdf48d4d36cf770dd6aaaa191b41 100644
---- a/arch/sparc/kernel/apc.c
-+++ b/arch/sparc/kernel/apc.c
-@@ -28,7 +28,6 @@
-  * #define APC_DEBUG_LED
-  */
+diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+index 6bd1a7785e888..83028ccf6e529 100644
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -999,7 +999,7 @@ int vc_cons_allocated(unsigned int i)
+ 	return (i < MAX_NR_CONSOLES && vc_cons[i].d);
+ }
  
--#define APC_MINOR	MISC_DYNAMIC_MINOR
- #define APC_OBPNAME	"power-management"
- #define APC_DEVNAME "apc"
- 
-@@ -138,7 +137,7 @@ static const struct file_operations apc_fops = {
- 	.llseek =		noop_llseek,
- };
- 
--static struct miscdevice apc_miscdev = { APC_MINOR, APC_DEVNAME, &apc_fops };
-+static struct miscdevice apc_miscdev = { MISC_DYNAMIC_MINOR, APC_DEVNAME, &apc_fops };
- 
- static int apc_probe(struct platform_device *op)
+-static void visual_init(struct vc_data *vc, int num, int init)
++static void visual_init(struct vc_data *vc, int num, bool init)
  {
-
+ 	/* ++Geert: vc->vc_sw->con_init determines console size */
+ 	if (vc->vc_sw)
+@@ -1083,7 +1083,7 @@ int vc_allocate(unsigned int currcons)	/* return 0 on success */
+ 	vc->port.ops = &vc_port_ops;
+ 	INIT_WORK(&vc_cons[currcons].SAK_work, vc_SAK);
+ 
+-	visual_init(vc, currcons, 1);
++	visual_init(vc, currcons, true);
+ 
+ 	if (!*vc->uni_pagedict_loc)
+ 		con_set_default_unimap(vc);
+@@ -3474,7 +3474,7 @@ static int __init con_init(void)
+ 		vc_cons[currcons].d = vc = kzalloc(sizeof(struct vc_data), GFP_NOWAIT);
+ 		INIT_WORK(&vc_cons[currcons].SAK_work, vc_SAK);
+ 		tty_port_init(&vc->port);
+-		visual_init(vc, currcons, 1);
++		visual_init(vc, currcons, true);
+ 		/* Assuming vc->vc_{cols,rows,screenbuf_size} are sane here. */
+ 		vc->vc_screenbuf = kzalloc(vc->vc_screenbuf_size, GFP_NOWAIT);
+ 		vc_init(vc, currcons || !vc->vc_sw->con_save_screen);
+@@ -3642,7 +3642,7 @@ static int do_bind_con_driver(const struct consw *csw, int first, int last,
+ 		old_was_color = vc->vc_can_do_color;
+ 		vc->vc_sw->con_deinit(vc);
+ 		vc->vc_origin = (unsigned long)vc->vc_screenbuf;
+-		visual_init(vc, i, 0);
++		visual_init(vc, i, false);
+ 		set_origin(vc);
+ 		update_attr(vc);
+ 
+diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
+index f1711b2f9ff05..9a19eb72a18b9 100644
+--- a/drivers/video/console/dummycon.c
++++ b/drivers/video/console/dummycon.c
+@@ -97,7 +97,7 @@ static const char *dummycon_startup(void)
+     return "dummy device";
+ }
+ 
+-static void dummycon_init(struct vc_data *vc, int init)
++static void dummycon_init(struct vc_data *vc, bool init)
+ {
+     vc->vc_can_do_color = 1;
+     if (init) {
+diff --git a/drivers/video/console/mdacon.c b/drivers/video/console/mdacon.c
+index ef29b321967f0..c5b255c968794 100644
+--- a/drivers/video/console/mdacon.c
++++ b/drivers/video/console/mdacon.c
+@@ -352,7 +352,7 @@ static const char *mdacon_startup(void)
+ 	return "MDA-2";
+ }
+ 
+-static void mdacon_init(struct vc_data *c, int init)
++static void mdacon_init(struct vc_data *c, bool init)
+ {
+ 	c->vc_complement_mask = 0x0800;	 /* reverse video */
+ 	c->vc_display_fg = &mda_display_fg;
+diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
+index e8e4f82cd4a1b..12c64ef470877 100644
+--- a/drivers/video/console/newport_con.c
++++ b/drivers/video/console/newport_con.c
+@@ -324,7 +324,7 @@ static const char *newport_startup(void)
+ 	return NULL;
+ }
+ 
+-static void newport_init(struct vc_data *vc, int init)
++static void newport_init(struct vc_data *vc, bool init)
+ {
+ 	int cols, rows;
+ 
+diff --git a/drivers/video/console/sticon.c b/drivers/video/console/sticon.c
+index 992a4fa431aaa..0bfeabc3f7c72 100644
+--- a/drivers/video/console/sticon.c
++++ b/drivers/video/console/sticon.c
+@@ -273,7 +273,7 @@ static int sticon_font_set(struct vc_data *vc, struct console_font *font,
+ 	return sticon_set_font(vc, font, vpitch);
+ }
+ 
+-static void sticon_init(struct vc_data *c, int init)
++static void sticon_init(struct vc_data *c, bool init)
+ {
+     struct sti_struct *sti = sticon_sti;
+     int vc_cols, vc_rows;
+diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
+index c9ec89649b055..490e157aebdd4 100644
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -332,7 +332,7 @@ static const char *vgacon_startup(void)
+ 	return display_desc;
+ }
+ 
+-static void vgacon_init(struct vc_data *c, int init)
++static void vgacon_init(struct vc_data *c, bool init)
+ {
+ 	struct uni_pagedict *p;
+ 
+@@ -349,7 +349,7 @@ static void vgacon_init(struct vc_data *c, int init)
+ 	c->vc_scan_lines = vga_scan_lines;
+ 	c->vc_font.height = c->vc_cell_height = vga_video_font_height;
+ 
+-	/* set dimensions manually if init != 0 since vc_resize() will fail */
++	/* set dimensions manually if init is true since vc_resize() will fail */
+ 	if (init) {
+ 		c->vc_cols = vga_video_num_columns;
+ 		c->vc_rows = vga_video_num_lines;
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 75996ef9992e4..9f10a6e92e509 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -993,7 +993,7 @@ static const char *fbcon_startup(void)
+ 	return display_desc;
+ }
+ 
+-static void fbcon_init(struct vc_data *vc, int init)
++static void fbcon_init(struct vc_data *vc, bool init)
+ {
+ 	struct fb_info *info;
+ 	struct fbcon_ops *ops;
+diff --git a/include/linux/console.h b/include/linux/console.h
+index 7de11c763eb35..4efe76ac56d74 100644
+--- a/include/linux/console.h
++++ b/include/linux/console.h
+@@ -36,6 +36,8 @@ enum vc_intensity;
+ /**
+  * struct consw - callbacks for consoles
+  *
++ * @con_init:   initialize the console on @vc. @init is true for the very first
++ *		call on this @vc.
+  * @con_scroll: move lines from @top to @bottom in direction @dir by @lines.
+  *		Return true if no generic handling should be done.
+  *		Invoked by csi_M and printing to the console.
+@@ -46,7 +48,7 @@ enum vc_intensity;
+ struct consw {
+ 	struct module *owner;
+ 	const char *(*con_startup)(void);
+-	void	(*con_init)(struct vc_data *vc, int init);
++	void	(*con_init)(struct vc_data *vc, bool init);
+ 	void	(*con_deinit)(struct vc_data *vc);
+ 	void	(*con_clear)(struct vc_data *vc, int sy, int sx, int height,
+ 			int width);
 -- 
-2.34.1
+2.39.5
+
+
 
 
