@@ -1,264 +1,261 @@
-Return-Path: <linux-parisc+bounces-3761-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3762-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F10AFD3EB
-	for <lists+linux-parisc@lfdr.de>; Tue,  8 Jul 2025 19:02:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ECA7AFDF0F
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Jul 2025 07:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 095141C40FE2
-	for <lists+linux-parisc@lfdr.de>; Tue,  8 Jul 2025 16:59:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 573854E1882
+	for <lists+linux-parisc@lfdr.de>; Wed,  9 Jul 2025 05:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449162E54D5;
-	Tue,  8 Jul 2025 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61512269D18;
+	Wed,  9 Jul 2025 05:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DT6vYbo4"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b="P+9TWd4x"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www3579.sakura.ne.jp (www3579.sakura.ne.jp [49.212.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3058F5E;
-	Tue,  8 Jul 2025 16:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0F174C08;
+	Wed,  9 Jul 2025 05:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.243.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751993893; cv=none; b=Ym/8jsXMx0kWn9+Hn9VVkJIpzpPAvUDUAPShjZTBze7/WQPLni1fFl1CgCxgQZ2XxtlGkvG6GiqwS63w5tr40515HnKHk0jKlT7XWRgKhnU4fteaYrIzKJrPe/uPV7NYqESXQwJdHgf5BpVG8+6tQvMQ0PADanNQYczLSLCWErw=
+	t=1752038034; cv=none; b=cYNceocUiHN7nmUHZm3xfZqQ9l+jSV8and5OxWDnUgOUb7IHSi1Sdy0XkjEBHzy5Q2m6v0uBFRd+X613+2tB9LV5xSxdwRJeaC10G0vRoseQ1XO7X2sAbSGZQfCk7YiAErXR8tEZ751T+qeSanFDNxz4acBxGvJ7NxkVApq9lMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751993893; c=relaxed/simple;
-	bh=EeEMgCSnp4cF6QPEGdcY1HvK4Zlc8qKiYJpz2mS+mcQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDHeyyEFx/Hjppjts4toenmZ7dwFdO0XnfNGaiIBPFB/gcTkGy7Ej8KZsyKGIhh6GF2uFho+aY/Aw5wDzwT8P654ulGLgKhFLHg9va9DSX0qqP3O5CelkzNUqLRI2SE3ycKGZdqcsOqleolQ2KTWl1pVky9hUDmd3vf0+5EJm7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DT6vYbo4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494CEC4CEF5;
-	Tue,  8 Jul 2025 16:58:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751993892;
-	bh=EeEMgCSnp4cF6QPEGdcY1HvK4Zlc8qKiYJpz2mS+mcQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DT6vYbo4wvdNTuYRfg8XPUHXRy+n4P3U0ijpANvv0on3gXrc/S57H8hA/bDSMgBkh
-	 YBbG1cmlJYj2vP2xIL5H90B1WWB+2xGtT4I7VLM4+uxF0ay67v2+dXjn1ydsawKPP5
-	 nCS/7R35LfztlB1EoD5dDtI5lCdEYOngFrgfPCzI=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Helge Deller <deller@gmx.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-parisc@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 055/160] tty: vt: make consw::con_switch() return a bool
-Date: Tue,  8 Jul 2025 18:21:32 +0200
-Message-ID: <20250708162233.072507233@linuxfoundation.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250708162231.503362020@linuxfoundation.org>
-References: <20250708162231.503362020@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1752038034; c=relaxed/simple;
+	bh=EN5ByLBGywGLTiCp1bK3fyTglM7Zbn5pwSVlzcDFN2s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pGaipwUU/aWjK1ythTQJVB8GAk8/oF60HBsfg6QT1XCQjprEGRFucFBWqmHYIaM3ejuBgZ/jCUyxmBwom6aUfqrJ0vh1E8NKq2nX79cFGQHyA9TWijFUzHMFWfgbCQzhY4jrJSPu8MAc6O0OLzDJm7f+MPTYH/P8/ezZAE14tFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp; dkim=fail (0-bit key) header.d=rsg.ci.i.u-tokyo.ac.jp header.i=@rsg.ci.i.u-tokyo.ac.jp header.b=P+9TWd4x reason="key not found in DNS"; arc=none smtp.client-ip=49.212.243.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rsg.ci.i.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rsg.ci.i.u-tokyo.ac.jp
+Received: from [157.82.206.39] ([157.82.206.39])
+	(authenticated bits=0)
+	by www3579.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 56955rZV065688
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 9 Jul 2025 14:05:53 +0900 (JST)
+	(envelope-from odaki@rsg.ci.i.u-tokyo.ac.jp)
+DKIM-Signature: a=rsa-sha256; bh=4clTUl4sMeFn+3+ZKeZuCK2i1/1ZYbUuPzsuXuco86k=;
+        c=relaxed/relaxed; d=rsg.ci.i.u-tokyo.ac.jp;
+        h=Message-ID:Date:Subject:To:From;
+        s=rs20250326; t=1752037554; v=1;
+        b=P+9TWd4xgbOJt4IAGxHHsFZCUP5mU2LruCqB6XvGSTxPuNiG88lEdFqKSI5e8GV9
+         IZQ027gIzqE6R884yIAbqFDeeb+QV4d98ETFvdXUnoX+FYopiMFnNscVsB2zI9Wa
+         2l2RcZyKqEBQDUjGZTaMI0r6Rf5IedBu6hCBpXk/895FEVdR2zQg58ehwJmyxgfF
+         XT9yXnMK/B98pfOeSBYxC5A9B18qaCU6AclyvtM00Ovo46CMOeuPcCCb07Ssut/I
+         yGZrAOC9hnteaFT0HuEm66QoaIAFlJenYdCL8L9SlWdVr/Lxm01+5vFw0NVbVwNR
+         jKgFire83dealgPIcgL8rg==
+Message-ID: <36c0213c-6b14-4ad2-969e-3d8e356bb680@rsg.ci.i.u-tokyo.ac.jp>
+Date: Wed, 9 Jul 2025 14:05:53 +0900
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/23] binfmt_elf,arch/*: Use elf.h for coredump note
+ names
+To: Dave Martin <Dave.Martin@arm.com>, linux-kernel@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin"
+ <hpa@zytor.com>,
+        "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Alexandre Ghiti <alex@ghiti.fr>, Andreas Larsson <andreas@gaisler.com>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chris Zankel <chris@zankel.net>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dinh Nguyen
+ <dinguyen@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Jonas Bonn <jonas@southpole.se>, Kees Cook <kees@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Max Filippov
+ <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, Oleg Nesterov <oleg@redhat.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley
+ <paul.walmsley@sifive.com>,
+        Rich Felker <dalias@libc.org>, Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        loongarch@lists.linux.dev, sparclinux@vger.kernel.org, x86@kernel.org
+References: <20250701135616.29630-1-Dave.Martin@arm.com>
+Content-Language: en-US
+From: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
+In-Reply-To: <20250701135616.29630-1-Dave.Martin@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+On 2025/07/01 22:55, Dave Martin wrote:
+> This series aims to clean up an aspect of coredump generation:
+> 
+> ELF coredumps contain a set of notes describing the state of machine
+> registers and other information about the dumped process.
+> 
+> Notes are identified by a numeric identifier n_type and a "name"
+> string, although this terminology is somewhat misleading.  Officially,
+> the "name" of a note is really an "originator" or namespace identifier
+> that indicates how to interpret n_type [1], although in practice it is
+> often used more loosely.
+> 
+> Either way, each kind of note needs _both_ a specific "name" string and
+> a specific n_type to identify it robustly.
+> 
+> To centralise this knowledge in one place and avoid the need for ad-hoc
+> code to guess the correct name for a given note, commit 7da8e4ad4df0
+> ("elf: Define note name macros") [2] added an explicit NN_<foo> #define
+> in elf.h to give the name corresponding to each named note type
+> NT_<foo>.
+> 
+> Now that the note name for each note is specified explicitly, the
+> remaining guesswork for determining the note name for common and
+> arch-specific regsets in ELF core dumps can be eliminated.
+> 
+> This series aims to do just that:
+> 
+>   * Patch 2 adds a user_regset field to specify the note name, and a
+>     helper macro to populate it correctly alongside the note type.
+> 
+>   * Patch 3 ports away the ad-hoc note names in the common coredump
+>     code.
+> 
+>   * Patches 4-22 make the arch-specific changes.  (This is pretty
+>     mechanical for most arches.)
+> 
+>   * The final patch adds a WARN() when no note name is specified,
+>     and simplifies the fallback guess.  This should only be applied
+>     when all arches have ported across.
+> 
+> See the individual patches for details.
+> 
+> 
+> Testing:
+> 
+>   * x86, arm64: Booted in a VM and triggered a core dump with no WARN(),
+>     and verified that the dumped notes are the same.
+> 
+>   * arm: Build-tested only (for now).
+> 
+>   * Other arches: not tested yet
+> 
+> Any help with testing is appreciated.  If the following generates the
+> same notes (as dumped by readelf -n core) and doesn't trigger a WARN,
+> then we are probably good.
+> 
+> $ sleep 60 &
+> $ kill -QUIT $!
+> 
+> (Register content might differ between runs, but it should be safe to
+> ignore that -- this series only deals with the note names and types.)
+> 
+> Cheers
+> ---Dave
+> 
+> 
+> [1] System V Application Binary Interface, Edition 4.1,
+> Section 5 (Program Loading and Dynamic Linking) -> "Note Section"
+> 
+> https://refspecs.linuxfoundation.org/elf/gabi41.pdf
+> 
+> [2] elf: Define note name macros
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/uapi/linux/elf.h?id=7da8e4ad4df0dd12f37357af62ce1b63e75ae2e6
+> 
+> 
+> Dave Martin (23):
+>    regset: Fix kerneldoc for struct regset_get() in user_regset
+>    regset: Add explicit core note name in struct user_regset
+>    binfmt_elf: Dump non-arch notes with strictly matching name and type
+>    ARC: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+>    ARM: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+>    arm64: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+>      names
+>    csky: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+>    hexagon: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+>      names
+>    LoongArch: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+>      names
+>    m68k: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+>    MIPS: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+>    nios2: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+>      names
+>    openrisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+>      names
+>    parisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+>      names
+>    powerpc/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+>      names
+>    riscv: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+>      names
+>    s390/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+>    sh: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+>    sparc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+>      names
+>    x86/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+>    um: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+>    xtensa: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+>      names
+>    binfmt_elf: Warn on missing or suspicious regset note names
+> 
+>   arch/arc/kernel/ptrace.c                 |  4 +-
+>   arch/arm/kernel/ptrace.c                 |  6 +-
+>   arch/arm64/kernel/ptrace.c               | 52 ++++++++---------
+>   arch/csky/kernel/ptrace.c                |  4 +-
+>   arch/hexagon/kernel/ptrace.c             |  2 +-
+>   arch/loongarch/kernel/ptrace.c           | 16 ++---
+>   arch/m68k/kernel/ptrace.c                |  4 +-
+>   arch/mips/kernel/ptrace.c                | 20 +++----
+>   arch/nios2/kernel/ptrace.c               |  2 +-
+>   arch/openrisc/kernel/ptrace.c            |  4 +-
+>   arch/parisc/kernel/ptrace.c              |  8 +--
+>   arch/powerpc/kernel/ptrace/ptrace-view.c | 74 ++++++++++++------------
+>   arch/riscv/kernel/ptrace.c               | 12 ++--
+>   arch/s390/kernel/ptrace.c                | 42 +++++++-------
+>   arch/sh/kernel/ptrace_32.c               |  4 +-
+>   arch/sparc/kernel/ptrace_32.c            |  4 +-
+>   arch/sparc/kernel/ptrace_64.c            |  8 +--
+>   arch/x86/kernel/ptrace.c                 | 22 +++----
+>   arch/x86/um/ptrace.c                     | 10 ++--
+>   arch/xtensa/kernel/ptrace.c              |  4 +-
+>   fs/binfmt_elf.c                          | 36 +++++++-----
+>   fs/binfmt_elf_fdpic.c                    | 17 +++---
+>   include/linux/regset.h                   | 12 +++-
+>   23 files changed, 194 insertions(+), 173 deletions(-)
+> 
+> 
+> base-commit: 86731a2a651e58953fc949573895f2fa6d456841
 
-------------------
+For the whole series:
+Reviewed-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-
-[ Upstream commit 8d5cc8eed738e3202379722295c626cba0849785 ]
-
-The non-zero (true) return value from consw::con_switch() means a redraw
-is needed. So make this return type a bool explicitly instead of int.
-The latter might imply that -Eerrors are expected. They are not.
-
-And document the hook.
-
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-parisc@vger.kernel.org
-Tested-by: Helge Deller <deller@gmx.de> # parisc STI console
-Link: https://lore.kernel.org/r/20240122110401.7289-31-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 03bcbbb3995b ("dummycon: Trigger redraw when switching consoles with deferred takeover")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/tty/vt/vt.c                 | 2 +-
- drivers/video/console/dummycon.c    | 4 ++--
- drivers/video/console/mdacon.c      | 4 ++--
- drivers/video/console/newport_con.c | 4 ++--
- drivers/video/console/sticon.c      | 4 ++--
- drivers/video/console/vgacon.c      | 4 ++--
- drivers/video/fbdev/core/fbcon.c    | 6 +++---
- include/linux/console.h             | 4 +++-
- 8 files changed, 17 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 765db5a7d5f52..a6e0c803e96ec 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -1014,7 +1014,7 @@ void redraw_screen(struct vc_data *vc, int is_switch)
- 	}
- 
- 	if (redraw) {
--		int update;
-+		bool update;
- 		int old_was_color = vc->vc_can_do_color;
- 
- 		set_origin(vc);
-diff --git a/drivers/video/console/dummycon.c b/drivers/video/console/dummycon.c
-index 6918014b02408..d701f2b51f5b1 100644
---- a/drivers/video/console/dummycon.c
-+++ b/drivers/video/console/dummycon.c
-@@ -119,9 +119,9 @@ static bool dummycon_scroll(struct vc_data *vc, unsigned int top,
- 	return false;
- }
- 
--static int dummycon_switch(struct vc_data *vc)
-+static bool dummycon_switch(struct vc_data *vc)
- {
--	return 0;
-+	return false;
- }
- 
- /*
-diff --git a/drivers/video/console/mdacon.c b/drivers/video/console/mdacon.c
-index 1ddbb6cd5b0ca..26b41a8f36c87 100644
---- a/drivers/video/console/mdacon.c
-+++ b/drivers/video/console/mdacon.c
-@@ -454,9 +454,9 @@ static void mdacon_clear(struct vc_data *c, unsigned int y, unsigned int x,
- 	scr_memsetw(dest, eattr, width * 2);
- }
- 
--static int mdacon_switch(struct vc_data *c)
-+static bool mdacon_switch(struct vc_data *c)
- {
--	return 1;	/* redrawing needed */
-+	return true;	/* redrawing needed */
- }
- 
- static int mdacon_blank(struct vc_data *c, int blank, int mode_switch)
-diff --git a/drivers/video/console/newport_con.c b/drivers/video/console/newport_con.c
-index 5dac00c825946..1ebb18bf10983 100644
---- a/drivers/video/console/newport_con.c
-+++ b/drivers/video/console/newport_con.c
-@@ -462,7 +462,7 @@ static void newport_cursor(struct vc_data *vc, int mode)
- 	}
- }
- 
--static int newport_switch(struct vc_data *vc)
-+static bool newport_switch(struct vc_data *vc)
- {
- 	static int logo_drawn = 0;
- 
-@@ -476,7 +476,7 @@ static int newport_switch(struct vc_data *vc)
- 		}
- 	}
- 
--	return 1;
-+	return true;
- }
- 
- static int newport_blank(struct vc_data *c, int blank, int mode_switch)
-diff --git a/drivers/video/console/sticon.c b/drivers/video/console/sticon.c
-index 58e983b18f1f4..6b82194a8ef36 100644
---- a/drivers/video/console/sticon.c
-+++ b/drivers/video/console/sticon.c
-@@ -309,9 +309,9 @@ static void sticon_clear(struct vc_data *conp, unsigned int sy, unsigned int sx,
- 	      conp->vc_video_erase_char, font_data[conp->vc_num]);
- }
- 
--static int sticon_switch(struct vc_data *conp)
-+static bool sticon_switch(struct vc_data *conp)
- {
--    return 1;	/* needs refreshing */
-+    return true;	/* needs refreshing */
- }
- 
- static int sticon_blank(struct vc_data *c, int blank, int mode_switch)
-diff --git a/drivers/video/console/vgacon.c b/drivers/video/console/vgacon.c
-index 54d79edbe85e1..448aede31b946 100644
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -616,7 +616,7 @@ static int vgacon_doresize(struct vc_data *c,
- 	return 0;
- }
- 
--static int vgacon_switch(struct vc_data *c)
-+static bool vgacon_switch(struct vc_data *c)
- {
- 	int x = c->vc_cols * VGA_FONTWIDTH;
- 	int y = c->vc_rows * c->vc_cell_height;
-@@ -645,7 +645,7 @@ static int vgacon_switch(struct vc_data *c)
- 			vgacon_doresize(c, c->vc_cols, c->vc_rows);
- 	}
- 
--	return 0;		/* Redrawing not needed */
-+	return false;		/* Redrawing not needed */
- }
- 
- static void vga_set_palette(struct vc_data *vc, const unsigned char *table)
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 7467b7a27ce2f..1ce767de96c11 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -2043,7 +2043,7 @@ static int fbcon_resize(struct vc_data *vc, unsigned int width,
- 	return 0;
- }
- 
--static int fbcon_switch(struct vc_data *vc)
-+static bool fbcon_switch(struct vc_data *vc)
- {
- 	struct fb_info *info, *old_info = NULL;
- 	struct fbcon_ops *ops;
-@@ -2166,9 +2166,9 @@ static int fbcon_switch(struct vc_data *vc)
- 			      vc->vc_origin + vc->vc_size_row * vc->vc_top,
- 			      vc->vc_size_row * (vc->vc_bottom -
- 						 vc->vc_top) / 2);
--		return 0;
-+		return false;
- 	}
--	return 1;
-+	return true;
- }
- 
- static void fbcon_generic_blank(struct vc_data *vc, struct fb_info *info,
-diff --git a/include/linux/console.h b/include/linux/console.h
-index bd7f3a6a64cd0..e2862542a162d 100644
---- a/include/linux/console.h
-+++ b/include/linux/console.h
-@@ -40,6 +40,8 @@ enum vc_intensity;
-  * @con_scroll: move lines from @top to @bottom in direction @dir by @lines.
-  *		Return true if no generic handling should be done.
-  *		Invoked by csi_M and printing to the console.
-+ * @con_switch: notifier about the console switch; it is supposed to return
-+ *		true if a redraw is needed.
-  * @con_set_palette: sets the palette of the console to @table (optional)
-  * @con_scrolldelta: the contents of the console should be scrolled by @lines.
-  *		     Invoked by user. (optional)
-@@ -58,7 +60,7 @@ struct consw {
- 	bool	(*con_scroll)(struct vc_data *vc, unsigned int top,
- 			unsigned int bottom, enum con_scroll dir,
- 			unsigned int lines);
--	int	(*con_switch)(struct vc_data *vc);
-+	bool	(*con_switch)(struct vc_data *vc);
- 	int	(*con_blank)(struct vc_data *vc, int blank, int mode_switch);
- 	int	(*con_font_set)(struct vc_data *vc, struct console_font *font,
- 			unsigned int flags);
--- 
-2.39.5
-
-
-
+Regards,
+Akihiko Odaki
 
