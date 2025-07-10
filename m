@@ -1,150 +1,136 @@
-Return-Path: <linux-parisc+bounces-3765-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3766-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E43DAFE9B6
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Jul 2025 15:10:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FD9B000E1
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Jul 2025 13:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 974F0641077
-	for <lists+linux-parisc@lfdr.de>; Wed,  9 Jul 2025 13:10:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA5B61C8182C
+	for <lists+linux-parisc@lfdr.de>; Thu, 10 Jul 2025 11:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D532DC330;
-	Wed,  9 Jul 2025 13:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A062E2222AB;
+	Thu, 10 Jul 2025 11:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEpzwmbi"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="zd2Xw1ck"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outbound.pv.icloud.com (p-west1-cluster4-host10-snip4-8.eps.apple.com [57.103.65.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ABA35962;
-	Wed,  9 Jul 2025 13:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E79A2494F0
+	for <linux-parisc@vger.kernel.org>; Thu, 10 Jul 2025 11:57:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.65.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752066631; cv=none; b=iOq2jn/u8OcnBcgPgNclp9+aTGg279dVS7Am1oMKh3PaV7IW8mrTPKQRz2MW/izr/htKkPXnThuYtVpf2v3LIiko/KBVfbMfmvwgt4vgdOVnNPjvUYElTKurJjuy7sZ0A548U7p93jlgygcyFlZhbaJ+u5Ibz+3lhSe9kgYkcZA=
+	t=1752148635; cv=none; b=hoc2kCjKNfTFdzO8NV30cjObx4eVnynf46+Ay6mqSuba3wnZgzIfAvaliuWSeLaaH17fU//a/m6cNbz+wLnXb5W/LyylkCc5bWsgDJa8vBYQJs+oz6pXn9zYJbZI36jf/4XlKt/SPgWAaq7uAutvtVEHf1BMydw8tx8Si/X1FUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752066631; c=relaxed/simple;
-	bh=7Jt7O1pR5EpPW0k2UzAVTXavUdczRi2h2HTT7FBhDJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l4BcriDUVruCdljCEf1qI5pxUXV0nDLAqX+au45CP0YGvmDun7r2zHyvVJGY/FaCmSvet1kz7PRsrSIpA/ZtA2B/fMWjM3KNJhmBSKmEPYbwrsffWPt83dhsTj15zhdieiXTV/y7IPDxdwiY34+d5IVVXKMPoi5he8up1MD+pyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEpzwmbi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C034C4CEEF;
-	Wed,  9 Jul 2025 13:10:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752066630;
-	bh=7Jt7O1pR5EpPW0k2UzAVTXavUdczRi2h2HTT7FBhDJA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oEpzwmbi9HZ1new6EewN01Vxu1knb9ECd/WhjoQQ4sR5rbYxZgHCbSzRX0dk+aUIP
-	 mL9REFDq6VfVE08TiudY6UgRRngiydHmb59BrRncAmCVXrzMm092lNN0nKvxHLrEnR
-	 kdQrdjVOU+3GkXgILA6QZGIxrTDIGzdNzf20MeDg=
-Date: Wed, 9 Jul 2025 15:10:26 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-	sparclinux@vger.kernel.org, Zijun Hu <zijun.hu@oss.qualcomm.com>
-Subject: Re: [PATCH v4 5/8] char: misc: Make registering miscdevice reentry
- who wants dynamic minor
-Message-ID: <2025070948-habitable-figment-d1aa@gregkh>
-References: <20250704-rfc_miscdev-v4-0-b48986112d6a@oss.qualcomm.com>
- <20250704-rfc_miscdev-v4-5-b48986112d6a@oss.qualcomm.com>
- <2025070658-brought-shakable-935e@gregkh>
- <961b53a1-9c30-48ad-becf-81590b27464b@icloud.com>
+	s=arc-20240116; t=1752148635; c=relaxed/simple;
+	bh=7jhKZUFyuZhEw6VIXU65rDKomSBChFoAaONNO/+cm5w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=tLZD3xsPYBWhYq9LSLn+nUtBADUdmZGU3PqEWMC/Iy54krocRhxpR5FxkbCCOtTgoFF7aWtbvxQLWtewWs2If95vNl2IrSE4KHWDuH1+I3sUWpI7tutfxqxDrRS5u5Wo4osydNDS8Ls8CCJlUMQQ8js3aGVlYpXJ3B0wJ9MYAMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=zd2Xw1ck; arc=none smtp.client-ip=57.103.65.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by outbound.pv.icloud.com (Postfix) with ESMTPS id 71F6B1800183;
+	Thu, 10 Jul 2025 11:57:11 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; bh=6TmzOUQ4GH9aW+xdMYh3n7mk7LO31oxqs+N8LbGY1hc=; h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:x-icloud-hme; b=zd2Xw1ckU/DwPkPvlm+n6wNV5LKDKZRGM0SjoFF4sYOFS69FehtjQcD5s+v57J5WuefUhSSA22c5Yv6vGfvN/pVkMUM4DKiTC3yBknr4zKsPuDgZowcgHuU4uIwj0e9wDaS4bWpo3s3pICUoz5vpKvTQjrW44fZZGIuFSZza1kQrWUfOmLscfJ8N2wNExkHnKNKCOZTNc0Vmb8x3MY9zihc/iDM26BKCYHe6JV/MBqTMn2NE6+4yxcr8H/ZjsgWp7iP2n/o9zx6XHeKiFaCTi1JQCOj/QGmsyQTx9thn+GDXMIwTUP7E0/nDKAXkl1OiS25p9j/S4qU/hYhNZB5fsg==
+Received: from [192.168.1.26] (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
+	by outbound.pv.icloud.com (Postfix) with ESMTPSA id 8E7BB18001AD;
+	Thu, 10 Jul 2025 11:57:07 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Subject: [PATCH v5 0/8] char: misc: Various cleanup for miscdevice
+Date: Thu, 10 Jul 2025 19:56:43 +0800
+Message-Id: <20250710-rfc_miscdev-v5-0-b3940297db16@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <961b53a1-9c30-48ad-becf-81590b27464b@icloud.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHuqb2gC/3XOTWrDMBCG4asErasgzVj+ySr3CKXImlEtqKNWS
+ kVL8N0rZ9OYppuBbzEP71VkToGzOOyuInEJOcRzHeZpJ9xkz68sA9UtQIFRndIyefcyh+yIi0R
+ DhKiV65wS9eM9sQ9fN+30XLdPcZaXKbH9NVpQG6NoqaUnC4aMAovdMea8//i0by7O876eVZ5Cv
+ sT0fcsssPqPiwpIJZFHgNEbxJH/amtYwXsCtgRWgvqhBnHXD0j/EM090WyJphJj0w99qzVQax8
+ Qy7L8AJUNyFJ9AQAA
+X-Change-ID: 20250701-rfc_miscdev-35dd3310c7c0
+To: Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
+ Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org, 
+ linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org, 
+ Zijun Hu <zijun.hu@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Proofpoint-GUID: 6JKPoQ45ogP2JeNHHvSeu3SmqkprQ1SJ
+X-Proofpoint-ORIG-GUID: 6JKPoQ45ogP2JeNHHvSeu3SmqkprQ1SJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDEwMiBTYWx0ZWRfX3725bFWHMOvJ
+ CyRILXHALnQeJLuJ5GmzzdOX5iI3YLpeLeOqRw6+sA4WxR0YH6CHryOFumb4j9b540WqGHi3KQb
+ KJTh1gXaEV0oZhOrdTLM8aXaxCqEom6Zc8U+v0bhSwhFdvUesseWYINDaH2P44Yu4b8EHag1D13
+ 6Xy9CDfRI4gsfod8/fhJR+fSptI8QqVLYx/1lD1Nci0pHkm/K9xZ+RMkL5h3SbO/6sVGVRuaRyy
+ FSosQCU77au0R5u8+JrMXu0pDEIchHAY1qictFzk8KIOxLkicoXYbli7E9F1u7iNukcPX8EIk=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-10_02,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ bulkscore=0 malwarescore=0 mlxscore=0 clxscore=1015 mlxlogscore=977
+ suspectscore=0 spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506060001 definitions=main-2507100102
 
-On Wed, Jul 09, 2025 at 08:41:36PM +0800, Zijun Hu wrote:
-> On 2025/7/6 16:55, Greg Kroah-Hartman wrote:
-> >> | Invalid fixed minor 257 for miscdevice 'miscdyn_a'
-> >> | #miscdev_test_dynamic_reentry: ASSERTION FAILED at misc_minor_kunit.c:639
-> >> | Expected ret == 0, but
-> >> | ret == -22 (0xffffffffffffffea)
-> >> | [FAILED] miscdev_test_dynamic_reentry
-> >>
-> >> misc_register()/misc_deregister() are sometimes invoked by driver's
-> >> probe()/remove() separately, which has reentry requirement.
-> > What do you mean?  Why is it required that this is reentrant?  What
-> > in-kernel drivers require this?
-> > 
-> 
-> miscdevice APIs are sometimes used by the following way, "drv_probe()->
-> drv_remove()->drv_probe()" is possible, so "misc_register()->
-> misc_deregister()->misc_register()" is possible and considered by
-> previous patch's test case, which needs to register misc_dev again
-> without any reinitialization, namely, reentry.
-> 
-> actually, several in-kernel codes have such usages.
-> 
-> static struct miscdevice misc_dev = {
-> 	...
-> 		.minor = MISC_DYNAMIC_MINOR,
-> 	...
-> };
-> 
-> int drv_probe() {
-> ...
->     // static misc_dev is not initialized before registering.
-> 	misc_register(&misc_dev);
-> ...
-> }
-> 
-> void drv_remove() {
-> 	...
-> 	misc_deregister(&misc_dev);
-> 	...
-> }
-> 
-> struct device_driver driver = {
-> 	.probe = drv_probe,
-> 	.remove = drv_remove,
-> };
-> 
-> >> Fix by resetting @misc->minor to MISC_DYNAMIC_MINOR in misc_deregister()
-> >> as error handling of misc_register() does.
-> >>
-> >> Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-> >> ---
-> >>  drivers/char/misc.c | 2 ++
-> >>  1 file changed, 2 insertions(+)
-> >>
-> >> diff --git a/drivers/char/misc.c b/drivers/char/misc.c
-> >> index b8e66466184fa21fb66d968db7950e0b5669ac43..96ed343cf5c8509a09855020049a9af82a3ede95 100644
-> >> --- a/drivers/char/misc.c
-> >> +++ b/drivers/char/misc.c
-> >> @@ -288,6 +288,8 @@ void misc_deregister(struct miscdevice *misc)
-> >>  	list_del(&misc->list);
-> >>  	device_destroy(&misc_class, MKDEV(MISC_MAJOR, misc->minor));
-> >>  	misc_minor_free(misc->minor);
-> >> +	if (misc->minor > MISC_DYNAMIC_MINOR)
-> >> +		misc->minor = MISC_DYNAMIC_MINOR;
-> >>  	mutex_unlock(&misc_mtx);
-> > misc is being unregistered here, so why are you changing the minor
-> > field?  It's now invalid as it is not registered, so this value should
-> > never be relied on at all, neither is anything else in this structure.
-> 
-> reset its minor code is to register it again without re-initialization
-> successfully
-> 
-> the other members are handed by misc_deregister() properly and don't
-> effect re-registering.
+This patch series is to do cleanup for:
 
-Then we are getting lucky, let's clear out all the fields we modified
-and later rely on as this feels very fragile.
+- Miscdevice APIs
+- Miscdevice kunit test cases
+- Drivers which use miscdevice APIs
 
-thanks,
+Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
+---
+Previous discussion link:
+https://lore.kernel.org/all/20250620-rfc_miscdev-v1-1-fda25d502a37@oss.qualcomm.com
 
-greg k-h
+---
+Changes in v5:
+- Replace space with table in fist patch's Makefile
+- Correct title and commit messages
+- Link to v4: https://lore.kernel.org/r/20250704-rfc_miscdev-v4-0-b48986112d6a@oss.qualcomm.com
+
+Changes in v4:
+- Fix WARNINGs reported by "kernel test robot <lkp@intel.com>"
+- Link to v3: https://lore.kernel.org/r/20250702-rfc_miscdev-v3-0-d8925de7893d@oss.qualcomm.com
+
+Changes in v3:
+- Drop the change which allocates 4 fixed minors for watchdog
+- Correct tile and commit message
+- Link to v2: https://lore.kernel.org/r/20250701-rfc_miscdev-v2-0-3eb22bf533be@oss.qualcomm.com
+
+---
+Zijun Hu (8):
+      char: misc: Move drivers/misc/misc_minor_kunit.c to drivers/char/
+      char: misc: Adapt and add test cases for simple minor space division
+      char: misc: Disallow registering miscdevice whose minor > MISC_DYNAMIC_MINOR
+      char: misc: Add a case to test registering miscdevice again without reinitialization
+      char: misc: Fix kunit test case miscdev_test_dynamic_reentry() failure
+      char: misc: Does not request module for miscdevice with dynamic minor
+      char: misc: Register fixed minor EISA_EEPROM_MINOR in linux/miscdevice.h
+      sparc: kernel: apc: Remove macro APC_MINOR definition
+
+ arch/sparc/kernel/apc.c                   |  3 +-
+ drivers/char/Makefile                     |  1 +
+ drivers/char/misc.c                       | 16 +++++-
+ drivers/{misc => char}/misc_minor_kunit.c | 95 +++++++++++++++++++++----------
+ drivers/misc/Makefile                     |  1 -
+ drivers/parisc/eisa_eeprom.c              |  2 -
+ include/linux/miscdevice.h                |  9 +++
+ 7 files changed, 89 insertions(+), 38 deletions(-)
+---
+base-commit: 626e89412dfb88766d90d842af4d9ec432d8526f
+change-id: 20250701-rfc_miscdev-35dd3310c7c0
+
+Best regards,
+-- 
+Zijun Hu <zijun.hu@oss.qualcomm.com>
+
 
