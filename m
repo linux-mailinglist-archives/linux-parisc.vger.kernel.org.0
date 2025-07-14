@@ -1,130 +1,108 @@
-Return-Path: <linux-parisc+bounces-3777-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3778-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D27B00B41
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Jul 2025 20:22:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B8EB033BE
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Jul 2025 02:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C332560B7D
-	for <lists+linux-parisc@lfdr.de>; Thu, 10 Jul 2025 18:22:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D6A1899134
+	for <lists+linux-parisc@lfdr.de>; Mon, 14 Jul 2025 00:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F16A2F50B6;
-	Thu, 10 Jul 2025 18:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE3B14A4F0;
+	Mon, 14 Jul 2025 00:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="QfykkzUo"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="fEEKvqR0"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from outbound.pv.icloud.com (p-west1-cluster3-host5-snip4-3.eps.apple.com [57.103.66.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517FD2F2C6E;
-	Thu, 10 Jul 2025 18:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0103D131E2D
+	for <linux-parisc@vger.kernel.org>; Mon, 14 Jul 2025 00:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.66.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752171759; cv=none; b=Kjb4fkgrAYJHOU4v0/Mz2mPFQ2uLORFdjWBP35pMFdz6lMgTYOjniXWf13TFQmZMZJpbFg5p7Bm7dTzfGB1oozTF8sz7yHDdcDBM/0EHX5QTc9y8jTOIlhTFFWMU5XttB+NotEndYc65V1sXuPY9zrV4YLbeKJIcrULAZe/+lFk=
+	t=1752453784; cv=none; b=b8fLdna1KQbtt0IQvRkk3cMKXQhkZ/ZXiY1IVMWb17alGeZ7Caviwgvhlrv68lIug87XYQlZ4rry3R0mgZYWv2WIJHkB/3VE1MSMaoLEYeiQovzZ6Cd99d1/kIVLGWUSxgoDBaMCcgYku9MGEBvgLQblrG0fTBMn22dg/nQnMus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752171759; c=relaxed/simple;
-	bh=h0qKLmDhXIaFsgvlOIN3susDzu/+PPSRV6kLudOs6sE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aLlHw20pU5ZteOAY+OtxVIcbKl63qtaX0pcxmW290pD+b0rznFIwyvmwGi+b8Ll2nq3ZQUvXq632OhD15UYOcLgGS5hzWnSmZRvkIRRJsgwKNl5mupVa8uxoeM64Gjx2DZ9Szodmj5iiYzTHP/MFKZs6avLRseB8Cz4VaxRO1hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=QfykkzUo; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=C2bN5FstwQ/sSqjlVirDz35vgjcAjpul7lMG1TygQe0=; b=QfykkzUoR8knNdGlhwRx6HeWW3
-	K0qL4smMy35ewHdsgN+4H+m4pEXkfVAzn7oBcKcmBIC1SoXqkTM3yR36unT5ar3y/bUlsMZ1/V7Vv
-	kTgKtdt8h8qEyT+4CPzK+iXG/p+hVrh/PXFm+muJ8iT7mBKKSiWQp7GISlgJTWNxoZNIRBF3BXpVk
-	mB2BfeSIBOolti5k/swn7TAZRtZWW6Ja9xuvOCjc9vdNGqBGjfrXMrRu9tpLK8c562oW3PRdN3LhB
-	FqcAHctqff5tMSlxSglat2AictAChrPYT1KPUo/HPW7BKQU/XP8t+iyasiBIC+YAbJ3iOenxwmOHX
-	LjMYvgig==;
-Received: from 179-125-86-110-dinamico.pombonet.net.br ([179.125.86.110] helo=quatroqueijos.cascardo.eti.br)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1uZvuX-00F3Dn-L7; Thu, 10 Jul 2025 20:22:22 +0200
-Date: Thu, 10 Jul 2025 15:22:15 -0300
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>, linux-kernel@vger.kernel.org,
-	linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
-	Zijun Hu <zijun.hu@oss.qualcomm.com>
-Subject: Re: [PATCH v5 6/8] char: misc: Does not request module for
- miscdevice with dynamic minor
-Message-ID: <aHAE103XZl8yqDuo@quatroqueijos.cascardo.eti.br>
-References: <20250710-rfc_miscdev-v5-0-b3940297db16@oss.qualcomm.com>
- <20250710-rfc_miscdev-v5-6-b3940297db16@oss.qualcomm.com>
+	s=arc-20240116; t=1752453784; c=relaxed/simple;
+	bh=5XHvvd6myXOHSnaaFgTCZbOxbLEnCPAnhZHsRpt4/Tg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=quu0L6Ii9gdRq9qM0QX3ciUSlTq4jmy1LeYTxKmhvG6theYAeIInFs691OiL84MQ1oUvdiMJaSNoIEJdoeeEdWWjEB5AVWb/lpZdRiKqdMFMvmmdbB/sdGOZuGgH0N9xJk5LND7wX04czRDtvClhGWnok5MQXj2NSQq/tO+HVoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=fEEKvqR0; arc=none smtp.client-ip=57.103.66.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
+	by outbound.pv.icloud.com (Postfix) with ESMTPS id AE81718001C2;
+	Mon, 14 Jul 2025 00:42:58 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; bh=cIMdmGU4tFWjTxE1aZma/FVmR11J9Mem5zRPqwQjfXI=; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme; b=fEEKvqR0rp9sGvj2sUTejf9+WKgxaG9n7kOq3Qy747hqlDxe82qmVLHOgrJPDnY5xg88wcnU1owDRCTlSDSpkVDL1ab9ZRiVm+HixtmcL21VrGpbCpu5bgSL9RWPQG5Du3qoMZtKANWtocKy8ApNVksR77GrAWN21E2//vy2uH0Kls6vyJs+jULUFiV+ryF90pXcs21KzQ0zIbcLaGK3b3ExI6uLkFcNqaR4DWF/Xzlyn3l/EH0VPXHRAptdql2Yjf+rKc4WU7pIwumrVXy31UehV0KrXw/j1WFbTUY/I7trq09dDTx9ZzWp/aG67jtPJEkoyMZfTJc2YM0ZMJc5/A==
+Received: from [192.168.1.26] (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
+	by outbound.pv.icloud.com (Postfix) with ESMTPSA id A6B911800135;
+	Mon, 14 Jul 2025 00:42:55 +0000 (UTC)
+Message-ID: <f623ea12-4795-4dd1-bc5e-38968ce718e0@icloud.com>
+Date: Mon, 14 Jul 2025 08:42:51 +0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250710-rfc_miscdev-v5-6-b3940297db16@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/8] char: misc: Adapt and add test cases for simple
+ minor space division
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, linux-kernel@vger.kernel.org,
+ linux-parisc@vger.kernel.org, sparclinux@vger.kernel.org,
+ Zijun Hu <zijun.hu@oss.qualcomm.com>
+References: <20250710-rfc_miscdev-v5-0-b3940297db16@oss.qualcomm.com>
+ <20250710-rfc_miscdev-v5-2-b3940297db16@oss.qualcomm.com>
+ <aG_Pjl4Jl7QJxl8f@quatroqueijos.cascardo.eti.br>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <aG_Pjl4Jl7QJxl8f@quatroqueijos.cascardo.eti.br>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 7xQA6wUDvP_kIOgKQsfHzl36qltJVPDu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE0MDAwMiBTYWx0ZWRfX4E9l34NZXO8I
+ LhzI28DXw8t8vrSsZ5l0wP5aWY21s/7sok6bEIgzDZ42JPKUcMXzmr4zIP9o2y8GmbaAcpTnfK6
+ JR5ZIO0IyQb+aool9yXcu2U8c12LMXZc8SC+ApTgHE8bQWddvkUtmDo4TjbcElvRcUyEnlqSfaj
+ joOQIT59uw6DAsxe0OidaJCF4u+JbFm7oT7pgTI89zW8kv4t2ELAWgEbBKz+ImMlLR7xJpNQApe
+ ykEdn4B0bs+6Nbz7KC61vH46OPr8rEos44ef85dXfYHGI9A8B7sE/bVVn95cqqW1srTnULoo8=
+X-Proofpoint-ORIG-GUID: 7xQA6wUDvP_kIOgKQsfHzl36qltJVPDu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-13_03,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ bulkscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015 mlxscore=0
+ phishscore=0 adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2506270000 definitions=main-2507140002
 
-On Thu, Jul 10, 2025 at 07:56:49PM +0800, Zijun Hu wrote:
-> From: Zijun Hu <zijun.hu@oss.qualcomm.com>
-> 
-> misc_open() may request module for miscdevice with dynamic minor, which
-> is meaningless since:
-> 
-> - The dynamic minor allocated is unknown in advance without registering
->   miscdevice firstly.
-> - Macro MODULE_ALIAS_MISCDEV() is not applicable for dynamic minor.
-> 
-> Fix by only requesting module for miscdevice with fixed minor.
-> 
-> Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
-> ---
->  drivers/char/misc.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/char/misc.c b/drivers/char/misc.c
-> index 96ed343cf5c8509a09855020049a9af82a3ede95..a0aae0fc792666a7bdc0ba00da9dc02ff9cead42 100644
-> --- a/drivers/char/misc.c
-> +++ b/drivers/char/misc.c
-> @@ -132,7 +132,8 @@ static int misc_open(struct inode *inode, struct file *file)
->  		break;
->  	}
->  
-> -	if (!new_fops) {
-> +	/* Only request module for fixed minor code */
-> +	if (!new_fops && minor < MISC_DYNAMIC_MINOR) {
->  		mutex_unlock(&misc_mtx);
->  		request_module("char-major-%d-%d", MISC_MAJOR, minor);
->  		mutex_lock(&misc_mtx);
-> @@ -144,10 +145,11 @@ static int misc_open(struct inode *inode, struct file *file)
->  			new_fops = fops_get(iter->fops);
->  			break;
->  		}
-> -		if (!new_fops)
-> -			goto fail;
->  	}
->  
-> +	if (!new_fops)
-> +		goto fail;
-> +
->  	/*
->  	 * Place the miscdevice in the file's
->  	 * private_data so it can be used by the
-> 
-> -- 
-> 2.34.1
-> 
+On 2025/7/10 22:34, Thadeu Lima de Souza Cascardo wrote:
+> These tests will fail if applied before patch 3 "char: misc: Disallow 
+> registering miscdevice whose minor > MISC_DYNAMIC_MINOR".
+>
+yes, that is expected since:
+test case to expose issue may need to be sorted before fix to solve
+the issue.
 
-Given this should not break any code, as there should be no legit drivers
-requesting a minor >= 255,
+I ever had below observation that below patch order were reversed when
+they are applied by robh finally.
 
-Acked-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+https://lore.kernel.org/all/20241216-of_core_fix-v2-0-e69b8f60da63@quicinc.com/
+[PATCH v2 1/7] of: Fix API of_find_node_opts_by_path() finding OF device
+node failure
+[PATCH v2 2/7] of: unittest: Add a test case for API
+of_find_node_opts_by_path()
+
+> One option is just merge the two commits.
+> 
+> I have worked on a different option, which would be the two patches 
+> above,
+> before applying patch 3. Then, we can either support the two different
+> behaviors in the test case, or remove the support for the old behavior
+> after patch 3 is applied.
+
 
