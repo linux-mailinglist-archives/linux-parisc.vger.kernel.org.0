@@ -1,58 +1,57 @@
-Return-Path: <linux-parisc+bounces-3800-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3801-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7834BB0CB64
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Jul 2025 22:13:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23038B0CBBB
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Jul 2025 22:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AADC97B1A1F
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Jul 2025 20:11:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE7D53A72C5
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Jul 2025 20:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B532AD0F;
-	Mon, 21 Jul 2025 20:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F54223AB85;
+	Mon, 21 Jul 2025 20:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="uP2AZNaM"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="htroB+//"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-torrgo001.bell.net (mta-tor-007.bell.net [209.71.212.44])
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-007.bell.net [209.71.208.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568BE2376EC
-	for <linux-parisc@vger.kernel.org>; Mon, 21 Jul 2025 20:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1042923AE87
+	for <linux-parisc@vger.kernel.org>; Mon, 21 Jul 2025 20:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753128798; cv=none; b=mTFxUJDATXXTFeTckQEZsZFWFnu23EW4ArTMHsLD5oBlQZjsUWyEA/FxoMBmHDGrY3UZ13Id9Fb9H4M+NBFVnmkP1NpAUnfGXKqTT7tQbF1xH3zsUqCzooAylmP0qeFBWflHNHribPOWCeth02G25C7eG+l5vsAfKnrSckrsTBA=
+	t=1753129293; cv=none; b=k+lHRkF1KgHnNUyR88NaQTt8tWoBoluP8lzdMFzuDH1d1tfkzh/7darBMMZkrqXT+ZdNM+jGj/1dBrxIsZeVSj1wA/gQPtoPmUXUGySMgdUddJucMpllvMRZmLI7DNLW0EPg5UV+nLwTAMhiIzS6VZSuey9bYeE7OZhKcWkHgao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753128798; c=relaxed/simple;
-	bh=c4bF5wuDskOoThVYLlSS9MM77WEGPGwZznRO1XJ3UAM=;
+	s=arc-20240116; t=1753129293; c=relaxed/simple;
+	bh=V6M1sX+nJtwWJuvMypY6dbsRZh2ksqYowrisBevKrjg=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=mfHV+ZNQIOSE67K+UTU09/PKbhJPBRI2+kaVrMYuL6Sqv8tZQCPwt13ugcInGWq8yHpLE8n2T8Fhz2ighsrV2ab+VjQGO8GaWampLr6fY2ib/A6hBcjBQqz6/nXMGwI50vPM9lizp9u7nFC1Hv9t+JTNesiZt9TSZZFBKhBfZHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=uP2AZNaM; arc=none smtp.client-ip=209.71.212.44
+	 Content-Disposition; b=s5cTPg1bfvU/8/qZmcV32lNOWjv1e/+vlvPZu9VxbHD6OQc9/2ZAGDle70Uf8tX6WO8t5XVXb824xjyW+51OcPrZXZ8RtVKcTc1jaPpC7E7UrwHcTgeeP8zl6C6e7F+SmixM6mOfJssMz6oqJ5y7aY7TMBEG7rlj4aBl2qP8rzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=htroB+//; arc=none smtp.client-ip=209.71.208.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1753128796; 
-        bh=c6AmiQqhaaIy61gxInZeYSvqe0310hGVzMUWBQ9xsG4=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1753129291; 
+        bh=bE5svEcRKsCT7Xj2oSxVSuEFh4Q7aOSPNtt+GLCcSao=;
         h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-        b=uP2AZNaMTTVNoCjkL4emep1a8XbcRHuyW9j9jEuF1nAbUMzx1Bl7GM/sTp2TP9+onasIU8LtPEdIPxv9VlUbeNSsJ3daCCmUG6MrV3rd343xgqjE5hBY3Sm+j7VsxkNAaNMF7cQWVj/d5aXj0DsileytpDW0WrFYMSe70/fjBCmVBX2Eavppdu+iDg5H3oFl2HT1XZR8VM355hljXOUII8aJNHUKHVTKy6Kq83uQr/oYAQHZdRzbe61Y7ze7YZDZGAEpI+daoZywqDOOcHSU22J4zMK2L8sMQ61ujQaKJneS/7YtitbKvZVXmTToAJVuRFg3Y4tdb3PXVP2DeTRmhg==
+        b=htroB+//pW122Aa+nvl/guNhqXugXaB1LnIlDN1AO4Z+0TgzTC/ymGiS6LRf+pFA0zCV6mgde05Op/IfFulEvdPslIOISKJWDDq9Z4c2kb2EWXWFynB7UWm3djIJGaxxCA3Zg2i9cZr3WyDvi6RoIiZTpPW2bnULDFR0q3a8SWPyxPFxctQm3dvwsaMZEzOvX96fH5aGspLQbkJJHv5YQv/MQosQeb4joiwkvpsLWfZTRIKZK5ZKKK7zWf5hB5dAArVNGPGAWECBrXeRk5SU06PpNVG65XXf/esKk+BlncuSb0F1dTo5CA/Pn2F8duQodonKXwyI+wnws3yKK3BSWA==
 X-RG-SOPHOS: Clean
 X-RG-VADE-SC: 0
 X-RG-VADE: Clean
 X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 687A6B9A00665C24
-X-RazorGate-Vade: dmFkZTFVRT3LQ87jrghPBSFb4zX/qDCBjZdpAz/DmIz3wz3RkN0sYrVizs7T4+siT/BPStpe0WsXOjBgaVovoyfaT2ZzMYOdhxRPOzVewQtAFSR//dC4CRbCxE7s7cawZoZQm7EywedVLqONHekkMUHRKOzzsl5m6Vg3qzMVJfuaegVlOkNCRgqtES4GP8jspOluTLe5icFlZ4MwiIKg+rLcLE/HEguBM9ykRa7fwUIXfa7k8ku8HDiZcmwsFqszSI890tLn4qcxZJUzoTY2sLhqhHa1gpqXT2JnleZib4k1iHHmjuSen3X6D6CyDmajJYVByrDNoR8COlkQkFLd82e4IcLdijRJCA5eRVil8nidkQtUi3/MMEoOetXHEbzGr72CiPVhzQtteMzvzzEtMsw2cjDCCrrwDAj/ym380jBuMJJAuTnruE0ImTcLELKiWrjz0bPNUcpYy3/Eyyw6BHhr3RyUnlfRGab06UYB94owjBhtNvITb7v+Do8+TjAvn7S2R8xi1hL2Ej2Jmgka8Vja3pWdyBteJq+zZWXNkbHeugbBwR44QNQas+OfA3vrb84oo+tOiRdNJcwVIhq+YNIB8u9pEfa+QxS7LlezGnxfHlQRPiHVWH/q/brTYjdOqRzwiKhJZohirA28c1Ly3nOa0lD55m92Hw/RrrXm2uv6i/5Sfw
+X-RG-Rigid: 687D26C200333ECB
+X-RazorGate-Vade: dmFkZTFGSuyHxwXp9g/U5wwVshXigSRya+nOnVewfTuOnWBhryWYJyMzd2HDM0StaAPDGHHqitJhtPnjnsyLuZl7Zuv/Z5pY58ZwatgXwlBKOM61JjVsySe9mEXPFVpCnGI4a/sduWahz6hE5/Ig5gg/XJjxnpzWoWNojoNS0eWM9A83cMfYDC7/3Gf55xLJxL4QoP6FJZD9/zWdK+9KL2AKj3nvkwxKIhDWFEYJkZreZW3GsC/AhFJXBXeswaRjUeSVPA1TSZJCuQojv0oskwRLNe4zrWiEVBBcY5v41b4hoaJlc8kzMem7w+Eh/y6Oc9ndiVj3Yx3XuHoj028XUyHV5bB6o2/aqQWszxoMwbVB/0Gb8Zx32dmLI9bqWdMS3g14o267doB/c3bOdwltsx7n8zd5VwkBEG6Z3pXPvULwXNlxVj6XA+wpcDpiij4Jl3ssL4nJlLevWrBtlmwhn/KX5vnXR+ii5oy+jaezC3ppuPhYyBP+VZStvhT7KIyEC+cvzrUn5NgneYrOVCVQTuYQs8bVzelAagd6Hx71gqPR4mNpCiUoZVzomYgM3Xhfadnr0rbRYqNK8NRA/1z+l+7UqaEOBU25cz88C8iCpCcn2muFX/4wJhkfKJyNX9IvLt5BUMF8cbIpxOZNUUvt5kMG9J/HvWnFnm4e2FiYlB67jQS+ag
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
-Received: from mx3210.local (142.126.136.104) by cmx-torrgo001.bell.net (authenticated as dave.anglin@bell.net)
-        id 687A6B9A00665C24; Mon, 21 Jul 2025 16:13:15 -0400
-Date: Mon, 21 Jul 2025 16:13:13 -0400
+Received: from mx3210.local (142.126.136.104) by cmx-mtlrgo001.bell.net (authenticated as dave.anglin@bell.net)
+        id 687D26C200333ECB; Mon, 21 Jul 2025 16:18:44 -0400
+Date: Mon, 21 Jul 2025 16:18:41 -0400
 From: John David Anglin <dave.anglin@bell.net>
 To: linux-parisc@vger.kernel.org
 Cc: Helge Deller <deller@gmx.de>,
 	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>
-Subject: [PATCH] parisc: Try to fixup kernel exception in
- bad_area_nosemaphore path of do_page_fault()
-Message-ID: <aH6fWe6DU2_TWD23@mx3210.local>
+Subject: [PATCH] parisc: Drop WARN_ON_ONCE() from flush_cache_vmap
+Message-ID: <aH6gob3EFxc4_fcw@mx3210.local>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -60,57 +59,56 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ShEAAG0axkqHx+NB"
+	protocol="application/pgp-signature"; boundary="2fmvfT3GjmPZwbzu"
 Content-Disposition: inline
 
 
---ShEAAG0axkqHx+NB
+--2fmvfT3GjmPZwbzu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-parisc: Try to fixup kernel exception in bad_area_nosemaphore path of do_pa=
-ge_fault()
+parisc: Drop WARN_ON_ONCE() from flush_cache_vmap
+
+I have observed warning to occassionally trigger.
 
 Signed-off-by: John David Anglin <dave.anglin@bell.net>
 ---
 
-diff --git a/arch/parisc/mm/fault.c b/arch/parisc/mm/fault.c
-index c39de84e98b0..f1785640b049 100644
---- a/arch/parisc/mm/fault.c
-+++ b/arch/parisc/mm/fault.c
-@@ -363,6 +363,10 @@ void do_page_fault(struct pt_regs *regs, unsigned long=
- code,
- 	mmap_read_unlock(mm);
+diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
+index db531e58d70e..37ca484cc495 100644
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -841,7 +841,7 @@ void flush_cache_vmap(unsigned long start, unsigned lon=
+g end)
+ 	}
 =20
- bad_area_nosemaphore:
-+	if (!user_mode(regs) && fixup_exception(regs)) {
-+		return;
-+	}
-+
- 	if (user_mode(regs)) {
- 		int signo, si_code;
-=20
+ 	vm =3D find_vm_area((void *)start);
+-	if (WARN_ON_ONCE(!vm)) {
++	if (!vm) {
+ 		flush_cache_all();
+ 		return;
+ 	}
 
---ShEAAG0axkqHx+NB
+--2fmvfT3GjmPZwbzu
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmh+n1gACgkQXb/Nrl8Z
-TfGzSBAAsFb3xtFEsx7yruBoMKT05RZMAtoXZ949Ro48Tq+yzr19u+lmn/v9r+LT
-eUI9Z/N1SE+lFMS95siDUYO6xL6DMYRM5/edYa9ph8rh5LQ3lRZShg4kJ93Qx6hI
-jc3PKO/xTpZaJsgoTnlSHlTw9oCY2maq2nuHaXiyMdeaQIciKdQolxSilxUxJydt
-Uzjmjjb8CvW/5Ggt3mQqsIAd/yCEPq/9rfh5yqXfjozocWkSIybr6BfFoTsOGd8G
-0VvYN74RiYTJvztlg645rIRUlBnj4KQTeJ/PQhwKO8lRkz8aWGyCwqKlwIIInoXr
-m+STP4dI8BslZIsNpBpRPlxdXaxTHnNYN9eeg4CT1P8P5UGpR60pcJkqIT7le2Te
-F8Da0Wf+es4afeMj8ZcRU6Glh8z7tGwSTLpIFIhbk/w4ySqoWsvc9Agv6pTGFGal
-7nOpLyDKNN229isxHyzhvpbZyIQyeVAiLn2jPvxpsLbsTaseWRp9uAZFUGqtdD5F
-alvvrnVMvtVnXd+Us59oPRsnGdG2xHQzZ0maPpc1xquIAo0ZYlXLyaXqjmhfLnZU
-KTQc8bIUqfv4DInfNOvX3Kri2gnq3bxiqGSzPhEXSesSC3lj+JRteWULqL/v76vT
-9KtCGQ3hrI0gvumidqqNpKIBRFmyPDVot3E2Gt95ycy1T6g3shY=
-=9WnU
+iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmh+oKAACgkQXb/Nrl8Z
+TfFthhAAiTTMaATKUdN29ph5QpujXwi/jAFSz9pm3F9lHy01BrajDmEE5PncZ121
+OZuxwI95aymz0Sq6DSnb8fLElMbvq3+bA2w5e/lBV3Hwycz+ux03XlkGMeS9jk52
+5Rf14mG/5PjitccFT8RZ3CZ+kJbNhj9/ZMX2Ut3Lf/clzCg93mMsSi+2CB32FB2Q
+N1c1aaPTh7RB+fEzNMcm9oanzo8OTo9s88UlfhY9cJUTKlhJf3SIzPyexpVlC/2V
+75yjdkqOi3xyCF1VBt4/Ynrmu3q98mIe4bNiP4IN0OcQNcojdnopKhjE/kogZmWT
+pxzSsWhPpEUd9XAy5YwfbianwgkS3wpjWX7SFsZQWdAM/XEX6aniPDl4pafNNnRE
+zS3gOrOlaM5+k1Tk5Df5gjMfwTp7MufusTEEUM506s6a7Od2cO8Yd5BpNhrwVY6R
+RQeq/RbWZGtmNvJh6vf1uLYMWrncyrZ2bJ4AOY/ZUKPBReu9S+M1QsUx/egVUR0a
+Q8oIk8FsX7mrcpbfhAEOsnlOG9AfH5tOnxgRvKNiFKAnC+Kw3qI3FIkrxQsnpJVY
+Jj8xenyu2Xofucmok4cBQql8vjj0AA0LVDQy9Ed0iahR/x152LOxvwY+4Fc/Bk6Q
+LzInCxzOU5hj/U2XSOD/wIQHE4dSdwKyRCg1KEL9ftjei8BaFRg=
+=nF8A
 -----END PGP SIGNATURE-----
 
---ShEAAG0axkqHx+NB--
+--2fmvfT3GjmPZwbzu--
 
