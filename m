@@ -1,57 +1,58 @@
-Return-Path: <linux-parisc+bounces-3795-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3796-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC90B0CAEB
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Jul 2025 21:16:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26002B0CB1B
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Jul 2025 21:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6732516501F
-	for <lists+linux-parisc@lfdr.de>; Mon, 21 Jul 2025 19:16:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C40EB188B951
+	for <lists+linux-parisc@lfdr.de>; Mon, 21 Jul 2025 19:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2EF2AD0F;
-	Mon, 21 Jul 2025 19:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1AB2222BB;
+	Mon, 21 Jul 2025 19:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="GqwPuQpB"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="vYQakZ2A"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-mtlrgo001.bell.net (mta-mtl-007.bell.net [209.71.208.29])
+Received: from cmx-torrgo001.bell.net (mta-tor-007.bell.net [209.71.212.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F372F32
-	for <linux-parisc@vger.kernel.org>; Mon, 21 Jul 2025 19:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CF81885A5
+	for <linux-parisc@vger.kernel.org>; Mon, 21 Jul 2025 19:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753125393; cv=none; b=a0C6FJ2cysLTBW7TAWHXO1PdBUjnC8chTHzClerAGAXFHyxeoqN2nvUSMcZ4UkvugTUvN/dAZVHzfI97dY7TSjs9IAlSykUNZ6EK0cRMMc9eGwO/ncEYKGyiT740gb7PV6GKVweZyXQqL8RZNtuUcYAbvBSeiV4HVYyfhlfIllM=
+	t=1753126949; cv=none; b=GUmCxZSyxKHsW8IG5Plk17ajLoHbHx89gA1ISsavHInGmeRBN22Rk05GbogAZYq5HlG2JC+lcFgXtIe+9zSX0usnGjpV+VY2dd176RAJItSWo8s3x1VmQpXYRfD9llyC91TlolHf9ljd/Lr3TPl438hwklhibZZqMp1Qvzn0k8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753125393; c=relaxed/simple;
-	bh=SndjvEtC0EbVUcPOZbn2mnV7oiYKyphhMGevsmTCOrc=;
+	s=arc-20240116; t=1753126949; c=relaxed/simple;
+	bh=I36GmdexTxBHHIiXwvgbuMiO9mnZgwqSxKxF6ocy8Hw=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=kL3fX1/Nw1vhVBsH/wzMQMDVbQXatFMD4KU6p1ivAjyrw3ttqI2sNGp3wtv5ukw86E3gMmR7FO0j5ANE0cOj6Sw4yY/udELcW7afPEQ2OXJqJK5BqQzgFanbimKRRb4dX0FTtvWMy5itVugI6IME11vkWdtyFL9mlY6o0rNWnZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=GqwPuQpB; arc=none smtp.client-ip=209.71.208.29
+	 Content-Disposition; b=WQcEHnPUXQKkfIvX4I/I1L3NaG86uaLlydfR1Z/bbMSHkBhLlwOoMNWwyMOpCbAHpOF2TOBGbSqb4THW3KvEBO10OfpF20V9ZTHBfvo9CIGAYv2jzW87ZY0eQYkejT6VHtqs689HU3BNH+0/bBEG61bu7OetoadMFIlaiZUH3KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=vYQakZ2A; arc=none smtp.client-ip=209.71.212.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1753125391; 
-        bh=5y1jAxIPjKBShkB1/hWzC9zdVSNdxye7NziF/jsOma4=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1753126947; 
+        bh=un+1plqor7WFaRuoLN/5nN9wQGU6ecJHKvFA2svWCKo=;
         h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-        b=GqwPuQpBXWTxay0qGaS7fNtOy2g8+CszpZV6kyahYy9joxsRDTW2aBaFiUPOXF+KuKbOnekjAUux/O4JY+eTG9V38edjA59hBwKL0jncQ7QRPKQJswGDKV2ttJZYV0AFfFG/m5z7TzMCbLgITQOLf0ZzykOvTm9cEzVxtIrSmHq/ccVNb8C3Bkh6qIWhnfoX86V1mpe2PPM/qhMNUV/pulhi0FWaz8Z5+TVcrFmLiI5JPk7qNSaN2zVbg41WJF203xz0jNe1r9odcATVVZtkIzb+lc0Wj8WlnKCxesYtfV6V9LaWFU6XHaxO+69qBh1gluAlc05JSXZnOlvC9MZIeA==
+        b=vYQakZ2AKQ8Wnn6PmAwNiEuJxgvx+PVe65okuAn8Jx/NqAD91PIFSIDit9XWv8Je8iICF7Q0pNdWjUZrSld1IU7v2csmNo0qh5zWZ4i+PSn5XguNHkKuYk8NT/NX7QvUnh/MfU3zEnGMdUTDKP0wpvix6v2zxR/TieC/n7ZQFwQimeMLYF7YwEPHx1sizniLHK3iId2aE88jg1vzPk9Gtm08RmvD3U7JxdqeJKo49mPq434KM3qPqZ/ejU9lMbE38NintOemyydQRomGnVJt1oh/4LaoyxtYWQ2KMtsiyHvXwNrJwTQ2zJTeAShBLU6MXf5dTZBcunoJ3Lp87sVbPw==
 X-RG-SOPHOS: Clean
 X-RG-VADE-SC: 0
 X-RG-VADE: Clean
 X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 687D26C20030EA27
-X-RazorGate-Vade: dmFkZTFLSenzu6cAqpKi6Oi88N1YYsu3GRAdMlaYn8qWr/jmmga9kzG2RCHxUUcjGXeai89Jk7Jh7Yyqy8yv2uszxGhvW1w0/U2D6pNd7UqTgf28H0pXGC5IY3AaEJTT/J5FzB5lCKWanes+QQCagkNFEmJ+qFhaICyGxOlVrILFtM8lQ/scz68r1df6XqBdAmokzQEiNKBR4azIybOj9UBcdPo8J0Lxu5z+vdcDegeRruD5LlLvLJ7p9R+TMLInhEmW5r1zE76dCg0K4ZXZ2xuFRbtkRn44DpQT1u9Woc6Fjy12VhBTHg2uT1E49vIiIr690Pk1pi+auXqcn9J3pDi9ewkOpE5UKDwNfpUAkfAdNmrKM0rD4ihNEr+x4Ytmxzxo6BvIUQXP7ghWG3x9wBGXE4wYiUOyHgSpdwLnZ1ShcAB5zW7QmHeAtEA7PVYC4ttJrZ6eqPI98FYK5GALmR7DLNe4vSAsddE4FbNFZWyphrdG9XjrGoiD4LJPj2ZBrIjbnlsl3VWfV7f1HYzHk+ZQvv4/Xu3QK+eEdHpE8JeAJ+OIjiTfg0V4lLBUOM8n+1aC/cG/PkUxQ1GBC+zCE/tE+UCuu9RQzg3013E5UJHnOOB2cnUltjbqHHxbuzdbde4smv/FTPB4oO5S5mZy26rSjo/j6qU+DGezzanYHoCjZh0CqA
+X-RG-Rigid: 687A6B9A00656769
+X-RazorGate-Vade: dmFkZTEojxxE3UFXmk8EaT1b80rKODYBw87YgXt7rtJUprdlJndMdLDCvIThriWQy20LGkWCsOo17W8mvvYAj1BWVNjDg/hAbRPq88LaW5dwHpPmjrWp4klS8ogQAMGA+hBQHMKOuImMYNvFEAm56otv5aMKqDTRxlRfx9Qae1dgUqMN+YWBAP1MdZrmc1v/UdAoANG/65JOIct5NVd6/h85tdIDhDlkYchIJo5qPurgO8DR9IepyiMKCs83NbyF9hdwQf7/8EUXG2O6152VKEJEm3atX8PEI1zkHlVrB7z6P0dnaj0sSxLCBBd5IhemELASBD0fVwOjFmgfXHIqBFf32YJLUuXoujtx3ImrrA1OUQ8MhBpkiCfCEB6RoupEhxH4xRAOpJ/QkwFxd3x38wyck2JP8CwiDOg2TNvhZznqjpKKzaAx6FFOHJdFr70XqeTbtv5SHNJhSee0kJunMKdpqvi95ImnLeWK+jk0K4xBvHwK0y6gXOjEYb0EnlnYI1ZdQHJeJ8AjDr+WxbvKTJVu560DtCyKq+URAHpCm3nrezPyeJxTd4KorXCFDWVKQ+f+JQFvjDGUjVbpCT9FpJbf3VbOjyvi4jZijYWt9cYndLMkQ2FPsKMT6XZvzhSTKRKDVVqHLbG3RGmkVWz81S7YBdj6Wx/cvqWEK/eJaC/LJEYDqg
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
-Received: from mx3210.local (142.126.136.104) by cmx-mtlrgo001.bell.net (authenticated as dave.anglin@bell.net)
-        id 687D26C20030EA27; Mon, 21 Jul 2025 15:13:44 -0400
-Date: Mon, 21 Jul 2025 15:13:42 -0400
+Received: from mx3210.local (142.126.136.104) by cmx-torrgo001.bell.net (authenticated as dave.anglin@bell.net)
+        id 687A6B9A00656769; Mon, 21 Jul 2025 15:39:28 -0400
+Date: Mon, 21 Jul 2025 15:39:26 -0400
 From: John David Anglin <dave.anglin@bell.net>
 To: linux-parisc@vger.kernel.org
 Cc: Helge Deller <deller@gmx.de>,
 	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>
-Subject: [PATCH] parisc: Update comments in make_insert_tlb
-Message-ID: <aH6RZvx5qxp2bfKI@mx3210.local>
+Subject: [PATCH] parisc: Check region is readable by user in
+ raw_copy_from_user()
+Message-ID: <aH6XbizAdny_XB7e@mx3210.local>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -59,127 +60,130 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="XtWV4BlMIQdUAgvB"
+	protocol="application/pgp-signature"; boundary="YJXDJ416G2yuUv+t"
 Content-Disposition: inline
 
 
---XtWV4BlMIQdUAgvB
+--YJXDJ416G2yuUv+t
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-parisc: Update comments in make_insert_tlb
+parisc: Check region is readable by user in raw_copy_from_user()
 
-The following testcase exposed a problem with our read access checks
-in get_user() and raw_copy_from_user():
+Because of the way the _PAGE_READ is handled in the parisc PTE, an
+access interruption is not generated when the kernel reads from a
+region where the _PAGE_READ is zero. The current code was written
+assuming read access faults would also occur in the kernel.
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-
-int main(int argc, char **argv)
-{
-  unsigned long page_size =3D sysconf(_SC_PAGESIZE);
-  char *p =3D malloc(3 * page_size);
-  char *p_aligned;
-
-  /* initialize memory region. If not initialized, write syscall below will=
- correctly return EFAULT. */
-  if (1)
-	memset(p, 'X', 3 * page_size);
-
-  p_aligned =3D (char *) ((((uintptr_t) p) + (2*page_size - 1)) & ~(page_si=
-ze - 1));
-  /* Drop PROT_READ protection. Kernel and userspace should fault when acce=
-ssing that memory region */
-  mprotect(p_aligned, page_size, PROT_NONE);
-
-  /* the following write() should return EFAULT, since PROT_READ was droppe=
-d by previous mprotect() */
-  int ret =3D write(2, p_aligned, 1);
-  if (!ret || errno !=3D EFAULT)
-	printf("\n FAILURE: write() did not returned expected EFAULT value\n");
-
-  return 0;
-}
-
-Because of the way _PAGE_READ is handled, kernel code never generates
-a read access fault when it access a page as the kernel privilege level
-is always less than PL1 in the PTE.
-
-This patch reworks the comments in the make_insert_tlb macro to try
-to make this clearer.
+This change adds user access checks to raw_copy_from_user().  The
+prober_user() define checks whether user code has read access to
+a virtual address. Note that page faults are not handled in the
+exception support for the probe instruction. For this reason, we
+precede the probe by a ldb access check.
 
 Signed-off-by: John David Anglin <dave.anglin@bell.net>
 ---
 
-diff --git a/arch/parisc/kernel/entry.S b/arch/parisc/kernel/entry.S
-index ea57bcc21dc5..f4bf61a34701 100644
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -499,6 +499,12 @@
- 	 * this happens is quite subtle, read below */
- 	.macro		make_insert_tlb	spc,pte,prot,tmp
- 	space_to_prot   \spc \prot        /* create prot id from space */
-+
-+#if _PAGE_SPECIAL_BIT =3D=3D _PAGE_DMB_BIT
-+	/* need to drop DMB bit, as it's used as SPECIAL flag */
-+	depi		0,_PAGE_SPECIAL_BIT,1,\pte
-+#endif
-+
- 	/* The following is the real subtlety.  This is depositing
- 	 * T <-> _PAGE_REFTRAP
- 	 * D <-> _PAGE_DIRTY
-@@ -511,17 +517,18 @@
- 	 * Finally, _PAGE_READ goes in the top bit of PL1 (so we
- 	 * trigger an access rights trap in user space if the user
- 	 * tries to read an unreadable page */
--#if _PAGE_SPECIAL_BIT =3D=3D _PAGE_DMB_BIT
--	/* need to drop DMB bit, as it's used as SPECIAL flag */
--	depi		0,_PAGE_SPECIAL_BIT,1,\pte
--#endif
- 	depd            \pte,8,7,\prot
+diff --git a/arch/parisc/include/asm/special_insns.h b/arch/parisc/include/=
+asm/special_insns.h
+index 51f40eaf7780..5e8d0b36f1b1 100644
+--- a/arch/parisc/include/asm/special_insns.h
++++ b/arch/parisc/include/asm/special_insns.h
+@@ -32,6 +32,34 @@
+ 	pa;						\
+ })
 =20
- 	/* PAGE_USER indicates the page can be read with user privileges,
- 	 * so deposit X1|11 to PL1|PL2 (remember the upper bit of PL1
--	 * contains _PAGE_READ) */
-+	 * contains _PAGE_READ). While the kernel can't directly write
-+	 * user pages which have _PAGE_WRITE zero, it can read pages
-+	 * which have _PAGE_READ zero (PL <=3D PL1). Thus, the kernel
-+	 * exception fault handler doesn't trigger when reading pages
-+	 * that aren't user read accessible */
- 	extrd,u,*=3D      \pte,_PAGE_USER_BIT+32,1,%r0
- 	depdi		7,11,3,\prot
++/**
++ * prober_user() - Probe user read access
++ * @sr:		Space regster.
++ * @va:		Virtual address.
++ *
++ * Return: Non-zero if address is accessible.
++ *
++ * Due to the way _PAGE_READ is handled in TLB entries, we need
++ * a special check to determine whether a user address is accessible.
++ * The ldb instruction does the initial access check. If it is
++ * successful, the probe instruction checks user access rights.
++ */
++#define prober_user(sr, va)	({			\
++	unsigned long read_allowed;			\
++	__asm__ __volatile__(				\
++		"copy %%r0,%0\n"			\
++		"8:\tldb 0(%%sr%1,%2),%%r0\n"		\
++		"\tproberi (%%sr%1,%2),3,%0\n"		\
++		"9:\n"					\
++		ASM_EXCEPTIONTABLE_ENTRY(8b, 9b,	\
++				"or %%r0,%%r0,%%r0")	\
++		: "=3D&r" (read_allowed)			\
++		: "i" (sr), "r" (va)			\
++		: "memory"				\
++	);						\
++	read_allowed;					\
++})
 +
- 	/* If we're a gateway page, drop PL2 back to zero for promotion
- 	 * to kernel privilege (so we can execute the page as kernel).
- 	 * Any privilege promotion page always denys read and write */
+ #define CR_EIEM 15	/* External Interrupt Enable Mask */
+ #define CR_CR16 16	/* CR16 Interval Timer */
+ #define CR_EIRR 23	/* External Interrupt Request Register */
+diff --git a/arch/parisc/lib/memcpy.c b/arch/parisc/lib/memcpy.c
+index 5fc0c852c84c..69d65ffab312 100644
+--- a/arch/parisc/lib/memcpy.c
++++ b/arch/parisc/lib/memcpy.c
+@@ -12,6 +12,7 @@
+ #include <linux/module.h>
+ #include <linux/compiler.h>
+ #include <linux/uaccess.h>
++#include <linux/mm.h>
+=20
+ #define get_user_space()	mfsp(SR_USER)
+ #define get_kernel_space()	SR_KERNEL
+@@ -32,9 +33,25 @@ EXPORT_SYMBOL(raw_copy_to_user);
+ unsigned long raw_copy_from_user(void *dst, const void __user *src,
+ 			       unsigned long len)
+ {
++	unsigned long start =3D (unsigned long) src;
++	unsigned long end =3D start + len;
++	unsigned long newlen =3D len;
++
+ 	mtsp(get_user_space(), SR_TEMP1);
+ 	mtsp(get_kernel_space(), SR_TEMP2);
+-	return pa_memcpy(dst, (void __force *)src, len);
++
++	/* Check region is user accessible */
++	if (start)
++	while (start < end) {
++		if (!prober_user(SR_TEMP1, start)) {
++			newlen =3D (start - (unsigned long) src);
++			break;
++		}
++		start +=3D PAGE_SIZE;
++		/* align to page boundry which may have different permission */
++		start =3D PAGE_ALIGN_DOWN(start);
++	}
++	return len - newlen + pa_memcpy(dst, (void __force *)src, newlen);
+ }
+ EXPORT_SYMBOL(raw_copy_from_user);
+=20
 
---XtWV4BlMIQdUAgvB
+--YJXDJ416G2yuUv+t
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmh+kV4ACgkQXb/Nrl8Z
-TfF71A/+LGdeleIGhIrRh/nKgjx5BdEIML2Rm4NmpZErbm3a7QDgAam+YXQiys4Y
-+CZQ3X89rDa3XHS7rn50sQW8yMBiCJLmGfJhMTQs4EbkXEfU9yzIi8PsnkNouFhv
-tTO9s21N2yMdFwL8GJjPrRn3qjwbFWkMh9ducoyjWWNgz/E16voOLG6kzdV0sAKf
-CpotUl7j9tIWCTfTlHYVvtUstJHTkFWVPzeX2HHfVeCyc5al3VDuCMPeMg4ijDt+
-MwQWN/nasjndqBR31cvCjVaXTATUs/WUiB9DNXEvX8UVsJfuSZ0AfeOLn5bNfAMC
-HcO3cGA7Me52FZxZS0Cx8MOgqRiKgAdQD6lZjh7ThqqBWQ7gaZqYDXhMhxcAEgUh
-tba+vsvjkt8Pz1/awr3bwXi5/B4Hq9HQhxc5Vfjcv3w0oTYJZBsvUIjBO8ALhp7l
-9oi6DzGekmIwCWuErPmRIkEm65AdkAXfTwY/mSNxfHlHzkJz2CZRvmvMqn1aBeqK
-IRJXtYeZsNEVkWeLAYmJBpobKPphV4mVYaYHqpv93J2mrMIzyTQZ+X4ZbjM+pjiG
-/VzpmGOzDzSVquYi7nf+LI7CgfCLiXEJDDfFuNhmjDx1OF7QvJOz774gK7UH9OkZ
-lzliMOqSMR4k3N5ci/tgVlZf6ifZiovipRItR7qbxmw49vvt5lU=
-=8mhO
+iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmh+l2YACgkQXb/Nrl8Z
+TfHsug//QU+XFl/j3ItknSBtu1LPD1t1vBh1lhvq6zAE4pZN8Gr/Enph10jP0Icy
+8uGquu/17Qdi6IFrrb9b8XUNob9Zvd2Y9dN6u1H1sCL46fneUbGsxDuFkKiTqFD3
+XNKPZ3DRWoAoDjoJn1FjT4G2HnsJaXt4tCNslbXV5IHsYM0P4wyvl7PNfHZUf0Rz
+WxHSLZeibgx3ZW51QTwNf5195Bpm2H8d+SUrCQxYMmGVS6TylBM6Zezqct10yjDC
+aSK2rhzaWDLhAQ1fV0ERJ3yXgfape0EYkcbJxAfHv2Qmmjea01rPndX0HbngZu+P
+Wdqyb/ix6SW1IzeVubE9kyakFzS7Daj+AhaleF4LHX5qvS4rGumk0pHHrFrIx9xb
+cCeaLyMFyFK2KNCXeQ1Z9zd98nznwDg7QTknzKE4K3G4QTYPMRJBh25yKpFVGJPU
+Q4AETR6BFthseLyzu8iuuA7gViB7JJhuJEe2SSb0f2kO6HkndnhTZomEV0pb8WQE
+agsAwAu7jPGfRhcknYIbvcYv+/cBRMpE3RJNyksKI79xHvumsdoXuvW51qnJyjUR
+qfu5A74vB0pIwFCzdGmPrs+EnJ0aUA9sZ6xDzz5aJUnX1h+OAUwCp9StbeFQjchm
+KAhaM6u3UFkA2PYl4Y3rGJdY1mti5RE605/24DnW7NblGghC1lM=
+=Tp/j
 -----END PGP SIGNATURE-----
 
---XtWV4BlMIQdUAgvB--
+--YJXDJ416G2yuUv+t--
 
