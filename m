@@ -1,146 +1,179 @@
-Return-Path: <linux-parisc+bounces-3805-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3806-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06CE5B11038
-	for <lists+linux-parisc@lfdr.de>; Thu, 24 Jul 2025 19:10:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED153B1107F
+	for <lists+linux-parisc@lfdr.de>; Thu, 24 Jul 2025 19:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3528916B90E
-	for <lists+linux-parisc@lfdr.de>; Thu, 24 Jul 2025 17:10:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED3A11CC7C5D
+	for <lists+linux-parisc@lfdr.de>; Thu, 24 Jul 2025 17:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5722EAB96;
-	Thu, 24 Jul 2025 17:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EECA1F8937;
+	Thu, 24 Jul 2025 17:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iD4xK0nL"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="LFg6NtxP"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cmx-torrgo001.bell.net (mta-tor-007.bell.net [209.71.212.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CEA2EA730
-	for <linux-parisc@vger.kernel.org>; Thu, 24 Jul 2025 17:10:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80D41B4F0A
+	for <linux-parisc@vger.kernel.org>; Thu, 24 Jul 2025 17:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.212.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753377029; cv=none; b=jcJ7MfJ+JizZ4WMYNHPSTLhrNZ8seL8ddSmsBrnXYCz/feecYKPiPg5+OueF4wltsZbW3bN0HBF+ul6Qq8WJR+VgwYGZ2siMMFclolPpPcqrPrxvKOLUxZ6CJfeC6+0BJqqVS7ztuA7/oHBTot2HqDaJ0NCVjUVllyJbKqiXTYU=
+	t=1753379270; cv=none; b=eGGY1UeZUXkBmr7lavstM/LT3Xe6a2+7x3UX45SHQYk0KefB5thV+cHrK8TN92sQpCjoLSx/FBPMvCeMfb8PURie04E108uNtT8iMD2NgSLVGx0VXSBNu3kRA64QWxvoq8NA1Xwpu97R9BLlGh1Fyz2OmI0qC7PB5upcwyZRKHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753377029; c=relaxed/simple;
-	bh=BXxKQvzobe5wQ3xYmuCvC8UMynXnntS8L6QJrFyzNtU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tmVIqhhVkhrHaXPlAEyqjDn3tYzRTzuvV40CFgaqFztFoA+V/GH8d+MZ166TLIHM2aC3yVBWhQ3dpRpW3q5KVt19KFTq4VQEaBhaGVcQdpLwoLS6apsiGwPg7wcdv+6uw3HdZu+kUZ0oodlotD9q0EHtwyg5oKkq5c1sfaVNl+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iD4xK0nL; arc=none smtp.client-ip=209.85.166.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3e283b2d065so6095ab.1
-        for <linux-parisc@vger.kernel.org>; Thu, 24 Jul 2025 10:10:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753377026; x=1753981826; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VLgUSpYw53cKLUDxe40QFSqFx9VHdgfTQvYmq7qO0B8=;
-        b=iD4xK0nLzndJyLfxqXy2nvnYg+2HLRpZUYfO46D67Qu7CxF/fXtgwk7Ihmu6fkilOX
-         gYgB0/4vg7R78HIQxclL0q88RU+5pABE6Qx3IqoEh4s9hy21fL0/nzzYiCuFgk2p5pgH
-         FoCRMOYvk2e+zEhAvZ9tIke67mQVI9bZpCCHjQtKowgq8tReyW5K+gyt+1kyWtoAkQMU
-         E33mIwDZev0WEdnUwbprgj/LRox+1p3gXM8pTlqPVdrCUJvnj39dUBdRmuPf5SXqlSeB
-         mO843ccRHL2fq+Fvaq8LNs93TyNNP5AlO4SNISk4Ij+KzSpGVauuhgLa5t48lXdWIam5
-         Y9LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753377026; x=1753981826;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VLgUSpYw53cKLUDxe40QFSqFx9VHdgfTQvYmq7qO0B8=;
-        b=XXFkVNoT2/ai22HfQbW9lW3j3cABp9jKg9O26duEBdPeCBLOj+4SRyE9KSRGxTVSCt
-         6pZKCS3pFAm/5+U72fFkqF1VXuRKL2Hr7fQGu0iRtLNJmqYwIjaPO0ACXmAsEENvKiPY
-         yarCyRz7ZHvqF3jTBsFCVIwZIiOR0gmtyRJUV0LXMuTUxQi2Uc0oe9ZadFkRY/aw5Doc
-         fS/+s/tx9F21zTb6Ym1k9sGByPgnGgjc9/Q4Fzk9Z38D60weTuRG95KkhX7RnSJG7U47
-         LZNVrf/Y/KpqaQ4g/CQWWD5Vc25gYIvZnrSp4jfizOvhw6J6WcBMk196zobGkD3I9LuS
-         LY8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWfQVV2O5CyOdnVka8bGNK8ix5e7DhgxeqEneAPXVhko3VBKzK1AmEee7X8mL1tAqbYcbVgv5NdgU3RjqY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1KNHfUvI3rrP/t5hMqKViX7QGlQ34tAWnoF3D4r90wBFcEp8v
-	UehChPgW16+fS2HfY2M0hFC63NQNjvxFBG9108OIo5GGN/I5iQCosGOgPKsMdx9/X7B3BZBdzmV
-	gObn3U4yMuFj32YDvt8SKPDn0wcfZ50M0kuPY3Mtr
-X-Gm-Gg: ASbGncvYessOjEangjJSjM0uMXFN/7xQAfr3r9nOApicwPLICuKrHW1QaKLk0WcbPln
-	sttYEs19czEG7LRmbllkx+Vqm42DOhyEFl7TpHEalID9hgySip5By/BFf5hix8uVZEmrJgr5KvD
-	0M8pMoSqCI5dWyT72NiJdJDXKyCndeDCsejNXOigRguOfPTA4nVD/V9pOXknPvfiv2MOX7ejnw5
-	ZG2juFvm6yGP0+YEYlJaPvfJagvP3J/F4ha
-X-Google-Smtp-Source: AGHT+IE8b1+9raOGesHfGm8k94AzrKSvF5YlDcl6t0VjEks3fbr8R8bSxUctdy4iwWVOqk6bssyVAo2+k1XA8p4oSsk=
-X-Received: by 2002:a05:6e02:9:b0:3e0:4f95:13e5 with SMTP id
- e9e14a558f8ab-3e3b64c0bfcmr5891225ab.24.1753377026297; Thu, 24 Jul 2025
- 10:10:26 -0700 (PDT)
+	s=arc-20240116; t=1753379270; c=relaxed/simple;
+	bh=Nuet/B3U+mXWZI2AVwNuuRUfYwLB6B45PLZ0R6XkhY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=te5tBeJPdFcr66WV9w8tVV3CzbYh5JpxvDrRNv7fFXqAYbv70b/7eD8E6mRSHlCgRyiiaSmOzLpiKf2lcxBbP/uP4+WQfOf0Nyz0EIB70n7H9gOWES7YtZHw1ugh+cv0BHtfjeU3z8b4EAjJqcr9+mjkKEdxvrZk9tVJXjfzbeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=LFg6NtxP; arc=none smtp.client-ip=209.71.212.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1753379268; 
+        bh=+FEsRSyGMYthJOZLrAJaGb39uPq8NRbnkr02cm7hBDs=;
+        h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+        b=LFg6NtxPDaNenP8C+DBMePzE6DuLcqo17jr4Ea6di0OzU/XaK++KRXSpNEGsqSklXLFSax7PjasU/6Qn1eUMA2MlnHV5NwRSHM7wxSoqOAdf0hDYyYd7enmQeEdqKH4xzYGIF9ywmlUECw0geY8U4CR11NbuomBbjKkKJCLeEBmFVAZz89EXgIGlhVflRx14XTrlaHA6bKbC0PPQcrfP5rPjCO+6m0VH0NfIQnyJU00Vy1Ih90kDGU2AoDu4bOtOkZX2KQYCnrsxHaZ4Hy0i0RMSqp9D1u9A3rE07GViEhqND4ZS+ZAW7gDbMmORhh9qt5azhsEO++Uogj6NUP+81w==
+X-RG-SOPHOS: Clean
+X-RG-VADE-SC: 0
+X-RG-VADE: Clean
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 687F0CD1004D9A98
+X-RazorGate-Vade: dmFkZTEPk6KrHgLClv+wLwp3FDTHU3E5vPLX2epMVhJRWjIS6NsBQ6UUgx9wJmlzGpgJBZThRUElLwTwcPLPlE8AtPKgY+abHjCOtvZNhSKdhBTJtBX0c3sTmaIAKRvN04pika/IzDcKGi/Lrgu5SCaovRo5O1ghm0QzxDeUWa9GelVagMXI+hm1vX9fEyIzpZI8yPo2p5cwaN6YLC7q8hx90c+zgTaEt+mhs+3OF5wYsMawzAoVxAVBxS/bncfnYhoLMcHobH7GB5D7SUfqTD4h17QIsjflroSpj0mmALOqXjul9HTPMuam99siPr1OorbQKht2cowUgloBG3D0ig7n2DCMRpag67LaAcjLq7jjow4LMk+Y7LU6VTd+nlx9Ny1N6rzKTMLuKSh+tbrHDCBMMXBITamjzq6jdIzMl+17Vfn6r4lY5xLphJ+SFhDiH4/om5Ia2KJOrKx6hpP/v5Jn4RDRuiEFH0qmXBR9as8C7pDIOWJl8IIVYncbnqTzVeO7zOI+YCU4mUDCTZkzDHF/jCxFmvbwFs6V/1uTRfB4eXrk7XoWHwijg7TKwawgJLuQkBNCJQ/MqERqMO2hQSt10+5vOXN/Bp1CUkT5lu+djCIn1UHgnwJHVmoxDFG/AMbDXSwhmSrsJW4DNQOPw/xpkALdEmfveH+h/lnZ6M+wNoskcQ
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from mx3210.local (142.126.136.104) by cmx-torrgo001.bell.net (authenticated as dave.anglin@bell.net)
+        id 687F0CD1004D9A98; Thu, 24 Jul 2025 13:47:41 -0400
+Date: Thu, 24 Jul 2025 13:47:40 -0400
+From: John David Anglin <dave.anglin@bell.net>
+To: linux-parisc@vger.kernel.org
+Cc: Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>
+Subject: {PATCH] parisc: Revise gateway LWS calls to probe user read access
+Message-ID: <aIJxvJMDzv-UE9gv@mx3210.local>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <202507231135.OtEGYfnQ-lkp@intel.com> <CAP-5=fWXcGiWXeb8=165tCVtEAYX7qkVUpanbpmg=Db=kwEP0g@mail.gmail.com>
- <2923e512-36f6-4cf3-9606-18031167a93a@gmx.de>
-In-Reply-To: <2923e512-36f6-4cf3-9606-18031167a93a@gmx.de>
-From: Ian Rogers <irogers@google.com>
-Date: Thu, 24 Jul 2025 10:10:14 -0700
-X-Gm-Features: Ac12FXyR-7lBitRsNkqVgrna1c0hkaAl18mvxhank8-IiRE-018c4PqLhz59BRM
-Message-ID: <CAP-5=fUiF26Ay+W+fUTRe7EOjEJXk5k_eNe6Yh7SD=GSYAssVQ@mail.gmail.com>
-Subject: Re: [thomas-weissschuh:vdso/unaligned 1/3] include/vdso/unaligned.h:21:9:
- warning: '__builtin_memcpy' reading 4 bytes from a region of size 1
-To: Helge Deller <deller@gmx.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, linux-parisc@vger.kernel.org, 
-	oe-kbuild-all@lists.linux.dev, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="O9NmRe+AfKyq0A5I"
+Content-Disposition: inline
+
+
+--O9NmRe+AfKyq0A5I
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 24, 2025 at 9:15=E2=80=AFAM Helge Deller <deller@gmx.de> wrote:
->
-> On 7/23/25 18:11, Ian Rogers wrote:
-> > https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-tree/arch/parisc/boot/compressed/misc.c#n28
-> >    /* output_len is inserted by the linker possibly at an unaligned add=
-ress */
-> >    extern char output_len;
-> > ...
-> > https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-tree/arch/parisc/boot/compressed/misc.c#n312
-> >    vmlinux_len =3D get_unaligned_le32(&output_len);
-> >
-> > is reading a char as an le32, so a 1 byte value as a 4-byte le32. It
-> > appears the code didn't originally declare output_len this way but it
-> > was changed in commit  c42813b71a06 ("parisc: Fix unaligned-access
-> > crash in bootloader"):
-> > https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-commit/arch/parisc/boot/compressed/misc.c?id=3Dc42813b71a06a2ff4a155aa87ac6=
-09feeab76cf3
-> > -extern __le32 output_len __aligned(1);
-> > +extern char output_len;
-> >
-> > Using __builtin_memcpy for unaligned values is sound. I'm not clear
-> > what the appropriate parisc fix would be nor how I could test it for
-> > the "unalignment-exception" reported in commit c42813b71a06. I suspect
-> > the fix is to revert that commit. I believe we're seeing this warning
-> > now as the casts of the previous __get_unaligned_t would hide the
-> > issue.
->
-> I'm afraid that if you revert my patch, the compiler may again "optimize"
-> __builtin_memcpy() to a single-memory-access assembler instruction, which
-> then will fail again if the variable output_len was stored at an unaligne=
-d address.
-> So the same issue as described in commit c42813b71a06.
-> Please note, that this is the boot loader, where an in-kernel
-> unalignment handler isn't functional yet.
->
-> My proposal to fix this is to avoid -Wstringop-overread when compiling
-> this file. Maybe some Makefile logic as done with CFLAGS_REMOVE_fpudispat=
-ch.o
-> in arch/parisc/math-emu/Makefile can be added
+parisc: Revise gateway LWS calls to probe user read access
 
-It is probably easier to add #pragmas. Is there a concern that the
-compiler may detect undefined behavior and just do something garbage?
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+---
 
-Thanks,
-Ian
+diff --git a/arch/parisc/kernel/syscall.S b/arch/parisc/kernel/syscall.S
+index 0fa81bf1466b..4a9d7a08ecf9 100644
+--- a/arch/parisc/kernel/syscall.S
++++ b/arch/parisc/kernel/syscall.S
+@@ -613,6 +613,9 @@ lws_compare_and_swap32:
+ lws_compare_and_swap:
+ 	/* Trigger memory reference interruptions without writing to memory */
+ 1:	ldw	0(%r26), %r28
++	proberi	(%r26), 3, %r28
++	comb,=3D,n	%r28, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 2:	stbys,e	%r0, 0(%r26)
+=20
+ 	/* Calculate 8-bit hash index from virtual address */
+@@ -767,6 +770,9 @@ cas2_lock_start:
+ 	copy	%r26, %r28
+ 	depi_safe	0, 31, 2, %r28
+ 10:	ldw	0(%r28), %r1
++	proberi	(%r28), 3, %r1
++	comb,=3D,n	%r1, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 11:	stbys,e	%r0, 0(%r28)
+=20
+ 	/* Calculate 8-bit hash index from virtual address */
+@@ -951,41 +957,47 @@ atomic_xchg_begin:
+=20
+ 	/* 8-bit exchange */
+ 1:	ldb	0(%r24), %r20
++	proberi	(%r24), 3, %r20
++	comb,=3D,n	%r20, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 	copy	%r23, %r20
+ 	depi_safe	0, 31, 2, %r20
+ 	b	atomic_xchg_start
+ 2:	stbys,e	%r0, 0(%r20)
+-	nop
+-	nop
+-	nop
+=20
+ 	/* 16-bit exchange */
+ 3:	ldh	0(%r24), %r20
++	proberi	(%r24), 3, %r20
++	comb,=3D,n	%r20, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 	copy	%r23, %r20
+ 	depi_safe	0, 31, 2, %r20
+ 	b	atomic_xchg_start
+ 4:	stbys,e	%r0, 0(%r20)
+-	nop
+-	nop
+-	nop
+=20
+ 	/* 32-bit exchange */
+ 5:	ldw	0(%r24), %r20
++	proberi	(%r24), 3, %r20
++	comb,=3D,n	%r20, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 	b	atomic_xchg_start
+ 6:	stbys,e	%r0, 0(%r23)
+ 	nop
+ 	nop
+-	nop
+-	nop
+-	nop
+=20
+ 	/* 64-bit exchange */
+ #ifdef CONFIG_64BIT
+ 7:	ldd	0(%r24), %r20
++	proberi	(%r24), 3, %r20
++	comb,=3D,n	%r20, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 8:	stdby,e	%r0, 0(%r23)
+ #else
+ 7:	ldw	0(%r24), %r20
+ 8:	ldw	4(%r24), %r20
++	proberi	(%r24), 3, %r20
++	comb,=3D,n	%r20, %r0, lws_fault /* backwards, likely not taken */
++	nop
+ 	copy	%r23, %r20
+ 	depi_safe	0, 31, 2, %r20
+ 9:	stbys,e	%r0, 0(%r20)
 
->
-> Helge
+--O9NmRe+AfKyq0A5I
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmiCcbQACgkQXb/Nrl8Z
+TfFLdxAAlQ0GhjiJ/EE7no91Y3dLKuXvrVM6BvpmA3EwVLJ/7Ru7BgaqE6jQl5JG
+wCgveDWWNHHGP7mZ5FMaaw0gu5pAwqb4T/tqd1nsemFOD2ZGBRDUN8v/iytqrESY
+dK3EJBtF0krzEuTCyTG9DktU/1mt6rzAPs6J7qFCHJNfn1MUZ/MwXmASNNrqRj24
+5hBzwewm09loffbRhjKmPlPcT/jXb5W4RmOLqRyHgGugtJfVzzjAu7zxH1dHd4zV
+SEax9dLjq/tXaGHZFyWAxBwE79B65EHS49NdMroVj0VOFB6hY+SKou/QoUWnYfHs
+9q27/5SGySvUyV6ZMK1jE9c69kx55M0iaOhVXco9SQqrJ8Js94p5U1aEWGCd3Bkg
+juexirlYYusJLy1JY2IPpJcJSlE6pMmtJpXxB/EzD7+LNFoo59MEccZ3gdJdLTIp
+Vkb26kR0AdMeqJLNUC/j1bK1Eq6ZCdItdWanbM4ZcrW2A4Z7c4+lrUgxdu0/ZJ8K
+J+BzKmwsBIvyTR7hO1vYY6N01FvV3dNBWTrmfCVul9JLuog24vhBSd2EQzkAxwuA
+eN/gVfcOV4LdjewIRh4foOneWrTCw9PQDABiT4zDt268Up365B2pC6zmqhWr+7qh
+Tw3k6o+kz8BnNfsKMqJd5wZGC38BZuFZZszQQ1aQH2rOcsujG8Y=
+=CByQ
+-----END PGP SIGNATURE-----
+
+--O9NmRe+AfKyq0A5I--
 
