@@ -1,57 +1,57 @@
-Return-Path: <linux-parisc+bounces-3807-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3808-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A79B12142
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 17:47:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AAA4B1217B
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 18:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F0BD1CC5BC3
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 15:48:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAD417B150E
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 16:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3194824677E;
-	Fri, 25 Jul 2025 15:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4672BB17;
+	Fri, 25 Jul 2025 16:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="1tFg4RtF"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="2ozczpVo"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-mtlrgo001.bell.net (mta-mtl-008.bell.net [209.71.208.31])
+Received: from cmx-mtlrgo002.bell.net (mta-mtl-001.bell.net [209.71.208.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3652B9A4
-	for <linux-parisc@vger.kernel.org>; Fri, 25 Jul 2025 15:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE54D2EF290
+	for <linux-parisc@vger.kernel.org>; Fri, 25 Jul 2025 16:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753458470; cv=none; b=nbqLrqPhhHCGygFwUZV2EkubWQ6n+rGYJxfmyg4LErIWIg6FNdgsaT359XtbjmCfQU5xi5xFQoUD3cs7l32gfn8aG27nfKX7G0GPw3SEmaq8dzKeY+AR2qCYfsYt1y9RxShRiH52jt1Sou/yIyvgnhXP+bKvmZOiH2s1XASRwo0=
+	t=1753459944; cv=none; b=duAiok9dS6ni9V+/eDBVDijugIrR/MupAQOgvYSAlpe+vvpr79QMiYT1Wa0ODRVIvYYP96gPK+Cxq6ttb4SbUW3JK7QvVbLlMlxPGHjufb055eC0y2GDYP49hbC5M9h5n75xHsG06AYiANjsBHpizi/itgws1YkxP5rvrchUfPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753458470; c=relaxed/simple;
-	bh=PXTDHUJsc3tktZe3fp/sbB3DdAjwlwBbmQnwxOI2tXs=;
+	s=arc-20240116; t=1753459944; c=relaxed/simple;
+	bh=wSH2yiXuREj86Q7zUbkkIB4iNdZsTpZeP0s6fX+yDNs=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ug6/oNIVlQl/vOXJSIPVMtV3CPyAGC8nOSa14LuKJcIuHMrb6CVIjI9lRxytGNVmkTggf8jEXl3ZYlFcZoWYonDQ3bCI49Q75/fRZQrjjWkMfAdZ2KBYIuRnUnMzcR/tyjAc1Mgs8OrTxdaqE8jgp96a5gylgo9LDsLyBMC2Qrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=1tFg4RtF; arc=none smtp.client-ip=209.71.208.31
+	 Content-Disposition; b=chp1pzmF82qWHfJXUAo5/IRmwI+0MpUKF3hg1nE7zXlf5KwRMxXYBWaXqE7TadrbdePQMLr6p9IVzmevwB7ohekT1afndT9E2bf7uzcZ53i0+y1bEy9HJJLb+FVORcdO4dgLnVz2qQGfp+UW/KwAVO4NpqJXsyXgPD2+MWJT0H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=2ozczpVo; arc=none smtp.client-ip=209.71.208.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1753458468; 
-        bh=BascKlQNxuEP20OAQxyYjTf77w0WJEWb+I1IjVwT2A8=;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1753459943; 
+        bh=N6X0BfM9VWj9/0Np/aw7HbCx8ncrs15qvrbhrcKmAW8=;
         h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-        b=1tFg4RtFd3Z9hjgQE19mOT59j+T7hTg7GcIZwdpf43jvlN2HDadID5aIDJa9ms7pn2i8BLgFN8yKTXtIqgAbPoyLi0enT57Jqr5VS++E0pLzVty04WCf7eIwhY+CNSfQl6vHqQssfvuaf7Qf/RY4Ftjp0fDi1wnpbTlftILX1siuboRHGEuhODkfMZ2iYvcacbYrc2+SneBSfFFe0/CDb0/q3lYPhmlLLfH2Y0aimKv1eYxrZ41toLUhd0gs6zxpof0YaEQq8gekJevsAY1f1B5f0LqsL//S5HsUh3zAhD+QtGdH//dAzyTvxSVb5oqK6T2VvHzdr0lx6ot09BGDzw==
+        b=2ozczpVoUkcWCBymfJjkozI4NXGA46TLxMXEEER6KXQzEJQ1TFWR+zCCeEMmlJmbegFIbVfQxeoUsdwbo3xO6rPS/OQBpxJAg8D1lDS5Nua1hO+tJM9MNqvNPpbLbVv45ULw1O4QVEFllsNYM1yxENsL9zJY9dlA/FH63R8s1Q/KBjPJWWyP9f7UPwTb3mH8GPEMsTt+vdazDAadZfgIVlLjgRWGfQFnefFyLDSt7KXP3AWBGpyoLl1HgLaNh/KYBFiAsANDTV9CPHswwkOPTwalnA0rTL09alMtj/+yOGOH4elXkWjtBRnwpCezkbttjDt/1BrKSJKucback1RJPw==
 X-RG-SOPHOS: Clean
 X-RG-VADE-SC: 0
 X-RG-VADE: Clean
 X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 687D26C200C538EE
-X-RazorGate-Vade: dmFkZTGTAQwMy4l/DBNi3bxy84DM6YDDcTzhwnqvO/zJ0W26hMfNEygh6hrTr4LsVX6FLn3eyYa2SdjHmA6O4F73uoUMoDbuuXGSum1uzXM5Sh/foKoJtEsYF5BGyKjx3Ut5j9SVKgVQKH9VyTtYLOG56l4bxE9pyy7nGRG6aXAFHkiBvwaI2nOovdXWbkrBE5yeOtPcZ4svyEzdFnrtHiD7kyHPTFZxw1/YX3EV84/nOXetFSrfnjUh0rzJBp8igAAIs/8ayqJCr0QeT7nvaF/XwAJbXr9MjguNr1jLLWYM8uyWzlnH7JrZNtsEiWWalL6S/yFldf3pvyg3YrAtxv7IhybXh5r0fdJuwSAc5Yj2eNw/VGuABB9K4onv8WH8cgXYDvkNTdst9ZLckqp/OVgQiko0oCHba78GuoOqZltSKvZ1yCUYg9WhhK/OuOgzqM13LKOtORbqAnveSUO3JMwzS5cCqV+KFRiqNOVta1WFBKFjaY66U5vGCDzuiBX2kFs54Bs+ve8/gV8DmddNnslEZ5yqjs1eyVDogI5VHGBRDfHTwackG9fPo9+oBLVfPvYJIIVg5YlMpvKQ3Bac7Fr0ChPZJDq/zEhh736+RSJlWKhmXJH1u3z4C25QX7SHadb5bCkzW2oAueHU+iA2UO+w04NJQhjzYY8VDErbg2z1WfFGxg
+X-RG-Rigid: 687D27190085E14F
+X-RazorGate-Vade: dmFkZTExr9suV6/+MFOgqs1Z2oQWazM0CnNHvyVz58zuDyM7fz9FW+5MO/EYmAdQ/OtW6NGCpSv1bmjs+l6EKYIgMegjtShwRlvntaBR8rw57l9PE+SN+Ix933f6JZbQiRtP5S4kElB7TnrWGQdBVNASp72AlG6C1It9+q3r0KMwiKd02j9qAqoAHuUtNS/JH94v2L1HhsOYOev1ez9wF64XqshS06Xi4+Q+OezJXbySa3L3sULdPvu8F7JXQwpGjXuJK0w4WCcSCXez/3AIMRQ+zyNGfUrpHhGE676SNWsiGWQouQbBwUbKEFG9chiEkXNZY9k3FaOs2325FKQXcOHvdlArPBxDSCFjtEdl5VgyzFiUq9oxr0He98DHt+fh17sUFCWwfIsXGy/FHEp+56PqKg4f9v0YSt7t1AccP7RQ3JmHnG2LPHV9r0qP5d0akaSL0IleqAuKjSIgQF9nU3wkqpD9PVyh1jCoML/lU0lMOMX7femSAhEeWqLa9NJ9CsXNORrp5RDRZ4Aets64Bg80f4BAMiBjcYqFRpQeEZqmhxFwct+ZELIi0quAhjTxFCALMuVSJoFwhSFIdKzw/FodRgOZPESjxKbyGuXkI+Amwsg/eryV3q541YRMaKNbFjND7zjXsA6uPsmu3CvgnP/iMiDSCNNXstN5hcltCiSlFWCMGw
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
-Received: from mx3210.local (142.126.136.104) by cmx-mtlrgo001.bell.net (authenticated as dave.anglin@bell.net)
-        id 687D26C200C538EE; Fri, 25 Jul 2025 11:47:40 -0400
-Date: Fri, 25 Jul 2025 11:47:39 -0400
+Received: from mx3210.local (142.126.136.104) by cmx-mtlrgo002.bell.net (authenticated as dave.anglin@bell.net)
+        id 687D27190085E14F; Fri, 25 Jul 2025 12:12:16 -0400
+Date: Fri, 25 Jul 2025 12:12:14 -0400
 From: John David Anglin <dave.anglin@bell.net>
 To: linux-parisc@vger.kernel.org
 Cc: Helge Deller <deller@gmx.de>,
 	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>
-Subject: [PATCH v2] parisc: Revise gateway LWS calls to probe user read access
-Message-ID: <aIOnG0l0VFFwywTr@mx3210.local>
+Subject: [PATCH v3] parisc: Revise gateway LWS calls to probe user read access
+Message-ID: <aIOs3toL13kNy_to@mx3210.local>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -59,19 +59,14 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ljK4ySshoX8ZWphK"
+	protocol="application/pgp-signature"; boundary="yxlDoHcsTanuRRRa"
 Content-Disposition: inline
 
 
---ljK4ySshoX8ZWphK
+--yxlDoHcsTanuRRRa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-
-Updated commit message in this version.
-
-Dave
----
 
 parisc: Revise gateway LWS calls to probe user read access
 
@@ -80,9 +75,9 @@ interruptions without writing to memory. Because of the way read
 access support is implemented, read access interruptions are only
 triggered at privilege levels 2 and 3. The kernel and gateway
 page execute at privilege level 0, so this code never triggers
-a read access interruption. Thus, it currently possible for user
-code to execute a LWS compare and swap operation at an address
-that is read protected at privilege level 3.
+a read access interruption. Thus, it is currently possible for
+user code to execute a LWS compare and swap operation at an
+address that is read protected at privilege level 3.
 
 Fix this by probing read access rights at privilege level 3 and
 branching to lws_fault if access isn't allowed.
@@ -172,25 +167,25 @@ index 0fa81bf1466b..4a9d7a08ecf9 100644
  	depi_safe	0, 31, 2, %r20
  9:	stbys,e	%r0, 0(%r20)
 
---ljK4ySshoX8ZWphK
+--yxlDoHcsTanuRRRa
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmiDpxIACgkQXb/Nrl8Z
-TfEQXQ//eSO8DKm7D1igW4UYc9j/4VtGaAsjC8ucr/P1OTIczbNmUzxylD9RiF2h
-IX7jiSpVbd6K7os4yQseialTwnQATkavREKbhafdEjMaYiAAuTCvw5aOErGNMFMU
-MQselehmTb3w/0g9+/hyBDFbv12PscoKSKLhwE89qS/ZWi7lTGDk+78y+SgLU8o3
-v+XRhWW/irG10mznc3JkaHGBDBAE6bJfxa0seeIaYi1jv98Mvwvqtg73457Rzo2s
-64mjg8QUudL9rfgeBDqFK7pc/Woa/Q6ZWMeUvm31anF67/3hD/Y0YrtVgui85gQy
-YrhGCYF1zWxwvzus1YJI4y31pMbcgQ/C2ZP0Fc3u2VtcIe7s1+K5vtjRGjRb+9wG
-8if5pOCv7JgBrn7DGKQwdeYjahUyS39y+09Cl1mB/Tni2TgOCaJ+8MBF1D8X8sor
-OeOUIx1HJ7vI9KK2p6/oK6MiaiCLw6GLRflFAdzbP5pTVT4103coQYDEeqBmI9pJ
-JSPKXso6omRXSQtsvL9v+j1dMaivlsAgpyEndaIB8QU7PlYUF5MiCvDc4j5UG9IK
-xR0vGwDZC6qeN9w3m7njVJ81QoaLzqMnDyWyr4HA7oRNSd80+YyakKIHb23I2s/f
-upRYljvkOm9c+TF297JzAQhhVAcG26qmRMGJXwXp1ryqx7Uk9Bs=
-=0ZvN
+iQIzBAABCAAdFiEEnRzl+6e9+DTrEhyEXb/Nrl8ZTfEFAmiDrNgACgkQXb/Nrl8Z
+TfEX0BAAoxQ3SYpgjMHwq+H15jb51rS8ciy8nAp01laEm92tW7aA6hhnfDWFdxOV
+OHBtup1H6fczKXDvWcYGERLvMOASB2y78MuONfOfgxaDqIUuA6klP3V19BNYZP9y
+e4rIZg99Vccc/0+UrxQl3lAO/bnUo8oy1CP3mGT4S0taejevi+UFMWaqug528hms
+jEdo+ERYZ/ByyrILMNdhAtovHa3YyHrw4e4ANsZwaeO2Bw+8KCvTkmY82gxUbEsh
+OpIFYiFMkmm99E9GgCnzK+oEFE5tsIArV3KjT70UL9r3hwEnQaG47Q/9cndjoQ5i
+4U4YoKImIbYAHRzenVPXkWXkTiBkdLf4HcHkYO1/1RNiJgb9JjNYCWBtxlj0kMuh
+iY6fJBgqADSu1QtMcC0wUTBsPF7vfgqc5gygjpoL37VKTWhe0MbT0Mph/Jn36Zc4
+hiXtaoKWWIskLQiT8b1Z9VC/BbmecMlI7cF46ONNrFT3yIkjdb4TWsIkAdI4Z6HD
+b2Fjg/E+mzkd6/WyA1xCJc9oybueRhdfG3J3iO+UxrhItPWt8loXJHciGGhd+bC8
+0DfKDAzCz6Nf2i0wV2P+cmymVFBXDPOqp7Qiu5Y9nDSwrknDFkD/9XLJsFUCHXm+
+gRKysAtIVs1y/C74SNw60cZT/IxxMLQm8d1BBvUSt5uSzJqjwcQ=
+=Toit
 -----END PGP SIGNATURE-----
 
---ljK4ySshoX8ZWphK--
+--yxlDoHcsTanuRRRa--
 
