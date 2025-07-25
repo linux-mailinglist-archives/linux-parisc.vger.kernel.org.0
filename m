@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-3813-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3814-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7DD4B124BA
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 21:33:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE301B124BF
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 21:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 837A9AA7591
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 19:33:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9348B3B9651
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 19:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5404A1FE455;
-	Fri, 25 Jul 2025 19:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5F621CA1E;
+	Fri, 25 Jul 2025 19:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="H5HoZ7we"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="Rxqs2vHw"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779AB2D052;
-	Fri, 25 Jul 2025 19:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3782D052;
+	Fri, 25 Jul 2025 19:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753472032; cv=none; b=DjOAPd8QbNzWmUC1CeTVow/41vLkRBkH/qhXVc6mfJzm/SPgzyIkpeFdJJV818NODllCheKxRGfQGLUMdwa/B3zBRn+8AN8ODZUZ/OYWM/26TbIm6GT1ocSxeBpSqDR711lS77ogZS1W/QN4Wo5+t5mv1wJt8P/vDW2qJJyD1uE=
+	t=1753472121; cv=none; b=hOPO/xHPdAfVb4EzFc/bZUrgj8La609fv41mxAroMx+XwrHiDMn/uLGkylAhp6/So9x2bOWcAEI8rVjZd+cotfywJq9jZk6d2U2O9obYQunGfSq3/wRJCGkkJTfZCbdm6ezr3keeKtCWiwfvO2oewnmf1Smp83tYQ+VnqXTMeUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753472032; c=relaxed/simple;
-	bh=r8mlM7FiQEg1L2QTN1ooTgTm0zlBWN9V95Czg8v9tjU=;
+	s=arc-20240116; t=1753472121; c=relaxed/simple;
+	bh=3Xlemyi/uapW2J9j70OiiGHjNEZEJkgBsZ/R6FXT6eg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O58ZIjXJB8liwoD7oLSOG/9uREj3ePYYCh36e4XvkiT7H0oe+ncH+YJnDQs92JwO10sXOYVcRpNzJ9J2qEtv+X9Dv+tH9vpwUERf6hk6yjCxBnGixw8Jzy/Zjp0pips3X7NiTXmY7x2oA20eAWnKdzEdNybdhbIXrmo+hMMWuH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=H5HoZ7we; arc=none smtp.client-ip=212.227.15.15
+	 In-Reply-To:Content-Type; b=QB/thy2kjcew9uP6fukETeVpTYOzxsB4IeaXP6OlcU9B6EPYoy5rw4AF9zNREXj0C2yK1Bpj9BjEUi3rKpY+KA8qW2HHR4E6wFIeHKpXOSibO8pkaKQas6X4mmXjDGuKcU79H4/2uNZWCDZOeM5zxXpCysV3Mebdf4CtDrf13CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=Rxqs2vHw; arc=none smtp.client-ip=212.227.15.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1753472014; x=1754076814; i=deller@gmx.de;
-	bh=prdgWERnB6vVLOAd1xe7swblcuaID8D87uoTNlv9ZMc=;
+	s=s31663417; t=1753472111; x=1754076911; i=deller@gmx.de;
+	bh=wPO1NhkN4jIGEIxnkcFc0Y7dQYtvaXtp4zYP4NfbYcI=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=H5HoZ7weK53wBWT5fxxIpOWPfEC84Rjb1jLEXfQKCUExbtgteIq6Y/kw/EZaOwsv
-	 aBdVyqQ5/9W1CNGyxe4RTIsTBeOiFjLQ9FslmdNoalG46TmWT+dCT9M12bDOKsOnL
-	 ulXhPVZ7biHtQt8K6tEuiCSTKFnnth9dJV6L4D3Qk+0uEqmo58wFLwUIbVPD6Om3M
-	 s//J3z+1eeRJzGpGfkjQUs4GoXZXI0z180p4cnWrvt+Tw2Fc528AGGHRwX5R5h42F
-	 bYWuIU1b8iG1dmbmx1ifcOyJgE4YTn13lHXyJmp1NnO+1ZPAsuNG0sWCAf6J8bSx1
-	 GgGisWB3dX4racLbig==
+	b=Rxqs2vHwU9u3bbekWYEjO5IkGOXUj0ePd8WNq6iAXyRBOTKTNI25egIBZIRCZ/Tw
+	 QWtb309+VC/QD/VIOn+CnkZzvVwOp4o0MQaMhenBYbw8P+aeUyd+uCOFqme5yQ2fc
+	 32e2xpRnVExj9ofcUB3h46DYuqEXZpiErCBHXnF6GE1UrbVpcRbMAg01g9xnFD0nL
+	 Dh2tKOJJd8SzDiPZunnQ/AWwrsQFldeyHnuBdgvZe4Vj4ZrrkHp6J4oaV8L3Y+fct
+	 4W6+DQnBkhndRPV6jWPHorOSO0PubN49Ceh+dbXi0xhG/XWxCkXRbLRPGX1zVElX9
+	 WS4OAXRA3dR3/DFnuQ==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.173] ([109.250.63.22]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N0G1d-1uSF0T2Z1T-010le9; Fri, 25
- Jul 2025 21:33:34 +0200
-Message-ID: <05d6edd9-aa6f-4ddb-a32a-6b2ec844628a@gmx.de>
-Date: Fri, 25 Jul 2025 21:33:32 +0200
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MpUUw-1uMYdf2HV6-00dMuh; Fri, 25
+ Jul 2025 21:35:11 +0200
+Message-ID: <7496ae20-7ed2-4823-8646-5e1b1b22284e@gmx.de>
+Date: Fri, 25 Jul 2025 21:35:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,12 +58,12 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: Makefile: fix a typo in palo.conf
+Subject: Re: [PATCH] parisc: Makefile: explain that 64BIT requires both 32-bit
+ and 64-bit compilers
 To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
-Cc: Masahiro Yamada <yamada.masahiro@socionext.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
  linux-parisc@vger.kernel.org
-References: <20250625073102.804075-1-rdunlap@infradead.org>
+References: <20250625073054.802365-1-rdunlap@infradead.org>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -109,78 +109,75 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20250625073102.804075-1-rdunlap@infradead.org>
+In-Reply-To: <20250625073054.802365-1-rdunlap@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:X0hVkHDOJegvbM62VszeVr0a8WqfCDRTgaAPn9o9XFqb9mKK3sF
- b95rAFQBgD53UsUg3ICDdQ/3rz7F2g/eaUzK7x8CIik5WTllHfy2W628B/bKvmgauqFOat4
- s0j8Wi4CVf7d6sZIjMTtyRnyxloi7UEkns1Vat1RDB4sq6o8e+Fs086OFnUABqIncg/X18g
- /9JLKsjdTCaJbtA1KMmQA==
+X-Provags-ID: V03:K1:sKa2Nfb5eDUkuxl2E+xPqeS+RaiBP6YKniCfAcU7bV8T+I/rfQi
+ w2oivkLa+eKbagELf5mv9/A1oeoh/CGMhIr8ZufqR1WoxMb+agSSIuCqfMUDJxL4m+LTkmF
+ 1ubF3vmxYu6qoVOLQY9f4A102BKH1P+xN6jqn15yU1dIjB/YtsOobaW5mf2QkVqd1HD1hlT
+ 0Q+tgftUkYn0p2H0nAu0Q==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:4NQW6PHIHDU=;k96lQQfIgvoLe7CBrh04ebKQpEx
- 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
+UI-OutboundReport: notjunk:1;M01:P0:D7g/+jrr/0w=;sJTHicYzxwaCp0XsJBP29uLSkiY
+ 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
+ NzDR/jRtfRBFZ8G3ouUFXm0=
 
-On 6/25/25 09:31, Randy Dunlap wrote:
-> Correct "objree" to "objtree". "objree" is not defined.
+On 6/25/25 09:30, Randy Dunlap wrote:
+> For building a 64-bit kernel, both 32-bit and 64-bit VDSO binaries
+> are built, so both 32-bit and 64-bit compilers (and tools) should be
+> in the PATH environment variable.
 >=20
-> Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
 > Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
 > Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
 > Cc: Helge Deller <deller@gmx.de>
 > Cc: linux-parisc@vger.kernel.org
-> ---
->   arch/parisc/Makefile |    2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
 
 applied.
 
@@ -188,20 +185,25 @@ Thanks Randy!
 
 Helge
 
- =20
+> This wasn't obvious to me; I was seeing lots of Assembler errors
+> when only the 64-bit tools were in $PATH.
+> I didn't find a better place to document this.
+>=20
+>   arch/parisc/Makefile |    4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
 > --- lnx-616-rc3.orig/arch/parisc/Makefile
 > +++ lnx-616-rc3/arch/parisc/Makefile
-> @@ -139,7 +139,7 @@ palo lifimage: vmlinuz
->   	fi
->   	@if test ! -f "$(PALOCONF)"; then \
->   		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
-> -		echo 'A generic palo config file ($(objree)/palo.conf) has been creat=
-ed for you.'; \
-> +		echo 'A generic palo config file ($(objtree)/palo.conf) has been crea=
-ted for you.'; \
->   		echo 'You should check it and re-run "make palo".'; \
->   		echo 'WARNING: the "lifimage" file is now placed in this directory b=
-y default!'; \
->   		false; \
+> @@ -39,7 +39,9 @@ endif
+>  =20
+>   export LD_BFD
+>  =20
+> -# Set default 32 bits cross compilers for vdso
+> +# Set default 32 bits cross compilers for vdso.
+> +# This means that for 64BIT, both the 64-bit tools and the 32-bit tools
+> +# need to be in the path.
+>   CC_ARCHES_32 =3D hppa hppa2.0 hppa1.1
+>   CC_SUFFIXES  =3D linux linux-gnu unknown-linux-gnu suse-linux
+>   CROSS32_COMPILE :=3D $(call cc-cross-prefix, \
 
 
