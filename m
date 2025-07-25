@@ -1,56 +1,56 @@
-Return-Path: <linux-parisc+bounces-3812-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3813-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06774B124B5
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 21:22:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DD4B124BA
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 21:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9B424E41D1
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 19:22:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 837A9AA7591
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 19:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FFC254854;
-	Fri, 25 Jul 2025 19:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5404A1FE455;
+	Fri, 25 Jul 2025 19:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="OH082obJ"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="H5HoZ7we"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2300199EAD
-	for <linux-parisc@vger.kernel.org>; Fri, 25 Jul 2025 19:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779AB2D052;
+	Fri, 25 Jul 2025 19:33:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753471375; cv=none; b=PDye2pK0DmeyX+4aFOoHM8GmIa1+KufbLHzOjQiLhbqtwMxzleHl+vkpSlgS8sWckf4nvjOLK6UnsqH87pwxRn+zqKgca7gZwjBq3ZdhiZL9EOq1guog6o+i7eU+5Y58GwuW6v8uApXIf5vPXhyVTM7vVP4xUWo7bZcbl8Q7mB0=
+	t=1753472032; cv=none; b=DjOAPd8QbNzWmUC1CeTVow/41vLkRBkH/qhXVc6mfJzm/SPgzyIkpeFdJJV818NODllCheKxRGfQGLUMdwa/B3zBRn+8AN8ODZUZ/OYWM/26TbIm6GT1ocSxeBpSqDR711lS77ogZS1W/QN4Wo5+t5mv1wJt8P/vDW2qJJyD1uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753471375; c=relaxed/simple;
-	bh=A1x9GuSnw4YCaf5L144y3BnOgsKj+lgdzwJu0z/mLNU=;
+	s=arc-20240116; t=1753472032; c=relaxed/simple;
+	bh=r8mlM7FiQEg1L2QTN1ooTgTm0zlBWN9V95Czg8v9tjU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D+XpiVE1YuO4dFOmAeyMZZ01a72ugeqRDFULKhyg2XODR17C/1pOHn938qkmjs+sQig3orgCnLQymKiNRIg/47Lgc1Du001iclGrRFaQoGDzwFhjNRO+QE3EHX90zSPQhqowpC8FQWU2jnyjiZCKEf0hoVU1hfrDmrNBygCBYTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=OH082obJ; arc=none smtp.client-ip=212.227.15.18
+	 In-Reply-To:Content-Type; b=O58ZIjXJB8liwoD7oLSOG/9uREj3ePYYCh36e4XvkiT7H0oe+ncH+YJnDQs92JwO10sXOYVcRpNzJ9J2qEtv+X9Dv+tH9vpwUERf6hk6yjCxBnGixw8Jzy/Zjp0pips3X7NiTXmY7x2oA20eAWnKdzEdNybdhbIXrmo+hMMWuH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=H5HoZ7we; arc=none smtp.client-ip=212.227.15.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1753471370; x=1754076170; i=deller@gmx.de;
-	bh=VKC1hGCmUQZOOrfm6snpqkxs6rdJr0w/CXAfo+qB9Z0=;
+	s=s31663417; t=1753472014; x=1754076814; i=deller@gmx.de;
+	bh=prdgWERnB6vVLOAd1xe7swblcuaID8D87uoTNlv9ZMc=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=OH082obJIUhNVAYl9Q5ghJVjcZVk/2FNOqVwVO1LDqP1rm7lay7zk8bx7heYboUq
-	 BDJKrPS52hYyYFKemMEsegjPXjvDhd5BJX+UbPu3v4YdjUAT3wFMZx48r2yawYCJu
-	 xWMymj8xf6J37VzvX/9H8rDrQqEEojZRF2uW7VTBnSgIoFDdMVQLLqqWWL0bWnZ42
-	 CiUqHijpaffhhHTCmPTOT5crIIC4NKFJqvtAMWh5BoL2njnWycfaW+qCTH/nUylqk
-	 4gGarGKXme7C2XDNFK+v0VNvDrsfDT5ZiEXjEsdYpJNg6+A+wbD+Bg6l6WrNX3U0g
-	 p76sl/tUl2M1bRVkiw==
+	b=H5HoZ7weK53wBWT5fxxIpOWPfEC84Rjb1jLEXfQKCUExbtgteIq6Y/kw/EZaOwsv
+	 aBdVyqQ5/9W1CNGyxe4RTIsTBeOiFjLQ9FslmdNoalG46TmWT+dCT9M12bDOKsOnL
+	 ulXhPVZ7biHtQt8K6tEuiCSTKFnnth9dJV6L4D3Qk+0uEqmo58wFLwUIbVPD6Om3M
+	 s//J3z+1eeRJzGpGfkjQUs4GoXZXI0z180p4cnWrvt+Tw2Fc528AGGHRwX5R5h42F
+	 bYWuIU1b8iG1dmbmx1ifcOyJgE4YTn13lHXyJmp1NnO+1ZPAsuNG0sWCAf6J8bSx1
+	 GgGisWB3dX4racLbig==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.173] ([109.250.63.22]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Ml6qM-1uIBD41gfU-00epdp; Fri, 25
- Jul 2025 21:22:50 +0200
-Message-ID: <b0ad6535-c3f7-42e5-87ff-bc1b2f3b83ad@gmx.de>
-Date: Fri, 25 Jul 2025 21:22:49 +0200
+Received: from [192.168.20.173] ([109.250.63.22]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N0G1d-1uSF0T2Z1T-010le9; Fri, 25
+ Jul 2025 21:33:34 +0200
+Message-ID: <05d6edd9-aa6f-4ddb-a32a-6b2ec844628a@gmx.de>
+Date: Fri, 25 Jul 2025 21:33:32 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,12 +58,12 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] parisc: Revise __get_user() to probe user read access
-To: John David Anglin <dave.anglin@bell.net>, linux-parisc@vger.kernel.org
-Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>
-References: <aIPEJOOMJQtuW49u@mx3210.local>
- <8524edb6-f011-4e0c-8647-c03dfb720c09@gmx.de>
- <52946f87-5a1f-41ff-8cf5-2637f89f9350@bell.net>
+Subject: Re: [PATCH] parisc: Makefile: fix a typo in palo.conf
+To: Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ linux-parisc@vger.kernel.org
+References: <20250625073102.804075-1-rdunlap@infradead.org>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -109,114 +109,99 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <52946f87-5a1f-41ff-8cf5-2637f89f9350@bell.net>
+In-Reply-To: <20250625073102.804075-1-rdunlap@infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:00K4V7H6zFbvxUa7Yoo2mK9iuCKweQs0+Qo8BAhv/QBu8qHcDtX
- 9lEpixK7Qg5sSquFkT9IhO4DqSwxa3dLWE7pHVeyNyW+JuMaxRe82CI+BPUr7sfCa0Madm0
- Df0/01dFI6u0lN3d2M7BxO105R2sPfObsePEcloqJkLh+/zGOg4r7xf/WzLGSkUWEqRJS6h
- 8ZkNTqS0iFYzg+7myNbcw==
+X-Provags-ID: V03:K1:X0hVkHDOJegvbM62VszeVr0a8WqfCDRTgaAPn9o9XFqb9mKK3sF
+ b95rAFQBgD53UsUg3ICDdQ/3rz7F2g/eaUzK7x8CIik5WTllHfy2W628B/bKvmgauqFOat4
+ s0j8Wi4CVf7d6sZIjMTtyRnyxloi7UEkns1Vat1RDB4sq6o8e+Fs086OFnUABqIncg/X18g
+ /9JLKsjdTCaJbtA1KMmQA==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:sYD1CQTF6Ec=;YBUA60e1ByJlfmtJ1yTtE7cRMGu
- 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
- Ug==
+UI-OutboundReport: notjunk:1;M01:P0:4NQW6PHIHDU=;k96lQQfIgvoLe7CBrh04ebKQpEx
+ 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
 
-On 7/25/25 21:07, John David Anglin wrote:
-> On 2025-07-25 2:37 p.m., Helge Deller wrote:
->> On=C2=A07/25/25=C2=A019:51,=C2=A0John=C2=A0David=C2=A0Anglin=C2=A0wrote=
-:
->>> parisc:=C2=A0Revise=C2=A0__get_user()=C2=A0to=C2=A0probe=C2=A0user=C2=
-=A0read=C2=A0access
->>>
->>> Because=C2=A0of=C2=A0the=C2=A0way=C2=A0read=C2=A0access=C2=A0support=
-=C2=A0is=C2=A0implemented,=C2=A0read=C2=A0access
->>> interruptions=C2=A0are=C2=A0only=C2=A0triggered=C2=A0at=C2=A0privilege=
-=C2=A0levels=C2=A02=C2=A0and=C2=A03.=C2=A0The
->>> kernel=C2=A0executes=C2=A0at=C2=A0privilege=C2=A0level=C2=A00,=C2=A0so=
-=C2=A0__get_user()=C2=A0never=C2=A0triggers
->>> a=C2=A0read=C2=A0access=C2=A0interruption=C2=A0(code=C2=A026).=C2=A0Th=
-us,=C2=A0it=C2=A0is=C2=A0currently=C2=A0possible
->>> for=C2=A0user=C2=A0code=C2=A0to=C2=A0access=C2=A0a=C2=A0read=C2=A0prot=
-ected=C2=A0address=C2=A0via=C2=A0a=C2=A0system=C2=A0call.
->>>
->>> Fix=C2=A0this=C2=A0by=C2=A0probing=C2=A0read=C2=A0access=C2=A0rights=
-=C2=A0at=C2=A0privilege=C2=A0level=C2=A03=C2=A0and
->>> setting=C2=A0__gu_err=C2=A0to=C2=A0-EFAULT=C2=A0(-14)=C2=A0if=C2=A0acc=
-ess=C2=A0isn't=C2=A0allowed.
->>>
->>> Signed-off-by:=C2=A0John=C2=A0David=C2=A0Anglin=C2=A0<dave.anglin@bell=
-.net>
->>
->> Thanks=C2=A0a=C2=A0lot,=C2=A0Dave!
->>
->> I've=C2=A0applied=C2=A0that=C2=A0patch,=C2=A0but=C2=A0modified=C2=A0it=
-=C2=A0to=C2=A0utilize=C2=A0PRIV_USER=C2=A0and
->> EFAULT=C2=A0constants=C2=A0instead=C2=A0of=C2=A0the=C2=A0hardcoded=C2=
-=A0values=C2=A0in=C2=A0the=C2=A0proberi=C2=A0instruction.
->> Compiler=C2=A0does=C2=A0not=C2=A0seem=C2=A0to=C2=A0complain.
->> Maybe=C2=A0you=C2=A0want=C2=A0to=C2=A0check:
->> https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git=
-/log/?h=3Dfor-next
+On 6/25/25 09:31, Randy Dunlap wrote:
+> Correct "objree" to "objtree". "objree" is not defined.
 >=20
-> Maybe that works since you added extra arguments to asm.  It didn't work=
- with EFAULT
-> directly in asm.
+> Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: linux-parisc@vger.kernel.org
+> ---
+>   arch/parisc/Makefile |    2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes.
- =20
-> Another minor issue to note is the cmpiclr instruction does a 32-bit com=
-pare because
-> COND macro doesn't work inside asm.
+applied.
 
-Good point. I'll add this info.
+Thanks Randy!
 
 Helge
+
+ =20
+> --- lnx-616-rc3.orig/arch/parisc/Makefile
+> +++ lnx-616-rc3/arch/parisc/Makefile
+> @@ -139,7 +139,7 @@ palo lifimage: vmlinuz
+>   	fi
+>   	@if test ! -f "$(PALOCONF)"; then \
+>   		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
+> -		echo 'A generic palo config file ($(objree)/palo.conf) has been creat=
+ed for you.'; \
+> +		echo 'A generic palo config file ($(objtree)/palo.conf) has been crea=
+ted for you.'; \
+>   		echo 'You should check it and re-run "make palo".'; \
+>   		echo 'WARNING: the "lifimage" file is now placed in this directory b=
+y default!'; \
+>   		false; \
+
 
