@@ -1,56 +1,52 @@
-Return-Path: <linux-parisc+bounces-3810-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3811-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC8BB12423
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 20:39:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D721B12499
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 21:08:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 195B1174282
-	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 18:38:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4558717C796
+	for <lists+linux-parisc@lfdr.de>; Fri, 25 Jul 2025 19:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAC02494D8;
-	Fri, 25 Jul 2025 18:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8C8253925;
+	Fri, 25 Jul 2025 19:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="ibZE1es2"
+	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="CFsTvtIw"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from cmx-mtlrgo002.bell.net (mta-mtl-008.bell.net [209.71.208.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD452550CA
-	for <linux-parisc@vger.kernel.org>; Fri, 25 Jul 2025 18:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3290254877
+	for <linux-parisc@vger.kernel.org>; Fri, 25 Jul 2025 19:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753468645; cv=none; b=ly2j+63+s1KvtJCHgZ9u9feSkLgEXZftlohoYb36teXY99SdpX4exJvOsYf1K92GXQPipwDjR72jhTy1XcmWn8UWN17aOuHOMqKyz66gJgFFQZtrEeQ/pjkIKyHr3KvKurI+FpPfX4YhuAxDKIX440dTZSUp8YAz7RsKCkH2K08=
+	t=1753470484; cv=none; b=JaO586xVkt+Zc98CN7qWhKe7+E29g/ORagEvuQwkqDDtUE4odg410ZMB+HiRMO0l8Kk+gVMMiHs6oRaYrySGbT3IS/hClGYvTlV0iM6KGDKBXPbi8ZwMBjwxOa5Wt3snreokHt0c9zFX6GJPYw+R9WMvMl9pN8W9w/5VVhwJsDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753468645; c=relaxed/simple;
-	bh=PneRTN73jnEZfwInPeHIs1XCi+dZUTYA+Ur4xvuL4WE=;
+	s=arc-20240116; t=1753470484; c=relaxed/simple;
+	bh=5lpoLKJAOTTuWZMqdS2cjN+BAdbjtm2A5BtW6D5vmHo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EwpSRPdxuC2HlHmNkudnSR7kvZ+0vcbUf4MeEmKtDkHBjjWUkDZ5/gCtyx7FRjFrprBoiYWPTtysQZ8/QAHnVqOASuzSeOLAxxudeVaxS3P7k3U2Sjea3KeFzMRT2/jyDEbJfNZ1QPMbst7EjoJ6Yh37Tu/7nPWb1ZrRT4CuwXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=ibZE1es2; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1753468633; x=1754073433; i=deller@gmx.de;
-	bh=c6KDfVAcwjJDy6yNG11VHoxt0uIcwcewFUGQa7Ackb8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=ibZE1es2JhzYfwglyqw2IHe+zwqKvvzY/V97ICcQA7MkKAtE8HmAWkogjn+/9Hiw
-	 hCUSjR+3+uSoS8H9g9ITEwx9CtrE0v6brGyIbSMOmjdTjCZn0UOROt0Mv1CIchQXo
-	 elOYX566YCCSOpZU7M2YnhLaBBtPF0lZ6yrgvMu9bgemtnOrUkKYMeMssgb31l0no
-	 uld/9tzexnAuL5HDz/+uP5A/Tam5WWAPfL3zIFYKPDQFzVyzTUMYMOqtHCqUXM0oB
-	 rDnc89wvtfK113fEK7TAxOKieq7p9uIEwt68GhbAE9hHnII/f0unlKpLvXXOqgqJ2
-	 RRGWQHaQwyd2m9A0IA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.173] ([109.250.63.22]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mi2Nv-1uABKq2L5N-00iY8Q; Fri, 25
- Jul 2025 20:37:13 +0200
-Message-ID: <8524edb6-f011-4e0c-8647-c03dfb720c09@gmx.de>
-Date: Fri, 25 Jul 2025 20:37:11 +0200
+	 In-Reply-To:Content-Type; b=WJ/HCyQB9OV0qHnUqphqzbjsmu6Z+wF4/K2B3S07DEOWsrNJRZ6tVtHPD8P7ksst1BECBz4poDMTv7BIfdwmIuW2q+iwcB8emDGr6HzKMi/JCy3SEpypC3KeuNRrZwH8HTSFviE7hSaiPvIHjZFLO+UK/5SUhR4p0BKwj+6dcYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=CFsTvtIw; arc=none smtp.client-ip=209.71.208.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1753470481; 
+        bh=/HQtBFcRiUEpPqUNdguvAXMCra0ogfRICiGpBBW/wBE=;
+        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
+        b=CFsTvtIwzzKD+WT6N/8bkIYyA9aFnSXvw3pmYAHxR1bpn4qYHB934//wv/z3pmT3mCS+pw/IWEl+5z+/+WdFvGsZkG3Y+WekXOfG2IfOmmR3jn/FDFhrpQQSuHryC1FfV/p69F3/Z03BkDTO56jdLqeMEseaRSwgJ544U5DpWisMj8lUhkXtW8RAadGCYCO6/Uow8QpMF+lGyjJVO1l4PQ2Y7Q0dRzrW4Tu5Ke2LFF92LGcoROjR1CpSCfbqO7xDgPbGj+gzod8mp2q6E8UNbEcjk3SqEL0j1+5WytEATXUOHiKYm/cFUbX+hGGVpILA5fSlpzz1HgMB112DbWLcsQ==
+X-RG-SOPHOS: Clean
+X-RG-VADE-SC: 0
+X-RG-VADE: Clean
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 687D2719008951C7
+X-RazorGate-Vade: dmFkZTEpDpzgi7H3ykA8i4mzjV/qicd3P4BihpsEP1mnizOg6+GpEVJ4AQ6dC54a73Gj572r1H8vL/aLByB8+Sw7os7xAKw9aMwKBIvDUOlW+jfwRs2ToJmRkfn0Z+vXuttQ7mJRDwolsUITlJwiBnY+lsjVE6LyxVnSO7zh/9AR7NtJEhik0rjKHxjZ67TMcAFY8d206pm8HLROPXcUAj7tPTjHo6ZA/XkSPQ+v565AGCdI7+QIr+QChlU2lzrUJj6ojN4JEyJx0xHdT11fjhdz4K+aDHI9bFXzG9gFO9kckxbMfWXMywuH1XLXpyXXn078uOfO9UGhKoEK2/+8kim7aMxJIQoSKlngi/DXY9T7Rq29k6h2jsFD62ElUq0XFnXP1tuWLzERhSwPBM8KAJAT4A7BcC60Ahoz4MDXja+S/8AwOPdpYheeInNqDx0U+Zsc4h7q4oTQJFRpI2KFt2NTKGWLoR0MXZvf2fExTkVdJD+6nFIAhvhQ1cN6nvmLYXmNrEqevsQhZRwpoVsW9nkupkSUOZE8QKZGprSza5NS6CINS1qfyopqM0HtDpU8rc4bawYR/4QXFakLDgD29qFJeJqfjH7XeXDwExmJpnvBCB3ZlW2JhB+xI9y2cWx6TKYZ5/52hU/FRrroG5vlR5CzwT4WGza+oYgsIxmlR0QJ2oIVgg
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from [192.168.2.49] (142.126.136.104) by cmx-mtlrgo002.bell.net (authenticated as dave.anglin@bell.net)
+        id 687D2719008951C7; Fri, 25 Jul 2025 15:07:57 -0400
+Message-ID: <52946f87-5a1f-41ff-8cf5-2637f89f9350@bell.net>
+Date: Fri, 25 Jul 2025 15:07:58 -0400
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -59,175 +55,89 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] parisc: Revise __get_user() to probe user read access
-To: John David Anglin <dave.anglin@bell.net>, linux-parisc@vger.kernel.org
+To: Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
 Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>
 References: <aIPEJOOMJQtuW49u@mx3210.local>
+ <8524edb6-f011-4e0c-8647-c03dfb720c09@gmx.de>
 Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <aIPEJOOMJQtuW49u@mx3210.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:huXYXYnIhONJ/3T7Kscqt2l6JrH1iHj6giAXGXqOpgKjrQeg9aq
- TuCQuNA+ohje129EmJ7eZnfgxnF3CcbTDComl0n5NA2MMYO1mTf6DQ8IeEIn7/s9NHSMOn5
- 15VNqbVQPRQxFBQjS7SRQKrciLkegXPts7KCfqxPdwOLg/blma7kA5lO/HD8Rn3fyBbFbTN
- 1LYhdFNEswR3YKsecgymg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:nbgn2pRmBp0=;rbA3PRGkJorHpuguaaZZ1Br43JT
- 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
+From: John David Anglin <dave.anglin@bell.net>
+Autocrypt: addr=dave.anglin@bell.net; keydata=
+ xsFNBFJfN1MBEACxBrfJ+5RdCO+UQOUARQLSsnVewkvmNlJRgykqJkkI5BjO2hhScE+MHoTK
+ MoAeKwoLfBwltwoohH5RKxDSAIWajTY5BtkJBT23y0hm37fN2JXHGS4PwwgHTSz63cu5N1MK
+ n8DZ3xbXFmqKtyaWRwdA40dy11UfI4xzX/qWR3llW5lp6ERdsDDGHm5u/xwXdjrAilPDk/av
+ d9WmA4s7TvM/DY3/GCJyNp0aJPcLShU2+1JgBxC6NO6oImVwW07Ico89ETcyaQtlXuGeXYTK
+ UoKdEHQsRf669vwcV5XbmQ6qhur7QYTlOOIdDT+8zmBSlqBLLe09soATDciJnyyXDO1Nf/hZ
+ gcI3lFX86i8Fm7lQvp2oM5tLsODZUTWVT1qAFkHCOJknVwqRZ8MfOvaTE7L9hzQ9QKgIKrSE
+ FRgf+gs1t1vQMRHkIxVWb730C0TGiMGNn2oRUV5O5QEdb/tnH0Te1l+hX540adKZ8/CWzzW9
+ vcx+qD9IWLRyZMsM9JnmAIvYv06+YIcdpbRYOngWPd2BqvktzIs9mC4n9oU6WmUhBIaGOGnt
+ t/49bTRtJznqm/lgqxtE2NliJN79dbZJuJWe5HkjVa7mP4xtsG59Rh2hat9ByUfROOfoZ0dS
+ sVHF/N6NLWcf44trK9HZdT/wUeftEWtMV9WqxIwsA4cgSHFR2QARAQABzTdKb2huIERhdmlk
+ IEFuZ2xpbiAoRGViaWFuIFBvcnRzKSA8ZGF2ZS5hbmdsaW5AYmVsbC5uZXQ+wsF3BBMBCAAh
+ BQJSXzdTAhsDBQsJCAcDBRUKCQgLBRYCAwEAAh4BAheAAAoJEF2/za5fGU3xs/4P/15sNizR
+ ukZLNYoeGAd6keRtNcEcVGEpRgzc/WYlXCRTEjRknMvmCu9z13z8qB9Y9N4JrPdp+NQj5HEs
+ ODPI+1w1Mjj9R2VZ1v7suFwhjxMTUQUjCsgna1H+zW/UFsrL5ERX2G3aUKlVdYmSWapeGeFL
+ xSMPzawPEDsbWzBzYLSHUOZexMAxoJYWnpN9JceEcGvK1SU2AaGkhomFoPfEf7Ql1u3Pgzie
+ ClWEr2QHl+Ku1xW0qx5OLKHxntaQiu30wKHBcsF0Zx2uVGYoINJl/syazfZyKTdbmJnEYyNa
+ Bdbn7B8jIkVCShLOWJ8AQGX/XiOoL/oE9pSZ60+MBO9qd18TGYByj0X2PvH+OyQGul5zYM7Q
+ 7lT97PEzh8xnib49zJVVrKDdJds/rxFwkcHdeppRkxJH0+4T0GnU2IZsEkvpRQNJAEDmEE8n
+ uRfssr7RudZQQwaBugUGaoouVyFxzCxdpSYL6zWHA51VojvJYEBQDuFNlUCqet9LtNlLKx2z
+ CAKmUPTaDwPcS3uOywOW7WZrAGva1kz9lzxZ+GAwgh38HAFqQT8DQvW8jnBBG4m4q7lbaum3
+ znERv7kcfKWoWS7fzxLNTIitrbpYA3E7Zl9D2pDV3v55ZQcO/M35K9teRo6glrtFDU/HXM+r
+ ABbh8u9UnADbPmJr9nb7J0tZUSS/zsFNBFJfN1MBEADBzhVn4XyGkPAaFbLPcMUfwcIgvvPF
+ UsLi9Q53H/F00cf7BkMY40gLEXvsvdUjAFyfas6z89gzVoTUx3HXkJTIDTiPuUc1TOdUpGYP
+ hlftgU+UqW5O8MMvKM8gx5qn64DU0UFcS+7/CQrKOJmzktr/72g98nVznf5VGysa44cgYeoA
+ v1HuEoqGO9taA3Io1KcGrzr9cAZtlpwj/tcUJlc6H5mqPHn2EdWYmJeGvNnFtxd0qJDmxp5e
+ YVe4HFNjUwsb3oJekIUopDksAP41RRV0FM/2XaPatkNlTZR2krIVq2YNr0dMU8MbMPxGHnI9
+ b0GUI+T/EZYeFsbx3eRqjv1rnNg2A6kPRQpn8dN3BKhTR5CA7E/cs+4kTmV76aHpW8m/NmTc
+ t7KNrkMKfi+luhU2P/sKh7Xqfbcs7txOWB2V4/sbco00PPxWr20JCA5hYidaKGyQxuXdPUlQ
+ Qja4WJFnAtBhh3Oajgwhbvd6S79tz1acjNXZ89b8IN7yDm9sQ+4LhWoUQhB5EEUUUVQTrzYS
+ yTGN1YTTO5IUU5UJHb5WGMnSPLLArASctOE01/FYnnOGeU+GFIeQp91p+Jhd07hUr6KWYeJY
+ OgEmu+K8SyjfggCWdo8aGy0H3Yr0YzaHeK2HrfC3eZcUuo+yDW3tnrNwM1rd1i3F3+zJK18q
+ GnBxEQARAQABwsFfBBgBCAAJBQJSXzdTAhsMAAoJEF2/za5fGU3xNDQP/ikzh1NK/UBrWtpN
+ yXLbype4k5/zyQd9FIBxAOYEOogfKdkp+Yc66qNf36gO6vsokxsDXU9me1n8tFoB/DCdzKbQ
+ /RjKQRMNNR4fT2Q9XV6GZYSL/P2A1wzDW06tEI+u+1dV40ciQULQ3ZH4idBW3LdN+nloQf/C
+ qoYkOf4WoLyhSzW7xdNPZqiJCAdcz9djN79FOz8US+waBCJrL6q5dFSvvsYj6PoPJkCgXhiJ
+ hI91/ERMuK9oA1oaBxCvuObBPiFlBDNXZCwmUk6qzLDjfZ3wdiZCxc5g7d2e2taBZw/MsKFc
+ k+m6bN5+Hi1lkmZEP0L4MD6zcPuOjHmYYzX4XfQ61lQ8c4ztXp5cKkrvaMuN/bD57HJ6Y73Q
+ Y+wVxs9x7srl4iRnbulCeiSOAqHmwBAoWaolthqe7EYL4d2+CjPCcfIuK7ezsEm8c3o3EqC4
+ /UpL1nTi0rknRTGc0VmPef+IqQUj33GGj5JRzVJZPnYyCx8sCb35Lhs6X8ggpsafUkuKrH76
+ XV2KRzaE359RgbM3pNEViXp3NclPYmeu+XI8Ls/y6tSq5e/o/egktdyJj+xvAj9ZS18b10Jp
+ e67qK8wZC/+N7LGON05VcLrdZ+FXuEEojJWbabF6rJGN5X/UlH5OowVFEMhD9s31tciAvBwy
+ T70V9SSrl2hiw38vRzsl
+In-Reply-To: <8524edb6-f011-4e0c-8647-c03dfb720c09@gmx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 7/25/25 19:51, John David Anglin wrote:
-> parisc: Revise __get_user() to probe user read access
->=20
-> Because of the way read access support is implemented, read access
-> interruptions are only triggered at privilege levels 2 and 3. The
-> kernel executes at privilege level 0, so __get_user() never triggers
-> a read access interruption (code 26). Thus, it is currently possible
-> for user code to access a read protected address via a system call.
->=20
-> Fix this by probing read access rights at privilege level 3 and
-> setting __gu_err to -EFAULT (-14) if access isn't allowed.
->=20
-> Signed-off-by: John David Anglin <dave.anglin@bell.net>
+On 2025-07-25 2:37 p.m., Helge Deller wrote:
+> On 7/25/25 19:51, John David Anglin wrote:
+>> parisc: Revise __get_user() to probe user read access
+>>
+>> Because of the way read access support is implemented, read access
+>> interruptions are only triggered at privilege levels 2 and 3. The
+>> kernel executes at privilege level 0, so __get_user() never triggers
+>> a read access interruption (code 26). Thus, it is currently possible
+>> for user code to access a read protected address via a system call.
+>>
+>> Fix this by probing read access rights at privilege level 3 and
+>> setting __gu_err to -EFAULT (-14) if access isn't allowed.
+>>
+>> Signed-off-by: John David Anglin <dave.anglin@bell.net>
+> 
+> Thanks a lot, Dave!
+> 
+> I've applied that patch, but modified it to utilize PRIV_USER and
+> EFAULT constants instead of the hardcoded values in the proberi instruction.
+> Compiler does not seem to complain.
+> Maybe you want to check:
+> https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/log/?h=for-next
 
-Thanks a lot, Dave!
+Maybe that works since you added extra arguments to asm.  It didn't work with EFAULT
+directly in asm.
 
-I've applied that patch, but modified it to utilize PRIV_USER and
-EFAULT constants instead of the hardcoded values in the proberi instructio=
-n.
-Compiler does not seem to complain.
-Maybe you want to check:
-https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/lo=
-g/?h=3Dfor-next
+Another minor issue to note is the cmpiclr instruction does a 32-bit compare because
+COND macro doesn't work inside asm.
 
-Helge
-
-
-
-> ---
->=20
-> diff --git a/arch/parisc/include/asm/uaccess.h b/arch/parisc/include/asm=
-/uaccess.h
-> index 88d0ae5769dd..f610bda1466a 100644
-> --- a/arch/parisc/include/asm/uaccess.h
-> +++ b/arch/parisc/include/asm/uaccess.h
-> @@ -42,9 +42,23 @@
->   	__gu_err;					\
->   })
->  =20
-> -#define __get_user(val, ptr)				\
-> -({							\
-> -	__get_user_internal(SR_USER, val, ptr);	\
-> +#define __probe_user_internal(sr, error, ptr)			\
-> +({								\
-> +	__asm__("\tproberi (%%sr%1,%2),3,%0\n"			\
-> +		"\tcmpiclr,=3D 1,%0,%0\n"				\
-> +		"\tldi -14,%0\n"				\
-> +		: "=3Dr"(error)					\
-> +		: "i"(sr), "r"(ptr));				\
-> +})
-> +
-> +#define __get_user(val, ptr)					\
-> +({								\
-> +	register long __gu_err;					\
-> +								\
-> +	__gu_err =3D __get_user_internal(SR_USER, val, ptr);	\
-> +	if (likely(!__gu_err))					\
-> +		__probe_user_internal(SR_USER, __gu_err, ptr);	\
-> +	__gu_err;						\
->   })
->  =20
->   #define __get_user_asm(sr, val, ldx, ptr)		\
-
+Dave
+-- 
+John David Anglin  dave.anglin@bell.net
 
