@@ -1,43 +1,43 @@
-Return-Path: <linux-parisc+bounces-3848-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3849-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67571B2A453
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 Aug 2025 15:19:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFDB6B2A720
+	for <lists+linux-parisc@lfdr.de>; Mon, 18 Aug 2025 15:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F2A31B60CFB
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 Aug 2025 13:13:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB898685B84
+	for <lists+linux-parisc@lfdr.de>; Mon, 18 Aug 2025 13:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A38D31E117;
-	Mon, 18 Aug 2025 13:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E98221294;
+	Mon, 18 Aug 2025 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6oYY5xU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBa8cy+B"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FCC31CA7D;
-	Mon, 18 Aug 2025 13:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5720D335BC9;
+	Mon, 18 Aug 2025 13:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755522751; cv=none; b=GJNZykKrf5YuWSW8G3fgkcWowDYIGl1cNjh/6mgn1iCJgxkWmXdkKcXvTA2+2dWAKVqsiGwPjhtaX3JhpX0HKf859GQ5832zbup7NqdT2XgEyKieugKFGL73jQO6O5DJB7+4K9bGhyvY2IWPRSkMWlXu4h6PCIvezgij2X7OJaQ=
+	t=1755524494; cv=none; b=sjNnWMe1QUym3NsdYyU2akq+vD3BqfYMfAUpp8u7UZ/0EXDU1RBvAaEwCDH8poLQjcMOTTvkz48ZBWjSyAS40ttMEKcuMIqjTHYXqKsQOvDOFC9g1NPTw+k559UlxfZCujDB30Xp+noHn/M6Ma9uQAcm+N8TXWf+iv0Ng7TVXYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755522751; c=relaxed/simple;
-	bh=cevtIg4MdZfhmfO8Bgg2mDHsQJTQmpbceQL5AbNIFeQ=;
+	s=arc-20240116; t=1755524494; c=relaxed/simple;
+	bh=WakBklAWGLjAQSOVjTQC28FD2Qtt2Tza2Sg6CDUknGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFeBirTL70RjHneehu54c+OEbWy9jcAtxWd2FXYjggXuEZ52E3KvJnqCkoUnBvIeKdExoGz6oba7urZTVX1RVPFxNLIDXPp6KlnE1Gr0T2wn6REAHpGhkkJEjMMqitpf+gRF5v9xBddz10E9/4HgKezD+zeZCwxu4VeAiFrjaLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6oYY5xU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C02C4CEEB;
-	Mon, 18 Aug 2025 13:12:31 +0000 (UTC)
+	 MIME-Version; b=Tkj8M/xDQA2i962sQd70jD4TrMXRTYOHL1weSPaWdJzDG9EKTJoGKbyqW6zyPILHL4Zfj8hm6IumFFzN6cNxTYd67icjp7i9TPnbmwNTSaHzuGg95zTSs1Zv4PXt3/AL4Wj5N0KR8u99YHh+2xTGlqgeTP3EhK9ymfNms2VJr/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBa8cy+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699A1C113D0;
+	Mon, 18 Aug 2025 13:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755522751;
-	bh=cevtIg4MdZfhmfO8Bgg2mDHsQJTQmpbceQL5AbNIFeQ=;
+	s=korg; t=1755524493;
+	bh=WakBklAWGLjAQSOVjTQC28FD2Qtt2Tza2Sg6CDUknGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6oYY5xUtoX8WVxFZpr9l+WZ83SKo92BGvkRt2q099O1nNwQM9oY4ld+2EXgBYxbE
-	 geO8GXPBM0MTJkl6OqwHkcYotyZqNQ6aj7E9a7kETpctaUcurzmKPkZqjRc9wb+SeB
-	 Ki/HvjZB+so6buCSAW9n3C8FfRddtQ29lFfs7ZZg=
+	b=EBa8cy+BsBHDYOJS9JXuFC1PETyHwwS6iulrmzk0ty58gp/7PBSTuwy7vo6QLUbeP
+	 BCKbdn6cJvegWeKhKYcjQbjRjRKez6iBMhrTRkne3Q6w0YyqL1b4fp5JtJ0QU18ntJ
+	 opvIHrNyphVDI/5YVaEDbfKMitEY1wFo3hxhc0MY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
 	Helge Deller <deller@gmx.de>,
 	linux-parisc@vger.kernel.org
-Subject: [PATCH 6.12 411/444] parisc: Makefile: fix a typo in palo.conf
-Date: Mon, 18 Aug 2025 14:47:17 +0200
-Message-ID: <20250818124504.336839241@linuxfoundation.org>
+Subject: [PATCH 6.15 489/515] parisc: Makefile: fix a typo in palo.conf
+Date: Mon, 18 Aug 2025 14:47:55 +0200
+Message-ID: <20250818124517.261069211@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
-References: <20250818124448.879659024@linuxfoundation.org>
+In-Reply-To: <20250818124458.334548733@linuxfoundation.org>
+References: <20250818124458.334548733@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
