@@ -1,82 +1,103 @@
-Return-Path: <linux-parisc+bounces-3847-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3848-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DB0B28423
-	for <lists+linux-parisc@lfdr.de>; Fri, 15 Aug 2025 18:46:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67571B2A453
+	for <lists+linux-parisc@lfdr.de>; Mon, 18 Aug 2025 15:19:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D32103A64BD
-	for <lists+linux-parisc@lfdr.de>; Fri, 15 Aug 2025 16:43:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F2A31B60CFB
+	for <lists+linux-parisc@lfdr.de>; Mon, 18 Aug 2025 13:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2949930E857;
-	Fri, 15 Aug 2025 16:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A38D31E117;
+	Mon, 18 Aug 2025 13:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6oYY5xU"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6489D30E82D;
-	Fri, 15 Aug 2025 16:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.228.1.57
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FCC31CA7D;
+	Mon, 18 Aug 2025 13:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755276134; cv=none; b=VWJUWfRbRGRmIk3aH+l6EU9NXUnSluVW7QrbrofiLWSB/Yc7nr/9Wym1kauqxNqR7e6pN0Mq92+dKVeopNmKsm1W3EH7nUH26NtdI45RodeZRxINkmZXz7AMi9V2LywrAu8kSVf2eYKTl9WcFBMbgF5LW11AZKXc8RNUwjec5wg=
+	t=1755522751; cv=none; b=GJNZykKrf5YuWSW8G3fgkcWowDYIGl1cNjh/6mgn1iCJgxkWmXdkKcXvTA2+2dWAKVqsiGwPjhtaX3JhpX0HKf859GQ5832zbup7NqdT2XgEyKieugKFGL73jQO6O5DJB7+4K9bGhyvY2IWPRSkMWlXu4h6PCIvezgij2X7OJaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755276134; c=relaxed/simple;
-	bh=YNnF98V/d1J/g71YSMmy+PpRsNt0b+QK8zrhLaRJBBA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aIcsCbK0iTylR4QrWQVdnZJ3f1d3EjPJKGWvbAG/7Je9fqn7pzY8i+h5BbkO3KKAJ3HEUNduSbM6j+qjmrWis/IYO8GJYsN4+uTvmEq3YBKIN6v7D7J2On5MFp4CmOkxaXBx8NU64bRU4btTjrjHE1c9qnbtwkxZR99esWvl0dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass smtp.mailfrom=kernel.crashing.org; arc=none smtp.client-ip=63.228.1.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.crashing.org
-Received: from gate.crashing.org (localhost [127.0.0.1])
-	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 57FGg0P42568454;
-	Fri, 15 Aug 2025 11:42:00 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.18.1/8.18.1/Submit) id 57FGfxjE2568453;
-	Fri, 15 Aug 2025 11:41:59 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Fri, 15 Aug 2025 11:41:59 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Kees Cook <kees@kernel.org>, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-m68k@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        llvm@lists.linux.dev, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 05/17] powerpc: Add __attribute_const__ to ffs()-family
- implementations
-Message-ID: <aJ9jV80oYG6rPN1o@gate>
-References: <20250804163910.work.929-kees@kernel.org>
- <20250804164417.1612371-5-kees@kernel.org>
- <7f4f4d07-38f7-444c-adff-ec2a2387e86b@linux.ibm.com>
- <aJ9hsHj9lsHvvhcA@gate>
+	s=arc-20240116; t=1755522751; c=relaxed/simple;
+	bh=cevtIg4MdZfhmfO8Bgg2mDHsQJTQmpbceQL5AbNIFeQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pFeBirTL70RjHneehu54c+OEbWy9jcAtxWd2FXYjggXuEZ52E3KvJnqCkoUnBvIeKdExoGz6oba7urZTVX1RVPFxNLIDXPp6KlnE1Gr0T2wn6REAHpGhkkJEjMMqitpf+gRF5v9xBddz10E9/4HgKezD+zeZCwxu4VeAiFrjaLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6oYY5xU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C02C4CEEB;
+	Mon, 18 Aug 2025 13:12:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1755522751;
+	bh=cevtIg4MdZfhmfO8Bgg2mDHsQJTQmpbceQL5AbNIFeQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=f6oYY5xUtoX8WVxFZpr9l+WZ83SKo92BGvkRt2q099O1nNwQM9oY4ld+2EXgBYxbE
+	 geO8GXPBM0MTJkl6OqwHkcYotyZqNQ6aj7E9a7kETpctaUcurzmKPkZqjRc9wb+SeB
+	 Ki/HvjZB+so6buCSAW9n3C8FfRddtQ29lFfs7ZZg=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org
+Subject: [PATCH 6.12 411/444] parisc: Makefile: fix a typo in palo.conf
+Date: Mon, 18 Aug 2025 14:47:17 +0200
+Message-ID: <20250818124504.336839241@linuxfoundation.org>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250818124448.879659024@linuxfoundation.org>
+References: <20250818124448.879659024@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJ9hsHj9lsHvvhcA@gate>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 15, 2025 at 11:34:56AM -0500, Segher Boessenkool wrote:
-> On Thu, Aug 07, 2025 at 03:16:35PM +0530, Madhavan Srinivasan wrote:
-> > making them eligible for compiler optimization.
-> 
-> You can instead use GCC for this.  __builtin_ffs () exists since 2003,
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
-Erm, 1992 actually, but stuff has moved around since then :-)
+------------------
 
-> and has this attribute built-in, as well as tens of other optimisations
-> that the kernel thing misses.
-> 
-> Of course using existing stuff instead of cobbling together something
-> half working prevents you from having a lot of fun ;-)
+From: Randy Dunlap <rdunlap@infradead.org>
+
+commit 963f1b20a8d2a098954606b9725cd54336a2a86c upstream.
+
+Correct "objree" to "objtree". "objree" is not defined.
+
+Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-parisc@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.3+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/parisc/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/arch/parisc/Makefile
++++ b/arch/parisc/Makefile
+@@ -139,7 +139,7 @@ palo lifimage: vmlinuz
+ 	fi
+ 	@if test ! -f "$(PALOCONF)"; then \
+ 		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
+-		echo 'A generic palo config file ($(objree)/palo.conf) has been created for you.'; \
++		echo 'A generic palo config file ($(objtree)/palo.conf) has been created for you.'; \
+ 		echo 'You should check it and re-run "make palo".'; \
+ 		echo 'WARNING: the "lifimage" file is now placed in this directory by default!'; \
+ 		false; \
 
 
-Segher
 
