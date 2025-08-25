@@ -1,61 +1,103 @@
-Return-Path: <linux-parisc+bounces-3850-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3851-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FDEAB2AAE6
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 Aug 2025 16:38:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8A8B34785
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 Aug 2025 18:36:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ED776E4296
-	for <lists+linux-parisc@lfdr.de>; Mon, 18 Aug 2025 14:23:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BE3B2A1A60
+	for <lists+linux-parisc@lfdr.de>; Mon, 25 Aug 2025 16:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473BB3570B8;
-	Mon, 18 Aug 2025 14:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99F22FF178;
+	Mon, 25 Aug 2025 16:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVtCpla0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aQ4JtXe6"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB9B3570B7;
-	Mon, 18 Aug 2025 14:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FB02367B5;
+	Mon, 25 Aug 2025 16:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755526389; cv=none; b=jKkinXgLiq14QB+EBC2hVscS3S2PXB4fRVT8Qqg50YM6CXLdBnUbL1YFIbcSor4jVIAH0DrW0i7I+NvlxUNSdrYLrbxVvQRZmlykeiBI1MZz4POH0fp6V9F0EwefioyRk/3Pvrn9EVOWY/dKJOD5rTkCpAmwTlRBPGO5SxVbqQI=
+	t=1756139757; cv=none; b=J5pwUrLHqUxUdfLv4+Gjafiq5Q/S47gao4DQn0dfdF3dsuhPWO5IGGZWAg5Vlb396QyV45PFVtuwiQESWuWQqJzAXtlP6OsvIcfquTHTKiFbcJnKggEWq1ZguB3Scb5mIS+b5DFq2jL+19w37xlM4DmFyHSEn2UZRphlOAyk29U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755526389; c=relaxed/simple;
-	bh=JTqC9v0vnpCH7GxvQmJvPc3etaIzGXadZ12jX90cBJU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1sykY3g336pXWZsvKxET7LRypO3nl22Rn54D9UvbZw27y7ud+3wCHFaIh5QQ6wpXZmA7Z9KU8JVbjwkK+qkA+gAfwUquH2NKJYmZGvjZB6ihE7CghxcJBv2XrdgMFs86HjnsZQ2reX6To/sF0h4u97caF+ln21IjeKv7kGz8Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVtCpla0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A58C4CEEB;
-	Mon, 18 Aug 2025 14:13:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1755526388;
-	bh=JTqC9v0vnpCH7GxvQmJvPc3etaIzGXadZ12jX90cBJU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVtCpla0l9olErDQgDOXzhBR6OfmuJZbd4Qvrei7UZ50yu57JPslXjZVmUVzv2r9x
-	 JG4e0boIY9mfD0M62SpqBjzpnWkggSZn44rR9j4XHZrFNO0x+z44BO5SkuOh/rD/m8
-	 cKjCwm1PV5BtdIPFicio3NjH53/JVyq1O76FDc7M=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	s=arc-20240116; t=1756139757; c=relaxed/simple;
+	bh=L2un3Tp24kq84D49bPeqtKFgx0ttvdt2Oi+LfIRW2Jk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u+wT30xuGlRhD1VS9y4xnkmQWjuE0zeIVyTWWGRObzs+IjVYfCwmSer/69gWp3DRILELdbDdL8utUK0MA9DoswtUH1GJGSCImXcu47PZmBQUhfrVUHJQzyIB9Yj/1WdCF5n+sQzgittFyN70QyQkX+8GtMYGFUfFox/CAUA2CrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aQ4JtXe6; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756139756; x=1787675756;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=L2un3Tp24kq84D49bPeqtKFgx0ttvdt2Oi+LfIRW2Jk=;
+  b=aQ4JtXe64l+megZLLTslxyNO3mJqjxdtJ26XSa/vg7Ok0/CPcoWHylNS
+   sy7pZklbtxpurn/BksnbsqCcROHvDk6acKNemmeoCLgviZMx9To+ysikz
+   EdWm7ujPGtjUyp8MohOgTFCufJzi5KQ0cMNvOl+AzGO5N52dsnVC/dpTp
+   JP2GkFp+B4U7cXsOqor3Jq6ku+sW4EGsBmdVrX1dLtNXZFulX9PA0+ZxU
+   TCqaefv5XJmYMQdXjFqGC7ZsHjmSKJQCskjGAauLG/aMOV77ejuZpgaHC
+   daCGL962vrAplIU/KS0uGjxyp1jnq+tEWKEflG7ocsis59TMXvx69grQ2
+   g==;
+X-CSE-ConnectionGUID: TonUE+BYSi2EtIOi3kn5rw==
+X-CSE-MsgGUID: Lj7NOPs8TAKPfDvF5eODHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11533"; a="69459506"
+X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
+   d="scan'208";a="69459506"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2025 09:35:55 -0700
+X-CSE-ConnectionGUID: orFQ8jjkTR+a1kLWJels8Q==
+X-CSE-MsgGUID: l5OrMqmGT8icT6nXAJqR8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,213,1751266800"; 
+   d="scan'208";a="169241087"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa007.jf.intel.com with ESMTP; 25 Aug 2025 09:35:48 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id D581B94; Mon, 25 Aug 2025 18:35:46 +0200 (CEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Helge Deller <deller@gmx.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	linux-block@vger.kernel.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Ian Molton <spyro@f2s.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	linux-parisc@vger.kernel.org
-Subject: [PATCH 6.16 541/570] parisc: Makefile: fix a typo in palo.conf
-Date: Mon, 18 Aug 2025 14:48:48 +0200
-Message-ID: <20250818124526.720115167@linuxfoundation.org>
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Denis Efremov <efremov@linux.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v2 0/3] floppy: A couple of cleanups
+Date: Mon, 25 Aug 2025 18:32:54 +0200
+Message-ID: <20250825163545.39303-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250818124505.781598737@linuxfoundation.org>
-References: <20250818124505.781598737@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -64,40 +106,34 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.16-stable review patch.  If anyone has any objections, please let me know.
+There are a few places in architecture code for the floppy driver
+that may be cleaned up. Do it so.
 
-------------------
+Assumed to route via Andrew Morton's tree as floppy is basically orphaned.
 
-From: Randy Dunlap <rdunlap@infradead.org>
+Changelog v2:
+- combined separate patches sent earlier into a series
+- added tags (Helge, Geert)
+- fixed typo in the commit message (Geert)
 
-commit 963f1b20a8d2a098954606b9725cd54336a2a86c upstream.
+Andy Shevchenko (3):
+  floppy: Remove unused CROSS_64KB() macro from arch/ code
+  floppy: Replace custom SZ_64K constant
+  floppy: Sort headers alphabetically
 
-Correct "objree" to "objtree". "objree" is not defined.
+ arch/alpha/include/asm/floppy.h    | 19 ----------
+ arch/arm/include/asm/floppy.h      |  2 --
+ arch/m68k/include/asm/floppy.h     |  4 ---
+ arch/mips/include/asm/floppy.h     | 15 --------
+ arch/parisc/include/asm/floppy.h   | 11 +++---
+ arch/powerpc/include/asm/floppy.h  |  5 ---
+ arch/sparc/include/asm/floppy_32.h |  3 --
+ arch/sparc/include/asm/floppy_64.h |  3 --
+ arch/x86/include/asm/floppy.h      |  8 ++---
+ drivers/block/floppy.c             | 56 ++++++++++++++----------------
+ 10 files changed, 34 insertions(+), 92 deletions(-)
 
-Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v5.3+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/parisc/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/arch/parisc/Makefile
-+++ b/arch/parisc/Makefile
-@@ -139,7 +139,7 @@ palo lifimage: vmlinuz
- 	fi
- 	@if test ! -f "$(PALOCONF)"; then \
- 		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
--		echo 'A generic palo config file ($(objree)/palo.conf) has been created for you.'; \
-+		echo 'A generic palo config file ($(objtree)/palo.conf) has been created for you.'; \
- 		echo 'You should check it and re-run "make palo".'; \
- 		echo 'WARNING: the "lifimage" file is now placed in this directory by default!'; \
- 		false; \
-
+-- 
+2.50.1
 
 
