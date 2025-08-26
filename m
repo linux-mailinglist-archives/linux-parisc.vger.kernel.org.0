@@ -1,57 +1,58 @@
-Return-Path: <linux-parisc+bounces-3861-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3866-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A14EB364FD
-	for <lists+linux-parisc@lfdr.de>; Tue, 26 Aug 2025 15:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7672EB36C93
+	for <lists+linux-parisc@lfdr.de>; Tue, 26 Aug 2025 16:57:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 694E0464AB3
-	for <lists+linux-parisc@lfdr.de>; Tue, 26 Aug 2025 13:29:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E66335855F1
+	for <lists+linux-parisc@lfdr.de>; Tue, 26 Aug 2025 14:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAE523A9A0;
-	Tue, 26 Aug 2025 13:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1965352074;
+	Tue, 26 Aug 2025 14:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDt9k/ld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeWzgX3Y"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22045196C7C;
-	Tue, 26 Aug 2025 13:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DEA352FD9;
+	Tue, 26 Aug 2025 14:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756214909; cv=none; b=n5wgfF6J4cujDWt8HXZGvewuueCR7q7ZLv+ZWtFVsCUNyHVSqlFh4bkMJ2+kytkU4TwLJ8ii7Xpw7Ag9y4wBOxJzK0PTHRogAMTy2kBuiG+4hZgJc97Y3Nm3NWbyuRlZpdzuS05L4hvqcPWClXKb/QyDgMuU8oVPyelk3S+olCA=
+	t=1756219167; cv=none; b=a2sUy2eTiS7DA2/veVtGJC0I43ymUeOTQmHoA/gZ+v4FGFFAIDHnc6pU+z3Zase6xFt4lei3Y9Efm7iRh+CFC41/vCS3HRkvwG7CkaB1YMiYRKWXV6xjjjXZZaELvGA887+psXb0qFVC1ly0QyuPGnqYuNHlRIZno55lK+rqW/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756214909; c=relaxed/simple;
-	bh=NJcANyMcr7nj4qtqahjWMFURurftgHdlcxPZSeOIKPA=;
+	s=arc-20240116; t=1756219167; c=relaxed/simple;
+	bh=xuqdUlLD7tnOdj/e0qjbCN1vwSWp9UGMpwcJ0YedjY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LW+PR9i6YueqOW8uymEDvkJSBnZik1yeH7ScKi8CKLU9xU4p86/1BYP87G5sD1upw7nzQE0OICwjdkwrt/f1ig2hz9/rAZCT6ihc9HlMTYM54o+kI2FXCvuPM7yT57E8cmlPFQFBuYVY6rsdNh7wtonSIaDf523qgZ9KncNVvnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDt9k/ld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4A8C4CEF1;
-	Tue, 26 Aug 2025 13:28:28 +0000 (UTC)
+	 MIME-Version; b=F4tbmHASVXJ88z1QHlaodNwUiobNAxmaXiYBWU26srMCfng98sTGj9GmrrTrxcRFlRDSuGChq9+zquktltAINk1Cz2aeLm6aEaqJFoFJ+6gFyDUAISt8EerV6shwC0xtFBLlPuFx5eePlgg47Htnwd21J2OPyMQiDzs+FrWl62s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeWzgX3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A07C4CEF1;
+	Tue, 26 Aug 2025 14:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756214908;
-	bh=NJcANyMcr7nj4qtqahjWMFURurftgHdlcxPZSeOIKPA=;
+	s=korg; t=1756219167;
+	bh=xuqdUlLD7tnOdj/e0qjbCN1vwSWp9UGMpwcJ0YedjY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDt9k/ldfhOzCX1XZhM8KMMc8s7NJlOQfWG3A+6Kao6BNtV+mu8aqCflbzx6nzACd
-	 FTHphXSecUycTvd61ao74PA8Llq+m8lBCRJucf2HVapRtoJxPrF42n2vmj5Gvq5epz
-	 ZgKBwufOkD6o5Dkmq5rBhSl+bJb7GJq0SqO4HsYw=
+	b=jeWzgX3YOPRfQ7CRw46iTcqCV9t0SszICg1uG9rFGMnhxL+yVDwSAv1UtSDaCi9Rf
+	 MuYHCusC81IEPGTFoUR2BTJhrOqoko67RAH6N7a5fssoMMEbWhaRfMRvNCpNRWvNFV
+	 OJCMvyoMWvFljbfx9VDOqxWe1oLibYFMp65hIx0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Randy Dunlap <rdunlap@infradead.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
 	Helge Deller <deller@gmx.de>,
 	linux-parisc@vger.kernel.org
-Subject: [PATCH 6.1 314/482] parisc: Makefile: explain that 64BIT requires both 32-bit and 64-bit compilers
-Date: Tue, 26 Aug 2025 13:09:27 +0200
-Message-ID: <20250826110938.561541011@linuxfoundation.org>
+Subject: [PATCH 5.4 278/403] parisc: Makefile: fix a typo in palo.conf
+Date: Tue, 26 Aug 2025 13:10:04 +0200
+Message-ID: <20250826110914.477838065@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250826110930.769259449@linuxfoundation.org>
-References: <20250826110930.769259449@linuxfoundation.org>
+In-Reply-To: <20250826110905.607690791@linuxfoundation.org>
+References: <20250826110905.607690791@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,19 +64,19 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 305ab0a748c52eeaeb01d8cff6408842d19e5cb5 upstream.
+commit 963f1b20a8d2a098954606b9725cd54336a2a86c upstream.
 
-For building a 64-bit kernel, both 32-bit and 64-bit VDSO binaries
-are built, so both 32-bit and 64-bit compilers (and tools) should be
-in the PATH environment variable.
+Correct "objree" to "objtree". "objree" is not defined.
 
+Fixes: 75dd47472b92 ("kbuild: remove src and obj from the top Makefile")
 Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
 Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
 Cc: Helge Deller <deller@gmx.de>
 Cc: linux-parisc@vger.kernel.org
@@ -83,22 +84,20 @@ Signed-off-by: Helge Deller <deller@gmx.de>
 Cc: stable@vger.kernel.org # v5.3+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/Makefile |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/parisc/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/arch/parisc/Makefile
 +++ b/arch/parisc/Makefile
-@@ -39,7 +39,9 @@ endif
- 
- export LD_BFD
- 
--# Set default 32 bits cross compilers for vdso
-+# Set default 32 bits cross compilers for vdso.
-+# This means that for 64BIT, both the 64-bit tools and the 32-bit tools
-+# need to be in the path.
- CC_ARCHES_32 = hppa hppa2.0 hppa1.1
- CC_SUFFIXES  = linux linux-gnu unknown-linux-gnu suse-linux
- CROSS32_COMPILE := $(call cc-cross-prefix, \
+@@ -134,7 +134,7 @@ palo lifimage: vmlinuz
+ 	fi
+ 	@if test ! -f "$(PALOCONF)"; then \
+ 		cp $(srctree)/arch/parisc/defpalo.conf $(objtree)/palo.conf; \
+-		echo 'A generic palo config file ($(objree)/palo.conf) has been created for you.'; \
++		echo 'A generic palo config file ($(objtree)/palo.conf) has been created for you.'; \
+ 		echo 'You should check it and re-run "make palo".'; \
+ 		echo 'WARNING: the "lifimage" file is now placed in this directory by default!'; \
+ 		false; \
 
 
 
