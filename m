@@ -1,117 +1,73 @@
-Return-Path: <linux-parisc+bounces-3869-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3870-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0BCB3CBD3
-	for <lists+linux-parisc@lfdr.de>; Sat, 30 Aug 2025 17:21:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57A8EB3CBED
+	for <lists+linux-parisc@lfdr.de>; Sat, 30 Aug 2025 17:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84CCD5E5973
-	for <lists+linux-parisc@lfdr.de>; Sat, 30 Aug 2025 15:21:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E9D6560646
+	for <lists+linux-parisc@lfdr.de>; Sat, 30 Aug 2025 15:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC68D20E31C;
-	Sat, 30 Aug 2025 15:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E5B24A047;
+	Sat, 30 Aug 2025 15:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=laposte.net header.i=@laposte.net header.b="HqhTCyvf"
+	dkim=pass (2048-bit key) header.d=laposte.net header.i=@laposte.net header.b="RgQYowbj"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp-outgoing-1702.laposte.net (smtp-outgoing-1702.laposte.net [160.92.124.100])
+Received: from smtp-outgoing-1601.laposte.net (smtp-outgoing-1601.laposte.net [160.92.124.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1559317A300
-	for <linux-parisc@vger.kernel.org>; Sat, 30 Aug 2025 15:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.92.124.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBD11A7253
+	for <linux-parisc@vger.kernel.org>; Sat, 30 Aug 2025 15:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.92.124.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756567273; cv=none; b=iP+lD5GRK2r3fhNM/bUMgTYkC7Ud3F3jginNI75PRmohda95WIFVD49yIZqZxbh38KF4hdEImUwlbIgqwKme3D8t3ZGRYV6kGqLk3rggF0owGeypSQP9iEj1t3YkAQOIhnEP+hEYhxEg6B5J+pZw/0JwMsPQJC2cwSXE1mv9m0M=
+	t=1756567552; cv=none; b=g+QxFIhorIxokSIACJP7FeljyAqzjZ6gxfiUkecLrhMSQE8Ch9onc1kmv7Qn4XU79WigTf29u17tcpuJ32YotvxQ8BQcnyS++k+NWPePzfoQLLS/1zTLhFRcK9M+35jDHhtxRD7LgBUAixgaqZVZuJi0j8+yxs/0UKaUUzfmXaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756567273; c=relaxed/simple;
-	bh=3thogFjozItYeV1vMf+egzbEKKkBpymf19MuFubEmOc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uKa/8CK7bwRP7My4rHakMgYbRENUQuHppd1XDkBGOvnnNY/8U2fpPYp0NDLClPSlAdW3Nm7vJKu++YAe/dBVE0ZY88bCCmycqcqpA5M+bKUmzDdp5xcrK9Cb0NdMvpJiF+MPP2SHGyPpvd6BGu1jV6ZBJbHVu6FW+VmtdnKyK/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=laposte.net; spf=pass smtp.mailfrom=laposte.net; dkim=pass (2048-bit key) header.d=laposte.net header.i=@laposte.net header.b=HqhTCyvf; arc=none smtp.client-ip=160.92.124.100
+	s=arc-20240116; t=1756567552; c=relaxed/simple;
+	bh=DUpt1CJxWQGVReyq28b5sdeuPs4A5xFECzIvtgthjG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TfXO8sUJ/e6cD+DV993wnsOp6peUrVqHLZfdbFmxx26m9Fu+PRNGyjH+IEJLaIk+oAZWrRMsbV2ULDG0CeU9E7axkDO0oaJdKsvVnzQhjq+5N+27SjoHVk2mGymnfVt5UP/pxrl1jafCcC2fh1oTHlKh+WPnJH+l8rrgIo3ZqUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=laposte.net; spf=pass smtp.mailfrom=laposte.net; dkim=pass (2048-bit key) header.d=laposte.net header.i=@laposte.net header.b=RgQYowbj; arc=none smtp.client-ip=160.92.124.96
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=laposte.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=laposte.net
-X-mail-filterd: {"version":"1.9.3","queueID":"4cDf3k1wgMzPjdG","contextId":
- "2f4311d5-4d2e-45f4-bd15-5ef073ed3a70"}
+X-mail-filterd: {"version":"1.9.3","queueID":"4cDf901fGfzPjdF","contextId":
+ "33d23219-2b50-4395-a4c6-421e50f30656"}
 Received: from outgoing-mail.laposte.net (localhost.localdomain [127.0.0.1])
-	by mlpnf0117.laposte.net (SMTP Server) with ESMTP id 4cDf3k1wgMzPjdG;
-	Sat, 30 Aug 2025 17:21:06 +0200 (CEST)
-X-mail-filterd: {"version":"1.9.3","queueID":"4cDf3k14rmzPjdF","contextId":
- "39e68a8c-636c-417a-a891-3addd64e23a4"}
+	by mlpnf0117.laposte.net (SMTP Server) with ESMTP id 4cDf901fGfzPjdF;
+	Sat, 30 Aug 2025 17:25:40 +0200 (CEST)
+X-mail-filterd: {"version":"1.9.3","queueID":"4cDf90100LzPjd8","contextId":
+ "61a975e7-9201-436b-9a90-b23ab0f8431c"}
 X-lpn-mailing: LEGIT
 X-lpn-spamrating: 36
 X-lpn-spamlevel: not-spam
 Received: from romuald.bergerie (88-169-129-225.subs.proxad.net [88.169.129.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by mlpnf0117.laposte.net (SMTP Server) with ESMTPSA id 4cDf3k14rmzPjdF;
-	Sat, 30 Aug 2025 17:21:06 +0200 (CEST)
-Received: from radicelle (radicelle.bergerie [192.168.42.3])
-	by romuald.bergerie (Postfix) with ESMTP id 086026970AEC;
-	Sat, 30 Aug 2025 17:21:12 +0200 (CEST)
-Received: from vincent by radicelle with local (Exim 4.98.2)
-	(envelope-from <vincent@radicelle.bergerie>)
-	id 1usNPH-000000002G0-0sBp;
-	Sat, 30 Aug 2025 17:22:19 +0200
-From: =?UTF-8?q?Vincent=20Stehl=C3=A9?= <vincent.stehle@laposte.net>
-To: linux-parisc@vger.kernel.org
-Cc: =?UTF-8?q?Vincent=20Stehl=C3=A9?= <vincent.stehle@laposte.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH] ipl: adjust firmware entry type
-Date: Sat, 30 Aug 2025 17:22:04 +0200
-Message-ID: <20250830152204.7868-1-vincent.stehle@laposte.net>
-X-Mailer: git-send-email 2.47.2
+	by mlpnf0117.laposte.net (SMTP Server) with ESMTPSA id 4cDf90100LzPjd8;
+	Sat, 30 Aug 2025 17:25:40 +0200 (CEST)
+Received: by romuald.bergerie (Postfix, from userid 1000)
+	id 1F2546970BBB; Sat, 30 Aug 2025 17:25:46 +0200 (CEST)
+Date: Sat, 30 Aug 2025 17:25:46 +0200
+From: Vincent =?iso-8859-1?Q?Stehl=E9?= <vincent.stehle@laposte.net>
+To: Vincent =?iso-8859-1?Q?Stehl=E9?= <vincent.stehle@laposte.net>
+Cc: linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH] ipl: adjust firmware entry type
+Message-ID: <aLMX-qhLMaWNkmQ4@romuald.bergerie>
+Mail-Followup-To: Vincent =?iso-8859-1?Q?Stehl=E9?= <vincent.stehle@laposte.net>,
+	linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>
+References: <20250830152204.7868-1-vincent.stehle@laposte.net>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=laposte.net; s=lpn-wlmd; t=1756567268; bh=3thogFjozItYeV1vMf+egzbEKKkBpymf19MuFubEmOc=; h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; b=HqhTCyvfQvmKBTz14qwFes40hG+rbOzreu9hCkX6SGZXiIww/VTdErs+WMCkDxBushE2mLMJT9+i9P3VDEF37KbHHdM0OK4VTshE2aVft8UuL72kuqh0C4k3scnAUApDpJkZxORjSHLfU9Rt3DKkK8DVyZVlidwALhGC1S44BWC3Gwv5V0YmGHp/1P2YO0t8OPNeNUcEu7K6DBGstHdyEzus7B+dzF1T+YTCGAMpbME6CUn99KyCKaRJCF2C9NwHAbBiW1z8So7hAIE1eyylNDlxJbnThHmRKTgA1mU5O9sBchJ2f9KCgiDeJhl5D8fj/muf+JRY+a08QeE0DFecdw==;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250830152204.7868-1-vincent.stehle@laposte.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=laposte.net; s=lpn-wlmd; t=1756567547; bh=DUpt1CJxWQGVReyq28b5sdeuPs4A5xFECzIvtgthjG0=; h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=RgQYowbjH1htQ9jBGPFlNPc5QbSgT/sqdu2TS/4sW9Nx6ftbX4PBT9ak3LiVXRMDZApyzEYO5tZWndym3QizW/sGtmx5J2+ikguMqqjZIhAPW0QSyoOLC70lyF1xYn2ODkKAf8L8DNgVNTSoPLJGQ9FGFOnw+mTR/lbMKxmjwgd5rwi7mUrnQtwDDTgU2Ov1enMfhVwKykbzL6qyho2tJeda/qa4myFbiFeYt2IFpPXGd3Z+is2vnEb9pCFUlHSCsdBn/G/q2rXRgWmLkQFwiIKFpjAsMgwDi6NuJ2nPIa5oV/64vUUu6SD8ikft1IqogS3FzDRMubpM6Fvc8tz3AQ==;
 
-The `firmware_entry' function typedef used to call the firmware in
-firmware_call() is defined with no argument.
-
-This causes the compilation to fail with gcc 15:
-
-  pdc_misc.c:119:14: error: too many arguments to function =E2=80=98(int =
-(*)(void))(unsigned int)fn=E2=80=99; expected 0, have 14
-
-Add all the 14 function arguments to the type definition to fix the
-build with gcc 15.
-
-Signed-off-by: Vincent Stehl=C3=A9 <vincent.stehle@laposte.net>
----
-
-Hi,
-
-I could verify that this still compiles fine with gcc 14 and 13.
-
-Best regards,
-Vincent.
-
- ipl/pdc_misc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/ipl/pdc_misc.c b/ipl/pdc_misc.c
-index f516bd8..ab2191a 100644
---- a/ipl/pdc_misc.c
-+++ b/ipl/pdc_misc.c
-@@ -95,7 +95,10 @@ firmware_call(unsigned long long fn, ...)
-     }
-     else
-     {
--	typedef int (*firmware_entry)();
-+	typedef int (*firmware_entry)(unsigned long, unsigned long,
-+	    unsigned long, unsigned long, unsigned long, unsigned long,
-+	    unsigned long, unsigned long, unsigned long, unsigned long,
-+	    unsigned long, unsigned long, unsigned long, unsigned long);
- 	unsigned long arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
- 	    arg9, arg10, arg11, arg12, arg13;
-=20
---=20
-2.47.2
-
+I forgot to mention: this patch is for the palo bootloader.
 
