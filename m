@@ -1,79 +1,79 @@
-Return-Path: <linux-parisc+bounces-3968-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3969-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE90FB3EFE5
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 22:51:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1830FB3EFE8
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 22:51:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65A7D1A85F54
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 20:51:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19A3E164D32
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 20:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D93275106;
-	Mon,  1 Sep 2025 20:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6532777EA;
+	Mon,  1 Sep 2025 20:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="FHQ91QSn"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="fd7uB6P5"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEFC271A7C
-	for <linux-parisc@vger.kernel.org>; Mon,  1 Sep 2025 20:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E832765D1
+	for <linux-parisc@vger.kernel.org>; Mon,  1 Sep 2025 20:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756759837; cv=none; b=qIcq7wYl66ZuKa4hQH/Lg3alOBLtI92P+ze/RAzJ16yMOQOcGSg2prEgAAcTxv66xNa2VHpEPK1PnHKtzrxzdglBlTfkr8ZexFxPOVMFlXI665vPl+gp4Yij1SpPLDDpIMPa93HlUEMkGlRod5mf41V+TMwy0NFTk8qe5r0E5hM=
+	t=1756759838; cv=none; b=sW5lhQ5iwPVrf/7s2lw4bI9wfZCawsaYB0q0WZ0R0/0AzJ6MkVRt2WKQa8DrA66izauzbI3ZS2kvSGhX+c15Vmm9SVCFYL5m7A69iUP5/2OAAqTAMDF/oHkT5q4lTU9ErgORboPaHlEVRYw3wWy0g4Eh0oGrBnrMeRILxQ+iVKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756759837; c=relaxed/simple;
-	bh=TMT49CqstTNtBaTVBDnVTRRV9UZlWdrh748RuoUcnSc=;
+	s=arc-20240116; t=1756759838; c=relaxed/simple;
+	bh=9ZBLOgc8o7e4sYGe9wP+1FqjAVbgCQ4ajZen8ILi1mU=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wt6PRX8VDbh4ONTQ7XRptTF4QNtMs0nhwJKeRTyHLJ3szbCz6th/Aq/icOvKaaoVconTTEPXPfhwVXmsAYz4nrVXcqpVvkMKHzHKrGvkFWDQIICY12ggcHP8Bi6fD7W8YrGU73C3kX9l0DHswqfwf/RJo4njkd5xUgsd+gVWqsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=FHQ91QSn; arc=none smtp.client-ip=209.85.218.51
+	 MIME-Version; b=Sv6hh+5EDx2/1xG5gWiFjPtWqaS06PrJL8+OwKGPWkbFU3THg2lQpd1bDpljU8eRDecGVRt6thO/hnlJBckf+y1MdGBH8L84r04zrhZHbc/fd1HyUOMG9YxE56sRk+gj/zQr/hsAEcK3U5oVjC28Yc111Ksw+KIMQpSuAi/MWDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=fd7uB6P5; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b042cc3962aso160506866b.0
-        for <linux-parisc@vger.kernel.org>; Mon, 01 Sep 2025 13:50:34 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-afefc7be9d4so531804066b.1
+        for <linux-parisc@vger.kernel.org>; Mon, 01 Sep 2025 13:50:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756759833; x=1757364633; darn=vger.kernel.org;
+        d=ionos.com; s=google; t=1756759835; x=1757364635; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+HuFWfM/wBc81hJ9dDpPKVdEJMtdQ1aHoBTwvYzmlVA=;
-        b=FHQ91QSnsRjfVPy0zY1rSfaE13IzuBddN7koWV8FABvl4CnCk1K0RyXVwVx7Aj4Aa5
-         OnyKz1581fAFHF4LMEnp//MdHK+M9kSxednjB9fj6Xl6fgGTeB15VKX2ioru/1BBvOi4
-         X0M7YrbW3UUo7jKn32autgZTe9pdRuKEdoTSbtZ4uCheXuopYkRvX0qnigHN7ni5xQjd
-         zIIiOp7UVOvU/9k89LRoHcVK2OFg9YYU3lzg8etBf3KUIie3IyKTxGG+vGjHVTXR4p+Z
-         yMPlZiAullwaGpbq6Oqfs1GsyKJifr1dmQ6kAZxxt6tym9hIjF/esK8ZX4J0cj5TMmAZ
-         qBzg==
+        bh=DOUVRSUkKssTlOViJjAfm2Ry0I5gABWdPNOlGM2jpT8=;
+        b=fd7uB6P54iPwC2UabKzsiHRweWKdRQtn3DyA4wJAfMScLZN1S+Cup8/pYYTAplSMEb
+         oiBSDgN/cMndhVSnK3dy1F1xDzRmlHH4c+pwq64ndLkUHnyHTx8yv1/dfzMz3ypiPfn4
+         8UHqEA9DVSmFJ3D1GH+q+8zaqZoBGK01uE8ypp59GqicaNHlQRnIbnL3xuQLNvvPatap
+         hJ9P0AdKWfhJjWVQvuXfj3mCv1DMb9NxwlVnYUV9Vzq9E09vInVSwjrAf6Q9VRmB9P6s
+         RdfdiJFKP0QNJy+RQC9MFfF+tm0mX1+QjBw9kw0Ow79PUijkwu5E1KqjA6WhcmNf3ZG+
+         Tz7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756759833; x=1757364633;
+        d=1e100.net; s=20230601; t=1756759835; x=1757364635;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+HuFWfM/wBc81hJ9dDpPKVdEJMtdQ1aHoBTwvYzmlVA=;
-        b=pbB0BOdZo90J9krbR+ahzLd0taYyEFFSENftLoJjmR6mEI/1MaDDKgzEsE0doXkGf+
-         CdsrtgFwueVWpZ6zW3oDpysLhLMU8njMMYgsWnv4hvhnbnQWOQKVAZv038ATqaTUjcR1
-         AezW55SqdpZqDaIWIET7OWvdNrt4zyVvrV9TbTS0xW9YaP5Lxw0/FQkA2ouRwPBbr9ff
-         9VR4todDBVAm5nStVn6+LajYMoyR6dmjxns5GHx3LlwY7OtfVliXxObArMXAvF3ZEf1h
-         rOQxlbmgwDEZTpdgpsXrJucoMVupVuII8OPKMzYtXOqCugRHxFSbrnVQhoY5HOR+4o9B
-         jMQA==
-X-Forwarded-Encrypted: i=1; AJvYcCXdEAohO7bodoWcUj4gCrnCfOfsgmmf/dQt6uAS9nKJYLclnjzUajCc6sGMkwdbs6sXVKtj32mOHbOqjEE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKBjPZYH2LJEBQvPrkEbwZeAEMrPHrCPkJLddYDC8weWbJLacA
-	dtrqnV8llb/lcauvg/LNO8Dm1RpATmiGslwVuoQx3kPYEcJyAJNUqdR/kxGelRutBtA=
-X-Gm-Gg: ASbGncvat9D+XWRJhXLgZDw2RKI0ITZxoyhGR9koiQ3ypQgYbv6hU7DfP5kVU3gwb5l
-	8F9FzP/Yj4uo33+Zn4ZZQPdX4zrJ7DvCNvQvcu8qxPwxh76PEBzxauYTjEyuOJbjixPHyWqDQqC
-	eb4ncYHHZfyJ6x+z+MZfevnMnCv7xLee+IZ1A17mlm2w4m5QsXxRCkup0Tr8mSPgzRXVEo6Tr48
-	zmBbhqprG2elZqPDdH9dbLbkGmp2gBzGpzqKn2NKkzou7164EBgbNsOPOqLFowOPgc8FrMm4ScA
-	IIAfGmL9H59NPNutdFmOeHIyuO0aOfD2B/8LIrSYJR/f29/lNZYznFglRHK1rcP7zl5UZS3Way6
-	tERYRk9PHQIWbkT/qLt6UBes+mdsVp70wDVSSOhLMau/wtkcC0Hb4sKDn4VMUwEvdE3ATAQKoZr
-	2JKE4qcCvVL3Xb3VG+evGBVD95zFOnVLGI
-X-Google-Smtp-Source: AGHT+IE84zezaOZTWoQkapLH2C1BbO6vX7Y1+6hTyfb4WtgBOH2M2hBOPUkaiYSUFhoR0XJ1xkAFHg==
-X-Received: by 2002:a17:906:4794:b0:aff:7429:d40f with SMTP id a640c23a62f3a-b01d8a322b9mr880289766b.4.1756759833266;
-        Mon, 01 Sep 2025 13:50:33 -0700 (PDT)
+        bh=DOUVRSUkKssTlOViJjAfm2Ry0I5gABWdPNOlGM2jpT8=;
+        b=aWMANdMKxR+tl3RqdgdiWZ9s1SZlDnxlXqIbYoYbRNblQauuWVADTLQbu37dln4iY+
+         VUk8XMl3Eri1WVybn8HHSwlPU5dFhBVkVHBQ6TDbWcBvkRxMdxKIKdf81sIZuKbAi/Ac
+         ZdyKOXYi0HaVLsbgOOmj/7buA9gxIltyGkPntmHnhodhmHQc0CyhJiQY/j+VY2/rr1Ok
+         NKzu4fKqJgOQq2W3Iv3o20WW8j/8ewlSIl9bmlbP+aXVzPAwdWJzugvhJ7E8TqHUTRr+
+         HP1Z4mBWIqq7OFmWK7IWauiCboHa5fPIYiSOCT66/zI+vbSxeIqDtgumwJRhkhL+7qN8
+         /sgA==
+X-Forwarded-Encrypted: i=1; AJvYcCWwVUO1BFejVnURrMsNQc3idZs9gTlDBSjgr9uuqflE3y7lcaex333rKi/yQRqIrk2i843f2lkJhSc+gz0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOaor4B2Mh5PelqnC1QBijTaZvmbSw8HFzWWiZMb/V5w9g9eno
+	vPaQXlmWohjYnXWplRc4jJLbSJScqZzL+te/RCJjEOdqBAL8gpRl01jaS4jNHwINyAk=
+X-Gm-Gg: ASbGncsAU/XpUCDZdxUq5KtL6AiY9oEHJ2zEF36GXZSEqvGC9gWmj3GI8TMP6DtbN14
+	sSkWy85wfTgj49wtWcYxBYGpMX0qTrFI4xIjkPMOewCEdtrzPMhLZGWwx6cAt9Yl/9Pqjg8Viey
+	qwCwA8xDVlK2oRqaD6yHk7K0u08FDjjgkxkryELpirh6IRH4clgABBn5G5kqPESvYfVI9rJFrd9
+	CLfwmPYHMh0yZoi3CM/ecVZ4YZJinnAsi2HajA0P+IgNeczfyzzHFhKI5MwdzI54NmbUs5jXmn8
+	/e1uBnRUPIv0WgvefscdOK2uUIsZPueJTKbvNbBBhu12IzXWJaa46SdlN/YfA8+42zeMIlqRtzq
+	82O+SMVNFPJMv1kQrgLUbjxq+AFY/ppHqFnjMoxfKNOfR3HF+VSbG4IHWg/o4xOcqZTDYiSKxZ0
+	liFzzDpq5NbhoGUBatZRjtuQ7xG+3S+pfU
+X-Google-Smtp-Source: AGHT+IGigtKDXFUmdSAlFGcDTy1NmHrauWomJBx5FIkz9t/2ArUf43T05qd7+gJYKJea9RCwhs03Aw==
+X-Received: by 2002:a17:907:e8f:b0:afe:8f28:fd5 with SMTP id a640c23a62f3a-b01d9719057mr990403866b.41.1756759835180;
+        Mon, 01 Sep 2025 13:50:35 -0700 (PDT)
 Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcbd9090sm937339066b.69.2025.09.01.13.50.31
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afefcbd9090sm937339066b.69.2025.09.01.13.50.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Sep 2025 13:50:33 -0700 (PDT)
+        Mon, 01 Sep 2025 13:50:34 -0700 (PDT)
 From: Max Kellermann <max.kellermann@ionos.com>
 To: akpm@linux-foundation.org,
 	david@redhat.com,
@@ -130,9 +130,9 @@ To: akpm@linux-foundation.org,
 	linux-s390@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [PATCH v6 03/12] mm: constify zone related test/getter functions
-Date: Mon,  1 Sep 2025 22:50:12 +0200
-Message-ID: <20250901205021.3573313-4-max.kellermann@ionos.com>
+Subject: [PATCH v6 04/12] fs: constify mapping related test functions for improved const-correctness
+Date: Mon,  1 Sep 2025 22:50:13 +0200
+Message-ID: <20250901205021.3573313-5-max.kellermann@ionos.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250901205021.3573313-1-max.kellermann@ionos.com>
 References: <20250901205021.3573313-1-max.kellermann@ionos.com>
@@ -143,8 +143,6 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-
-For improved const-correctness.
 
 We select certain test functions which either invoke each other,
 functions that are already const-ified, or no further functions.
@@ -158,181 +156,39 @@ Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Acked-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/mmzone.h | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ include/linux/fs.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index f3272ef5131b..6c4eae96160d 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1104,7 +1104,7 @@ static inline unsigned long promo_wmark_pages(const struct zone *z)
- 	return wmark_pages(z, WMARK_PROMO);
- }
- 
--static inline unsigned long zone_managed_pages(struct zone *zone)
-+static inline unsigned long zone_managed_pages(const struct zone *zone)
- {
- 	return (unsigned long)atomic_long_read(&zone->managed_pages);
- }
-@@ -1128,12 +1128,12 @@ static inline bool zone_spans_pfn(const struct zone *zone, unsigned long pfn)
- 	return zone->zone_start_pfn <= pfn && pfn < zone_end_pfn(zone);
- }
- 
--static inline bool zone_is_initialized(struct zone *zone)
-+static inline bool zone_is_initialized(const struct zone *zone)
- {
- 	return zone->initialized;
- }
- 
--static inline bool zone_is_empty(struct zone *zone)
-+static inline bool zone_is_empty(const struct zone *zone)
- {
- 	return zone->spanned_pages == 0;
- }
-@@ -1273,7 +1273,7 @@ static inline bool folio_is_zone_movable(const struct folio *folio)
-  * Return true if [start_pfn, start_pfn + nr_pages) range has a non-empty
-  * intersection with the given zone
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 3b9f54446db0..0b43edb33be2 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -537,7 +537,7 @@ struct address_space {
+ /*
+  * Returns true if any of the pages in the mapping are marked with the tag.
   */
--static inline bool zone_intersects(struct zone *zone,
-+static inline bool zone_intersects(const struct zone *zone,
- 		unsigned long start_pfn, unsigned long nr_pages)
+-static inline bool mapping_tagged(struct address_space *mapping, xa_mark_t tag)
++static inline bool mapping_tagged(const struct address_space *mapping, xa_mark_t tag)
  {
- 	if (zone_is_empty(zone))
-@@ -1581,12 +1581,12 @@ static inline int local_memory_node(int node_id) { return node_id; };
- #define zone_idx(zone)		((zone) - (zone)->zone_pgdat->node_zones)
- 
- #ifdef CONFIG_ZONE_DEVICE
--static inline bool zone_is_zone_device(struct zone *zone)
-+static inline bool zone_is_zone_device(const struct zone *zone)
- {
- 	return zone_idx(zone) == ZONE_DEVICE;
+ 	return xa_marked(&mapping->i_pages, tag);
  }
- #else
--static inline bool zone_is_zone_device(struct zone *zone)
-+static inline bool zone_is_zone_device(const struct zone *zone)
- {
- 	return false;
- }
-@@ -1598,19 +1598,19 @@ static inline bool zone_is_zone_device(struct zone *zone)
-  * populated_zone(). If the whole zone is reserved then we can easily
-  * end up with populated_zone() && !managed_zone().
+@@ -585,7 +585,7 @@ static inline void i_mmap_assert_write_locked(struct address_space *mapping)
+ /*
+  * Might pages of this file be mapped into userspace?
   */
--static inline bool managed_zone(struct zone *zone)
-+static inline bool managed_zone(const struct zone *zone)
+-static inline int mapping_mapped(struct address_space *mapping)
++static inline int mapping_mapped(const struct address_space *mapping)
  {
- 	return zone_managed_pages(zone);
+ 	return	!RB_EMPTY_ROOT(&mapping->i_mmap.rb_root);
  }
- 
- /* Returns true if a zone has memory */
--static inline bool populated_zone(struct zone *zone)
-+static inline bool populated_zone(const struct zone *zone)
- {
- 	return zone->present_pages;
- }
- 
- #ifdef CONFIG_NUMA
--static inline int zone_to_nid(struct zone *zone)
-+static inline int zone_to_nid(const struct zone *zone)
- {
- 	return zone->node;
- }
-@@ -1620,7 +1620,7 @@ static inline void zone_set_nid(struct zone *zone, int nid)
- 	zone->node = nid;
- }
- #else
--static inline int zone_to_nid(struct zone *zone)
-+static inline int zone_to_nid(const struct zone *zone)
- {
- 	return 0;
- }
-@@ -1647,7 +1647,7 @@ static inline int is_highmem_idx(enum zone_type idx)
-  * @zone: pointer to struct zone variable
-  * Return: 1 for a highmem zone, 0 otherwise
+@@ -599,7 +599,7 @@ static inline int mapping_mapped(struct address_space *mapping)
+  * If i_mmap_writable is negative, no new writable mappings are allowed. You
+  * can only deny writable mappings, if none exists right now.
   */
--static inline int is_highmem(struct zone *zone)
-+static inline int is_highmem(const struct zone *zone)
+-static inline int mapping_writably_mapped(struct address_space *mapping)
++static inline int mapping_writably_mapped(const struct address_space *mapping)
  {
- 	return is_highmem_idx(zone_idx(zone));
- }
-@@ -1713,12 +1713,12 @@ static inline struct zone *zonelist_zone(struct zoneref *zoneref)
- 	return zoneref->zone;
- }
- 
--static inline int zonelist_zone_idx(struct zoneref *zoneref)
-+static inline int zonelist_zone_idx(const struct zoneref *zoneref)
- {
- 	return zoneref->zone_idx;
- }
- 
--static inline int zonelist_node_idx(struct zoneref *zoneref)
-+static inline int zonelist_node_idx(const struct zoneref *zoneref)
- {
- 	return zone_to_nid(zoneref->zone);
- }
-@@ -2021,7 +2021,7 @@ static inline struct page *__section_mem_map_addr(struct mem_section *section)
- 	return (struct page *)map;
- }
- 
--static inline int present_section(struct mem_section *section)
-+static inline int present_section(const struct mem_section *section)
- {
- 	return (section && (section->section_mem_map & SECTION_MARKED_PRESENT));
- }
-@@ -2031,12 +2031,12 @@ static inline int present_section_nr(unsigned long nr)
- 	return present_section(__nr_to_section(nr));
- }
- 
--static inline int valid_section(struct mem_section *section)
-+static inline int valid_section(const struct mem_section *section)
- {
- 	return (section && (section->section_mem_map & SECTION_HAS_MEM_MAP));
- }
- 
--static inline int early_section(struct mem_section *section)
-+static inline int early_section(const struct mem_section *section)
- {
- 	return (section && (section->section_mem_map & SECTION_IS_EARLY));
- }
-@@ -2046,27 +2046,27 @@ static inline int valid_section_nr(unsigned long nr)
- 	return valid_section(__nr_to_section(nr));
- }
- 
--static inline int online_section(struct mem_section *section)
-+static inline int online_section(const struct mem_section *section)
- {
- 	return (section && (section->section_mem_map & SECTION_IS_ONLINE));
- }
- 
- #ifdef CONFIG_ZONE_DEVICE
--static inline int online_device_section(struct mem_section *section)
-+static inline int online_device_section(const struct mem_section *section)
- {
- 	unsigned long flags = SECTION_IS_ONLINE | SECTION_TAINT_ZONE_DEVICE;
- 
- 	return section && ((section->section_mem_map & flags) == flags);
- }
- #else
--static inline int online_device_section(struct mem_section *section)
-+static inline int online_device_section(const struct mem_section *section)
- {
- 	return 0;
- }
- #endif
- 
- #ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
--static inline int preinited_vmemmap_section(struct mem_section *section)
-+static inline int preinited_vmemmap_section(const struct mem_section *section)
- {
- 	return (section &&
- 		(section->section_mem_map & SECTION_IS_VMEMMAP_PREINIT));
-@@ -2076,7 +2076,7 @@ void sparse_vmemmap_init_nid_early(int nid);
- void sparse_vmemmap_init_nid_late(int nid);
- 
- #else
--static inline int preinited_vmemmap_section(struct mem_section *section)
-+static inline int preinited_vmemmap_section(const struct mem_section *section)
- {
- 	return 0;
+ 	return atomic_read(&mapping->i_mmap_writable) > 0;
  }
 -- 
 2.47.2
