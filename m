@@ -1,87 +1,87 @@
-Return-Path: <linux-parisc+bounces-3938-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3939-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A81B3E67F
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 16:01:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3959CB3E6AC
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 16:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D31F440CBA
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 14:01:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22376176395
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 14:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F1633A009;
-	Mon,  1 Sep 2025 14:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1601733EAF9;
+	Mon,  1 Sep 2025 14:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BM3Z3K6Q"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OneGP6ZD"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58A02F291D
-	for <linux-parisc@vger.kernel.org>; Mon,  1 Sep 2025 14:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A80A31CA71
+	for <linux-parisc@vger.kernel.org>; Mon,  1 Sep 2025 14:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756735260; cv=none; b=XXhNbr9e3fsJBitqP1jChkd4+Lbl9qgQFxCk23eX1OdpqEZBWjfgLTOkGCNUFgYf31UzwXY/1jZ69D17A4UCaWoL9U5HjmA7u6beF7IrAVEtgQHgD9A6ARRzbNaOK0GHdTskZCjVYhPFlN5E627Zg1ZLF/nDMS00u4O9TEPNPhg=
+	t=1756735628; cv=none; b=Shju2cWOd8NapTWzYP/CaeP263StNz57BWWD3ZZcNVpOq47IFPQ8AGAqFt+wQ8GVlwS5Gjf4/4c4Uq4rDXevab9Ygk6lOw45WF5Xdd13QM3Di6jWr0d4ww+skbVE0FcI2g1VzRAx9qWswkwOrUzpRqTPHWBZqi6xViTU1PqVEgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756735260; c=relaxed/simple;
-	bh=A0rIjcIgYC8dyuUFStHv+vQbOBSmgcbpTN3EDpWY4Jo=;
+	s=arc-20240116; t=1756735628; c=relaxed/simple;
+	bh=64mPdBUB1VnZC6F7vLaBcxY8HngxXhwwW47VJnp3RAY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=MC4orV3xh46eNxcOtNKouIuOeEhFxmqpWbBpbFyG5V3HCY9SUmnQCnMMIKfvL2MvyxiqZ5Vkai+5cszJFC4Gv/Ck9f3Ot4zuEvW2gUAOJKM+tWPsUqOMf1sNTM5D3ob9HwdPbDgvX9dWZcOBxzxA/4v4I69g73Q2f76zf3EnFxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BM3Z3K6Q; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=d/fz3QJM6HnFQVFiskeRcqQyTAZYnhnJ8Gk8+8d5DhqvUdEKc7Oi5YT3e+8h/XKoFcYM9LEaX2Yvs4XYF8bdqqLv7JQ/0sY8Is+oVXVr250cxImXzFKCBNhSLY/6jPoBA6+YYwkv6yLPUDha9WgV+jsyliS/5YRXI8VSUDL2F/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OneGP6ZD; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756735257;
+	s=mimecast20190719; t=1756735625;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=lx0LFME7B3AUa2/+kLMyCPk/GuDX6f91CgTqDnBJCDI=;
-	b=BM3Z3K6QOwpmfwV92fM5pbdsAwGEZ1zD/hUkJLATCROKzd6tdsanT2MzKQlTRdrHvXals6
-	yV5/E1bAj5LGFDj+6qcC2+MWSp6dyITNO86q27JpGPIpdJ5GPdKmw7EmYFI9QfQa/7MUOm
-	WEXLY1Q5kWCEPTScZIO3aiPP+ysVTrw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=b8phEHlSLnRxLufhaprOt2cjL5zUnMPeEi+VixSkVIU=;
+	b=OneGP6ZDiywizjHuhR6xUXeUzefhC+2mJfdObUxz19ch2WK/5hdc1nzwLScKsEijtMKW9H
+	2gdYr9XS3zIzWReTia4DlJ+Me33SIIrFFC1YxDxJV1SSoXTdyGklmAaudyQbmWTir+FmwJ
+	IwmX2nzE+oZmZvKk/IJ3dRyLimsoLYQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-EyChiZBdOPCqc6oGqNqzng-1; Mon, 01 Sep 2025 10:00:56 -0400
-X-MC-Unique: EyChiZBdOPCqc6oGqNqzng-1
-X-Mimecast-MFC-AGG-ID: EyChiZBdOPCqc6oGqNqzng_1756735255
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45b8b7d66adso6301025e9.2
-        for <linux-parisc@vger.kernel.org>; Mon, 01 Sep 2025 07:00:56 -0700 (PDT)
+ us-mta-624-8NKszpgzN2qEzyPcT3L1Sg-1; Mon, 01 Sep 2025 10:07:03 -0400
+X-MC-Unique: 8NKszpgzN2qEzyPcT3L1Sg-1
+X-Mimecast-MFC-AGG-ID: 8NKszpgzN2qEzyPcT3L1Sg_1756735622
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45b828bed3fso11021155e9.1
+        for <linux-parisc@vger.kernel.org>; Mon, 01 Sep 2025 07:07:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756735255; x=1757340055;
+        d=1e100.net; s=20230601; t=1756735622; x=1757340422;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lx0LFME7B3AUa2/+kLMyCPk/GuDX6f91CgTqDnBJCDI=;
-        b=aTLINiQufAr0oa/1mxmkKHeaOyo0wfQ9Ii1wozIIFJjzjm2h9JuR2t8SKtPJ4hTenU
-         mNrZzyGBf+EC0dbkgezYdEO9qr4TTHJjbCF6UoHAqLcpCxaf9FVdXVD34Y8ANF7824/M
-         XsXHs+RR5VylCcJslAIL/mSJs3cvjZZ/CY1r/DdjvlhFi7YQ1gcnQ4CKOQr8GgSc46ot
-         aegdYO575Z5tYiN3+98FydARBChNDq5hToxN5oe2NYlwkT2mCJrYiuwMFO9iUPMuDhpq
-         ztmCCrr5CfLyHnQhY70K2RT7FCfJQ/Bcy8dENAmx7Ij2lBRBIGbX8Ji3cQaeq6UwXl29
-         Tzfg==
-X-Forwarded-Encrypted: i=1; AJvYcCXi1wpX03e1M9ve6Uqyq0EhbPHX+C6EbOdKmPkZbWAz09dcIsdz77egGN6YaCYilZd+lm/TQdL4V/WTlT0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx06+4DXZzMp1QALI6kYYJLcFN91qEg6P0IFumTZvSrxdaAqm0l
-	x1IBRAfbbgi3j5wrhHzNfmp5EtqguBKUL960dRGQ/EpOGX+Q2JC8jpMFrdDr4CCrgdpandNACC2
-	GMnzokUpqElnbJzjUDRDaxNiYkITCviNx7AXMx5nNvnqdSoA39tDZIKskUF35M65CgA==
-X-Gm-Gg: ASbGnctAl+z7nDZis2GRnDUye/BPV8lD2w3NbLA6uTCNAOWRZncaSF3tbvtVQxfF0TU
-	0xKPklnKgaehyE70IPd620RXf7T6ztngpf4g+HiSYc7lKrq2rPqw0mTLaT/gy4KDYZQMrC49jVE
-	NSbEWTkEJSiWBd1ajfsv1bx1hwBvByQvZNA+KPMDL6hFPqx1aGJ6dIrJfzZMIzwx46d1lfNkOhg
-	t8JtiJy7qfsj1J6FzZDrhD2iGsqBzCJ6+AIxC6wgm/HAhQ7leXAvimv/WZQkpAJgJ50NyHjYdL3
-	8mJpAcG0c6X9I9pSHmMcZbKI+3O6t4o4glu4yjuQ/rtYJsqDEQSFdFXH2OklqGk535RWNlB4JdL
-	hBxgJzKoTvvJoOVnZUM1BiAQKU6PYEf2FhVW60A3t+LdPulUcYWjSUhGNp7D9VYz+VOM=
-X-Received: by 2002:a05:600c:19ca:b0:45b:8b76:c734 with SMTP id 5b1f17b1804b1-45b8b76c9aemr51288715e9.17.1756735255046;
-        Mon, 01 Sep 2025 07:00:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGKtDnpo7zdRn5kM2ivYNaIbBCzDVyMQFOSKKHTd6+Sf3l6DZcgbqTIv+QNYIMEkOQcJ2hrog==
-X-Received: by 2002:a05:600c:19ca:b0:45b:8b76:c734 with SMTP id 5b1f17b1804b1-45b8b76c9aemr51287845e9.17.1756735254313;
-        Mon, 01 Sep 2025 07:00:54 -0700 (PDT)
+        bh=b8phEHlSLnRxLufhaprOt2cjL5zUnMPeEi+VixSkVIU=;
+        b=kJ6p6qFaQYG5Jq8mobTbqEuam8vgefqFk8DCeh5ddO/w7R7NW9VVY6eJLwiA6kI/d7
+         Tzf1mdVY1LLwNGwHOGCkY9rQYtc7LnIvqjwjfzgTPUStNvF+HawvRi8jmzFIeUeyIbAr
+         68oOrp4NuFpxSpwnA6KGwLrM/bwaDkzcU2CRAiRXKzxHekrOvC+P7RMM8BLWeNmT9n9D
+         JsqkkblijT6FQO+yxwCppO9s54+mLpk6W3Lk9ZUQGY8B1oZTwpQF10IMJBRlx1+S460y
+         BDuUjQwEjXMUILVkX2F7LbMg/OMQCMxv3e6+96+SsubVPAHc2ph5zjaMR1E+Wm264uks
+         8mZA==
+X-Forwarded-Encrypted: i=1; AJvYcCVmh6AiBv6oQKr2wa8y+Gz1AmOEm1T0LkICzhcQl3RPpRZq9AA0zeFdXfw2Tn1lgMgM2Lla/FaPCYxMnaw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm5n3aL/WfirzKX+Zz5F+BUoFWBhQvpRyHWKV6KCyb62WZY5DL
+	Ji1q7HHAXCtZyvZiLQ4bhfc4K1xoubLjY+TRY6gv9AzJ8UfakYOs3ImhEgRjDU0VVdaF2UWAdn7
+	ZUSWVm/kRNLOOVIgsvcmBqBUbLKsyJVhFOiriayQ+tCHhUdMTSixyP6Acgkv6dLu2NQ==
+X-Gm-Gg: ASbGncuxmQKshrnbt6q8hpDANrLoOyZjx9rNYxwYZD1au3I5bybytX8MmAsqXRhTVGv
+	lNafU+JOBKa+OQodAdhOGMVAMDkZT2ftGpD8n/Hs54CDNGJpwqORNSXlJoSYmU6u+FYoTsod3GL
+	AE2ZBQVA8orPzp21zf/78EflFhzIWX2/xhe0zeiTX7Migx6d3OxZckrLK4h/PJSfukXPe1LG23l
+	AkiZ/snkuBD2ywRzerhjNJ/VaNm0COKBAoVt7FyOtkxf6RdCw+v3gzMu9btNTXMKb2nvLc5Cz1b
+	gy6j0/kBeBpB2oNgGf+V5bFUfZS0x2XdjprocqR/DSrhQ6tqhSMHilr/9FOZYXjWDQ+NOTlBtZT
+	sghxQW2qAiNb8atFjRYMSlzx6hNMON+uvcBOeuLoxRnTKofzBvTIfyGuDG+NU7IIOKiE=
+X-Received: by 2002:a05:600c:484a:b0:45b:85d0:9a0c with SMTP id 5b1f17b1804b1-45b85d09ccdmr50143045e9.15.1756735622249;
+        Mon, 01 Sep 2025 07:07:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFc/fzqFhcyBDKForO8lAi4OllS0y6HGtqOEpvIJOxrpYoc27SWP07i3IDs6oE/SD7LPI4+eg==
+X-Received: by 2002:a05:600c:484a:b0:45b:85d0:9a0c with SMTP id 5b1f17b1804b1-45b85d09ccdmr50142575e9.15.1756735621736;
+        Mon, 01 Sep 2025 07:07:01 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6f0c6fe5sm239195655e9.5.2025.09.01.07.00.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d92d51982bsm519348f8f.21.2025.09.01.07.06.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Sep 2025 07:00:53 -0700 (PDT)
-Message-ID: <5ff7c9bc-1722-4d8a-ad2e-8d567216a4e4@redhat.com>
-Date: Mon, 1 Sep 2025 16:00:50 +0200
+        Mon, 01 Sep 2025 07:07:01 -0700 (PDT)
+Message-ID: <081a7335-ec84-4e26-9ea2-251e3fc42277@redhat.com>
+Date: Mon, 1 Sep 2025 16:06:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -89,8 +89,7 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/12] mm: constify various inline test functions for
- improved const-correctness
+Subject: Re: [PATCH v5 11/12] mm: constify assert/test functions in mm.h
 To: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org,
  axelrasmussen@google.com, yuanchu@google.com, willy@infradead.org,
  hughd@google.com, mhocko@suse.com, linux-kernel@vger.kernel.org,
@@ -111,7 +110,7 @@ To: Max Kellermann <max.kellermann@ionos.com>, akpm@linux-foundation.org,
  linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
  linux-fsdevel@vger.kernel.org
 References: <20250901123028.3383461-1-max.kellermann@ionos.com>
- <20250901123028.3383461-11-max.kellermann@ionos.com>
+ <20250901123028.3383461-12-max.kellermann@ionos.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -158,37 +157,55 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20250901123028.3383461-11-max.kellermann@ionos.com>
+In-Reply-To: <20250901123028.3383461-12-max.kellermann@ionos.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 01.09.25 14:30, Max Kellermann wrote:
-> We select certain test functions from mm_inline.h which either invoke
-> each other, functions that are already const-ified, or no further
+> For improved const-correctness.
+> 
+> We select certain assert and test functions which either invoke each
+> other, functions that are already const-ified, or no further
 > functions.
 > 
 > It is therefore relatively trivial to const-ify them, which
 > provides a basis for further const-ification further up the call
 > stack.
 > 
-> One exception is the function folio_migrate_refs() which does write to
-> the "new" folio pointer; there, only the "old" folio pointer is being
-> constified; only its "flags" field is read, but nothing written.
-> 
 > Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-> Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 > ---
-
-Also some getters hiding (and functions that actually implement logic -- 
-folio_migrate_refs())
-
-[...]
-
+>   include/linux/mm.h | 40 ++++++++++++++++++++--------------------
+>   1 file changed, 20 insertions(+), 20 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 23864c3519d6..4cca66ba8839 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -703,7 +703,7 @@ static inline void release_fault_lock(struct vm_fault *vmf)
+>   		mmap_read_unlock(vmf->vma->vm_mm);
+>   }
 >   
-> -static inline int folio_lru_gen(struct folio *folio)
-> +static inline int folio_lru_gen(const struct folio *folio)
+> -static inline void assert_fault_locked(struct vm_fault *vmf)
+> +static inline void assert_fault_locked(struct vm_fault *const vmf)
+>   {
+>   	if (vmf->flags & FAULT_FLAG_VMA_LOCK)
+>   		vma_assert_locked(vmf->vma);
+> @@ -716,7 +716,7 @@ static inline void release_fault_lock(struct vm_fault *vmf)
+>   	mmap_read_unlock(vmf->vma->vm_mm);
+>   }
+>   
+> -static inline void assert_fault_locked(struct vm_fault *vmf)
+> +static inline void assert_fault_locked(const struct vm_fault *vmf)
+>   {
 
-*const ?
+This confused me a bit: in the upper variant it's "*const" and here it's 
+"const *".
+
+There are multiple such cases here, which might imply that it is not 
+"relatively trivial to const-ify them". :)
+
+Did you miss to convert some of these cases properly, or is there a 
+reason for this inconsistency?
 
 -- 
 Cheers
