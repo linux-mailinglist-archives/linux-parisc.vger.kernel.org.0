@@ -1,126 +1,270 @@
-Return-Path: <linux-parisc+bounces-3897-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3898-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262DDB3E22D
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 14:05:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D532AB3E305
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 14:34:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3A1F189EC22
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 12:05:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 916F03ADEE2
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 12:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD28A257453;
-	Mon,  1 Sep 2025 12:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8802631DDA2;
+	Mon,  1 Sep 2025 12:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ig0Ia3Q+"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Uvm/pHRi"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A1B242D9F
-	for <linux-parisc@vger.kernel.org>; Mon,  1 Sep 2025 12:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0604F212FB9
+	for <linux-parisc@vger.kernel.org>; Mon,  1 Sep 2025 12:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756728293; cv=none; b=M96L54EBTHNCTCowekmEdBrdK0DfJY83pF4R9dHowX4qscMV9qJGL3D+aGmb2RI+IRhvEg9ZvRgIVI17w7zUMjf/v8XoMNanyG4VwY6qMJYCrSRKZ/NAAJvT85+ChQ+bGPUF1JWlxAQarfSPYiqx9SCGrVnXKbNVucBKThatLOM=
+	t=1756729837; cv=none; b=Cg/BeDAoA9oKj2CdwsDUh0hlnBLNyv+OS1F4w9at7X62FG9ILC7NOiG4nB5nybWxRHdDgXcYg5uUrAXJrB4a/ueFU8znnV3dbPhdrKUqGQzYqO30xoccad7ug1zuoibSm3Godwr4bP9Desfz+MWRMxh4v6IeTgeYyHNFTsL9gUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756728293; c=relaxed/simple;
-	bh=RkdIGOasiN/G4T1FxY1sOGjNpqGU9h85OHCFSJBYtXs=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=jfqHRjvZ1sU79wRGrxUsRv7Zkd1GViN8KJhYS5Spz8hJxocisWGZ555hNFxN82iXBT/3ssj8AujK/+vo3tnFagZGYXq2YbWsY5ILUIGgOSoNvij2Pv9Clio04nx8nGcVz/3e5/ftAKzgqIQHhG6xmyRJ7CEhFEe/52RNIemwURM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ig0Ia3Q+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756728291;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YGw8Ab/OXgFUAJW0OAtWC6mI8zMQxjJeIWEK5dKTXMg=;
-	b=ig0Ia3Q+PWYXFQWhHg3oM2YEXosdx9tfVBaHlYsoQy7HRW30I0kMqy2JKwY2HwJ960URcS
-	vv5j+GG0KuDUsRuHMr7n7GB33mwshyriE4s7DhmI7h1XfFnA2MmoaDNJrXeLa+u4vM/R40
-	Us3GmBD47N3aXekzuMKUtZu9gc7bfpA=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-8L_Z16kkMPmA7xVODBVWnA-1; Mon,
- 01 Sep 2025 08:04:47 -0400
-X-MC-Unique: 8L_Z16kkMPmA7xVODBVWnA-1
-X-Mimecast-MFC-AGG-ID: 8L_Z16kkMPmA7xVODBVWnA_1756728286
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 403D3180034D;
-	Mon,  1 Sep 2025 12:04:45 +0000 (UTC)
-Received: from [10.22.80.6] (unknown [10.22.80.6])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 29E4430001B5;
-	Mon,  1 Sep 2025 12:04:41 +0000 (UTC)
-Date: Mon, 1 Sep 2025 14:04:38 +0200 (CEST)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-cc: "David S. Miller" <davem@davemloft.net>, 
-    Harald Freudenberger <freude@linux.ibm.com>, linux-crypto@vger.kernel.org, 
-    dm-devel@lists.linux.dev, 
-    "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
-    Helge Deller <deller@gmx.de>, John David Anglin <dave.anglin@bell.net>, 
-    linux-parisc@vger.kernel.org
-Subject: Re: crypto ahash requests on the stack
-In-Reply-To: <aK7Rl7YC1bTlZWcL@gondor.apana.org.au>
-Message-ID: <90c8cedd-cdad-c528-2771-829a66e08e33@redhat.com>
-References: <94b8648b-5613-d161-3351-fee1f217c866@redhat.com> <aK7Rl7YC1bTlZWcL@gondor.apana.org.au>
+	s=arc-20240116; t=1756729837; c=relaxed/simple;
+	bh=ymeIcfO5siUE2sOCLzmRutxlU15if7PhiIG2QigIMEY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=L+rsBsSixqcwmPB5qkSHA+zdqQHKEfyT31LQrJAGFf7vqv+An+GHgiGN3HmugByVU96boB97aro/eTmYjFFdYUj055uqe6PC3XlzYnH8qC9XzT1Am8VgnZ1Uu09x1M77KNd1TBV/8lLP6IW+mNq4sBdr5ww90HgAIBGr/9kzCd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Uvm/pHRi; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6188b72b7caso4392806a12.2
+        for <linux-parisc@vger.kernel.org>; Mon, 01 Sep 2025 05:30:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1756729833; x=1757334633; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HrNbT6choDi3GgMhWeWNgFFS/EdlWGopjyFWK6pahow=;
+        b=Uvm/pHRiQSJl/jP+0X7QpAySNr+dlAkQfnqCmB021oq7hHk9wXJqWrVuHIO5KiE7H+
+         wUULFlcXhHykTl7USZRn/+nyYtqk/+46INuoyBUx1zKzFdKMgrM/j0o0XwTW9acn0/Uw
+         psPYYs4L6vaXlq/lOY59mUAE/v7fJPuMTbMIXYRTP74KGMMDTT5L09Ho4ZF+lh+o7jCl
+         qFNPlZNfArFdwcUBeCP2hWmc/F1eZkWmuCIy9I7RikcjibtlRehNeT1PXinJt+r3ZHmo
+         we8fL89ssznlDkEuwJSrGcaoukvVP1KYHwUk1cUwXmM1Wgp+FqUMbkztyqyJrSEAXEH/
+         lrrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756729833; x=1757334633;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HrNbT6choDi3GgMhWeWNgFFS/EdlWGopjyFWK6pahow=;
+        b=pLtiSB6vqNu2OAeOi1lF+QWquyMovXLQRr/aGW+fY7uHdNOE743KOFd7Ze/rajLZph
+         KtrP37PahAciO2L2Ggs/Uhir40wYsWN04s4rXC6bK0eskSgEb475evxjVA3qwvorwODI
+         U80Zj8GinB4AHbx2hMTIhRgt5ahRLp2Hkp7nlOp57RLpr4wZTGIECBG3D/lArsycHuom
+         HRSzSRZ0vWRMbqyeVYRmQ++tfYGk37XyZtfxdTnJEEnAmxbZ3OgH0Y43ylTM0uON5JeB
+         XyQk9auvLCvDHlIHoauYSd8FOaqdDs6v2jWdQPS26fHi0C3uyVuNyTErSJZbzilzyHid
+         n9/g==
+X-Forwarded-Encrypted: i=1; AJvYcCU5XObR5pHUs/kRW3jtkJEWEwH7K1kb0kxUcTtH2ejNRWK1EFpjrIvqa5ijeZ5oTzuo0XzIEV2bU9mviRc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZmJD/jonosDewRrdVm49Uh4N7xL+io+Z1crAh7qIBtdF1L7n6
+	S5GDjdZDSwlbQhP+kKQDhfV0l3+Ki0t4yDKAlETf8uUtpeC8IGOMJ5veB6bP7mAgehs=
+X-Gm-Gg: ASbGnctaFEBcXjP9k+Ha6OYgcXZKqnVP0QocySyMUtsn6m938NsosLsDQwDIY6WNY5i
+	FuL9/J2gJ2syflZGGpmM7hEpMnY8wfC+gQpXar5c8s2pY3NmM4XTGHdYawzM822sBB7QWKbiyqW
+	sfwme62ZxWbLD7eFFAjSgGLmaAgJNTSMNvVAVix8+EeUHV5d42r3s67cTh+07jjwFkXtH9Dk8br
+	YkCEKLGvcnCougmTJ9HF8oI7dS8JcdIcCqrN/LVznY7cnHXph2pTto48SccSMNpWnENBczTgLDf
+	i1l5yxN3ncYSpUyjGVmft+/qFgRvrxTv8Sr5N4nOtuNUDz1FT72sPGT55dhgZjnv2oFVtReHgur
+	vsekyL+jMoGdqgOLIHhZueEwqbdiYxx0yhACiI3GhscPwPAY2A6d7DtafYzdebzaGa3YHqNYMGX
+	zTXAqhTnsag9z7A4/zxcqtMKVtBRO4l4+U
+X-Google-Smtp-Source: AGHT+IEIvcwSPmSxXCSKH0hPzJ7k/4E5ApIsDuAgvra/l5zTme80rYXYzWHYoZRuIErlfCsG0v7L6A==
+X-Received: by 2002:a05:6402:270e:b0:617:b28c:e134 with SMTP id 4fb4d7f45d1cf-61d260cc308mr7198111a12.0.1756729833131;
+        Mon, 01 Sep 2025 05:30:33 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f1d0f00023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f1d:f00:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-61eaf5883b6sm255566a12.20.2025.09.01.05.30.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Sep 2025 05:30:32 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: akpm@linux-foundation.org,
+	david@redhat.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	willy@infradead.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	vishal.moola@gmail.com,
+	linux@armlinux.org.uk,
+	James.Bottomley@HansenPartnership.com,
+	deller@gmx.de,
+	agordeev@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	svens@linux.ibm.com,
+	davem@davemloft.net,
+	andreas@gaisler.com,
+	dave.hansen@linux.intel.com,
+	luto@kernel.org,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	chris@zankel.net,
+	jcmvbkbc@gmail.com,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	jack@suse.cz,
+	weixugc@google.com,
+	baolin.wang@linux.alibaba.com,
+	rientjes@google.com,
+	shakeel.butt@linux.dev,
+	max.kellermann@ionos.com,
+	thuth@redhat.com,
+	broonie@kernel.org,
+	osalvador@suse.de,
+	jfalempe@redhat.com,
+	mpe@ellerman.id.au,
+	nysal@linux.ibm.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-parisc@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v5 00/12] mm: establish const-correctness for pointer parameters
+Date: Mon,  1 Sep 2025 14:30:16 +0200
+Message-ID: <20250901123028.3383461-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 8bit
 
+For improved const-correctness.
 
+This patch series systematically adds const qualifiers to pointer
+parameters throughout the memory management subsystem, establishing a
+foundation for improved const-correctness across the entire Linux
+kernel.
 
-On Wed, 27 Aug 2025, Herbert Xu wrote:
+Const-correctness provides multiple benefits:
 
-> On Mon, Aug 25, 2025 at 04:23:59PM +0200, Mikulas Patocka wrote:
-> > 
-> > I'd like to ask about this condition in crypto_ahash_digest:
-> > 	if (ahash_req_on_stack(req) && ahash_is_async(tfm))
-> > 		return -EAGAIN;
-> > 
-> > Can it be removed? Or, is there some reason why you can't have 
-> > asynchronous requests on the stack (such as inability of doing DMA to 
-> > virtually mapped stack)?
-> 
-> Right, in general you can't use stack requests for async hash
-> because they may DMA to the request memory.
+1. Type Safety: The compiler enforces that functions marked as taking
+   const parameters cannot accidentally modify the data, catching
+   potential bugs at compile time rather than runtime.
 
-Thanks for the confirmation.
+2. Compiler Optimizations: When the compiler knows data won't be
+   modified, it can generate more efficient code through better
+   register allocation, code motion, and aliasing analysis.
 
-BTW. what happens if you have an architecture that needs cacheline-aligned 
-DMA accesses? For example, on parisc, some microarchitectures have 
-128-byte cache line. As caches on parisc are not DMA-coherent, you must 
-not touch the 128-byte region around the area where you are doing DMA.
+3. API Documentation: Const qualifiers serve as self-documenting code,
+   making it immediately clear to developers which functions are
+   read-only operations versus those that modify state.
 
-Normally, this problem is solved by tweaking kmalloc, so that the minimum 
-allocation size and alignment is 128 bytes. But if you do DMA into struct 
-ahash_request, and struct ahash_request may be embedded in other 
-structures, and doesn't have 128-byte alignment, it could break.
+4. Maintenance Safety: Future modifications to const-correct code are
+   less likely to introduce subtle bugs, as the compiler will reject
+   attempts to modify data that should remain unchanged.
 
-> So what I can do is bypass the ahash_req_on_stack for Harald's
-> driver by changing the ahash_is_async test to something more
-> specific about DMA.  Let me write that up and I'll have something
-> for you to test in a couple of days.
-> 
-> Cheers,
+The memory management subsystem is a fundamental building block of the
+kernel.  Most higher-level kernel subsystems (filesystems, drivers,
+networking) depend on mm interfaces.  By establishing
+const-correctness at this foundational level:
 
-I reworked my patchset so that it places asynchronous requests after the 
-dm_integrity_io structure (that is allocated in directly mapped memory), 
-so there are no longer any needs to change the crypto code.
+1. Enables Propagation: Higher-level subsystems can adopt
+   const-correctness in their own interfaces.  Without const-correct
+   mm functions, filesystems cannot mark their own parameters const
+   when they need to call mm functions.
 
-Maybe I should allocate the ahash requests with kmalloc, to solve the 
-DMA-into-request problem.
+2. Maximum Impact: Changes to core mm APIs benefit the entire kernel, as
+   these functions are called from virtually every subsystem.
 
-Mikulas
+3. Prevents Impedance Mismatch: Without const-correctness in mm, other
+   subsystems must either cast away const (dangerous) or avoid using
+   const altogether (missing optimization opportunities).
+
+Each patch focuses on a specific header or subsystem component to ease review
+and bisection.
+
+This work was initially posted as a single large patch:
+ https://lore.kernel.org/lkml/20250827192233.447920-1-max.kellermann@ionos.com/
+
+Following feedback from Lorenzo Stoakes and David Hildenbrand, it has been
+split into focused, reviewable chunks. The approach was validated with a
+smaller patch that received agreement:
+ https://lore.kernel.org/lkml/20250828130311.772993-1-max.kellermann@ionos.com/
+
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+v1 -> v2:
+- made several parameter values const (i.e. the pointer address, not
+  just the pointed-to memory), as suggested by Andrew Morton and
+  Yuanchu Xie
+- drop existing+obsolete "extern" keywords on lines modified by these
+  patches (suggested by Vishal Moola)
+- add missing parameter names on lines modified by these patches
+  (suggested by Vishal Moola)
+- more "const" pointers (e.g. the task_struct passed to
+  process_shares_mm())
+- add missing "const" to s390, fixing s390 build failure
+- moved the mmap_is_legacy() change in arch/s390/mm/mmap.c from 08/12
+  to 06/12 (suggested by Vishal Moola)
+
+v2 -> v3:
+- remove garbage from 06/12
+- changed tags on subject line (suggested by Matthew Wilcox)
+
+v3 -> v4:
+- more verbose commit messages including a listing of function names
+  (suggested by David Hildenbrand and Lorenzo Stoakes)
+
+v4 -> v5:
+- back to shorter commit messages after an agreement between David
+  Hildenbrand and Lorenzo Stoakes was found
+
+Max Kellermann (12):
+  mm: constify shmem related test functions for improved
+    const-correctness
+  mm: constify pagemap related test functions for improved
+    const-correctness
+  mm: constify zone related test functions for improved
+    const-correctness
+  fs: constify mapping related test functions for improved
+    const-correctness
+  mm: constify process_shares_mm() for improved const-correctness
+  mm, s390: constify mapping related test functions for improved
+    const-correctness
+  parisc: constify mmap_upper_limit() parameter for improved
+    const-correctness
+  mm: constify arch_pick_mmap_layout() for improved const-correctness
+  mm: constify ptdesc_pmd_pts_count() and folio_get_private()
+  mm: constify various inline test functions for improved
+    const-correctness
+  mm: constify assert/test functions in mm.h
+  mm: constify highmem related functions for improved const-correctness
+
+ arch/arm/include/asm/highmem.h      |  6 +--
+ arch/parisc/include/asm/processor.h |  2 +-
+ arch/parisc/kernel/sys_parisc.c     |  2 +-
+ arch/s390/mm/mmap.c                 |  7 ++--
+ arch/sparc/kernel/sys_sparc_64.c    |  3 +-
+ arch/x86/mm/mmap.c                  |  7 ++--
+ arch/xtensa/include/asm/highmem.h   |  2 +-
+ include/linux/fs.h                  |  7 ++--
+ include/linux/highmem-internal.h    | 44 +++++++++++----------
+ include/linux/highmem.h             |  8 ++--
+ include/linux/mm.h                  | 56 +++++++++++++--------------
+ include/linux/mm_inline.h           | 26 +++++++------
+ include/linux/mm_types.h            |  4 +-
+ include/linux/mmzone.h              | 42 ++++++++++----------
+ include/linux/pagemap.h             | 59 +++++++++++++++--------------
+ include/linux/sched/mm.h            |  4 +-
+ include/linux/shmem_fs.h            |  4 +-
+ mm/highmem.c                        | 10 ++---
+ mm/oom_kill.c                       |  7 ++--
+ mm/shmem.c                          |  6 +--
+ mm/util.c                           | 20 ++++++----
+ 21 files changed, 171 insertions(+), 155 deletions(-)
+
+-- 
+2.47.2
 
 
