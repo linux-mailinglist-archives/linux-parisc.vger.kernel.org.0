@@ -1,134 +1,201 @@
-Return-Path: <linux-parisc+bounces-3959-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-3960-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46F9B3EAF5
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 17:39:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C82B3EAEA
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 17:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C91B1885D90
-	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 15:33:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BF9B16AFD5
+	for <lists+linux-parisc@lfdr.de>; Mon,  1 Sep 2025 15:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F5023183A;
-	Mon,  1 Sep 2025 15:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20632D595D;
+	Mon,  1 Sep 2025 15:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="V8FU0ftV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JajueSMK"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F3B2D5941
-	for <linux-parisc@vger.kernel.org>; Mon,  1 Sep 2025 15:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F27C32F768
+	for <linux-parisc@vger.kernel.org>; Mon,  1 Sep 2025 15:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756740181; cv=none; b=lx2gmHgPlihzXBKZxU5w/aLhFPeUISjHAZFoa1GUhjpeiOEG2/UEeCOArWJsgbtpB84fVpbip50PQTXNumg/Mvf8nfhyIAxjd5dYxk+Lx3VlHGdVn7XMpgiuFQ7/TKBRQqYwHGykOvIacwBxxBMbBmKzI5GCtWC2eHrSyZ6NGL8=
+	t=1756740329; cv=none; b=CB7yNj5icJylCjzxZhLjU2vg4yegi/WtRVsaF9WxQb5A7d7y1/4+1eVKHq+dQnCZjK5YRTC/yF5EUdVIXhIlNLVtUrkBr8UBGYTuHYn2RPXg2dsvH3DRTZPYHvwkiS4RM67noe7WX6jRlJauh+9FBhZ5Sjd48H5dq5qq7esW3v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756740181; c=relaxed/simple;
-	bh=xqYJE8gaVl+wcM64SwwllZC2T3TpIFwcaihrMWL4cIs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TNjxpyQceEshMz7J9SmffSVT+gQVPRNB3xXAXILjhSKTS85Z3wVs282+7YQgwlqJHGInqP/jDhgaCkLCEfp0ZYTW1fR8p0M7G8QreWrNnnjikszGJ9Xu3ZPKEqc0blpyFkd7iihqbeq30KpnSodhOhFzJr2AZGYsvku7f7Lee0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=V8FU0ftV; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-afcb78ead12so726868666b.1
-        for <linux-parisc@vger.kernel.org>; Mon, 01 Sep 2025 08:22:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1756740177; x=1757344977; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xqYJE8gaVl+wcM64SwwllZC2T3TpIFwcaihrMWL4cIs=;
-        b=V8FU0ftVpb2p3tqAzIFJXxS9Ss99K7zDrWutbLl7NXM+DVbrHRVuPdUwELaYxrUoJ5
-         m9CACTX/9p5DCsmSlRkv3pow87OTYaHJ+U/hZ3zV1ObOLfuEdmJ6W2D0SdgImFxt1rGc
-         YBOBj8dcjxunOFCA4rlg2VL4iJpu8cz9Q9kZ9wh7pakm9lptgJPkdDmrl9Wbumvavx55
-         PEVAgB14GA468wMQXDOyGILndkwcV4tLIz9txw9r/0k6Jh3z/xgkmkWzHLxAwFIh0tWW
-         A2IhGwemR1wxv1W8X5/qKELXxe8HrfXNd6ANkNeRr8EAxaYN82MI94epPvY+f9P4695p
-         dzFA==
+	s=arc-20240116; t=1756740329; c=relaxed/simple;
+	bh=iLPg5/NsqE2fgJNlNze5wZTZC18RwFd3hiEqg2oxKz8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TBi8rhKnr+2S9GIszJjSKHRHcI3zFWswug/gc+7oE7pQAhiH5q6/cj/11idDiYnuXwM4JjM0aW9zwFuYEbqZxkg8WF6mbS4tVDmanxw195/ircu3gafb9B92c7rffPVo3T94uN9I5QV5FQov4gsJMABnjUPWjCTYSXNWX+7vplc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JajueSMK; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756740327;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=t7wTvc9eUbw7jtHlrnxQy+rN4qRUOO7ojXz7+PUk6M8=;
+	b=JajueSMKM0IjV39DBZ6nXqgNqJmzASMyInByClVwCfutfAFEEr0Kl5ZWFHBJ3mCOLJmKWv
+	iPYBCXfVcizcWGyeTIWqoBgm5gC/hyA59PIWTOOQM3SBS8/9FPtjk6+obGoNdPT6dYlOPX
+	K65Jz9MGigTWU44Xe8gSUvqZau9e9WY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-161-Ypl5oxWFMV6rEK0cFj_-bg-1; Mon, 01 Sep 2025 11:25:26 -0400
+X-MC-Unique: Ypl5oxWFMV6rEK0cFj_-bg-1
+X-Mimecast-MFC-AGG-ID: Ypl5oxWFMV6rEK0cFj_-bg_1756740325
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3d3d2472b92so1008463f8f.1
+        for <linux-parisc@vger.kernel.org>; Mon, 01 Sep 2025 08:25:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756740177; x=1757344977;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xqYJE8gaVl+wcM64SwwllZC2T3TpIFwcaihrMWL4cIs=;
-        b=gg53YwDAe6RzrIdPrT4JsjDUEQ6TubBxK+qQrdIrBqr2F01ZL9SZ54ruNZsXat8JiB
-         HkQhXG/6W4jhlfGNT9Z+KO1zVJ93JtkLHIgB0q7jpB7+RkDKW+5AJ9pEtoLMVCgxyEHd
-         UndWToxUxVwc4FpaSMib1M+Dr29zX90gQXpty/VzYgN2iecpzwO8waeZ8LuSsWf4dXYG
-         /sVB8eH6Vyx8s8EeLjCTFHN0D/Kpr7ZijMRN1rYPYl449lgM6UZXKlMXc8gl7ze9eTO2
-         c2z0LWrotI6051Zlv+AyHcCO0BSfPnH+EB9O2Q+uSPRmR7wUWpXGlNzrG9SYTPyWtgg3
-         BFRA==
-X-Forwarded-Encrypted: i=1; AJvYcCWt7YpnTH+ii9MLmIK0gGIwqedG3095BSNJN0PGyAkaNwPwcPpvOTKbaBkVf8l/lsXhZIeOMk/5VizLaxc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyubJp4icrK2JnxozxtJ8m8TTU23gxNCiMKLuzUNaJWeT3Gjx3T
-	4iJC8frsimbNfpJ5JBfqFYlGlgML9domhImiqI8Q4+8QXRIDEpHwrLU/gQFHq6jiwV+Tt8w/NeQ
-	2sg4QcSGrQdOzKEPMEEU9UVQvFupbjRIxhjm1Yi1x5w==
-X-Gm-Gg: ASbGncuioRHF/gmZvKsJb7H6pRFvF4eaqj3Z8mJGYg7nproDek0Eg060fJh1Nxc7bxx
-	1L6IIbSpYbo5CyBimS8PBUE0j9gbevePy6GCYWwSsTDBU0lUPLZ5/Z02XyJrvkfd+13kxqICEdx
-	2f7s0nM/D5OLnF91sLAKTDrC73dnWIm14pfo8DGrHKDIuv0vECkBiGuWyw3zgNCuIqv9Xk3DB+b
-	DFyMwW0SF3ED3sG5G9eTNsXLt9qOtUTwLA=
-X-Google-Smtp-Source: AGHT+IGyHGBQU5Fmr9N1bQCrhCA+i8zJzAFx27YAdwJf0bpouLhs7aYdtEtaq8rinlUX8phhR2x58GzGpQKldL70zDk=
-X-Received: by 2002:a17:907:60cf:b0:afe:a7f0:80e6 with SMTP id
- a640c23a62f3a-b01d9756fb9mr875954466b.33.1756740177075; Mon, 01 Sep 2025
- 08:22:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756740325; x=1757345125;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t7wTvc9eUbw7jtHlrnxQy+rN4qRUOO7ojXz7+PUk6M8=;
+        b=S6BNGzoWHaGwH9/+UbzAWi1Te9UG0SURc8+z9CBkPKzWvihmbLEREr4BsdKD1SrxNI
+         q7lsk1Lf9CMsww5UnUAAyyxBmjs2NEyg7eOKVsAMY86V4ur9qOxdLps1w8GG1Cqs2jok
+         EvrpMqzuEt2TLqUWiC5NGREwJkZ66FFTdc27yhq3IDx2sNDntYFt0nrcjdLgfJYET9bD
+         vOKnBO4UDZhev4IynxFso2a4yH/3qq2cHih4uDWIc32BRjec3WiiD+mKgOzgdGwMIkRb
+         fCoLZt7l+3inkKDasaMeaCVBXfzgx4XXnz3XhJdtBHoAlfGEe8XFRLQdKyaLluwRtADs
+         rayQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUDWlh1TVzP/Ehmmalzuec8A3Swoju7I6klycEcJhzlRj741RGGUwz2ZiOAbUR0DDehUj5/SyY8iKUgGzs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzX3/T416kdZDCisaZml8cwOiBP5kRg8kab/MjMZHJbnYPCU4eF
+	3gdjJByD/DEGXDHUOT0ON/yDxN+zngPlymLeK9A/USa6sncZrbzkdiDclZdFZRgOP1o/Sq+O8cp
+	/fFX2b0e/mgBDsGx3L5HSjm62TNBFdoQk6PGdQ1shpBcq4lFj3UvTKJW1ULlxKAE54A==
+X-Gm-Gg: ASbGncsMezDQoJXKSz+UPFDHhvQDobiMFg4zEY1I0tR2Qd88JM8fLr8a//miRWxkBLd
+	nNERCz+cK4EvjkAzkwalBBtU50CQhtDedQzMagb0wZBB8MGrBX+QGVNY3pIn2VgKU0dUNwWgJo8
+	ClW4JwIR4ZvsIMVT51c1NJ/E9VD/DZf+3N9PCLIlecgzmaRmPOkIHHr9ZKnStt8pf8N1D10Fg1i
+	vmPnel2ANSe9ZmgYRObujEf2vXCadCO4zDZD8k6D7ULbC3oOULaaUh5+peHGNbTbhJj8RdYFGsq
+	/eG9ENPk07vMpF6F7Sy+Qjm9iITlyGgLicuTxE6djKd3oKC/e9cvWjWAhyIXlmrLWRaDNqSWrWh
+	A2U0ZRu6bF6PiELkr0dHjvTbCsb789sIBKBvKPp5ljtvo7MplNohu74iQNfArINIfFd0=
+X-Received: by 2002:a5d:5d09:0:b0:3b8:893f:a185 with SMTP id ffacd0b85a97d-3d1df34f216mr7377181f8f.53.1756740325010;
+        Mon, 01 Sep 2025 08:25:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHyQFfDTfcx6weYHYURNCUN2TyUMgP1+sDx60HW3E6IenOe07uG2Bl4c+GEZR2K3WNO1i1qFA==
+X-Received: by 2002:a5d:5d09:0:b0:3b8:893f:a185 with SMTP id ffacd0b85a97d-3d1df34f216mr7377103f8f.53.1756740324457;
+        Mon, 01 Sep 2025 08:25:24 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f37:2b00:948c:dd9f:29c8:73f4? (p200300d82f372b00948cdd9f29c873f4.dip0.t-ipconnect.de. [2003:d8:2f37:2b00:948c:dd9f:29c8:73f4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3d21a80c723sm10724135f8f.9.2025.09.01.08.25.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Sep 2025 08:25:23 -0700 (PDT)
+Message-ID: <4ce074b4-8f79-4e69-81c1-d6e28239ccf0@redhat.com>
+Date: Mon, 1 Sep 2025 17:25:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 11/12] mm: constify assert/test functions in mm.h
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com,
+ willy@infradead.org, hughd@google.com, mhocko@suse.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, vishal.moola@gmail.com,
+ linux@armlinux.org.uk, James.Bottomley@hansenpartnership.com, deller@gmx.de,
+ agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
+ gor@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
+ davem@davemloft.net, andreas@gaisler.com, dave.hansen@linux.intel.com,
+ luto@kernel.org, peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, x86@kernel.org, hpa@zytor.com, chris@zankel.net,
+ jcmvbkbc@gmail.com, viro@zeniv.linux.org.uk, brauner@kernel.org,
+ jack@suse.cz, weixugc@google.com, baolin.wang@linux.alibaba.com,
+ rientjes@google.com, shakeel.butt@linux.dev, thuth@redhat.com,
+ broonie@kernel.org, osalvador@suse.de, jfalempe@redhat.com,
+ mpe@ellerman.id.au, nysal@linux.ibm.com,
+ linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
 References: <20250901123028.3383461-1-max.kellermann@ionos.com>
- <20250901123028.3383461-7-max.kellermann@ionos.com> <ce720df8-cdf2-492a-9eeb-e7b643bffa91@redhat.com>
- <CAKPOu+-_E6qKmRo8UXg+5wy9fACX5JHwqjV6uou6aueA_Y7iRA@mail.gmail.com> <0bcb2d4d-9fb5-40c0-ab61-e021277a6ba3@redhat.com>
-In-Reply-To: <0bcb2d4d-9fb5-40c0-ab61-e021277a6ba3@redhat.com>
-From: Max Kellermann <max.kellermann@ionos.com>
-Date: Mon, 1 Sep 2025 17:22:45 +0200
-X-Gm-Features: Ac12FXxiiebv9X2d18G9zaz1-52NeLol_OdOPtBiylMXolSmoqbk-OqNT_yTCiM
-Message-ID: <CAKPOu+8SdvDAcNS12TjHWq_QL6pXnw4Pnhrq2_4DgJg8ASc67A@mail.gmail.com>
-Subject: Re: [PATCH v5 06/12] mm, s390: constify mapping related test
- functions for improved const-correctness
-To: David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, yuanchu@google.com, 
-	willy@infradead.org, hughd@google.com, mhocko@suse.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com, 
-	vishal.moola@gmail.com, linux@armlinux.org.uk, 
-	James.Bottomley@hansenpartnership.com, deller@gmx.de, agordeev@linux.ibm.com, 
-	gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, davem@davemloft.net, 
-	andreas@gaisler.com, dave.hansen@linux.intel.com, luto@kernel.org, 
-	peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	x86@kernel.org, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, weixugc@google.com, 
-	baolin.wang@linux.alibaba.com, rientjes@google.com, shakeel.butt@linux.dev, 
-	thuth@redhat.com, broonie@kernel.org, osalvador@suse.de, jfalempe@redhat.com, 
-	mpe@ellerman.id.au, nysal@linux.ibm.com, linux-arm-kernel@lists.infradead.org, 
-	linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <20250901123028.3383461-12-max.kellermann@ionos.com>
+ <081a7335-ec84-4e26-9ea2-251e3fc42277@redhat.com>
+ <CAKPOu+8xJJ91pOymWxJ0W3wum_mHPkn_nR7BegzmrjFwEMLrGg@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAKPOu+8xJJ91pOymWxJ0W3wum_mHPkn_nR7BegzmrjFwEMLrGg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 1, 2025 at 5:11=E2=80=AFPM David Hildenbrand <david@redhat.com>=
- wrote:
-> >> Should this also be *const ?
-> >
-> > No. These are function protoypes. A "const" on a parameter value
-> > (pointer address, not pointed-to memory) makes no sense on a
-> > prototype.
->
-> But couldn't you argue the same about variable names? In most (not all
-> :) ) we keep declaration + definition in sync. So thus my confusion.
+On 01.09.25 17:17, Max Kellermann wrote:
+> On Mon, Sep 1, 2025 at 4:07 PM David Hildenbrand <david@redhat.com> wrote:
+>>> -static inline void assert_fault_locked(struct vm_fault *vmf)
+>>> +static inline void assert_fault_locked(const struct vm_fault *vmf)
+>>>    {
+>>
+>> This confused me a bit: in the upper variant it's "*const" and here it's
+>> "const *".
+> 
+> That was indeed a mistake. Both should be "const*const".
+> 
+>> There are multiple such cases here, which might imply that it is not
+>> "relatively trivial to const-ify them". :)
+> 
+> I double-checked this patch and couldn't find any other such mistake.
+> Or do you mean the function vs prototype thing on parameter values?
 
-Variable names in the prototypes have no effect either, but they serve
-as useful documentation.
+If there is a simple rule (declaration/definition), then it's trivial. 
+Probably worth spelling out that rule somewhere (unless I missed it).
 
-Whereas the "const" on a parameter value documents nothing - it's an
-implementation detail whether the function would like to modify
-parameter values. That implementation detail has no effect for the
-caller.
+As raised in the other reply, not sure if we should just keep them in sync.
 
-Of course, we could have "const" in the prototype as well. This boils
-down to personal taste. It's not my taste (has no use, has no effect,
-documents nothing, only adds noise for no gain), so I didn't add it.
-If you prefer to have that, I'll leave my taste and home and add it,
-but only after you guys make up your minds about whether you want to
-have const parameters at all.
+I'm, not the biggest fan of the *const in general here. I can see why 
+Andrew suggested it, but only doing that for pointers is a bit weird. 
+Anyhow, that discussion is likely happening elsewhere, and I don't think 
+there is real harm when doing it, as long as we are consistent with what 
+we're doing.
+
+-- 
+Cheers
+
+David / dhildenb
+
 
