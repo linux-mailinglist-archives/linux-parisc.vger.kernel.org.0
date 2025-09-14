@@ -1,78 +1,78 @@
-Return-Path: <linux-parisc+bounces-4066-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4067-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49022B5651F
-	for <lists+linux-parisc@lfdr.de>; Sun, 14 Sep 2025 05:54:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293E8B56530
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Sep 2025 05:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 386C14E03D6
-	for <lists+linux-parisc@lfdr.de>; Sun, 14 Sep 2025 03:54:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CCC51A2110D
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Sep 2025 03:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE05226B755;
-	Sun, 14 Sep 2025 03:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1A93270ED9;
+	Sun, 14 Sep 2025 03:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m7q9EjnF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SnKvRore"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D5A26C383
-	for <linux-parisc@vger.kernel.org>; Sun, 14 Sep 2025 03:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BA32459F3
+	for <linux-parisc@vger.kernel.org>; Sun, 14 Sep 2025 03:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757822053; cv=none; b=Pb0QYmZRM/NKcTaTpljPymrUy2BIx/P6STHDQGla/Oa01Iaqp7Ziul7SGtHUBRGSz6AfHt+YUsqGg9QW00idRhBluMZrWaj1eEAoH5kOTJmQiNv7X4q/ipr77umrfS1YrtU2LVxXShIxQTBfZnaQRy5owvesNoTU8yx8+ghyVbs=
+	t=1757822089; cv=none; b=deejmc5MwrIqHqziC4sO9mcBSLFIaNyHCXAr9TmBr8jCxIAynujmd55HX+kqbdhRZ9EYzeRdLTR/RVq1PYLGK6Zf3qfiAJVOXc8hX9vyc4qbu1IidLUiitYd20o4qKfPqCQJH55RZN/hEUos2DQACgrnhhWBrKEeHOM/qfHaHSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757822053; c=relaxed/simple;
-	bh=E3G8T/3zLMm3x5kad8USEbJCkxfjt487WTCm3NfxUQM=;
+	s=arc-20240116; t=1757822089; c=relaxed/simple;
+	bh=z148AkYrWgRabAliJ93Wt4Z2ZD8niTFA9cUReN1NNec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHE88A4baxXREE7zPpmJ3rPPuv6/Z8Hyq45eY/XeDKAbhf6/kMRqCS8ijJZu/O1D7xBwyHVvGaf61UZCfWjS67cIdqrb5kTVzOFirUKiv+MeJWYG5/+CFr4dy4QTcJYPmrfZ2vrUthhDQcyFBu/5ikDpR7iD/keDDl+NIN64jvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m7q9EjnF; arc=none smtp.client-ip=209.85.208.49
+	 MIME-Version; b=BZ4D7MogUJWsqE+SDCpVhpdDf84UOyagztyD9u1VPNLATeSX9ml0z0a/HlvNlq0J6eIKD1TWzOWIeZ4Dg36WJamAQPdQ0YX2fWt++FuwZBvJhoylL+/t1nUDnHZIVF2RNga9Le4LtZIvSQuuGkfWTt/VQB2BVnvlHBK+W3TtJBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SnKvRore; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6228de280ccso6254144a12.3
-        for <linux-parisc@vger.kernel.org>; Sat, 13 Sep 2025 20:54:09 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b07e3a77b72so134360266b.0
+        for <linux-parisc@vger.kernel.org>; Sat, 13 Sep 2025 20:54:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757822048; x=1758426848; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1757822083; x=1758426883; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U0YiDU4Bzw7IKNW2/fgCfvKW6iRx1DQ4l7Ssn455PQA=;
-        b=m7q9EjnFFJXZKnnJWAuHewuPVuFM6vjLTLUvGfzyzdImBQ++EznbIWQrk7ZI2edCxN
-         ABVvHSn4RknXX5w6azOwuYHGkiavtI++cDhw2VB+z9yMG4LKQot3louLK0jFpgqq1FWv
-         Q78TRjdvR0Cw/rFvCF6EeApx0C0A+QEIwW3wsoRz53U0346Ms0IAbOFiBo7TQKjy2D0H
-         6fAS2QfZ95SJNv8tL8ibrMA8/T7EUfTK9KZRsSZi0NwfZi/1IKHCtEKzDysYdoxQDCFa
-         Jvp3JCGDTMjnFlQzVxYRvv7qTI5TjZp2QRR+sCsbevZnJUnSRA7koomaDueq5ksTsrH3
-         uUqg==
+        bh=pjKVSjXysip/b5UNUwgMX+OIg9u3DNn6e0+I8Cmpn0k=;
+        b=SnKvRoreLVbwLq3ZfOlOAtKHzJTK+2CRHD7ST4oqw6m/ZX2K/TZA22o1yNoPXi2wZ5
+         G7kuVImssYITwW/jgXP4hkFh2XUZ+TERnohXGu6hptn3aDrOoY98hw+QU1dhrDTt5T8k
+         mMC8GCnLmrUP1UL8ToJv32F/LGSgjUKrOXx4232qqs1cxpwgRVRk7tE8FWchEOHHC9Tp
+         2SVUSHGslP+mCL9Z2UrOW6k9kv36DNY8Z2iTZPf0J8NDSEFQeGls4ACw/IuSe9ucFlYV
+         m/I19RcmkFI3CO/PBZXuNWwi6tPZdk4wyrRTTsiUNwQ1IuWcK82Mr0pn/is7hcMyR4y2
+         XIhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757822048; x=1758426848;
+        d=1e100.net; s=20230601; t=1757822083; x=1758426883;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U0YiDU4Bzw7IKNW2/fgCfvKW6iRx1DQ4l7Ssn455PQA=;
-        b=dz5cCl7C/W2hAmfK5+m6ZBZ82Sx3UUqtvMdMc7WhwGjB+kVvk3K1Rgo72aO1tTjAmb
-         76fhreWTzacfS1NYbsY8JzKGALCEp+4X7eItdpNoNL/+13EpWF37m8uTN+or1iuPCxtb
-         4cphAWWxSi71WPOwoVuliksBm4ZYz5lg574/Arx3C+RpJI7MAi4XZ46eUMHQ/l8gxZtn
-         sVLpQJkt2Sd3QWPlnLAEJDl4uOjDfqF9wvTsKh229/gcmPIhHuhKolIs+8Ld7Cngz7lf
-         pF9vcVlkUeWcMk2hIiSgWCkQXoDFp7VrJo1ihEsQa19Zbfpgqiiw6C6RcOCo3a2RdOxU
-         cQ2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWcOT3463d6rpxYXbvkveUC0+m9JlMUBO+zSScqp9qWHTCCr2Wm/vtSGP/Zd6MU1QWBZ9g7qihPtPba/JI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw25od90fSqlkh7Dn0hCrPnh0UKWqifdrQtkWba+N9ymIuPZoPv
-	ussUga7dykhxxfj2dKRW2Y5siAJ18mwPwEOdBle0MUVVrHRvFJpOySdt
-X-Gm-Gg: ASbGncvbu4YqzNfwiYnLjvr4EqVeVyTFKeB6Ill83OGJYhfGIUCZocKWpftRCTHcVti
-	tKCC/EZgxltWmh+wwtFoMq+lZ0zpjMx2mEc4AH01eODNWtFQJgEEqz6BvmIaN/AvrmFQwYAqqZ0
-	qEIStAjVaEU5G1uNY6IZhfHDg21bh4NvhG0yQp31HfDZiUW5Ub/SDlvB2EHu2WiIHwHhHJKGgZa
-	8A3KZMgvuq4KwP1xfnXqUFlfsFzfIxOS8LibYsiWW1SaAbFHv4vjS2NG1DzCYn8+kQXXpXsrQr+
-	loHvmjiIXpajr8rvKB0Xn2LLLQxYdExGLe7XePo+I9k0t4owCfqmEQd5o7dYdw+ZSkC8+2X2Y+M
-	lAEAib8q5hF+sFnU9GtY0NPWlnin6AQ==
-X-Google-Smtp-Source: AGHT+IEVLkeZlLSkzoTpPLzlBRvNTQ9m/bl133jXYp2zZldNvB+tlYKH8pXYzZ5ISfOO2+UjGM6RFg==
-X-Received: by 2002:a17:907:e8d:b0:b0e:3d88:27fd with SMTP id a640c23a62f3a-b0e3d97e027mr75192266b.8.1757822048020;
-        Sat, 13 Sep 2025 20:54:08 -0700 (PDT)
+        bh=pjKVSjXysip/b5UNUwgMX+OIg9u3DNn6e0+I8Cmpn0k=;
+        b=jr6Q86HTcf6tFxUZHoV4WGKHlr90tj+D/mZ+dbfbwNLvoCEpwcGPiNOiOUGNIutuLE
+         iSyL9zFiESB6B+a/r9M37FK09Nol3KYXV9wbQa7lNgA5yk8LP0AuEU96fP3dKKXIyuEJ
+         zIuiYpioZJpdT1bePeuv4rYC7PJLaMfy56dp/6MV7MluABNz+wBGY4bRS2m4T7SMpgSS
+         Tt2P2D6JCavWFPae4GtmPox+FyuetyS6/BPUlOv5z0xsK748xV9cc/0dv+FXDtQ2BUID
+         yyZbvjmSQvXtEylhdt2jk86TnRXVCAfl/yGxbB4pSuTQiIVTc4Lb9UYIzOriAfpck7ra
+         AS8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW0Smh6cGHO09/GpQhGun0QfmrcMAld0oyiWRn8LY+ZevCpuU+UmTEk3hZ20rbkRIOg7Pb4mrZ5YHe1YIA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhfjiU81LHFawEjhlWgxPDKHAXkupfPsxWUrkuvJSKX34Y1Agh
+	98EMcN/a7v3wZj/3zgvW8LPCHDrqhBHASipA6uce4F7T+xJTzHTO8YRr
+X-Gm-Gg: ASbGnctKL8eR07HJQ+jFKihnIqgca2IGOw9q6WYaR4S8l1qVb/dBVBszno2VWKMw97d
+	swlPVtxAQGAGLMPhexDHh5wMXGvuCUZ/3Mq2i66pdh9RIMwlYlvuNlH9mYb9mHF10CeOT+guWY8
+	w0P8Akv+DpT0aMghEseLsP5Dsk9cfbeHDiZt6SQt7XBVgn2dnTT9ahbzCurVaPPGmSvmJ7gWFgo
+	inU5wDTPPVFqOaDJLbP4RShkrepx3aoBG03ViPyg9NE/s70wBikD8fSSZqgS6h6vSN4tR8roQr4
+	qm/Ko+70dLFaNTkRyqf8WxfxrWzjMN2RiOFHo3s8uY/vT78UwWm5wsKHDMf/2M5RhpPApjp1oci
+	3GY2X7NAVQI5E0f/T+8dQb7RYtQToRA==
+X-Google-Smtp-Source: AGHT+IFpMpCVJeNrUipt0dZC4eBHRTy08fiFy9cwywIocPIoMawoMDT0bJrFyHi72vkPeUNRc3Oodg==
+X-Received: by 2002:a17:906:114e:b0:b0b:35d8:248e with SMTP id a640c23a62f3a-b0b35d8267fmr237998166b.18.1757822083468;
+        Sat, 13 Sep 2025 20:54:43 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07da7a8918sm303079766b.56.2025.09.13.20.54.03
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b32dd5a9sm665619166b.57.2025.09.13.20.54.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Sep 2025 20:54:07 -0700 (PDT)
+        Sat, 13 Sep 2025 20:54:43 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -128,9 +128,9 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Thorsten Blum <thorsten.blum@linux.dev>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	patches@lists.linux.dev
-Subject: [PATCH RESEND 44/62] doc: kernel-parameters: remove [RAM] from reserve_mem=
-Date: Sun, 14 Sep 2025 06:54:02 +0300
-Message-ID: <20250914035402.3670906-1-safinaskar@gmail.com>
+Subject: [PATCH RESEND 45/62] doc: kernel-parameters: replace [RAM] with [INITRAMFS]
+Date: Sun, 14 Sep 2025 06:54:38 +0300
+Message-ID: <20250914035438.3682240-1-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
 References: <20250913003842.41944-1-safinaskar@gmail.com>
@@ -142,27 +142,117 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This parameter has nothing to do with ramdisk
+Also, do other initramfs-related edits, while we are here
 
 Signed-off-by: Askar Safin <safinaskar@gmail.com>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ .../admin-guide/kernel-parameters.rst         |  4 ++--
+ .../admin-guide/kernel-parameters.txt         | 20 +++++++++----------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.rst b/Documentation/admin-guide/kernel-parameters.rst
+index 39d0e7ff0965..22af6bbffc35 100644
+--- a/Documentation/admin-guide/kernel-parameters.rst
++++ b/Documentation/admin-guide/kernel-parameters.rst
+@@ -123,7 +123,7 @@ is applicable::
+ 	CMA	Contiguous Memory Area support is enabled.
+ 	DRM	Direct Rendering Management support is enabled.
+ 	DYNAMIC_DEBUG Build in debug messages and enable them at runtime
+-	EARLY	Parameter processed too early to be embedded in initrd.
++	EARLY	Parameter processed too early to be embedded in initramfs.
+ 	EDD	BIOS Enhanced Disk Drive Services (EDD) is enabled
+ 	EFI	EFI Partitioning (GPT) is enabled
+ 	EVM	Extended Verification Module
+@@ -134,6 +134,7 @@ is applicable::
+ 	HW	Appropriate hardware is enabled.
+ 	HYPER_V HYPERV support is enabled.
+ 	IMA     Integrity measurement architecture is enabled.
++	INITRAMFS Initramfs support is enabled.
+ 	IP_PNP	IP DHCP, BOOTP, or RARP is enabled.
+ 	IPV6	IPv6 support is enabled.
+ 	ISAPNP	ISA PnP code is enabled.
+@@ -167,7 +168,6 @@ is applicable::
+ 	PPT	Parallel port support is enabled.
+ 	PS2	Appropriate PS/2 support is enabled.
+ 	PV_OPS	A paravirtualized kernel is enabled.
+-	RAM	RAM disk support is enabled.
+ 	RDT	Intel Resource Director Technology.
+ 	RISCV	RISCV architecture is enabled.
+ 	S390	S390 architecture is enabled.
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a259f2bdba0f..0805d3ebc75a 100644
+index 0805d3ebc75a..8e10abac4cc7 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6277,8 +6277,7 @@
- 			them.  If <base> is less than 0x10000, the region
- 			is assumed to be I/O ports; otherwise it is memory.
+@@ -565,7 +565,7 @@
+ 			Format: integer
  
--	reserve_mem=	[RAM]
--			Format: nn[KMG]:<align>:<label>
-+	reserve_mem=	Format: nn[KMG]:<align>:<label>
- 			Reserve physical memory and label it with a name that
- 			other subsystems can use to access it. This is typically
- 			used for systems that do not wipe the RAM, and this command
+ 	bootconfig	[KNL,EARLY]
+-			Extended command line options can be added to an initrd
++			Extended command line options can be added to an initramfs
+ 			and this will cause the kernel to look for it.
+ 
+ 			See Documentation/admin-guide/bootconfig.rst
+@@ -1005,7 +1005,7 @@
+ 			may be missing from the dump.
+ 
+ 			A standard crashkernel reservation, as described above,
+-			is still needed to hold the crash kernel and initrd.
++			is still needed to hold the crash kernel and initramfs.
+ 
+ 			This option increases the risk of a kdump failure: DMA
+ 			transfers configured by the first kernel may end up
+@@ -2298,7 +2298,7 @@
+ 			initcall functions.  Useful for debugging built-in
+ 			modules and initcalls.
+ 
+-	initramfs_async= [KNL]
++	initramfs_async= [INITRAMFS,KNL]
+ 			Format: <bool>
+ 			Default: 1
+ 			This parameter controls whether the initramfs
+@@ -2310,10 +2310,10 @@
+ 			unpacking being completed before device_ and
+ 			late_ initcalls.
+ 
+-	initrd=		[BOOT,EARLY] Specify the location of the initial ramdisk
++	initrd=		[BOOT,EARLY,INITRAMFS,KNL] Same as initrdmem=
+ 
+-	initrdmem=	[KNL,EARLY] Specify a physical address and size from which to
+-			load the initrd. If an initrd is compiled in or
++	initrdmem=	[BOOT,EARLY,INITRAMFS,KNL] Specify a physical address and size from which to
++			load initramfs. If initramfs is compiled in or
+ 			specified in the bootparams, it takes priority over this
+ 			setting.
+ 			Format: ss[KMG],nn[KMG]
+@@ -2749,7 +2749,7 @@
+ 			between unregistering the boot console and initializing
+ 			the real console.
+ 
+-	keepinitrd	[HW,ARM] See retain_initrd.
++	keepinitrd	[HW,ARM,INITRAMFS] See retain_initrd.
+ 
+ 	kernelcore=	[KNL,X86,PPC,EARLY]
+ 			Format: nn[KMGTPE] | nn% | "mirror"
+@@ -6129,8 +6129,8 @@
+ 
+ 	rdinit=		[KNL]
+ 			Format: <full_path>
+-			Run specified binary instead of /init from the ramdisk,
+-			used for early userspace startup. See initrd.
++			Run specified binary instead of /init from initramfs,
++			used for early userspace startup.
+ 
+ 	rdrand=		[X86,EARLY]
+ 			force - Override the decision by the kernel to hide the
+@@ -6324,7 +6324,7 @@
+ 			Useful for devices that are detected asynchronously
+ 			(e.g. USB and MMC devices).
+ 
+-	retain_initrd	[RAM] Keep initrd memory after extraction. After boot, it will
++	retain_initrd	[INITRAMFS] Keep initramfs memory after extraction. After boot, it will
+ 			be accessible via /sys/firmware/initrd.
+ 
+ 	retbleed=	[X86] Control mitigation of RETBleed (Arbitrary
 -- 
 2.47.2
 
