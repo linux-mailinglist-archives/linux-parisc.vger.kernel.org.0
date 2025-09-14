@@ -1,127 +1,107 @@
-Return-Path: <linux-parisc+bounces-4088-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4089-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F8DB56AC3
-	for <lists+linux-parisc@lfdr.de>; Sun, 14 Sep 2025 19:15:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B56FB56C1C
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Sep 2025 22:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAACC17798F
-	for <lists+linux-parisc@lfdr.de>; Sun, 14 Sep 2025 17:15:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0BF67AD103
+	for <lists+linux-parisc@lfdr.de>; Sun, 14 Sep 2025 20:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41081FBEB9;
-	Sun, 14 Sep 2025 17:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9619C2E6CD6;
+	Sun, 14 Sep 2025 20:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2UPxRGMw"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from manchmal.in-ulm.de (manchmal.in-ulm.de [217.10.9.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EE01EEE6;
-	Sun, 14 Sep 2025 17:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.9.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92F8EEAB;
+	Sun, 14 Sep 2025 20:13:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757870136; cv=none; b=CJayQrfaaL4hQvAGytbrEdEZ2SmPxmZ/Ki+Ux30K88Yx+QNCNdcWK/Z3V77ZzFfTqWeiUI2ktk6GDo7E/h2HrCtY0jINGtQ5C3M6cBVNWLeipL/73GqSaG2Ig/wZ3wYEpb545wxd698kcF67+dOR/uuLa3W7QKuRGFZtLuZInDY=
+	t=1757880804; cv=none; b=MyB2Gwyu1BOl0hAoRbOp+7v4Qz6eKsfNO4fR69Z5DlP2Bm2/EpqHpaX3ADhgUCrt8Zt3bOYLuKolTii5c8EvseGYI6Lg65JHlTj/trkkBlr1xmqRYxxl6NO8/w5Lqjl+Gj0yPHZrakntpFwKMFx8fl9oXX9uW4TLrC1fOBDAyIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757870136; c=relaxed/simple;
-	bh=mCY7CFjzHorofJ89F2uXcM9RFrcQISKb9+9Ln9zOgO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q8bs8fJyQtAXBLUAsy5uH6KoZYSq0VSLlSUno1oYYt5/b0YdkThP+mRV8EYZVa558uBGaJmUpk2wfJwJclZBnacp6Rr+YoTo9hGF50DCKu65ulEqmmk9izG+qtkbJQgyP6VCKvxHa9/D99DQhN9efdd/H5DlAEunz+4/9H64yaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=manchmal.in-ulm.de; spf=pass smtp.mailfrom=manchmal.in-ulm.de; arc=none smtp.client-ip=217.10.9.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=manchmal.in-ulm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manchmal.in-ulm.de
-Date: Sun, 14 Sep 2025 19:06:12 +0200
-From: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-To: Helge Deller <deller@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>,
-	Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	netdev@vger.kernel.org,
-	Linux parisc List <linux-parisc@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH][RESEND][RFC] Fix 32-bit boot failure due inaccurate
- page_pool_page_is_pp()
-Message-ID: <1757869448@msgid.manchmal.in-ulm.de>
-References: <aMSni79s6vCCVCFO@p100>
+	s=arc-20240116; t=1757880804; c=relaxed/simple;
+	bh=S1O2mYg/nuSFWiepEfi3INn1/VxeJMAKyzsDV4vYqvg=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=J+jptC/J4YKLwKI3aHT7snFfP84NJQk0HTR18Ww5e2AXCQg3c6guvNc9b3LB3SOubHVnQHwAP6wzn+xnhQlwtRG/xPpZ4PicPNMfgb41hm3EfwS3OTsNwBXv5FciZQTzyw1WObPXMCJhz+FNCsWkcCzc3PW2ZIGvVRKS+Izs6CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2UPxRGMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D19C4CEF0;
+	Sun, 14 Sep 2025 20:13:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757880803;
+	bh=S1O2mYg/nuSFWiepEfi3INn1/VxeJMAKyzsDV4vYqvg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=2UPxRGMw8I/maQZ+HN3ir+gn07zWGBMkkdWTdW2X4OKEgkpUDDbZLiyj3E0pJDtL3
+	 1+D42ZKa/D0blrtutGoeATk6sFzQAtpGrIpNKIWACFz+9+7ensOkK9v2abyA5QnetQ
+	 dB1gPfBNpyMhvJhlFN9WW4x1lQUIWNYqbIuD5q6A=
+Date: Sun, 14 Sep 2025 13:13:21 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Linus Torvalds
+ <torvalds@linux-foundation.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, Al
+ Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig
+ <hch@lst.de>, Jens Axboe <axboe@kernel.dk>, Andy Shevchenko
+ <andy.shevchenko@gmail.com>, Aleksa Sarai <cyphar@cyphar.com>, Thomas
+ =?ISO-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>, Julian
+ Stecklina <julian.stecklina@cyberus-technology.de>, Gao Xiang
+ <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, Eric
+ Curtin <ecurtin@redhat.com>, Alexander Graf <graf@amazon.com>, Rob Landley
+ <rob@landley.net>, Lennart Poettering <mzxreary@0pointer.de>,
+ linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, x86@kernel.org, Ingo Molnar
+ <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, "Theodore Y . Ts'o"
+ <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek
+ <monstr@monstr.eu>, devicetree@vger.kernel.org, Luis Chamberlain
+ <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, Thorsten Blum
+ <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>,
+ patches@lists.linux.dev
+Subject: Re: [PATCH RESEND 21/62] init: remove all mentions of
+ root=/dev/ram*
+Message-Id: <20250914131321.df00dfc835be48c10f4cce4b@linux-foundation.org>
+In-Reply-To: <a079375f-38c2-4f38-b2be-57737084fde8@kernel.org>
+References: <20250913003842.41944-1-safinaskar@gmail.com>
+	<20250913003842.41944-22-safinaskar@gmail.com>
+	<a079375f-38c2-4f38-b2be-57737084fde8@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yGQQKzeyEZMtAyaE"
-Content-Disposition: inline
-In-Reply-To: <aMSni79s6vCCVCFO@p100>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Sun, 14 Sep 2025 12:06:24 +0200 Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
---yGQQKzeyEZMtAyaE
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> >  Documentation/admin-guide/kernel-parameters.txt          | 3 +--
+> >  Documentation/arch/m68k/kernel-options.rst               | 9 ++-------
+> >  arch/arm/boot/dts/arm/integratorap.dts                   | 2 +-
+> >  arch/arm/boot/dts/arm/integratorcp.dts                   | 2 +-
+> >  arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-cmm.dts     | 2 +-
+> >  .../boot/dts/aspeed/aspeed-bmc-facebook-galaxy100.dts    | 2 +-
+> >  .../arm/boot/dts/aspeed/aspeed-bmc-facebook-minipack.dts | 2 +-
+> >  .../arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge100.dts | 2 +-
+> >  arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge40.dts | 2 +-
+> >  arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yamp.dts    | 2 +-
+> >  .../boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi  | 2 +-
+> 
+> No, don't do that. DTS is always separate.
 
-Helge Deller wrote...
-
-> Commit ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them wh=
-en
-> destroying the pool") changed PP_MAGIC_MASK from 0xFFFFFFFC to 0xc000007c=
- on
-> 32-bit platforms.
->=20
-> The function page_pool_page_is_pp() uses PP_MAGIC_MASK to identify page p=
-ool
-> pages, but the remaining bits are not sufficient to unambiguously identify
-> such pages any longer.
->=20
-> So page_pool_page_is_pp() now sometimes wrongly reports pages as page pool
-> pages and as such triggers a kernel BUG as it believes it found a page po=
-ol
-> leak.
->=20
-> There are patches upcoming where page_pool_page_is_pp() will not depend on
-> PP_MAGIC_MASK and instead use page flags to identify page pool pages. Unt=
-il
-> those patches are merged, the easiest temporary fix is to disable the che=
-ck
-> on 32-bit platforms.
->=20
-> Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-> Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Cc: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> Cc: Linux Memory Management List <linux-mm@kvack.org>
-> Cc: netdev@vger.kernel.org
-> Cc: Linux parisc List <linux-parisc@vger.kernel.org>
-> Cc: <stable@vger.kernel.org> # v6.15+
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Link: https://www.spinics.net/lists/kernel/msg5849623.html
-> Fixes: ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them wh=
-en destroying the pool")
-
-Tested-by: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-
---yGQQKzeyEZMtAyaE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEWXMI+726A12MfJXdxCxY61kUkv0FAmjG9gAACgkQxCxY61kU
-kv2OKg/+I5r7SmuFKfUeJR8lmfesg5+t/EObRKadkYWCImIHaUX2omjB2mblcKP8
-3HrhbTGSJvEaqud7y12GGP62Q0elxTUxBQmjedaIibtL0oknVyPwiFrVGrKQ5nPR
-Q9DQNFh6GEIiiME2uWh+gmc2lVz8mLnrxtZj/eTlNXYCRwKz9GgEgOVEeJDSrHNE
-wcFJQH5Yvteb8n3C1opZNO2+uokGahlH0OCfEFZsGvaFdvusRgTAlyNyV9PXzAlM
-okIqWJv8EABX3Zfl8+GA82FSTGT8Bn4sQRu5IrXarzM2POw/nlYnQP36RJrFe6M0
-9tFkaLTcKaYWhWSZ8YxtfWjbGufGYNhikqgL5w9MSAeH3twAGGFbx03Q0dzUT8XC
-xwq0gfQqGagnADmtvHXF40PTSjeb98El2QQ/Vz/fV/dfJcn6EbNjzYraKtMuMZuX
-BlI6wxJEaj/PaGjpPeQ1FcMmuJYSbW/6TKEB8gD5Hgmh0ngbZQ5zJuM1AR0Oe/JZ
-mhsio08zmXM8A0wIvWXFsrXsXzSV3hXn9I+sn4DAMz9gx3+O/Ek9/wbww9rcA4lH
-DU/zroDnn050JvMJZr00pCFmYeBuvy8cWE3sh6tgN0kdSRUPb222KGLD4dZxfPag
-3LuZXw/cgYGtMgw6RxtuiY6nfrouzsYLrQJBNoseZTYCn3VCxNE=
-=Qki2
------END PGP SIGNATURE-----
-
---yGQQKzeyEZMtAyaE--
+Why can't DTS changes be carried in a different tree?
 
