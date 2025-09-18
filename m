@@ -1,143 +1,83 @@
-Return-Path: <linux-parisc+bounces-4119-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4120-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C954EB8147B
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Sep 2025 20:01:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10054B825EB
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Sep 2025 02:27:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA653468421
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Sep 2025 18:01:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7E641C20FF1
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Sep 2025 00:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19533009F2;
-	Wed, 17 Sep 2025 18:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE8D1922FD;
+	Thu, 18 Sep 2025 00:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b="g1LtUuBN"
+	dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b="vY2FQqZj"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cdmsr2.hinet.net (210-65-1-144.hinet-ip.hinet.net [210.65.1.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF4A2FFDE0
-	for <linux-parisc@vger.kernel.org>; Wed, 17 Sep 2025 18:00:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1A5185B67
+	for <linux-parisc@vger.kernel.org>; Thu, 18 Sep 2025 00:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.65.1.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758132049; cv=none; b=Mrqr0YusaROtX49kOJNXjT4atTVgQbCmohMgXNdcgJAwtGWuMFc1XQC+1qj+23/llgmBN0g6TfoUfgWK7EIZe+UbJgg1pwvsXsmGGcRQ4tV+JeWkvf7WoTtef4pIYcW1CxIvhYmJ++XSHAZ5MgjIQdspOpPmb7OoJqPkSkvqWdA=
+	t=1758155239; cv=none; b=DWcoem8IBJAGHpmAzxahTYw1sYdvHutivNCOeTVarEzjgk9zvtcpBi7l4cfHJ+OrOCnJqriQLP2dBspyUoZTY1RqzKagVsqYqUGf7wduKO7E+h3eZYehTQJ0U7f59jIU2bX4UG6PFMJ5Y+6Cmu0VJ0FEJNoscLqsI6wHsaLH10U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758132049; c=relaxed/simple;
-	bh=DLDcGQ3mu3T/MPVKq0NF9V2I5Jn6ILZwFaw9KVQfhOo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SEpLowpb9c2WeJrgZZOOtpRLXKLMYE+WRJ6LCbzqb4b8CdAnchR4i0x0HOgLb5B1V+cSQQ7rGxb4GWB/vlxxUPU84whDGQ4BnZBCobTe0tP0FmJQKIXJN8MQIwRbtuodMy0/NsPqveo5UW40MjMxEdzf9QCxhLY/dDUD3z5ZiHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net; spf=pass smtp.mailfrom=amacapital.net; dkim=pass (2048-bit key) header.d=amacapital-net.20230601.gappssmtp.com header.i=@amacapital-net.20230601.gappssmtp.com header.b=g1LtUuBN; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amacapital.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amacapital.net
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-578a8bd4bd2so83231e87.1
-        for <linux-parisc@vger.kernel.org>; Wed, 17 Sep 2025 11:00:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20230601.gappssmtp.com; s=20230601; t=1758132044; x=1758736844; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
-        b=g1LtUuBN2lj4qvyQzWAdLKTewMPpvB0BMgAm3EhYmOSEcT379TNMgVSmJk7DCmgjc/
-         T0eHokwlFMY3Yd+mXYCz+ekytPn0ndF69T0GJJIC1YMQr15FXnETUToESn8hAOjjN4TJ
-         wc+dE3joK8Hj6X0qrUlvmHpmCBRx7/hVESh3NV1/RSPbebawN77L/JxPYbAY8rno5NPR
-         h45BlMuQrVS79kOiLhszZHO32mHd/xwXNvhKNiRJJPEEOxGanxAq7D4RvCoxMPnsrP0o
-         gtEy+UX8pbw1CA/Tbhp0++SKDmI4SgqYBJ/2EKyXEOwvuyrgRQgYTYLI+VQny1h7rWhV
-         /NkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758132044; x=1758736844;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Pv4dFUExNQfPloEDat7jfEF9BkjeLOy7zrinjdnc80=;
-        b=KzqNBVdBZKUtz7uU6LE+cWVn0NvDf5aWRJChQ/T4RbLkrWY36be63nNuGad/Zq0cJQ
-         z27YQ/W/ohPtYWq1pWAKw1gIo37tVNUUZKDrf+gUqzPFwGGFeoNwrKRLR2upS5Q99Wd8
-         AO2jSSTa3oSFBxj/i3cO/4nJcxokbnFl1H2Djd1XU/4R05ZizsoYEqyjI6dW6BvzVRXX
-         m82hhIFR6Vd/2EI22td3TQ0USICfh3B/BTQjg+3k8PeViaLl0TTF4FTrNG+lOR+f7kEr
-         fo6nRf1LDkJginyOL3WBbf/JzldVVNcwTMO/qtpM9qysfbslElgnfRO7kPuWEjOwkENX
-         lIDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXsqoylmh7SL1iFt6K7ZlPNBTU/cS/l2AUncCBVJXcHMQOzELXXL1W7Ja07Iw6Uvdvj54VP/sMcoTiGUHQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6G64A8yBW736UgeTGaEPWSIISTwVoiYEkddW7oYWenvHIRdeW
-	bnFCjXOGikD9A4x9it7Y/Yh6uWN99WQrSubIt3A0QF2PMM1AwXC4KDybYr/tDV/ClOTcikR4yMO
-	gw3owdZ5r7WkqH98SgGQQtXO2NjBUYea9B982F4wp
-X-Gm-Gg: ASbGncv+jWKjsYBZaBFgi7MSEu8JWeOmt/bnq2iQH667eu2QfwolFNPZeFFsAsQKsoe
-	at2EJC2FSJvOhKeW0Q2YYLjmgjOBNh5a1snktcchPd43MArcou/X55UkWv5T9K3/MfrjXWxdwiJ
-	qkKEBEPZsq0TXtRiV7j8isg2ggc4Y8oM187dmQNMyg1pTfsP7OAyYLgnMnrtQ+fZzxg5l32fetg
-	XF0SA==
-X-Google-Smtp-Source: AGHT+IGI+xF2OSgRbI6+fabXiqu9Xwuf5bxWYwnja/rNGOUuSmNzhH42MNUAKuR34Ox7ov8nmiujA9clDhMS84oRbmU=
-X-Received: by 2002:ac2:4e09:0:b0:576:d217:3f2f with SMTP id
- 2adb3069b0e04-57796b5e819mr1028160e87.3.1758132043747; Wed, 17 Sep 2025
- 11:00:43 -0700 (PDT)
+	s=arc-20240116; t=1758155239; c=relaxed/simple;
+	bh=NYpvHFrW+6WJdAoVAxtmW6ZPYUGGPlR0B51uZtc+3E0=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=rWFQs4raSb9nNx4ZtXWixg40H6hDeA5kylauURHz0rpTsqjaQhVVuF+hXLp06qxWtFUeCJpQFRs7Si4wEuBwyP0KDV4UQHn3weBPKmAdV9IAVHEyQGJvBrAIpXMkETRlHTBj+Qnw7CmFa+zuTU1YvzKLf/PCpG6sWK6C20vA6s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net; spf=pass smtp.mailfrom=ms29.hinet.net; dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b=vY2FQqZj; arc=none smtp.client-ip=210.65.1.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ms29.hinet.net
+Received: from cmsr8.hinet.net ([10.199.216.87])
+	by cdmsr2.hinet.net (8.15.2/8.15.2) with ESMTPS id 58I0R9mV429619
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <linux-parisc@vger.kernel.org>; Thu, 18 Sep 2025 08:27:15 +0800
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=ms29.hinet.net;
+	s=default; t=1758155235; bh=bHPGMPKfAEEenMl5a6VUBVWn7TE=;
+	h=From:To:Subject:Date;
+	b=vY2FQqZjo9fhYuOyfUOlOJezAK2QcF556flfeWbCvQl/CyyCPiCayhjg3QL8xCx+j
+	 PoPCwSD2bKLmEPy9So08ReqO6DgxFnz895/DNGqr48Ct9K6WRbTyK0le7WTqVgo9yl
+	 2w+vkTKk5gXdkfFIF7THA+zszisaGwTqUymSqoAQ=
+Received: from [127.0.0.1] (36-237-152-93.dynamic-ip.hinet.net [36.237.152.93])
+	by cmsr8.hinet.net (8.15.2/8.15.2) with ESMTPS id 58I0IsS4692655
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <linux-parisc@vger.kernel.org>; Thu, 18 Sep 2025 08:23:07 +0800
+From: "Info - Albinayah 247" <Linux-parisc@ms29.hinet.net>
+To: linux-parisc@vger.kernel.org
+Reply-To: "Info - Albinayah." <europe-sales@albinayah-group.com>
+Subject: =?UTF-8?B?TmV3IFNlcHRlbWJlciBPcmRlci4gNDY1NzIgVGh1cnNkYXksIFNlcHRlbWJlciAxOCwgMjAyNSBhdCAwMjoyMzowNiBBTQ==?=
+Message-ID: <63cfe111-96c3-79f0-237e-37f2942883b9@ms29.hinet.net>
+Content-Transfer-Encoding: 7bit
+Date: Thu, 18 Sep 2025 00:23:06 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250912223937.3735076-1-safinaskar@zohomail.com> <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
-In-Reply-To: <0342fbda-9901-4293-afa7-ba6085eb1688@landley.net>
-From: Andy Lutomirski <luto@amacapital.net>
-Date: Wed, 17 Sep 2025 11:00:32 -0700
-X-Gm-Features: AS18NWAGwakGZ9zjxjq7MnfN8O7ZgOJb6fmKIJ0JIML7P3j0NnlDZ27eNb5S7Es
-Message-ID: <CALCETrXHxOkHoS+0zhvc4cfpZqJ0wpfQUDnXW-A-qyQkqur-DQ@mail.gmail.com>
-Subject: Re: [PATCH 00/62] initrd: remove classic initrd support
-To: Rob Landley <rob@landley.net>
-Cc: Askar Safin <safinaskar@zohomail.com>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, 
-	Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Aleksa Sarai <cyphar@cyphar.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
-	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
-	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org, initramfs@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	"Theodore Y . Ts'o" <tytso@mit.edu>, linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>, 
-	devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Thorsten Blum <thorsten.blum@linux.dev>, Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+X-HiNet-Brightmail: Spam
+X-CMAE-Score: 100
+X-CMAE-Analysis: v=2.4 cv=LvQxyWdc c=0 sm=1 tr=0 ts=68cb50ec
+	p=OrFXhexWvejrBOeqCD4A:9 a=ECSLwNRI2jCDHCWmz5/pyw==:117 a=IkcTkHD0fZMA:10
+	a=5KLPUuaC_9wA:10
 
-On Mon, Sep 15, 2025 at 10:09=E2=80=AFAM Rob Landley <rob@landley.net> wrot=
-e:
+Hi Linux-parisc,
 
-> While you're at it, could you fix static/builtin initramfs so PID 1 has
-> a valid stdin/stdout/stderr?
->
-> A static initramfs won't create /dev/console if the embedded initramfs
-> image doesn't contain it, which a non-root build can't mknod, so the
-> kernel plumbing won't see it dev in the directory we point it at unless
-> we build with root access.
+Please provide a quote for your products:
 
-I have no current insight as to whether there's a kernel issue here,
-but why are you trying to put actual device nodes in an actual
-filesystem as part of a build process?  It's extremely straightforward
-to emit devices nodes in cpio format, and IMO it's far *more*
-straightforward to do that than to make a whole directory, try to get
-all the modes right, and cpio it up.
+Include:
+1.Pricing (per unit)
+2.Delivery cost & timeline
+3.Quote expiry date
 
-I wrote an absolutely trivial tool for this several years ago:
+Deadline: September
 
-https://github.com/amluto/virtme/blob/master/virtme/cpiowriter.py
+Thanks!
 
-it would be barely more complicated to strip the trailer off an cpio
-file from some other source, add some device nodes, and stick the
-trailer back on.  But it's also really, really, really easy to emit an
-entire, functioning cpio-formatted initramfs from plain user code with
-no filesystem manipulation at all.  This also makes that portion of
-the build reproducible, which is worth quite a bit IMO.
+Kamal Prasad
 
---Andy
+Albinayah Trading
 
