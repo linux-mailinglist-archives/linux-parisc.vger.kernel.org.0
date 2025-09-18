@@ -1,84 +1,141 @@
-Return-Path: <linux-parisc+bounces-4132-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4134-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915B0B86807
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Sep 2025 20:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F818B86CD1
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Sep 2025 21:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9A8D624C38
-	for <lists+linux-parisc@lfdr.de>; Thu, 18 Sep 2025 18:47:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 102416270AA
+	for <lists+linux-parisc@lfdr.de>; Thu, 18 Sep 2025 19:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF706302175;
-	Thu, 18 Sep 2025 18:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D454C3112BF;
+	Thu, 18 Sep 2025 19:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DrF4UB5v"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hNlT1dRM"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD502D8DCF;
-	Thu, 18 Sep 2025 18:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FFF30C0FA
+	for <linux-parisc@vger.kernel.org>; Thu, 18 Sep 2025 19:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758221167; cv=none; b=Ekd55Nx2kscjeqPN5MfJKErHtYu80lZKNDy6swjcEYQP/425dzbviOKLBPKw5A/hXYY6Dq+9ks9eOL3SkmfO1lwjGlvpnCfPRBHYjRy4Rs6/3aHndLkyzvW8Idfd7uRh3fP6DbhZj6T7ZiJK3m3cMdbzMxX6ucU7rgZ+A1s6lbQ=
+	t=1758225500; cv=none; b=mLQO5sVlNQI0dTd5GqvoxHrNnCVHj4tq7eg9SM3YwqHZeQB/7pnXD3MNbVB3VeGKwN6XIkrgKBNai5+Ys3pbihfRLumEZIEJfHAOQpegXFd5mv5HA4qYgKVm/cMjd15yWUlbDLWMqRzJh2UYOX774XHAyPc+vUDlsLuRd0h/LAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758221167; c=relaxed/simple;
-	bh=3bqXOAYctDiXe+OCMHlitClbfEhC7Di6QPs9FEZ1pPI=;
+	s=arc-20240116; t=1758225500; c=relaxed/simple;
+	bh=hrTKVKMuOKbLilzSA+VEl+XSSF0VIocT2KvCzkuRjcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=leI/0ZsDmp513dEv4Ux8F4GOm83SqdxqodDTbHw5txl5zDSfZVZRcEi7HDbroKJibw20fz7BBnzDq/o8W7LJE4trZYPQjkIrPGWHWcNondxAGEKOnzwLnGuUFnq98jt/jRh4uU6o21cZo4TrLPESgHSiDeJ6R87zQ+W9zoiymHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DrF4UB5v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE03FC4CEE7;
-	Thu, 18 Sep 2025 18:46:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758221167;
-	bh=3bqXOAYctDiXe+OCMHlitClbfEhC7Di6QPs9FEZ1pPI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DrF4UB5vNiS1ar6EQULnP2g8xHqnzBBCJmALQvRpfCCwMERikovmxa5qLdv90lwcz
-	 ISbg/kGE2Tx15VZG2vdkPFE7TQRrtuhFvEA4HHp4uvvjl43WFlncTqgHCP9W8wX6U0
-	 xkIrRlvfY93G0GJ6rLphYBdU4/P5Y3W5660GWNxfdMbw9xHyNKR5bspM/f6LGlmcb0
-	 udD+iUQiHebDEBJeOzgdkD6z4qs8pqG/CD7tfwkbjzQ863aDbZfxl2ejEdBKmr2Eva
-	 UOsKQLShS++Ltzx7J/LCHkdw5NkgqooNDn4P7ThMastTfrzbD5CblRWK/tnQFtzeWT
-	 PGzH6N+KD8OlA==
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Geoff Levand <geoff@infradead.org>,
-	Helge Deller <deller@gmx.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	iommu@lists.linux.dev,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
+	 MIME-Version; b=f1t2Uut8X0vjHihrfCxVizQx3oAuiXtbEMNuxUGbeTeANElP+n+8kVqPaX5vSXPNhpixLZ4XTUGM7jyyz80nSDh/C9k9foNUqACygyJ6Y5+tUQ1/Mk7uUAwRPZVV5Q5FTUWQYFvTUFJFp4p801sMMc1U4qqh7Ec9drnq0SsFgxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hNlT1dRM; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-62ecd3c21d3so2066597a12.0
+        for <linux-parisc@vger.kernel.org>; Thu, 18 Sep 2025 12:58:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758225496; x=1758830296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9McvDjxp1cOQ8m8DQ7zr8KAOkClRv+R613f7KwPZqLk=;
+        b=hNlT1dRMFhV3nNEO8OCPXfEiZjy7HadMXu4vRgp3Ipj8QW/pTjkxFRxYZEa69pe80J
+         R5WZR6uBlmeIbF+VQhBUi3wnRJuDxh3ZSYPm2HtEzHdmYgYFzaLOTkBNZpxqwUsXFCi5
+         xh48TC/I8mOWxP2I4D6qthvi1wAkVJadHw9+Q6aETqCdcS+tzshGNcO1qODnTVXpUxR3
+         DzGuLf7FRf7YNLECrqzb9ayMBLdTqRvBk0ivmzKueGmRkmu1GRq1Uqn5Uc0kg8EqXgPJ
+         5wCj9Urjk2M3jfgX+oYXsBuDx3I+zNM2GW5fMn6rB/kk6qlx/ZV55XBxceRxo80pIEfP
+         n68Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758225496; x=1758830296;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9McvDjxp1cOQ8m8DQ7zr8KAOkClRv+R613f7KwPZqLk=;
+        b=dOFJ7qNy3sEreYTb0lTJzhtTfiVQL7Qv0ajzwK3rk+mZpkstcqynqDvtspt+FDOE9i
+         bt4NE8yk2IK8qFb+7ffmkvhm8XV51cqxDzzrXjekEfUFqaLFpltNmoP+o9mD1PpyZo3K
+         lzBtLPRksKhdKnBFiOJN/HJqdMUf/p08tyxFvgjz66+Rl0srjvvYycar8X5y+L7XabTe
+         iXprk98PXNU81xRm1eepHyMeXgje/LzBcMyP8RtxsqEWIeI4p1PuBNuS8Nh1K7+pO5SZ
+         O/JH9IsFdV0uteExroziD+W3PWpcVBTX7hsv9jjcchexwLKGQ+hQfDk8hMz3bB+eCDgB
+         fyyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW1OvtFCrEvirSz14tPA27dEe2uAGFoLE0rcY1StwYQCEidokOaJ3BJqe6Sfh3Yxti625z2ltHbWJwA2is=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGZ2CmxS7ZzfMYthfN92h9vu3duWiADwNaLKofoSSW7WKrVdsi
+	11+vQt1qlGtSc1jkD1EAsrRjWkJUtRqxRuZR6q/VLNw1bPyBRQY3mXnZ
+X-Gm-Gg: ASbGncs+KcGJQnFEWc7Y9IGVanlqNP8al3SCx2LZQi2ybuLpmrnV4fdIDukkdh1jTpD
+	BKQI6sjj0LkcR4eRTOVdJESLOmpLsMio4fMbRlIuCeCKOe8QH+XLZH6J4krfnozUHr8v/HkZNoM
+	BkC2ZmTwb7uzYxBgWio5yBDGSmroMFInv8tx+8Js3athDAbmT2B+jjYvlEc7rsDQhvDdptzGb6H
+	W5LuXPi/1U6HdURiGwTx5y1+Ls/fcd/WAJGIkg9e+W/veOwOWxfoa9tA/EcrTVl5AMky2bGOXQu
+	ybz4Zw4f06NEGVB7TjojFh4JsYduhnKqyXy1tG6c8LNZP35WOmRm379xNmWPSj7OMJN+OPEAz7c
+	NR6tpOiNpNs+PFBePd/ptauJYksYbgAoIY0V3nQ==
+X-Google-Smtp-Source: AGHT+IH2NBu6L+bASXNqg9sJUcZ42MFCB2aqzEFiqoDEW6um54A4CtHcJnO37auTgFbi6nwycKDm8A==
+X-Received: by 2002:a17:907:a089:b0:b19:969a:86 with SMTP id a640c23a62f3a-b24f35aa177mr45885966b.37.1758225496090;
+        Thu, 18 Sep 2025 12:58:16 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b1fd1101c44sm264530466b.82.2025.09.18.12.58.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Sep 2025 12:58:15 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: nschichan@freebox.fr
+Cc: akpm@linux-foundation.org,
+	andy.shevchenko@gmail.com,
+	axboe@kernel.dk,
+	brauner@kernel.org,
+	cyphar@cyphar.com,
+	devicetree@vger.kernel.org,
+	ecurtin@redhat.com,
+	email2tema@gmail.com,
+	graf@amazon.com,
+	gregkh@linuxfoundation.org,
+	hca@linux.ibm.com,
+	hch@lst.de,
+	hsiangkao@linux.alibaba.com,
+	initramfs@vger.kernel.org,
+	jack@suse.cz,
+	julian.stecklina@cyberus-technology.de,
+	kees@kernel.org,
+	linux-acpi@vger.kernel.org,
 	linux-alpha@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	linux-csky@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
 	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
 	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-um@lists.infradead.org,
 	linuxppc-dev@lists.ozlabs.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Matt Turner <mattst88@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
+	loongarch@lists.linux.dev,
+	mcgrof@kernel.org,
+	mingo@redhat.com,
+	monstr@monstr.eu,
+	mzxreary@0pointer.de,
+	patches@lists.linux.dev,
+	rob@landley.net,
+	safinaskar@gmail.com,
 	sparclinux@vger.kernel.org,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	virtualization@lists.linux.dev,
-	x86@kernel.org,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH 9/9] dma-mapping: remove unused map_page callback
-Date: Thu, 18 Sep 2025 21:45:09 +0300
-Message-ID: <d55dbd258a5582aff0bc40771099cad594600469.1758219787.git.leon@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1758219786.git.leon@kernel.org>
-References: <cover.1758219786.git.leon@kernel.org>
+	thomas.weissschuh@linutronix.de,
+	thorsten.blum@linux.dev,
+	torvalds@linux-foundation.org,
+	tytso@mit.edu,
+	viro@zeniv.linux.org.uk,
+	x86@kernel.org
+Subject: Re: [PATCH RESEND 00/62] initrd: remove classic initrd support
+Date: Thu, 18 Sep 2025 22:58:06 +0300
+Message-ID: <20250918195806.6337-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20250918152830.438554-1-nschichan@freebox.fr>
+References: <20250918152830.438554-1-nschichan@freebox.fr>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -87,94 +144,19 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Leon Romanovsky <leonro@nvidia.com>
+> When booting with root=/dev/ram0 in the kernel commandline,
+> handle_initrd() where the deprecation message resides is never called,
+> which is rather unfortunate (init/do_mounts_initrd.c):
 
-After conversion of arch code to use physical address mapping,
-there are no users of .map_page() and .unmap_page() callbacks,
-so let's remove them.
+Yes, this is unfortunate.
 
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- include/linux/dma-map-ops.h |  7 -------
- kernel/dma/mapping.c        | 12 ------------
- kernel/dma/ops_helpers.c    |  8 +-------
- 3 files changed, 1 insertion(+), 26 deletions(-)
+I personally still think that initrd should be removed.
 
-diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
-index a2ec1566aa270..e0a78991fa8a3 100644
---- a/include/linux/dma-map-ops.h
-+++ b/include/linux/dma-map-ops.h
-@@ -31,13 +31,6 @@ struct dma_map_ops {
- 			void *cpu_addr, dma_addr_t dma_addr, size_t size,
- 			unsigned long attrs);
- 
--	dma_addr_t (*map_page)(struct device *dev, struct page *page,
--			unsigned long offset, size_t size,
--			enum dma_data_direction dir, unsigned long attrs);
--	void (*unmap_page)(struct device *dev, dma_addr_t dma_handle,
--			size_t size, enum dma_data_direction dir,
--			unsigned long attrs);
--
- 	dma_addr_t (*map_phys)(struct device *dev, phys_addr_t phys,
- 			size_t size, enum dma_data_direction dir,
- 			unsigned long attrs);
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 32a85bfdf873a..37163eb49f9fa 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -171,16 +171,6 @@ dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
- 		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
- 	else if (ops->map_phys)
- 		addr = ops->map_phys(dev, phys, size, dir, attrs);
--	else if (!is_mmio && ops->map_page) {
--		struct page *page = phys_to_page(phys);
--		size_t offset = offset_in_page(phys);
--
--		/*
--		 * The dma_ops API contract for ops->map_page() requires
--		 * kmappable memory.
--		 */
--		addr = ops->map_page(dev, page, offset, size, dir, attrs);
--	}
- 
- 	if (!is_mmio)
- 		kmsan_handle_dma(phys, size, dir);
-@@ -222,8 +212,6 @@ void dma_unmap_phys(struct device *dev, dma_addr_t addr, size_t size,
- 		iommu_dma_unmap_phys(dev, addr, size, dir, attrs);
- 	else if (ops->unmap_phys)
- 		ops->unmap_phys(dev, addr, size, dir, attrs);
--	else
--		ops->unmap_page(dev, addr, size, dir, attrs);
- 	trace_dma_unmap_phys(dev, addr, size, dir, attrs);
- 	debug_dma_unmap_phys(dev, addr, size, dir);
- }
-diff --git a/kernel/dma/ops_helpers.c b/kernel/dma/ops_helpers.c
-index 1eccbdbc99c1e..20caf9cabf699 100644
---- a/kernel/dma/ops_helpers.c
-+++ b/kernel/dma/ops_helpers.c
-@@ -76,11 +76,8 @@ struct page *dma_common_alloc_pages(struct device *dev, size_t size,
- 	if (use_dma_iommu(dev))
- 		*dma_handle = iommu_dma_map_phys(dev, phys, size, dir,
- 						 DMA_ATTR_SKIP_CPU_SYNC);
--	else if (ops->map_phys)
--		*dma_handle = ops->map_phys(dev, phys, size, dir,
--					    DMA_ATTR_SKIP_CPU_SYNC);
- 	else
--		*dma_handle = ops->map_page(dev, page, 0, size, dir,
-+		*dma_handle = ops->map_phys(dev, phys, size, dir,
- 					    DMA_ATTR_SKIP_CPU_SYNC);
- 	if (*dma_handle == DMA_MAPPING_ERROR) {
- 		dma_free_contiguous(dev, page, size);
-@@ -102,8 +99,5 @@ void dma_common_free_pages(struct device *dev, size_t size, struct page *page,
- 	else if (ops->unmap_phys)
- 		ops->unmap_phys(dev, dma_handle, size, dir,
- 				DMA_ATTR_SKIP_CPU_SYNC);
--	else if (ops->unmap_page)
--		ops->unmap_page(dev, dma_handle, size, dir,
--				DMA_ATTR_SKIP_CPU_SYNC);
- 	dma_free_contiguous(dev, page, size);
- }
+I suggest using workaround I described in cover letter.
+
+Also, for unknown reasons I didn't get your letter in my inbox.
+(Not even in spam folder.) I ocasionally found it on lore.kernel.org .
+
 -- 
-2.51.0
-
+Askar Safin
 
