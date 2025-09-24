@@ -1,89 +1,115 @@
-Return-Path: <linux-parisc+bounces-4145-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4146-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCDEB97E88
-	for <lists+linux-parisc@lfdr.de>; Wed, 24 Sep 2025 02:35:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4398DB988C4
+	for <lists+linux-parisc@lfdr.de>; Wed, 24 Sep 2025 09:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AD9419C3717
-	for <lists+linux-parisc@lfdr.de>; Wed, 24 Sep 2025 00:35:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3ED67ACD0E
+	for <lists+linux-parisc@lfdr.de>; Wed, 24 Sep 2025 07:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8176319ABC6;
-	Wed, 24 Sep 2025 00:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8424C98;
+	Wed, 24 Sep 2025 07:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=maguitec.com.mx header.i=@maguitec.com.mx header.b="Af1gAMK3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Apr75Ugi"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from sender4-g3-154.zohomail360.com (sender4-g3-154.zohomail360.com [136.143.188.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1378C18C008
-	for <linux-parisc@vger.kernel.org>; Wed, 24 Sep 2025 00:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.154
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758674103; cv=pass; b=XrDupg06UibEH16fD0UYYuXQqiXq3W2Pl0xJlKmyp8/wcWBINQ5qJnyOy3JnuTeGQ+OdXNC+Y+YoT/n344Ae2/tzrMmeRgazUEyc1960O4ZxF3JlYfko58wzuYRCjpuLFCQ66ZkMgZzxTjNBsT8JpJPCz3DTSByyOQaanId8wws=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758674103; c=relaxed/simple;
-	bh=L5RfDDx5E9Al44+W7OTkwsd3IV0tK6SKW3qbGVgtFUc=;
-	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type; b=ob2gqklaorvaoeee8LiOvh/H2pMGU2XVUXGTf6zBGLNmbBG+tryENTwQ02lFo4DdTjOQIGUuOpWsrOIC44d9uD359y2fO6P/J4ac8I8z0X5IU5yFjVGTZysHfJWJOqkWUgttGHr8Pk/sZxE6o5F0ex3QwQTCrJvXk30JhQn7gkU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=maguitec.com.mx; spf=pass smtp.mailfrom=bounce-zem.maguitec.com.mx; dkim=pass (1024-bit key) header.d=maguitec.com.mx header.i=@maguitec.com.mx header.b=Af1gAMK3; arc=pass smtp.client-ip=136.143.188.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=maguitec.com.mx
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce-zem.maguitec.com.mx
-ARC-Seal: i=1; a=rsa-sha256; t=1758674101; cv=none; 
-	d=us.zohomail360.com; s=zohoarc; 
-	b=DMF4HsdwZ5ksCWyoRsvlBXTU/jtYdYpkk2g2YDgfGZXemwttSB550TX4cMVahL4B6tjCPYGopxg8JsI5OWGZWPiSdX7CZX9EgPnXdt1El7BaZ3WAFQnA4yWneJxo1mIs9RZv+uOx9IyA54M1oWwqe5s9Sqe75JSfsQSPS1jOrzs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=us.zohomail360.com; s=zohoarc; 
-	t=1758674101; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Reply-To:Reply-To:Subject:Subject:To:To:Message-Id:Cc; 
-	bh=L5RfDDx5E9Al44+W7OTkwsd3IV0tK6SKW3qbGVgtFUc=; 
-	b=lZI9VSdq7dsbqDKohKOQwSRpYPJSA0l9lQ32OIUJunKXXnMLOxnZm6SoZOof8V7zak8PHdQO6Xl9BawWJZHOnoHjXFAiMnZsA72J2HTiEiRYix6+h0QsidpK472GPerkf9WoW+iKLL8FTTbwWQ7gLcbFlSD8w3j717FGjmimHX4=
-ARC-Authentication-Results: i=1; mx.us.zohomail360.com;
-	dkim=pass  header.i=maguitec.com.mx;
-	spf=pass  smtp.mailfrom=investorrelations+9aa04d00-98d8-11f0-8217-5254007ea3ec_vt1@bounce-zem.maguitec.com.mx;
-	dmarc=pass header.from=<investorrelations@maguitec.com.mx>
-Received: by mx.zohomail.com with SMTPS id 175867165353153.1471674992365;
-	Tue, 23 Sep 2025 16:54:13 -0700 (PDT)
-DKIM-Signature: a=rsa-sha256; b=Af1gAMK37Z5gDXDA307Ff95wkBO5OgLEQ8ePWQujlHJ+LngzXlHARkauIrU7rJesvcpG3hxN2PUMK1VdBDRoQlAwws6yk467jAdxj5+zc6WrUu1avhwBhYaRN5bZTwt39n8G5AiGJjUJwdHubSVAJoyc/9RRE7u0/PtraAGID7w=; c=relaxed/relaxed; s=15205840; d=maguitec.com.mx; v=1; bh=L5RfDDx5E9Al44+W7OTkwsd3IV0tK6SKW3qbGVgtFUc=; h=date:from:reply-to:to:message-id:subject:mime-version:content-type:content-transfer-encoding:date:from:reply-to:to:message-id:subject;
-Date: Tue, 23 Sep 2025 16:54:13 -0700 (PDT)
-From: Al Sayyid Sultan <investorrelations@maguitec.com.mx>
-Reply-To: investorrelations@alhaitham-investment.ae
-To: linux-parisc@vger.kernel.org
-Message-ID: <2d6f.1aedd99b146bc1ac.m1.9aa04d00-98d8-11f0-8217-5254007ea3ec.19978ffc5d0@bounce-zem.maguitec.com.mx>
-Subject: Thematic Funds Letter Of Intent
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D729627B336
+	for <linux-parisc@vger.kernel.org>; Wed, 24 Sep 2025 07:32:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758699141; cv=none; b=BQsti72+K+DSHStk59lst0qnQQgEZhwL8m1gTyTKEFWuE0sdQ7J9efY9JjR4ui0N4oe5cXlhWYCIElAAsFcdUFRqUeBXFAOGNktxUaUVwX8kg+YSXk7lcVios5QRrmE9tttYkixgJPrewElrEget4hvpp2FOwEupK/MHW/zT/Ko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758699141; c=relaxed/simple;
+	bh=TX6kI82yO/RlICOevJbAdNu2g5LXBtW4mVT11ZayfNE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BwFj4jtNjb95JXZG/o9imm8fMkhSPlzRX7Z+OxJ3dagUpvHlBWkc3+1KcfprW7x21kVmYW9zH9ojQ0UPTB+dG0EKKrDk9AyMLG4E8lBWaOQGGxlbMnT7VsRdgMSNn7Jb/XG62jjoipjlWAiqmotNuCshdXXX4v8pUI9Uw04qEXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Apr75Ugi; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63163a6556bso9381616a12.1
+        for <linux-parisc@vger.kernel.org>; Wed, 24 Sep 2025 00:32:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1758699138; x=1759303938; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=v9ogATJZj1jG8raAY2zUuQe4EmJHk/4W4xvGLcmqNCI=;
+        b=Apr75Ugi6SUfNBAH+kYzUGDTjoRx4+4tdqorCAQPRdi6ZhXxBv0peiMsD+V4puAl/L
+         VnxwZSNbl9FiKKvSAqE1eYwjqdZWh7FJCNF0dlJCMq2k1bWZYIlAjQgIervtcnAm3t8B
+         GN105YKAWQyS6/Cr/MiE0AtzMIVY2JD6Cl6oo5pZJOVanYffCW03eXtoB23UbA49jJ7r
+         M37tNlpRwrjn7OtFzfza/vp/LuwUFXCQHnS9le2rzn9s9XBPgWtVSKHOOn2Jak7mhDnY
+         wGqCR0eC89eG87mkj1IyXNs4+n6M1Xm2c52C76N990iZ2sIOpbDuxtQDSZpysCj2x7fQ
+         cVpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758699138; x=1759303938;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v9ogATJZj1jG8raAY2zUuQe4EmJHk/4W4xvGLcmqNCI=;
+        b=MAgCeMSggeFNu4kGSGUnBRs7Um2+PzahXAGiq4hNd563RvBNljK3HyqYyod1oKo/pQ
+         DHNK6CQ96gkde+cvQCx3cTWGnvINu9K+ix//SyUOdnu0zFurFrnB8dUGQeOlTagdqdMq
+         iDP3bpkKUXdRFvtQgsR3lEvQAYtpFypgqMHF5M7eZ+SCGLMD76bx234tF7XRcTZjVzfB
+         f/JttjucHy9NoH26abrrd7EKIr3eytP+n4zPvw4MNOImuqHkOTP6z+r1QhemsVsbyVuB
+         ziMX2pOE3FEZRXRMOeqotL3ra0QEjIruLgKfgGhAQ3RxkDZo+XQTms9YUpaAKwSqwBW6
+         mY5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWZS0JQHtZuHTSilHpYcYPl9JROksYt4RLRe0ALrEHeVN/SmB/baSAIm17bNz3MSa2sYtf+CcJo3DbG+/I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypbRjOzZAnEcwT4icIiIJphxwLKir3lRgg9iry4qHX0VbXYW2h
+	mXPF6qbzo6J3v/fQroVEVpb2ekqHVcaqR0cK/qEAlNHmyXiL4GRh8DA3HBwUdyVDei2QPCwsxLF
+	xR3wvgDF7fRQ66NXWF3gSidlBcpc0dQI=
+X-Gm-Gg: ASbGncs3lhD6KF9hJTpk8W2RQhqecmds43RX2geZps0iQBsd9rCuN1WDuHHqAms6YII
+	J0A14fbdzzvgveAs7x1/tslvDfYjeQOyccAehIl2Quui8nRi5kisKAi5igl7Z8iAEgAJtGyoqQJ
+	nfsJoV9gxDnU7O8j9CGqV7eOXBZa7p/XhQLnaQlujexAmMqHaUxn7mFrQKSg1zDDXU8EUuoAv8e
+	kxRuuiD
+X-Google-Smtp-Source: AGHT+IEsD22J4a5V9bbdMWtQv1Ep8AmuRuA2KpP+ndq9VMyD7XFtjS94kSm5rlJirOSxMvazqqoNAsq4GX/ON5RyqyA=
+X-Received: by 2002:a05:6402:44dc:b0:633:4726:a077 with SMTP id
+ 4fb4d7f45d1cf-63467796df4mr4258422a12.15.1758699137992; Wed, 24 Sep 2025
+ 00:32:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-content-transfer-encoding-Orig: quoted-printable
-content-type-Orig: text/plain;\r\n\tcharset="utf-8"
-Original-Envelope-Id: 2d6f.1aedd99b146bc1ac.m1.9aa04d00-98d8-11f0-8217-5254007ea3ec.19978ffc5d0
-X-JID: 2d6f.1aedd99b146bc1ac.s1.9aa04d00-98d8-11f0-8217-5254007ea3ec.19978ffc5d0
-TM-MAIL-JID: 2d6f.1aedd99b146bc1ac.m1.9aa04d00-98d8-11f0-8217-5254007ea3ec.19978ffc5d0
-X-App-Message-ID: 2d6f.1aedd99b146bc1ac.m1.9aa04d00-98d8-11f0-8217-5254007ea3ec.19978ffc5d0
-X-Report-Abuse: <abuse+2d6f.1aedd99b146bc1ac.m1.9aa04d00-98d8-11f0-8217-5254007ea3ec.19978ffc5d0@zeptomail.com>
-X-ZohoMailClient: External
+References: <cover.1758219786.git.leon@kernel.org> <0c64474985af55b1aa934b857808068a0e609c6e.1758219787.git.leon@kernel.org>
+ <CA+=Fv5Q8dVUFVBh82mAe=fy3mV6mWtQT_0pBPLQwLNBt3f8E1g@mail.gmail.com>
+ <20250923171819.GM10800@unreal> <CA+=Fv5SJcQ5C4UeX2+deV9mPAe5QxrocMG8EJ2eVcYjbLE5U+A@mail.gmail.com>
+ <20250923235318.GD2617119@nvidia.com>
+In-Reply-To: <20250923235318.GD2617119@nvidia.com>
+From: Magnus Lindholm <linmag7@gmail.com>
+Date: Wed, 24 Sep 2025 09:32:06 +0200
+X-Gm-Features: AS18NWBrVH-9-wBlZ7ZFV3RxYYp-7iSL9DfIPq4jDzU8rxFLx7xmKKzveUA49as
+Message-ID: <CA+=Fv5Tg7sQACpeG8aMZF6_E6dbRnN5ifg0aiHityXadxiHoPA@mail.gmail.com>
+Subject: Re: [PATCH 1/9] alpha: Convert mapping routine to rely on physical address
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "David S. Miller" <davem@davemloft.net>, 
+	Geoff Levand <geoff@infradead.org>, Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>, 
+	iommu@lists.linux.dev, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Jason Wang <jasowang@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Matt Turner <mattst88@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Richard Henderson <richard.henderson@linaro.org>, 
+	sparclinux@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
+	virtualization@lists.linux.dev, x86@kernel.org, 
+	xen-devel@lists.xenproject.org
+Content-Type: text/plain; charset="UTF-8"
 
-To: linux-parisc@vger.kernel.org
-Date: 24-09-2025
-Thematic Funds Letter Of Intent
+> Suggest testing the same branch with the alpha patch reverted just to
+> rule out any issue in the core code. If it reproduces suggest to
+> bisect Leon's branch.
+>
+I can try to revert just the patch containing the alpha-specific stuff and
+see what happens and then, as  you say, maybe do a bisect from there.
+First I'll just try the same kernel again a few times more just to make sure
+that this is really reproducible.
 
-It's a pleasure to connect with you
-
-Having been referred to your investment by my team, we would be=20
-honored to review your available investment projects for onward=20
-referral to my principal investors who can allocate capital for=20
-the financing of it.
-
-kindly advise at your convenience
-
-Best Regards,
-
-Respectfully,
-Al Sayyid Sultan Yarub Al Busaidi
-Director
+/Magnus
 
