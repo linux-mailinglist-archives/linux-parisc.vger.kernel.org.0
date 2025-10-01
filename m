@@ -1,83 +1,94 @@
-Return-Path: <linux-parisc+bounces-4175-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4176-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC39ABB0052
-	for <lists+linux-parisc@lfdr.de>; Wed, 01 Oct 2025 12:31:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E96EBB1A16
+	for <lists+linux-parisc@lfdr.de>; Wed, 01 Oct 2025 21:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CA64194011C
-	for <lists+linux-parisc@lfdr.de>; Wed,  1 Oct 2025 10:32:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4E362A72AC
+	for <lists+linux-parisc@lfdr.de>; Wed,  1 Oct 2025 19:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E15329BDBC;
-	Wed,  1 Oct 2025 10:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b="K3+ks7kL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225C02D0C99;
+	Wed,  1 Oct 2025 19:40:17 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cdmsr1.hinet.net (210-65-1-144.hinet-ip.hinet.net [210.65.1.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F46288C13
-	for <linux-parisc@vger.kernel.org>; Wed,  1 Oct 2025 10:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.65.1.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9562D347B4;
+	Wed,  1 Oct 2025 19:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759314704; cv=none; b=gbtH7GGz/Eex1PsXRh8w+0HAXP1rQN8mVk9jAKUXPo5CzH6Yh7ncZwl9+JU6Hykisp63REB3/rd1gKNLmAGY972abZHCpUaua9a2Nm45JE6O02WnPY4iDwG/PJwbvRjyABclex6ikqy7BR4zEsOaVZAcbJYx7FKK8o9w5KKNW2A=
+	t=1759347617; cv=none; b=oGQNq/PKX6wh+CmnXuxqnWWBC8paaWTtlZIjTgr4JGZ+vsfoQevXAF9g2hP1Nm+eV4DpGQ46b051g7TgV1/9lFeOpmTuMG+M+DhHO8CGLFgTR7vHqxh+TnvLRIZlH2gsz+5YUhjjQSEjkVz8/XhxRVawk41Azy3DIOZJ5tiyxPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759314704; c=relaxed/simple;
-	bh=NYpvHFrW+6WJdAoVAxtmW6ZPYUGGPlR0B51uZtc+3E0=;
-	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=G4ctn1gCCaE0gfMNgGW0uw+yvAVVq7bafibzdDLl/MzW7gjyLTRfIp6Wp6mvAfEeZ9URKdc93y4n4R254yOtS427IJK8Oq5izHvvt4/vuj19n5cR/FD00BXrZF016iT3mzlWoMrOVhejCvtAvK4Go1fo2grBQ2nMKjWRxJ8j/TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net; spf=pass smtp.mailfrom=ms29.hinet.net; dkim=pass (1024-bit key) header.d=ms29.hinet.net header.i=@ms29.hinet.net header.b=K3+ks7kL; arc=none smtp.client-ip=210.65.1.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ms29.hinet.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ms29.hinet.net
-Received: from cmsr2.hinet.net ([10.199.216.81])
-	by cdmsr1.hinet.net (8.15.2/8.15.2) with ESMTPS id 591AVeQx188944
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <linux-parisc@vger.kernel.org>; Wed, 1 Oct 2025 18:31:40 +0800
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=ms29.hinet.net;
-	s=default; t=1759314700; bh=bHPGMPKfAEEenMl5a6VUBVWn7TE=;
-	h=From:To:Subject:Date;
-	b=K3+ks7kLJLN8QQ1saWnSFX8Y6AJVBU9Vuhv9ESOFgkJlr64Vm4HGRH3+WDhZHW8RV
-	 ksUTQOFPBESop6QHoQdd2l4M5+ygbUtXbP6Tsjy38JSc2jdR48jVeP4OFcgEWNCP4F
-	 SlwgUfmmYFN+nhbd/qjHCEDEpSvSdaXvXDSHhFIU=
-Received: from [127.0.0.1] (118-171-10-232.dynamic-ip.hinet.net [118.171.10.232])
-	by cmsr2.hinet.net (8.15.2/8.15.2) with ESMTPS id 591AShN1233849
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
-	for <linux-parisc@vger.kernel.org>; Wed, 1 Oct 2025 18:28:47 +0800
-From: "Info - Albinayah 112" <Linux-parisc@ms29.hinet.net>
-To: linux-parisc@vger.kernel.org
-Reply-To: "Info - Albinayah." <europe-sales@albinayah-group.com>
-Subject: =?UTF-8?B?TmV3IFNlcHRlbWJlciBPcmRlci4gOTA1MzQgV2VkbmVzZGF5LCBPY3RvYmVyIDEsIDIwMjUgYXQgMTI6Mjg6NDEgUE0=?=
-Message-ID: <b2cd7ba5-320f-633e-e1c3-e5b8598ca92c@ms29.hinet.net>
-Content-Transfer-Encoding: 7bit
-Date: Wed, 01 Oct 2025 10:28:42 +0000
+	s=arc-20240116; t=1759347617; c=relaxed/simple;
+	bh=GjvKThdNt9MwfVXiKim86Oku7IsGjWscR/bHrE8L4uI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iEPHDkKGU2EOZf49roowsXe8/NcxrFQTx1t6QVqi/Dk149gzijz+ny7VWhr0Ob3FMD0s9dhx+w8mu3OkV0ZSGTplq+Gd0OZXb+OQjyz6/SsBNzTRzoOZu5obW+4Okopj5HH5+EUe1eXqMw2ODNBzSHSHgOoaT1ornB4WGc/LlUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+Received: from localhost (2.8.3.0.0.0.0.0.0.0.0.0.0.0.0.0.a.5.c.d.c.d.9.1.0.b.8.0.1.0.0.2.ip6.arpa [IPv6:2001:8b0:19dc:dc5a::382])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sam@gentoo.org)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id 3CFB8340E15;
+	Wed, 01 Oct 2025 19:40:12 +0000 (UTC)
+From: Sam James <sam@gentoo.org>
+To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>
+Cc: Sam James <sam@gentoo.org>,
+	Stian Halseth <stian@itx.no>,
+	linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/3] parisc: don't reference obsolete termio struct for TC* constants
+Date: Wed,  1 Oct 2025 20:39:50 +0100
+Message-ID: <d55e5e19c4d30ab1602718b1263d051413edf562.1759347592.git.sam@gentoo.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-X-HiNet-Brightmail: Spam
-X-CMAE-Score: 100
-X-CMAE-Analysis: v=2.4 cv=L46+QPT8 c=0 sm=1 tr=0 ts=68dd0260
-	p=OrFXhexWvejrBOeqCD4A:9 a=cY7OJCTA0kKZHwJy2uE19A==:117 a=IkcTkHD0fZMA:10
-	a=5KLPUuaC_9wA:10
+Content-Transfer-Encoding: 8bit
 
-Hi Linux-parisc,
+Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
+drops the legacy termio struct, but the ioctls.h header still defines some
+TC* constants in terms of termio (via sizeof). Hardcode the values instead.
 
-Please provide a quote for your products:
+This fixes building Python for example, which falls over like:
+  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
 
-Include:
-1.Pricing (per unit)
-2.Delivery cost & timeline
-3.Quote expiry date
+Link: https://bugs.gentoo.org/961769
+Link: https://bugs.gentoo.org/962600
+Co-authored-by: Stian Halseth <stian@itx.no>
+Signed-off-by: Sam James <sam@gentoo.org>
+---
+ arch/parisc/include/uapi/asm/ioctls.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Deadline: September
+diff --git a/arch/parisc/include/uapi/asm/ioctls.h b/arch/parisc/include/uapi/asm/ioctls.h
+index 82d1148c6379a..b90253c8265ae 100644
+--- a/arch/parisc/include/uapi/asm/ioctls.h
++++ b/arch/parisc/include/uapi/asm/ioctls.h
+@@ -10,10 +10,10 @@
+ #define TCSETS		_IOW('T', 17, struct termios) /* TCSETATTR */
+ #define TCSETSW		_IOW('T', 18, struct termios) /* TCSETATTRD */
+ #define TCSETSF		_IOW('T', 19, struct termios) /* TCSETATTRF */
+-#define TCGETA		_IOR('T', 1, struct termio)
+-#define TCSETA		_IOW('T', 2, struct termio)
+-#define TCSETAW		_IOW('T', 3, struct termio)
+-#define TCSETAF		_IOW('T', 4, struct termio)
++#define TCGETA          0x5405
++#define TCSETA          0x5406
++#define TCSETAW         0x5407
++#define TCSETAF         0x5408
+ #define TCSBRK		_IO('T', 5)
+ #define TCXONC		_IO('T', 6)
+ #define TCFLSH		_IO('T', 7)
+-- 
+2.51.0
 
-Thanks!
-
-Kamal Prasad
-
-Albinayah Trading
 
