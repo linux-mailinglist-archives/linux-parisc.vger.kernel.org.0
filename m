@@ -1,30 +1,30 @@
-Return-Path: <linux-parisc+bounces-4176-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4177-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E96EBB1A16
-	for <lists+linux-parisc@lfdr.de>; Wed, 01 Oct 2025 21:40:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E40DBB1A28
+	for <lists+linux-parisc@lfdr.de>; Wed, 01 Oct 2025 21:42:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4E362A72AC
-	for <lists+linux-parisc@lfdr.de>; Wed,  1 Oct 2025 19:40:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 046693A3905
+	for <lists+linux-parisc@lfdr.de>; Wed,  1 Oct 2025 19:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225C02D0C99;
-	Wed,  1 Oct 2025 19:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55DF283C93;
+	Wed,  1 Oct 2025 19:42:49 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9562D347B4;
-	Wed,  1 Oct 2025 19:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224B41F428F;
+	Wed,  1 Oct 2025 19:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759347617; cv=none; b=oGQNq/PKX6wh+CmnXuxqnWWBC8paaWTtlZIjTgr4JGZ+vsfoQevXAF9g2hP1Nm+eV4DpGQ46b051g7TgV1/9lFeOpmTuMG+M+DhHO8CGLFgTR7vHqxh+TnvLRIZlH2gsz+5YUhjjQSEjkVz8/XhxRVawk41Azy3DIOZJ5tiyxPk=
+	t=1759347769; cv=none; b=M/BF7SDQWrb8gV+8jaAjqibJu7hqSmXj9wKKQiPQjqPTQTLhb/FNqhTB5FYPTnjMEB1O8NtFz087x8iX1Fm89sclQAKHcj5r3fNYmXZUqZnqKUV1wBVQNtlp+oGWEIiK5LGN2viar3gIm8W5h+djjnIDt/oLUUl5GLYvt5bgCMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759347617; c=relaxed/simple;
-	bh=GjvKThdNt9MwfVXiKim86Oku7IsGjWscR/bHrE8L4uI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iEPHDkKGU2EOZf49roowsXe8/NcxrFQTx1t6QVqi/Dk149gzijz+ny7VWhr0Ob3FMD0s9dhx+w8mu3OkV0ZSGTplq+Gd0OZXb+OQjyz6/SsBNzTRzoOZu5obW+4Okopj5HH5+EUe1eXqMw2ODNBzSHSHgOoaT1ornB4WGc/LlUw=
+	s=arc-20240116; t=1759347769; c=relaxed/simple;
+	bh=DatTNjzryt0SJPLXRY7tGwwImAf4qJJ8MRZYOOqA+fM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GdVsd5vBAyWR0BRYzladXQWIYtAe6NH8FOpmlvx1YoGDASIwR4gUFQ4IVMK+7IHWG74vwrgSy6lvODWLUvq4iWxQCDgv6Eyl7TTPbNpDDkpIkbWhuc5RWf3ltNBW6BvH9ScwG7E6gDxDrMlOLpc5sfiomuQg5GO7LVWEMJ1OeEY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
@@ -33,8 +33,8 @@ Received: from localhost (2.8.3.0.0.0.0.0.0.0.0.0.0.0.0.0.a.5.c.d.c.d.9.1.0.b.8.
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: sam@gentoo.org)
-	by smtp.gentoo.org (Postfix) with ESMTPSA id 3CFB8340E15;
-	Wed, 01 Oct 2025 19:40:12 +0000 (UTC)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id 78FE5340E16;
+	Wed, 01 Oct 2025 19:42:46 +0000 (UTC)
 From: Sam James <sam@gentoo.org>
 To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
 	Helge Deller <deller@gmx.de>
@@ -42,9 +42,9 @@ Cc: Sam James <sam@gentoo.org>,
 	Stian Halseth <stian@itx.no>,
 	linux-parisc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] parisc: don't reference obsolete termio struct for TC* constants
-Date: Wed,  1 Oct 2025 20:39:50 +0100
-Message-ID: <d55e5e19c4d30ab1602718b1263d051413edf562.1759347592.git.sam@gentoo.org>
+Subject: [PATCH v2 1/3] parisc: don't reference obsolete termio struct for TC* constants
+Date: Wed,  1 Oct 2025 20:42:15 +0100
+Message-ID: <fc2e8775d55f43e08eb79d326d6fdd89291898dd.1759347737.git.sam@gentoo.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
@@ -66,6 +66,8 @@ Link: https://bugs.gentoo.org/962600
 Co-authored-by: Stian Halseth <stian@itx.no>
 Signed-off-by: Sam James <sam@gentoo.org>
 ---
+v2: Fixed title...
+
  arch/parisc/include/uapi/asm/ioctls.h | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
