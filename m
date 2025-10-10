@@ -1,90 +1,91 @@
-Return-Path: <linux-parisc+bounces-4204-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4205-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB57BCB7BA
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Oct 2025 05:18:25 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FCEBCB98E
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Oct 2025 06:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13B519E2E13
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Oct 2025 03:18:48 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 30CDF34B1B3
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Oct 2025 04:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05F5192B90;
-	Fri, 10 Oct 2025 03:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDD71E835D;
+	Fri, 10 Oct 2025 04:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPjRTN5O"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MTQhtqJO"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0572441A0
-	for <linux-parisc@vger.kernel.org>; Fri, 10 Oct 2025 03:18:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D6635957
+	for <linux-parisc@vger.kernel.org>; Fri, 10 Oct 2025 04:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760066301; cv=none; b=kYuOCXILiBNzvuAp5dqFgvrDeKt5eg/nC/J2Dc8/WrAgz0FxllDrd1VX6lDd0Q4a9WwZADusOdVuhXJPXjCv3Bh5l6//WKoyKwm/Dj8eLzA2ZH3DDyhkMjiP9YkQi62OaheFRFN02s/kRLK/ksByjOdRcjQzZf7fkTn/M31lalc=
+	t=1760069263; cv=none; b=KjObeIxxTjaJ3pIaCNPI/HwILtl9ppPt6H/rLQK4k/N+cnWsCAPpwXM9P5m+IWz0ZqvkO1TBvI0ylB2bqqMiQtiCn1l/TjqOStsLVIm+FTf7WM08oa53Hz9OL8E5eZgZTXX63t8Y8kMmlIbvMLhZmm7/eatUCtfjEsJ6sIhNN00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760066301; c=relaxed/simple;
-	bh=Pa2OhCNI6n3Mf2P8BAMZLHp7akXwtALOTxVawJZtfK8=;
+	s=arc-20240116; t=1760069263; c=relaxed/simple;
+	bh=zKp2kw3Tfj/wI+7DBmKCMChAalHVoRdliS5fwx1zm9s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sa4oMvv8RyP5HjYuLAWKMemuYgO4v5lq8bDLDd8fakzy6tvQHOM4zhV1bIRnWm0pxvq9UgV7EcV0s+9MbpJc8XnC+ngfBjvpnpuoxSvT0o7aZ0Bj7gpc1xyYBZZgZ7b9eB5b6ireSk1C7GfuMABKC7vjtPu8ZonBEcbTQ73564g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPjRTN5O; arc=none smtp.client-ip=74.125.224.53
+	 To:Cc:Content-Type; b=mD2QQEJEpwNnU7V/oM5bxAezbCEqeiqUdl5w4olmoc5vM5m4x4HtQECjOdSNYYlf8MJY2iSknNeAVCV3qPSTypZg31vDEyzEvYcNY7mokQasff5+KzKojuQ59Ljvk8AvQdxBXCFYZTDAQfaDa9IYbuv/eJnM4dSlAZekKq27EPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MTQhtqJO; arc=none smtp.client-ip=209.85.128.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6352c8b683eso1884896d50.2
-        for <linux-parisc@vger.kernel.org>; Thu, 09 Oct 2025 20:18:18 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-72ce9790acdso16383437b3.0
+        for <linux-parisc@vger.kernel.org>; Thu, 09 Oct 2025 21:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760066297; x=1760671097; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760069260; x=1760674060; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Pa2OhCNI6n3Mf2P8BAMZLHp7akXwtALOTxVawJZtfK8=;
-        b=TPjRTN5OIdK/OXusT04ct2sgaYmzHo4t4RUcO6PdWBlDAfEWtPUI7uWv35B1xXRQxj
-         nWDps35hFTHMxr6Vk6M3zzXh9jL55JqC/Vtbp/qJ6kt/g1GOp16G+Bg7LB6bG1r+b641
-         2GZAocJ0Y9aAfXmNH7ZbdSlkaY3855X9zXdD9dkM95xNJUS9OJ0kOfTN+fQ/pIQRx9sx
-         UeR9ve3br8pXzxG5ySPUb1OPrdiaO3ghhmi6NZfYRnFFgvD4Pi0E0XzWFozMQQbypHnK
-         0gPBMHcY8gVSfhZZYOScFt4tOJz4MKXSPhlAeobvvXhPaauJ7QzUiKey4bQvJhfYcTAm
-         mK8g==
+        bh=zKp2kw3Tfj/wI+7DBmKCMChAalHVoRdliS5fwx1zm9s=;
+        b=MTQhtqJO+fB23BeKxPChePBiul2OLD2R3e4r3/DBj5FLkEAuL0XSceSwP5w5vMbnmZ
+         l042076U99GkRQvHqrdAzbVDwCW4eeypNzpcLQdRO1KUT1CBsk/MB0MXNkPJuViMaDgh
+         1dDSkmBJLlA+wMSkgc2OpI21yLucA+ywwLmE/B4fj9AKSCShFPkwrCY6j4IS/f6hrzvh
+         LHNxt1GryrhatGCYhA2KFuZJAeJ50Yas5ibGAHfG/tMWPAlvGKKMde7gORw+L7RR1o9q
+         8lIZjeMw75nk7FSwmxnzCwhNG6pIiaIDRurrsPBd9G2WJTuf2T/CWP2V/QeJEKWVHjc5
+         1ZuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760066297; x=1760671097;
+        d=1e100.net; s=20230601; t=1760069260; x=1760674060;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Pa2OhCNI6n3Mf2P8BAMZLHp7akXwtALOTxVawJZtfK8=;
-        b=nfb6WwznFi6PDBvgUT6wW6DssG6tNRw9a4pW2lpCl45qv5P6S97Wdvn+MA0e/xh3ni
-         52dRxVRGSq8hONtGM+B6qBOyn3X5Qf04WeGRPK/SH0rPv81JXta1P7yVBXeRI7MvZR5S
-         8/8hc5qdnRyViPvP7RdKjUIw5HqXNNlk4eAEn0JIjGfJe4rRMLuU4kuzZYwoooH8/Fyd
-         sliQDoh8A0p2zzGeZtUh7z65Ikt86n91WlUonTKtlsOnhU3fUMkNSn2EpaKwfufUitlQ
-         dxtbgFE6+Lnp4C7EWhNCRe1sSkGAajfJ5WqkpIFCag2hRLIK2wNzwbOkjPIpX80AFBNN
-         JkKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7Omdgxvgn+k0kUEOHpvVDlPc2G743896pCg8GDG0UYzqn6eJH9V1F2kr1ow3isz/P9KsdTCaaOVLZLzc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2G2UiC0bK0HgodlbEoqfQgIEcH+uvUWdpucnWGBFM3xajupoP
-	Lb4TtQXSqx2m/WBU2uy6G+iLO5ewgEGHbEnessmNCd39Bb1orXc2TgXbo4F54AWtfIxBjkU+Tw2
-	HW3+W/kui7paMDpso4pHDkDTE7ZT667w=
-X-Gm-Gg: ASbGnctALAf//SKOTpmgTjCAd/qtS3Bu7rOuxnQLPFLEnluxwHLouC+hhItJcA1FlGg
-	nzaKh3xagrbT3n5ZmySmhSpxAkGpFbZ5qSEe2G0jK4Zb+zyxnEgYG6wtUofuILVUxeja3bim06h
-	VJN5SdWMHmNCslLZMLlRWpmS1yTNW0ZLweA+PKjL77WDDU9eOBuxnjUaiPn+L7BJfUAAlbADkkS
-	o05uKxEGpVa9XJrSTvXWQCxCg==
-X-Google-Smtp-Source: AGHT+IFTQdXvlZxDoBIwCyChBgf2ijvKjPOXu3xyloDy3VewP6H31eXx2tdJ5Y2sZs04pWqa6kN09Zh4TAMeP3pYKTk=
-X-Received: by 2002:a05:690e:1587:10b0:63c:e90c:a6d8 with SMTP id
- 956f58d0204a3-63ce90cac96mr2654086d50.44.1760066297220; Thu, 09 Oct 2025
- 20:18:17 -0700 (PDT)
+        bh=zKp2kw3Tfj/wI+7DBmKCMChAalHVoRdliS5fwx1zm9s=;
+        b=xJ0BwDsZ+Z1Ckth4DGK2mraPWsklwK1qD8RWQfPfbHlzFIyCDYzBoLy/QDatc9bPc2
+         YHv5riSTiCZc1iKsT06Thg6KYjPyc81NdpU+gTr9wYSH25QeFOnRuToSReA0pC41xG7u
+         yX9ahE4pBpwrceB+U+BPozZWNK56tECR66MJhR5OJg/eL1v/+kwCw2XOjIy+PCPcQEeN
+         LQGNuuOZFyC4GmvdwRyJFTrM92NPvCeiNZMwQRmdrIwDHdsGfdzHjSaEsfcg+HR/BKom
+         CPd0dMIR5R10ULOVD4oXUBp6qL8TnDYwAX+vRshwrC6nZbmrPicpfA3lyYcqIyBUDzx2
+         pHWg==
+X-Forwarded-Encrypted: i=1; AJvYcCWFqLQv5F9+BldpO3bovIzkYe5dMho8ynk3afIVTABHSq804IfmgQj1VKuh74cQziUHUQNcEfWsUwiljDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrpQ5wQOrejinhXGZcOtqQXgLGy3Q5X/py0ejj/dM9UIAoUdNM
+	8M6JS145alvqCxvuGyziioFa3u9rO4o6JZseUdMrZ3jESm/c+UMfmQ2FN/fIx51/qC5Y+D+pX9R
+	wxiSd9thT+t88oEvV0o9juCT8GHLfiYU=
+X-Gm-Gg: ASbGncvOLjrikXPV8ZJqk+cqbrIRW+RfKtLr0LlqNRJ2PM/0Az5enmvRu0srNZSp/hj
+	ckqnYWlSRQpUjDz/o8RE0jHt8sAAM1zo53IP0FGOuH3p7by00fxXOaQ5DtZUnCjcx1b0XE/j6Y2
+	fIOSXbzPP+9PBNUFxsHq9ctrsgDKoPI656dx+wfcZj/pVMTTKv99ffkmvrvl04PzXrwL54+qEHC
+	LwRVV6+0NqNcerXXYM58i8g3A==
+X-Google-Smtp-Source: AGHT+IFQERg8mTh7nax6OaWavJ8DgllCOHm5p0zLQR54uFFNlwqM0wGCA+Q/Rj/bdvDMe/rRbnhyAA7hAcefbtq0UHo=
+X-Received: by 2002:a53:ca49:0:b0:633:a883:3d1b with SMTP id
+ 956f58d0204a3-63ccb87491emr6995599d50.6.1760069259733; Thu, 09 Oct 2025
+ 21:07:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250913003842.41944-1-safinaskar@gmail.com> <20250913003842.41944-3-safinaskar@gmail.com>
- <053f39a9-06dc-4fbd-ad1b-325f9d3f3f66@csgroup.eu>
-In-Reply-To: <053f39a9-06dc-4fbd-ad1b-325f9d3f3f66@csgroup.eu>
+References: <20250913003842.41944-1-safinaskar@gmail.com> <20250913003842.41944-29-safinaskar@gmail.com>
+ <20250916030903.GA3598798-robh@kernel.org>
+In-Reply-To: <20250916030903.GA3598798-robh@kernel.org>
 From: Askar Safin <safinaskar@gmail.com>
-Date: Fri, 10 Oct 2025 06:17:41 +0300
-X-Gm-Features: AS18NWCm5nh3vfq5EIpD-J_OKHQvi_8uVbgLjcXTz6TnQl9pdn9vqNDRLNkppRk
-Message-ID: <CAPnZJGC9avy1s=xFS5Tg6obS+RB3zw4yWsUBw9g=Vt09S6j88w@mail.gmail.com>
-Subject: Re: [PATCH RESEND 02/62] init: remove deprecated "prompt_ramdisk"
- command line parameter, which does nothing
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Date: Fri, 10 Oct 2025 07:07:02 +0300
+X-Gm-Features: AS18NWBct1j-7S8OHD6pljCYd2aEZxR7vcCRPjZz3T1pRcQcUgdDoCBWxEfbyM8
+Message-ID: <CAPnZJGAvQirGTJTiTxumn8sAJ5KYDv8+MUTBmEW2fYX+r2RE3Q@mail.gmail.com>
+Subject: Re: [PATCH RESEND 28/62] init: alpha, arc, arm, arm64, csky, m68k,
+ microblaze, mips, nios2, openrisc, parisc, powerpc, s390, sh, sparc, um, x86,
+ xtensa: rename initrd_{start,end} to virt_external_initramfs_{start,end}
+To: Rob Herring <robh@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Linus Torvalds <torvalds@linux-foundation.org>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
@@ -113,14 +114,12 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 15, 2025 at 2:16=E2=80=AFPM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> Squash patch 1 and patch 2 together and say this is cleanup of two
-> options deprecated by commit c8376994c86c ("initrd: remove support for
-> multiple floppies") with the documentation by commit 6b99e6e6aa62
-> ("Documentation/admin-guide: blockdev/ramdisk: remove use of "rdev"")
+On Tue, Sep 16, 2025 at 6:09=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
+:
+> There's not really any point in listing every arch in the subject.
 
-Will do in v2.
+Ok, I will fix this.
+
 
 --=20
 Askar Safin
