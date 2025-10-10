@@ -1,91 +1,89 @@
-Return-Path: <linux-parisc+bounces-4202-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4203-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57502BC8BF9
-	for <lists+linux-parisc@lfdr.de>; Thu, 09 Oct 2025 13:20:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 840DDBCB72D
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Oct 2025 04:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5D4064F9E0E
-	for <lists+linux-parisc@lfdr.de>; Thu,  9 Oct 2025 11:19:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99BA31A6422E
+	for <lists+linux-parisc@lfdr.de>; Fri, 10 Oct 2025 02:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943262E092E;
-	Thu,  9 Oct 2025 11:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB48525228B;
+	Fri, 10 Oct 2025 02:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jNoiJ37l"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="elQ/QoLE"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com [74.125.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EC52DF6FA
-	for <linux-parisc@vger.kernel.org>; Thu,  9 Oct 2025 11:19:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10BD23D7D2
+	for <linux-parisc@vger.kernel.org>; Fri, 10 Oct 2025 02:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760008783; cv=none; b=SB1OhwhxzXPYRuONssnaVnvaNcf91RC3+jCcpsxDCoVE123vWuThZ252zDqbv27boG8MVhtyq6dfn9QZ2xNcAwZJnfT3eXjqWNAqrGDKfYPR3KXaRjM/XM9tJrRS773AoCrIuuu2nVerOmdMI6w3JtpGXgJSa1AJ9Y/5Oq1Nu3U=
+	t=1760064527; cv=none; b=QVuZkYshaXHHvpInL97NGenD/+xmYntkqePTSkx2/zKSrfC1U4G9cTE0qsfsEgj346ItGH9WdJxmhHPGl6/hCPfu7acOlsaFWOIKTD41hXS+IH0SyYHciUJ5fw0RWhTAPTQ8u+HpBiSmqgHwxfCxXrQqDS5Avhj/6Wkkhl+SDro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760008783; c=relaxed/simple;
-	bh=mzeWOdj3lBj+Ke0QviDFWI2aF1kcLsskxWN0A79AnHU=;
+	s=arc-20240116; t=1760064527; c=relaxed/simple;
+	bh=SUvjTYrAKggs3w1tKlxCJydt04WX0hyij5ZVnNtO2rY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tKlocSxO9O6ESL9ru4p2EL2BsQLu2IgRhCW6g4xKZAlnKCVpJr1S/NzcmbijVR+Y1ENBqi6nLOjwAVBTAYN+m93NG6Q12Etm2R1rycwihGJcz/dAw08esuVcaweCM+gIEtm6Fic71Djk4FmYUBQRhMxCIkFgUK4uupHzuw88QI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jNoiJ37l; arc=none smtp.client-ip=209.85.128.174
+	 To:Cc:Content-Type; b=B1NdutBP80nBv+hXo/214Q8J4H2MAn8R7/4NECrTsHfMnixHaYtzn7TBfcRPatf1oH1nMVevoWJReuS7plBWgkYVm/0Pv/VcdS5VkMToXafCrxP243/luBayTfox51C94Bn1dQ8lciI7TlRLqDNbLwhi82mQTVyFZXSia/jMuo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=elQ/QoLE; arc=none smtp.client-ip=74.125.224.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-72ce9790ab3so8427587b3.1
-        for <linux-parisc@vger.kernel.org>; Thu, 09 Oct 2025 04:19:40 -0700 (PDT)
+Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-63bcdf5f241so2420732d50.0
+        for <linux-parisc@vger.kernel.org>; Thu, 09 Oct 2025 19:48:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760008779; x=1760613579; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1760064523; x=1760669323; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mzeWOdj3lBj+Ke0QviDFWI2aF1kcLsskxWN0A79AnHU=;
-        b=jNoiJ37lCUQ9Hrm2hMpur0n3OpmXylsTAvQFzFo0gEHLdPW1H7xLOEfZx9IMP3xJGG
-         VvaFojxgSsr0dFIBvT0p9gx6C2qVKiKNUQeCfRio9yhV6GZjq9rpyyrteqxqW9Ew3dBm
-         wtvaqMjirKwpcBo4MgJpiCLn7sWEkQpEyqFiwGTjc5zHrlT4QCRizWiXWVk6zMf3FYYn
-         bzUTIQSKLADIffCIHWelPhf43EqQYtzVSfMGzuGbrzIwj9QJsP6FN+oluyC+bzTKhDgF
-         5nZ3Uo6yeEy5h0e9DLaazODqWGp9Q080LEkzOtn2P2FcQKQiw+6Kon0LQ4PFBZDDcg2+
-         Grtw==
+        bh=SUvjTYrAKggs3w1tKlxCJydt04WX0hyij5ZVnNtO2rY=;
+        b=elQ/QoLEl07oguGQwVeaLuPvx9pg+ZF3HObzItQAr16R2PwjJJ/BJhHlsBagHWRo1E
+         q4f4I5TainPicRHfP4mxi/QA8fweTGrjQlrXERSkdlr6KgU4ZilfiRp9i5MkNzxdmJFE
+         GqtJBFbDrYJM4r8+ph0NGbgZ2YQn4dQX2PL+zpJpSkH6dn2eia2X9CYfK8q38r3RGNos
+         FYWwKOjsxbNPoX+OU5D0/LZM5lIAyQ56jv8iMtnZPsc8rn7rN4UBS2EkrASRagSQ6iHh
+         M0HiA7o+kBUytakpqhUfCayQ9hhTHxglANqJie8IdxhcFjjr6XDM3XOMyO0pRXWHPZL7
+         uJTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760008779; x=1760613579;
+        d=1e100.net; s=20230601; t=1760064523; x=1760669323;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mzeWOdj3lBj+Ke0QviDFWI2aF1kcLsskxWN0A79AnHU=;
-        b=g6E1wwl3X6PILB1yKeKT9HQACgrZuHj4CXnLsOzw1wwcDxWz8Gk6X6TA8uC3xLBkl3
-         s4WSA4JiNnnw8UppdiFt5RVjGJQOZYu+qqQ1vuJuKwqqDksCX04U/+2Apy3MA4cxNMyU
-         Rj4RirUJdMCaUhMR+l+xt350ANu3Ok3mrqZ29SjQfE/J+aMRyVkJaY9/EihYKYUtZBn4
-         E4nXGooI1doDZ9mRA19PT5568C1t+sPBE8PN9ATDZtnS4/DS1mN5W4lreDvVTrra1iBX
-         5O6cVAQEIxVTMufNT/Q0C8bivTKrYUWKHEmUaJ3DyRwmYke9EYmk7muEBdCWP602yFQX
-         y43g==
-X-Forwarded-Encrypted: i=1; AJvYcCUn1a1RdQO5xRQN3DGEQbnmCOKb6NAQdlgFvSWBJNOYzlRfCy4kZnOjJaJhF/w3Rn1yYbudfSerabKdKXs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxh0Ty5ck8HfsqlvjX8wGDa7xmWcBTpVVxkBqx3uT/voOCwYd8S
-	EpnUaSRkQVP3pOT4dZKx6WdXk4loCtcE4OxzaKEL0TsU1sP7e7rjDlU5X3D9YysJSJV4GOWMXre
-	iyg/EWBK95KCRkWM1tCuAF8QD0P7/1a4=
-X-Gm-Gg: ASbGncszhGjDCEXKo8lnL2rp+l1pWnZW39cZH6RYlE8xXQNmm1CjSz/nuecCVvCu1bq
-	4Jvm5ruy4CxgGflNokbyTzMcSEOmNeSuwcULw49fzY5WPJiFJgh2LlDoPGqnRZRMKLIW8Atj4Fn
-	8nprUjWkMtdUj+DhH5G2cOeRqDoqIgmqWLF1ATxz9FPuKdBITSZDl8zNgbUU1x1fLHhsc2AZEVg
-	mfGnU+ulZ+z4BOUNB5+9GWu/JWHeH4=
-X-Google-Smtp-Source: AGHT+IE5U7JyGi1AmeLjDi25hUOta+sU2hpJbVTN9Ai63ARDyOdLqRjdCN3h5Wr4u+tqZlHZJ+/pg/7Xr5jCWFq4BIc=
-X-Received: by 2002:a53:d048:0:10b0:63b:8e80:c017 with SMTP id
- 956f58d0204a3-63ccb672a0emr6807745d50.0.1760008779377; Thu, 09 Oct 2025
- 04:19:39 -0700 (PDT)
+        bh=SUvjTYrAKggs3w1tKlxCJydt04WX0hyij5ZVnNtO2rY=;
+        b=tGw6gehwdyTWtGXvFrICq6Fm8eUcLkK5bXnAZgx2GEFjGfR2V1YPyguxmfx04wmvB/
+         KgMBRJ9IcAyLbHdFOumzB7CLj7idK2BByOwsLKBpIQdF4AC2FZ4nc61wHzObJah14nWZ
+         HybCD6b6wb4qtTMDjcwiUcIGoLlN2U9k00aYI2DWWHakXnACcNx5syIEWlE5qKIRGyXR
+         /kiL4TMoY4nmpHypdsVTYZytkueoiAtO5sytZZx15j0ZBsqTPE8wr9nDoYpTpEevwkGW
+         rIzcdEJLhm9Jh9Cb/puOnPkorxl/A/NBOC6DohnKFNPa9me/ncJJl7RBQKzani7ychC7
+         C18w==
+X-Forwarded-Encrypted: i=1; AJvYcCW9tiIC1UasOG/BqUU+om9YUDqIudrOg5DOAeOSWBgQi0opt4E9p2STdMDZ1N1E5t5BqTMDNZIPghIU098=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzggKYO1LlTHbIXYqsH0uiRySJEzQH19P8hlzwf41L0Bf5plJL/
+	6dMbfKbN9DTTFICFwOnlcBTD6ljmMwNxNTGFFeQfXonlylxl/WPOSUES1io3TiwoMQdRVIy6kuu
+	uUjjGxk9M+DgeXKHNAjMyGhg68E/GCdc=
+X-Gm-Gg: ASbGnctk1/ZVr4iSbpB0JVWQcrx6fQu/45hrY1PcKfTggy6eEjr29P7htZFR20yKKxA
+	ggiP4PamhRpzv2TRwkQJCTMMS9MoLeheJDI/EURTSa1xBu7YMlZlTXD3E0cuQdx12gKnS6t9BmW
+	vWmWYFj36rYjZDYCddJTfa5GsLi93/6x9lS07ssabdS/CB9tIFen42L7ZdF7e4tBF/4U4TPc9F6
+	A6Nna3PIuRC+uVRL9i2lssmDP4d2dfXU27fcwkyMA==
+X-Google-Smtp-Source: AGHT+IE/ruZR0Nl+gZjd7KSfaZ+4Yt5azf8Eoz6teA2EZ5XcCIQ6BBXF8AxOCZshaSTrV+l7WDzDAJYCcqNIJ+IMELc=
+X-Received: by 2002:a53:cd0e:0:b0:635:4ed0:571e with SMTP id
+ 956f58d0204a3-63ccc4fd4b5mr7697871d50.22.1760064522649; Thu, 09 Oct 2025
+ 19:48:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250913003842.41944-1-safinaskar@gmail.com> <20250913003842.41944-29-safinaskar@gmail.com>
- <20250913054837.GAaMUFtd4YlaPqL2Ov@fat_crate.local> <20250913055851.GBaMUIGyF8VhpUsOZg@fat_crate.local>
-In-Reply-To: <20250913055851.GBaMUIGyF8VhpUsOZg@fat_crate.local>
+References: <20250913003842.41944-1-safinaskar@gmail.com> <20250913003842.41944-22-safinaskar@gmail.com>
+ <a079375f-38c2-4f38-b2be-57737084fde8@kernel.org>
+In-Reply-To: <a079375f-38c2-4f38-b2be-57737084fde8@kernel.org>
 From: Askar Safin <safinaskar@gmail.com>
-Date: Thu, 9 Oct 2025 14:19:03 +0300
-X-Gm-Features: AS18NWAGN6ExXhEWeXK-ERFvGpf6JdjWShiWpIPYOnPjMCR9bXVHwIY8E_1WxIc
-Message-ID: <CAPnZJGBwFqNAybORpTtRfjtGwMQiBtd+rATD=mh8ZgE3owT_ow@mail.gmail.com>
-Subject: Re: [PATCH RESEND 28/62] init: alpha, arc, arm, arm64, csky, m68k,
- microblaze, mips, nios2, openrisc, parisc, powerpc, s390, sh, sparc, um, x86,
- xtensa: rename initrd_{start,end} to virt_external_initramfs_{start,end}
-To: Borislav Petkov <bp@alien8.de>
+Date: Fri, 10 Oct 2025 05:48:06 +0300
+X-Gm-Features: AS18NWC-iakvkxLfUlO1LRxakg0fg4KV7Trw_hsIF2wxGpnmpWZvHTCQ7Z3GaoE
+Message-ID: <CAPnZJGDK08eDWaMTmvVQwkAAThUvgB0XgAapqqV4_ZmWeay-iw@mail.gmail.com>
+Subject: Re: [PATCH RESEND 21/62] init: remove all mentions of root=/dev/ram*
+To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Linus Torvalds <torvalds@linux-foundation.org>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christian Brauner <brauner@kernel.org>, 
@@ -94,8 +92,9 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Aleksa Sarai <cyphar@cyphar.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
 	Julian Stecklina <julian.stecklina@cyberus-technology.de>, 
 	Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
-	Rob Landley <rob@landley.net>, Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>, 
+	Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>, 
+	Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org, 
 	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
 	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
 	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
@@ -113,19 +112,14 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 13, 2025 at 9:00=E2=80=AFAM Borislav Petkov <bp@alien8.de> wrot=
-e:
-> Ooh, now I see it - you have virtual and physical initramfs address thing=
-s. We
-> usually call those "va" and "pa". So
->
-> initramfs_{va,pa}_{start,end}
+On Sun, Sep 14, 2025 at 1:06=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+> Please wrap commit message according to Linux coding style / submission
+I will do this for v2
 
-Okay, I will call external_initramfs_{va,pa}_{start,end}
-(after I will remove initrd, which will happen after a year)
+> To me your patchset is way too big bomb, too difficult to review. You
+v2 will be small.
 
-"external" means "bootloader-supplied" as opposed to builtin initramfs.
-
---=20
+--
 Askar Safin
 
