@@ -1,79 +1,87 @@
-Return-Path: <linux-parisc+bounces-4209-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4210-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6667BCE375
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Oct 2025 20:25:43 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D357BD137F
+	for <lists+linux-parisc@lfdr.de>; Mon, 13 Oct 2025 04:30:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 923263A6EFB
-	for <lists+linux-parisc@lfdr.de>; Fri, 10 Oct 2025 18:25:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 311C54E3C82
+	for <lists+linux-parisc@lfdr.de>; Mon, 13 Oct 2025 02:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DF92FCC16;
-	Fri, 10 Oct 2025 18:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9621354723;
+	Mon, 13 Oct 2025 02:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmfrHg51"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="bMKyizjj"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDB12FCC04;
-	Fri, 10 Oct 2025 18:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A96434BA2C;
+	Mon, 13 Oct 2025 02:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760120720; cv=none; b=eAVW8DWFFv74EsW2vbJwZrYC4MaWCFuknljPtIDD6dzZQL223OFVAv/XiCoVIGHHRr2lxhRO3DRWtIv3TFlGYNqpP3dnLBtMXTeGyA20YShqkeesEsz3NapGzqkmb/alPKMxm7yLkFaNWmhe/rNinhgVHGyOHfsqFuBe2hgjveM=
+	t=1760322633; cv=none; b=eBvpuGLXdN/QHOuGQsZQENZkmjZ+H+tCA+JB1Nsn7Lj9+omSG54KE222taLoj8m2gwF4B/5Tr3+yAVExCLs4iI1mJHTzQf9DyJ3LSgFDRTcUCukpvRfAyMTeScWsvRIS37EqX/fnycBQxQx9FT9Dq/C5yZrXqiLWsNet1M4yNUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760120720; c=relaxed/simple;
-	bh=TMmYpgnVBIJyMr0u8jVMZds43sE0Ws+ESMdMLTOxg8w=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=dS1jXTYVRHGcniX6db6bnaIv55Zcc3jKL4do7uiHud/pqIy3Fw8msFRpMoFtrQEiBaONJBAfdGGZfb6U8+q3gLgX7XmX0lnrNt87bvEdIM5Qks9ksLEyVTKBWtqlw+psEi7azhXR3uWJRScuitT6ha2r0KtDHPSt8SZSA0fWcjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmfrHg51; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41A4C4CEF1;
-	Fri, 10 Oct 2025 18:25:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760120720;
-	bh=TMmYpgnVBIJyMr0u8jVMZds43sE0Ws+ESMdMLTOxg8w=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=fmfrHg51vTlHG1fIFe7oYPETjer5Wz8lXsx40ogUg2r2XytUwy91lFxeEUuYszVUt
-	 q+6hHUWVsgPCcbXlhsd/lAVrHvSYytNlfnDDF64Ob8yb6or2dX9vwTM8QHCkjzeeEI
-	 LIqiiUxjcekQbF0DLIse3gkfCw9+1SFfh/Gpag36UrOSAWN0bne851o6porYtNF+XQ
-	 iEnCficV+XX9zBC/XPb2jer+i9ktrWVnUpsLSI3cbi7IBD+GXADn9pp1l2ZJ0rKvG+
-	 2L1tNYhzq4rnuDkpLDhEEUSFniV79YW3yXbZtXdMp61suREIpYqZbowAjymdZa6dnW
-	 q1JtU+1FcXF9w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE2733809A00;
-	Fri, 10 Oct 2025 18:25:08 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture fixes and updates for v6.18-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <aOkEOBbCvAdGdF5c@p100>
-References: <aOkEOBbCvAdGdF5c@p100>
-X-PR-Tracked-List-Id: <linux-parisc.vger.kernel.org>
-X-PR-Tracked-Message-Id: <aOkEOBbCvAdGdF5c@p100>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.18-rc1
-X-PR-Tracked-Commit-Id: f4edb5c52c93b1bc676064472fb517566a3e2129
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 8cc8ea228c4199482cf087fc6ed2d6e31b7a49e2
-Message-Id: <176012070729.1074429.16299569342844065275.pr-tracker-bot@kernel.org>
-Date: Fri, 10 Oct 2025 18:25:07 +0000
-To: Helge Deller <deller@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, John David Anglin <dave.anglin@bell.net>
+	s=arc-20240116; t=1760322633; c=relaxed/simple;
+	bh=Rz5IUeO7Od3+7XpyVOyEco2NiGqY62grdl9fusAzTjU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iQnd1gfslfm1pEI4BY62w9tFBC+CnqeoXF9iddFoMGL3OvzdpzQa4Gq2zC2Wf9JeoSTHVtellOFpd8pQuh2fepSWBKpOE6xF1XzKfXeiCtKE1qLGqfA6+XL8rk85/YVKyplJ4z++KYjZMp3mz4sawJF7UwWIryXxgDxWRgZiJ8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=bMKyizjj; arc=none smtp.client-ip=115.124.30.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1760322621; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=bTrSg4+Ju1yQWCUjI2YUcMdAQWZaOX/XJAOM2fwegqo=;
+	b=bMKyizjjoSS8rbfzlxFbvdoiEXajUteP+DehpNjsITkt20qiWuHTrDiR4TJQwte7IJ30tZ+IAIZx1mD9n8M9nDr8SU56M3i5o8dhfr6JgIkrZ7FGBq7bwrcRDxBH9iP5FHjE76zsTyidGSQluEA3DF5UouUqwXIPVP4ieoLaaNg=
+Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0Wpzwl4K_1760322612 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 13 Oct 2025 10:30:21 +0800
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To: James.Bottomley@HansenPartnership.com
+Cc: deller@gmx.de,
+	linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH -next] parisc: remove unneeded semicolon
+Date: Mon, 13 Oct 2025 10:30:11 +0800
+Message-ID: <20251013023011.955200-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Fri, 10 Oct 2025 15:03:52 +0200:
+No functional modification involved.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.18-rc1
+./arch/parisc/kernel/perf_regs.c:30:2-3: Unneeded semicolon.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/8cc8ea228c4199482cf087fc6ed2d6e31b7a49e2
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=26159
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+---
+ arch/parisc/kernel/perf_regs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you!
-
+diff --git a/arch/parisc/kernel/perf_regs.c b/arch/parisc/kernel/perf_regs.c
+index 68458e2f6197..10a1a5f06a18 100644
+--- a/arch/parisc/kernel/perf_regs.c
++++ b/arch/parisc/kernel/perf_regs.c
+@@ -27,7 +27,7 @@ u64 perf_reg_value(struct pt_regs *regs, int idx)
+ 		return regs->ior;
+ 	case PERF_REG_PARISC_IPSW:	/* CR22 */
+ 		return regs->ipsw;
+-	};
++	}
+ 	WARN_ON_ONCE((u32)idx >= PERF_REG_PARISC_MAX);
+ 	return 0;
+ }
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.43.5
+
 
