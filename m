@@ -1,87 +1,154 @@
-Return-Path: <linux-parisc+bounces-4210-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4211-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D357BD137F
-	for <lists+linux-parisc@lfdr.de>; Mon, 13 Oct 2025 04:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBBA0BDDA0D
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Oct 2025 11:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 311C54E3C82
-	for <lists+linux-parisc@lfdr.de>; Mon, 13 Oct 2025 02:30:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D21724E9CE4
+	for <lists+linux-parisc@lfdr.de>; Wed, 15 Oct 2025 09:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9621354723;
-	Mon, 13 Oct 2025 02:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784FC30BB83;
+	Wed, 15 Oct 2025 09:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="bMKyizjj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T/fn/Q7E"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A96434BA2C;
-	Mon, 13 Oct 2025 02:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D6B298991;
+	Wed, 15 Oct 2025 09:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760322633; cv=none; b=eBvpuGLXdN/QHOuGQsZQENZkmjZ+H+tCA+JB1Nsn7Lj9+omSG54KE222taLoj8m2gwF4B/5Tr3+yAVExCLs4iI1mJHTzQf9DyJ3LSgFDRTcUCukpvRfAyMTeScWsvRIS37EqX/fnycBQxQx9FT9Dq/C5yZrXqiLWsNet1M4yNUg=
+	t=1760519589; cv=none; b=HanzYuve6EgCSNIsvyhGO3QT2csxkcB5xNYy9bGwQGElpHlR+MjWjxalrne5SLbWsmi5EJ0nccBiibG9P4B8+La3Z6F+t+j2WW1J11XhFISTMxGxvzx8q17jd2AiF0cuR0/gT793vkn9BnuArsOAf1lHZ4omIA63k4WVezeFVNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760322633; c=relaxed/simple;
-	bh=Rz5IUeO7Od3+7XpyVOyEco2NiGqY62grdl9fusAzTjU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iQnd1gfslfm1pEI4BY62w9tFBC+CnqeoXF9iddFoMGL3OvzdpzQa4Gq2zC2Wf9JeoSTHVtellOFpd8pQuh2fepSWBKpOE6xF1XzKfXeiCtKE1qLGqfA6+XL8rk85/YVKyplJ4z++KYjZMp3mz4sawJF7UwWIryXxgDxWRgZiJ8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=bMKyizjj; arc=none smtp.client-ip=115.124.30.118
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1760322621; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=bTrSg4+Ju1yQWCUjI2YUcMdAQWZaOX/XJAOM2fwegqo=;
-	b=bMKyizjjoSS8rbfzlxFbvdoiEXajUteP+DehpNjsITkt20qiWuHTrDiR4TJQwte7IJ30tZ+IAIZx1mD9n8M9nDr8SU56M3i5o8dhfr6JgIkrZ7FGBq7bwrcRDxBH9iP5FHjE76zsTyidGSQluEA3DF5UouUqwXIPVP4ieoLaaNg=
-Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0Wpzwl4K_1760322612 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 13 Oct 2025 10:30:21 +0800
-From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-To: James.Bottomley@HansenPartnership.com
-Cc: deller@gmx.de,
-	linux-parisc@vger.kernel.org,
+	s=arc-20240116; t=1760519589; c=relaxed/simple;
+	bh=ywR7wdHo9iJDPAMnOLxx2KSfcpdMYgaVYoeQgeEMVE0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZHyCeU7uvFcnjiWkFUPfmd2Chjd5/pSDqcrgc0b8qlE5fwCUb367tTeM3CfTc780AfX7ruNQXkiMLkJhxJ/KpTRLE1HLOoJUTGT5wiaeKuyIscXcFkLzqlTHARHrIQVFw71tR1meoRWn9iTP+/S99Eo92qJDLNLZzO28EAUVDKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T/fn/Q7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5DDC4CEF8;
+	Wed, 15 Oct 2025 09:13:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760519588;
+	bh=ywR7wdHo9iJDPAMnOLxx2KSfcpdMYgaVYoeQgeEMVE0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=T/fn/Q7Et3W/XoUP2+BW/BncjyLdn9Q59dx4I+uKrVGVx83N3CoqpvJHFxWuqRsC+
+	 XdbXTMel6OirvBhxiFjPLifrL1qZ1WA1GV0CfnbnyJ0gLcqjgJlrUBUk085bytleC1
+	 Ps1/U8qadzNDPEXTFtbAw3rfhPCKp+JJvyNHVNWiVzxBuTqLX4e1h0uwpfnG6FXSGu
+	 ahv0t+DTPlJs6QFO33ojzLxd9DpyMUAoYg7u/ZEvqC360GdrnKWc4kvzqrKjjOzNyu
+	 sfpnfCdbcfzoWkUMqnORIpnF4VZ9xrYID8Bc3PCTstBRCa5sVe3z7x9f1ejmwsSTxY
+	 9ePteT4berpfg==
+From: Leon Romanovsky <leon@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Geoff Levand <geoff@infradead.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>
+Cc: iommu@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-	Abaci Robot <abaci@linux.alibaba.com>
-Subject: [PATCH -next] parisc: remove unneeded semicolon
-Date: Mon, 13 Oct 2025 10:30:11 +0800
-Message-ID: <20251013023011.955200-1-jiapeng.chong@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
+	linux-arm-kernel@lists.infradead.org,
+	xen-devel@lists.xenproject.org,
+	linux-alpha@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: [PATCH v5 00/14] Remove DMA map_page/map_resource and their unmap callbacks
+Date: Wed, 15 Oct 2025 12:12:46 +0300
+Message-ID: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20251015-remove-map-page-a28302e6cc7d
+X-Mailer: b4 0.15-dev
 Content-Transfer-Encoding: 8bit
 
-No functional modification involved.
+This series is a combination of previous two steps [1, 2] to reduce
+number of accesses to struct page in the code "below" DMA layer.
 
-./arch/parisc/kernel/perf_regs.c:30:2-3: Unneeded semicolon.
+In this series, the DMA .map_page/.map_resource/.unmap_page/.unmap_resource
+callbacks are converted to newly introduced .map_phys/.unmap_phys interfaces.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=26159
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Thanks
+
+[1] https://lore.kernel.org/all/cover.1758203802.git.leon@kernel.org
+[2] https://lore.kernel.org/all/cover.1759071169.git.leon@kernel.org
+
 ---
- arch/parisc/kernel/perf_regs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Leon Romanovsky (14):
+      dma-mapping: prepare dma_map_ops to conversion to physical address
+      dma-mapping: convert dummy ops to physical address mapping
+      ARM: dma-mapping: Reduce struct page exposure in arch_sync_dma*()
+      ARM: dma-mapping: Switch to physical address mapping callbacks
+      xen: swiotlb: Switch to physical address mapping callbacks
+      dma-mapping: remove unused mapping resource callbacks
+      alpha: Convert mapping routine to rely on physical address
+      MIPS/jazzdma: Provide physical address directly
+      parisc: Convert DMA map_page to map_phys interface
+      powerpc: Convert to physical address DMA mapping
+      sparc: Use physical address DMA mapping
+      x86: Use physical address for DMA mapping
+      xen: swiotlb: Convert mapping routine to rely on physical address
+      dma-mapping: remove unused map_page callback
 
-diff --git a/arch/parisc/kernel/perf_regs.c b/arch/parisc/kernel/perf_regs.c
-index 68458e2f6197..10a1a5f06a18 100644
---- a/arch/parisc/kernel/perf_regs.c
-+++ b/arch/parisc/kernel/perf_regs.c
-@@ -27,7 +27,7 @@ u64 perf_reg_value(struct pt_regs *regs, int idx)
- 		return regs->ior;
- 	case PERF_REG_PARISC_IPSW:	/* CR22 */
- 		return regs->ipsw;
--	};
-+	}
- 	WARN_ON_ONCE((u32)idx >= PERF_REG_PARISC_MAX);
- 	return 0;
- }
--- 
-2.43.5
+ arch/alpha/kernel/pci_iommu.c            |  48 ++++-----
+ arch/arm/mm/dma-mapping.c                | 180 +++++++++----------------------
+ arch/mips/jazz/jazzdma.c                 |  20 ++--
+ arch/powerpc/include/asm/iommu.h         |   8 +-
+ arch/powerpc/kernel/dma-iommu.c          |  22 ++--
+ arch/powerpc/kernel/iommu.c              |  14 +--
+ arch/powerpc/platforms/ps3/system-bus.c  |  33 +++---
+ arch/powerpc/platforms/pseries/ibmebus.c |  15 +--
+ arch/powerpc/platforms/pseries/vio.c     |  21 ++--
+ arch/sparc/kernel/iommu.c                |  30 ++++--
+ arch/sparc/kernel/pci_sun4v.c            |  31 +++---
+ arch/sparc/mm/io-unit.c                  |  38 +++----
+ arch/sparc/mm/iommu.c                    |  46 ++++----
+ arch/x86/kernel/amd_gart_64.c            |  19 ++--
+ drivers/parisc/ccio-dma.c                |  54 +++++-----
+ drivers/parisc/iommu-helpers.h           |  10 +-
+ drivers/parisc/sba_iommu.c               |  54 +++++-----
+ drivers/xen/grant-dma-ops.c              |  20 ++--
+ drivers/xen/swiotlb-xen.c                |  63 +++++------
+ include/linux/dma-map-ops.h              |  14 +--
+ kernel/dma/dummy.c                       |  13 ++-
+ kernel/dma/mapping.c                     |  26 +----
+ kernel/dma/ops_helpers.c                 |  12 ++-
+ 23 files changed, 361 insertions(+), 430 deletions(-)
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251015-remove-map-page-a28302e6cc7d
+
+Best regards,
+--  
+Leon Romanovsky <leon@kernel.org>
 
 
