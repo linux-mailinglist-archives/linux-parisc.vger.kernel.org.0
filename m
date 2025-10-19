@@ -1,142 +1,181 @@
-Return-Path: <linux-parisc+bounces-4236-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4237-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F04BEDF3E
-	for <lists+linux-parisc@lfdr.de>; Sun, 19 Oct 2025 08:50:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDACBEEACA
+	for <lists+linux-parisc@lfdr.de>; Sun, 19 Oct 2025 19:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD01189EEFD
-	for <lists+linux-parisc@lfdr.de>; Sun, 19 Oct 2025 06:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B988B3E278D
+	for <lists+linux-parisc@lfdr.de>; Sun, 19 Oct 2025 17:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624E52236E0;
-	Sun, 19 Oct 2025 06:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501C3212549;
+	Sun, 19 Oct 2025 17:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cl0KoSN2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ao5sBXJl"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2865178372;
-	Sun, 19 Oct 2025 06:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC54191F84
+	for <linux-parisc@vger.kernel.org>; Sun, 19 Oct 2025 17:24:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760856631; cv=none; b=K/78XNAKiDzDOooJcNp6Eu7AipUYBG1kPLI8N/p5Cza3u1FLaw2JLMT5Zo8BYIUgv2wrfJXIekPQJ4MKhqrHKYxeHu2n5PKjQi/v1gR9tQPp1p0HCXWMQh93jRWQwhafmjrxGk3HtW7t1K2WNNouBp355Vl+DkRC1mW8enY/ZJE=
+	t=1760894663; cv=none; b=a02ti7k9fjB7grUWNXd4xYUBYUXffS5N+3pV/baoNlc9KiPq3uqGuQhkH5/ZwYmYD3boLrzpDCrk3XWH7z4tVsUL0zlv/RxhkQjPgI+a/j3yyvK3ut8vOceDtIQBld0Lk0e455Ks/6Wri2m3ymyd0dqRWTzjXoUvLUWGXAxlWAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760856631; c=relaxed/simple;
-	bh=EdgpjTa5vPTpdpYEzLk3B3e9bf5d6qYFWAfS+EwNqnE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XiUeVLimD7Xq4wSNC3HT1XLtnTbynNPLVCwp5kXj5tnPfO2LiZS7Aq3Hwcs9tAOrM4NxzNwsFxaGc+bDR/nSuaoZCEWPzZS0KK5z/1IrC2OiPCslTQ4AtyUyXJrOlkgO0X0N3i/BwgXUfIqBbW8d97EvWjh0wtDx/lsiuCVDo6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cl0KoSN2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F25C4CEE7;
-	Sun, 19 Oct 2025 06:50:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760856630;
-	bh=EdgpjTa5vPTpdpYEzLk3B3e9bf5d6qYFWAfS+EwNqnE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Cl0KoSN24WldfEYSRSfu5lozmGJAVE9xioGE6C+PBBseYSuE/7hgf2KbKvxu1nAfq
-	 +AnxTaK9VaE7xdn62r2Zk9oFnNMs7lSpecdggsfr9Z5mfbyraggVUnrWZwla30ASHd
-	 TTQUKVBXbjDXmyKfOdXMojvKQKorenot/jpefXad8wpoUyJQ/gWBwcSUSTx6MlFUkq
-	 O4BqR0RMnSAfMnvUpkN7wKJhQIsaUmfqwAekVS20NwyN/940rzzKb69Mu6Ni7vQrxn
-	 4PzVEO7y+ixH5H5iambi/6vum/20jOqyGoZB3A2tTRPyBtt8DjbzWrov4g4xwvEbN2
-	 ljhF5KLlm27vA==
-Date: Sun, 19 Oct 2025 02:50:21 -0400
-From: Guo Ren <guoren@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-	x86@kernel.org, linux-alpha@vger.kernel.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, llvm@lists.linux.dev,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 03/17] csky: Add __attribute_const__ to ffs()-family
- implementations
-Message-ID: <aPSKLRnWUAVSGQjF@gmail.com>
-References: <20250804163910.work.929-kees@kernel.org>
- <20250804164417.1612371-3-kees@kernel.org>
+	s=arc-20240116; t=1760894663; c=relaxed/simple;
+	bh=GyxzHIIXxUVg82kV2A6JxNIkaYJb83owSDvq3N9KC9s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gHvffHN1hamRySXez44o2IItooLYNYSnBbpsc2AHIP4qd8io9hR1ZBMWeXT96G8hQdr3H5mtxYxgp0sHYK5hNAfT1MH9/KxmrEAT0yvmrcVMmlPBCdzH10OgD7w9wcIBSxxxlsZVZ3lQE41SyFXv6bv2hSjpAwXAQbwlSV7qmYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ao5sBXJl; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47109187c32so17081995e9.2
+        for <linux-parisc@vger.kernel.org>; Sun, 19 Oct 2025 10:24:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760894660; x=1761499460; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=evSatq99/j/IimCAo4hFusCnUZcKI8cGVVRGB4j0Cgg=;
+        b=ao5sBXJl1AJ/mXM3XlTPfEwircDb2foE8jUngelpuMpinqJoILE6tp10pfpT+CbE+z
+         lJJ6hsWM/ap96AM78jLRlDO3EkbF7EeHC8NY9rNP2+gOmKeyEIIGtZrQaTw/7NTWgmVZ
+         JloSEZqAouuZrT0+wWuD8jueU/fg5JaTDywL36GWR4vCYNkLRm107FxAyinKZ3SINecR
+         i49UoYcXdu9krPzjQAsw/MHZpIeMwfa+2shXMab2flzLU9V6mcwaPqUSiHy+wplpmhl0
+         HEZR82fIquXNCwk2MHO4nMGAjVMteGYmJmYCf64W22//2ZtpAruDkVgQ1+BRbHK8ceUv
+         CrDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760894660; x=1761499460;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=evSatq99/j/IimCAo4hFusCnUZcKI8cGVVRGB4j0Cgg=;
+        b=Il1Zb94uiGF0n8ktpIUKdGJf5uMh4zqjgBAg/CbPs1SXgjulRC9CT9Vxm5BbONvdbg
+         VaK514w1bgOn0p4zaZbc4DRBe1NL4MRqpSc5/73r/eJPHkX6nI35u28+BVK4wM6nZ+LX
+         Nyg6gwUwVq65sZQmusHb4WxkJ/pri1Yv7mi1Ix55R81IZ7z0dUmlCo27BWh0AT+Em/k0
+         xI9mefANS47Lyi6k5C2zLH2AP9dW+yIrkWMM3bsLQePnra2hMiNLV8NziEBFigkZOWnk
+         /ExK94Ja5TZbUyzdo105oeUSKvIdaiFFAV1lg/HroIYjnHMO3LjAMKum64+YpaTLsLi+
+         usWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV21c+9xPQnbqNaBmL6Y6YcalzO4c9E2R0xoB2efhkuCi9rOJWI+wFIWTPpuSIMY1fmf4tQr/b1jtsZeHw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyTNbB5ylXky/cZnSCqDrACzBMCyLbevPMqV9QHbrVgdCDWxm6
+	7nI+ZC6pp4h5AnAlbk/VNVCHI01wbNiWkSf01lIdGbUtNF4qCxRak0DQ
+X-Gm-Gg: ASbGncuOs3hTr1ic3hdeeA5q76AoxmGF2d5RYAnvWcnb1sAa9iIAVphOCMXuRqSBVpI
+	fw9EzfUr+3FLVOBitnrHY3UTW+Q9lCG10Paw8tIPThBkuDS1s6+DhjVRFeC6fjCd1siF8xjBbWN
+	qf9rvxsEJTJwVf2/GpRuoNTIwDP7UL0sXN7rDCrlZ+O5yoOjZowwQD569v0DW3yw4OUc6S0rZsU
+	4YZpUu6aG6UUqk8wnOFDRFbKTtxIL65rvXj8MTDXlT3H3jzs0oRFMGqg+ZfJrqCoJ5/Wk4kgKDd
+	qHJ0NCwr0+c2ptGWEjLy1td6PJ6dwNWftmGySf4uWwnLmvtbjJe52SFVoleYBYjgHqErpcFfw1f
+	Zl7q5JdRKTP7NrFLPqSssRaovpuqkEP5QfJz00+q5UyNNMoRBzIiMCJh14NyIfJMPCUI2QQnHxa
+	z9ET3YqAu1EoSuo8VBrAsZ5//bR1CsWLRKn7fIgLV3zazA7gTXFVBI
+X-Google-Smtp-Source: AGHT+IF+arsaQthKXRMuvg/hSWu3RAUPVcPTbK+bjkFJ6eNJ3JroXtudCR7D5D0v0mDKTLBg9wio0A==
+X-Received: by 2002:a05:600c:4743:b0:471:ff3:a877 with SMTP id 5b1f17b1804b1-47117907a30mr69597355e9.20.1760894659621;
+        Sun, 19 Oct 2025 10:24:19 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4715e4e268asm44333425e9.14.2025.10.19.10.24.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Oct 2025 10:24:19 -0700 (PDT)
+Date: Sun, 19 Oct 2025 18:24:18 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Ian Rogers <irogers@google.com>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge
+ Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner
+ <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Eric Biggers <ebiggers@google.com>, Al Viro
+ <viro@zeniv.linux.org.uk>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: Re: [PATCH v5 2/4] vdso: Switch get/put unaligned from packed
+ struct to memcpy
+Message-ID: <20251019182418.6434b416@pumpkin>
+In-Reply-To: <20251016205126.2882625-3-irogers@google.com>
+References: <20251016205126.2882625-1-irogers@google.com>
+	<20251016205126.2882625-3-irogers@google.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250804164417.1612371-3-kees@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 04, 2025 at 09:43:59AM -0700, Kees Cook wrote:
-> While tracking down a problem where constant expressions used by
-> BUILD_BUG_ON() suddenly stopped working[1], we found that an added static
-> initializer was convincing the compiler that it couldn't track the state
-> of the prior statically initialized value. Tracing this down found that
-> ffs() was used in the initializer macro, but since it wasn't marked with
-> __attribute__const__, the compiler had to assume the function might
-> change variable states as a side-effect (which is not true for ffs(),
-> which provides deterministic math results).
-> 
-> Add missing __attribute_const__ annotations to C-SKY's implementations of
-> ffs(), __ffs(), fls(), and __fls() functions. These are pure mathematical
-> functions that always return the same result for the same input with no
-> side effects, making them eligible for compiler optimization.
-LGTM.
+On Thu, 16 Oct 2025 13:51:24 -0700
+Ian Rogers <irogers@google.com> wrote:
 
-Acked-by: Guo Ren <guoren@kernel.org>
+> Type punning is necessary for get/put unaligned but the use of a
+> packed struct violates strict aliasing rules, requiring
+> -fno-strict-aliasing to be passed to the C compiler. Switch to using
+> memcpy so that -fno-strict-aliasing isn't necessary.
+
+Does the compiler always manage to optimise everything away?
+You really do need it to generate the code for a misaligned
+memory access.
+
+You might be better off removing the 'strict-aliasing' warning
+by 'laundering' the pointer through an integer type (probably long).
+
+	David
 
 > 
-> Build tested ARCH=csky defconfig with GCC csky-linux 15.1.0.
-> 
-> Link: https://github.com/KSPP/linux/issues/364 [1]
-> Signed-off-by: Kees Cook <kees@kernel.org>
+> Signed-off-by: Ian Rogers <irogers@google.com>
 > ---
->  arch/csky/include/asm/bitops.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  include/vdso/unaligned.h | 41 ++++++++++++++++++++++++++++++++++------
+>  1 file changed, 35 insertions(+), 6 deletions(-)
 > 
-> diff --git a/arch/csky/include/asm/bitops.h b/arch/csky/include/asm/bitops.h
-> index 72e1b2aa29a0..80d67eee6e86 100644
-> --- a/arch/csky/include/asm/bitops.h
-> +++ b/arch/csky/include/asm/bitops.h
-> @@ -9,7 +9,7 @@
->  /*
->   * asm-generic/bitops/ffs.h
->   */
-> -static inline int ffs(int x)
-> +static inline __attribute_const__ int ffs(int x)
->  {
->  	if (!x)
->  		return 0;
-> @@ -26,7 +26,7 @@ static inline int ffs(int x)
->  /*
->   * asm-generic/bitops/__ffs.h
->   */
-> -static __always_inline unsigned long __ffs(unsigned long x)
-> +static __always_inline __attribute_const__ unsigned long __ffs(unsigned long x)
->  {
->  	asm volatile (
->  		"brev %0\n"
-> @@ -39,7 +39,7 @@ static __always_inline unsigned long __ffs(unsigned long x)
->  /*
->   * asm-generic/bitops/fls.h
->   */
-> -static __always_inline int fls(unsigned int x)
-> +static __always_inline __attribute_const__ int fls(unsigned int x)
->  {
->  	asm volatile(
->  		"ff1 %0\n"
-> @@ -52,7 +52,7 @@ static __always_inline int fls(unsigned int x)
->  /*
->   * asm-generic/bitops/__fls.h
->   */
-> -static __always_inline unsigned long __fls(unsigned long x)
-> +static __always_inline __attribute_const__ unsigned long __fls(unsigned long x)
->  {
->  	return fls(x) - 1;
->  }
-> -- 
-> 2.34.1
-> 
-> 
+> diff --git a/include/vdso/unaligned.h b/include/vdso/unaligned.h
+> index ff0c06b6513e..9076483c9fbb 100644
+> --- a/include/vdso/unaligned.h
+> +++ b/include/vdso/unaligned.h
+> @@ -2,14 +2,43 @@
+>  #ifndef __VDSO_UNALIGNED_H
+>  #define __VDSO_UNALIGNED_H
+>  
+> -#define __get_unaligned_t(type, ptr) ({							\
+> -	const struct { type x; } __packed * __get_pptr = (typeof(__get_pptr))(ptr);	\
+> -	__get_pptr->x;									\
+> +#include <linux/compiler_types.h>
+> +
+> +/**
+> + * __get_unaligned_t - read an unaligned value from memory.
+> + * @type:	the type to load from the pointer.
+> + * @ptr:	the pointer to load from.
+> + *
+> + * Use memcpy to affect an unaligned type sized load avoiding undefined behavior
+> + * from approaches like type punning that require -fno-strict-aliasing in order
+> + * to be correct. As type may be const, use __unqual_scalar_typeof to map to a
+> + * non-const type - you can't memcpy into a const type. The
+> + * __get_unaligned_ctrl_type gives __unqual_scalar_typeof its required
+> + * expression rather than type, a pointer is used to avoid warnings about mixing
+> + * the use of 0 and NULL. The void* cast silences ubsan warnings.
+> + */
+> +#define __get_unaligned_t(type, ptr) ({					\
+> +	type *__get_unaligned_ctrl_type __always_unused = NULL;		\
+> +	__unqual_scalar_typeof(*__get_unaligned_ctrl_type) __get_unaligned_val; \
+> +	__builtin_memcpy(&__get_unaligned_val, (void *)(ptr),		\
+> +			 sizeof(__get_unaligned_val));			\
+> +	__get_unaligned_val;						\
+>  })
+>  
+> -#define __put_unaligned_t(type, val, ptr) do {						\
+> -	struct { type x; } __packed * __put_pptr = (typeof(__put_pptr))(ptr);		\
+> -	__put_pptr->x = (val);								\
+> +/**
+> + * __put_unaligned_t - write an unaligned value to memory.
+> + * @type:	the type of the value to store.
+> + * @val:	the value to store.
+> + * @ptr:	the pointer to store to.
+> + *
+> + * Use memcpy to affect an unaligned type sized store avoiding undefined
+> + * behavior from approaches like type punning that require -fno-strict-aliasing
+> + * in order to be correct. The void* cast silences ubsan warnings.
+> + */
+> +#define __put_unaligned_t(type, val, ptr) do {				\
+> +	type __put_unaligned_val = (val);				\
+> +	__builtin_memcpy((void *)(ptr), &__put_unaligned_val,		\
+> +			 sizeof(__put_unaligned_val));			\
+>  } while (0)
+>  
+>  #endif /* __VDSO_UNALIGNED_H */
+
 
