@@ -1,155 +1,114 @@
-Return-Path: <linux-parisc+bounces-4238-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4239-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0F7BEEC2F
-	for <lists+linux-parisc@lfdr.de>; Sun, 19 Oct 2025 22:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1022BBF26D7
+	for <lists+linux-parisc@lfdr.de>; Mon, 20 Oct 2025 18:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1366B3AD44C
-	for <lists+linux-parisc@lfdr.de>; Sun, 19 Oct 2025 20:20:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B68B3B7DC4
+	for <lists+linux-parisc@lfdr.de>; Mon, 20 Oct 2025 16:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D23D2E7F21;
-	Sun, 19 Oct 2025 20:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7212877CF;
+	Mon, 20 Oct 2025 16:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nJuXJq2v"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="KX6ZcktJ"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BEA1F0E32
-	for <linux-parisc@vger.kernel.org>; Sun, 19 Oct 2025 20:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81778287507;
+	Mon, 20 Oct 2025 16:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760905211; cv=none; b=diIyKiyuYYRH6QN7hrjWrY8eNBl6kjUqJsEvcKTXl9pNJbV/DQ48yUVoFp8zpe2F+CwNr2/RRzhuBTxwEUZPJc9yrJybic4UDOJO4ESEzx5azmIxWDsBNp2BhlwxPTh+ADzgWdB4IJRDEJ42n6vi7vnkpD93MAWVZy+N826H6Pw=
+	t=1760977661; cv=none; b=Vfo2Y1Fmfz7fOnvVg8rVrYrXoHpdZexXl0TwphoShEQWXdC17L7rpHlQEYG0KSGYXh9Tq1wNhB9AObCb8IfrjikzXHTCrNcKUEf5U/NF2PKzoBaXJ3HEwqUbxVvkK6X7fnaW1sgWc0TWMBjq3fTv8IxnSXYtOiF31upZ3UG0K/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760905211; c=relaxed/simple;
-	bh=2CxS4y+l0L27meZSjGJEaayPPI49yDmtzC0d6yfWETU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=kNcCjKMNlxT5LdtofVguL8qYcu+uNn+RgngfkXlKTfygFqUeh7Hm0TcMsgcZ80k6gC4l7Vhu2k4r6g/VIhmNQnU3LfiOcrRrMwydjAzF/kRbqlnO3b513q0zeSZIifypVrgrnE6veR5CK5csR74Qm1ZNLhSErkM7Iw9Gz/n4mcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nJuXJq2v; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-76e2ea933b7so3292610b3a.1
-        for <linux-parisc@vger.kernel.org>; Sun, 19 Oct 2025 13:20:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1760905207; x=1761510007; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=g4HxyRRBlNg3Uy1WJvknBsTLo2+VRNyQvX/LTki0p1M=;
-        b=nJuXJq2vZba8COtuIkvM56AsjsEWrMlMcmk72upy7pP8O7IsPz9KnA4ONvJeX/owoQ
-         modUpVu2ZriYOAvy5Ux7PE2Ez2n0+ESRF2KKF2ALPTDy0bjE7OTjQ62jgJPTTufKmFM6
-         4s4C4JupGSlnBiLuVfmDLuWY0YPNNISCwgmRRd0WbMmc+DRVyHYV6VXrVRP7/8Ele14b
-         TpgvmXKSEmbdOCDq8YAgtBPKTQS2rBYV147ItOvagZGZXVnr0WQVZcpS+F5paroUt83k
-         ALn82IoLzL+msuyPSnLR9CcXmJLt7zHRvUydfKW4pkDduoOij04TH8p4OrcifpMdqAEA
-         BJlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1760905207; x=1761510007;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=g4HxyRRBlNg3Uy1WJvknBsTLo2+VRNyQvX/LTki0p1M=;
-        b=UYp6UPqdUFedC6TWqCdOfLz7feR/9+8zM2LuTb+tPY8q2DI0axi5RCvy90sn5oDrMx
-         jwK5xtTj5WkEQPhSZwkpgC4953khSDBUZFJG9X+POTNwEiZ3nUZVT+LqK754L6ehBtlV
-         g6X+bzfl3DKAbEADzzfwGku5rz/hk0wezf9CeQDkfgyPzT7thY41oelse2YjBBHuKNYJ
-         auzj4xDWgWaBm0TzCwMHSM5vhEKoDN7Uyk+UpIls8GR3kvdj/ab7VakwARTkmkxCyj+i
-         vDcnyQwYiW8lU/PxQqKyfmaVp5rzy/oTKE1hw57zDwzNUaTFhGCkXWedZHeEAnQhoKFK
-         3emg==
-X-Gm-Message-State: AOJu0YzXwi+DXR5dzTL5AA2cSuerW+wKXE7Oo2/p/NQgk8cRnsrW3Ulu
-	gzDm1KyvZMbT8Dq0f/klW34ZdTU3yGyo+Ilj8PM1xqgnNSiBeDlVwP1T
-X-Gm-Gg: ASbGncvpO2ME/HhK/jNsnmKlE6kmzKtERr/xtS7vDVlGK81/DiUJp9T/hk5EhfuYw0A
-	Tfy9/NUav4Ls73y83Jm9/gWI3SA5XmhOpqtQGXh8Pa1YbVVON9LGwjD4FpLaMFLabAbFEJDnpAV
-	0brrxeeR3q2EYrBC1D2r4Dk6V9b1amucb/uMD+NRldD1yUx0buEF3xdmxKmeLHvadHWcsm6Wcp9
-	FLYK29faF7z5ZGwOSyqZiE5xggsZ+auAtyND1hnOoIsO/b7wu5Q0koJFn1s205GGerc/ifmXScz
-	vigHqdY5ZW4aXVQhy3vjNLzLf6iVCutuQ1kraAdzEfRqWt49IXbAn9oOEG/vcost6fyXE0Njufq
-	e+Evk9Y9u0+/KB59kXY2fi2ewpafxkeUblYWwdgBRXKl4SnIJfBaUtRkxw+LJs3VhifgVIYhIlp
-	sC6yPQSTA027o+
-X-Google-Smtp-Source: AGHT+IGLgRfuhRQYRvtZHHbuh2zLZ6kne8DSM040Adl2P8ZbLAe+9zKBhxIgTG2lMIP+fhk5iprQyQ==
-X-Received: by 2002:a05:6a20:72a3:b0:249:18e4:52a9 with SMTP id adf61e73a8af0-334a7876b76mr13581094637.9.1760905207057;
-        Sun, 19 Oct 2025 13:20:07 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6a76b33c7asm5967650a12.21.2025.10.19.13.20.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Oct 2025 13:20:06 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sun, 19 Oct 2025 13:20:03 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: Re: [PATCH] parisc: Add initial kernel-side perf_event support
-Message-ID: <eec4fe59-c750-4460-9a88-6bbccffed89c@roeck-us.net>
+	s=arc-20240116; t=1760977661; c=relaxed/simple;
+	bh=Vabp+0+S/4DTZ4v4reVqmI30Vzed+Tmcb8OyEwtERHU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=eOCJC56yTlk4gvSx/S2H2H15BW7sOpQLrub95K/gCinAZu4g2xwL7hrnz9txWJUAYun9vQ8S0JfjymHXT+g1rkQOZQUUC9sr6mtEXP9U0V06tKfTGfWdOhDkboq8JaJhs1VWmou7RviuUDchmb1pT813T4xQGPYf4UGh35K5g2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=KX6ZcktJ; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251020162737euoutp01a7ea5ea3a3593576d6931ec88825e51e~wP9lezYs81013510135euoutp01e;
+	Mon, 20 Oct 2025 16:27:37 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251020162737euoutp01a7ea5ea3a3593576d6931ec88825e51e~wP9lezYs81013510135euoutp01e
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1760977657;
+	bh=e1+m70MIpIyLz0CgkjVmG+Zs9EMNilUICX9qZOez4wM=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=KX6ZcktJJB15hpYlnrrgQKN5QMQizY7xdPAAhwp/El6wk7EM1ZJ6O6Pj837PofyJ0
+	 migBg+i6L8vxe8bZ5F9hMcPUSOwsRbNZdnHxT7YLQRx589Age6y9jtnUV7j+rxCbcf
+	 lscFl8Zw2Bwk6HlnV8xYW2UgmAXjN9fs/Wr5RS2Y=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20251020162736eucas1p1ef138572570fd17f7ba8cf6e6bc78ba6~wP9lIhm7s0044200442eucas1p1L;
+	Mon, 20 Oct 2025 16:27:36 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20251020162733eusmtip2068f969d861135995e1cd515194afc64~wP9hxNWHW2552125521eusmtip2Y;
+	Mon, 20 Oct 2025 16:27:33 +0000 (GMT)
+Message-ID: <4a47088d-6542-45f2-917b-c91f7dd1eb1a@samsung.com>
+Date: Mon, 20 Oct 2025 18:27:32 +0200
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v5 00/14] Remove DMA map_page/map_resource and their
+ unmap callbacks
+To: Leon Romanovsky <leon@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Russell King <linux@armlinux.org.uk>, Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko
+	<oleksandr_tyshchenko@epam.com>, Richard Henderson
+	<richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, Thomas
+	Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley"
+	<James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+	<mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+	<christophe.leroy@csgroup.eu>, Geoff Levand <geoff@infradead.org>, "David S.
+ Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, Thomas
+	Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
+	Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, xen-devel@lists.xenproject.org,
+	linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org, Magnus Lindholm <linmag7@gmail.com>, Jason
+	Gunthorpe <jgg@ziepe.ca>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20251020162736eucas1p1ef138572570fd17f7ba8cf6e6bc78ba6
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251015091313eucas1p2426ae40b579d7f3b4f29b46e0e788c0d
+X-EPHeader: CA
+X-CMS-RootMailID: 20251015091313eucas1p2426ae40b579d7f3b4f29b46e0e788c0d
+References: <CGME20251015091313eucas1p2426ae40b579d7f3b4f29b46e0e788c0d@eucas1p2.samsung.com>
+	<20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
 
-Hi Helge,
+Dear All,
 
-On Tue, Oct 07, 2025 at 05:08:16PM +0200, Helge Deller wrote:
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> ---
+On 15.10.2025 11:12, Leon Romanovsky wrote:
+> This series is a combination of previous two steps [1, 2] to reduce
+> number of accesses to struct page in the code "below" DMA layer.
+>
+> In this series, the DMA .map_page/.map_resource/.unmap_page/.unmap_resource
+> callbacks are converted to newly introduced .map_phys/.unmap_phys interfaces.
 
-This patch triggers a spinlock recursion and subsequent hang in my testing.
+I would like to have some acks from respective arch maintainers before 
+applying this patchset.
 
-Starting network: udhcpc: started, v1.36.1
-[   96.037009] Backtrace:
-[   96.037545]  [<104320d4>] unwind_once+0x1c/0x5c
-[   96.037802]  [<10434a00>] walk_stackframe.isra.0+0x74/0xb8
-[   96.037959]  [<10434a6c>] arch_stack_walk+0x28/0x38
-[   96.038074]  [<104e5e18>] stack_trace_save+0x48/0x5c
-[   96.038190]  [<105d1ac0>] set_track_prepare+0x44/0x6c
-[   96.038312]  [<105d9b64>] ___slab_alloc+0xfc4/0x1024
-[   96.038421]  [<105d9c1c>] __slab_alloc.isra.0+0x58/0x90
-[   96.038529]  [<105dc6f0>] kmem_cache_alloc_noprof+0x2ac/0x4a0
-[   96.038646]  [<105b8d38>] __anon_vma_prepare+0x60/0x280
-[   96.038762]  [<105a8120>] __vmf_anon_prepare+0x68/0x94
-[   96.038870]  [<105a8a18>] do_wp_page+0x8cc/0xf10
-[   96.038969]  [<105aac6c>] handle_mm_fault+0x6c0/0xf08
-[   96.039076]  [<10425568>] do_page_fault+0x110/0x440
-[   96.039179]  [<10427938>] handle_interruption+0x184/0x748
-[   96.039299]  [<111781c8>] schedule+0x4c/0x190
-[   96.039567] BUG: spinlock recursion on CPU#0, ifconfig/2433
-[   96.039720]  lock: terminate_lock.2+0x0/0x1c, .magic: dead4ead, .owner: ifconfig/2433, .owner_cpu: 0
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-Bisect log is attached.
-
-Guenter
-
----
-# bad: [d9043c79ba68a089f95bb4344ab0232c3585f9f1] Merge tag 'sched_urgent_for_v6.18_rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
-# good: [e5f0a698b34ed76002dc5cff3804a61c80233a7a] Linux 6.17
-git bisect start 'HEAD' 'v6.17'
-# good: [58809f614e0e3f4e12b489bddf680bfeb31c0a20] Merge tag 'drm-next-2025-10-01' of https://gitlab.freedesktop.org/drm/kernel
-git bisect good 58809f614e0e3f4e12b489bddf680bfeb31c0a20
-# good: [7dbec0bbc3b468310be172f1ce6ddc9411c84952] Merge tag 'for-6.18/dm-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/device-mapper/linux-dm
-git bisect good 7dbec0bbc3b468310be172f1ce6ddc9411c84952
-# good: [2f2c7254931f41b5736e3ba12aaa9ac1bbeeeb92] Merge tag 'pci-v6.18-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci
-git bisect good 2f2c7254931f41b5736e3ba12aaa9ac1bbeeeb92
-# good: [37bfdbc11b245119210ac9924a192aec8bd07d16] Merge tag 'pci-v6.18-fixes-1' of git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci
-git bisect good 37bfdbc11b245119210ac9924a192aec8bd07d16
-# bad: [ae13bd23102805383bf04f26e0b043f3d02c9b15] Merge tag 'mm-nonmm-stable-2025-10-10-15-03' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-git bisect bad ae13bd23102805383bf04f26e0b043f3d02c9b15
-# good: [18a7e218cfcdca6666e1f7356533e4c988780b57] Merge tag 'net-6.18-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
-git bisect good 18a7e218cfcdca6666e1f7356533e4c988780b57
-# bad: [1b1391b9c4bfadcaeb89a87edf6c3520dd349e35] Merge tag 'block-6.18-20251009' of git://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux
-git bisect bad 1b1391b9c4bfadcaeb89a87edf6c3520dd349e35
-# good: [9976831f401eeb302d699b2d37624153d7cd2892] Merge tag 'gpio-fixes-for-v6.18-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux
-git bisect good 9976831f401eeb302d699b2d37624153d7cd2892
-# good: [fdfa38e95e1229ec2fb2f18540987c97f861d470] Merge tag 'sound-fix-6.18-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound
-git bisect good fdfa38e95e1229ec2fb2f18540987c97f861d470
-# bad: [8cc8ea228c4199482cf087fc6ed2d6e31b7a49e2] Merge tag 'parisc-for-6.18-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux
-git bisect bad 8cc8ea228c4199482cf087fc6ed2d6e31b7a49e2
-# good: [912b9fd7c7775060900ad315f0ceb616f9381bc3] parisc: Report software alignment faults via perf
-git bisect good 912b9fd7c7775060900ad315f0ceb616f9381bc3
-# bad: [44ac7f5c6d4c7fd62784bb2700245dbc4ac7e102] parisc: Firmware: Fix returned path for PDC_MODULE_FIND on older machines
-git bisect bad 44ac7f5c6d4c7fd62784bb2700245dbc4ac7e102
-# bad: [610cb23bcc75bcd9fead3e41cbd867cccd0eb229] parisc: Add initial kernel-side perf_event support
-git bisect bad 610cb23bcc75bcd9fead3e41cbd867cccd0eb229
-# first bad commit: [610cb23bcc75bcd9fead3e41cbd867cccd0eb229] parisc: Add initial kernel-side perf_event support
 
