@@ -1,150 +1,113 @@
-Return-Path: <linux-parisc+bounces-4240-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4242-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED590BF3EE2
-	for <lists+linux-parisc@lfdr.de>; Tue, 21 Oct 2025 00:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7892FC0A42A
+	for <lists+linux-parisc@lfdr.de>; Sun, 26 Oct 2025 08:38:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C42BD4E1B76
-	for <lists+linux-parisc@lfdr.de>; Mon, 20 Oct 2025 22:37:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EEDB74E2701
+	for <lists+linux-parisc@lfdr.de>; Sun, 26 Oct 2025 07:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA6F2F5492;
-	Mon, 20 Oct 2025 22:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E7A25F995;
+	Sun, 26 Oct 2025 07:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="D8lrsUcd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+Fmvy/T"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97762F5301;
-	Mon, 20 Oct 2025 22:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044A118DF9D;
+	Sun, 26 Oct 2025 07:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760999758; cv=none; b=U8HnKLloM8hX3cJUvOHHMKi8eLA2FWxufqsLRdyVp3MAn12RUNm4o9ZsljGvu5imVJbFB5hLWWJUZtrgGxws5NZNSPeCpvZIWvKGWyIb/smaArTQ9BT2Ue2OUYBEMkeK86qk5hnxRmR30mO065W8BRc9TgiZNLorgv16pZf0Dj8=
+	t=1761464314; cv=none; b=CJkObRie3z4ysHH/9PJt5Wf9qNe6r2CWDHECjKCblqvLBZoFUkEFBwH0+7oSiQgnzov+TZnUPKpNxQosyVxJN7uW4Vn4pK/09ndQCsb8tFcGdKejXmebGDNs8zZKdEckfujmQufNbE6zDMcfgZmtCV/CsYNwjsN5wGKJxuPFtvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760999758; c=relaxed/simple;
-	bh=z7VO9YALcMuks9K3N5YvpPrFdoIjEl3cTk4Y51zyFiY=;
-	h=Message-ID:From:Subject:Date:To:Cc; b=CrrO+PadM8jhLwYlkSP+ueHg3bh4ur6sOKyxhMknxqYpGQABiQ/GDuKnW9wyEtE3wh3gpJLO8OfGUAeT7qp/EfoAx9aoxwEeHp19wk43Yrcb4KN9AXYTDQmjDRArIN+iVM6Qu3ofWUFjyeolGhIoP+8O9j5dHz3LEUeXa3/6hRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=D8lrsUcd; arc=none smtp.client-ip=202.12.124.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfout.stl.internal (Postfix) with ESMTP id 4A5321D0016B;
-	Mon, 20 Oct 2025 18:35:54 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 20 Oct 2025 18:35:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-	:feedback-id:from:from:in-reply-to:message-id:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1760999754; x=1761086154; bh=WbKJEdG21clYm0wc8Wne2Sbd+OXB
-	PgwJrowUTp5Q/E8=; b=D8lrsUcdgdbChRnbqU8+J4ul97nvFi37TYAhVROEGFGF
-	zZ/iyiYLXPekaF2cIeNXWefZ8ao/ga9awnqpPYSsfmiQH4gDo6fMomtfi1CnPyHZ
-	o4pBooZ1/PaScmU2vqjn3ghpvzNb4JQGUdoBL3xLmZ5WKgrmipnrGjq4OZg2qYCt
-	RgunsNxw2eYDsN1iU6ozWCn+ZbM0JaVK7VViNNUfOSumlksjLatSntCPjpDDgnWD
-	l4Vf6Nmn99I1UYfyYMVFs2JSe3iSBVsJ8eMnO+p3Z+tREmv5Q8azMzyVapO91cLb
-	R9lPjCoq0bviv8eS7H/i08DES+1/raU/jxCIoa5J1g==
-X-ME-Sender: <xms:Sbn2aPFwXyDWB6rBB6_MmTCNsuua4ZSGUBL6YQFAe8bDHVQCWw18Kg>
-    <xme:Sbn2aIRbjO1rEYuSkAXZ9X6108oosFsXj09nZMIdm7vCumsLnMs3XDEZLdgZiuQ8c
-    j7wJj4uRdwkEW8IdI0Se99wnVoC2_IecFEzNj000NzKAK6fM3nDycM>
-X-ME-Received: <xmr:Sbn2aHQrjdceZiUFsqKygDBsNtdBGDxtqV3R9Tu7hA1xaanHJPrXa_igYDgJlI7pNEju3lo4xhDImkgreBhnepmK0xu_xITPLMQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddufeeltdefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepkffhufffvfevsedttdertddttddtnecuhfhrohhmpefhihhnnhcuvfhhrghinhcu
-    oehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    duvedtieevfedvffetudehteeihedtkefhkeeivdelvddtheekteeiueduudefueenucff
-    ohhmrghinhepudejrddqnhgvfienucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgpdhnsggp
-    rhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepjhgrmhgvsh
-    drsghothhtohhmlhgvhieshhgrnhhsvghnphgrrhhtnhgvrhhshhhiphdrtghomhdprhgt
-    phhtthhopeguvghllhgvrhesghhmgidruggvpdhrtghpthhtohepphgvthgvrhiisehinh
-    hfrhgruggvrggurdhorhhgpdhrtghpthhtohepfihilhhlsehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtg
-    hpthhtoheprghnughrihhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrhhnuges
-    rghrnhgusgdruggvpdhrtghpthhtoheprghstheskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:Sbn2aDeRu2WihSf1EEsDccScZ7aFH2Xos4Uk6YS0MenxQ_4A0z8ogQ>
-    <xmx:Sbn2aDfxx3IXMPtbxY-3lJ6xYA5x_i2XNs-Bh6bB_w90LV0VOV690w>
-    <xmx:Sbn2aB-6tS8KPC6okonTAsWKEmtMbNrDIIZ_vJwG3L4_9nB8UC-2fA>
-    <xmx:Sbn2aLM4y1Y4jCZ2w-yqSgD3WYuyzvi6zPRahZDxwpV-xZzoV3gMKQ>
-    <xmx:Srn2aIDyCR_ZROGkcgoSk6sDlJMCCRQSH6uKa3KcBkTKenGfFi_TY_HY>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 20 Oct 2025 18:35:51 -0400 (EDT)
-Message-ID: <cover.1760999284.git.fthain@linux-m68k.org>
-From: Finn Thain <fthain@linux-m68k.org>
-Subject: [RFC v4 0/5] Align atomic storage
-Date: Tue, 21 Oct 2025 09:28:04 +1100
-To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-    Helge Deller <deller@gmx.de>,
-    Peter Zijlstra <peterz@infradead.org>,
-    Will Deacon <will@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-    Andrii Nakryiko <andrii@kernel.org>,
-    Arnd Bergmann <arnd@arndb.de>,
-    Alexei Starovoitov <ast@kernel.org>,
-    Boqun Feng <boqun.feng@gmail.com>,
-    bpf@vger.kernel.org,
-    Daniel Borkmann <daniel@iogearbox.net>,
-    Geert Uytterhoeven <geert@linux-m68k.org>,
-    linux-arch@vger.kernel.org,
-    linux-kernel@vger.kernel.org,
-    linux-m68k@vger.kernel.org,
-    linux-parisc@vger.kernel.org,
-    Mark Rutland <mark.rutland@arm.com>
+	s=arc-20240116; t=1761464314; c=relaxed/simple;
+	bh=tE6duDWkMhf/izPfcVJAu0QGF5RniuWMZJNurHMPV4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pvjo59lmC7L3AhzoknXbtAwzHpgg02LaZ5Bws7X3EvFzR+3dy0wpTEQcxibNokSGx0NoqqRDtjL+SK9+jYrkO2GMhZpKcFnJf5lRNItgfh0UC7CM5Goc+1xPlGkqngL6+SbIrIJQR5bA2+3I7PiEDytX+AEAIuTTC3JyRj4ZSNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+Fmvy/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEC0C4CEE7;
+	Sun, 26 Oct 2025 07:38:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761464312;
+	bh=tE6duDWkMhf/izPfcVJAu0QGF5RniuWMZJNurHMPV4k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m+Fmvy/TkbKsHE/ly3nNuV5cMvplX6wPfLQ8hDaDmyX3wLacnUE7JOG/nZvuUxvmv
+	 CczVISfw5M2fl/jL4dxMpQZjR+1heTwgUYiFF7wTs743d7UeCv0GILFXzjGlxgVBC0
+	 oE76qdMbU/6QmYSolZLhh/1ehXnuAH4Wfx1TxENucSoXAohh6TFciSEQZaKMP7NYm1
+	 JNqz8+TYhassoC4ST69Mi5FA0Qr+hRmr+2UhbjR5EKFyOegX19oAs4ZZ/0v57u0VQ0
+	 /l9R6yk8RlGVj+rmA/30TcaUiEVUwLELSxYEgJrK1wn3ZV8WITcnHNlOkzodvgsSHW
+	 uuxeQvWuJFb7A==
+Date: Sun, 26 Oct 2025 09:38:28 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Geoff Levand <geoff@infradead.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	xen-devel@lists.xenproject.org, linux-alpha@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+	Magnus Lindholm <linmag7@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH v5 00/14] Remove DMA map_page/map_resource and their
+ unmap callbacks
+Message-ID: <20251026073828.GC12554@unreal>
+References: <CGME20251015091313eucas1p2426ae40b579d7f3b4f29b46e0e788c0d@eucas1p2.samsung.com>
+ <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
+ <4a47088d-6542-45f2-917b-c91f7dd1eb1a@samsung.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4a47088d-6542-45f2-917b-c91f7dd1eb1a@samsung.com>
 
-This series adds the __aligned attribute to atomic_t and atomic64_t
-definitions in include/asm-generic.
+On Mon, Oct 20, 2025 at 06:27:32PM +0200, Marek Szyprowski wrote:
+> Dear All,
+> 
+> On 15.10.2025 11:12, Leon Romanovsky wrote:
+> > This series is a combination of previous two steps [1, 2] to reduce
+> > number of accesses to struct page in the code "below" DMA layer.
+> >
+> > In this series, the DMA .map_page/.map_resource/.unmap_page/.unmap_resource
+> > callbacks are converted to newly introduced .map_phys/.unmap_phys interfaces.
+> 
+> I would like to have some acks from respective arch maintainers before 
+> applying this patchset.
 
-It also adds Kconfig options to enable a new runtime warning to help
-reveal misaligned atomic accesses on platforms which don't trap that.
+If to judge by git log and lore for some of these arch (didn't check all),
+you won't get any response and will need to make a call by yourself.
 
-This patch series is a Request For Comments because the alignment
-change is a time/space tradeoff. Its costs and benefits are expected
-to vary across platforms and workloads. More measurements are needed.
+Thanks
 
----
-
-Changed since v3:
- - Rebased on v6.17.
- - New patch to resolve header dependency issue on parisc.
- - Dropped documentation patch.
-
-Changed since v2:
- - Specify natural alignment for atomic64_t.
- - CONFIG_DEBUG_ATOMIC checks for natural alignment again.
- - New patch to add weakened alignment check.
- - New patch for explicit alignment in BPF header.
-
----
-
-Finn Thain (4):
-  bpf: Explicitly align bpf_res_spin_lock
-  parisc: Drop linux/kernel.h include from asm/bug.h header
-  atomic: Specify alignment for atomic_t and atomic64_t
-  atomic: Add option for weaker alignment check
-
-Peter Zijlstra (1):
-  atomic: Add alignment check to instrumented atomic operations
-
- arch/parisc/include/asm/bug.h    |  2 --
- include/asm-generic/atomic64.h   |  2 +-
- include/asm-generic/rqspinlock.h |  2 +-
- include/linux/instrumented.h     | 15 +++++++++++++++
- include/linux/types.h            |  2 +-
- kernel/bpf/rqspinlock.c          |  1 -
- lib/Kconfig.debug                | 18 ++++++++++++++++++
- 7 files changed, 36 insertions(+), 6 deletions(-)
-
--- 
-2.49.1
-
+> 
+> Best regards
+> -- 
+> Marek Szyprowski, PhD
+> Samsung R&D Institute Poland
+> 
 
