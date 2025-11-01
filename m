@@ -1,217 +1,315 @@
-Return-Path: <linux-parisc+bounces-4245-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4246-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D545C208F6
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Oct 2025 15:22:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BE3C2830F
+	for <lists+linux-parisc@lfdr.de>; Sat, 01 Nov 2025 17:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CAEB421D47
-	for <lists+linux-parisc@lfdr.de>; Thu, 30 Oct 2025 14:21:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7980F3BEF58
+	for <lists+linux-parisc@lfdr.de>; Sat,  1 Nov 2025 16:36:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD505219A7A;
-	Thu, 30 Oct 2025 14:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2739B2652B7;
+	Sat,  1 Nov 2025 16:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="JAeVHA6X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UPST1qGH"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0E81990A7;
-	Thu, 30 Oct 2025 14:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0FF34D3A7;
+	Sat,  1 Nov 2025 16:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761834081; cv=none; b=MkaBSAl4e2eaUuX6xtunF1/OthUrgXiYiKt1NAnmBi8i+7u6WYt7FhB7lgd+f/OC2rjUeflKouNImmuRLHxHdVfSbTrAKv/b/uwt6mT6Ws61T910cAFpk2cH8WO1P/DSRc7pi1Z564kuyzugTDuYJkHI/BusPQo5ffKaA+hBwEU=
+	t=1762014966; cv=none; b=EqyBqF0wi1vVbm2sUckW2k6zSXZ/mQseayYB6ixQoYZ+fv671HeGKbrISoi61oUVQreAGQp9S6RcyjJJ0pp2VYyAIYBJhJ0e14TuWnpnmLTdFfs2CFdby69xJE3IDCZO9p57W9W4uPO+tufiZ/PZFB6mbIBlLhlRfnpFQ9phY1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761834081; c=relaxed/simple;
-	bh=cpWP1PDpmQC8mrIhQknuZq+cukReClKurwt6mtHnFZg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HdjM4dWanfTlfrt9zzSj1r6pnE82VD2zYVEmosgOWnGzUWyG1Y06rXjGa/aHqIhup+/h+CJQV8HfzNDHtdfGba7KBvEAVk/iU1WOZ6TsThnuiRSh60WenPaVQbuVXWfFlBK/MXTZmhFgzQkKgsJGtL3ZyQnuVMj2b87emnwJKv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=JAeVHA6X; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1761834077; x=1762438877; i=deller@gmx.de;
-	bh=52j1php9L8cIvUxewIkUMNjUXJ3OzivZO+CGo1ph/+U=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=JAeVHA6XNxuE6xrXMEEz1muBFmwstNNkOmJQyrEgEw1qGmYqcWCRK6t+TNByvihI
-	 tFUu6IOw7yKV59ic+PerJYDuNrHIXiA8aaehL6oXaFKFVfIHg+iMsaWXdV6/PyTtp
-	 1izZGZMs7fcIi6K8lX5phzlME7inMXgo2iJCzIg084DHlNzHrz316i5XvcIu/Xel0
-	 haekdGFLtjuIB4utUEQwtC+L4Lslrabp5eIzUKV0oBwkne+iZGqnd0ayHxxGH9sCA
-	 yOvQmxWE5l2Ffooo5ImxHyxeuJJLHwND/9K/HNYwPxGeXFa/fQUsWwKmSp0vbGQvD
-	 IM7t0O9sZjK4e2l8Qg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [10.8.0.6] ([78.94.87.245]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1N49h5-1wDpee0ARl-014wBK; Thu, 30
- Oct 2025 15:21:17 +0100
-Message-ID: <4ee64e89-1e67-42b5-96e0-e79375c6f383@gmx.de>
-Date: Thu, 30 Oct 2025 15:21:15 +0100
+	s=arc-20240116; t=1762014966; c=relaxed/simple;
+	bh=mpbY/AMnkzNhmN4mkjkXlTWSkt2ZjxshAHZwo2hrI6c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gyxMZN2Ys7ZFBiGCxCfHM8oLxFWsQOZ0YXdInwOGZbcV8GW971slY7efqDa+RBCHexSz5J4Nqb+UsNt0ve46qShBCryJuNmnTJPYu+J6TlsJxphAZrSlV8zJl6KdDD/SeF/u7Db7ezMya9ndelrrr+n/r4ef3s7QJMnL+WXRES0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UPST1qGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B26C4CEF1;
+	Sat,  1 Nov 2025 16:35:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762014965;
+	bh=mpbY/AMnkzNhmN4mkjkXlTWSkt2ZjxshAHZwo2hrI6c=;
+	h=From:Date:Subject:To:Cc:From;
+	b=UPST1qGHgAE675YAXk4URKXgHUGpWsPdqtGU7DUmfp2PIHngmcg+b3L1CMALapD9L
+	 3LKiWNHfT92b8SRq4jIO7DEACwCqQLQDdVVpD0u+Uowxm1MCM99NMteoAg9wv9EKCT
+	 B4nBU/jfaUW1KM62rRdXGqrqoE/WMLwHCu4biEfeGoDqiWJsQehn2tJbn8RXhNDQrs
+	 cAjDWk1eEEr2u015r27Q2xBsEUhuTHcE2lsF1xvJ0a0R45D+gmWP+U0T/edXtjEv7f
+	 /CSkgOVYYa3VZSGKtxsHOevA6An6Vofsw1PR6zrnm3g54PEKj2dEP7sZXHyKl4eBdi
+	 vDuVqRezhdNgg==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Sat, 01 Nov 2025 12:35:47 -0400
+Subject: [PATCH] kbuild: Add '-fms-extensions' to areas with dedicated
+ CFLAGS
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc/entry: fix space adjustment on interruption
-To: Sven Schnelle <svens@stackframe.org>
-Cc: John David Anglin <dave.anglin@bell.net>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-References: <20251030075605.61854-1-svens@stackframe.org>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20251030075605.61854-1-svens@stackframe.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:lqWZWon2HnLT3wViCyxKnvR9do21m/SY/OeUQTpkDdKw9KhNeb+
- zHGO7Vj5KUyP2NBW8uSJtrKgKJ2Zj+9LoJCol/LpSv1kLr10GzaQT3wyLfh7vTqjj6XHw2+
- wBh77QtlsJoFSVr04k1q/9Xgag9eMlEMr4SwDNmiumFs3lMXCNCUil3YzuMsx2cVS1N+H/o
- Gp6kqkSOo/SCy+UV3/Mlw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:mLbYAWbSOWQ=;/D/DsEJwsgYtpUgv7qaO0FNMLL6
- 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
- cF9fQ==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251101-kbuild-ms-extensions-dedicated-cflags-v1-1-38004aba524b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAOI2BmkC/x2N0QrCMAwAf2Xk2UBTJwx/RXxom3QGZ5Vmk8HYv
+ 6/6eHDcbWBSVQyu3QZVvmr6Lg3o1EF6hDIKKjcG7/yFyBE+46IT48tQ1lnKzzdkYU1hFsaUpzA
+ auqGPxMPZ55ihtT5Vsq7/z+2+7wcnsB1WdwAAAA==
+X-Change-ID: 20251101-kbuild-ms-extensions-dedicated-cflags-084b1d832fbf
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>, Huacai Chen <chenhuacai@kernel.org>, 
+ WANG Xuerui <kernel@xen0n.name>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ Ard Biesheuvel <ardb@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ loongarch@lists.linux.dev, linux-parisc@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+ linux-efi@vger.kernel.org, llvm@lists.linux.dev, 
+ Christian Brauner <brauner@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=10437; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=mpbY/AMnkzNhmN4mkjkXlTWSkt2ZjxshAHZwo2hrI6c=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJlsZu8uX1HMSPkx/ce7dYfO722J5Lk+l9nuXGfXP+P5v
+ 9m1Ti7d1VHKwiDGxSArpshS/Vj1uKHhnLOMN05NgpnDygQyhIGLUwAmMoOF4X9meEHav5YSo7W7
+ /OItre2Ofqk4zyGxexsfr6//z4zsZXsY/lkIKJTfvOWkK/4hw/R7V80h01NRJ2yu6d5ZZdjQ+zJ
+ mOysA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On 10/30/25 08:56, Sven Schnelle wrote:
-> In wide mode, the IASQ contain the upper part of the GVA
-> during interruption. This needs to be reversed before
-> the space is used - otherwise it contains parts of IAOQ.
-> See Page 2-13 "Processing Resources / Interruption Instruction
-> Address Queues" in the Parisc 2.0 Architecture Manual page 2-13
-> for an explanation.
->=20
-> The IAOQ/IASQ space_adjust was skipped for other interruptions
-> than itlb misses. However, the code in handle_interruption()
-> checks whether iasq[0] contains a valid space. Due to the not
-> masked out bits this match failed and the process was killed.
->=20
-> Also add space_adjust for IAOQ1/IASQ1 so ptregs contains sane values.
->=20
-> Signed-off-by: Sven Schnelle <svens@stackframe.org>
-> ---
->   arch/parisc/kernel/entry.S | 11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
+This is a follow up to commit c4781dc3d1cf ("Kbuild: enable
+-fms-extensions") but in a separate change due to being substantially
+different from the initial submission.
 
-applied.
+There are many places within the kernel that use their own CFLAGS
+instead of the main KBUILD_CFLAGS, meaning code written with the main
+kernel's use of '-fms-extensions' in mind that may be tangentially
+included in these areas will result in "error: declaration does not
+declare anything" messages from the compiler.
 
-Thanks!
-Helge
+Add '-fms-extensions' to all these areas to ensure consistency, along
+with -Wno-microsoft-anon-tag to silence clang's warning about use of the
+extension that the kernel cares about using. parisc does not build with
+clang so it does not need this warning flag. LoongArch does not need it
+either because -W flags from KBUILD_FLAGS are pulled into cflags-vdso.
+
+Reported-by: Christian Brauner <brauner@kernel.org>
+Closes: https://lore.kernel.org/20251030-meerjungfrau-getrocknet-7b46eacc215d@brauner/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+I am taking the original '-fms-extensions' change [1] via a shared
+branch in kbuild [2] so I would appreciate acks. I plan to finalize that
+branch so that other maintainers can safely pull it on Thursday.
+
+[1]: https://git.kernel.org/kbuild/c/c4781dc3d1cf0e017e1f290607ddc56cfe187afc
+[2]: https://git.kernel.org/kbuild/l/kbuild-ms-extensions
+---
+ arch/arm64/kernel/vdso32/Makefile     | 3 ++-
+ arch/loongarch/vdso/Makefile          | 2 +-
+ arch/parisc/boot/compressed/Makefile  | 2 +-
+ arch/powerpc/boot/Makefile            | 3 ++-
+ arch/s390/Makefile                    | 3 ++-
+ arch/s390/purgatory/Makefile          | 3 ++-
+ arch/x86/Makefile                     | 4 +++-
+ arch/x86/boot/compressed/Makefile     | 7 +++++--
+ drivers/firmware/efi/libstub/Makefile | 4 ++--
+ 9 files changed, 20 insertions(+), 11 deletions(-)
+
+diff --git a/arch/arm64/kernel/vdso32/Makefile b/arch/arm64/kernel/vdso32/Makefile
+index ffa3536581f6..9d0efed91414 100644
+--- a/arch/arm64/kernel/vdso32/Makefile
++++ b/arch/arm64/kernel/vdso32/Makefile
+@@ -63,7 +63,7 @@ VDSO_CFLAGS += -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+                $(filter -Werror,$(KBUILD_CPPFLAGS)) \
+                -Werror-implicit-function-declaration \
+                -Wno-format-security \
+-               -std=gnu11
++               -std=gnu11 -fms-extensions
+ VDSO_CFLAGS  += -O2
+ # Some useful compiler-dependent flags from top-level Makefile
+ VDSO_CFLAGS += $(call cc32-option,-Wno-pointer-sign)
+@@ -71,6 +71,7 @@ VDSO_CFLAGS += -fno-strict-overflow
+ VDSO_CFLAGS += $(call cc32-option,-Werror=strict-prototypes)
+ VDSO_CFLAGS += -Werror=date-time
+ VDSO_CFLAGS += $(call cc32-option,-Werror=incompatible-pointer-types)
++VDSO_CFLAGS += $(if $(CONFIG_CC_IS_CLANG),-Wno-microsoft-anon-tag)
+ 
+ # Compile as THUMB2 or ARM. Unwinding via frame-pointers in THUMB2 is
+ # unreliable.
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index d8316f993482..c0cc3ca5da9f 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -19,7 +19,7 @@ ccflags-vdso := \
+ cflags-vdso := $(ccflags-vdso) \
+ 	-isystem $(shell $(CC) -print-file-name=include) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+-	-std=gnu11 -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
++	-std=gnu11 -fms-extensions -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+ 	$(call cc-option, -fno-asynchronous-unwind-tables) \
+ 	$(call cc-option, -fno-stack-protector)
+diff --git a/arch/parisc/boot/compressed/Makefile b/arch/parisc/boot/compressed/Makefile
+index 17c42d718eb3..f8481e4e9d21 100644
+--- a/arch/parisc/boot/compressed/Makefile
++++ b/arch/parisc/boot/compressed/Makefile
+@@ -18,7 +18,7 @@ KBUILD_CFLAGS += -fno-PIE -mno-space-regs -mdisable-fpregs -Os
+ ifndef CONFIG_64BIT
+ KBUILD_CFLAGS += -mfast-indirect-calls
+ endif
+-KBUILD_CFLAGS += -std=gnu11
++KBUILD_CFLAGS += -std=gnu11 -fms-extensions
+ 
+ LDFLAGS_vmlinux := -X -e startup --as-needed -T
+ $(obj)/vmlinux: $(obj)/vmlinux.lds $(addprefix $(obj)/, $(OBJECTS)) $(LIBGCC) FORCE
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index c47b78c1d3e7..f1a4761ebd44 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -70,7 +70,7 @@ BOOTCPPFLAGS	:= -nostdinc $(LINUXINCLUDE)
+ BOOTCPPFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
+ 
+ BOOTCFLAGS	:= $(BOOTTARGETFLAGS) \
+-		   -std=gnu11 \
++		   -std=gnu11 -fms-extensions \
+ 		   -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+ 		   -fno-strict-aliasing -O2 \
+ 		   -msoft-float -mno-altivec -mno-vsx \
+@@ -86,6 +86,7 @@ BOOTARFLAGS	:= -crD
+ 
+ ifdef CONFIG_CC_IS_CLANG
+ BOOTCFLAGS += $(CLANG_FLAGS)
++BOOTCFLAGS += -Wno-microsoft-anon-tag
+ BOOTAFLAGS += $(CLANG_FLAGS)
+ endif
+ 
+diff --git a/arch/s390/Makefile b/arch/s390/Makefile
+index b4769241332b..8578361133a4 100644
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -22,7 +22,7 @@ KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -D__ASSEMBLY__
+ ifndef CONFIG_AS_IS_LLVM
+ KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
+ endif
+-KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack -std=gnu11
++KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -mpacked-stack -std=gnu11 -fms-extensions
+ KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
+ KBUILD_CFLAGS_DECOMPRESSOR += -D__DECOMPRESSOR
+ KBUILD_CFLAGS_DECOMPRESSOR += -Wno-pointer-sign
+@@ -35,6 +35,7 @@ KBUILD_CFLAGS_DECOMPRESSOR += $(call cc-disable-warning, address-of-packed-membe
+ KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),-g)
+ KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO_DWARF4), $(call cc-option, -gdwarf-4,))
+ KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_CC_NO_ARRAY_BOUNDS),-Wno-array-bounds)
++KBUILD_CFLAGS_DECOMPRESSOR += $(if $(CONFIG_CC_IS_CLANG),-Wno-microsoft-anon-tag)
+ 
+ UTS_MACHINE	:= s390x
+ STACK_SIZE	:= $(if $(CONFIG_KASAN),65536,$(if $(CONFIG_KMSAN),65536,16384))
+diff --git a/arch/s390/purgatory/Makefile b/arch/s390/purgatory/Makefile
+index bd39b36e7bd6..0c196a5b194a 100644
+--- a/arch/s390/purgatory/Makefile
++++ b/arch/s390/purgatory/Makefile
+@@ -13,7 +13,7 @@ CFLAGS_sha256.o := -D__NO_FORTIFY
+ $(obj)/mem.o: $(srctree)/arch/s390/lib/mem.S FORCE
+ 	$(call if_changed_rule,as_o_S)
+ 
+-KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
++KBUILD_CFLAGS := -std=gnu11 -fms-extensions -fno-strict-aliasing -Wall -Wstrict-prototypes
+ KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
+ KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
+ KBUILD_CFLAGS += -Os -m64 -msoft-float -fno-common
+@@ -21,6 +21,7 @@ KBUILD_CFLAGS += -fno-stack-protector
+ KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+ KBUILD_CFLAGS += -D__DISABLE_EXPORTS
+ KBUILD_CFLAGS += $(CLANG_FLAGS)
++KBUILD_CFLAGS += $(if $(CONFIG_CC_IS_CLANG),-Wno-microsoft-anon-tag)
+ KBUILD_CFLAGS += $(call cc-option,-fno-PIE)
+ KBUILD_AFLAGS := $(filter-out -DCC_USING_EXPOLINE,$(KBUILD_AFLAGS))
+ KBUILD_AFLAGS += -D__DISABLE_EXPORTS
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 4db7e4bf69f5..e20e25b8b16c 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -48,7 +48,8 @@ endif
+ 
+ # How to compile the 16-bit code.  Note we always compile for -march=i386;
+ # that way we can complain to the user if the CPU is insufficient.
+-REALMODE_CFLAGS	:= -std=gnu11 -m16 -g -Os -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
++REALMODE_CFLAGS	:= -std=gnu11 -fms-extensions -m16 -g -Os \
++		   -DDISABLE_BRANCH_PROFILING -D__DISABLE_EXPORTS \
+ 		   -Wall -Wstrict-prototypes -march=i386 -mregparm=3 \
+ 		   -fno-strict-aliasing -fomit-frame-pointer -fno-pic \
+ 		   -mno-mmx -mno-sse $(call cc-option,-fcf-protection=none)
+@@ -60,6 +61,7 @@ REALMODE_CFLAGS += $(cc_stack_align4)
+ REALMODE_CFLAGS += $(CLANG_FLAGS)
+ ifdef CONFIG_CC_IS_CLANG
+ REALMODE_CFLAGS += -Wno-gnu
++REALMODE_CFLAGS += -Wno-microsoft-anon-tag
+ endif
+ export REALMODE_CFLAGS
+ 
+diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
+index 74657589264d..68f9d7a1683b 100644
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -25,7 +25,7 @@ targets := vmlinux vmlinux.bin vmlinux.bin.gz vmlinux.bin.bz2 vmlinux.bin.lzma \
+ # avoid errors with '-march=i386', and future flags may depend on the target to
+ # be valid.
+ KBUILD_CFLAGS := -m$(BITS) -O2 $(CLANG_FLAGS)
+-KBUILD_CFLAGS += -std=gnu11
++KBUILD_CFLAGS += -std=gnu11 -fms-extensions
+ KBUILD_CFLAGS += -fno-strict-aliasing -fPIE
+ KBUILD_CFLAGS += -Wundef
+ KBUILD_CFLAGS += -DDISABLE_BRANCH_PROFILING
+@@ -36,7 +36,10 @@ KBUILD_CFLAGS += -mno-mmx -mno-sse
+ KBUILD_CFLAGS += -ffreestanding -fshort-wchar
+ KBUILD_CFLAGS += -fno-stack-protector
+ KBUILD_CFLAGS += $(call cc-disable-warning, address-of-packed-member)
+-KBUILD_CFLAGS += $(call cc-disable-warning, gnu)
++ifdef CONFIG_CC_IS_CLANG
++KBUILD_CFLAGS += -Wno-gnu
++KBUILD_CFLAGS += -Wno-microsoft-anon-tag
++endif
+ KBUILD_CFLAGS += -Wno-pointer-sign
+ KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
+ KBUILD_CFLAGS += -D__DISABLE_EXPORTS
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 94b05e4451dd..7d15a85d579f 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -11,12 +11,12 @@ cflags-y			:= $(KBUILD_CFLAGS)
+ 
+ cflags-$(CONFIG_X86_32)		:= -march=i386
+ cflags-$(CONFIG_X86_64)		:= -mcmodel=small
+-cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu11 \
++cflags-$(CONFIG_X86)		+= -m$(BITS) -D__KERNEL__ -std=gnu11 -fms-extensions \
+ 				   -fPIC -fno-strict-aliasing -mno-red-zone \
+ 				   -mno-mmx -mno-sse -fshort-wchar \
+ 				   -Wno-pointer-sign \
+ 				   $(call cc-disable-warning, address-of-packed-member) \
+-				   $(call cc-disable-warning, gnu) \
++				   $(if $(CONFIG_CC_IS_CLANG),-Wno-gnu -Wno-microsoft-anon-tag) \
+ 				   -fno-asynchronous-unwind-tables \
+ 				   $(CLANG_FLAGS)
+ 
+
+---
+base-commit: c4781dc3d1cf0e017e1f290607ddc56cfe187afc
+change-id: 20251101-kbuild-ms-extensions-dedicated-cflags-084b1d832fbf
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
+
 
