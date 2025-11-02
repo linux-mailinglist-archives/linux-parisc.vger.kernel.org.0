@@ -1,128 +1,82 @@
-Return-Path: <linux-parisc+bounces-4247-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4248-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3C3C2835D
-	for <lists+linux-parisc@lfdr.de>; Sat, 01 Nov 2025 17:55:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8FC0C29A99
+	for <lists+linux-parisc@lfdr.de>; Mon, 03 Nov 2025 00:54:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0243C1A21E0E
-	for <lists+linux-parisc@lfdr.de>; Sat,  1 Nov 2025 16:56:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 975BB4E75BF
+	for <lists+linux-parisc@lfdr.de>; Sun,  2 Nov 2025 23:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA875277029;
-	Sat,  1 Nov 2025 16:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E797253B5C;
+	Sun,  2 Nov 2025 23:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RF0EYwGk"
+	dkim=pass (1024-bit key) header.d=msa.hinet.net header.i=@msa.hinet.net header.b="YKctrMFS"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cdmsr1.hinet.net (210-65-1-144.hinet-ip.hinet.net [210.65.1.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4680275AE8
-	for <linux-parisc@vger.kernel.org>; Sat,  1 Nov 2025 16:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B568E22422D
+	for <linux-parisc@vger.kernel.org>; Sun,  2 Nov 2025 23:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.65.1.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762016150; cv=none; b=N9vVghLUdhA56C89EGtnaAkPacCRmVyW/s7GzsWyOT1PaDGeuIC+55yc5UNynf8BkFb9WAFcRs/4jd02wGsAFJbY8DrS1QG7j+U42i6hOeXviQBMpYtg/EllB7txyDP9hKSIA7/42oHo+AI/medBitJEF9uReTAufJzx7B0Kq6A=
+	t=1762127696; cv=none; b=FuzIlbBic6mlmdA5Ea7ThHJDsvmJSEwLU7GfZ+23eAYXNW5JSJQNUbYwk+HQkHwRK5kEOyj8zjoYWuuGY7+JIwcnBKhmJDGS5c20WDzGLy7A1sxuyj8Zu2YvcjvpupPKMQjHAMSxUK5lHuPG8pTZV7daKieym3COIilZO3bfMLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762016150; c=relaxed/simple;
-	bh=sP80vbxc0GNP/r5uXwFDomQ23UoJ4yroWxjXP3XmNMU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u2sEXKL3p5z+cTAHe9GxC2YQDtxDBGuCdu+3P4NJM9C4IIPLwTYr6iKYIuie0Ce7SsG0GJnkHEka+c/jO20+7Q329jA/BAF2ZxcZcgD63MuJltt2qcVQg4EC4QxRhYT49UPSDsCp0HbR+pJOSutzrsspAY+9irwSs9QK/xF5cOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RF0EYwGk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4C8C2BC87
-	for <linux-parisc@vger.kernel.org>; Sat,  1 Nov 2025 16:55:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762016150;
-	bh=sP80vbxc0GNP/r5uXwFDomQ23UoJ4yroWxjXP3XmNMU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RF0EYwGkYWAviePjW7xN/OJRvwNhbqV1hMMNIs20gYmgWjrUhX3VTiMTlz9ZOCZ5B
-	 NXQkgiqk8kYiwPDsvTA0VFMALLKyf5rQdgj/CBG1sTE15ccibfrhS1g63ZlKX1lHKM
-	 7UL3/hfHnLT5czan5cp/tcrvWDt4uWQ6UuGsdc+QEdMaz7s1qTGKGYYXQJYBe6vVca
-	 z1o0oo3gMr4PFJwzcE+qRl/dEms8SbUHTB8ZwVA2Uf/IDxdQO9JDrNb7/WRWaVtzGH
-	 71Lh5gelYwPa5qTi/Hg3BmeOn0k8gVwdT2WJ5JcjHGb8oMfT8U2c1Ut/j9b0mZ+sFJ
-	 GEsrrsx0XoT7g==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3737d09d123so42399921fa.2
-        for <linux-parisc@vger.kernel.org>; Sat, 01 Nov 2025 09:55:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWh35FBSKd6XI2FRSra5wNTEAj/gsdfn5SB/nGSnz41vqAEt8vlZLnAjg1jLfqdkOt5HBDKd4q6vtKlpLs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfGiJKQrY6m7q+SUeZjazM5DWW89hwq6VZ+rnRSwarS4cRTrSS
-	bUNDIe+G6ispqKt+KYl8S+01uuhw5Ia3e8KeZ24Ft/pnpk594FH2TEGtT6aZthAtjrYcF6dp3xr
-	UtE4D0Nzd/L60DGVzqOmTIHAcDqShmAs=
-X-Google-Smtp-Source: AGHT+IFzm6byOVEcoCYQ/cLxtsweQADoRZYzXMb1uWfsMHcHS2qxBFBPxKTICmebgyez5+m6RGoVxWrnW9Pxli+8r4A=
-X-Received: by 2002:a2e:b8cb:0:b0:37a:2c7d:2d69 with SMTP id
- 38308e7fff4ca-37a2c7d3241mr5473091fa.40.1762016148544; Sat, 01 Nov 2025
- 09:55:48 -0700 (PDT)
+	s=arc-20240116; t=1762127696; c=relaxed/simple;
+	bh=Wkh+agUt0LUUVBd0sMs7/qctqrcKSZ6PZbHGjIf5e8U=;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type; b=AAZIsPIjnvC1SMs5YG9nzGHHV4vCZjiK4nsJqHloiflZ9/5JqXfbbEmSg+MnkQVhqA4Xv1H4xN6CW+WhFzPR8M5FlG2xlSLath1rO2fI7gNZqv29fMhXlafkB9a/1xdWYd1r0GnoWmeQX0i9bvzk2Mae7XpvXhv3z+IiIJUDung=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=msa.hinet.net; spf=pass smtp.mailfrom=msa.hinet.net; dkim=pass (1024-bit key) header.d=msa.hinet.net header.i=@msa.hinet.net header.b=YKctrMFS; arc=none smtp.client-ip=210.65.1.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=msa.hinet.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=msa.hinet.net
+Received: from cmsr7.hinet.net ([10.199.216.86])
+	by cdmsr1.hinet.net (8.15.2/8.15.2) with ESMTPS id 5A2NsiIZ991522
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <linux-parisc@vger.kernel.org>; Mon, 3 Nov 2025 07:54:45 +0800
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=msa.hinet.net;
+	s=default; t=1762127685; bh=wxEVEIpQpvAHfBnLVQ2IcW8FqlU=;
+	h=From:To:Subject:Date;
+	b=YKctrMFSE21lU2bk4RKzdS1AGp0u3ExTdSyBn/ticyvAErjmlj0nYuO3YqesZXTbs
+	 T3BPLcsW1CHVji3vnEjIRL49LgB51tntFHKuAeycD8UPKErV95lAH7t7Oj0BMG5LnE
+	 INpAYUmIfqEqRvxs634i93VSkw1rw7s/AhvSRjtg=
+Received: from [127.0.0.1] (220-143-17-2.dynamic-ip.hinet.net [220.143.17.2])
+	by cmsr7.hinet.net (8.15.2/8.15.2) with ESMTPS id 5A2NltMu996357
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <linux-parisc@vger.kernel.org>; Mon, 3 Nov 2025 07:49:35 +0800
+From: Procurement 03142 <Linux-parisc@msa.hinet.net>
+To: linux-parisc@vger.kernel.org
+Reply-To: Procurement <purchase@pathnsithu.com>
+Subject: =?UTF-8?B?TkVXIFBPIDI4MDI5IE1vbmRheSwgTm92ZW1iZXIgMywgMjAyNSBhdCAxMjo0OTozMyBBTQ==?=
+Message-ID: <48b4a916-c0bb-d876-43b6-7ba3a00a2626@msa.hinet.net>
+Content-Transfer-Encoding: 7bit
+Date: Sun, 02 Nov 2025 23:49:34 +0000
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251101-kbuild-ms-extensions-dedicated-cflags-v1-1-38004aba524b@kernel.org>
-In-Reply-To: <20251101-kbuild-ms-extensions-dedicated-cflags-v1-1-38004aba524b@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sat, 1 Nov 2025 17:55:37 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGy8s7Cc=aycKymv2d5wEZFL5J5_HxWyMb-QYDXkUrU9Q@mail.gmail.com>
-X-Gm-Features: AWmQ_bnURnp_FaiKs8-FENuEErFxDHIc7i6dKr7lAYFTzEG_ElUiaSBCxPBJiyA
-Message-ID: <CAMj1kXGy8s7Cc=aycKymv2d5wEZFL5J5_HxWyMb-QYDXkUrU9Q@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: Add '-fms-extensions' to areas with dedicated CFLAGS
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-efi@vger.kernel.org, llvm@lists.linux.dev, 
-	Christian Brauner <brauner@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.4 cv=KqTu2nWN c=1 sm=1 tr=0 ts=6907ee10
+	a=X4mNPFsjQvS7wtIdOyEb8Q==:117 a=IkcTkHD0fZMA:10 a=5KLPUuaC_9wA:10
+	a=UGgpRm_RchrTRtReUJ8A:9 a=QEXdDO2ut3YA:10
 
-On Sat, 1 Nov 2025 at 17:36, Nathan Chancellor <nathan@kernel.org> wrote:
->
-> This is a follow up to commit c4781dc3d1cf ("Kbuild: enable
-> -fms-extensions") but in a separate change due to being substantially
-> different from the initial submission.
->
-> There are many places within the kernel that use their own CFLAGS
-> instead of the main KBUILD_CFLAGS, meaning code written with the main
-> kernel's use of '-fms-extensions' in mind that may be tangentially
-> included in these areas will result in "error: declaration does not
-> declare anything" messages from the compiler.
->
-> Add '-fms-extensions' to all these areas to ensure consistency, along
-> with -Wno-microsoft-anon-tag to silence clang's warning about use of the
-> extension that the kernel cares about using. parisc does not build with
-> clang so it does not need this warning flag. LoongArch does not need it
-> either because -W flags from KBUILD_FLAGS are pulled into cflags-vdso.
->
-> Reported-by: Christian Brauner <brauner@kernel.org>
-> Closes: https://lore.kernel.org/20251030-meerjungfrau-getrocknet-7b46eacc215d@brauner/
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
-> I am taking the original '-fms-extensions' change [1] via a shared
-> branch in kbuild [2] so I would appreciate acks. I plan to finalize that
-> branch so that other maintainers can safely pull it on Thursday.
->
-> [1]: https://git.kernel.org/kbuild/c/c4781dc3d1cf0e017e1f290607ddc56cfe187afc
-> [2]: https://git.kernel.org/kbuild/l/kbuild-ms-extensions
-> ---
->  arch/arm64/kernel/vdso32/Makefile     | 3 ++-
->  arch/loongarch/vdso/Makefile          | 2 +-
->  arch/parisc/boot/compressed/Makefile  | 2 +-
->  arch/powerpc/boot/Makefile            | 3 ++-
->  arch/s390/Makefile                    | 3 ++-
->  arch/s390/purgatory/Makefile          | 3 ++-
->  arch/x86/Makefile                     | 4 +++-
->  arch/x86/boot/compressed/Makefile     | 7 +++++--
->  drivers/firmware/efi/libstub/Makefile | 4 ++--
->  9 files changed, 20 insertions(+), 11 deletions(-)
->
+Hi Linux-parisc,
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Please provide a quote for your products:
+
+Include:
+1.Pricing (per unit)
+2.Delivery cost & timeline
+3.Quote expiry date
+
+Deadline: October
+
+Thanks!
+
+Danny Peddinti
+
+PathnSitu Trading
 
