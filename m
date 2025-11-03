@@ -1,143 +1,132 @@
-Return-Path: <linux-parisc+bounces-4249-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4250-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E51C2E38B
-	for <lists+linux-parisc@lfdr.de>; Mon, 03 Nov 2025 23:11:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01639C2E4D0
+	for <lists+linux-parisc@lfdr.de>; Mon, 03 Nov 2025 23:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF6B1887A1A
-	for <lists+linux-parisc@lfdr.de>; Mon,  3 Nov 2025 22:12:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F0C644E29DC
+	for <lists+linux-parisc@lfdr.de>; Mon,  3 Nov 2025 22:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6132EE5F5;
-	Mon,  3 Nov 2025 22:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3651DED63;
+	Mon,  3 Nov 2025 22:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YDu2TGrm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FwPoXP3p"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998D12EE268
-	for <linux-parisc@vger.kernel.org>; Mon,  3 Nov 2025 22:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49BF1C3C18
+	for <linux-parisc@vger.kernel.org>; Mon,  3 Nov 2025 22:42:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762207895; cv=none; b=NupvlXz7m4IlDU3IinlggECqK8bHz3MIsFagFxQu2JkWiau55ZoN1R2D+cupDEHFwMcu+lVr5xE6J34xtrsPjD1/h5m8fy/xJ2fpAYIWxLQniTOX3tkXhB8HN9VvpAGE1JfGs1Vnu5rV4teYSJFkYK27NcaU6EPfOspkiVVlG7k=
+	t=1762209756; cv=none; b=flQqa/GObakHKst3egr3IYAy8HCvy1uYL9n1r0AQAMuJPEWzmzYl/7316eXL1s2nC/5bM6Mr6tIWaO2dJEBR3gRZMejcqpeySylYPNqeXFPdKbRvYC0DsNzkMlVn+7LXpUgMFUdC6+SmILISXeLEJh1CJcJmVrYyNRTSDKRS2K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762207895; c=relaxed/simple;
-	bh=c5KcyDrEtt8a5uizotqH00RuOldT/bAmx/8kRfJHrwI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ksJBkhg7Te0cUQtfyHiroHlqDYjOEw0QEdP72wUI+gmg5gcj17px7osqTa8f7pA8AwgMRtWYFtI+K1lqO3vRUdRwDBBm/s8fz82c0oGgIURvdR+qHq6XWBG0q1lot00c1tex66d/a4sO5uNr1wE9bLXWzN5UVvBFLD4zsiQvMxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YDu2TGrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32EDC113D0;
-	Mon,  3 Nov 2025 22:11:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762207895;
-	bh=c5KcyDrEtt8a5uizotqH00RuOldT/bAmx/8kRfJHrwI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YDu2TGrmaYQjCxGp0U0R3UdQCXg9GpBG45ErzMK3WMvJ0FYehfnDJCYcxo6f41X/9
-	 Tb3yyETuUS3yIxIJhRNHpDwjbSbQB7BePEaYYD1tLNXIRrukC+h5wHF+DU9Di0fHOr
-	 wcDEPcEijVNRYbJR2zIN7pFPuN4VtP/57ZDsh233q/VkMdtgbH8KtP8qrxeiHUWzMs
-	 NvY1R3dHeMuPNu1/NJoVyRLbmoKWUrWCrhJiMb0GIFvK2NIfiwUVr9kLHrbIFh0x8q
-	 rDzYEtYkT0Wft36H9jIHbpmDQ98HUoT1Ws/olVrWwFMFjkID98W6M4Wxg8tjjh6FlD
-	 vFNKmnkuxYLrw==
-From: deller@kernel.org
-To: linux-parisc@vger.kernel.org
-Cc: Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH] parisc: Avoid crash due to unaligned access in unwinder
-Date: Mon,  3 Nov 2025 23:11:10 +0100
-Message-ID: <20251103221112.38617-1-deller@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1762209756; c=relaxed/simple;
+	bh=vZz8hLZHl3yo+H+t/J5m/JEPqK7xzGD9lPN2pFTI7OM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=thDqDPnsRtmeKPEfngBsE+szy0bzEGu3ULDTGJ93zUZwqEq1VyN0MbhELL8J4z3Qyk8bD750oI/kawWSMbpRnXI+9kcaPZfBgYHbnIAQCJjQoQuWm3yBUNzsglLRw9YKOn91jiFnKjM10lveMn1FGZq0+FTJ8Sut/7Ve75+GU8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FwPoXP3p; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b99dc8f439cso782423a12.0
+        for <linux-parisc@vger.kernel.org>; Mon, 03 Nov 2025 14:42:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762209754; x=1762814554; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+4shHKbY0GvQGnOM1w4nl9uewlypzFYNw5rgQwBl4+M=;
+        b=FwPoXP3pOdY4EvKBQx9lGTPSPgVQ1XcrgndnRI0zbmiT8ocamUoDdu/+Y1jNtSlUGr
+         iO6RCXGUMKNOflFpai/2K1CMFQzfvK4JA7rHs/L2XR2k80Fr3D7yq2j8AfcO04ZBa7XH
+         MDkDDDIna4x2HFSBdCBYF04YAqKTsixmQptRo7pHa47gqufp9ejgUeAi2fkV3pLQYFzk
+         +DrXVOwBEC5m7u2uU/PVmJ8wNhJkIUMaO3Mi4WfrydiB/MymelnCRcuGk1T2XSpZFnfH
+         nzITVlPKgaR4WUNaXV2p7SrE9WlwKpafNDK6XM76u0PsofVzGFbfqhuDngBDmJhALg/X
+         wQ4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762209754; x=1762814554;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+4shHKbY0GvQGnOM1w4nl9uewlypzFYNw5rgQwBl4+M=;
+        b=mM67xua+roiS9sI4tu5UufqIGsW1wHatvvuUqxAi9Qv7UH5M8fzw88jNrK70/t1T9c
+         07MnrxMsodtOS7z9PLnXrDckBCppGn+vcV8PJfbe09j0rK8rNZOpbdOVJ12xABZegali
+         J+Q3ZHkxElUzyIkUp2V/eXpAhYdUku07+3yYjZwFqNaoJmgwmkA36GXiDTzJqoqFfqyo
+         WmnmV9GXlIoORZZYCZ8EcLCSagyraK1fzVyfFSXUM2HAbHtVvLY8dt3HMRd29MA7A4kM
+         t4nTxkYdX4LvDmhDYBquwuS9rhRsEkHaEA7dNxW0loD/PaM5+Rx7RxkzMxA1GTw57Kj5
+         Q2/A==
+X-Gm-Message-State: AOJu0YyODNrqaiQZvfqmxNPPaL9nlL74LgHADzt/Zes2hwrS1z3GZaym
+	tk4DdqFFZbS4HKZ/KqQ2KlYMgxx/TbpM70z3gpk1dqfKzHnSvwfXT9Bh
+X-Gm-Gg: ASbGncvNxyEcv6uaQnmg57/4SKAmpz+cRByjsZu+enFcnqv1aYQf/+lhbwSuhgHw+Qc
+	n07Xn9UCsbQExhtVL9erReCi99ji6guhPvpf1cLEyRARzs/+enLlnxBO2BHscbbbYV24SMelZy8
+	nMzXhfSLIRDypS/fDvGkoZkHKkQNrYkm2nV3n3x+eH8g1QAjsM373SVHNvUGF/xb1jyQ9mkMNTw
+	gMbVpVjTGS+g2Zdm149wU4ASawckDZ4NteTqTFjiwYmfCRU896IrYxLjRqB1WmnBok0tz2FBzMv
+	Ttk7uzwuJ3bNZr03ftcy5rJh33OG51LPBgugfk9V2E/dr0e6Z1HhrkxGWpzaX+BmdwMTb3O1svK
+	2dR4sQKJHSuBmWr+QKnCJC6xFCHY0nvw38uwtu7EEAxdbFIb/fNSdlxMzwcgxGY9Z8DK/ubApA5
+	XuOfjCSmTWXHMus2l/9mU0g9U=
+X-Google-Smtp-Source: AGHT+IGj+1cRZMrKUuGL8R5FZFq6faDLQTjGakYUUWz32LX38yHiSfVm4oE2gX09XHlCI60+MnwQFQ==
+X-Received: by 2002:a17:902:e5c5:b0:295:7f1f:a808 with SMTP id d9443c01a7336-2957f1fb664mr93550725ad.38.1762209753795;
+        Mon, 03 Nov 2025 14:42:33 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2960199901dsm2673675ad.34.2025.11.03.14.42.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 14:42:32 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Mon, 3 Nov 2025 14:42:31 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: deller@kernel.org
+Cc: linux-parisc@vger.kernel.org
+Subject: Re: [PATCH] parisc: Avoid crash due to unaligned access in unwinder
+Message-ID: <a3561d53-2d18-45d7-bd50-b39c4ec77fa5@roeck-us.net>
+References: <20251103221112.38617-1-deller@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251103221112.38617-1-deller@kernel.org>
 
-From: Helge Deller <deller@gmx.de>
+On Mon, Nov 03, 2025 at 11:11:10PM +0100, deller@kernel.org wrote:
+> From: Helge Deller <deller@gmx.de>
+> 
+> Guenter Roeck reported this kernel crash on his emulated B160L machine:
+> 
+> Starting network: udhcpc: started, v1.36.1
+>  Backtrace:
+>   [<104320d4>] unwind_once+0x1c/0x5c
+>   [<10434a00>] walk_stackframe.isra.0+0x74/0xb8
+>   [<10434a6c>] arch_stack_walk+0x28/0x38
+>   [<104e5efc>] stack_trace_save+0x48/0x5c
+>   [<105d1bdc>] set_track_prepare+0x44/0x6c
+>   [<105d9c80>] ___slab_alloc+0xfc4/0x1024
+>   [<105d9d38>] __slab_alloc.isra.0+0x58/0x90
+>   [<105dc80c>] kmem_cache_alloc_noprof+0x2ac/0x4a0
+>   [<105b8e54>] __anon_vma_prepare+0x60/0x280
+>   [<105a823c>] __vmf_anon_prepare+0x68/0x94
+>   [<105a8b34>] do_wp_page+0x8cc/0xf10
+>   [<105aad88>] handle_mm_fault+0x6c0/0xf08
+>   [<10425568>] do_page_fault+0x110/0x440
+>   [<10427938>] handle_interruption+0x184/0x748
+>   [<11178398>] schedule+0x4c/0x190
+>   BUG: spinlock recursion on CPU#0, ifconfig/2420
+>   lock: terminate_lock.2+0x0/0x1c, .magic: dead4ead, .owner: ifconfig/2420, .owner_cpu: 0
+> 
+> While creating the stack trace, the unwinder uses the stack pointer to guess
+> the previous frame to read the previous stack pointer from memory.  The crash
+> happens, because the unwinder tries to read from unaligned memory and as such
+> triggers the unalignment trap handler which then leads to the spinlock
+> recursion and finally to a deadlock.
+> 
+> Fix it by checking the alignment before accessing the memory.
+> 
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Cc: <stable@vger.kernel.org> # v6.12+
 
-Guenter Roeck reported this kernel crash on his emulated B160L machine:
-
-Starting network: udhcpc: started, v1.36.1
- Backtrace:
-  [<104320d4>] unwind_once+0x1c/0x5c
-  [<10434a00>] walk_stackframe.isra.0+0x74/0xb8
-  [<10434a6c>] arch_stack_walk+0x28/0x38
-  [<104e5efc>] stack_trace_save+0x48/0x5c
-  [<105d1bdc>] set_track_prepare+0x44/0x6c
-  [<105d9c80>] ___slab_alloc+0xfc4/0x1024
-  [<105d9d38>] __slab_alloc.isra.0+0x58/0x90
-  [<105dc80c>] kmem_cache_alloc_noprof+0x2ac/0x4a0
-  [<105b8e54>] __anon_vma_prepare+0x60/0x280
-  [<105a823c>] __vmf_anon_prepare+0x68/0x94
-  [<105a8b34>] do_wp_page+0x8cc/0xf10
-  [<105aad88>] handle_mm_fault+0x6c0/0xf08
-  [<10425568>] do_page_fault+0x110/0x440
-  [<10427938>] handle_interruption+0x184/0x748
-  [<11178398>] schedule+0x4c/0x190
-  BUG: spinlock recursion on CPU#0, ifconfig/2420
-  lock: terminate_lock.2+0x0/0x1c, .magic: dead4ead, .owner: ifconfig/2420, .owner_cpu: 0
-
-While creating the stack trace, the unwinder uses the stack pointer to guess
-the previous frame to read the previous stack pointer from memory.  The crash
-happens, because the unwinder tries to read from unaligned memory and as such
-triggers the unalignment trap handler which then leads to the spinlock
-recursion and finally to a deadlock.
-
-Fix it by checking the alignment before accessing the memory.
-
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.12+
----
- arch/parisc/kernel/unwind.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/arch/parisc/kernel/unwind.c b/arch/parisc/kernel/unwind.c
-index f7e0fee5ee55..7ac88ff13d3c 100644
---- a/arch/parisc/kernel/unwind.c
-+++ b/arch/parisc/kernel/unwind.c
-@@ -35,6 +35,8 @@
- 
- #define KERNEL_START (KERNEL_BINARY_TEXT_START)
- 
-+#define ALIGNMENT_OK(ptr, type) (((ptr) & (sizeof(type) - 1)) == 0)
-+
- extern struct unwind_table_entry __start___unwind[];
- extern struct unwind_table_entry __stop___unwind[];
- 
-@@ -257,12 +259,15 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
- 	if (pc_is_kernel_fn(pc, _switch_to) ||
- 	    pc == (unsigned long)&_switch_to_ret) {
- 		info->prev_sp = info->sp - CALLEE_SAVE_FRAME_SIZE;
--		info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
-+		if (ALIGNMENT_OK(info->prev_sp, long))
-+			info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
-+		else
-+			info->prev_ip = info->prev_sp = 0;
- 		return 1;
- 	}
- 
- #ifdef CONFIG_IRQSTACKS
--	if (pc == (unsigned long)&_call_on_stack) {
-+	if (pc == (unsigned long)&_call_on_stack && ALIGNMENT_OK(info->sp, long)) {
- 		info->prev_sp = *(unsigned long *)(info->sp - FRAME_SIZE - REG_SZ);
- 		info->prev_ip = *(unsigned long *)(info->sp - FRAME_SIZE - RP_OFFSET);
- 		return 1;
-@@ -370,8 +375,10 @@ static void unwind_frame_regs(struct unwind_frame_info *info)
- 			info->prev_sp = info->sp - frame_size;
- 			if (e->Millicode)
- 				info->rp = info->r31;
--			else if (rpoffset)
-+			else if (rpoffset && ALIGNMENT_OK(info->prev_sp, long))
- 				info->rp = *(unsigned long *)(info->prev_sp - rpoffset);
-+			else
-+				info->rp = 0;
- 			info->prev_ip = info->rp;
- 			info->rp = 0;
- 		}
--- 
-2.51.0
-
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
