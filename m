@@ -1,47 +1,47 @@
-Return-Path: <linux-parisc+bounces-4269-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4270-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B812EC5CD3A
-	for <lists+linux-parisc@lfdr.de>; Fri, 14 Nov 2025 12:22:06 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9354C5CD10
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Nov 2025 12:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8D0D04F5929
-	for <lists+linux-parisc@lfdr.de>; Fri, 14 Nov 2025 11:14:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 61AB73523CC
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Nov 2025 11:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEAE315D49;
-	Fri, 14 Nov 2025 11:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A97D3148AF;
+	Fri, 14 Nov 2025 11:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MJ9Mpinl"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="L48H43W4"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F34315D23
-	for <linux-parisc@vger.kernel.org>; Fri, 14 Nov 2025 11:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9173148C6;
+	Fri, 14 Nov 2025 11:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763118843; cv=none; b=OB9sguL9CGBUzGJHof2uBcKmHlCSHpTG4D/lGtmf7RFcAY3OLXtepq+zLk7MxY8KL7j6ZDDdY8z+mTBWPqXmvyXTLuCskLpF2j8NLoh/yNcjYv8YvPlTfHrjcALIr+3xQiY5b2wD/QSwb9U5B/Ha+13o3podCHK/vNZungK+KRY=
+	t=1763118850; cv=none; b=GEhGEwiKWqfc/9v9WuhqC5/NfXwyQ21rpwwbmlhOpsA7j3ZbMM9q2hNeTKsjF9FdXjs9zHRCGL+WZbrNo4GJ7EWnAl1biP5Zo9JULCD+vn3BJDZXa9pf8bGE8OisklHXTqOpyQtyFBke0LbqLF1xIMv0v7+j1j8Hmr8VLP33CRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763118843; c=relaxed/simple;
-	bh=y3+cAqzSkPk1tWuUrHkYALa2DGC3gvmhFzF8IzkFgAo=;
+	s=arc-20240116; t=1763118850; c=relaxed/simple;
+	bh=L77VHJOsxYGfJl12t5E1P3bJEqsaMDW4GIC4V2YxBI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=in0AZBxLZja0gwQhXi5qLmqHhUnIQRMGtZIvJ36N0uheiNyJ/xQjnK2JW49HllDHVxnaPwThCYyoYv82XEI2LGoGXV9JRtY05nJrbp3luHlvTTA/K0TXytqPospsuA+r6WiIpFRsRCigPbPLZITG8fT9ihsAjqE4ap6wUinww5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MJ9Mpinl; arc=none smtp.client-ip=91.218.175.188
+	 MIME-Version; b=OL1T1d4Vb3dXTI3rJQX1N/NQDV3mhc8X4pnunO1vJAHRJWvPb6NwfjkKbtm97P9+fMSzIra5ZU9RuYo2+Hjgi7OYgv1HMY+cmeDZ70kyCfN36maqxHi4j/cDEY2SX/jK/PQgSahhEWeDVvY6tD/1eILRBkmFfClnK/LFFlmlKrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=L48H43W4; arc=none smtp.client-ip=91.218.175.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763118839;
+	t=1763118845;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Sax8A8PA6ZHc/cVS+xTeKKlG8M0r3mfGW440vNjJZdg=;
-	b=MJ9MpinllxQ4TveK74NmYHIrtnuWysqMuo3kH1WtaJPOEfUFraWTOjeuO+qSEwJDbXunL4
-	KzCwC7WMF3bErXcULhl6Hmst/RWmFUWC5WUQqMmKuZtOwbb3VyxdEl/g2hEf0Oms7Jx9kQ
-	EAMJFMUorbF1pVdhYWTD7Kr5yAkEd64=
+	bh=nUnrWplutHBzvgR2dvaxPt91n3EUIlT8RN+kjzr9YeU=;
+	b=L48H43W4jFZRnZVw9O79JRiRB5m9aw/GV0MPdZjIrgDSOzS1xJajXCccgoMGVVyjHQVMx8
+	ixGDGcGZ9+fwVuXGogoz7wJwNfE66muSzsaVj6jY+ONOTTSdEs5AZWkbAoLKzZN3TJkNEr
+	SLREeZzO+x0CEbQrd41ME+/n9u8TpH4=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: will@kernel.org,
 	aneesh.kumar@kernel.org,
@@ -61,11 +61,12 @@ Cc: linux-arch@vger.kernel.org,
 	linux-parisc@vger.kernel.org,
 	linux-um@lists.infradead.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5/7] parisc: mm: enable MMU_GATHER_RCU_TABLE_FREE
-Date: Fri, 14 Nov 2025 19:11:19 +0800
-Message-ID: <3a88790a662c2b84066c77772d20bd1f5f687f8b.1763117269.git.zhengqi.arch@bytedance.com>
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>
+Subject: [PATCH 6/7] um: mm: enable MMU_GATHER_RCU_TABLE_FREE
+Date: Fri, 14 Nov 2025 19:11:20 +0800
+Message-ID: <27f173b0fc6fdf92104721fc3daba8d7d9d31e2f.1763117269.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1763117269.git.zhengqi.arch@bytedance.com>
 References: <cover.1763117269.git.zhengqi.arch@bytedance.com>
 Precedence: bulk
@@ -85,42 +86,25 @@ first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
 PT_RECLAIM feature, which resolves this problem.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
 ---
- arch/parisc/Kconfig           | 1 +
- arch/parisc/include/asm/tlb.h | 6 ++++--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ arch/um/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 47fd9662d8005..946cbe21a4118 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -92,6 +92,7 @@ config PARISC
- 	select TRACE_IRQFLAGS_SUPPORT
- 	select HAVE_FUNCTION_DESCRIPTORS if 64BIT
- 	select PCI_MSI_ARCH_FALLBACKS if PCI_MSI
+diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+index 097c6a6265ef3..47a41bc77bb24 100644
+--- a/arch/um/Kconfig
++++ b/arch/um/Kconfig
+@@ -41,6 +41,7 @@ config UML
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select THREAD_INFO_IN_TASK
+ 	select SPARSE_IRQ
 +	select MMU_GATHER_RCU_TABLE_FREE
  
- 	help
- 	  The PA-RISC microprocessor is designed by Hewlett-Packard and used
-diff --git a/arch/parisc/include/asm/tlb.h b/arch/parisc/include/asm/tlb.h
-index 44235f367674d..ab7d4113df61a 100644
---- a/arch/parisc/include/asm/tlb.h
-+++ b/arch/parisc/include/asm/tlb.h
-@@ -5,8 +5,10 @@
- #include <asm-generic/tlb.h>
- 
- #if CONFIG_PGTABLE_LEVELS == 3
--#define __pmd_free_tlb(tlb, pmd, addr)	pmd_free((tlb)->mm, pmd)
-+#define __pmd_free_tlb(tlb, pmd, addr)	\
-+	tlb_remove_ptdesc((tlb), virt_to_ptdesc(pmd))
- #endif
--#define __pte_free_tlb(tlb, pte, addr)	pte_free((tlb)->mm, pte)
-+#define __pte_free_tlb(tlb, pte, addr)	\
-+	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
- 
- #endif
+ config MMU
+ 	bool
 -- 
 2.20.1
 
