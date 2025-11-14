@@ -1,56 +1,54 @@
-Return-Path: <linux-parisc+bounces-4262-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4263-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04EBFC45E77
-	for <lists+linux-parisc@lfdr.de>; Mon, 10 Nov 2025 11:24:06 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77099C5C535
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Nov 2025 10:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8292C4E30AC
-	for <lists+linux-parisc@lfdr.de>; Mon, 10 Nov 2025 10:23:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 35DF64FEF90
+	for <lists+linux-parisc@lfdr.de>; Fri, 14 Nov 2025 09:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E502FB978;
-	Mon, 10 Nov 2025 10:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="f1X7CXII"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D1030274B;
+	Fri, 14 Nov 2025 09:20:38 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E992F3601;
-	Mon, 10 Nov 2025 10:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD70302157;
+	Fri, 14 Nov 2025 09:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762770199; cv=none; b=Dxy+HlQSyfEMnv2yZNBAmLWXzNLPYcvUQb2D6Vm1PMLyOZ36/Um6wcWbt1l3gdSoASXKnkR43G/HnWaDOC1Xh6aqH/zeadXRNdGGREBV6TfQTW6ZQEUg8fNC4PQYc4UG1J9L8XOynn7hkEQ1hLvnFYdgOM/TemnJwtkNBw4xhck=
+	t=1763112038; cv=none; b=kE4DwwyZyjN6/G1n1D4eT6zKRXH7ApYpNhG2Fzsg5MdXuvJUQoJMu7OMrXMS6n1v7b26qoBL3RTOrpseaGzjYXct8ovXY1SVUSB9uId5OwKfH1Mf2l6m/hBr2LjSG/uW5YLlhgUCcgPl6tlRGBHPKQqcpRSvDuOObkK17bzEFP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762770199; c=relaxed/simple;
-	bh=RWEP0R0pTG321z+Z6PZ8q34MUxzyv7FTabwu8ryr9mA=;
+	s=arc-20240116; t=1763112038; c=relaxed/simple;
+	bh=kimqotKOowC9YnAuCm2hSc6coYV+4UC/hx4MUTohuDY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=phwxKpIksePhfMM3cYZCuMcvusS44nWTdQ2CC2L1sd44497y4VuSk5RuqOvOd+dMUKnHeBji/5NbCGPpbgz8LK1klTROWb/xqu46LWHi5W6tVbLnOD/FiTAM08AT1ucolyzVho29MeiNLImsW+OpGN3f1HxkPLRfC45mwu172MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=f1X7CXII; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1762770193; x=1763374993; i=deller@gmx.de;
-	bh=n+WLv0qum0TyySWOTqWqs5Hc6wLEkONWzjrPnoWRkmE=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=f1X7CXIISQq1mBetU474pR3T28jltwCFwAda72Z0pnoj4riAD0nE8TckpXcFaw/r
-	 /5uULLlEz6W30foUkTJ6/Lp7EGXZBFQy2icIobqj+g024uioxYJlx5eOqah9nrELK
-	 WoObhmNMc2BOHPXj7VFAV41liB92b0sTbV76dopWNV4q40FDHAThGg9hglY8w/E5+
-	 v6ZPyN0TSs3i/gNnHgGJywzdpQofny5mkYkHEBAK2XEAVpI9sg80IfcUGQOQdGp6N
-	 f8Ffr3jRKagEBjOUalRRNjXM+hoYyLxI2HAgAAeu1BrBxvVIR/0Fdw2jJ9C+W751S
-	 TvnWsdQYagR+R2119w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.50.95]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M2O2W-1vMF4h3BKY-00FmWL; Mon, 10
- Nov 2025 11:23:13 +0100
-Message-ID: <7efd11f2-aa31-4ad5-bd07-18df750f53cf@gmx.de>
-Date: Mon, 10 Nov 2025 11:23:13 +0100
+	 In-Reply-To:Content-Type; b=DF1pieV2rqs307KhRbc6Gj71UB9SEsHwqxXsNMe2vKvZcKXVU8KlEcj9M07XPgX9YTBGzLlJUqjytczR5hfeB1cD0d2L++cUypmK423su35bCGm1YQw2etonXB+g34OOWmrLQVTNfJB7Lzl2A8eVHrTE9Gdbo6IcYe0mDVN7lcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4d7B3S6g5lz9sSm;
+	Fri, 14 Nov 2025 10:02:12 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Jh3Mqk4UdkM3; Fri, 14 Nov 2025 10:02:12 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4d7B3P5h7Hz9sSt;
+	Fri, 14 Nov 2025 10:02:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 940058B770;
+	Fri, 14 Nov 2025 10:02:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id WOt_dcMEhEst; Fri, 14 Nov 2025 10:02:09 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id DCFEA8B76E;
+	Fri, 14 Nov 2025 10:02:07 +0100 (CET)
+Message-ID: <83cdd7e8-51a7-4989-b270-93cec301cde7@csgroup.eu>
+Date: Fri, 14 Nov 2025 10:02:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -58,185 +56,401 @@ List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] parisc: Drop linux/kernel.h include from asm/bug.h header
-To: Finn Thain <fthain@linux-m68k.org>
-Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <3d812c89ecbc6028e3c550c484201f33d763b885.1762735489.git.fthain@linux-m68k.org>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <3d812c89ecbc6028e3c550c484201f33d763b885.1762735489.git.fthain@linux-m68k.org>
+Subject: Re: [PATCH v5 10/14] powerpc: Convert to physical address DMA mapping
+To: Leon Romanovsky <leon@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Russell King <linux@armlinux.org.uk>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Matt Turner <mattst88@gmail.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Geoff Levand <geoff@infradead.org>, "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, xen-devel@lists.xenproject.org,
+ linux-alpha@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org
+References: <20251015-remove-map-page-v5-0-3bbfe3a25cdf@kernel.org>
+ <20251015-remove-map-page-v5-10-3bbfe3a25cdf@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20251015-remove-map-page-v5-10-3bbfe3a25cdf@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:je9qkIqOx+Jy2gU0PJrbWRRilWQAna1QWy/EFqifb1otMweBCA7
- 1kqold9fBcciRle02ZhS7/TO/5ntoXIBTfSLWuIkh5W3dhnAIxHx1Wm20cNXMv6iptSIaDI
- zbJU2tGUx5ywG+nimh707vLEByqpew/9KhekuPHWsveWGFz61mIbQpXVZZij8pBapn+2bac
- WfluziGch0eXfArdQ5wMQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ek8+xcQ8Z9I=;nnN9gobHbs9oSB9XYqXFfImETJo
- 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
+Content-Transfer-Encoding: 8bit
 
-On 11/10/25 01:44, Finn Thain wrote:
-> While working on an unrelated patch series, I needed to include
-> linux/bug.h from linux/instrumented.h, in order to call WARN_ON_ONCE().
->=20
-> Doing so resulted in the following compiler error on parisc:
->=20
-> In file included from ./include/linux/atomic/atomic-instrumented.h:17,
->                   from ./include/linux/atomic.h:82,
->                   from ./arch/parisc/include/asm/bitops.h:13,
->                   from ./include/linux/bitops.h:67,
->                   from ./include/linux/kernel.h:23,
->                   from ./arch/parisc/include/asm/bug.h:5,
->                   from ./include/linux/bug.h:5,
->                   from ./include/linux/page-flags.h:10,
->                   from kernel/bounds.c:10:
-> ./include/linux/instrumented.h: In function 'instrument_atomic_alignment=
-_check':
-> ./include/linux/instrumented.h:69:9: error: implicit declaration of func=
-tion 'WARN_ON_ONCE' [-Werror=3Dimplicit-function-declaration]
->     69 |         WARN_ON_ONCE((unsigned long)v & (size - 1));
->        |         ^~~~~~~~~~~~
-> cc1: some warnings being treated as errors
-> make[3]: *** [scripts/Makefile.build:182: kernel/bounds.s] Error 1
->=20
-> The problem is, asm/bug.h indirectly includes atomic-instrumented.h,
-> which means a new cycle appeared in the graph of #includes. And because
-> some headers in the cycle can't see all definitions, my new WARN_ON_ONCE=
-()
-> call appears to be an undeclared function.
->=20
-> This only happens on parisc and it's easy to fix. In the error
-> message above, linux/kernel.h is included by asm/bug.h, but it's no
-> longer needed there, so just remove that include.
->=20
-> The comment about needing BUGFLAG_TAINT seems to be incorrect as of
-> commit 19d436268dde ("debug: Add _ONCE() logic to report_bug()"). Also,
-> there's a comment in linux/kernel.h which strongly discourages use of
-> that header.
->=20
-> Compile-tested only.
->=20
-> Acked-by: Helge Deller <deller@gmx.de> # parisc
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+
+
+Le 15/10/2025 à 11:12, Leon Romanovsky a écrit :
+> From: Leon Romanovsky <leonro@nvidia.com>
+> 
+> Adapt PowerPC DMA to use physical addresses in order to prepare code
+> to removal .map_page and .unmap_page.
+> 
+> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+Non fatal comments below.
+
 > ---
->   arch/parisc/include/asm/bug.h | 2 --
->   1 file changed, 2 deletions(-)
+>   arch/powerpc/include/asm/iommu.h         |  8 ++++----
+>   arch/powerpc/kernel/dma-iommu.c          | 22 ++++++++++-----------
+>   arch/powerpc/kernel/iommu.c              | 14 +++++++-------
+>   arch/powerpc/platforms/ps3/system-bus.c  | 33 ++++++++++++++++++--------------
+>   arch/powerpc/platforms/pseries/ibmebus.c | 15 ++++++++-------
+>   arch/powerpc/platforms/pseries/vio.c     | 21 +++++++++++---------
+>   6 files changed, 60 insertions(+), 53 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
+> index b410021ad4c6..eafdd63cd6c4 100644
+> --- a/arch/powerpc/include/asm/iommu.h
+> +++ b/arch/powerpc/include/asm/iommu.h
+> @@ -274,12 +274,12 @@ extern void *iommu_alloc_coherent(struct device *dev, struct iommu_table *tbl,
+>   				  unsigned long mask, gfp_t flag, int node);
+>   extern void iommu_free_coherent(struct iommu_table *tbl, size_t size,
+>   				void *vaddr, dma_addr_t dma_handle);
+> -extern dma_addr_t iommu_map_page(struct device *dev, struct iommu_table *tbl,
+> -				 struct page *page, unsigned long offset,
+> -				 size_t size, unsigned long mask,
+> +extern dma_addr_t iommu_map_phys(struct device *dev, struct iommu_table *tbl,
+> +				 phys_addr_t phys, size_t size,
+> +				 unsigned long mask,
+>   				 enum dma_data_direction direction,
+>   				 unsigned long attrs);
 
-applied to parisc for-next git tree.
+'extern' is pointless for function prototypes.
 
-Thanks!
-Helge
+Report from checkpatch:
+
+CHECK: extern prototypes should be avoided in .h files
+#31: FILE: arch/powerpc/include/asm/iommu.h:277:
++extern dma_addr_t iommu_map_phys(struct device *dev, struct iommu_table 
+*tbl,
+
+
+> -extern void iommu_unmap_page(struct iommu_table *tbl, dma_addr_t dma_handle,
+> +extern void iommu_unmap_phys(struct iommu_table *tbl, dma_addr_t dma_handle,
+>   			     size_t size, enum dma_data_direction direction,
+>   			     unsigned long attrs);
+
+Same:
+
+CHECK: extern prototypes should be avoided in .h files
+#37: FILE: arch/powerpc/include/asm/iommu.h:282:
++extern void iommu_unmap_phys(struct iommu_table *tbl, dma_addr_t 
+dma_handle,
+
+
+
+>   
+> diff --git a/arch/powerpc/kernel/dma-iommu.c b/arch/powerpc/kernel/dma-iommu.c
+> index 0359ab72cd3b..aa3689d61917 100644
+> --- a/arch/powerpc/kernel/dma-iommu.c
+> +++ b/arch/powerpc/kernel/dma-iommu.c
+> @@ -93,28 +93,26 @@ static void dma_iommu_free_coherent(struct device *dev, size_t size,
+>   
+>   /* Creates TCEs for a user provided buffer.  The user buffer must be
+>    * contiguous real kernel storage (not vmalloc).  The address passed here
+> - * comprises a page address and offset into that page. The dma_addr_t
+> - * returned will point to the same byte within the page as was passed in.
+> + * is a physical address to that page. The dma_addr_t returned will point
+> + * to the same byte within the page as was passed in.
+>    */
+> -static dma_addr_t dma_iommu_map_page(struct device *dev, struct page *page,
+> -				     unsigned long offset, size_t size,
+> +static dma_addr_t dma_iommu_map_phys(struct device *dev, phys_addr_t phys,
+> +				     size_t size,
+>   				     enum dma_data_direction direction,
+>   				     unsigned long attrs)
+>   {
+> -	return iommu_map_page(dev, get_iommu_table_base(dev), page, offset,
+> -			      size, dma_get_mask(dev), direction, attrs);
+> +	return iommu_map_phys(dev, get_iommu_table_base(dev), phys, size,
+> +			      dma_get_mask(dev), direction, attrs);
+>   }
+>   
+> -
+> -static void dma_iommu_unmap_page(struct device *dev, dma_addr_t dma_handle,
+> +static void dma_iommu_unmap_phys(struct device *dev, dma_addr_t dma_handle,
+>   				 size_t size, enum dma_data_direction direction,
+>   				 unsigned long attrs)
+>   {
+> -	iommu_unmap_page(get_iommu_table_base(dev), dma_handle, size, direction,
+> +	iommu_unmap_phys(get_iommu_table_base(dev), dma_handle, size, direction,
+>   			 attrs);
+>   }
+>   
+> -
+>   static int dma_iommu_map_sg(struct device *dev, struct scatterlist *sglist,
+>   			    int nelems, enum dma_data_direction direction,
+>   			    unsigned long attrs)
+> @@ -211,8 +209,8 @@ const struct dma_map_ops dma_iommu_ops = {
+>   	.map_sg			= dma_iommu_map_sg,
+>   	.unmap_sg		= dma_iommu_unmap_sg,
+>   	.dma_supported		= dma_iommu_dma_supported,
+> -	.map_page		= dma_iommu_map_page,
+> -	.unmap_page		= dma_iommu_unmap_page,
+> +	.map_phys		= dma_iommu_map_phys,
+> +	.unmap_phys		= dma_iommu_unmap_phys,
+>   	.get_required_mask	= dma_iommu_get_required_mask,
+>   	.mmap			= dma_common_mmap,
+>   	.get_sgtable		= dma_common_get_sgtable,
+> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+> index 244eb4857e7f..6b5f4b72ce97 100644
+> --- a/arch/powerpc/kernel/iommu.c
+> +++ b/arch/powerpc/kernel/iommu.c
+> @@ -848,12 +848,12 @@ EXPORT_SYMBOL_GPL(iommu_tce_table_put);
+>   
+>   /* Creates TCEs for a user provided buffer.  The user buffer must be
+>    * contiguous real kernel storage (not vmalloc).  The address passed here
+> - * comprises a page address and offset into that page. The dma_addr_t
+> - * returned will point to the same byte within the page as was passed in.
+> + * is physical address into that page. The dma_addr_t returned will point
+> + * to the same byte within the page as was passed in.
+>    */
+> -dma_addr_t iommu_map_page(struct device *dev, struct iommu_table *tbl,
+> -			  struct page *page, unsigned long offset, size_t size,
+> -			  unsigned long mask, enum dma_data_direction direction,
+> +dma_addr_t iommu_map_phys(struct device *dev, struct iommu_table *tbl,
+> +			  phys_addr_t phys, size_t size, unsigned long mask,
+> +			  enum dma_data_direction direction,
+>   			  unsigned long attrs)
+>   {
+>   	dma_addr_t dma_handle = DMA_MAPPING_ERROR;
+> @@ -863,7 +863,7 @@ dma_addr_t iommu_map_page(struct device *dev, struct iommu_table *tbl,
+>   
+>   	BUG_ON(direction == DMA_NONE);
+>   
+> -	vaddr = page_address(page) + offset;
+> +	vaddr = phys_to_virt(phys);
+>   	uaddr = (unsigned long)vaddr;
+>   
+>   	if (tbl) {
+> @@ -890,7 +890,7 @@ dma_addr_t iommu_map_page(struct device *dev, struct iommu_table *tbl,
+>   	return dma_handle;
+>   }
+>   
+> -void iommu_unmap_page(struct iommu_table *tbl, dma_addr_t dma_handle,
+> +void iommu_unmap_phys(struct iommu_table *tbl, dma_addr_t dma_handle,
+>   		      size_t size, enum dma_data_direction direction,
+>   		      unsigned long attrs)
+>   {
+> diff --git a/arch/powerpc/platforms/ps3/system-bus.c b/arch/powerpc/platforms/ps3/system-bus.c
+> index afbaabf182d0..f4f3477d3a23 100644
+> --- a/arch/powerpc/platforms/ps3/system-bus.c
+> +++ b/arch/powerpc/platforms/ps3/system-bus.c
+> @@ -551,18 +551,20 @@ static void ps3_free_coherent(struct device *_dev, size_t size, void *vaddr,
+>   
+>   /* Creates TCEs for a user provided buffer.  The user buffer must be
+>    * contiguous real kernel storage (not vmalloc).  The address passed here
+> - * comprises a page address and offset into that page. The dma_addr_t
+> - * returned will point to the same byte within the page as was passed in.
+> + * is physical address to that hat page. The dma_addr_t returned will point
+> + * to the same byte within the page as was passed in.
+>    */
+>   
+> -static dma_addr_t ps3_sb_map_page(struct device *_dev, struct page *page,
+> -	unsigned long offset, size_t size, enum dma_data_direction direction,
+> -	unsigned long attrs)
+> +static dma_addr_t ps3_sb_map_phys(struct device *_dev, phys_addr_t phys,
+> +	size_t size, enum dma_data_direction direction, unsigned long attrs)
+
+CHECK: Alignment should match open parenthesis
+#151: FILE: arch/powerpc/platforms/ps3/system-bus.c:559:
++static dma_addr_t ps3_sb_map_phys(struct device *_dev, phys_addr_t phys,
++	size_t size, enum dma_data_direction direction, unsigned long attrs)
+
+
+
+>   {
+>   	struct ps3_system_bus_device *dev = ps3_dev_to_system_bus_dev(_dev);
+>   	int result;
+>   	dma_addr_t bus_addr;
+> -	void *ptr = page_address(page) + offset;
+> +	void *ptr = phys_to_virt(phys);
+> +
+> +	if (unlikely(attrs & DMA_ATTR_MMIO))
+> +		return DMA_MAPPING_ERROR;
+>   
+>   	result = ps3_dma_map(dev->d_region, (unsigned long)ptr, size,
+>   			     &bus_addr,
+> @@ -577,8 +579,8 @@ static dma_addr_t ps3_sb_map_page(struct device *_dev, struct page *page,
+>   	return bus_addr;
+>   }
+>   
+> -static dma_addr_t ps3_ioc0_map_page(struct device *_dev, struct page *page,
+> -				    unsigned long offset, size_t size,
+> +static dma_addr_t ps3_ioc0_map_phys(struct device *_dev, phys_addr_t phys,
+> +				    size_t size,
+>   				    enum dma_data_direction direction,
+>   				    unsigned long attrs)
+>   {
+> @@ -586,7 +588,10 @@ static dma_addr_t ps3_ioc0_map_page(struct device *_dev, struct page *page,
+>   	int result;
+>   	dma_addr_t bus_addr;
+>   	u64 iopte_flag;
+> -	void *ptr = page_address(page) + offset;
+> +	void *ptr = phys_to_virt(phys);
+> +
+> +	if (unlikely(attrs & DMA_ATTR_MMIO))
+> +		return DMA_MAPPING_ERROR;
+>   
+>   	iopte_flag = CBE_IOPTE_M;
+>   	switch (direction) {
+> @@ -613,7 +618,7 @@ static dma_addr_t ps3_ioc0_map_page(struct device *_dev, struct page *page,
+>   	return bus_addr;
+>   }
+>   
+> -static void ps3_unmap_page(struct device *_dev, dma_addr_t dma_addr,
+> +static void ps3_unmap_phys(struct device *_dev, dma_addr_t dma_addr,
+>   	size_t size, enum dma_data_direction direction, unsigned long attrs)
+
+CHECK: Alignment should match open parenthesis
+#193: FILE: arch/powerpc/platforms/ps3/system-bus.c:622:
++static void ps3_unmap_phys(struct device *_dev, dma_addr_t dma_addr,
+  	size_t size, enum dma_data_direction direction, unsigned long attrs)
+
+
+
+>   {
+>   	struct ps3_system_bus_device *dev = ps3_dev_to_system_bus_dev(_dev);
+> @@ -690,8 +695,8 @@ static const struct dma_map_ops ps3_sb_dma_ops = {
+>   	.map_sg = ps3_sb_map_sg,
+>   	.unmap_sg = ps3_sb_unmap_sg,
+>   	.dma_supported = ps3_dma_supported,
+> -	.map_page = ps3_sb_map_page,
+> -	.unmap_page = ps3_unmap_page,
+> +	.map_phys = ps3_sb_map_phys,
+> +	.unmap_phys = ps3_unmap_phys,
+>   	.mmap = dma_common_mmap,
+>   	.get_sgtable = dma_common_get_sgtable,
+>   	.alloc_pages_op = dma_common_alloc_pages,
+> @@ -704,8 +709,8 @@ static const struct dma_map_ops ps3_ioc0_dma_ops = {
+>   	.map_sg = ps3_ioc0_map_sg,
+>   	.unmap_sg = ps3_ioc0_unmap_sg,
+>   	.dma_supported = ps3_dma_supported,
+> -	.map_page = ps3_ioc0_map_page,
+> -	.unmap_page = ps3_unmap_page,
+> +	.map_phys = ps3_ioc0_map_phys,
+> +	.unmap_phys = ps3_unmap_phys,
+>   	.mmap = dma_common_mmap,
+>   	.get_sgtable = dma_common_get_sgtable,
+>   	.alloc_pages_op = dma_common_alloc_pages,
+> diff --git a/arch/powerpc/platforms/pseries/ibmebus.c b/arch/powerpc/platforms/pseries/ibmebus.c
+> index 3436b0af795e..cad2deb7e70d 100644
+> --- a/arch/powerpc/platforms/pseries/ibmebus.c
+> +++ b/arch/powerpc/platforms/pseries/ibmebus.c
+> @@ -86,17 +86,18 @@ static void ibmebus_free_coherent(struct device *dev,
+>   	kfree(vaddr);
+>   }
+>   
+> -static dma_addr_t ibmebus_map_page(struct device *dev,
+> -				   struct page *page,
+> -				   unsigned long offset,
+> +static dma_addr_t ibmebus_map_phys(struct device *dev, phys_addr_t phys,
+>   				   size_t size,
+>   				   enum dma_data_direction direction,
+>   				   unsigned long attrs)
+>   {
+> -	return (dma_addr_t)(page_address(page) + offset);
+> +	if (attrs & DMA_ATTR_MMIO)
+> +		return DMA_MAPPING_ERROR;
+> +
+> +	return (dma_addr_t)(phys_to_virt(phys));
+>   }
+>   
+> -static void ibmebus_unmap_page(struct device *dev,
+> +static void ibmebus_unmap_phys(struct device *dev,
+>   			       dma_addr_t dma_addr,
+>   			       size_t size,
+>   			       enum dma_data_direction direction,
+> @@ -146,8 +147,8 @@ static const struct dma_map_ops ibmebus_dma_ops = {
+>   	.unmap_sg           = ibmebus_unmap_sg,
+>   	.dma_supported      = ibmebus_dma_supported,
+>   	.get_required_mask  = ibmebus_dma_get_required_mask,
+> -	.map_page           = ibmebus_map_page,
+> -	.unmap_page         = ibmebus_unmap_page,
+> +	.map_phys           = ibmebus_map_phys,
+> +	.unmap_phys         = ibmebus_unmap_phys,
+>   };
+>   
+>   static int ibmebus_match_path(struct device *dev, const void *data)
+> diff --git a/arch/powerpc/platforms/pseries/vio.c b/arch/powerpc/platforms/pseries/vio.c
+> index ac1d2d2c9a88..18cffac5468f 100644
+> --- a/arch/powerpc/platforms/pseries/vio.c
+> +++ b/arch/powerpc/platforms/pseries/vio.c
+> @@ -512,18 +512,21 @@ static void vio_dma_iommu_free_coherent(struct device *dev, size_t size,
+>   	vio_cmo_dealloc(viodev, roundup(size, PAGE_SIZE));
+>   }
+>   
+> -static dma_addr_t vio_dma_iommu_map_page(struct device *dev, struct page *page,
+> -                                         unsigned long offset, size_t size,
+> -                                         enum dma_data_direction direction,
+> -                                         unsigned long attrs)
+> +static dma_addr_t vio_dma_iommu_map_phys(struct device *dev, phys_addr_t phys,
+> +					 size_t size,
+> +					 enum dma_data_direction direction,
+> +					 unsigned long attrs)
+>   {
+>   	struct vio_dev *viodev = to_vio_dev(dev);
+>   	struct iommu_table *tbl = get_iommu_table_base(dev);
+>   	dma_addr_t ret = DMA_MAPPING_ERROR;
+>   
+> +	if (unlikely(attrs & DMA_ATTR_MMIO))
+> +		return ret;
+> +
+>   	if (vio_cmo_alloc(viodev, roundup(size, IOMMU_PAGE_SIZE(tbl))))
+>   		goto out_fail;
+> -	ret = iommu_map_page(dev, tbl, page, offset, size, dma_get_mask(dev),
+> +	ret = iommu_map_phys(dev, tbl, phys, size, dma_get_mask(dev),
+>   			direction, attrs);
+
+CHECK: Alignment should match open parenthesis
+#285: FILE: arch/powerpc/platforms/pseries/vio.c:530:
++	ret = iommu_map_phys(dev, tbl, phys, size, dma_get_mask(dev),
+  			direction, attrs);
+
+
+>   	if (unlikely(ret == DMA_MAPPING_ERROR))
+>   		goto out_deallocate;
+> @@ -536,7 +539,7 @@ static dma_addr_t vio_dma_iommu_map_page(struct device *dev, struct page *page,
+>   	return DMA_MAPPING_ERROR;
+>   }
+>   
+> -static void vio_dma_iommu_unmap_page(struct device *dev, dma_addr_t dma_handle,
+> +static void vio_dma_iommu_unmap_phys(struct device *dev, dma_addr_t dma_handle,
+>   				     size_t size,
+>   				     enum dma_data_direction direction,
+>   				     unsigned long attrs)
+> @@ -544,7 +547,7 @@ static void vio_dma_iommu_unmap_page(struct device *dev, dma_addr_t dma_handle,
+>   	struct vio_dev *viodev = to_vio_dev(dev);
+>   	struct iommu_table *tbl = get_iommu_table_base(dev);
+>   
+> -	iommu_unmap_page(tbl, dma_handle, size, direction, attrs);
+> +	iommu_unmap_phys(tbl, dma_handle, size, direction, attrs);
+>   	vio_cmo_dealloc(viodev, roundup(size, IOMMU_PAGE_SIZE(tbl)));
+>   }
+>   
+> @@ -605,8 +608,8 @@ static const struct dma_map_ops vio_dma_mapping_ops = {
+>   	.free              = vio_dma_iommu_free_coherent,
+>   	.map_sg            = vio_dma_iommu_map_sg,
+>   	.unmap_sg          = vio_dma_iommu_unmap_sg,
+> -	.map_page          = vio_dma_iommu_map_page,
+> -	.unmap_page        = vio_dma_iommu_unmap_page,
+> +	.map_phys          = vio_dma_iommu_map_phys,
+> +	.unmap_phys        = vio_dma_iommu_unmap_phys,
+>   	.dma_supported     = dma_iommu_dma_supported,
+>   	.get_required_mask = dma_iommu_get_required_mask,
+>   	.mmap		   = dma_common_mmap,
+> 
+
 
