@@ -1,47 +1,47 @@
-Return-Path: <linux-parisc+bounces-4292-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4293-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDB0C6D28A
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Nov 2025 08:36:28 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04267C6D2A5
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Nov 2025 08:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 1CED62D285
-	for <lists+linux-parisc@lfdr.de>; Wed, 19 Nov 2025 07:35:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 336023679A9
+	for <lists+linux-parisc@lfdr.de>; Wed, 19 Nov 2025 07:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A9229BD96;
-	Wed, 19 Nov 2025 07:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F8C329C48;
+	Wed, 19 Nov 2025 07:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UPZyoHTW"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="W9W/9jbe"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3BE2E8B7A
-	for <linux-parisc@vger.kernel.org>; Wed, 19 Nov 2025 07:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D2F321F31
+	for <linux-parisc@vger.kernel.org>; Wed, 19 Nov 2025 07:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763537602; cv=none; b=VPy9XW4Ld8peNpUYGxUuinD0HOtew7E/Ezgtc6pp3TgKWq000cBYRICz0w1KB4qxvKIi7lxkw7rrp+29PM29aNAm8DCgRoOt0Qgn6JLBTz/kwKB9emZyCD0calyOtjv11UfEkdQ14EclXRg6xsbkFqmHUdootzHmnhGkRX7hLVE=
+	t=1763537612; cv=none; b=GFoDU36HGb/RyqA9wsFULmh1qX6lGhTlAwgaxWEjaAeLtsUrtVdd1Q5KJ8AbNTbLmX+I3O4XFHLJ4EejAkUt3lM/O/M5QlB7WLk057MGSbSeB9DM5MPvvxm4x+yakVyXJ3gTME0K78DibTpCzMKsOODP4+SunXt1lIp0/gDcVX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763537602; c=relaxed/simple;
-	bh=JBGvtd6lIDpE88cwSn1qvAi5ZYQhW95obYt/hFyoa6o=;
+	s=arc-20240116; t=1763537612; c=relaxed/simple;
+	bh=L77VHJOsxYGfJl12t5E1P3bJEqsaMDW4GIC4V2YxBI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jr3EdBE51wVKyiUDy89SG+vEdbKv1xkIWDC1HwLYRUl9P/zZ9r+JAEgBvGk8dEhd2wvNGX9AG4k3fmbDIsfsGpnfG0EpGowYtjY+3pf/u/9H8YUz90uBjfgUUaqJOi7vWZvabdhYKHVI0A7nfjCBmQU7uJ2qtwkrTl+20u6WvNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UPZyoHTW; arc=none smtp.client-ip=91.218.175.184
+	 MIME-Version; b=ZSe8me9yUty4UxyPx7P91FWgpPYnlIALX7hyYPJwOSRKRsBLcVbsvWqYJgSfDMx22WudYZi8VJUIUB3najEa0KsNl6t/zn+Bsji+NGz6AErI1poxUgosr9ev92Yw2VnHOdTXE+ZPF+u9lS31Roxgw8UTt2Odv1orqJF38kSHtpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=W9W/9jbe; arc=none smtp.client-ip=91.218.175.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1763537598;
+	t=1763537608;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8PNYJl+4luznSu7Qs41hn6BnOWw9fSYJ1f3qY5qKkjU=;
-	b=UPZyoHTWlvcojbrasT0m6wZAA4vVJvUtdfGcqOc224298mAJZj8RgoKfcBwgHvUNwVVlYY
-	xUXSg/BFyvnGHDg1OT0FG3OvfiUEgAljF44L6ANy/FULPK7Dli6T59Yj/3HWliWxACip+2
-	cxcFG/pEkqS5KVkntRXLnkKsYrtQDIY=
+	bh=nUnrWplutHBzvgR2dvaxPt91n3EUIlT8RN+kjzr9YeU=;
+	b=W9W/9jbeN29NpXBktlOeuZdun6gLuLfTHYgZNBEnwmUPS2C7HbpVqgtF+wOLSoQrCR+nsv
+	lZVMJmsyMyvFqrgawPm3nejPEj5RiAp+GDf2+i+BBoiZ9m3cs51DJAzOJ7V5PQ2Bu8uOUa
+	OEIRgNRI0+JvdYgQt5MLrxebdOjajls=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: will@kernel.org,
 	aneesh.kumar@kernel.org,
@@ -61,11 +61,12 @@ Cc: linux-arch@vger.kernel.org,
 	linux-parisc@vger.kernel.org,
 	linux-um@lists.infradead.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH v2 5/7] parisc: mm: enable MMU_GATHER_RCU_TABLE_FREE
-Date: Wed, 19 Nov 2025 15:31:22 +0800
-Message-ID: <74f0e72f11347656a9de0d4b9e2bccc17e4338a7.1763537007.git.zhengqi.arch@bytedance.com>
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>
+Subject: [PATCH v2 6/7] um: mm: enable MMU_GATHER_RCU_TABLE_FREE
+Date: Wed, 19 Nov 2025 15:31:23 +0800
+Message-ID: <16ab9e6ce0febaf2fc383b7e09e3f1fb2ad63a40.1763537007.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1763537007.git.zhengqi.arch@bytedance.com>
 References: <cover.1763537007.git.zhengqi.arch@bytedance.com>
 Precedence: bulk
@@ -85,40 +86,25 @@ first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
 PT_RECLAIM feature, which resolves this problem.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
 ---
- arch/parisc/Kconfig           | 1 +
- arch/parisc/include/asm/tlb.h | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/um/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 47fd9662d8005..62d5a89d5c7bc 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -79,6 +79,7 @@ config PARISC
- 	select GENERIC_CLOCKEVENTS
- 	select CPU_NO_EFFICIENT_FFS
+diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+index 097c6a6265ef3..47a41bc77bb24 100644
+--- a/arch/um/Kconfig
++++ b/arch/um/Kconfig
+@@ -41,6 +41,7 @@ config UML
+ 	select HAVE_SYSCALL_TRACEPOINTS
  	select THREAD_INFO_IN_TASK
+ 	select SPARSE_IRQ
 +	select MMU_GATHER_RCU_TABLE_FREE
- 	select NEED_DMA_MAP_STATE
- 	select NEED_SG_DMA_LENGTH
- 	select HAVE_ARCH_KGDB
-diff --git a/arch/parisc/include/asm/tlb.h b/arch/parisc/include/asm/tlb.h
-index 44235f367674d..4501fee0a8fa4 100644
---- a/arch/parisc/include/asm/tlb.h
-+++ b/arch/parisc/include/asm/tlb.h
-@@ -5,8 +5,8 @@
- #include <asm-generic/tlb.h>
  
- #if CONFIG_PGTABLE_LEVELS == 3
--#define __pmd_free_tlb(tlb, pmd, addr)	pmd_free((tlb)->mm, pmd)
-+#define __pmd_free_tlb(tlb, pmd, addr)	tlb_remove_ptdesc((tlb), virt_to_ptdesc(pmd))
- #endif
--#define __pte_free_tlb(tlb, pte, addr)	pte_free((tlb)->mm, pte)
-+#define __pte_free_tlb(tlb, pte, addr)	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
- 
- #endif
+ config MMU
+ 	bool
 -- 
 2.20.1
 
