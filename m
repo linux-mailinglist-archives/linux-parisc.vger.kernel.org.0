@@ -1,144 +1,206 @@
-Return-Path: <linux-parisc+bounces-4308-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4309-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738E0C7BC00
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Nov 2025 22:30:34 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51868C7E45F
+	for <lists+linux-parisc@lfdr.de>; Sun, 23 Nov 2025 17:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E6F9A34237A
-	for <lists+linux-parisc@lfdr.de>; Fri, 21 Nov 2025 21:28:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ED1AC4E1DEB
+	for <lists+linux-parisc@lfdr.de>; Sun, 23 Nov 2025 16:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5EB533D6;
-	Fri, 21 Nov 2025 21:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9582522579E;
+	Sun, 23 Nov 2025 16:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b="eZRx2r/y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UDkHaJr8"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from cmx-mtlrgo002.bell.net (mta-mtl-008.bell.net [209.71.208.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179E9254AE4
-	for <linux-parisc@vger.kernel.org>; Fri, 21 Nov 2025 21:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.71.208.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67174A35
+	for <linux-parisc@vger.kernel.org>; Sun, 23 Nov 2025 16:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763760513; cv=none; b=e+IX4o5sdKdt5H8wtEfE+PXNl7uxMaS1huvw3xCNBWpHH0MF35jqu4UD94t/K+bEd9n8nx7HC8w1sHsQ25bSK0M/fdbb7oamWflS6AkC2D7irOmM0BuQY8fwPN+/6aZhvalwx7SNa2aP/E3mEfvs7zvPQ/YszMn+lUI5y1pl+1k=
+	t=1763916165; cv=none; b=nUo2og1Erm22bo9vTLNnvrZjVxx/fvQADDvj5k+wxdIhy15GwnqcHpDgLCXXfcSAJeK2TpIw4/7I1OM4yxUMqLtNznb0yjEP2YPXW3EyvSm3ic3Ei03BATLimC24alrUxAUxceLwqY/SoqT7YfrhICKfZcQCFq26kKuXs8EPDMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763760513; c=relaxed/simple;
-	bh=fruq9lk1DW0pPBDycjucgVA+7+GFOM5LibKvH/hq7uo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=uXOw7NIONugdgAzoKGTCmRm3FSPEZpNQSPHHs3QnkuXr9kNlKGoYH5js7T11nHqbs++QHRVquY6SKy2GGqkWjXEHCZB2EPjtXxz4yAi1Jou9XMzhsAU6Eoh+1RhbcbS4I5mIFCNhT0CwBnFKHh5Mg1aeR1uFBItvte5HrAxO6C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net; spf=pass smtp.mailfrom=bell.net; dkim=pass (2048-bit key) header.d=bell.net header.i=@bell.net header.b=eZRx2r/y; arc=none smtp.client-ip=209.71.208.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bell.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bell.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bell.net; s=selector1; t=1763760511; 
-        bh=MFajJ6IAQ1ZW5891ypkRYHmQSrzPuCEsv/7FvedAd/4=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:In-Reply-To:Content-Type;
-        b=eZRx2r/yKp6IIfsU1Q2Zuu77YzKQPdOygsenaUA8egDwle4Y8X9CukAxC1A0BU8sCnlGDJuw3dhGj4AEYFpfALv97UIkBVA8GDJR5gsYX6EKobwQfwMw+vtvEiisCXWzmQfeJstglEyj9VjwiliUVGn4ZHUjOURthCUXR8bDOaNilUo3J72kuJi8F4CgRiES+QGo1ZBuN4yTqAB3eaJjdPVfjGGkAyEv/vFPSWG+3q8BEXsJDXpWOxr5IvwaVXDG+G/c8HuyW+4k/LAfotDsH7NMTD4tNIVg5LQ5oflkjQkjSdpHPABZ8SaAqCCQElhZSv9cEsIhtFOlsaDm1prXbA==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-RG-Env-Sender: dave.anglin@bell.net
-X-RG-Rigid: 690E03AE00EFE9AA
-X-RazorGate-Vade: dmFkZTEX3RxiknNTgspvFoSE9d55ZuD081AdjdERb7yoxFyD3IcUdDT29AziL7dzmUU4PqdJeA2ZS2Y/f/hjf8auql8QTAzxP9mwUNdrteR9tRJx+/JUoWSOGKXKgXIQnqENQT6aww+FfghmmzvkLkPQ99UPJUVyKFqV3jtqbFOCsW7P8lKj4kQ4udlX5tD9+F2TTe+z2/qGxDYfG9ZSf0xoOo/X6m1Dal8W6ArJj+JOSomSNYJ881bAgYXWn1TykbV0U3ASWgpa5PFx8s9SisXGnV0PsK4zhi00dCfnqZynRkNzPRZ2srXnklM/ZvuIkJBdkBu9TFwyEbyYk7n5/6toGxrySVnb534WEaSbLu/sxhyJl/X78BZampQ2Eu9YK8FIbx9vKuI5pmpPw8x3yyEM9liZQWLyJnEze5xMnPaj88ccOE1LDsK79fZjWedIPk9RdJmdGcwe+0b9A57ZJ7hcoO7/WxItCCtNcm5WSTFToF+YAajt1JHQxOqNFTzqeu8xQwuKrt/ym2aFHmt1Vbmnp4stUlQ6j2B4byMpj0O3BbbLSdQsz3S5RnbNHUf5KvCNZirEEu4Az9O3BNaDSZI5LzDHdtvgunpS5i22gJJV1ZDyvJWqzhzTD5A/nbUopQDRX7fhnbSPdz+Y1lT0z9aLgTgDvnS1dVCaCCJAzZP61/nT8g
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from [192.168.2.49] (142.126.189.246) by cmx-mtlrgo002.bell.net (authenticated as dave.anglin@bell.net)
-        id 690E03AE00EFE9AA; Fri, 21 Nov 2025 16:17:25 -0500
-Message-ID: <12543787-dbb0-403c-bdfd-85e75ff40b2a@bell.net>
-Date: Fri, 21 Nov 2025 16:17:25 -0500
+	s=arc-20240116; t=1763916165; c=relaxed/simple;
+	bh=cSYsTc9rurDaCIOyxSlxp078tfD177G4C6LbUYLDv0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fFdWHdilqMgy0OswgvJka/Z2g7gMnfcGP9KFt3v2aKoZug1qp+vwF0lVWuOTd7JSqo0wYbYmOO4KTTcGxuICPQYBZQaQgz7iY+Rjmgi3swOh4v2yewdubsweyo3u8PFpK9dVN1zP2VNdENSBylqik0EPIhggGCxXMCQdKjYSPD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UDkHaJr8; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-bc0e89640b9so2279986a12.1
+        for <linux-parisc@vger.kernel.org>; Sun, 23 Nov 2025 08:42:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763916163; x=1764520963; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=d0j1F7QCP+4D9igowWdEVkA8R7gqxJbBFhGcJ/oVN5w=;
+        b=UDkHaJr8FqzfLPqHrkAazWysjgU8Bq2vpb3dB8rsvJjRUPWTUWPcmdE3ZjPMLbUewl
+         kmngDOWFzaJ6BxyBH7ulGc4dfOPLVGPvRvY7fLGbJNoZ7xsZ2blAo14Zj5kGZI51Zgt+
+         knzeVhRxZZlcQn/dGazFok5rqbYIy+b3YCQWEiruxa1N9LrNFjSkejMXdBmUcvh4gOrD
+         KE5d5qVK+pwR1WADPAFPTN+RF3DqKrG1QhwLKpwMAj0Wwi7wwiDmk7YpNZ0fQweJtpL2
+         GXajrkykBD5DRMIEblGYDabb4quRh8ZHQXB9pzXEuYwQsx8tUBAABv1qF8dohdwJb1F7
+         H/SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763916163; x=1764520963;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=d0j1F7QCP+4D9igowWdEVkA8R7gqxJbBFhGcJ/oVN5w=;
+        b=DFAbKKeE9HjHkKukebvbrziHJDSPE+qIgHtrRS2+NjwitUeXk0uchW0YgZvkYZIAJ3
+         BryUNWagfmKMbrkAKFajX0bbG2uIEGdNOv4RKIStDygzP0H2OlxlJsttkXTkq2+xh7yn
+         Ib1WHmfb8yWvwP8/nwvZu9QRIApNDD9sNAc2oU363dAQ46DjSEhVWs3jzh8C/762TCDu
+         zp2zcL6+B8/9Uc+oO4FYi3KwHF4b/zYubkabMJ/bXYQqjLIzue4EMmYlRN7WN+uduyWk
+         uwi4QmFKskyRXxQuLm3Kp2cS8s5ysn9n55nhonPQoogFd6WRS5Q98pRqsOEIwT1W2ACW
+         iDrg==
+X-Forwarded-Encrypted: i=1; AJvYcCWFk4TjdWuNsZ4/38tyRjIqI5HhbM2LE5KAIhWC4CO/3L539cCmgmhNTEIv6kPFXla0dz/MfeqovSYUCM8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg8lz2bXCfdcFvIotvepFHbhRK3zKs+ZymCoqsfvKHwryCZtdi
+	r8+dpaSdr55+wQPsHsP7dq8ADN6gDaREt/SAKhaD9fjGDUS+nNbYLK1e
+X-Gm-Gg: ASbGnct4MlA8Phyv5zzW5BN893VGfucJJ5/KEAgktU/FgPDVkm4HSer3CblOw6AJZ++
+	LuA+TLKGscfZzy/XoZb0qsWF8EDvbSy8YB4rEvN3olgmtQt9X9Wkfr/A6LVxfCJRV009DZ0VKQw
+	+LC1/+CE0Uo/yepeWJ7UJnGZlkUO70/6FHRPDhzRHbXIZMg2uXL/p4IIVU45nhWME0Wnpq/5h6Y
+	kGZH7JnCBYgcW0l+nhsAY5CUk+WSv++I7rcB7PBksduf9Y8GYCfvDo8QelC1WoXhqLu2TVfXFC5
+	0DoJSv3hvYHBwIKfvVVi9QZosAqfoRLj0HRtqNilPbObOd0KEYmyG/MmYehVftHc4WLuhBLSuM+
+	nellNY/3bjcC3AIGPzANy20uziwI2GSTPdpIDLz2lC8AafwBB7yb3IKbadFNERrN6cPBVFuPV/k
+	oj0Iw7ilCfONCaCZ7pM/C1SAU=
+X-Google-Smtp-Source: AGHT+IE13jqQnGMBUZ2qpPc1TDhmtseXk7/7dxNiq5aM2ZmAaTpjpGFXTOpMGpzVp9MUYxu7Pd26Pg==
+X-Received: by 2002:a05:7022:2509:b0:119:e56c:18a1 with SMTP id a92af1059eb24-11c9d60f0a7mr5105569c88.9.1763916162816;
+        Sun, 23 Nov 2025 08:42:42 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11c93cd457dsm56769583c88.0.2025.11.23.08.42.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Nov 2025 08:42:41 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Sun, 23 Nov 2025 08:42:39 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sam Ravnborg <sam@ravnborg.org>, dakr@redhat.com,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-parisc@vger.kernel.org,
+	Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH v9 02/13] PCI: Add devres helpers for iomap table
+ [resulting in backtraces on HPPA]
+Message-ID: <16cd212f-6ea0-471d-bf32-34f55d7292fe@roeck-us.net>
+References: <20240613115032.29098-1-pstanner@redhat.com>
+ <20240613115032.29098-3-pstanner@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: PIDFD_GET_INFO
-To: Helge Deller <deller@gmx.de>, linux-parisc
- <linux-parisc@vger.kernel.org>, Christian Brauner <brauner@kernel.org>
-References: <2380a8de-5284-49f3-8155-f7fb9496b422@bell.net>
- <092acd39-3783-4f33-a26d-e6b4f8dfdf1a@gmx.de>
-From: John David Anglin <dave.anglin@bell.net>
-Content-Language: en-US
-Autocrypt: addr=dave.anglin@bell.net; keydata=
- xsFNBFJfN1MBEACxBrfJ+5RdCO+UQOUARQLSsnVewkvmNlJRgykqJkkI5BjO2hhScE+MHoTK
- MoAeKwoLfBwltwoohH5RKxDSAIWajTY5BtkJBT23y0hm37fN2JXHGS4PwwgHTSz63cu5N1MK
- n8DZ3xbXFmqKtyaWRwdA40dy11UfI4xzX/qWR3llW5lp6ERdsDDGHm5u/xwXdjrAilPDk/av
- d9WmA4s7TvM/DY3/GCJyNp0aJPcLShU2+1JgBxC6NO6oImVwW07Ico89ETcyaQtlXuGeXYTK
- UoKdEHQsRf669vwcV5XbmQ6qhur7QYTlOOIdDT+8zmBSlqBLLe09soATDciJnyyXDO1Nf/hZ
- gcI3lFX86i8Fm7lQvp2oM5tLsODZUTWVT1qAFkHCOJknVwqRZ8MfOvaTE7L9hzQ9QKgIKrSE
- FRgf+gs1t1vQMRHkIxVWb730C0TGiMGNn2oRUV5O5QEdb/tnH0Te1l+hX540adKZ8/CWzzW9
- vcx+qD9IWLRyZMsM9JnmAIvYv06+YIcdpbRYOngWPd2BqvktzIs9mC4n9oU6WmUhBIaGOGnt
- t/49bTRtJznqm/lgqxtE2NliJN79dbZJuJWe5HkjVa7mP4xtsG59Rh2hat9ByUfROOfoZ0dS
- sVHF/N6NLWcf44trK9HZdT/wUeftEWtMV9WqxIwsA4cgSHFR2QARAQABzTdKb2huIERhdmlk
- IEFuZ2xpbiAoRGViaWFuIFBvcnRzKSA8ZGF2ZS5hbmdsaW5AYmVsbC5uZXQ+wsF3BBMBCAAh
- BQJSXzdTAhsDBQsJCAcDBRUKCQgLBRYCAwEAAh4BAheAAAoJEF2/za5fGU3xs/4P/15sNizR
- ukZLNYoeGAd6keRtNcEcVGEpRgzc/WYlXCRTEjRknMvmCu9z13z8qB9Y9N4JrPdp+NQj5HEs
- ODPI+1w1Mjj9R2VZ1v7suFwhjxMTUQUjCsgna1H+zW/UFsrL5ERX2G3aUKlVdYmSWapeGeFL
- xSMPzawPEDsbWzBzYLSHUOZexMAxoJYWnpN9JceEcGvK1SU2AaGkhomFoPfEf7Ql1u3Pgzie
- ClWEr2QHl+Ku1xW0qx5OLKHxntaQiu30wKHBcsF0Zx2uVGYoINJl/syazfZyKTdbmJnEYyNa
- Bdbn7B8jIkVCShLOWJ8AQGX/XiOoL/oE9pSZ60+MBO9qd18TGYByj0X2PvH+OyQGul5zYM7Q
- 7lT97PEzh8xnib49zJVVrKDdJds/rxFwkcHdeppRkxJH0+4T0GnU2IZsEkvpRQNJAEDmEE8n
- uRfssr7RudZQQwaBugUGaoouVyFxzCxdpSYL6zWHA51VojvJYEBQDuFNlUCqet9LtNlLKx2z
- CAKmUPTaDwPcS3uOywOW7WZrAGva1kz9lzxZ+GAwgh38HAFqQT8DQvW8jnBBG4m4q7lbaum3
- znERv7kcfKWoWS7fzxLNTIitrbpYA3E7Zl9D2pDV3v55ZQcO/M35K9teRo6glrtFDU/HXM+r
- ABbh8u9UnADbPmJr9nb7J0tZUSS/zsFNBFJfN1MBEADBzhVn4XyGkPAaFbLPcMUfwcIgvvPF
- UsLi9Q53H/F00cf7BkMY40gLEXvsvdUjAFyfas6z89gzVoTUx3HXkJTIDTiPuUc1TOdUpGYP
- hlftgU+UqW5O8MMvKM8gx5qn64DU0UFcS+7/CQrKOJmzktr/72g98nVznf5VGysa44cgYeoA
- v1HuEoqGO9taA3Io1KcGrzr9cAZtlpwj/tcUJlc6H5mqPHn2EdWYmJeGvNnFtxd0qJDmxp5e
- YVe4HFNjUwsb3oJekIUopDksAP41RRV0FM/2XaPatkNlTZR2krIVq2YNr0dMU8MbMPxGHnI9
- b0GUI+T/EZYeFsbx3eRqjv1rnNg2A6kPRQpn8dN3BKhTR5CA7E/cs+4kTmV76aHpW8m/NmTc
- t7KNrkMKfi+luhU2P/sKh7Xqfbcs7txOWB2V4/sbco00PPxWr20JCA5hYidaKGyQxuXdPUlQ
- Qja4WJFnAtBhh3Oajgwhbvd6S79tz1acjNXZ89b8IN7yDm9sQ+4LhWoUQhB5EEUUUVQTrzYS
- yTGN1YTTO5IUU5UJHb5WGMnSPLLArASctOE01/FYnnOGeU+GFIeQp91p+Jhd07hUr6KWYeJY
- OgEmu+K8SyjfggCWdo8aGy0H3Yr0YzaHeK2HrfC3eZcUuo+yDW3tnrNwM1rd1i3F3+zJK18q
- GnBxEQARAQABwsFfBBgBCAAJBQJSXzdTAhsMAAoJEF2/za5fGU3xNDQP/ikzh1NK/UBrWtpN
- yXLbype4k5/zyQd9FIBxAOYEOogfKdkp+Yc66qNf36gO6vsokxsDXU9me1n8tFoB/DCdzKbQ
- /RjKQRMNNR4fT2Q9XV6GZYSL/P2A1wzDW06tEI+u+1dV40ciQULQ3ZH4idBW3LdN+nloQf/C
- qoYkOf4WoLyhSzW7xdNPZqiJCAdcz9djN79FOz8US+waBCJrL6q5dFSvvsYj6PoPJkCgXhiJ
- hI91/ERMuK9oA1oaBxCvuObBPiFlBDNXZCwmUk6qzLDjfZ3wdiZCxc5g7d2e2taBZw/MsKFc
- k+m6bN5+Hi1lkmZEP0L4MD6zcPuOjHmYYzX4XfQ61lQ8c4ztXp5cKkrvaMuN/bD57HJ6Y73Q
- Y+wVxs9x7srl4iRnbulCeiSOAqHmwBAoWaolthqe7EYL4d2+CjPCcfIuK7ezsEm8c3o3EqC4
- /UpL1nTi0rknRTGc0VmPef+IqQUj33GGj5JRzVJZPnYyCx8sCb35Lhs6X8ggpsafUkuKrH76
- XV2KRzaE359RgbM3pNEViXp3NclPYmeu+XI8Ls/y6tSq5e/o/egktdyJj+xvAj9ZS18b10Jp
- e67qK8wZC/+N7LGON05VcLrdZ+FXuEEojJWbabF6rJGN5X/UlH5OowVFEMhD9s31tciAvBwy
- T70V9SSrl2hiw38vRzsl
-In-Reply-To: <092acd39-3783-4f33-a26d-e6b4f8dfdf1a@gmx.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240613115032.29098-3-pstanner@redhat.com>
 
-On 2025-11-21 4:05 p.m., Helge Deller wrote:
-> On 11/21/25 20:04, John David Anglin wrote:
->> We have a new glibc failure that may be a kernel issue:
->>
->> make[2]: Entering directory '/home/dave/gnu/glibc/glibc/misc'
->> env GCONV_PATH=/home/dave/gnu/glibc/objdir/iconvdata LOCPATH=/home/dave/gnu/glibc/objdir/localedata LC_ALL=C
->> /home/dave/gnu/glibc/objdir/elf/ld.so.1 --library-path
->> /home/dave/gnu/glibc/objdir:/home/dave/gnu/glibc/objdir/math:/home/dave/gnu/glibc/objdir/elf:/home/dave/gnu/glibc/objdir/dlfcn:/home/dave/gnu/
->> glibc/objdir/nss:/home/dave/gnu/glibc/objdir/nis:/home/dave/gnu/glibc/objdir/rt:/home/dave/gnu/glibc/objdir/resolv:/home/dave/gnu/glibc/
->> objdir/mathvec:/home/dave/gnu/glibc/objdir/support:/home/dave/gnu/glibc/objdir/misc:/home/dave/gnu/glibc/objdir/debug:/home/dave/gnu/glibc/
->> objdir/nptl:/usr/lib/gcc/hppa-linux-gnu/15/../../../hppa-linux-gnu/:/usr/lib/gcc/hppa-linux-gnu/15/../../../hppa-linux-gnu/
->> /home/dave/gnu/glibc/objdir/misc/tst-pidfd_getinfo  > /home/dave/gnu/glibc/objdir/misc/tst-pidfd_getinfo.out; \
->> ../scripts/evaluate-test.sh misc/tst-pidfd_getinfo $? false false > /home/dave/gnu/glibc/objdir/misc/tst-pidfd_getinfo.test-result
->> make[2]: Leaving directory '/home/dave/gnu/glibc/glibc/misc'
->> FAIL: misc/tst-pidfd_getinfo
->> original exit status 1
->> error: ../sysdeps/unix/sysv/linux/tst-pidfd_getinfo.c:52: ioctl (PIDFD_GET_INFO) failed: Invalid argument
->> error: 1 test failures
->>
->>    if (ioctl (pidfd, PIDFD_GET_INFO, &info) != 0)
->>      {
->>        if (errno == ENOTTY)
->>          FAIL_UNSUPPORTED ("kernel does not support PIDFD_GET_INFO");
->>        else
->>          FAIL_EXIT1 ("ioctl (PIDFD_GET_INFO) failed: %m");
->>      }
-> Which kernel are you running?
+Hi,
 
-6.12.58.
+On Thu, Jun 13, 2024 at 01:50:15PM +0200, Philipp Stanner wrote:
+> The pcim_iomap_devres.table administrated by pcim_iomap_table() has its
+> entries set and unset at several places throughout devres.c using manual
+> iterations which are effectively code duplications.
+> 
+> Add pcim_add_mapping_to_legacy_table() and
+> pcim_remove_mapping_from_legacy_table() helper functions and use them where
+> possible.
+> 
+> Link: https://lore.kernel.org/r/20240605081605.18769-4-pstanner@redhat.com
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> [bhelgaas: s/short bar/int bar/ for consistency]
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> ---
+>  drivers/pci/devres.c | 77 +++++++++++++++++++++++++++++++++-----------
+>  1 file changed, 58 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
+> index f13edd4a3873..845d6fab0ce7 100644
+> --- a/drivers/pci/devres.c
+> +++ b/drivers/pci/devres.c
+> @@ -297,6 +297,52 @@ void __iomem * const *pcim_iomap_table(struct pci_dev *pdev)
+>  }
+>  EXPORT_SYMBOL(pcim_iomap_table);
+>  
+> +/*
+> + * Fill the legacy mapping-table, so that drivers using the old API can
+> + * still get a BAR's mapping address through pcim_iomap_table().
+> + */
+> +static int pcim_add_mapping_to_legacy_table(struct pci_dev *pdev,
+> +					    void __iomem *mapping, int bar)
+> +{
+> +	void __iomem **legacy_iomap_table;
+> +
+> +	if (bar >= PCI_STD_NUM_BARS)
+> +		return -EINVAL;
+> +
+> +	legacy_iomap_table = (void __iomem **)pcim_iomap_table(pdev);
+> +	if (!legacy_iomap_table)
+> +		return -ENOMEM;
+> +
+> +	/* The legacy mechanism doesn't allow for duplicate mappings. */
+> +	WARN_ON(legacy_iomap_table[bar]);
+> +
 
-Dave
--- 
-John David Anglin  dave.anglin@bell.net
+Ever since this patch has been applied, I see this warning on all hppa
+(parisc) systems.
+
+[    0.978177] WARNING: CPU: 0 PID: 1 at drivers/pci/devres.c:473 pcim_add_mapping_to_legacy_table.part.0+0x54/0x80
+[    0.978850] Modules linked in:
+[    0.979277] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc6-64bit+ #1 NONE
+[    0.979519] Hardware name: 9000/785/C3700
+[    0.979715]
+[    0.979768]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+[    0.979886] PSW: 00001000000001000000000000001111 Not tainted
+[    0.980006] r00-03  000000000804000f 00000000414e10a0 0000000040acb300 00000000434b1440
+[    0.980167] r04-07  00000000414a78a0 0000000000029000 0000000000000000 0000000043522000
+[    0.980314] r08-11  0000000000000000 0000000000000008 0000000000000000 00000000434b0de8
+[    0.980461] r12-15  00000000434b11b0 000000004156a8a0 0000000043c655a0 0000000000000000
+[    0.980608] r16-19  000000004016e080 000000004019e7d8 0000000000000030 0000000043549780
+[    0.981106] r20-23  0000000020000000 0000000000000000 000000000800000e 0000000000000000
+[    0.981317] r24-27  0000000000000000 000000000800000f 0000000043522260 00000000414a78a0
+[    0.981480] r28-31  00000000436af480 00000000434b1680 00000000434b14d0 0000000000027000
+[    0.981641] sr00-03  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    0.981805] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    0.981972]
+[    0.982024] IASQ: 0000000000000000 0000000000000000 IAOQ: 0000000040acb31c 0000000040acb320
+[    0.982185]  IIR: 03ffe01f    ISR: 0000000000000000  IOR: 00000000436af410
+[    0.982322]  CPU:        0   CR30: 0000000043549780 CR31: 0000000000000000
+[    0.982458]  ORIG_R28: 00000000434b16b0
+[    0.982548]  IAOQ[0]: pcim_add_mapping_to_legacy_table.part.0+0x54/0x80
+[    0.982733]  IAOQ[1]: pcim_add_mapping_to_legacy_table.part.0+0x58/0x80
+[    0.982871]  RP(r2): pcim_add_mapping_to_legacy_table.part.0+0x38/0x80
+[    0.983100] Backtrace:
+[    0.983439]  [<0000000040acba1c>] pcim_iomap+0xc4/0x170
+[    0.983577]  [<0000000040ba3e4c>] serial8250_pci_setup_port+0x8c/0x168
+[    0.983725]  [<0000000040ba7588>] setup_port+0x38/0x50
+[    0.983837]  [<0000000040ba7d94>] pci_hp_diva_setup+0x8c/0xd8
+[    0.983957]  [<0000000040baa47c>] pciserial_init_ports+0x2c4/0x358
+[    0.984088]  [<0000000040baa8bc>] pciserial_init_one+0x31c/0x330
+[    0.984214]  [<0000000040abfab4>] pci_device_probe+0x194/0x270
+
+Looking into serial8250_pci_setup_port():
+
+        if (pci_resource_flags(dev, bar) & IORESOURCE_MEM) {
+                if (!pcim_iomap(dev, bar, 0) && !pcim_iomap_table(dev))
+                        return -ENOMEM;
+
+This suggests that the failure is expected. I can see that pcim_iomap_table()
+is deprecated, and that one is supposed to use pcim_iomap() instead. However,
+pcim_iomap() _is_ alrady used, and I don't see a function which lets the
+caller replicate what is done above (attach multiple serial ports to the
+same PCI bar).
+
+How would you suggest to fix the problem ?
+
+Thanks,
+Guenter
 
