@@ -1,221 +1,284 @@
-Return-Path: <linux-parisc+bounces-4311-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4312-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FAEC85B2A
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Nov 2025 16:12:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C183EC85D36
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Nov 2025 16:48:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E05F3A9E6E
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Nov 2025 15:11:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CED63AED8F
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Nov 2025 15:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFDA2D7DF2;
-	Tue, 25 Nov 2025 15:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620C91C01;
+	Tue, 25 Nov 2025 15:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J8/rT5rE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NOZgHvJR";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MVkQ0bhu"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE31324B17;
-	Tue, 25 Nov 2025 15:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8298633EC
+	for <linux-parisc@vger.kernel.org>; Tue, 25 Nov 2025 15:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764083473; cv=none; b=hPRHL9Bg5tMrRcKnrzssYPp2gHipZFe6xufxNEcnXB0MUao89g48VFcxCA8wx4vLS7d78mbPpp9kTg7069Pu5jLELG2lfOS46p86gXKoDIRPke7WBqOXe9HwbpAi3BeYu9d8/uB3sXTpLPuqq+0J3ZB6fhQQMdQjRL22QJfRBhY=
+	t=1764085712; cv=none; b=IC9luYhHulWXqTGw6l5aKPtKjkn1chfvqMCKXSRd/L0c2RNjgh8qtlqEauQfRUl6jtEw92pVQf4MjmWM+U93GTuhM+So7+YFT3FLcNP7mdavSp+ELGMZM2haPiYoe5l9ahEGEmazB93nXz+WYCBUSQaaxN3soollDnldy4MbwE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764083473; c=relaxed/simple;
-	bh=Gvzy+GG131VoXDqWVUu7DGYA/eTcJ0iyIo3aA8r2e1Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KdXfhplyhuej58UtNN2v7uwv35fPSVpD44W6J3/ntsAxdkYMtSbSCGACFOtwY5kz5udlTvrzmoHr63uHZOjAoBtgDa3tloogHuUYfU5JElgwXKyy8g6qzImem5JsCTDQ3+vNBWuDXAfXozwNklUsPrHvodoUwr97zH2Ny3YLelA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J8/rT5rE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11004C116B1;
-	Tue, 25 Nov 2025 15:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764083471;
-	bh=Gvzy+GG131VoXDqWVUu7DGYA/eTcJ0iyIo3aA8r2e1Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J8/rT5rE/ljoxffISLB7vsl+xjZUMOG1krv1T6H4Agz6YAE9UyQ5K61sm3B/SeAF2
-	 v6kJQEIsp6N0atYBTBjLogJp5JM5Lx3H522z01zXyD9Hb4aZJ2qV7HtCx4Dz8cpI8D
-	 ZNb20DdQqMfC1f27naL5JlfrGpYfsSVs7vP2gjLyylXa9jLVjRNLZoU2AjIA3E/cCq
-	 YtEkY+Ea0XMI+Nau8SSNQYFu/1HUIiloZeHWtGLyTJlXi2Km7IyTJO8lLlFdWzyko0
-	 v6WvN2s3eOxm3i+zQFzcu2R5L7tIRfCkLc0pwGpPH58Udj4G3Epcb015Uoygs8rRYM
-	 G2FZFBpHH6IGw==
-Date: Tue, 25 Nov 2025 16:11:07 +0100
-From: Helge Deller <deller@kernel.org>
-To: John Johansen <john.johansen@canonical.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org,
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-	linux-parisc@vger.kernel.org
-Subject: Re: [PATCH 0/2] apparmor unaligned memory fixes
-Message-ID: <aSXHCyH_rS-c5BgP@p100>
-References: <20250531150822.135803-1-deller@kernel.org>
- <bc21bee14ca44077ae9323bfc251ad12390fa841.camel@physik.fu-berlin.de>
- <aRxT78fdN5v2Ajyl@p100>
- <90513f85cc8d060ebccd3972cc7709e4b6f13f34.camel@physik.fu-berlin.de>
- <be9c143d-1d5e-4c5b-9078-4a7804489258@gmx.de>
- <ba3d5651-fa68-4bb5-84aa-35576044e7b0@canonical.com>
+	s=arc-20240116; t=1764085712; c=relaxed/simple;
+	bh=UXJeNlSO3UHGHBV9doi+HvjfXgdBQnSFuegzqXfDFpc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WdLyrcC1TvOWfiwqIAJN1XkquGfC4s6WyhOg1VKWT095nYAhs1swTZSHajJ7UJkVMRV1MkSbAiJEYRxLKJYkm6Hz+cP9L8wnDgc18w7AAkB9zvza4qvrcuif6HWpUQ+Npb/hf8G8Gr4sXzBqsyOqnKjzo41JBipM0YowJ18Fhvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NOZgHvJR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MVkQ0bhu; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764085709;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k9b09Krqnfah1Efwew759eb1g6delm/Yd1AUWIG5UK4=;
+	b=NOZgHvJRke/0mec2snjja4wWMiCmZ7uHqRKighI+86Kn9eazQ/m2yHjYnB3BYYWzlZc5pp
+	RsKEu6VdJoWYWtEipCDj935kNtCyXowo1pDHi2j9cktksswgZ/2AHJ5/wbjDZpaeC4XCMz
+	aq8i7V3zb/ETQtTr2uCHiI0mCQeXV5A=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-150-EhhHgom9MXiO4Vykj27zcg-1; Tue, 25 Nov 2025 10:48:28 -0500
+X-MC-Unique: EhhHgom9MXiO4Vykj27zcg-1
+X-Mimecast-MFC-AGG-ID: EhhHgom9MXiO4Vykj27zcg_1764085707
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-299d221b749so130161625ad.3
+        for <linux-parisc@vger.kernel.org>; Tue, 25 Nov 2025 07:48:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1764085707; x=1764690507; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=k9b09Krqnfah1Efwew759eb1g6delm/Yd1AUWIG5UK4=;
+        b=MVkQ0bhuK0cr/lsE458pEs+3VYnLGdwnEbKYy0BTZG7+1uyg62o7i6Z6dMarAn7/m4
+         8jYGWRgl2fw3t02BRZTWfazB4F475IYqJiUcqEUDT3JyAzf9oisJgYEyeNbdsu38No9m
+         VAH6ub5AnxEL2LVzhddrOU2EyUwtvsaNIwX4qfS4+UCQUNjyYYxUrMFGdamK8by/2A8x
+         EiqOv9vnW6l65GJpl+Lhn6FaPbhse/CL/lK94a7DxBTcgJzZcFD6SjbFZXDW2dsv4wOq
+         KMKMMrcmc7V7Cfi86zClaQzoH5E94Gc21untP+HY63rzxpnPrqOK2DFfoxktICVb8g/N
+         QLVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764085707; x=1764690507;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k9b09Krqnfah1Efwew759eb1g6delm/Yd1AUWIG5UK4=;
+        b=uMPzFnpIXPdtvmmwbRvDY+eWRVAAOS9XSNmR+e7+DwbUMnwTZrrvYhS3QcaTstDEQn
+         2vg19iJSckj2P6yrZajdRJxX9bJLw50gEWTwUWmNd7z2aLAOHDC8QID909eOMQq3Wgvv
+         YKfU6tC9e+F6g35OUJU/ob96UrcVVOSt1wM/VjMDkIXPAJsgpOypXdolkzo3y1Db9oGp
+         F+WytvOJgL3I6YnDY2ZdWGcqC8UZSK/hTeJneMffkW15R0ul2tqFYTnj+efX/qa3rnM8
+         WIhYsgU+qfbSsinVbslQaH7z7xesfM8JPW3asv3tu/HFkL4LFmAYNRTJ1Vjcf9grezq2
+         XY+g==
+X-Forwarded-Encrypted: i=1; AJvYcCWGtSoIlVNS0yFF/rICXBYwBJZF344oA+EYya6GIa1fKVMQYiC8oYDmpith3NTuh4PBM8ABr9VBg1pCB5Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuXm6KjlD7bRiyhxlur9xTQDIByKiFUcwJ9y+KX/PJuyHKUoOt
+	0zwmbr3pj9m9sLvhWZwWvePLhRfHVZnnVek9CJRQFdaeLqwTVLiaNKaOYgloZa6x7+/O++Oksqs
+	UGKQcE5fyacWA1KymBNBqQGIOc4BjY5Z4JXN9+LuurCI7vyOAmjEVFaylxrM4dCFO+g==
+X-Gm-Gg: ASbGnct3WUIaFw2zRjP4dgCkz7KSfe0ItZNjLtNRresR893ThmxD3fIlGFQS7ryi6Fm
+	ghwLkNe6xeiECJHjUzxDeuAed0MAeVYB7wWuyUW7F/heNMSDUQRwUL7kRGXbXmS7vitMpaU8SLO
+	63FnbEWo/C4u/rQ6UD29MgDoVAigjuJlipyHjaN5MGCUx4futA2vaC3UID0BVy08O9yULWSYJqA
+	iwVxYdiWvGHj8g85HrfmmXaQ7WTzqTQqCwG+z5jnFjJ16Rlz9D0qSUtaAAMdc88KBQvmg2hvLHB
+	ZCYd2qMxx8JxynXoZQDtRLAxfFEJ9lzjkHFcSGtRCxJA6NWAHF2fFuUSfsP3xaUE8xT/eP6NY75
+	UKDhuAyw8bMf1CV4oBSNN/skRfn756e/yTXpm
+X-Received: by 2002:a17:903:b86:b0:295:4d97:8503 with SMTP id d9443c01a7336-29b6c575180mr187671435ad.30.1764085707034;
+        Tue, 25 Nov 2025 07:48:27 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHKvgNQbyrXYYI1Dt7FHL145Gwg3yi+vBGB1qCw8Ugy59NPU8GBaC78JFLtZrJ3YPzGWPblAA==
+X-Received: by 2002:a17:903:b86:b0:295:4d97:8503 with SMTP id d9443c01a7336-29b6c575180mr187671005ad.30.1764085706489;
+        Tue, 25 Nov 2025 07:48:26 -0800 (PST)
+Received: from [10.200.68.138] (nat-pool-muc-u.redhat.com. [149.14.88.27])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b107774sm168940565ad.9.2025.11.25.07.48.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 07:48:25 -0800 (PST)
+Message-ID: <414bc2c721bfc60b8b8a1b7d069ff0fc9b3e5283.camel@redhat.com>
+Subject: Re: [PATCH v9 02/13] PCI: Add devres helpers for iomap table
+ [resulting in backtraces on HPPA]
+From: Philipp Stanner <pstanner@redhat.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Hans de Goede <hdegoede@redhat.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>, Sam
+ Ravnborg <sam@ravnborg.org>, dakr@redhat.com, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ linux-pci@vger.kernel.org, linux-parisc@vger.kernel.org, Helge Deller
+ <deller@gmx.de>
+Date: Tue, 25 Nov 2025 16:48:11 +0100
+In-Reply-To: <16cd212f-6ea0-471d-bf32-34f55d7292fe@roeck-us.net>
+References: <20240613115032.29098-1-pstanner@redhat.com>
+	 <20240613115032.29098-3-pstanner@redhat.com>
+	 <16cd212f-6ea0-471d-bf32-34f55d7292fe@roeck-us.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ba3d5651-fa68-4bb5-84aa-35576044e7b0@canonical.com>
 
-* John Johansen <john.johansen@canonical.com>:
-> On 11/18/25 04:49, Helge Deller wrote:
-> > Hi Adrian,
-> > 
-> > On 11/18/25 12:43, John Paul Adrian Glaubitz wrote:
-> > > On Tue, 2025-11-18 at 12:09 +0100, Helge Deller wrote:
-> > > > My patch fixed two call sites, but I suspect you see another call site which
-> > > > hasn't been fixed yet.
-> > > > 
-> > > > Can you try attached patch? It might indicate the caller of the function and
-> > > > maybe prints the struct name/address which isn't aligned.
-> > > > 
-> > > > Helge
-> > > > 
-> > > > 
-> > > > diff --git a/security/apparmor/match.c b/security/apparmor/match.c
-> > > > index c5a91600842a..b477430c07eb 100644
-> > > > --- a/security/apparmor/match.c
-> > > > +++ b/security/apparmor/match.c
-> > > > @@ -313,6 +313,9 @@ struct aa_dfa *aa_dfa_unpack(void *blob, size_t size, int flags)
-> > > >       if (size < sizeof(struct table_set_header))
-> > > >           goto fail;
-> > > > +    if (WARN_ON(((unsigned long)data) & (BITS_PER_LONG/8 - 1)))
-> > > > +        pr_warn("dfa blob stream %pS not aligned.\n", data);
-> > > > +
-> > > >       if (ntohl(*(__be32 *) data) != YYTH_MAGIC)
-> > > >           goto fail;
-> > > 
-> > > Here is the relevant output with the patch applied:
-> > > 
-> > > [   73.840639] ------------[ cut here ]------------
-> > > [   73.901376] WARNING: CPU: 0 PID: 341 at security/apparmor/match.c:316 aa_dfa_unpack+0x6cc/0x720
-> > > [   74.015867] Modules linked in: binfmt_misc evdev flash sg drm drm_panel_orientation_quirks backlight i2c_core configfs nfnetlink autofs4 ext4 crc16 mbcache jbd2 hid_generic usbhid sr_mod hid cdrom
-> > > sd_mod ata_generic ohci_pci ehci_pci ehci_hcd ohci_hcd pata_ali libata sym53c8xx scsi_transport_spi tg3 scsi_mod usbcore libphy scsi_common mdio_bus usb_common
-> > > [   74.428977] CPU: 0 UID: 0 PID: 341 Comm: apparmor_parser Not tainted 6.18.0-rc6+ #9 NONE
-> > > [   74.536543] Call Trace:
-> > > [   74.568561] [<0000000000434c24>] dump_stack+0x8/0x18
-> > > [   74.633757] [<0000000000476438>] __warn+0xd8/0x100
-> > > [   74.696664] [<00000000004296d4>] warn_slowpath_fmt+0x34/0x74
-> > > [   74.771006] [<00000000008db28c>] aa_dfa_unpack+0x6cc/0x720
-> > > [   74.843062] [<00000000008e643c>] unpack_pdb+0xbc/0x7e0
-> > > [   74.910545] [<00000000008e7740>] unpack_profile+0xbe0/0x1300
-> > > [   74.984888] [<00000000008e82e0>] aa_unpack+0xe0/0x6a0
-> > > [   75.051226] [<00000000008e3ec4>] aa_replace_profiles+0x64/0x1160
-> > > [   75.130144] [<00000000008d4d90>] policy_update+0xf0/0x280
-> > > [   75.201057] [<00000000008d4fc8>] profile_replace+0xa8/0x100
-> > > [   75.274258] [<0000000000766bd0>] vfs_write+0x90/0x420
-> > > [   75.340594] [<00000000007670cc>] ksys_write+0x4c/0xe0
-> > > [   75.406932] [<0000000000767174>] sys_write+0x14/0x40
-> > > [   75.472126] [<0000000000406174>] linux_sparc_syscall+0x34/0x44
-> > > [   75.548802] ---[ end trace 0000000000000000 ]---
-> > > [   75.609503] dfa blob stream 0xfff0000008926b96 not aligned.
-> > > [   75.682695] Kernel unaligned access at TPC[8db2a8] aa_dfa_unpack+0x6e8/0x720
-> > 
-> > The non-8-byte-aligned address (0xfff0000008926b96) is coming from userspace
-> > (via the write syscall).
-> > Some apparmor userspace tool writes into the apparmor ".replace" virtual file with
-> > a source address which is not correctly aligned.
-> 
-> the userpace buffer passed to write(2) has to be aligned? Its certainly nice if it
-> is but the userspace tooling hasn't been treating it as aligned. With that said,
-> the dfa should be padded to be aligned. So this tripping in the dfa is a bug,
-> and there really should be some validation to catch it.
-> 
-> > You should be able to debug/find the problematic code with strace from userspace.
-> > Maybe someone with apparmor knowledge here on the list has an idea?
-> > 
-> This is likely an unaligned 2nd profile, being split out and loaded separately
-> from the rest of the container. Basically the loader for some reason (there
-> are a few different possible reasons) is poking into the container format and
-> pulling out the profile at some offset, this gets loaded to the kernel but
-> it would seem that its causing an issue with the dfa alignment within the container,
-> which should be aligned to the original container.
+On Sun, 2025-11-23 at 08:42 -0800, Guenter Roeck wrote:
+> Hi,
+>=20
+> On Thu, Jun 13, 2024 at 01:50:15PM +0200, Philipp Stanner wrote:
+> > The pcim_iomap_devres.table administrated by pcim_iomap_table() has its
+> > entries set and unset at several places throughout devres.c using manua=
+l
+> > iterations which are effectively code duplications.
+> >=20
+> > Add pcim_add_mapping_to_legacy_table() and
+> > pcim_remove_mapping_from_legacy_table() helper functions and use them w=
+here
+> > possible.
+> >=20
+> > Link: https://lore.kernel.org/r/20240605081605.18769-4-pstanner@redhat.=
+com
+> > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> > [bhelgaas: s/short bar/int bar/ for consistency]
+> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > ---
+> > =C2=A0drivers/pci/devres.c | 77 +++++++++++++++++++++++++++++++++------=
+-----
+> > =C2=A01 file changed, 58 insertions(+), 19 deletions(-)
+> >=20
+> > diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
+> > index f13edd4a3873..845d6fab0ce7 100644
+> > --- a/drivers/pci/devres.c
+> > +++ b/drivers/pci/devres.c
+> > @@ -297,6 +297,52 @@ void __iomem * const *pcim_iomap_table(struct pci_=
+dev *pdev)
+> > =C2=A0}
+> > =C2=A0EXPORT_SYMBOL(pcim_iomap_table);
+> > =C2=A0
+> > +/*
+> > + * Fill the legacy mapping-table, so that drivers using the old API ca=
+n
+> > + * still get a BAR's mapping address through pcim_iomap_table().
+> > + */
+> > +static int pcim_add_mapping_to_legacy_table(struct pci_dev *pdev,
+> > +					=C2=A0=C2=A0=C2=A0 void __iomem *mapping, int bar)
+> > +{
+> > +	void __iomem **legacy_iomap_table;
+> > +
+> > +	if (bar >=3D PCI_STD_NUM_BARS)
+> > +		return -EINVAL;
+> > +
+> > +	legacy_iomap_table =3D (void __iomem **)pcim_iomap_table(pdev);
+> > +	if (!legacy_iomap_table)
+> > +		return -ENOMEM;
+> > +
+> > +	/* The legacy mechanism doesn't allow for duplicate mappings. */
+> > +	WARN_ON(legacy_iomap_table[bar]);
+> > +
+>=20
+> Ever since this patch has been applied, I see this warning on all hppa
+> (parisc) systems.
+>=20
+> [=C2=A0=C2=A0=C2=A0 0.978177] WARNING: CPU: 0 PID: 1 at drivers/pci/devre=
+s.c:473 pcim_add_mapping_to_legacy_table.part.0+0x54/0x80
+> [=C2=A0=C2=A0=C2=A0 0.978850] Modules linked in:
+> [=C2=A0=C2=A0=C2=A0 0.979277] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not ta=
+inted 6.18.0-rc6-64bit+ #1 NONE
+> [=C2=A0=C2=A0=C2=A0 0.979519] Hardware name: 9000/785/C3700
+> [=C2=A0=C2=A0=C2=A0 0.979715]
+> [=C2=A0=C2=A0=C2=A0 0.979768]=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 YZrvWESTHLNXB=
+CVMcbcbcbcbOGFRQPDI
+> [=C2=A0=C2=A0=C2=A0 0.979886] PSW: 00001000000001000000000000001111 Not t=
+ainted
+> [=C2=A0=C2=A0=C2=A0 0.980006] r00-03=C2=A0 000000000804000f 00000000414e1=
+0a0 0000000040acb300 00000000434b1440
+> [=C2=A0=C2=A0=C2=A0 0.980167] r04-07=C2=A0 00000000414a78a0 0000000000029=
+000 0000000000000000 0000000043522000
+> [=C2=A0=C2=A0=C2=A0 0.980314] r08-11=C2=A0 0000000000000000 0000000000000=
+008 0000000000000000 00000000434b0de8
+> [=C2=A0=C2=A0=C2=A0 0.980461] r12-15=C2=A0 00000000434b11b0 000000004156a=
+8a0 0000000043c655a0 0000000000000000
+> [=C2=A0=C2=A0=C2=A0 0.980608] r16-19=C2=A0 000000004016e080 000000004019e=
+7d8 0000000000000030 0000000043549780
+> [=C2=A0=C2=A0=C2=A0 0.981106] r20-23=C2=A0 0000000020000000 0000000000000=
+000 000000000800000e 0000000000000000
+> [=C2=A0=C2=A0=C2=A0 0.981317] r24-27=C2=A0 0000000000000000 0000000008000=
+00f 0000000043522260 00000000414a78a0
+> [=C2=A0=C2=A0=C2=A0 0.981480] r28-31=C2=A0 00000000436af480 00000000434b1=
+680 00000000434b14d0 0000000000027000
+> [=C2=A0=C2=A0=C2=A0 0.981641] sr00-03=C2=A0 0000000000000000 000000000000=
+0000 0000000000000000 0000000000000000
+> [=C2=A0=C2=A0=C2=A0 0.981805] sr04-07=C2=A0 0000000000000000 000000000000=
+0000 0000000000000000 0000000000000000
+> [=C2=A0=C2=A0=C2=A0 0.981972]
+> [=C2=A0=C2=A0=C2=A0 0.982024] IASQ: 0000000000000000 0000000000000000 IAO=
+Q: 0000000040acb31c 0000000040acb320
+> [=C2=A0=C2=A0=C2=A0 0.982185]=C2=A0 IIR: 03ffe01f=C2=A0=C2=A0=C2=A0 ISR: =
+0000000000000000=C2=A0 IOR: 00000000436af410
+> [=C2=A0=C2=A0=C2=A0 0.982322]=C2=A0 CPU:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 0=C2=A0=C2=A0 CR30: 0000000043549780 CR31: 0000000000000000
+> [=C2=A0=C2=A0=C2=A0 0.982458]=C2=A0 ORIG_R28: 00000000434b16b0
+> [=C2=A0=C2=A0=C2=A0 0.982548]=C2=A0 IAOQ[0]: pcim_add_mapping_to_legacy_t=
+able.part.0+0x54/0x80
+> [=C2=A0=C2=A0=C2=A0 0.982733]=C2=A0 IAOQ[1]: pcim_add_mapping_to_legacy_t=
+able.part.0+0x58/0x80
+> [=C2=A0=C2=A0=C2=A0 0.982871]=C2=A0 RP(r2): pcim_add_mapping_to_legacy_ta=
+ble.part.0+0x38/0x80
+> [=C2=A0=C2=A0=C2=A0 0.983100] Backtrace:
+> [=C2=A0=C2=A0=C2=A0 0.983439]=C2=A0 [<0000000040acba1c>] pcim_iomap+0xc4/=
+0x170
+> [=C2=A0=C2=A0=C2=A0 0.983577]=C2=A0 [<0000000040ba3e4c>] serial8250_pci_s=
+etup_port+0x8c/0x168
+> [=C2=A0=C2=A0=C2=A0 0.983725]=C2=A0 [<0000000040ba7588>] setup_port+0x38/=
+0x50
+> [=C2=A0=C2=A0=C2=A0 0.983837]=C2=A0 [<0000000040ba7d94>] pci_hp_diva_setu=
+p+0x8c/0xd8
+> [=C2=A0=C2=A0=C2=A0 0.983957]=C2=A0 [<0000000040baa47c>] pciserial_init_p=
+orts+0x2c4/0x358
+> [=C2=A0=C2=A0=C2=A0 0.984088]=C2=A0 [<0000000040baa8bc>] pciserial_init_o=
+ne+0x31c/0x330
+> [=C2=A0=C2=A0=C2=A0 0.984214]=C2=A0 [<0000000040abfab4>] pci_device_probe=
++0x194/0x270
+>=20
+> Looking into serial8250_pci_setup_port():
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (pci_resource_flags(dev, ba=
+r) & IORESOURCE_MEM) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 if (!pcim_iomap(dev, bar, 0) && !pcim_iomap_table(dev))
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -=
+ENOMEM;
+
+Strange. From the code I see here the WARN_ON in
+pcim_add_mapping_to_legacy_table() should not fire. I suspect that it's
+actually triggered somewhere else.
+
+>=20
+> This suggests that the failure is expected. I can see that pcim_iomap_tab=
+le()
+> is deprecated, and that one is supposed to use pcim_iomap() instead. Howe=
+ver,
+> pcim_iomap() _is_ alrady used, and I don't see a function which lets the
+> caller replicate what is done above (attach multiple serial ports to the
+> same PCI bar).
+
+Is serial8250_pci_setup_port() invoked in a loop somewhere? Where does
+the "attach multiple" happen?
+
+>=20
+> How would you suggest to fix the problem ?
+
+I suggest you try to remove the `&& pcim_iomap_table(dev)` from above
+to see if that's really the cause. pcim_iomap() already creates the
+table, and if it succeeds the table has been created with absolute
+certainty. The entries will also be present. So the table-check is
+surplus.
+
+Report back please if that helps, I'd want to understand what's
+happening here.
 
 
-Regarding this:
+Regards
+P.
 
-> Kernel side, we are going to need to add some extra verification checks, it should
-> be catching this, as unaligned as part of the unpack. Userspace side, we will have
-> to verify my guess and fix the loader.
-
-I wonder if loading those tables are really time critical?
-If not, maybe just making the kernel aware that the tables might be unaligned
-can help, e.g. with the following (untested) patch.
-Adrian, maybe you want to test?
-
-------------------------
-
-[PATCH] Allow apparmor to handle unaligned dfa tables
-
-The dfa tables can originate from kernel or userspace and 8-byte alignment
-isn't always guaranteed and as such may trigger unaligned memory accesses
-on various architectures.
-Work around it by using the get_unaligned_xx() helpers.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/security/apparmor/match.c b/security/apparmor/match.c
-index c5a91600842a..26e82ba879d4 100644
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -15,6 +15,7 @@
- #include <linux/vmalloc.h>
- #include <linux/err.h>
- #include <linux/kref.h>
-+#include <linux/unaligned.h>
- 
- #include "include/lib.h"
- #include "include/match.h"
-@@ -42,11 +43,11 @@ static struct table_header *unpack_table(char *blob, size_t bsize)
- 	/* loaded td_id's start at 1, subtract 1 now to avoid doing
- 	 * it every time we use td_id as an index
- 	 */
--	th.td_id = be16_to_cpu(*(__be16 *) (blob)) - 1;
-+	th.td_id = get_unaligned_be16(blob) - 1;
- 	if (th.td_id > YYTD_ID_MAX)
- 		goto out;
--	th.td_flags = be16_to_cpu(*(__be16 *) (blob + 2));
--	th.td_lolen = be32_to_cpu(*(__be32 *) (blob + 8));
-+	th.td_flags = get_unaligned_be16(blob + 2);
-+	th.td_lolen = get_unaligned_be32(blob + 8);
- 	blob += sizeof(struct table_header);
- 
- 	if (!(th.td_flags == YYTD_DATA16 || th.td_flags == YYTD_DATA32 ||
-@@ -313,14 +314,14 @@ struct aa_dfa *aa_dfa_unpack(void *blob, size_t size, int flags)
- 	if (size < sizeof(struct table_set_header))
- 		goto fail;
- 
--	if (ntohl(*(__be32 *) data) != YYTH_MAGIC)
-+	if (get_unaligned_be32(data) != YYTH_MAGIC)
- 		goto fail;
- 
--	hsize = ntohl(*(__be32 *) (data + 4));
-+	hsize = get_unaligned_be32(data + 4);
- 	if (size < hsize)
- 		goto fail;
- 
--	dfa->flags = ntohs(*(__be16 *) (data + 12));
-+	dfa->flags = get_unaligned_be16(data + 12);
- 	if (dfa->flags & ~(YYTH_FLAGS))
- 		goto fail;
- 
-@@ -329,7 +330,7 @@ struct aa_dfa *aa_dfa_unpack(void *blob, size_t size, int flags)
- 	 * if (dfa->flags & YYTH_FLAGS_OOB_TRANS) {
- 	 *	if (hsize < 16 + 4)
- 	 *		goto fail;
--	 *	dfa->max_oob = ntol(*(__be32 *) (data + 16));
-+	 *	dfa->max_oob = get_unaligned_be32(data + 16);
- 	 *	if (dfa->max <= MAX_OOB_SUPPORTED) {
- 	 *		pr_err("AppArmor DFA OOB greater than supported\n");
- 	 *		goto fail;
 
