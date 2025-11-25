@@ -1,334 +1,330 @@
-Return-Path: <linux-parisc+bounces-4314-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4315-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BECC85FA4
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Nov 2025 17:29:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40424C86B35
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Nov 2025 19:49:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EF16C348DBC
-	for <lists+linux-parisc@lfdr.de>; Tue, 25 Nov 2025 16:29:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D49B54E766F
+	for <lists+linux-parisc@lfdr.de>; Tue, 25 Nov 2025 18:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1F4325735;
-	Tue, 25 Nov 2025 16:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681461E5B7A;
+	Tue, 25 Nov 2025 18:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XxKYB4j5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="t77KqhNJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kx+xakpI"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11582DCBF2
-	for <linux-parisc@vger.kernel.org>; Tue, 25 Nov 2025 16:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7329126F463
+	for <linux-parisc@vger.kernel.org>; Tue, 25 Nov 2025 18:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764088155; cv=none; b=lQjbkGgLOqAZSHpJFrr/bprXptix1K+iv1g3+nGzFG+pMZVxWhHrbgGNzfkTqq98RdP6ZLv573F/10pFhP4NVzWZYfgeedhS0n2VmIE0tdL8fgZeWFOKNRaykQR6PTOKeNhhEr6Zwws8T8+gPc/f2v4gysm+t3ndwToRriMKtCs=
+	t=1764096550; cv=none; b=c7I1nl9+JdgGPervU801PRwQw6TulkklDWfdWrMrS7ytHKZ593OHgGpIYRfvrowGwY/NtqzOwPPwgggF3K5Q0NH+MwqszlPn2rG8U+hDAHw99RjO7RT7uzGDhxDCiVOJtsrNQ0EHE26NQ89zr9RhnL2EcSTsII2Gc/h3KS0sxRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764088155; c=relaxed/simple;
-	bh=7H2Ker12oQZk6vM210ErNkOeX7XVKxQ3MS0MHQiOn24=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bTU32NXzPbl/3y2VfcBSwGCImePa2lTdCQs/KoVCUmg6VZLZYlHqG2Ibg6xxDymN3TrEorZ0vB+gIs3T7a6GfVMci+JZJFhmMZ7abDCxcBGraJ5YzZ/JsuRO0gAVdCWRSoEmuuwa4JjkrwJtYSxb0LCcO6NcG3ikkPLKJ/hD/8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XxKYB4j5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=t77KqhNJ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764088152;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/9VdPfUeGGC/W4hs0+0u5m9NGyRulUJvhrFT3kOxAUc=;
-	b=XxKYB4j5jfwU8/GWGMmvDYkp1jKpqZvckFEmiQb7zyrWeG2OHEDC0KDPGBp9/tHjYEFaws
-	AyUwflD9wtpiAyK4PO87g7bpiLJDAOCu/f17JXjbNY3ijE5W+l2arY0KBcVgB17tFXCctC
-	VSQsFnjTF3+52gcD9Z3WUa+V0xa7wi4=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-692-RaLdJ10lMP6CCfcRJQV3aQ-1; Tue, 25 Nov 2025 11:29:10 -0500
-X-MC-Unique: RaLdJ10lMP6CCfcRJQV3aQ-1
-X-Mimecast-MFC-AGG-ID: RaLdJ10lMP6CCfcRJQV3aQ_1764088149
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-297df52c960so146420755ad.1
-        for <linux-parisc@vger.kernel.org>; Tue, 25 Nov 2025 08:29:09 -0800 (PST)
+	s=arc-20240116; t=1764096550; c=relaxed/simple;
+	bh=RZerNYDvz/Mehn/xJImaNe7+7gLzS+DuxfjigABdHyE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iuV7KUNCgqLqL/USUJpsBF9wNL4qOhpPZBRoWbk9Q9drWCckhpv7eUowNLBKYYHxT2daI+tL5OBL6ttQhhlBn0uizIyYnYSHaD7148s6PWUY9UrH7DVNM9WFr1/qTonD+1lGF62GHxhTJZBM8unPMeKB7viildZQPB/FhCxDsiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kx+xakpI; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2980d9b7df5so72524465ad.3
+        for <linux-parisc@vger.kernel.org>; Tue, 25 Nov 2025 10:49:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1764088149; x=1764692949; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/9VdPfUeGGC/W4hs0+0u5m9NGyRulUJvhrFT3kOxAUc=;
-        b=t77KqhNJQ8vJRzkFvKUH5KAjRrF3f7iTIJPBASuhHAvfvx6e03XtyXJr0mRwqOhM8K
-         kUp1xiR5EBfZQ8YGFvSe78UJUytdRcjvX4CFkDOarjRIyzzJOv+eaef6cUltnxPkvVAQ
-         gDaXwT/3HuyjAXK98EQJ/9GY5mnv8Nwoa/Bilcu3SUmHKBDuIcFN5RXAL7bdwpttyQKB
-         Kdcm8CRL98qsO60IxDWTsjZUJhUx5lZox6egfC7AVwygyzSTGy3XVoZ4x5MmXoi9hppH
-         Kv9TGGjPvr6QfaDC4gYVmdhuNPRqo3R2MuTiEUQy5xnu8Bn5406wrPoK1YDjpLoxy9af
-         Mi8w==
+        d=gmail.com; s=20230601; t=1764096547; x=1764701347; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=B180bsfAm0KCHOEdxqYKNTx6S5+8jqZpdMY4dqqo0Uc=;
+        b=kx+xakpIT5+EI3NY65P3X36YrONEgXLurU/Xvx9XnAGJv48P5gi9/BIc8Hhn16RiKC
+         Q1XUP/WTF1efITN1/KtvnluPU08H7RNyLwFS3faP4FiS9ijrqO/3bn7MEDudIVMp+053
+         y/hiJ59JMKVEKzCugPaUR4PZu2bX60Y5tJ2rMQ5Cx/wwNjPMO1MRCnjzQNbIR7MIboRY
+         CpGLubEbSdFAl9BSbe9XqsQyweZqh2m8ZsToDHhbGa6zWVzhpSj7pg05OYfLnmwE+psc
+         RC1AwneqG2557Xm6qOj1wtxwqqxquIWMc6qOm6mHz7PnbClIAt6agQ/2ZFOqETJBjM+q
+         i4HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764088149; x=1764692949;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/9VdPfUeGGC/W4hs0+0u5m9NGyRulUJvhrFT3kOxAUc=;
-        b=M8v9TiwHYTQvYwxXNOx5oPiR68rKoXdT+KtUcjHs8L1YXQdSZGdU7eSTgQiELTP+Bx
-         X9rK6Y4hhU/OjIms2rYYKBIzm6extA3q5WmdmkFSFuyAZMA3KVDFeLE0BCCqbrBFdAnn
-         0XwHnCDDVNo11OTpJtc9zq5LYQwKRMLPbEtPBQipz36DqvU84OUSoUdkuH+vkEbeS97h
-         JUbjSlxntHhRyYaM2e/Wd5tewrVghgwf6hLaY0HhpCanwBq67POm0JOcdqzaGXt+MTgT
-         tND3Murk7EosI5e68adYalRAsY+gt/NRw0xlGKtlHF0tAePutsJog1NyGhLdeyEsGFHZ
-         Cerw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5o1xRxDoQg7MhIyJ2/nLPlAFoGfEhKQ+XmJSxX4B1BiMchj2SSyRb3MuCDyUPlPefoFATdYoWmuhDwlY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFo0Fv/6u/PngpJyUkkNmsanMZQ1LdOvO22ApzRgf0rNmYbm5K
-	p3JgHJXGJAKQLRm36oXHEO7siRHSuWm0znv7UQjQpB4k2zwM3Fs9r6MIvDK5dClhHBUN4cAj07s
-	8Q5ibIdcTwozb2z6l2KvoLK+CKmToqrn2FdeecaaSbgMZg60JkFXfrUgzxrEfeENw2w==
-X-Gm-Gg: ASbGncuLQPwLes+2klsutUWx3lkcFndH1Tn9pvTVY0MI7sGTjAKgr5au1L8qZRDQxCN
-	RLQioQ3kGX3pd0J2Q3B4foiTTJZ8Ut/SHJ5TZYmYU5FW1NHz3a0I/ZiRAacpX9C712UkxZQKbWQ
-	Wgml6znbiWWwRS3c49KEAqTC9nZA4aVQNo9PW6crZk3SOWVVnKT24AvTVYW3dyTm7VV06yEK3zu
-	qZ5DGaOBW67uHRW6OthphrPls79wG67MzzbwThgTDzWjHF0ABdCQWzGTw+sRCphX6g6V+2ilFsN
-	fq+ufohQAOpNfsK8AZXStP0i/vMnW2Sww33yfXZ+5sa3oB+VxRNX4J9pyYXo+INp8WHer9uYmTq
-	3njNJe+BDubtuxoEPB7xP7bZYzOkRcMLAUIV7
-X-Received: by 2002:a17:903:3c6f:b0:295:8c51:64ff with SMTP id d9443c01a7336-29b6bf37d57mr164174805ad.29.1764088148917;
-        Tue, 25 Nov 2025 08:29:08 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEok0ss3gIQ0hLyr6LzY46SNfe/5xP0Mg5Had2izv07cMVi9rYxGcIgLMurharveVJBPsL79Q==
-X-Received: by 2002:a17:903:3c6f:b0:295:8c51:64ff with SMTP id d9443c01a7336-29b6bf37d57mr164174555ad.29.1764088148497;
-        Tue, 25 Nov 2025 08:29:08 -0800 (PST)
-Received: from [10.200.68.138] (nat-pool-muc-u.redhat.com. [149.14.88.27])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b29b37fsm169912725ad.79.2025.11.25.08.28.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 08:29:08 -0800 (PST)
-Message-ID: <6e43c821658de1f388de99aac9cbbbbfdccb7ffd.camel@redhat.com>
-Subject: Re: [PATCH v9 02/13] PCI: Add devres helpers for iomap table
- [resulting in backtraces on HPPA]
-From: Philipp Stanner <pstanner@redhat.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Hans de Goede <hdegoede@redhat.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>, Sam
- Ravnborg <sam@ravnborg.org>, dakr@redhat.com, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- linux-pci@vger.kernel.org, linux-parisc@vger.kernel.org, Helge Deller
- <deller@gmx.de>
-Date: Tue, 25 Nov 2025 17:28:55 +0100
-In-Reply-To: <6c749a78-2c98-45a8-b9d4-47f79b56c918@roeck-us.net>
-References: <20240613115032.29098-1-pstanner@redhat.com>
-	 <20240613115032.29098-3-pstanner@redhat.com>
-	 <16cd212f-6ea0-471d-bf32-34f55d7292fe@roeck-us.net>
-	 <414bc2c721bfc60b8b8a1b7d069ff0fc9b3e5283.camel@redhat.com>
-	 <6c749a78-2c98-45a8-b9d4-47f79b56c918@roeck-us.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+        d=1e100.net; s=20230601; t=1764096547; x=1764701347;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B180bsfAm0KCHOEdxqYKNTx6S5+8jqZpdMY4dqqo0Uc=;
+        b=bwdHsv6pGyetPeNCYR0LMMJQmmLZflZzSoziXkTfWDUcurh9qEr3Xb6yHdS/BHHdtz
+         sJsxOk3H+MXJYH9g/pV7Rfhxx5knv301D7NBHmIMRCOp2IWMUVdVrbBWPUKNpcy5Qthu
+         yvk5UJ2n31pgRRTsmoasgsEAjeazqeVMYM2Z6P07oOLstypdYbP49M/UptxQI3Zxuzy5
+         hFCZQCtcQd6Su4Xy8KsloH2neZhJOcfEbBplGrx1eYCugyUqwGxhfGbXhAIx/dYNv+n9
+         x9tBQ9WF/fy03FFJ5irk22Pt/6N56jNnhiT3s8ImEbz7vctbOvkSLZQiQCrvDFwrefBU
+         kKlA==
+X-Forwarded-Encrypted: i=1; AJvYcCXkT3XvM0IBKRi2+D0aCSvFUDOAumoY0BnTZN/KohQizV8bXDMFA/IFNWacQLD5ISI8FLbNcGA8y6tTMrE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwhxeuDGgY5Qs3yCWcflMsRaYhQmeOTeCODxpAMp/o0/+SpKJu
+	rSl8beF+9cCgaAFaouZ1XO1fjD16RY77+OF4Ov+Ja5eTJbjbtZz6F6UE
+X-Gm-Gg: ASbGnctDG4TJhmb+ae2xdXdXuPQk8osP9L+uh6r/ZAFlu6YxxJz0ienZwkTMLIiygIs
+	3GNgP12y1M1G2gB+OHk9LvnToTcXEZopTcxavQED4XCBMHzFEjnhi9G36tOUOV8uLIJCu/yhb77
+	bu49rekFnQQmvXx+HJAvvPnv1qFBWJNK18iRIi/y7OlWUFg5AcwRpHiuOsdT5jCCubm3oE1ElZo
+	VzpoBYU/hOHKHTaqW0xhZmjtUn1xN+7wCRzPeBmGJg5iShTZFrwsORyo2N7+HEr/REg6Z/KYc3+
+	lhdmxGZPljV1yZyBA8yuemS/Etrcs7rp7fE5Wz5TT4nM+okA04cfzZR53E2niaZHV6EBl/dRgqt
+	YPIGzKcyKOwOGEWOrhblZsLCNwfHyHT1xZ0ih8OEm4HGnxCG/07fV8CtMgIlHJTSVvMAH/6e+7L
+	Z4o6lwyLEpbVrBxOarwzVDbMLU20BLirN9HQFNkF5/bFoPC0WuQOuxeJ9zdG5020vV0iSSqw==
+X-Google-Smtp-Source: AGHT+IEHwXTrThqGk3VyGl80wkEw3hS0XTPFJR89BJSGGZ22O9IDSsq3WzbZDrhlts4nyHjl7Newiw==
+X-Received: by 2002:a17:903:1ae6:b0:297:c71d:851c with SMTP id d9443c01a7336-29b6bf3bd5dmr169811045ad.36.1764096546551;
+        Tue, 25 Nov 2025 10:49:06 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-bd7604de9f8sm16865768a12.19.2025.11.25.10.49.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Nov 2025 10:49:05 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <52bb4a29-4bd9-443f-a16a-c58db31562e2@roeck-us.net>
+Date: Tue, 25 Nov 2025 10:49:03 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 02/13] PCI: Add devres helpers for iomap table
+ [resulting in backtraces on HPPA]
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Bjorn Helgaas <bhelgaas@google.com>, Sam Ravnborg <sam@ravnborg.org>,
+ dakr@redhat.com, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>
+References: <20240613115032.29098-1-pstanner@redhat.com>
+ <20240613115032.29098-3-pstanner@redhat.com>
+ <16cd212f-6ea0-471d-bf32-34f55d7292fe@roeck-us.net>
+ <414bc2c721bfc60b8b8a1b7d069ff0fc9b3e5283.camel@redhat.com>
+ <6c749a78-2c98-45a8-b9d4-47f79b56c918@roeck-us.net>
+ <6e43c821658de1f388de99aac9cbbbbfdccb7ffd.camel@redhat.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
+ RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
+ nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
+ 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
+ gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
+ IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
+ kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
+ VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
+ jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
+ BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
+ ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
+ CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAmgrMyQFCSbODQkACgkQyx8mb86fmYGcWRAA
+ oRwrk7V8fULqnGGpBIjp7pvR187Yzx+lhMGUHuM5H56TFEqeVwCMLWB2x1YRolYbY4MEFlQg
+ VUFcfeW0OknSr1s6wtrtQm0gdkolM8OcCL9ptTHOg1mmXa4YpW8QJiL0AVtbpE9BroeWGl9v
+ 2TGILPm9mVp+GmMQgkNeCS7Jonq5f5pDUGumAMguWzMFEg+Imt9wr2YA7aGen7KPSqJeQPpj
+ onPKhu7O/KJKkuC50ylxizHzmGx+IUSmOZxN950pZUFvVZH9CwhAAl+NYUtcF5ry/uSYG2U7
+ DCvpzqOryJRemKN63qt1bjF6cltsXwxjKOw6CvdjJYA3n6xCWLuJ6yk6CAy1Ukh545NhgBAs
+ rGGVkl6TUBi0ixL3EF3RWLa9IMDcHN32r7OBhw6vbul8HqyTFZWY2ksTvlTl+qG3zV6AJuzT
+ WdXmbcKN+TdhO5XlxVlbZoCm7ViBj1+PvIFQZCnLAhqSd/DJlhaq8fFXx1dCUPgQDcD+wo65
+ qulV/NijfU8bzFfEPgYP/3LP+BSAyFs33y/mdP8kbMxSCjnLEhimQMrSSo/To1Gxp5C97fw5
+ 3m1CaMILGKCmfI1B8iA8zd8ib7t1Rg0qCwcAnvsM36SkrID32GfFbv873bNskJCHAISK3Xkz
+ qo7IYZmjk/IJGbsiGzxUhvicwkgKE9r7a1rOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
+ 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
+ pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
+ J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
+ pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
+ 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
+ ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
+ I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
+ nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
+ HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
+ JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAmgrMyQFCSbODQkACgkQyx8mb86fmYHlgg/9
+ H5JeDmB4jsreE9Bn621wZk7NMzxy9STxiVKSh8Mq4pb+IDu1RU2iLyetCY1TiJlcxnE362kj
+ njrfAdqyPteHM+LU59NtEbGwrfcXdQoh4XdMuPA5ADetPLma3YiRa3VsVkLwpnR7ilgwQw6u
+ dycEaOxQ7LUXCs0JaGVVP25Z2hMkHBwx6BlW6EZLNgzGI2rswSZ7SKcsBd1IRHVf0miwIFYy
+ j/UEfAFNW+tbtKPNn3xZTLs3quQN7GdYLh+J0XxITpBZaFOpwEKV+VS36pSLnNl0T5wm0E/y
+ scPJ0OVY7ly5Vm1nnoH4licaU5Y1nSkFR/j2douI5P7Cj687WuNMC6CcFd6j72kRfxklOqXw
+ zvy+2NEcXyziiLXp84130yxAKXfluax9sZhhrhKT6VrD45S6N3HxJpXQ/RY/EX35neH2/F7B
+ RgSloce2+zWfpELyS1qRkCUTt1tlGV2p+y2BPfXzrHn2vxvbhEn1QpQ6t+85FKN8YEhJEygJ
+ F0WaMvQMNrk9UAUziVcUkLU52NS9SXqpVg8vgrO0JKx97IXFPcNh0DWsSj/0Y8HO/RDkGXYn
+ FDMj7fZSPKyPQPmEHg+W/KzxSSfdgWIHF2QaQ0b2q1wOSec4Rti52ohmNSY+KNIW/zODhugJ
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <6e43c821658de1f388de99aac9cbbbbfdccb7ffd.camel@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2025-11-25 at 08:12 -0800, Guenter Roeck wrote:
-> On 11/25/25 07:48, Philipp Stanner wrote:
-> > On Sun, 2025-11-23 at 08:42 -0800, Guenter Roeck wrote:
-> > > Hi,
-> > >=20
-> > > On Thu, Jun 13, 2024 at 01:50:15PM +0200, Philipp Stanner wrote:
-> > > > The pcim_iomap_devres.table administrated by pcim_iomap_table() has=
- its
-> > > > entries set and unset at several places throughout devres.c using m=
-anual
-> > > > iterations which are effectively code duplications.
-> > > >=20
-> > > > Add pcim_add_mapping_to_legacy_table() and
-> > > > pcim_remove_mapping_from_legacy_table() helper functions and use th=
-em where
-> > > > possible.
-> > > >=20
-> > > > Link: https://lore.kernel.org/r/20240605081605.18769-4-pstanner@red=
-hat.com
-> > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> > > > [bhelgaas: s/short bar/int bar/ for consistency]
-> > > > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> > > > ---
-> > > > =C2=A0=C2=A0drivers/pci/devres.c | 77 +++++++++++++++++++++++++++++=
-++++-----------
-> > > > =C2=A0=C2=A01 file changed, 58 insertions(+), 19 deletions(-)
-> > > >=20
-> > > > diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
-> > > > index f13edd4a3873..845d6fab0ce7 100644
-> > > > --- a/drivers/pci/devres.c
-> > > > +++ b/drivers/pci/devres.c
-> > > > @@ -297,6 +297,52 @@ void __iomem * const *pcim_iomap_table(struct =
-pci_dev *pdev)
-> > > > =C2=A0=C2=A0}
-> > > > =C2=A0=C2=A0EXPORT_SYMBOL(pcim_iomap_table);
-> > > > =C2=A0=20
-> > > > +/*
-> > > > + * Fill the legacy mapping-table, so that drivers using the old AP=
-I can
-> > > > + * still get a BAR's mapping address through pcim_iomap_table().
-> > > > + */
-> > > > +static int pcim_add_mapping_to_legacy_table(struct pci_dev *pdev,
-> > > > +					=C2=A0=C2=A0=C2=A0 void __iomem *mapping, int bar)
-> > > > +{
-> > > > +	void __iomem **legacy_iomap_table;
-> > > > +
-> > > > +	if (bar >=3D PCI_STD_NUM_BARS)
-> > > > +		return -EINVAL;
-> > > > +
-> > > > +	legacy_iomap_table =3D (void __iomem **)pcim_iomap_table(pdev);
-> > > > +	if (!legacy_iomap_table)
-> > > > +		return -ENOMEM;
-> > > > +
-> > > > +	/* The legacy mechanism doesn't allow for duplicate mappings. */
-> > > > +	WARN_ON(legacy_iomap_table[bar]);
-> > > > +
-> > >=20
-> > > Ever since this patch has been applied, I see this warning on all hpp=
-a
-> > > (parisc) systems.
-> > >=20
-> > > [=C2=A0=C2=A0=C2=A0 0.978177] WARNING: CPU: 0 PID: 1 at drivers/pci/d=
-evres.c:473 pcim_add_mapping_to_legacy_table.part.0+0x54/0x80
-> > > [=C2=A0=C2=A0=C2=A0 0.978850] Modules linked in:
-> > > [=C2=A0=C2=A0=C2=A0 0.979277] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 No=
-t tainted 6.18.0-rc6-64bit+ #1 NONE
-> > > [=C2=A0=C2=A0=C2=A0 0.979519] Hardware name: 9000/785/C3700
-> > > [=C2=A0=C2=A0=C2=A0 0.979715]
-> > > [=C2=A0=C2=A0=C2=A0 0.979768]=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 YZrvWESTH=
-LNXBCVMcbcbcbcbOGFRQPDI
-> > > [=C2=A0=C2=A0=C2=A0 0.979886] PSW: 00001000000001000000000000001111 N=
-ot tainted
-> > > [=C2=A0=C2=A0=C2=A0 0.980006] r00-03=C2=A0 000000000804000f 000000004=
-14e10a0 0000000040acb300 00000000434b1440
-> > > [=C2=A0=C2=A0=C2=A0 0.980167] r04-07=C2=A0 00000000414a78a0 000000000=
-0029000 0000000000000000 0000000043522000
-> > > [=C2=A0=C2=A0=C2=A0 0.980314] r08-11=C2=A0 0000000000000000 000000000=
-0000008 0000000000000000 00000000434b0de8
-> > > [=C2=A0=C2=A0=C2=A0 0.980461] r12-15=C2=A0 00000000434b11b0 000000004=
-156a8a0 0000000043c655a0 0000000000000000
-> > > [=C2=A0=C2=A0=C2=A0 0.980608] r16-19=C2=A0 000000004016e080 000000004=
-019e7d8 0000000000000030 0000000043549780
-> > > [=C2=A0=C2=A0=C2=A0 0.981106] r20-23=C2=A0 0000000020000000 000000000=
-0000000 000000000800000e 0000000000000000
-> > > [=C2=A0=C2=A0=C2=A0 0.981317] r24-27=C2=A0 0000000000000000 000000000=
-800000f 0000000043522260 00000000414a78a0
-> > > [=C2=A0=C2=A0=C2=A0 0.981480] r28-31=C2=A0 00000000436af480 000000004=
-34b1680 00000000434b14d0 0000000000027000
-> > > [=C2=A0=C2=A0=C2=A0 0.981641] sr00-03=C2=A0 0000000000000000 00000000=
-00000000 0000000000000000 0000000000000000
-> > > [=C2=A0=C2=A0=C2=A0 0.981805] sr04-07=C2=A0 0000000000000000 00000000=
-00000000 0000000000000000 0000000000000000
-> > > [=C2=A0=C2=A0=C2=A0 0.981972]
-> > > [=C2=A0=C2=A0=C2=A0 0.982024] IASQ: 0000000000000000 0000000000000000=
- IAOQ: 0000000040acb31c 0000000040acb320
-> > > [=C2=A0=C2=A0=C2=A0 0.982185]=C2=A0 IIR: 03ffe01f=C2=A0=C2=A0=C2=A0 I=
-SR: 0000000000000000=C2=A0 IOR: 00000000436af410
-> > > [=C2=A0=C2=A0=C2=A0 0.982322]=C2=A0 CPU:=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 0=C2=A0=C2=A0 CR30: 0000000043549780 CR31: 0000000000000000
-> > > [=C2=A0=C2=A0=C2=A0 0.982458]=C2=A0 ORIG_R28: 00000000434b16b0
-> > > [=C2=A0=C2=A0=C2=A0 0.982548]=C2=A0 IAOQ[0]: pcim_add_mapping_to_lega=
-cy_table.part.0+0x54/0x80
-> > > [=C2=A0=C2=A0=C2=A0 0.982733]=C2=A0 IAOQ[1]: pcim_add_mapping_to_lega=
-cy_table.part.0+0x58/0x80
-> > > [=C2=A0=C2=A0=C2=A0 0.982871]=C2=A0 RP(r2): pcim_add_mapping_to_legac=
-y_table.part.0+0x38/0x80
-> > > [=C2=A0=C2=A0=C2=A0 0.983100] Backtrace:
-> > > [=C2=A0=C2=A0=C2=A0 0.983439]=C2=A0 [<0000000040acba1c>] pcim_iomap+0=
-xc4/0x170
-> > > [=C2=A0=C2=A0=C2=A0 0.983577]=C2=A0 [<0000000040ba3e4c>] serial8250_p=
-ci_setup_port+0x8c/0x168
-> > > [=C2=A0=C2=A0=C2=A0 0.983725]=C2=A0 [<0000000040ba7588>] setup_port+0=
-x38/0x50
-> > > [=C2=A0=C2=A0=C2=A0 0.983837]=C2=A0 [<0000000040ba7d94>] pci_hp_diva_=
-setup+0x8c/0xd8
-> > > [=C2=A0=C2=A0=C2=A0 0.983957]=C2=A0 [<0000000040baa47c>] pciserial_in=
-it_ports+0x2c4/0x358
-> > > [=C2=A0=C2=A0=C2=A0 0.984088]=C2=A0 [<0000000040baa8bc>] pciserial_in=
-it_one+0x31c/0x330
-> > > [=C2=A0=C2=A0=C2=A0 0.984214]=C2=A0 [<0000000040abfab4>] pci_device_p=
-robe+0x194/0x270
-> > >=20
-> > > Looking into serial8250_pci_setup_port():
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (pci_resource_fla=
-gs(dev, bar) & IORESOURCE_MEM) {
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!pcim_iomap(dev, bar, 0) && !pcim_iomap_tab=
-le(dev))
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- return -ENOMEM;
-> >=20
-> > Strange. From the code I see here the WARN_ON in
-> > pcim_add_mapping_to_legacy_table() should not fire. I suspect that it's
-> > actually triggered somewhere else.
-> >=20
->=20
-> pcim_iomap() calls pcim_add_mapping_to_legacy_table() which triggers the =
-traceback.
-> The caller uses the returned error to determine that it needs to call pci=
-m_iomap_table()
-> instead. As you point out below, that may not be necessary, but then it i=
-s already
-> too late and the warning was triggered.
->=20
-> > >=20
-> > > This suggests that the failure is expected. I can see that pcim_iomap=
-_table()
-> > > is deprecated, and that one is supposed to use pcim_iomap() instead. =
-However,
-> > > pcim_iomap() _is_ alrady used, and I don't see a function which lets =
-the
-> > > caller replicate what is done above (attach multiple serial ports to =
-the
-> > > same PCI bar).
-> >=20
-> > Is serial8250_pci_setup_port() invoked in a loop somewhere? Where does
-> > the "attach multiple" happen?
-> >=20
->=20
-> It is called for multiple serial ports, each of which are in the same bar=
- but
-> with different offset into the bar.
->=20
-> > >=20
-> > > How would you suggest to fix the problem ?
-> >=20
-> > I suggest you try to remove the `&& pcim_iomap_table(dev)` from above
-> > to see if that's really the cause. pcim_iomap() already creates the
-> > table, and if it succeeds the table has been created with absolute
-> > certainty. The entries will also be present. So the table-check is
-> > surplus.
-> >=20
->=20
-> How would that fix anything ? The warning would still be triggered from t=
-he
-> failed call to pcim_iomap() for the 2nd and subsequent serial port on the
-> same bar.
+On 11/25/25 08:28, Philipp Stanner wrote:
+> On Tue, 2025-11-25 at 08:12 -0800, Guenter Roeck wrote:
+>> On 11/25/25 07:48, Philipp Stanner wrote:
+>>> On Sun, 2025-11-23 at 08:42 -0800, Guenter Roeck wrote:
+>>>> Hi,
+>>>>
+>>>> On Thu, Jun 13, 2024 at 01:50:15PM +0200, Philipp Stanner wrote:
+>>>>> The pcim_iomap_devres.table administrated by pcim_iomap_table() has its
+>>>>> entries set and unset at several places throughout devres.c using manual
+>>>>> iterations which are effectively code duplications.
+>>>>>
+>>>>> Add pcim_add_mapping_to_legacy_table() and
+>>>>> pcim_remove_mapping_from_legacy_table() helper functions and use them where
+>>>>> possible.
+>>>>>
+>>>>> Link: https://lore.kernel.org/r/20240605081605.18769-4-pstanner@redhat.com
+>>>>> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+>>>>> [bhelgaas: s/short bar/int bar/ for consistency]
+>>>>> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+>>>>> ---
+>>>>>    drivers/pci/devres.c | 77 +++++++++++++++++++++++++++++++++-----------
+>>>>>    1 file changed, 58 insertions(+), 19 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
+>>>>> index f13edd4a3873..845d6fab0ce7 100644
+>>>>> --- a/drivers/pci/devres.c
+>>>>> +++ b/drivers/pci/devres.c
+>>>>> @@ -297,6 +297,52 @@ void __iomem * const *pcim_iomap_table(struct pci_dev *pdev)
+>>>>>    }
+>>>>>    EXPORT_SYMBOL(pcim_iomap_table);
+>>>>>    
+>>>>> +/*
+>>>>> + * Fill the legacy mapping-table, so that drivers using the old API can
+>>>>> + * still get a BAR's mapping address through pcim_iomap_table().
+>>>>> + */
+>>>>> +static int pcim_add_mapping_to_legacy_table(struct pci_dev *pdev,
+>>>>> +					    void __iomem *mapping, int bar)
+>>>>> +{
+>>>>> +	void __iomem **legacy_iomap_table;
+>>>>> +
+>>>>> +	if (bar >= PCI_STD_NUM_BARS)
+>>>>> +		return -EINVAL;
+>>>>> +
+>>>>> +	legacy_iomap_table = (void __iomem **)pcim_iomap_table(pdev);
+>>>>> +	if (!legacy_iomap_table)
+>>>>> +		return -ENOMEM;
+>>>>> +
+>>>>> +	/* The legacy mechanism doesn't allow for duplicate mappings. */
+>>>>> +	WARN_ON(legacy_iomap_table[bar]);
+>>>>> +
+>>>>
+>>>> Ever since this patch has been applied, I see this warning on all hppa
+>>>> (parisc) systems.
+>>>>
+>>>> [    0.978177] WARNING: CPU: 0 PID: 1 at drivers/pci/devres.c:473 pcim_add_mapping_to_legacy_table.part.0+0x54/0x80
+>>>> [    0.978850] Modules linked in:
+>>>> [    0.979277] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.0-rc6-64bit+ #1 NONE
+>>>> [    0.979519] Hardware name: 9000/785/C3700
+>>>> [    0.979715]
+>>>> [    0.979768]      YZrvWESTHLNXBCVMcbcbcbcbOGFRQPDI
+>>>> [    0.979886] PSW: 00001000000001000000000000001111 Not tainted
+>>>> [    0.980006] r00-03  000000000804000f 00000000414e10a0 0000000040acb300 00000000434b1440
+>>>> [    0.980167] r04-07  00000000414a78a0 0000000000029000 0000000000000000 0000000043522000
+>>>> [    0.980314] r08-11  0000000000000000 0000000000000008 0000000000000000 00000000434b0de8
+>>>> [    0.980461] r12-15  00000000434b11b0 000000004156a8a0 0000000043c655a0 0000000000000000
+>>>> [    0.980608] r16-19  000000004016e080 000000004019e7d8 0000000000000030 0000000043549780
+>>>> [    0.981106] r20-23  0000000020000000 0000000000000000 000000000800000e 0000000000000000
+>>>> [    0.981317] r24-27  0000000000000000 000000000800000f 0000000043522260 00000000414a78a0
+>>>> [    0.981480] r28-31  00000000436af480 00000000434b1680 00000000434b14d0 0000000000027000
+>>>> [    0.981641] sr00-03  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>>>> [    0.981805] sr04-07  0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>>>> [    0.981972]
+>>>> [    0.982024] IASQ: 0000000000000000 0000000000000000 IAOQ: 0000000040acb31c 0000000040acb320
+>>>> [    0.982185]  IIR: 03ffe01f    ISR: 0000000000000000  IOR: 00000000436af410
+>>>> [    0.982322]  CPU:        0   CR30: 0000000043549780 CR31: 0000000000000000
+>>>> [    0.982458]  ORIG_R28: 00000000434b16b0
+>>>> [    0.982548]  IAOQ[0]: pcim_add_mapping_to_legacy_table.part.0+0x54/0x80
+>>>> [    0.982733]  IAOQ[1]: pcim_add_mapping_to_legacy_table.part.0+0x58/0x80
+>>>> [    0.982871]  RP(r2): pcim_add_mapping_to_legacy_table.part.0+0x38/0x80
+>>>> [    0.983100] Backtrace:
+>>>> [    0.983439]  [<0000000040acba1c>] pcim_iomap+0xc4/0x170
+>>>> [    0.983577]  [<0000000040ba3e4c>] serial8250_pci_setup_port+0x8c/0x168
+>>>> [    0.983725]  [<0000000040ba7588>] setup_port+0x38/0x50
+>>>> [    0.983837]  [<0000000040ba7d94>] pci_hp_diva_setup+0x8c/0xd8
+>>>> [    0.983957]  [<0000000040baa47c>] pciserial_init_ports+0x2c4/0x358
+>>>> [    0.984088]  [<0000000040baa8bc>] pciserial_init_one+0x31c/0x330
+>>>> [    0.984214]  [<0000000040abfab4>] pci_device_probe+0x194/0x270
+>>>>
+>>>> Looking into serial8250_pci_setup_port():
+>>>>
+>>>>           if (pci_resource_flags(dev, bar) & IORESOURCE_MEM) {
+>>>>                   if (!pcim_iomap(dev, bar, 0) && !pcim_iomap_table(dev))
+>>>>                           return -ENOMEM;
+>>>
+>>> Strange. From the code I see here the WARN_ON in
+>>> pcim_add_mapping_to_legacy_table() should not fire. I suspect that it's
+>>> actually triggered somewhere else.
+>>>
+>>
+>> pcim_iomap() calls pcim_add_mapping_to_legacy_table() which triggers the traceback.
+>> The caller uses the returned error to determine that it needs to call pcim_iomap_table()
+>> instead. As you point out below, that may not be necessary, but then it is already
+>> too late and the warning was triggered.
+>>
+>>>>
+>>>> This suggests that the failure is expected. I can see that pcim_iomap_table()
+>>>> is deprecated, and that one is supposed to use pcim_iomap() instead. However,
+>>>> pcim_iomap() _is_ alrady used, and I don't see a function which lets the
+>>>> caller replicate what is done above (attach multiple serial ports to the
+>>>> same PCI bar).
+>>>
+>>> Is serial8250_pci_setup_port() invoked in a loop somewhere? Where does
+>>> the "attach multiple" happen?
+>>>
+>>
+>> It is called for multiple serial ports, each of which are in the same bar but
+>> with different offset into the bar.
+>>
+>>>>
+>>>> How would you suggest to fix the problem ?
+>>>
+>>> I suggest you try to remove the `&& pcim_iomap_table(dev)` from above
+>>> to see if that's really the cause. pcim_iomap() already creates the
+>>> table, and if it succeeds the table has been created with absolute
+>>> certainty. The entries will also be present. So the table-check is
+>>> surplus.
+>>>
+>>
+>> How would that fix anything ? The warning would still be triggered from the
+>> failed call to pcim_iomap() for the 2nd and subsequent serial port on the
+>> same bar.
+> 
+> OK, I failed to see that it's really pcim_iomap() which is called
+> multiple times for the same bar.
+> 
+> The warning itself is harmless, so it's not urgent.
+> Cleanup is always done through devres callbacks, one per resource. The
+> table is not used for that, just for accessors of existing mappings. So
+> at first glance I think that removing the WARN_ON would be OK. I'd like
+> to hear Bjorn's opinion on that, though.
+> 
+> Maybe you could investigate removing pcim_iomap_table() from this
+> driver, obtaining the mappings directly from calls to pcim_iomap().
 
-OK, I failed to see that it's really pcim_iomap() which is called
-multiple times for the same bar.
+serial8250_pci_setup_port() is an API function. It is called from several
+drivers. Its callers have no means to pass "This is the first request for
+this bar", and at least for some of the callers this would not be easy
+to accomplish unless one changes and adds complexity to all that calling
+code.
 
-The warning itself is harmless, so it's not urgent.
-Cleanup is always done through devres callbacks, one per resource. The
-table is not used for that, just for accessors of existing mappings. So
-at first glance I think that removing the WARN_ON would be OK. I'd like
-to hear Bjorn's opinion on that, though.
+> Calling it multiple times for the same BAR is valid, it's just the
+> table which complains. Since you are the first party I ever hear from
+> about that WARN_ON. So with this driver ported one could argue that
+> removing it is justified..
+> 
 
-Maybe you could investigate removing pcim_iomap_table() from this
-driver, obtaining the mappings directly from calls to pcim_iomap().
-Calling it multiple times for the same BAR is valid, it's just the
-table which complains. Since you are the first party I ever hear from
-about that WARN_ON. So with this driver ported one could argue that
-removing it is justified..
+Maybe the reason for that is that there are more and more pointless
+backtraces in the kernel. That only results in people ignoring them.
+I do see some more, but then I notice that such warnings proliferate,
+and feedback such as "The warning itself is harmless" doesn't really
+encourage me doing that.
 
-Another possiblity could be to switch to unmanaged PCI. Use pci_iomap()
-and pci_enable_device() etc.
+> Another possiblity could be to switch to unmanaged PCI. Use pci_iomap()
+> and pci_enable_device() etc.
+> 
+> In case you have lots of spare cycles, the cleanest way would be to
+> remove the legacy table altogether. To do so, one would have to port
+> all users of pcim_iomap_table(). I have worked on that for a while and
+> have removed many of them. The most difficult remaining users are AFAIR
+> in drivers/ata/
+> 
 
-In case you have lots of spare cycles, the cleanest way would be to
-remove the legacy table altogether. To do so, one would have to port
-all users of pcim_iomap_table(). I have worked on that for a while and
-have removed many of them. The most difficult remaining users are AFAIR
-in drivers/ata/
+Sorry, "spare cycles" is not exactly something that happens in my life.
 
-
-P.
+Guenter
 
 
