@@ -1,95 +1,95 @@
-Return-Path: <linux-parisc+bounces-4329-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4330-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388E7C8B8F6
-	for <lists+linux-parisc@lfdr.de>; Wed, 26 Nov 2025 20:23:29 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48C7AC8B959
+	for <lists+linux-parisc@lfdr.de>; Wed, 26 Nov 2025 20:33:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C5F7C4E7066
-	for <lists+linux-parisc@lfdr.de>; Wed, 26 Nov 2025 19:23:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BFFD034A085
+	for <lists+linux-parisc@lfdr.de>; Wed, 26 Nov 2025 19:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6248B340286;
-	Wed, 26 Nov 2025 19:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D93333FE35;
+	Wed, 26 Nov 2025 19:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="bMdRdw6f"
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="tKtgM92J"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B37133FE24
-	for <linux-parisc@vger.kernel.org>; Wed, 26 Nov 2025 19:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C1230595C
+	for <linux-parisc@vger.kernel.org>; Wed, 26 Nov 2025 19:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764184982; cv=none; b=Rxvu8kuC1gh+C9tQAspehDqXxIP1u95b6DeTswC9xlA9qN6qlwFzZHciWwPBUgE6mpmTEbOHC33DWRNYedXgw4Q3I+2U2E3gxV8N4vUgNKqEQelz7PUvkLAVeimEvOKyt/aiJV0wgMf5Ky0XHp87fe2Q+B1O08+hAVmqBpLt+/g=
+	t=1764185623; cv=none; b=uuuPCpsYrX9E1lUfpBmbteTLMaY65ImYexdKn6Y66e+VZf/0z9C6+zhzLQJlkw5Fa/zWnC9YBrmG5hooxUKD2lJR+Gl9qZd/CfDn3nV+k3NR5tDpfQjJWXpS9TXKSKaNoSbEUZWIB0Pq9Nu6civjEiJAcFSeSFArxA3V5BGuKak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764184982; c=relaxed/simple;
-	bh=0hirnEOzsvL7R5KJE8xoZhMUGGvRCsOO2pZvgrFpUqw=;
+	s=arc-20240116; t=1764185623; c=relaxed/simple;
+	bh=HYH6zAtKbzREJZ4g9W6jt5HmnHtr5oDmUi1h/tnXbXE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=savFJDF1dFvLrplKfC/SAKiqGJILIL+yDl0qnaRw41llSQNO2DwTbdgCO9GY+8wCmUJEF35A7vPX36Av320AhwNQYJtM27wpURvO2nzzGFelWqgDHhgaeXt8YuS16h0JRDGZgFNrqnuY9/PpQmOHxtGbgLuq+OMViTMRSKj8H1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=bMdRdw6f; arc=none smtp.client-ip=185.125.188.122
+	 In-Reply-To:Content-Type; b=O72/xKa06LZcoBLwqjfZCBtwaF+BRG0eoniF4YMYtS0KGgekXhfmUT1DBXaWnUdLrHSONCafSTVzipR7fOAHM+maK4YD5YFRHojoA542khARiIhZ9/acaKS9BA3o40eRea3RcVEVAz8kBc/f65E2yKFiQpmyuJFoYNdRWqkDEoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=tKtgM92J; arc=none smtp.client-ip=185.125.188.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 01E7640F19
-	for <linux-parisc@vger.kernel.org>; Wed, 26 Nov 2025 19:22:42 +0000 (UTC)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id C38323FCED
+	for <linux-parisc@vger.kernel.org>; Wed, 26 Nov 2025 19:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1764184962;
-	bh=HpISxZoFsAswvw2Vev1V7s27tbYB418EnQjvSTZMQCI=;
+	s=20251003; t=1764185614;
+	bh=az79TvpSU4Bz3IJbxRZDLB6JDgHW9IpSjfiaFglD1Xc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
 	 In-Reply-To:Content-Type;
-	b=bMdRdw6fwjbT4LwDtITfi5KbPPye+Gk0Vt8NIEQAoZtuSOQgQ9Rj4Ju3wc3ECvvGx
-	 hRdDGt1Hr4pr5Yy5uGE1ohqbEo+J01mVC6SZWzMZpvsLd4vH5SRyEeFCVVjeU1IXON
-	 0WvhiSixq6d1gwxkxIhpQFr+vw8zxrGUSXNYfzGIycm4NOR7pUJVoountXCNOaow4o
-	 DEemzjAcPd+X28A+E54jNX+1DZkNl4b9+W8k4ngn+4qVeuzq2Ge3e7SbV3h/b6Sqh7
-	 Td2IfqouHx2OWlJY9H7ZKu2N6cXzEqR0ueu1ji84jbE9NMQPW802o6x99Vz+SNm+Iy
-	 zHU/C0/z0pt+Ie9ACAhC6Ep/WgcvYK51uQNobOLoxgctomOgArywvmMlu6gRM8MFjS
-	 O5eNbHYmZpxWPX1dzHIFto9zXRNRFDqTwQZkYASlrd4Our+G+Pqo9oIJy9z7M7ljCE
-	 kKJrKi9Hn0x3z3i0eM7rkCH7h33iEF56D/uNMDQSXueaGMpAtXbPjOzi+1W9ARC2iD
-	 cRWx5QDIbDtGscP6vUlwR6u+zXB0MCzYzwJ4q86PBsM2Yt4bBr95kBCU1Z72w3hMWn
-	 r5grNb+zwC4kMMh+1cnfRP9+oZ2bSi5zG4mYpg0mHi6kSHTH5sYg+k6s47hC7B3rZF
-	 tcs5RuVFZDQf8fPSu7VCcrb4=
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7b9090d9f2eso100253b3a.0
-        for <linux-parisc@vger.kernel.org>; Wed, 26 Nov 2025 11:22:41 -0800 (PST)
+	b=tKtgM92JRxbClSkVkMJ9rqoBDkpLufdC3+NidBdOwttOacK7ZI2PjTxO17F6EShS1
+	 DqSM0wecOvUJC4ScUPNg6bBD1FWn+FViKgDX37F61IQHprdu43zGuXAW0kBTR+96aU
+	 IFIcqKgIDFZz1/X13IrO/GvNw9P7p10qZHaIXbhvb8duPYhdF1Hz86ILy1+JDzxA/H
+	 nwIEwybN2tEuCdjVrkkw0n4Av9gzMaccOA9t2XUOBIxDx9a9o9X6OAablQ8UU0x09f
+	 9wboBQfvq3TlHHAnmUliYp60CcvN+DwZjJ39mjWcMMxerW0ilDfs6XFwYJeo8t/pm2
+	 +AWg2mcuGIvPx8326DxUJShK3uHDBsCoSMonX+aYjoeWe8FYJ5i7auUKQ1O0XXbhl0
+	 CfBqLL54/KFyyvn8K/IpR8yLpeETAq6uguAhubYSkii0jngvXNZbMWPUE1GMhmW8gQ
+	 shVdLkTGr7uPNfXlkbGUqXgq97SYEKZbdP1hz/SURV8lnm9ZANhi7q08JHbhOxSDHI
+	 C9te93JDD+9g0QfNjKIM6v3VQE6RamidUrq2qzugMdaVT7BMXeVmzf2kiF/D0py819
+	 nu9GphAOACuLfq/y7lqtF8R7+1zNMRDtysK6pl422rHrWuABfgvdNmWnYVctgpAXOo
+	 FsIJjjzfqbabv9LxX0apzq84=
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3416dc5754fso147388a91.1
+        for <linux-parisc@vger.kernel.org>; Wed, 26 Nov 2025 11:33:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764184958; x=1764789758;
+        d=1e100.net; s=20230601; t=1764185613; x=1764790413;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HpISxZoFsAswvw2Vev1V7s27tbYB418EnQjvSTZMQCI=;
-        b=QbXhHwokxl+9T2Wq9djr6hqV3ibITX2g4ZcXMb2oszie7KZXThae/8+/6dj6rsRAFE
-         RAM0ZNAoMttV9hsVoKLY07c/ZwTEtmYfKwFzQrQO4BTBSDd8NHKcf+geSoABymywj/RR
-         PRa+wX2nkiv/PFvbiWyEO75v6UTzHsG7S4hCCzCUFEzyZSxHCW/dgSgDbH3SwVJsgKfa
-         LMlhkGKHFQwwntdvdMDRrf1tHlH5IepkRNnhIEqOEJmgudAQnpmOPhuyezotHQjutR2c
-         sebjTKHfQLuFxh5m27hzGuYXcQihmP1GY7Tas+dqBRlwx1yhs+uFll9s6EVw6sDJ5h5q
-         wrEA==
-X-Forwarded-Encrypted: i=1; AJvYcCUh9RvaZ4Q7oDwSq2QF7YaBZ1klaI9t62kXqOdV9rEvBgUubzESbbGoSFQsFO6AkLfUYssSsyXF0IUPsxQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfejTSnxYW1/l8828b2vpIn8Q2qw6ynr43daT80o3eKDqh7MhA
-	sUFfMeVUXiyv+Ll+4NQfZQoydWRlkqKu5molhErZ3r1Pt/O+UjWPXkeHfeStg/hGflMQ+Kootqn
-	OiWdNR/ny/opWpzgQNkbvGLjs7nBDf3kw97d+0GbItJjcyZfOBECWZEmO8wtGi68O83hPExtvJQ
-	B4r7Nw0Q==
-X-Gm-Gg: ASbGncuoCO8idgEnBxJlGHlWjEuuZEgr53+N1esgPwmrCF0umacwvQ4p8XxjLZRznR/
-	wl8lUO1JURKAyq++FewFR5jbCbkBmVJOZ2bPO/6KtWPB6m19F8NIHJ3elKLrzhtW/Bxkey/7Ver
-	rdk6Jm2JUwG/VWePulpQlY1xWamVWa2r9eRFpDsURppk9paeO8qMa4BF3MiF8EUM3ddOmNSjso3
-	xOcLG7SZ1z1UwYUIfqQR/I5q7jNrM705Gk6Q82ISL88ktYJDEG5Yctm3YExq9biTsrJAagG5PYn
-	8/FHAv2dmNJjkl87X7CTcCsDGMyFlxFZ/GOtEweq/yFE0QZo/pLk42btUmfiOmsArDJNjeeDn9L
-	Z3VAn8tMvKp2mPnMXxBrP/Ni0
-X-Received: by 2002:a05:6a20:3c89:b0:304:313a:4bcd with SMTP id adf61e73a8af0-3614ed3e0afmr23230845637.30.1764184957866;
-        Wed, 26 Nov 2025 11:22:37 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGHVAk9Xw8ILesdGB7m2WNRLS3td28HvyU0BBDFTEqpQmH82HgLZXPQOCT/YX6sbjDlqoy+Jg==
-X-Received: by 2002:a05:6a20:3c89:b0:304:313a:4bcd with SMTP id adf61e73a8af0-3614ed3e0afmr23230822637.30.1764184957322;
-        Wed, 26 Nov 2025 11:22:37 -0800 (PST)
+        bh=az79TvpSU4Bz3IJbxRZDLB6JDgHW9IpSjfiaFglD1Xc=;
+        b=oZTQekdBPUCHVJGxNLerByZ8PSaNMbM07trFr7Kh8R7GIz3IIGtnQgCjWXz3rSBGnG
+         pC6droxVGBgLz2rNDF+D9zcncx26kJnUrCPh0uohu2Lazrk9BlV1NbZa3O4iJcw+1N7m
+         xc8EQXwzIVPfiSFiKMfmLW2kWGuyllO4RTYqEt/DkBONqUaHvugc0oRjPSYtSaBAdWfL
+         M8JH+yEo87Y2wXiph98Lb+CM6P4Mw93zh0mAwspGQ0Ma5OirqqdcU2ls0glkRHMr7Q5J
+         AYlC4kJoOsG1mnSVDd32rgkztWFam01CqbRTSpBgnIFOir3S0n+YOBl6D6NgxhR2JQbQ
+         W6xQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVOJaL4IvFMvlrXOaspzj+iKjOUWhVMIj/auQKesBkyY4T+XcwH6dTb+7j7Q7xZ+36QGoVbG1L9dGPbEA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbtF2qv45a9fuPPOl+EZreHVvNpfCfnXAui1M9OucLBJ0V+AHW
+	z1peVwQcBpfdoHLE+UWlH08YStG79RF58L6YNAdaefxJJcXj8nilHQOsh618B4SIGKtwkbXUkWY
+	WvcP5hao7Z6fiXjSDgYQPdJLBe9fBHGGfiwqvRmqIPfv9/dWzI77mzMQ4K/JPUlkTNvcqToNIJJ
+	2pwKmWgg==
+X-Gm-Gg: ASbGnctsIaSloINIPNnLvJG0k/HAc2INCUTGrohrz/jk5fO+y4PkuZehqAHyJlDTD4f
+	JDgC3Bt3P5n0fLCtTIMjBMgJ9G2lfzJPUloNdz55ZXe3f+M0xiN82Ms7TYtzng38RKZwKt5VYFF
+	WdIvb+gJctNcv1giVXDl5WJzwgvcx1t+fo7kJaJ1zwIHzaBTp2hfFNNyjQ3wH8jZhj/lP7huYXO
+	RRD5zMiRqmXPH9yM7KqMdQ73o7wkMPH0PZjkemll+MpwcR0kgw/qUEjO1Ew+qakPCT9XA7oVUuS
+	+NJJh93fNV/J6MV2mTvyS3sg+MZGQx9ozanzn6LIl2/eP4RBmq8y/DBSwhnW7qfkM5FosKrJLO7
+	o2YD1vF/70R4KvWQPnxIBMYe7
+X-Received: by 2002:a17:90b:38c7:b0:340:ec6f:5ac5 with SMTP id 98e67ed59e1d1-34733e55021mr16182655a91.2.1764185613362;
+        Wed, 26 Nov 2025 11:33:33 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG47tmkWhcWx7LLIvtKQsizLgK/XycnA3H/j9qIrssDiOnhoTF9BGJBcCZ0+sksNIxvtyVvrA==
+X-Received: by 2002:a17:90b:38c7:b0:340:ec6f:5ac5 with SMTP id 98e67ed59e1d1-34733e55021mr16182627a91.2.1764185612922;
+        Wed, 26 Nov 2025 11:33:32 -0800 (PST)
 Received: from [192.168.192.85] ([50.47.129.42])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-bd7604de9f8sm19878018a12.19.2025.11.26.11.22.36
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-3476a7bd7f3sm3338986a91.13.2025.11.26.11.33.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Nov 2025 11:22:36 -0800 (PST)
-Message-ID: <06056268-bbae-4a35-8a17-9e52ab608e61@canonical.com>
-Date: Wed, 26 Nov 2025 11:22:35 -0800
+        Wed, 26 Nov 2025 11:33:32 -0800 (PST)
+Message-ID: <f5637038-9661-47fe-ba69-e461760ac975@canonical.com>
+Date: Wed, 26 Nov 2025 11:33:31 -0800
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -98,21 +98,20 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/2] apparmor unaligned memory fixes
-To: david laight <david.laight@runbox.com>
-Cc: Helge Deller <deller@gmx.de>, Helge Deller <deller@kernel.org>,
+To: Helge Deller <deller@kernel.org>, david laight <david.laight@runbox.com>
+Cc: Helge Deller <deller@gmx.de>,
  John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
  linux-kernel@vger.kernel.org, apparmor@lists.ubuntu.com,
  linux-security-module@vger.kernel.org, linux-parisc@vger.kernel.org
-References: <20250531150822.135803-1-deller@kernel.org>
- <bc21bee14ca44077ae9323bfc251ad12390fa841.camel@physik.fu-berlin.de>
- <aRxT78fdN5v2Ajyl@p100>
- <90513f85cc8d060ebccd3972cc7709e4b6f13f34.camel@physik.fu-berlin.de>
+References: <90513f85cc8d060ebccd3972cc7709e4b6f13f34.camel@physik.fu-berlin.de>
  <be9c143d-1d5e-4c5b-9078-4a7804489258@gmx.de>
  <ba3d5651-fa68-4bb5-84aa-35576044e7b0@canonical.com> <aSXHCyH_rS-c5BgP@p100>
  <e88c32c2-fb18-4f3e-9ec2-a749695aaf0a@canonical.com>
  <c192140a-0575-41e9-8895-6c8257ce4682@gmx.de>
  <d35010b3-7d07-488c-b5a4-a13380d0ef7c@canonical.com>
  <20251126104444.29002552@pumpkin>
+ <4034ad19-8e09-440c-a042-a66a488c048b@gmx.de>
+ <20251126142201.27e23076@pumpkin> <aScY13MEBATreotz@carbonx1>
 Content-Language: en-US
 From: John Johansen <john.johansen@canonical.com>
 Autocrypt: addr=john.johansen@canonical.com; keydata=
@@ -158,220 +157,142 @@ Autocrypt: addr=john.johansen@canonical.com; keydata=
  +T7sv9+iY+e0Y+SolyJgTxMYeRnDWE6S77g6gzYYHmcQOWP7ZMX+MtD4SKlf0+Q8li/F9GUL
  p0rw8op9f0p1+YAhyAd+dXWNKf7zIfZ2ME+0qKpbQnr1oizLHuJX/Telo8KMmHter28DPJ03 lT9Q
 Organization: Canonical
-In-Reply-To: <20251126104444.29002552@pumpkin>
+In-Reply-To: <aScY13MEBATreotz@carbonx1>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 11/26/25 02:44, david laight wrote:
-> On Wed, 26 Nov 2025 01:11:45 -0800
-> John Johansen <john.johansen@canonical.com> wrote:
-> 
->> On 11/25/25 13:13, Helge Deller wrote:
->>> On 11/25/25 20:20, John Johansen wrote:
->>>> On 11/25/25 07:11, Helge Deller wrote:
->>>>> * John Johansen <john.johansen@canonical.com>:
->>>>>> On 11/18/25 04:49, Helge Deller wrote:
->>>>>>> Hi Adrian,
->>>>>>>
->>>>>>> On 11/18/25 12:43, John Paul Adrian Glaubitz wrote:
->>>>>>>> On Tue, 2025-11-18 at 12:09 +0100, Helge Deller wrote:
->>>>>>>>> My patch fixed two call sites, but I suspect you see another call site which
->>>>>>>>> hasn't been fixed yet.
->>>>>>>>>
->>>>>>>>> Can you try attached patch? It might indicate the caller of the function and
->>>>>>>>> maybe prints the struct name/address which isn't aligned.
->>>>>>>>>
->>>>>>>>> Helge
->>>>>>>>>
->>>>>>>>>
->>>>>>>>> diff --git a/security/apparmor/match.c b/security/apparmor/match.c
->>>>>>>>> index c5a91600842a..b477430c07eb 100644
->>>>>>>>> --- a/security/apparmor/match.c
->>>>>>>>> +++ b/security/apparmor/match.c
->>>>>>>>> @@ -313,6 +313,9 @@ struct aa_dfa *aa_dfa_unpack(void *blob, size_t size, int flags)
->>>>>>>>>         if (size < sizeof(struct table_set_header))
->>>>>>>>>             goto fail;
->>>>>>>>> +    if (WARN_ON(((unsigned long)data) & (BITS_PER_LONG/8 - 1)))
->>>>>>>>> +        pr_warn("dfa blob stream %pS not aligned.\n", data);
->>>>>>>>> +
->>>>>>>>>         if (ntohl(*(__be32 *) data) != YYTH_MAGIC)
->>>>>>>>>             goto fail;
->>>>>>>>
->>>>>>>> Here is the relevant output with the patch applied:
->>>>>>>>
->>>>>>>> [   73.840639] ------------[ cut here ]------------
->>>>>>>> [   73.901376] WARNING: CPU: 0 PID: 341 at security/apparmor/match.c:316 aa_dfa_unpack+0x6cc/0x720
->>>>>>>> [   74.015867] Modules linked in: binfmt_misc evdev flash sg drm drm_panel_orientation_quirks backlight i2c_core configfs nfnetlink autofs4 ext4 crc16 mbcache jbd2 hid_generic usbhid sr_mod hid cdrom
->>>>>>>> sd_mod ata_generic ohci_pci ehci_pci ehci_hcd ohci_hcd pata_ali libata sym53c8xx scsi_transport_spi tg3 scsi_mod usbcore libphy scsi_common mdio_bus usb_common
->>>>>>>> [   74.428977] CPU: 0 UID: 0 PID: 341 Comm: apparmor_parser Not tainted 6.18.0-rc6+ #9 NONE
->>>>>>>> [   74.536543] Call Trace:
->>>>>>>> [   74.568561] [<0000000000434c24>] dump_stack+0x8/0x18
->>>>>>>> [   74.633757] [<0000000000476438>] __warn+0xd8/0x100
->>>>>>>> [   74.696664] [<00000000004296d4>] warn_slowpath_fmt+0x34/0x74
->>>>>>>> [   74.771006] [<00000000008db28c>] aa_dfa_unpack+0x6cc/0x720
->>>>>>>> [   74.843062] [<00000000008e643c>] unpack_pdb+0xbc/0x7e0
->>>>>>>> [   74.910545] [<00000000008e7740>] unpack_profile+0xbe0/0x1300
->>>>>>>> [   74.984888] [<00000000008e82e0>] aa_unpack+0xe0/0x6a0
->>>>>>>> [   75.051226] [<00000000008e3ec4>] aa_replace_profiles+0x64/0x1160
->>>>>>>> [   75.130144] [<00000000008d4d90>] policy_update+0xf0/0x280
->>>>>>>> [   75.201057] [<00000000008d4fc8>] profile_replace+0xa8/0x100
->>>>>>>> [   75.274258] [<0000000000766bd0>] vfs_write+0x90/0x420
->>>>>>>> [   75.340594] [<00000000007670cc>] ksys_write+0x4c/0xe0
->>>>>>>> [   75.406932] [<0000000000767174>] sys_write+0x14/0x40
->>>>>>>> [   75.472126] [<0000000000406174>] linux_sparc_syscall+0x34/0x44
->>>>>>>> [   75.548802] ---[ end trace 0000000000000000 ]---
->>>>>>>> [   75.609503] dfa blob stream 0xfff0000008926b96 not aligned.
->>>>>>>> [   75.682695] Kernel unaligned access at TPC[8db2a8] aa_dfa_unpack+0x6e8/0x720
->>>>>>>
->>>>>>> The non-8-byte-aligned address (0xfff0000008926b96) is coming from userspace
->>>>>>> (via the write syscall).
->>>>>>> Some apparmor userspace tool writes into the apparmor ".replace" virtual file with
->>>>>>> a source address which is not correctly aligned.
->>>>>>
->>>>>> the userpace buffer passed to write(2) has to be aligned? Its certainly nice if it
->>>>>> is but the userspace tooling hasn't been treating it as aligned. With that said,
->>>>>> the dfa should be padded to be aligned. So this tripping in the dfa is a bug,
->>>>>> and there really should be some validation to catch it.
->>>>>>   
->>>>>>> You should be able to debug/find the problematic code with strace from userspace.
->>>>>>> Maybe someone with apparmor knowledge here on the list has an idea?
->>>>>>>   
->>>>>> This is likely an unaligned 2nd profile, being split out and loaded separately
->>>>>> from the rest of the container. Basically the loader for some reason (there
->>>>>> are a few different possible reasons) is poking into the container format and
->>>>>> pulling out the profile at some offset, this gets loaded to the kernel but
->>>>>> it would seem that its causing an issue with the dfa alignment within the container,
->>>>>> which should be aligned to the original container.
->>>>>
->>>>>
->>>>> Regarding this:
->>>>>   
->>>>>> Kernel side, we are going to need to add some extra verification checks, it should
->>>>>> be catching this, as unaligned as part of the unpack. Userspace side, we will have
->>>>>> to verify my guess and fix the loader.
->>>>>
->>>>> I wonder if loading those tables are really time critical?
+On 11/26/25 07:12, Helge Deller wrote:
+> * david laight <david.laight@runbox.com>:
+>> On Wed, 26 Nov 2025 12:03:03 +0100
+>> Helge Deller <deller@gmx.de> wrote:
+>>
+>>> On 11/26/25 11:44, david laight wrote:
+>> ...
+>>>>> diff --git a/security/apparmor/match.c b/security/apparmor/match.c
+>>>>> index 26e82ba879d44..3dcc342337aca 100644
+>>>>> --- a/security/apparmor/match.c
+>>>>> +++ b/security/apparmor/match.c
+>>>>> @@ -71,10 +71,10 @@ static struct table_header *unpack_table(char *blob, size_t bsize)
+>>>>>     				     u8, u8, byte_to_byte);
 >>>>
->>>> no, most policy is loaded once on boot and then at package upgrades. There are some
->>>> bits that may be loaded at application startup like, snap, libvirt, lxd, basically
->>>> container managers might do some thing custom per container.
->>>>
->>>> Its the run time we want to minimize, the cost of.
->>>>
->>>> Policy already can be unaligned (the container format rework to fix this is low
->>>> priority), and is treated as untrusted. It goes through an unpack, and translation to
->>>> machine native, with as many bounds checks, necessary transforms etc done at unpack
->>>> time as possible, so that the run time costs can be minimized.
->>>>   
->>>>> If not, maybe just making the kernel aware that the tables might be unaligned
->>>>> can help, e.g. with the following (untested) patch.
->>>>> Adrian, maybe you want to test?
->>>>>   
->>>>   
->>>>> ------------------------
->>>>>
->>>>> [PATCH] Allow apparmor to handle unaligned dfa tables
->>>>>
->>>>> The dfa tables can originate from kernel or userspace and 8-byte alignment
->>>>> isn't always guaranteed and as such may trigger unaligned memory accesses
->>>>> on various architectures.
->>>>> Work around it by using the get_unaligned_xx() helpers.
->>>>>
->>>>> Signed-off-by: Helge Deller <deller@gmx.de>
->>>>>   
->>>> lgtm,
->>>>
->>>> Acked-by: John Johansen <john.johansen@canonical.com>
->>>>
->>>> I'll pull this into my tree regardless of whether it fixes the issue
->>>> for Adrian, as it definitely fixes an issue.
->>>>
->>>> We can added additional patches on top s needed.
+>>>> Is that that just memcpy() ?
 >>>
->>> My patch does not modify the UNPACK_ARRAY() macro, which we
->>> possibly should adjust as well.
+>>> No, it's memcpy() only on big-endian machines.
 >>
->> Indeed. See the patch below. I am not surprised testing hasn't triggered this
->> case, but a malicious userspace could certainly construct a policy that would
->> trigger it. Yes it would have to be root, but I still would like to prevent
->> root from being able to trigger this.
+>> You've misread the quoting...
+>> The 'data8' case that was only half there is a memcpy().
 >>
->>> Adrian's testing seems to trigger only a few unaligned accesses,
->>> so maybe it's not a issue currently.
->>>    
->> I don't think the userspace compiler is generating one that is bad, but it
->> possible to construct one and get it to the point where it can trip in
->> UNPACK_ARRAY
+>>> On little-endian machines it converts from big-endian
+>>> 16/32-bit ints to little-endian 16/32-bit ints.
+>>>
+>>> But I see some potential for optimization here:
+>>> a) on big-endian machines just use memcpy()
 >>
->> commit 2c87528c1e7be3976b61ac797c6c8700364c4c63
->> Author: John Johansen <john.johansen@canonical.com>
->> Date:   Tue Nov 25 13:59:32 2025 -0800
+>> true
 >>
->>       apparmor: fix unaligned memory access of UNPACK_ARRAY
->>       
->>       The UNPACK_ARRAY macro has the potential to have unaligned memory
->>       access when the unpacking an unaligned profile, which is caused by
->>       userspace splitting up a profile container before sending it to the
->>       kernel.
->>       
->>       While this is corner case, policy loaded from userspace should be
->>       treated as untrusted so ensure that userspace can not trigger an
->>       unaligned access.
->>       
->>       Signed-off-by: John Johansen <john.johansen@canonical.com>
+>>> b) on little-endian machines use memcpy() to copy from possibly-unaligned
+>>>      memory to then known-to-be-aligned destination. Then use a loop with
+>>>      be32_to_cpu() instead of get_unaligned_xx() as it's faster.
 >>
->> diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
->> index 1fbe82f5021b1..203f7c07529f5 100644
->> --- a/security/apparmor/include/match.h
->> +++ b/security/apparmor/include/match.h
->> @@ -104,7 +104,7 @@ struct aa_dfa {
->>    	struct table_header *tables[YYTD_ID_TSIZE];
->>    };
->>    
->> -#define byte_to_byte(X) (X)
->> +#define byte_to_byte(X) *(X)
+>> There is a function that does a loop byteswap of a buffer - no reason
+>> to re-invent it.
 > 
-> Even though is is only used once that ought to be (*(X))
+> I assumed there must be something, but I did not see it. Which one?
 > 
->>    
->>    #define UNPACK_ARRAY(TABLE, BLOB, LEN, TTYPE, BTYPE, NTOHX)	\
->>    	do { \
->> @@ -112,7 +112,7 @@ struct aa_dfa {
->>    		TTYPE *__t = (TTYPE *) TABLE; \
->>    		BTYPE *__b = (BTYPE *) BLOB; \
->>    		for (__i = 0; __i < LEN; __i++) { \
->> -			__t[__i] = NTOHX(__b[__i]); \
->> +			__t[__i] = NTOHX(&__b[__i]); \
->>    		} \
->>    	} while (0)
->>    
->> diff --git a/security/apparmor/match.c b/security/apparmor/match.c
->> index 26e82ba879d44..3dcc342337aca 100644
->> --- a/security/apparmor/match.c
->> +++ b/security/apparmor/match.c
->> @@ -71,10 +71,10 @@ static struct table_header *unpack_table(char *blob, size_t bsize)
->>    				     u8, u8, byte_to_byte);
+>> But I doubt it is always (if ever) faster to do a copy and then byteswap.
+>> The loop control and extra memory accesses kill performance.
 > 
-> Is that that just memcpy() ?
+> Yes, you are probably right.
 > 
-yeah for the byte case it is and we should just replace that case of UNPACK_ARRAY
+>> Not that I've seen a fast get_unaligned() - I don't think gcc or clang
+>> generate optimal code - For LE I think it is something like:
+>> 	low = *(addr & ~3);
+>> 	high = *((addr + 3) & ~3);
+>> 	shift = (addr & 3) * 8;
+>> 	value = low << shift | high >> (32 - shift);
+>> Note that it is only 2 aligned memory reads - even for 64bit.
+> 
+> Ok, then maybe we should keep it simple like this patch:
+> 
+> [PATCH v2] apparmor: Optimize table creation from possibly unaligned memory
+> 
+> Source blob may come from userspace and might be unaligned.
+> Try to optize the copying process by avoiding unaligned memory accesses.
+> 
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> 
+> diff --git a/security/apparmor/include/match.h b/security/apparmor/include/match.h
+> index 1fbe82f5021b..386da2023d50 100644
+> --- a/security/apparmor/include/match.h
+> +++ b/security/apparmor/include/match.h
+> @@ -104,16 +104,20 @@ struct aa_dfa {
+>   	struct table_header *tables[YYTD_ID_TSIZE];
+>   };
+>   
+> -#define byte_to_byte(X) (X)
+> +#define byte_to_byte(X) (*(X))
+>   
+>   #define UNPACK_ARRAY(TABLE, BLOB, LEN, TTYPE, BTYPE, NTOHX)	\
+>   	do { \
+>   		typeof(LEN) __i; \
+>   		TTYPE *__t = (TTYPE *) TABLE; \
+>   		BTYPE *__b = (BTYPE *) BLOB; \
+> -		for (__i = 0; __i < LEN; __i++) { \
+> -			__t[__i] = NTOHX(__b[__i]); \
+> -		} \
+> +		BUILD_BUG_ON(sizeof(TTYPE) != sizeof(BTYPE)); \
+> +		if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN) || sizeof(BTYPE) == 1) \
+> +			memcpy(__t, __b, (LEN) * sizeof(BTYPE)); \
+> +		else /* copy & convert convert from big-endian */ \
+> +			for (__i = 0; __i < LEN; __i++) { \
+> +				__t[__i] = NTOHX(&__b[__i]); \
+> +			} \
+>   	} while (0)
+>   
+>   static inline size_t table_size(size_t len, size_t el_size)
+> diff --git a/security/apparmor/match.c b/security/apparmor/match.c
+> index c5a91600842a..13e2f6873329 100644
+> --- a/security/apparmor/match.c
+> +++ b/security/apparmor/match.c
+> @@ -15,6 +15,7 @@
+>   #include <linux/vmalloc.h>
+>   #include <linux/err.h>
+>   #include <linux/kref.h>
+> +#include <linux/unaligned.h>
+>   
+>   #include "include/lib.h"
+>   #include "include/match.h"
+> @@ -70,10 +71,10 @@ static struct table_header *unpack_table(char *blob, size_t bsize)
+>   				     u8, u8, byte_to_byte);
+>   		else if (th.td_flags == YYTD_DATA16)
+>   			UNPACK_ARRAY(table->td_data, blob, th.td_lolen,
+> -				     u16, __be16, be16_to_cpu);
+> +				     u16, __be16, get_unaligned_be16);
+>   		else if (th.td_flags == YYTD_DATA32)
+>   			UNPACK_ARRAY(table->td_data, blob, th.td_lolen,
+> -				     u32, __be32, be32_to_cpu);
+> +				     u32, __be32, get_unaligned_be32);
+>   		else
+>   			goto fail;
+>   		/* if table was vmalloced make sure the page tables are synced
 
-> 	David
-> 
->>    		else if (th.td_flags == YYTD_DATA16)
->>    			UNPACK_ARRAY(table->td_data, blob, th.td_lolen,
->> -				     u16, __be16, be16_to_cpu);
->> +				     u16, __be16, get_unaligned_be16);
->>    		else if (th.td_flags == YYTD_DATA32)
->>    			UNPACK_ARRAY(table->td_data, blob, th.td_lolen,
->> -				     u32, __be32, be32_to_cpu);
->> +				     u32, __be32, get_unaligned_be32);
->>    		else
->>    			goto fail;
->>    		/* if table was vmalloced make sure the page tables are synced
->>
->>
->>
-> 
+I think we can make one more tweak, in just not using UNPACK_ARRAY at all for the byte case
+ie.
+
+diff --git a/security/apparmor/match.c b/security/apparmor/match.c
+index 26e82ba879d44..389202560675c 100644
+--- a/security/apparmor/match.c
++++ b/security/apparmor/match.c
+@@ -67,8 +67,7 @@ static struct table_header *unpack_table(char *blob, size_t bsize)
+  		table->td_flags = th.td_flags;
+  		table->td_lolen = th.td_lolen;
+  		if (th.td_flags == YYTD_DATA8)
+-			UNPACK_ARRAY(table->td_data, blob, th.td_lolen,
+-				     u8, u8, byte_to_byte);
++			memcp(table->td_data, blob, th.td_lolen);
+  		else if (th.td_flags == YYTD_DATA16)
+  			UNPACK_ARRAY(table->td_data, blob, th.td_lolen,
+  				     u16, __be16, be16_to_cpu);
+
 
 
