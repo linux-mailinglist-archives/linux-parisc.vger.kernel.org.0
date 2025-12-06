@@ -1,52 +1,53 @@
-Return-Path: <linux-parisc+bounces-4338-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4339-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B51FCAAD0F
-	for <lists+linux-parisc@lfdr.de>; Sat, 06 Dec 2025 20:48:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CBDCAADE4
+	for <lists+linux-parisc@lfdr.de>; Sat, 06 Dec 2025 22:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B06E93027E20
-	for <lists+linux-parisc@lfdr.de>; Sat,  6 Dec 2025 19:48:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5514300A372
+	for <lists+linux-parisc@lfdr.de>; Sat,  6 Dec 2025 21:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A7B2C21C0;
-	Sat,  6 Dec 2025 19:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238E3285404;
+	Sat,  6 Dec 2025 21:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXYnvvgu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bpw86d/W"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F36D2C11F8
-	for <linux-parisc@vger.kernel.org>; Sat,  6 Dec 2025 19:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45FB27E040;
+	Sat,  6 Dec 2025 21:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765050532; cv=none; b=RKzp2uJbNsA5HGQBBHOhvILXPbfTWUTskrzCPwH0WrK8UAgXItr8ONcXatsR+QxQx9CyqHwwg2mtH3+BKWtsKW8KiltZj3H9nomqsUniJQeQU4VK6ILX+MrCwmQs4Trn5dn1R4ZxU84KTS9VvA+6s9eWO5kLAJQ/lbS/KKi59D0=
+	t=1765055841; cv=none; b=bgRKsdkWT3k7VRPK1UWJzYT8n1TEZr2iKuHFfN/thJVwJBxOArbkNy54uVm0Uv4/9ztl7r50yPsWAE5sMxVBt3JvB0VXpPR9EiUUhrqYmbFtLrbfQM2JfrGAWtzbpJa3mAsthzd8c2egLDLPOft0qbcZoevnxgOTG6Mre70sghw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765050532; c=relaxed/simple;
-	bh=A5/ynKXh58UbrJBl2v/dntpeZRiOGasXH2OsqCV0TBw=;
+	s=arc-20240116; t=1765055841; c=relaxed/simple;
+	bh=DX50nouUIp4RVK+Wxa1Rxi74xqKgxSTwYGNQNdsdWso=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=QOSkiTS3sRMB8POOcqhg1RHfDOsuSoDkYxdbSixp/ehSWK6ZiN8jmZjJL0dHwmZTHPghqX48grgtdlIAWVUND5GjjCEFhqfn1CHLsmtw4CO87CFjCBIh9v76rU/bcEwvpHu9dKdhYzsmGeVGeC1IQL0Cs7iGgcjWD75gb7Ri8Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXYnvvgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41419C4CEF5;
-	Sat,  6 Dec 2025 19:48:50 +0000 (UTC)
+	 Content-Disposition; b=hnF3BzRGwczS7FkMdwynxMQYdI78HZDCVI3D7TWomq8SL+YIQICx11zQ1Ofw3OS/5XNs30oWJGqBytCXQlsn1AstS9ZjTAThNaIl4/57OLfQscI4f702yO06zDGO4VKrpwJxUEnqY7MK6uBPq9TF+Dh4r1L0hFuh0EMspPMtEPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bpw86d/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA59C4CEF5;
+	Sat,  6 Dec 2025 21:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765050531;
-	bh=A5/ynKXh58UbrJBl2v/dntpeZRiOGasXH2OsqCV0TBw=;
+	s=k20201202; t=1765055840;
+	bh=DX50nouUIp4RVK+Wxa1Rxi74xqKgxSTwYGNQNdsdWso=;
 	h=Date:From:To:Cc:Subject:From;
-	b=PXYnvvguGi/TGdHS+1VaXOu8gz43X8Nn0baId382Jp09GyucneYBwyfnP10YFUk2f
-	 h2B0+38hyCba6UmVufMFQYEwlpMQynJ/KXLlnh7sl9CAZfwasdnXh5+9tSs7bK8hle
-	 OmY1H/CCH3arVpM3YsNi8OFfQwWPh4/hPuQdSUmKn4qTdteAF8fhaMz2NageMG7rP9
-	 PGI2HLLXhheJEFsJAMZ7dtZwrjB0FQagyky2dmMbHlj4TDm+lj3xGGJQgePcqFw7um
-	 idvBdX7MVXwX76eXFp3XVFRTaMiyBbjPmGMIZ7hl9lKt4a0xFh3QkGDbX88QRUhbEN
-	 jr+7J9jejmfxA==
-Date: Sat, 6 Dec 2025 20:48:47 +0100
+	b=Bpw86d/WORCEgSe6ZSDz5csIzE3IWFGvegYWiT5HKhlX0Cia5jlrI45jrmrs1wbeH
+	 bHQWcdQN3PdKONno6RcAT1IZC+0tuBnbDNsdlhQqBd5ztjQNcMqLoc95GWi7HWgjpu
+	 RGS5C4zZjnkbo5ZYm+M1OeFXj6HetHpBvU5ByRUxP0C1K8Z3YRTDZf+15kP0wxEDWI
+	 0Xe1skNxu5Ou/F4eCz3kU+4NFeZ1KDlux5sW6bWwVV/kqpH3K4bGgbKhnIrNSkt1IS
+	 ZzuRtdqyOC9kBmv5qlQhXq9VcmoOI9lvkXufeKwjymr2t6MUU62JumrKl4lLVYE9FX
+	 Buqtbb3doKB8g==
+Date: Sat, 6 Dec 2025 22:17:16 +0100
 From: Helge Deller <deller@kernel.org>
-To: linux-parisc@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org
 Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
 	John David Anglin <dave.anglin@bell.net>,
 	Sven Schnelle <svens@stackframe.org>
 Subject: [GIT PULL] parisc architecture fixes and updates for v6.19-rc1
-Message-ID: <aTSInwCDyU6_L9p9@p100>
+Message-ID: <aTSdXEYJFuhxMltf@p100>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -62,10 +63,10 @@ please pull a few fixes and updates for the parisc architecture for 6.19-rc1.
 
 A fix which allows booting on the very old 710 workstations, and two fixes in
 the syscall entry/exit path which allow to execute 64-bit userspace binaries.
-Note that although we currently support a 64-bit (static) kernel to support
-more than 4 GB RAM, there is no support for 64-bit userspace for parisc-linux
-yet, but Dave and Sven are making slowly progress to port and fix glibc and
-gcc.
+Note that although we currently have a 64-bit (static) kernel to allow more
+than 4 GB physical RAM, there is no support for 64-bit userspace for
+parisc-linux yet, but Dave and Sven are making slowly progress to port and fix
+glibc and gcc.
 
 Thanks!
 Helge
