@@ -1,77 +1,136 @@
-Return-Path: <linux-parisc+bounces-4340-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4342-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68448CAAFBF
-	for <lists+linux-parisc@lfdr.de>; Sun, 07 Dec 2025 01:30:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8971CC6FE5
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Dec 2025 11:11:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 359AE3079E9A
-	for <lists+linux-parisc@lfdr.de>; Sun,  7 Dec 2025 00:30:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D51AD3045CFF
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Dec 2025 10:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825321E5B9E;
-	Sun,  7 Dec 2025 00:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE7633D6DE;
+	Wed, 17 Dec 2025 09:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e2FZcPhk"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MRO4qPIx"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599A11DFE22;
-	Sun,  7 Dec 2025 00:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B96833D6D4
+	for <linux-parisc@vger.kernel.org>; Wed, 17 Dec 2025 09:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765067406; cv=none; b=X8aJmd6bBN7a2auJgKJcNl3bsA+iTBRJrd1/hxRXibnR8w+lxVN0OV9xgqVLbQ1HXSAxiZQqqwj1UUH75uZQ478kBGw/gPrHwSErPA0yG3O4mWWELPpkLcnbFP/RvLLPGKHNNfCShCmwDgVzF7xvDXHbUnfFjldNX6reSz1F74I=
+	t=1765964829; cv=none; b=Kh+qZs5lvFVs+SrnRu6xNE8/HmUNOqhkqXdN32Ki0UGnSqUgszT4BnXDU9t+F9/caLPP+10aaZbVSXMRUVQH7w1/RXPdnuKp7tlIt8XyLruPa/7dI/Ge+Vhdmd9mqXU/D2ZUQdGDcH0f+csVYJmFDpo5HEzfKAeb5MBrGNspE2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765067406; c=relaxed/simple;
-	bh=BehhbUYKFUXF0F2HaT8t6MPhySJRTR/bSDoV/wVqBuo=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=t3uadUevHGLhlWm4NYt+kwHav7OpRhdFORbZ4UGL7Xunago3tlY9sv49VxpB71AYWcg6d99nz076UVFdLKG61JugmkQJFszhDonQIT9CuErhVt/29rkPXz/woQc4V0/6/MF+RRsTs8VKqmYdp2O8QNectrWhk9f2RN94Uh9fi3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e2FZcPhk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABCC1C4CEF5;
-	Sun,  7 Dec 2025 00:30:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765067405;
-	bh=BehhbUYKFUXF0F2HaT8t6MPhySJRTR/bSDoV/wVqBuo=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=e2FZcPhkRn8oMoMk8Ii+P77i0JPQy3EiT4iP50pfwZVVDagTqVQT4RtWlLC1SDht6
-	 p/fIL8HezLKeae/h0qDQ+XSz+iXk7b8jwwt6g5ctBwvEsWBZ11MnoPd9epClZOVx0e
-	 6AkQKuN12W3eIzsvXiFD9Q5oUs7Wl6oYhA4yKlY6NKaecpoHXAIYJyvJ3oBvDjgNJy
-	 tX1OuDUvinxT7du+hjVSsjFM7o/2IRzRdY9AbQT3/kPOxNg3P7Dtcn/V91EN6nDhw2
-	 qW50pF1bUVQyDAaI/C37Piaz7pqFELfEuA9vx/10lGOPks05ch8jc9cy6Jr1vSJ6Y6
-	 nVQW5/WvCkclw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B579F3808200;
-	Sun,  7 Dec 2025 00:27:03 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture fixes and updates for v6.19-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <aTSdXEYJFuhxMltf@p100>
-References: <aTSdXEYJFuhxMltf@p100>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <aTSdXEYJFuhxMltf@p100>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.19-rc1
-X-PR-Tracked-Commit-Id: dca7da244349eef4d78527cafc0bf80816b261f5
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 50471f8b7371c95c72c168eb45e4f42f1514fd5e
-Message-Id: <176506722219.2244723.16870759143766873657.pr-tracker-bot@kernel.org>
-Date: Sun, 07 Dec 2025 00:27:02 +0000
-To: Helge Deller <deller@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, John David Anglin <dave.anglin@bell.net>, Sven Schnelle <svens@stackframe.org>
+	s=arc-20240116; t=1765964829; c=relaxed/simple;
+	bh=2TdWibhf5ZP3VSAv96FB5mOfcfdZyF1zBRAuRMzN4h4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tnmiZDMCOVgY+ac/mBrN1ul7zMFa1lwVmTu73iH17buI3GVpmXG3LWLTQPPwqR4antOQILJTuBcbOD6l8Puk+CqgDSLsbsbc7oMtcVmAKvzMD7hh7+Qvf9fCaNuFj80iLaBxJHtrpPaMm3scGsSwh/Z80DRpuNHAWyJIn7EBfkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MRO4qPIx; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1765964813;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oN9R7byRGmHEs6T0OtpuwOuRpbJv46Zq9CpZBf5+XJg=;
+	b=MRO4qPIxxsVdDqwXzC7u9PLqRjNXx7wnrDSDf1lYyiYd50PIXjJACLh+SJDhboDde2AFBp
+	xudEn7lhZost3Ms/RAgSJ4rwmF9QHLUnd5iBfmp1YPdZeHPAwkC3Dg4lXkpK8Qt3kXk60G
+	KOm9TW1XYyMer/EiQIPn82zf46FXx9c=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	dev.jain@arm.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ioworker0@gmail.com,
+	linmag7@gmail.com
+Cc: linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-alpha@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v3 0/7] enable PT_RECLAIM on all 64-bit architectures
+Date: Wed, 17 Dec 2025 17:45:41 +0800
+Message-ID: <cover.1765963770.git.zhengqi.arch@bytedance.com>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-The pull request you sent on Sat, 6 Dec 2025 22:17:16 +0100:
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-6.19-rc1
+Changes in v3:
+ - modify the commit message in [PATCH v3 1/7] (suggested by David Hildenbrand)
+ - make PT_RECLAIM depends on MMU_GATHER_RCU_TABLE_FREE instead of 64BIT
+ - collect Acked-by
+ - rebase onto the next-20251217
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/50471f8b7371c95c72c168eb45e4f42f1514fd5e
+Changelog in v2:
+ - fix compilation errors (reported by Magnus Lindholm and kernel test robot)
+ - adjust some code style (suggested by Huacai Chen)
+ - make PT_RECLAIM user-unselectable (suggested by David Hildenbrand)
+ - rebase onto the next-20251119
 
-Thank you!
+Hi all,
+
+This series aims to enable PT_RECLAIM on all 64-bit architectures.
+
+On a 64-bit system, madvise(MADV_DONTNEED) may cause a large number of empty PTE
+page table pages (such as 100GB+). To resolve this problem, we need to enable
+PT_RECLAIM, which depends on MMU_GATHER_RCU_TABLE_FREE.
+
+Therefore, this series first enables MMU_GATHER_RCU_TABLE_FREE on all 64-bit
+architectures, and finally makes PT_RECLAIM depend on MMU_GATHER_RCU_TABLE_FREE.
+This way, PT_RECLAIM can be enabled by default on all 64-bit architectures.
+
+Of course, this will also be enabled on some 32-bit architectures that already
+support MMU_GATHER_RCU_TABLE_FREE. That's fine, PT_RECLAIM works well on all
+32-bit architectures as well. Although the benefit isn't significant, there's
+still memory that can be reclaimed. Perhaps PT_RECLAIM can be enabled on all
+32-bit architectures in the future.
+
+Comments and suggestions are welcome!
+
+Thanks,
+Qi
+
+Qi Zheng (7):
+  mm: change mm/pt_reclaim.c to use asm/tlb.h instead of
+    asm-generic/tlb.h
+  alpha: mm: enable MMU_GATHER_RCU_TABLE_FREE
+  LoongArch: mm: enable MMU_GATHER_RCU_TABLE_FREE
+  mips: mm: enable MMU_GATHER_RCU_TABLE_FREE
+  parisc: mm: enable MMU_GATHER_RCU_TABLE_FREE
+  um: mm: enable MMU_GATHER_RCU_TABLE_FREE
+  mm: make PT_RECLAIM depends on MMU_GATHER_RCU_TABLE_FREE
+
+ arch/alpha/Kconfig                   | 1 +
+ arch/alpha/include/asm/tlb.h         | 6 +++---
+ arch/loongarch/Kconfig               | 1 +
+ arch/loongarch/include/asm/pgalloc.h | 7 +++----
+ arch/mips/Kconfig                    | 1 +
+ arch/mips/include/asm/pgalloc.h      | 7 +++----
+ arch/parisc/Kconfig                  | 1 +
+ arch/parisc/include/asm/tlb.h        | 4 ++--
+ arch/um/Kconfig                      | 1 +
+ arch/x86/Kconfig                     | 1 -
+ mm/Kconfig                           | 9 ++-------
+ mm/pt_reclaim.c                      | 2 +-
+ 12 files changed, 19 insertions(+), 22 deletions(-)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.20.1
+
 
