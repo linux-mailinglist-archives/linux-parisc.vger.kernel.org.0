@@ -1,45 +1,45 @@
-Return-Path: <linux-parisc+bounces-4345-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4346-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6F6CC6FF4
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Dec 2025 11:12:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA45CC6EAA
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Dec 2025 10:58:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B5AF1300AC58
-	for <lists+linux-parisc@lfdr.de>; Wed, 17 Dec 2025 10:11:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90F533037CCB
+	for <lists+linux-parisc@lfdr.de>; Wed, 17 Dec 2025 09:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9709933F8A6;
-	Wed, 17 Dec 2025 09:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD3B340A62;
+	Wed, 17 Dec 2025 09:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XNsRb5JY"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="e8o1H7ID"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0212B33FE08
-	for <linux-parisc@vger.kernel.org>; Wed, 17 Dec 2025 09:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441EE33F8D9;
+	Wed, 17 Dec 2025 09:47:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765964839; cv=none; b=UKNM2ZvrEb7DFVc4S7MphyhT01lBRt9lOZDRLmk+OC07M07yfx+w340zIQXreArKo0XhyWSKEZeyni6H0TyUjnA5mGdk1nTTyOyTn9MZhUsFjNKr3DAAAq3+MxOEHyTliWWkCTUUZ4ChZ1ZvT/yjoz/NF3bKElDt3mcCt+Mq00M=
+	t=1765964843; cv=none; b=aMM9Nt2LWgmgY3Epehyr/vL8Lk9FjI0WMWYRkIvVGy6jPN8Oh7dVw7aseX+s2gkNY9EeOeBCq8yZIP6Tk1/fOmnAwFmkEB6nygqly6uEalrv/6r6UpxgYEEfy0U1z7qhXYI6+ftHBAbNmawf45h4hbE9ZIKPraksW0wb44XqgEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765964839; c=relaxed/simple;
-	bh=pyud3nQdBLCTKjSFF0Zkt9VyDdSozFnVBpkouw8a6dg=;
+	s=arc-20240116; t=1765964843; c=relaxed/simple;
+	bh=JBGvtd6lIDpE88cwSn1qvAi5ZYQhW95obYt/hFyoa6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upnjcMbsi03j6gXjjvM8eZqoSFiRZC6ErZ3hZ7bP1kbIQw8t+bFMLYBEGAwYLX9xOgLSt1xDIEOLFKrPGxWBUCderWAWF166zvBU8B3AmIHcC4z61BUafOVDbgDj93i4i1hQlJCYEDqa5JS0kyOD7Y62QEbmKbCEf0C1lhBT4oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XNsRb5JY; arc=none smtp.client-ip=95.215.58.172
+	 MIME-Version; b=jkPgfyLThbb4LlcGa6ODcQ6ipBPcZlQW6AuUSC8ofEGXW4weBhQEpsUX7HjaicBfq5ZzgCJCauEIOx9N8fBv0qX5jdqctMOYhoTgQheZjgYWlnbiMr8+nOQvB4kLk7AArllDXcIT5KZ6J5B8rfo5rupqiGH4i30NDRaGVr6GKEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=e8o1H7ID; arc=none smtp.client-ip=95.215.58.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1765964833;
+	t=1765964839;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fkW1q5oTlkchrLBj7uhW1/fyT/NJTp0qrNRVsGoiJYg=;
-	b=XNsRb5JY0NarSUDlxllpefgnMRlLZpW8qzQc9ZHNREId6Fq61bYkF9z2/CqnDHghDcClS6
-	JSWQbuaoMZEDzyNrP0E+UpEKY+0lMWWkYwX8tos3g2d3TeSlYHmAkMIa+8GNC7vJ+Ulmkt
-	1rnXZCKBiJgsfxRzh6s1Opl85Us62zE=
+	bh=8PNYJl+4luznSu7Qs41hn6BnOWw9fSYJ1f3qY5qKkjU=;
+	b=e8o1H7ID6IwrR/gVd0NtVTo7ZEz4HV3uPypab1CIVzcnpIVs9atrTDUBpW98/QwFghrEEU
+	5EBqavpncMavIyi2v23cOld40E9HERpVgTZ7omWcpU1XjKqMpN362CMM8Wv9Hk0+oQtTKQ
+	oRI/0dVJv/IYhli7SUrb7JHZnJy6tHc=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: will@kernel.org,
 	aneesh.kumar@kernel.org,
@@ -59,10 +59,11 @@ Cc: linux-arch@vger.kernel.org,
 	linux-parisc@vger.kernel.org,
 	linux-um@lists.infradead.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH v3 4/7] mips: mm: enable MMU_GATHER_RCU_TABLE_FREE
-Date: Wed, 17 Dec 2025 17:45:45 +0800
-Message-ID: <1c14fe4de18e7bc71b98eb58dbd4edb13d3391cd.1765963770.git.zhengqi.arch@bytedance.com>
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH v3 5/7] parisc: mm: enable MMU_GATHER_RCU_TABLE_FREE
+Date: Wed, 17 Dec 2025 17:45:46 +0800
+Message-ID: <e0445acf2c267f060e888a090cdd94cbf7f52dd3.1765963770.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1765963770.git.zhengqi.arch@bytedance.com>
 References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
 Precedence: bulk
@@ -82,56 +83,40 @@ first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
 PT_RECLAIM feature, which resolves this problem.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
 ---
- arch/mips/Kconfig               | 1 +
- arch/mips/include/asm/pgalloc.h | 7 +++----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/parisc/Kconfig           | 1 +
+ arch/parisc/include/asm/tlb.h | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b88b97139fa8e..c0c94e26ce396 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -99,6 +99,7 @@ config MIPS
- 	select IRQ_FORCED_THREADING
- 	select ISA if EISA
- 	select LOCK_MM_AND_FIND_VMA
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 47fd9662d8005..62d5a89d5c7bc 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -79,6 +79,7 @@ config PARISC
+ 	select GENERIC_CLOCKEVENTS
+ 	select CPU_NO_EFFICIENT_FFS
+ 	select THREAD_INFO_IN_TASK
 +	select MMU_GATHER_RCU_TABLE_FREE
- 	select MODULES_USE_ELF_REL if MODULES
- 	select MODULES_USE_ELF_RELA if MODULES && 64BIT
- 	select PERF_USE_VMALLOC
-diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
-index 7a04381efa0b5..895bf79e76762 100644
---- a/arch/mips/include/asm/pgalloc.h
-+++ b/arch/mips/include/asm/pgalloc.h
-@@ -48,8 +48,7 @@ static inline void pud_populate(struct mm_struct *mm, pud_t *pud, pmd_t *pmd)
- extern void pgd_init(void *addr);
- extern pgd_t *pgd_alloc(struct mm_struct *mm);
+ 	select NEED_DMA_MAP_STATE
+ 	select NEED_SG_DMA_LENGTH
+ 	select HAVE_ARCH_KGDB
+diff --git a/arch/parisc/include/asm/tlb.h b/arch/parisc/include/asm/tlb.h
+index 44235f367674d..4501fee0a8fa4 100644
+--- a/arch/parisc/include/asm/tlb.h
++++ b/arch/parisc/include/asm/tlb.h
+@@ -5,8 +5,8 @@
+ #include <asm-generic/tlb.h>
  
--#define __pte_free_tlb(tlb, pte, address)	\
--	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
-+#define __pte_free_tlb(tlb, pte, address)	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
- 
- #ifndef __PAGETABLE_PMD_FOLDED
- 
-@@ -72,7 +71,7 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
- 	return pmd;
- }
- 
--#define __pmd_free_tlb(tlb, x, addr)	pmd_free((tlb)->mm, x)
-+#define __pmd_free_tlb(tlb, x, addr)	tlb_remove_ptdesc((tlb), virt_to_ptdesc(x))
+ #if CONFIG_PGTABLE_LEVELS == 3
+-#define __pmd_free_tlb(tlb, pmd, addr)	pmd_free((tlb)->mm, pmd)
++#define __pmd_free_tlb(tlb, pmd, addr)	tlb_remove_ptdesc((tlb), virt_to_ptdesc(pmd))
+ #endif
+-#define __pte_free_tlb(tlb, pte, addr)	pte_free((tlb)->mm, pte)
++#define __pte_free_tlb(tlb, pte, addr)	tlb_remove_ptdesc((tlb), page_ptdesc(pte))
  
  #endif
- 
-@@ -97,7 +96,7 @@ static inline void p4d_populate(struct mm_struct *mm, p4d_t *p4d, pud_t *pud)
- 	set_p4d(p4d, __p4d((unsigned long)pud));
- }
- 
--#define __pud_free_tlb(tlb, x, addr)	pud_free((tlb)->mm, x)
-+#define __pud_free_tlb(tlb, x, addr)	tlb_remove_ptdesc((tlb), virt_to_ptdesc(x))
- 
- #endif /* __PAGETABLE_PUD_FOLDED */
- 
 -- 
 2.20.1
 
