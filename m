@@ -1,121 +1,97 @@
-Return-Path: <linux-parisc+bounces-4361-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4362-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C549CCFE91
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Dec 2025 13:56:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E45F7CD0051
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Dec 2025 14:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18B47315328F
-	for <lists+linux-parisc@lfdr.de>; Fri, 19 Dec 2025 12:48:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA9ED30034BA
+	for <lists+linux-parisc@lfdr.de>; Fri, 19 Dec 2025 13:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6CB2E11A6;
-	Fri, 19 Dec 2025 12:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="upqsDX/u"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1702133A6FE;
+	Fri, 19 Dec 2025 13:19:44 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE951F7098
-	for <linux-parisc@vger.kernel.org>; Fri, 19 Dec 2025 12:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DEC33A6F7;
+	Fri, 19 Dec 2025 13:19:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766148501; cv=none; b=IRhLVMqBaTVmkDUFM/ubAzPzRCoRiGaH5K366QNLKb7S7+719i7wSrAHhbsMTNYICRVqGyoCCxlrQIERTH43frYx+ppTqPUiLjYYgyvCsOPS0c+4jZRPnxoAqhX7S2c0NbK0A/McSBv9GY7VQYPfcnIy7VqtDj+3evFtr+bjnos=
+	t=1766150384; cv=none; b=ksBXqe7LQwkbwIt3q4EOUJpeRptde+48+juD+BZrJsCyT2zAHwj63Na6eHPhagL+Wmk9IBXPHsr9dwelgq7y4cBgmdFjXQ7yGw1c5PePxB9bWXmis9YSVQBSvnv9qP4psp9n3kyIrNNVmNBrA9CIfgBbutPa6bsoTtZ4pNmN3Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766148501; c=relaxed/simple;
-	bh=k7ceKjOo2GoaU/tykJYLAzfIGi3TmrBdl2efZPk1GCw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=pgU/cNerrFcPdoTWUH/C0dxtZzW8rxawTZOtTorMZ75zcPD+p9Vevcyufa/uvBitYIXSUwb9LwYc26ETuW+hfuW/yKJrbqX5OZp0Ig+CSCeFkw8FfYqWGS1tLca6CsrvP5lc6vZuhAu1fDEjK457jhyZVfC/6VIIZs3EWS8b9O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=upqsDX/u; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20251219124817euoutp010936a248bb0a104b8421516cd8930464~CnrNvNErG2722527225euoutp01b
-	for <linux-parisc@vger.kernel.org>; Fri, 19 Dec 2025 12:48:17 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20251219124817euoutp010936a248bb0a104b8421516cd8930464~CnrNvNErG2722527225euoutp01b
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1766148497;
-	bh=yIQDyMybLHNqin7NAAAUvAQtoQviI0aOKedDv+Mkc1Y=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=upqsDX/uMioioNuRz1VWl3MEb5Be/TjXQbE6NgRtXxD98MDY1jOps420iq3DpmftB
-	 vT1r7GmQIPMCHcUUiz1drVlw+IPe0RDcY3Qr3bfhiLmxajFryJztCW+Ody684f6TyD
-	 erHfjAHfKaDL4QKsvGOKcs54UWCRbcrtkF+BcS6s=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20251219124817eucas1p23a472c2546f837da858b963abea4a56b~CnrNiVC9N1230212302eucas1p2D;
-	Fri, 19 Dec 2025 12:48:17 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20251219124816eusmtip1a80f877747e0e44ab4e218ea7d8f2e45~CnrM-jMCU1293212932eusmtip1I;
-	Fri, 19 Dec 2025 12:48:16 +0000 (GMT)
-Message-ID: <fb9e642f-e5dd-48f2-b9b0-4ab2a63727f7@samsung.com>
-Date: Fri, 19 Dec 2025 13:48:16 +0100
+	s=arc-20240116; t=1766150384; c=relaxed/simple;
+	bh=CVtZSn4MAupFJnHEYt+sFGGQSY2JLbvXK2xlKCMK2ag=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n4xCLQtVKQUOiKokuPOiUzTRoVJEp1AVbBcBuxCdOOegIUxSnX42+lB+iVbd01yqT3/+d9Me8jEjjKgr4vU2BX9TGP/YSGM8OSAhxsd/vMd788hc/nHI1A5PH91J/ldQnqtfxeQc/R8o02r7rD6altF2iCcVcT3LPXMCV3F0HuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.209])
+	by APP-05 (Coremail) with SMTP id zQCowABH2g3fUEVpPbYuAQ--.16196S2;
+	Fri, 19 Dec 2025 21:19:27 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: James.Bottomley@HansenPartnership.com,
+	deller@gmx.de,
+	willy@infradead.org
+Cc: linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] parisc: kernel: replace kfree() with put_device() in create_tree_node()
+Date: Fri, 19 Dec 2025 21:19:26 +0800
+Message-Id: <20251219131926.623330-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_parisc=3A_Set_valid_bit_in_high_byte_of?=
- =?UTF-8?Q?_64=E2=80=91bit_physical_address?=
-To: James Bottomley <James.Bottomley@HansenPartnership.com>, Leon Romanovsky
-	<leon@kernel.org>, Helge Deller <deller@gmx.de>, Jason Gunthorpe
-	<jgg@ziepe.ca>
-Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, Guenter
-	Roeck <linux@roeck-us.net>
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <1528bd45c80a962dd172c9a9ed97c6ea3e8f295a.camel@HansenPartnership.com>
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20251219124817eucas1p23a472c2546f837da858b963abea4a56b
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20251218212903eucas1p2c61be3f993dbf4e1384f9660737f139a
-X-EPHeader: CA
-X-CMS-RootMailID: 20251218212903eucas1p2c61be3f993dbf4e1384f9660737f139a
-References: <20251218-fix-parisc-conversion-v1-1-4a04d26b0168@nvidia.com>
-	<23342800-92be-4288-a9cd-e9e436a2ef87@gmx.de>
-	<CGME20251218212903eucas1p2c61be3f993dbf4e1384f9660737f139a@eucas1p2.samsung.com>
-	<91700541-3c17-4c2f-aa6b-b4e1a36749f9@app.fastmail.com>
-	<eb983a65-ca78-4290-bad2-3e8955de5d69@samsung.com>
-	<1528bd45c80a962dd172c9a9ed97c6ea3e8f295a.camel@HansenPartnership.com>
+X-CM-TRANSID:zQCowABH2g3fUEVpPbYuAQ--.16196S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruFW7CF4UXFWUKFyxWr4kZwb_yoWfGFb_Ka
+	18Z3s5uF4kur4Ikr13GFyavryF93WqgrWrZr1jqr93try5Zr4UZrWFqrn5JrnrXw4DCr9r
+	K34kGr90kw1FkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbcAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1S6rWUM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjfUYCJmUUUUU
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBg0BE2lFNrJEYwAAsW
 
-On 19.12.2025 13:38, James Bottomley wrote:
-> On Fri, 2025-12-19 at 09:35 +0100, Marek Szyprowski wrote:
->> On 18.12.2025 22:28, Leon Romanovsky wrote:
->>> On Thu, Dec 18, 2025, at 20:27, Helge Deller wrote:
->>>> On 12/18/25 13:08, Leon Romanovsky wrote:
->>>>> On 32‑bit systems, phys_addr_t is defined as u32. However,
->>>>> parisc expects physical addresses to be 64‑bit values so it can
->>>>> store a validity bit in the upper byte.
->>>>> ...
->>>>> Also remove the now‑obsolete macro.
->>>> Your patch is OK, but could you please keep the lpa() macro?
->>>> It's unrelated to your patch, and sometimes we need the lpa()
->>>> e.g. when adding debug code, so I'd prefer to keep it.
->>> The parch was already accepted and if Marek agrees, he can easily
->>> revert the deleted hunk and rebase my parch.
->>>
->>> However from upstream perspective, we don't keep code which is not
->>> used and if this macro would be function, we would get compilation
->>> warning for that.
->>>
->>> Isn't lpa(x/) equal to virt_to_phys(x)?
->> I can drop the lpa() related change, but let us know what is the
->> advantage of it compared to virt_to_phys()?
-> Um, well same as on every architecture: virt_to_phys only gives correct
-> results on the offset map since it's defined as an offset map
-> subtraction; lpa() gives the the CPU view of the mapping through the
-> page table entries, so is correct even in the vmap (and iomap, etc)
-> range.
+If device_register() fails, put_device() is the correct way to
+drop the device reference.
 
-Thanks for the explanation. I will drop the lpa() removal chunk from 
-dma-mapping-fixes branch then.
+Found by code review.
 
-Best regards
+Fixes: 1070c9655b90 ("[PA-RISC] Fix must_check warnings in drivers.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+ arch/parisc/kernel/drivers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/parisc/kernel/drivers.c b/arch/parisc/kernel/drivers.c
+index 8d23fe42b0ce..809e3c171ad5 100644
+--- a/arch/parisc/kernel/drivers.c
++++ b/arch/parisc/kernel/drivers.c
+@@ -435,7 +435,7 @@ static struct parisc_device * __init create_tree_node(char id,
+ 	dev->dev.dma_mask = &dev->dma_mask;
+ 	dev->dev.coherent_dma_mask = dev->dma_mask;
+ 	if (device_register(&dev->dev)) {
+-		kfree(dev);
++		put_device(&dev->dev);
+ 		return NULL;
+ 	}
+ 
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.25.1
 
 
