@@ -1,150 +1,102 @@
-Return-Path: <linux-parisc+bounces-4397-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4398-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A674CE5CBB
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 04:14:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D248CE673B
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 12:06:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E6A663007286
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 03:14:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EDE6630112CF
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 11:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D0B248F73;
-	Mon, 29 Dec 2025 03:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B2B2E7F29;
+	Mon, 29 Dec 2025 11:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CsTctdZ8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hv5d9f+u"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f68.google.com (mail-yx1-f68.google.com [74.125.224.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45320263F4A
-	for <linux-parisc@vger.kernel.org>; Mon, 29 Dec 2025 03:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449603A1E6B
+	for <linux-parisc@vger.kernel.org>; Mon, 29 Dec 2025 11:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766978072; cv=none; b=e68FNnCiMAnh9xMhqMF6npwokV1GbOoJWquLGh4M/3mbsSySzTImm9R0CmFxW43BSJA3yHy043aGa6hsGU6txB1E0jDDZZG1ECgNsxnaB+iLqX0IPPdtiSMWAcSgP2WsMyYWPbBYk6ARd2rgEds5DX2kMW0lZBZ2829qoRrAVc4=
+	t=1767006383; cv=none; b=Gei7hXp1bp2nwSvfbNVxRkoqHR6a16uh9SlO6nUcsWr7PzqcPIf2jL40lsUPBjoBF9Hgq3n8VvF41C6Y+TfuOPYoQJ+aleZ5a59TFZXjgstzj0amWqAD5MbuBV4q3R2Q8QucY2QTKeSjP1fxNBS27CDkfVkQfBLZlTguCJTTDls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766978072; c=relaxed/simple;
-	bh=zJVh7Eiu9Qmqvv/80ZNMMMHzubfHqn+LQIj/Vkbafgs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=UD5w1KZ/Zew4vz0uaNZ/ft+mmLBdfCMo0fWAvnupNVPNkEO5/yZBkgH6M/QO+eDyH9Wte7lHTIhaZjYVDMpPV0nY/3GFbw3WXsoFO+tK1e0+mo+K+MPZ0Ggdjf+QIFRoLelGrCMKjTnj3OOgmac/F8IJ2EcGGQW0CyI/gLIOajg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CsTctdZ8; arc=none smtp.client-ip=91.218.175.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766978065;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=23WFVh4QD8EwOyb+DiEjMorTSabGcCdF0HCkzTj5UcI=;
-	b=CsTctdZ8U9pUZlVucTzftHHmp2gnI1r0CzZFlnpRDH9PaP1qXa4UPAYSva2HLine9CfV90
-	9W72CV4/QFwNiVWLYQ5mHLAgZrQcKb5qzwdX5woVQVU6YQn8JsHteRlat/Z+Spad7CIWaS
-	h++GDN5U6j2LdFzXpT0UvZYdzjPHOv4=
+	s=arc-20240116; t=1767006383; c=relaxed/simple;
+	bh=0dQ/R9FgC/lreN0H8Evtv4q4teLsqf2wv7b9fDw/ZDc=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=popl+GNMs88H6vGnB1yQWZRBZXvsq1HMa6KITWu2LTaWHLKA4i909dcncJYRSvr2EhdmTVIpmj4WWjWsdfe+9g1zzm8asdy3OjRTO6uT/Iim/n6Kyl2Dv3sfUYC6NrR2foZLjrK43AqdCnv8a2QDfAYn7NYCOdi3lkw+ADZ5fAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hv5d9f+u; arc=none smtp.client-ip=74.125.224.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f68.google.com with SMTP id 956f58d0204a3-640e065991dso7374015d50.3
+        for <linux-parisc@vger.kernel.org>; Mon, 29 Dec 2025 03:06:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767006380; x=1767611180; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:subject:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0dQ/R9FgC/lreN0H8Evtv4q4teLsqf2wv7b9fDw/ZDc=;
+        b=hv5d9f+uc/A0SAes5XKvmqHsX+vgmxWfy+h3YgI2iMm37s5t+N35bAVGYLqipN2PiR
+         mfBGmxe2+aSwjFTrNb9qFT9CL4qWeY0hQzaY4HhfwRz5xye8pkaTPBGTfv4pCPYVorPA
+         my74uNrcC7xBtLolES8ISZjgCmJg6NdeHsNUq1lKHsmMUqtDl2Pwywko8BrfQOBadogt
+         mqOK0JAb/xcpi2qr2mqYTWyp4LMWWdy9EMNVto4fPEDp8WKVGhy4IhSuzr5N7XYfd1vp
+         hY+H7EU37CAHNaEbqJ0M7wEwG2mQQdOKfgFuuEfLZAl8Nl4CL3pcygkTRXcf4Ib1yDKo
+         WuCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767006380; x=1767611180;
+        h=content-transfer-encoding:mime-version:message-id:subject:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0dQ/R9FgC/lreN0H8Evtv4q4teLsqf2wv7b9fDw/ZDc=;
+        b=DHjObMrlIgtjFBq6FFAJ5QFAISehe3GNIjwHyVQ+tKkkVkmu0zUFRXVSq5FNHQ6Zvn
+         gzlnVP30zvWWrXoMBkXXu7ZYQ9bLct4z1akVOnRpGMt2QeanwvfYrX4Le/iahaQNm8Wa
+         TP0Pw2GlaYKqK0Bxr0cz6e9TTvd+rgIZXH+GkfMJgqOjQpfy6IFW0fzGh7Q+2zxjIu0P
+         yKkaacc+qZPcc5zsrFwZIQWlkuQhgl/dQ+W5/2DTV4EZ3As9k1UmsCKHgpo12OkSQt5+
+         d4Gi+gFbkYe5amSoIDwKr1qOaIzo/TOs0zSRJuX9/gurwehgQg+WEirSDivYyhl5FGpt
+         UY3Q==
+X-Gm-Message-State: AOJu0YyqmnPi4b3WdRmKRvCv7IGhWyhmsND5+TIcy/zWlauW6t999sFC
+	tqSRculKYq5hpi2fVlvWQmlRoVffvUkNtlfXno7J0ZV0DuHrpsbKBIIOn2yB7OEI
+X-Gm-Gg: AY/fxX7Zjl8isXvWK+ArDVakMCQcVjkzC67eEeiFsz/27eHfa65D/JlHfZbe8GhPPm0
+	RDN4QjX1PVaTYMw4RvSwi7jLlGwaRVUzHkejn59KyC+l0trPxLfjoZeus8Sw7Lv8LrtPZC6j/ar
+	RyyLL8GX0gLUE1eKrVMACZhyyDpr8ZKXMkVxevKplrWAKf1xaSqsdvgoy9yR2+jWPsCch+3e8Zw
+	qVq+82MoCRv2FjqX86kmJyivvKPfMO4zlhTZlYgNHRQMwH/NcjUUrqRCw306HxgmTmME4R6vgby
+	nvM2oWxUMrUIUe0/FTnTmqhLc6hecaz4jI/XNdsK6EQLHlSsPhP6wm9ap/5Ii5Qy78LlicoNbn4
+	pV4ZmCMYnPXh4Lfrwwp/lPvrLrlCxoMOGZ+33Gk9FaUSwtIJ1QMsYeiif8Zdm7t5nSBXkkdCuNj
+	EI/0B92KJ0g9YFpA1+XO375w==
+X-Google-Smtp-Source: AGHT+IG/kV4rE7Um0CwLJxkCsuvMl34AxwoHydp0mdiexWulguVTxnzVXTemwwUFrfaSeHfW2RAoEw==
+X-Received: by 2002:a53:e007:0:b0:644:4eec:222 with SMTP id 956f58d0204a3-6466a8d0c64mr18330082d50.85.1767006379859;
+        Mon, 29 Dec 2025 03:06:19 -0800 (PST)
+Received: from glenmorangie (dhcp-67-147-84-4.gobrightspeed.net. [67.147.84.4])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6466a81d4e4sm14700528d50.0.2025.12.29.03.06.19
+        for <linux-parisc@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Dec 2025 03:06:19 -0800 (PST)
+Date: Mon, 29 Dec 2025 06:06:13 -0500
+From: Michael <macallan1888@gmail.com>
+To: linux-parisc@vger.kernel.org
+Subject: HP NGLE documentation
+Message-ID: <20251229060048.141359d4@glenmorangie>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; powerpc--netbsd)
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
-Subject: Re: [PATCH 28/28] Revert "mm/hugetlb: deal with multiple calls to
- hugetlb_bootmem_alloc"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20251228124001.3624742-29-rppt@kernel.org>
-Date: Mon, 29 Dec 2025 11:13:26 +0800
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Alex Shi <alexs@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Borislav Petkov <bp@alien8.de>,
- Brian Cain <bcain@kernel.org>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@kernel.org>,
- Dinh Nguyen <dinguyen@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Guo Ren <guoren@kernel.org>,
- Heiko Carstens <hca@linux.ibm.com>,
- Helge Deller <deller@gmx.de>,
- Huacai Chen <chenhuacai@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Jonathan Corbet <corbet@lwn.net>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Magnus Lindholm <linmag7@gmail.com>,
- Matt Turner <mattst88@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Michal Hocko <mhocko@suse.com>,
- Michal Simek <monstr@monstr.eu>,
- Oscar Salvador <osalvador@suse.de>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- Richard Weinberger <richard@nod.at>,
- Russell King <linux@armlinux.org.uk>,
- Stafford Horne <shorne@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Thomas Gleixner <tglx@linutronix.de>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Vineet Gupta <vgupta@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>,
- x86@kernel.org,
- linux-alpha@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org,
- linux-cxl@vger.kernel.org,
- linux-doc@vger.kernel.org,
- linux-hexagon@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org,
- linux-mm@kvack.org,
- linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org,
- linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org,
- linux-snps-arc@lists.infradead.org,
- linux-um@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org,
- loongarch@lists.linux.dev,
- sparclinux@vger.kernel.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <C8C5C80F-BA99-445D-9711-2665B1262C66@linux.dev>
-References: <20251228124001.3624742-1-rppt@kernel.org>
- <20251228124001.3624742-29-rppt@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-X-Migadu-Flow: FLOW_OUT
 
+Hello,
 
+I finally figured out enough about HCRX and PCI Visualize EG to write
+my own manual. It's a work in progress but I think it's at a point
+where it can be useful. Not exactly for beginners but anyone with some
+experience programming graphics hardware should have no trouble with it.
+For now it's here:
+https://cvsweb.netbsd.org/bsdweb.cgi/src/sys/arch/hppa/doc/
 
-> On Dec 28, 2025, at 20:39, Mike Rapoport <rppt@kernel.org> wrote:
-> 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> hugetlb_bootmem_alloc() is called only once, no need to check if it was
-> called aready at its entry.
-> 
-> Other checks performed during HVO initialization are also no longer
-> necessary because sparse_init() that calls hugetlb_vmemmap_init_early()
-> and hugetlb_vmemmap_init_late() is alaways called after
-> hugetlb_bootmem_alloc().
-> 
-> This reverts commit d58b2498200724e4f8c12d71a5953da03c8c8bdf.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+and a de-obfuscated header describing the registers lives here:
+https://cvsweb.netbsd.org/bsdweb.cgi/src/sys/dev/ic/nglereg.h
 
-Nice cleanup.
-
-Acked-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
-
+have fun
+Michael
 
