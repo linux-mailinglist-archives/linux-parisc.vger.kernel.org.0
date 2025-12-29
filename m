@@ -1,102 +1,116 @@
-Return-Path: <linux-parisc+bounces-4398-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4399-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D248CE673B
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 12:06:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8444CE6EB6
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 14:55:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EDE6630112CF
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 11:06:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DDA2A3009749
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 13:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B2B2E7F29;
-	Mon, 29 Dec 2025 11:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67D226ED3D;
+	Mon, 29 Dec 2025 13:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hv5d9f+u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YGxdnq2k"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-yx1-f68.google.com (mail-yx1-f68.google.com [74.125.224.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449603A1E6B
-	for <linux-parisc@vger.kernel.org>; Mon, 29 Dec 2025 11:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AC1224AF0;
+	Mon, 29 Dec 2025 13:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767006383; cv=none; b=Gei7hXp1bp2nwSvfbNVxRkoqHR6a16uh9SlO6nUcsWr7PzqcPIf2jL40lsUPBjoBF9Hgq3n8VvF41C6Y+TfuOPYoQJ+aleZ5a59TFZXjgstzj0amWqAD5MbuBV4q3R2Q8QucY2QTKeSjP1fxNBS27CDkfVkQfBLZlTguCJTTDls=
+	t=1767016527; cv=none; b=iAlBCpKfVTydfbLGw3rfVdAQ/y26jFyI/UXweRc6rdQgCDLotE8uTLR7TsAoV1pOqX/sXJh8DYEr+tC08/Odtw+/+d00VvRNUAubWIGv4KZAb+Y6SDHgzRLgdA9WlZYXZFnXiSBCLxu1ZqK8rXYYhCqelK1IPSbo5ygJlOdoKC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767006383; c=relaxed/simple;
-	bh=0dQ/R9FgC/lreN0H8Evtv4q4teLsqf2wv7b9fDw/ZDc=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=popl+GNMs88H6vGnB1yQWZRBZXvsq1HMa6KITWu2LTaWHLKA4i909dcncJYRSvr2EhdmTVIpmj4WWjWsdfe+9g1zzm8asdy3OjRTO6uT/Iim/n6Kyl2Dv3sfUYC6NrR2foZLjrK43AqdCnv8a2QDfAYn7NYCOdi3lkw+ADZ5fAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hv5d9f+u; arc=none smtp.client-ip=74.125.224.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f68.google.com with SMTP id 956f58d0204a3-640e065991dso7374015d50.3
-        for <linux-parisc@vger.kernel.org>; Mon, 29 Dec 2025 03:06:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767006380; x=1767611180; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:subject:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0dQ/R9FgC/lreN0H8Evtv4q4teLsqf2wv7b9fDw/ZDc=;
-        b=hv5d9f+uc/A0SAes5XKvmqHsX+vgmxWfy+h3YgI2iMm37s5t+N35bAVGYLqipN2PiR
-         mfBGmxe2+aSwjFTrNb9qFT9CL4qWeY0hQzaY4HhfwRz5xye8pkaTPBGTfv4pCPYVorPA
-         my74uNrcC7xBtLolES8ISZjgCmJg6NdeHsNUq1lKHsmMUqtDl2Pwywko8BrfQOBadogt
-         mqOK0JAb/xcpi2qr2mqYTWyp4LMWWdy9EMNVto4fPEDp8WKVGhy4IhSuzr5N7XYfd1vp
-         hY+H7EU37CAHNaEbqJ0M7wEwG2mQQdOKfgFuuEfLZAl8Nl4CL3pcygkTRXcf4Ib1yDKo
-         WuCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767006380; x=1767611180;
-        h=content-transfer-encoding:mime-version:message-id:subject:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0dQ/R9FgC/lreN0H8Evtv4q4teLsqf2wv7b9fDw/ZDc=;
-        b=DHjObMrlIgtjFBq6FFAJ5QFAISehe3GNIjwHyVQ+tKkkVkmu0zUFRXVSq5FNHQ6Zvn
-         gzlnVP30zvWWrXoMBkXXu7ZYQ9bLct4z1akVOnRpGMt2QeanwvfYrX4Le/iahaQNm8Wa
-         TP0Pw2GlaYKqK0Bxr0cz6e9TTvd+rgIZXH+GkfMJgqOjQpfy6IFW0fzGh7Q+2zxjIu0P
-         yKkaacc+qZPcc5zsrFwZIQWlkuQhgl/dQ+W5/2DTV4EZ3As9k1UmsCKHgpo12OkSQt5+
-         d4Gi+gFbkYe5amSoIDwKr1qOaIzo/TOs0zSRJuX9/gurwehgQg+WEirSDivYyhl5FGpt
-         UY3Q==
-X-Gm-Message-State: AOJu0YyqmnPi4b3WdRmKRvCv7IGhWyhmsND5+TIcy/zWlauW6t999sFC
-	tqSRculKYq5hpi2fVlvWQmlRoVffvUkNtlfXno7J0ZV0DuHrpsbKBIIOn2yB7OEI
-X-Gm-Gg: AY/fxX7Zjl8isXvWK+ArDVakMCQcVjkzC67eEeiFsz/27eHfa65D/JlHfZbe8GhPPm0
-	RDN4QjX1PVaTYMw4RvSwi7jLlGwaRVUzHkejn59KyC+l0trPxLfjoZeus8Sw7Lv8LrtPZC6j/ar
-	RyyLL8GX0gLUE1eKrVMACZhyyDpr8ZKXMkVxevKplrWAKf1xaSqsdvgoy9yR2+jWPsCch+3e8Zw
-	qVq+82MoCRv2FjqX86kmJyivvKPfMO4zlhTZlYgNHRQMwH/NcjUUrqRCw306HxgmTmME4R6vgby
-	nvM2oWxUMrUIUe0/FTnTmqhLc6hecaz4jI/XNdsK6EQLHlSsPhP6wm9ap/5Ii5Qy78LlicoNbn4
-	pV4ZmCMYnPXh4Lfrwwp/lPvrLrlCxoMOGZ+33Gk9FaUSwtIJ1QMsYeiif8Zdm7t5nSBXkkdCuNj
-	EI/0B92KJ0g9YFpA1+XO375w==
-X-Google-Smtp-Source: AGHT+IG/kV4rE7Um0CwLJxkCsuvMl34AxwoHydp0mdiexWulguVTxnzVXTemwwUFrfaSeHfW2RAoEw==
-X-Received: by 2002:a53:e007:0:b0:644:4eec:222 with SMTP id 956f58d0204a3-6466a8d0c64mr18330082d50.85.1767006379859;
-        Mon, 29 Dec 2025 03:06:19 -0800 (PST)
-Received: from glenmorangie (dhcp-67-147-84-4.gobrightspeed.net. [67.147.84.4])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6466a81d4e4sm14700528d50.0.2025.12.29.03.06.19
-        for <linux-parisc@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Dec 2025 03:06:19 -0800 (PST)
-Date: Mon, 29 Dec 2025 06:06:13 -0500
-From: Michael <macallan1888@gmail.com>
-To: linux-parisc@vger.kernel.org
-Subject: HP NGLE documentation
-Message-ID: <20251229060048.141359d4@glenmorangie>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; powerpc--netbsd)
+	s=arc-20240116; t=1767016527; c=relaxed/simple;
+	bh=KUzcCQmQKdCc6BXDXkIzmgljIGG78Dm71TrJEBQ0UVk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tWhrptlcLvaf+QdrS9gnBNvHdigWdFR7jUoAH+R0XjKieLsNgjOdXzq616Y0IAyVoVEVlCNAwaWoc8O4Q4Xsi/Yf+71e4LSQJKRHu1mrc4oJw23OGkQhXtYS27x7mN4yb3272GVspIhIKZzyU2cNOFyw266DDuvVAJ88cWv4mNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YGxdnq2k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B958C4CEF7;
+	Mon, 29 Dec 2025 13:55:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767016527;
+	bh=KUzcCQmQKdCc6BXDXkIzmgljIGG78Dm71TrJEBQ0UVk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YGxdnq2k/1YHQkO+jdKT72GRWIqp9MvmMpClq2GsOdPjlPP0FWxM04kupp5c2Q36H
+	 WhlDnqIsMmUc8EKUXxMVpxOS42QmCYKRBBIDWLcXcg4PUPqipaWdrKH1gKS1FwASa/
+	 hKp6pXPaUfKZpSt6S9+PDmd4sDLYk+k7PB2/GgxYMbTYOOhWXttLamMY9XPRpV3eOG
+	 +7yYHchowcnAlit4edYM+tpviihqUXpxV86rHDGshmddrsiLgHbLG6n6z8+q8V0Y39
+	 wHGA0q9QyXUGWHVXz4L51blEjBjtP/4YARdm22YWyWh7Tr/vFqZHJq9k7MphA7j8SR
+	 mM6Yjtx2b2iDw==
+Message-ID: <d17b3b7e-2d3e-4b0c-aa55-ce82fecc1710@kernel.org>
+Date: Mon, 29 Dec 2025 07:55:22 -0600
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 11/28] nios2: introduce arch_zone_limits_init()
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
+ Brian Cain <bcain@kernel.org>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Jonathan Corbet <corbet@lwn.net>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
+ Stafford Horne <shorne@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, x86@kernel.org, linux-alpha@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org
+References: <20251228124001.3624742-1-rppt@kernel.org>
+ <20251228124001.3624742-12-rppt@kernel.org>
+Content-Language: en-US
+From: Dinh Nguyen <dinguyen@kernel.org>
+In-Reply-To: <20251228124001.3624742-12-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hello,
 
-I finally figured out enough about HCRX and PCI Visualize EG to write
-my own manual. It's a work in progress but I think it's at a point
-where it can be useful. Not exactly for beginners but anyone with some
-experience programming graphics hardware should have no trouble with it.
-For now it's here:
-https://cvsweb.netbsd.org/bsdweb.cgi/src/sys/arch/hppa/doc/
 
-and a de-obfuscated header describing the registers lives here:
-https://cvsweb.netbsd.org/bsdweb.cgi/src/sys/dev/ic/nglereg.h
+On 12/28/25 06:39, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> Move calculations of zone limits to a dedicated arch_zone_limits_init()
+> function.
+> 
+> Later MM core will use this function as an architecture specific callback
+> during nodes and zones initialization and thus there won't be a need to
+> call free_area_init() from every architecture.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>   arch/nios2/mm/init.c | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+> 
 
-have fun
-Michael
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
 
