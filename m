@@ -1,57 +1,58 @@
-Return-Path: <linux-parisc+bounces-4396-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4397-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872DECE5C94
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 04:14:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A674CE5CBB
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 04:14:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6179630026B3
-	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 03:14:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E6A663007286
+	for <lists+linux-parisc@lfdr.de>; Mon, 29 Dec 2025 03:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CA426056C;
-	Mon, 29 Dec 2025 03:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D0B248F73;
+	Mon, 29 Dec 2025 03:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xudHUjeP"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CsTctdZ8"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2A125782D
-	for <linux-parisc@vger.kernel.org>; Mon, 29 Dec 2025 03:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45320263F4A
+	for <linux-parisc@vger.kernel.org>; Mon, 29 Dec 2025 03:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766978049; cv=none; b=rXMJNy2JjAJTVWkZxoMRjmGrmkEep5taH8x2/fQp5gI8LAjF7bgaYenhkJ3GUyHi4faLKDCpwmcb8+8VjZQU7jfsnuLFT/Xbw3qrX9ShChvgv3sZ3ZQv8F6pgqs+i4qUDaEVBeF5dn6+B+GXeGFJGwpLIOX6p0tLjhazrfNK3kw=
+	t=1766978072; cv=none; b=e68FNnCiMAnh9xMhqMF6npwokV1GbOoJWquLGh4M/3mbsSySzTImm9R0CmFxW43BSJA3yHy043aGa6hsGU6txB1E0jDDZZG1ECgNsxnaB+iLqX0IPPdtiSMWAcSgP2WsMyYWPbBYk6ARd2rgEds5DX2kMW0lZBZ2829qoRrAVc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766978049; c=relaxed/simple;
-	bh=qBCFUDAWRsep9ypsogxegTTrnf54BXOIWdjTbE8EFCs=;
+	s=arc-20240116; t=1766978072; c=relaxed/simple;
+	bh=zJVh7Eiu9Qmqvv/80ZNMMMHzubfHqn+LQIj/Vkbafgs=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=FUowl115DlhFrYFO4sYGLqFmP8ZBeJY+kPNSDLDHSu4mBbZ2gR4AOFj74QeTtV5z3fk1tgq1vjhWWN6dVOJbusPZ0JNQKST9a5zPufBZbePsoC38iA3N+mvHisjiq08R9cJcubpHVfVykMzibziNKpDjETf56zIloQKQW/wxsag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xudHUjeP; arc=none smtp.client-ip=91.218.175.181
+	 Message-Id:References:To; b=UD5w1KZ/Zew4vz0uaNZ/ft+mmLBdfCMo0fWAvnupNVPNkEO5/yZBkgH6M/QO+eDyH9Wte7lHTIhaZjYVDMpPV0nY/3GFbw3WXsoFO+tK1e0+mo+K+MPZ0Ggdjf+QIFRoLelGrCMKjTnj3OOgmac/F8IJ2EcGGQW0CyI/gLIOajg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CsTctdZ8; arc=none smtp.client-ip=91.218.175.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1766978044;
+	t=1766978065;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=F1afDEBzhkrjAza00g4g2aJTxEIGJdJZw63+C1Fb5ZI=;
-	b=xudHUjePDfaFRoveEwaIphF8mZs/R5mnH9f47udtH04DIRRrs8+LS6GS4z4/Dl/4eYgJsK
-	oBr6TOGzLIp7T/sxGOQwSW0OgPsC7SNoPYqwaW6LKziESfl/Vb8AEvdBWzNjrGqBebpb8i
-	DehsZ+lJojnmbdQbaGriVFYLNw3k1b4=
+	bh=23WFVh4QD8EwOyb+DiEjMorTSabGcCdF0HCkzTj5UcI=;
+	b=CsTctdZ8U9pUZlVucTzftHHmp2gnI1r0CzZFlnpRDH9PaP1qXa4UPAYSva2HLine9CfV90
+	9W72CV4/QFwNiVWLYQ5mHLAgZrQcKb5qzwdX5woVQVU6YQn8JsHteRlat/Z+Spad7CIWaS
+	h++GDN5U6j2LdFzXpT0UvZYdzjPHOv4=
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.200.81.1.6\))
-Subject: Re: [PATCH 27/28] mm/hugetlb: drop hugetlb_cma_check()
+Subject: Re: [PATCH 28/28] Revert "mm/hugetlb: deal with multiple calls to
+ hugetlb_bootmem_alloc"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20251228124001.3624742-28-rppt@kernel.org>
-Date: Mon, 29 Dec 2025 11:13:03 +0800
+In-Reply-To: <20251228124001.3624742-29-rppt@kernel.org>
+Date: Mon, 29 Dec 2025 11:13:26 +0800
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Alex Shi <alexs@kernel.org>,
  Alexander Gordeev <agordeev@linux.ibm.com>,
@@ -116,9 +117,9 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  loongarch@lists.linux.dev,
  sparclinux@vger.kernel.org
 Content-Transfer-Encoding: 7bit
-Message-Id: <2F5422EB-495E-4BC7-8174-13BED1147382@linux.dev>
+Message-Id: <C8C5C80F-BA99-445D-9711-2665B1262C66@linux.dev>
 References: <20251228124001.3624742-1-rppt@kernel.org>
- <20251228124001.3624742-28-rppt@kernel.org>
+ <20251228124001.3624742-29-rppt@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>
 X-Migadu-Flow: FLOW_OUT
 
@@ -128,13 +129,15 @@ X-Migadu-Flow: FLOW_OUT
 > 
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> hugetlb_cma_check() was required when the ordering of hugetlb_cma_reserve()
-> and hugetlb_bootmem_alloc() was architecture depended.
+> hugetlb_bootmem_alloc() is called only once, no need to check if it was
+> called aready at its entry.
 > 
-> Since hugetlb_cma_reserve() is always called before hugetlb_bootmem_alloc()
-> there is no need to check whether hugetlb_cma_reserve() was already called.
+> Other checks performed during HVO initialization are also no longer
+> necessary because sparse_init() that calls hugetlb_vmemmap_init_early()
+> and hugetlb_vmemmap_init_late() is alaways called after
+> hugetlb_bootmem_alloc().
 > 
-> Drop unneeded hugetlb_cma_check() function.
+> This reverts commit d58b2498200724e4f8c12d71a5953da03c8c8bdf.
 > 
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
