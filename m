@@ -1,96 +1,96 @@
-Return-Path: <linux-parisc+bounces-4405-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4406-lists+linux-parisc=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-parisc@lfdr.de
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB11CECC1B
-	for <lists+linux-parisc@lfdr.de>; Thu, 01 Jan 2026 03:07:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7087FCEDB22
+	for <lists+linux-parisc@lfdr.de>; Fri, 02 Jan 2026 07:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4452B3008EA3
-	for <lists+linux-parisc@lfdr.de>; Thu,  1 Jan 2026 02:07:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A3C0300724C
+	for <lists+linux-parisc@lfdr.de>; Fri,  2 Jan 2026 06:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5E72848AF;
-	Thu,  1 Jan 2026 02:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1975C2D0C60;
+	Fri,  2 Jan 2026 06:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i1n495X4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JURDexdX"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A542877D2
-	for <linux-parisc@vger.kernel.org>; Thu,  1 Jan 2026 02:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDB6186E58;
+	Fri,  2 Jan 2026 06:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767233240; cv=none; b=QBKP3qRpToGXXmcKnjW3nuYUguAnBso6Kd1BE7pge/3CLcAB8m2pyMVp9W/+Xssvl1LTw6L/0zWIahBV7cBXapedlCRnGHdlSjQEaBhtpbbhvr5RSj0+kdGsmmxEBLgwc07bAKFyYX8+afYjufs1MqPUOSQyC0slhQOzncAZovo=
+	t=1767337176; cv=none; b=NyfnD/ybUBVsxCBV0lRVZ/AkY5fJ/uBL0wXiQ4utIXLmHQ3Ws1TAJz94MTSZAc0dEjRqFUp/86PU5U6NL84dGz+Ly8YB+xqriR6qHGP5Xar7ITi+lQkrej0oZaN05HLAK0G+Nd59YN+vcxaxDQLlForVNi0nDY4zPnTCvaKT2aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767233240; c=relaxed/simple;
-	bh=NSSdoE7G/g/QaVmDnjP9LfDazgPNO8PlY1pApWlnZBE=;
+	s=arc-20240116; t=1767337176; c=relaxed/simple;
+	bh=6UamW9ypeYvnLArvWXDR1zXy9G1XczNWSIs66XcI5UY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D3krVVW2auEKWFCFM2/wzYrAt/NrMFnUosuPuVjphCyLRSSxy1sO9eOaEyO3H0e5bBvPSGsMyBotj17Br1A8vvCcH4D6OeavnY1NEdp8cZ6SCX5xQbtiXLJKHPktPKaURknyx6RfPKdxZHWQXh2GbbuQjWAlD/QTwup8kIJMiVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i1n495X4; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b734fcbf1e3so2284855466b.3
-        for <linux-parisc@vger.kernel.org>; Wed, 31 Dec 2025 18:07:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767233237; x=1767838037; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UQBF0g7LGMkaWXJONFj1Zzubf3JQP1KLJgb8Ha1McV4=;
-        b=i1n495X42Awi4n07MNXXkHhs/ZSWHAPyNb3ik83mMMvg7FjQvBFSC+rSMdi9Px3igo
-         ad9Hs5X4ug0sLCxi1ZTfwxmPNhO57XzfFjK2XzYXLBqTwhkTlmvIgF5yW8GvjCkwQbbU
-         NBN60YCrFfAHaoYx70H4Caie7FhFlYhTHrDGvZH51ECY9G5L9S84eZ1gsjPoIU5wrf/J
-         w1PMy2Fa0iKzfmNLuS3AqPw8moPkPPNKnssHuxbv09FulbTckOiPt0xA063QLX+AwQek
-         Yp1rTYvpi2E2k0qvHGE95AmwuJjpGUKSAN9TAAQAPA2l2LmiPgU1KiM9BmVeYPVefN+4
-         4vfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767233237; x=1767838037;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UQBF0g7LGMkaWXJONFj1Zzubf3JQP1KLJgb8Ha1McV4=;
-        b=qR42Ex7sulgYixlajTsM8u5dYCx6l4BTnoCHty4s9SR0voFEMI7a2hRM67baLebIjH
-         dNpYdgsEbh+jo/XsLedJ7xmhwiNPDjSwFBdc4y5UJQUWdwvrTDaXGkHPMmfK7bDhQI0i
-         j+FHvnIwMAPE8kNg8tLYkGud4gnFnIJ578LbR+WV7fTXCBD6p3IS33EfdwhwPsZZxLE2
-         Spxhxkbyj48kFW1fiTx6xkmM8Vgb3RWpie9w+XEVwBjs9QcbMaHAjXAVDJ2Q1i7SUM3R
-         u7OJtMzKRMviddjV/MT5nLMoXMTFNfOLX102qV21K9zoigVZmuMAROGHfDO/MG0g7bFj
-         Gilw==
-X-Forwarded-Encrypted: i=1; AJvYcCVBllCBuxe1X8ywIStHDee5Hl4oEzVt7dTYBhXhN+8+eZBfORRO7wBodaVckl+KSTq2DTopS8xeMSECUS4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySoqBwZ/TT01yFCX0Ss72hia+Yz2dogild6tiKZs+7TYM7yzVf
-	VaSC+mmRxGlJEt4bSvBCt7P65w2Irr/MNo8wiPAYmvY/ZvqPWhHz6eA7
-X-Gm-Gg: AY/fxX7L5HQvE2hREoqTJAAJScabXQlAgWR3oISVT2BBil+A6kWvpqQs522PTSe1v1V
-	mofERjrKyYXfdlIUZDK02VUB0j69FkN3/Rqd/IngAjCovD79faOxE1I9u+Nli0JTCiPWBFHL2Qy
-	LUCoEUDOr0+Ub5YhSiEqGPKGZdL2XzmDTBkXaENT4iSxwrseFvf62SmXA/UudIkc9zsCX/wfyAC
-	BvLkilAkpRgD8TLjbt0ckiX2IIUp8BXwfNHk+HLVHpoV1I3E0UZ2bb8dyLwdUScSxbAzGBhK3Z2
-	ymUQQn2GanlSQHTd1Mkc6RS/zL1QC3kyau9/Sp79FCEO+FhixYu33wD3KmfVauoaEPkOevzKEPu
-	YCstsmgs4vc+NbGhCuTtsZt/JidZ+CL1dV8bGWloMbgUVJo/5AU1Qmu57ZABulxryegVs1QpKbQ
-	slrm07+CmBjA==
-X-Google-Smtp-Source: AGHT+IGkCnh9dqfLUptvpy4PZGXmScqGnHYP3DGjjwJuJ8br2u0RfwesNHaEMQG1tTnLLwW9sFl6GQ==
-X-Received: by 2002:a17:907:7f05:b0:b72:9961:dc04 with SMTP id a640c23a62f3a-b8036f86950mr4237184166b.28.1767233236739;
-        Wed, 31 Dec 2025 18:07:16 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64b910601c7sm39251595a12.14.2025.12.31.18.07.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 31 Dec 2025 18:07:16 -0800 (PST)
-Date: Thu, 1 Jan 2026 02:07:15 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: Wei Yang <richard.weiyang@gmail.com>, will@kernel.org,
-	aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
-	dev.jain@arm.com, akpm@linux-foundation.org, david@kernel.org,
-	ioworker0@gmail.com, linmag7@gmail.com, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
- MMU_GATHER_RCU_TABLE_FREE
-Message-ID: <20260101020715.45wqnjgcklvjcth3@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
- <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
- <20251231094243.zmjs7kgflm7q6k73@master>
- <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JILajEJeZ35MRLyMg7Iw0q+IpK4NlAevAUYR+NtsUQHsxl5tORiTn6hhbxSBkuBqg0qGKIcwyXY9u7IwTHEmL3BzB7mLspJyK+U8mnn4ZyRITrANbJ7LTsH5OKh2cP6mc5dr7G0DnBZkdbDVoTtC1iLJBXqrDAT8Ygd/3FZWYLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JURDexdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B4AC116B1;
+	Fri,  2 Jan 2026 06:59:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767337175;
+	bh=6UamW9ypeYvnLArvWXDR1zXy9G1XczNWSIs66XcI5UY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JURDexdXezRaYfVCWbUaXW3lzvXlm31RIqEgAxJWeFjD7mvppUL+nB5Q6DW/syoE7
+	 9KCN3XX0+IFrZ6lXHKvj23Zbubf1juMpQoyVR3R5K+W0wTXoTePytdymIvKf7/FuUt
+	 b7F7Op6aP4W0iuoMzjx2QqloKghcV05PUK7YhWlqmCDHRezSFJ5+E+XxOvd9U94KrO
+	 yMpXKhnr9xm6zugptlmyDIWLkIzbYaeb0b/lyAP5EPPZjPoSkHAZCyI/7qGe07Bh3c
+	 ZF/OMYqQXU+WaQeAzqytLFSZafleWXTxSNL1jQdGV6O5YweZiL0UFX3Jm+OycztA8g
+	 kFuOhUi2qJ56g==
+Date: Fri, 2 Jan 2026 08:59:12 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Shi <alexs@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	x86@kernel.org, linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-mm@kvack.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org
+Subject: Re: [PATCH 00/28] arch, mm: consolidate hugetlb early reservation
+Message-ID: <aVdswNM9PUN6Kr8Q@kernel.org>
+References: <20251228124001.3624742-1-rppt@kernel.org>
+ <20251231172714.a7fe44e856c14fdc8fe1cb43@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -99,96 +99,55 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a3a60bbb-70b7-49ed-abc6-937e6c13d681@linux.dev>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20251231172714.a7fe44e856c14fdc8fe1cb43@linux-foundation.org>
 
-On Wed, Dec 31, 2025 at 05:52:57PM +0800, Qi Zheng wrote:
->
->
->On 12/31/25 5:42 PM, Wei Yang wrote:
->> On Wed, Dec 17, 2025 at 05:45:48PM +0800, Qi Zheng wrote:
->> > From: Qi Zheng <zhengqi.arch@bytedance.com>
->> > 
->> > The PT_RECLAIM can work on all architectures that support
->> > MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
->> > MMU_GATHER_RCU_TABLE_FREE.
->> > 
->> > BTW, change PT_RECLAIM to be enabled by default, since nobody should want
->> > to turn it off.
->> > 
->> > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> > ---
->> > arch/x86/Kconfig | 1 -
->> > mm/Kconfig       | 9 ++-------
->> > 2 files changed, 2 insertions(+), 8 deletions(-)
->> > 
->> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->> > index 80527299f859a..0d22da56a71b0 100644
->> > --- a/arch/x86/Kconfig
->> > +++ b/arch/x86/Kconfig
->> > @@ -331,7 +331,6 @@ config X86
->> > 	select FUNCTION_ALIGNMENT_4B
->> > 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->> > 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->> > -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
->> > 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
->> > 	select SCHED_SMT			if SMP
->> > 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
->> > diff --git a/mm/Kconfig b/mm/Kconfig
->> > index bd0ea5454af82..fc00b429b7129 100644
->> > --- a/mm/Kconfig
->> > +++ b/mm/Kconfig
->> > @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
->> > 	  The architecture has hardware support for userspace shadow call
->> >            stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->> > 
->> > -config ARCH_SUPPORTS_PT_RECLAIM
->> > -	def_bool n
->> > -
->> > config PT_RECLAIM
->> > -	bool "reclaim empty user page table pages"
->> > -	default y
->> > -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->> > -	select MMU_GATHER_RCU_TABLE_FREE
->> > +	def_bool y
->> > +	depends on MMU_GATHER_RCU_TABLE_FREE
->> > 	help
->> > 	  Try to reclaim empty user page table pages in paths other than munmap
->> > 	  and exit_mmap path.
->> 
->> Hi, Qi
->> 
->> I am new to PT_RECLAIM, when reading related code I got one question.
->> 
->> Before this patch,  we could have this config combination:
->> 
->>      CONFIG_MMU_GATHER_RCU_TABLE_FREE & !CONFIG_PT_RECLAIM
->> 
->> This means tlb_remove_table_free() is rcu version while tlb_remove_table_one()
->> is semi rcu version.
->> 
->> I am curious could we use rcu version tlb_remove_table_one() for this case?
->> Use rcu version tlb_remove_table_one() if CONFIG_MMU_GATHER_RCU_TABLE_FREE. Is
->> there some limitation here?
->
->I think there's no problem. The rcu version can also ensure that the
->fast GUP works well.
->
+On Wed, Dec 31, 2025 at 05:27:14PM -0800, Andrew Morton wrote:
+> On Sun, 28 Dec 2025 14:39:30 +0200 Mike Rapoport <rppt@kernel.org> wrote:
+> 
+> > Order in which early memory reservation for hugetlb happens depends on
+> > architecture, on configuration options and on command line parameters.
+> > 
+> > Some architectures rely on the core MM to call hugetlb_bootmem_alloc()
+> > while others call it very early to allow pre-allocation of HVO-style
+> > vmemmap.
+> > 
+> > When hugetlb_cma is supported by an architecture it is initialized during
+> > setup_arch() and then later hugetlb_init code needs to understand did it
+> > happen or not.
+> > 
+> > To make everything consistent and unified, both reservation of hugetlb
+> > memory from bootmem and creation of CMA areas for hugetlb must be called
+> > from core MM initialization and it would have been a simple change.
+> > However, HVO-style pre-initialization ordering requirements slightly
+> > complicate things and for HVO pre-init to work sparse and memory map should
+> > be initialized after hugetlb reservations.
+> > 
+> > This required pulling out the call to free_area_init() out of setup_arch()
+> > path and moving it MM initialization and this is what the first 23 patches
+> > do.
+> > 
+> > These changes are deliberately split into per-arch patches that change how
+> > the zone limits are calculated for each architecture and the patches 22 and
+> > 23 just remove the calls to free_area_init() and sprase_init() from arch/*.
+> > 
+> > Patch 24 is a simple cleanup for MIPS.
+> > 
+> > Patches 25 and 26 actually consolidate hugetlb reservations and patches 27
+> > and 28 perform some aftermath cleanups.
+> 
+> Thanks for the diligence - this can't have been the most exciting thing
+> to work on!
+> 
+> > I tried to trim the distribution list and although it's still quite long
+> > if you feel that someone was wrongly excluded please add them back.
+> 
+> I'll add these to mm.git's mm-new branch for some testing.  I'll
+> suppress the usual email storm because 41 * 28 is a lot of emails ;)
 
-Thanks for your quick response :-)
-
-And Happy New Year
-
-So my little suggestion is move the definition of __tlb_remove_table_one()
-under CONFIG_MMU_GATHER_RCU_TABLE_FREE. Do you thinks this would be more
-clear?
-
->> 
->> Thanks in advance for your explanation.
->> 
->> 
+kbuild reported failures on some configurations so I'm anyway going to send
+a lot of emails for v2 :)
 
 -- 
-Wei Yang
-Help you, Help me
+Sincerely yours,
+Mike.
 
