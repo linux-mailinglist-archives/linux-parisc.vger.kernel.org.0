@@ -1,218 +1,168 @@
-Return-Path: <linux-parisc+bounces-4504-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4505-lists+linux-parisc=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDrQOriQc2l0xAAAu9opvQ
-	(envelope-from <linux-parisc+bounces-4504-lists+linux-parisc=lfdr.de@vger.kernel.org>)
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Jan 2026 16:16:08 +0100
+	id vve9CqMBdGkb1QAAu9opvQ
+	(envelope-from <linux-parisc+bounces-4505-lists+linux-parisc=lfdr.de@vger.kernel.org>)
+	for <lists+linux-parisc@lfdr.de>; Sat, 24 Jan 2026 00:17:55 +0100
 X-Original-To: lists+linux-parisc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F9677A24
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Jan 2026 16:16:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52FA7B6AD
+	for <lists+linux-parisc@lfdr.de>; Sat, 24 Jan 2026 00:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9235A301BCDA
-	for <lists+linux-parisc@lfdr.de>; Fri, 23 Jan 2026 15:16:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B50603004F32
+	for <lists+linux-parisc@lfdr.de>; Fri, 23 Jan 2026 23:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2C428031D;
-	Fri, 23 Jan 2026 15:16:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b="ag1WRAWJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5C919CD06;
+	Fri, 23 Jan 2026 23:17:50 +0000 (UTC)
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D192737FC;
-	Fri, 23 Jan 2026 15:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.231.106.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D62286323;
+	Fri, 23 Jan 2026 23:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769181366; cv=none; b=Yx1G86mcpJq9y/it/MyZfuCPYXJcx7uBLXK0bjhnvf28qKRWQ+Rlo4xt4D2FdfXOr0TTS03e0B150YNqw+syKO+4tYFcDsXLcwLhg4/XqomVHxt77FMEpANzr+FwwwitTCyUpnYW4tlA0WpsBTq3vSmNWOgAkuAo/2RZgE0ulZw=
+	t=1769210270; cv=none; b=bg7W8wB7Tg1VvwFBeiP3asVxznLSAF5W+5pW6aoupcqdWGN+/vcYd/H7fADuLaHl7Rfs1UJ/ny68Gjc2079R/0gsBIzFb0NSlXczpu+EuhOObiH4Yd6NkbFZfjm6HVNiTYJegD4AtvKJS7KLm9NVbpzuuV42hK/ng/x6Ptyf96I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769181366; c=relaxed/simple;
-	bh=rXpme69WV3lZbMqXo4BPlwMSPALTvMzyYlkYjeNanmI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=auV1HukBw4WzomRHrBleG82TZOD5Fy0+u9VfGq1HCAXCKKLJl8fSrqXLviORIoaF5FRfhQg5ygBXnKCVSSdijGq/cnmlfLXX/AH7HVxGUQ8M67n5Qcs4BiyFNjPbkCt61gM5lLw+ovQ/VOPjt39CpuQQLKDR8l13dpslH+1bnco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; spf=pass smtp.mailfrom=gaisler.com; dkim=fail (0-bit key) header.d=gaisler.com header.i=@gaisler.com header.b=ag1WRAWJ reason="key not found in DNS"; arc=none smtp.client-ip=94.231.106.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gaisler.com
-Received: from localhost (localhost [127.0.0.1])
-	by smtp.simply.com (Simply.com) with ESMTP id 4dyM2M6CZPz1DHVR;
-	Fri, 23 Jan 2026 16:15:55 +0100 (CET)
-Received: from [10.10.15.21] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by smtp.simply.com (Simply.com) with ESMTPSA id 4dyM2M10Vkz1FDXX;
-	Fri, 23 Jan 2026 16:15:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
-	s=simplycom2; t=1769181355;
-	bh=bZOD1qxujIU3XqsrT9Q0is3A3LXGMfjZia6aaXxikQM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ag1WRAWJtsN0/+CXBOsevJVeLpSL3/UnOj7eGnW5g7r2ql6jKEN6uMQEFz39jpWTj
-	 70hB6mp8Ve1s6Wp5eFrGmiH/PwtssmQd+OO1x2dJ25+zQ8YZn2M7a8oa0nbx1j6rlf
-	 1jVZ+eG2KhetS8xTd2rubzhycPTOvv5H3QVv5BOpKDJUbmQFZnHbjmifqmRJK+rcmN
-	 m8LMVMH5b3JJXy0dqOhyCLj8N4ZpFxTGlppCWijPb5T9bTpg9tndXUgxZ+8Iusk4Vm
-	 o7IvTCBgZd7VuKCb0Zw5Xn08LvlpLoHpw8Ts3iS9q1RU+69VDDLKM0eepskCzawiEl
-	 rXuEIPQaRFOug==
-Message-ID: <9199f28e-e2b7-48c8-b61f-0b787e322443@gaisler.com>
-Date: Fri, 23 Jan 2026 16:15:54 +0100
+	s=arc-20240116; t=1769210270; c=relaxed/simple;
+	bh=TT6viFLewVpeNE7l5kw1sgQsdq6YVngbak/2JVfDQ6k=;
+	h=Date:Message-ID:From:To:Cc:Subject; b=hxaIf09LlPb/rb1Q1QOzlGKOViGnnOoN7Tbzuj/8NxzY2JbhBEELOXgc8u8Mtc2Ak5oaYZdrBIHwZ2UnsH956eZ7wK4vzxYYpGvjOGEfuRcUI1XghWtLrW2xq6GzhFIGqK+sXKrYBYbHHs/8aqoj8D2mNVueeGkSFdyJ2U3OXxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linutronix.de; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sat, 24 Jan 2026 00:17:46 +0100
+Message-ID: <20260123230651.688818373@kernel.org>
+From: Thomas Gleixner <tglx@kernel.org>
+To: LKML <linux-kernel@vger.kernel.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+ John Stultz <jstultz@google.com>,
+ Waiman Long <longman@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Stephen Boyd <sboyd@kernel.org>,
+ x86@kernel.org,
+ "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+ Jiri Wiesner <jwiesner@suse.de>,
+ Daniel J Blueman <daniel@quora.org>,
+ Scott Hamilton <scott.hamilton@eviden.com>,
+ Helge Deller <deller@gmx.de>,
+ linux-parisc@vger.kernel.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ linux-mips@vger.kernel.org
+Subject: [patch 0/5] clocksource: Rewrite clocksource watchdog and related
+ cleanups
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 7/7] mm: make PT_RECLAIM depends on
- MMU_GATHER_RCU_TABLE_FREE
-To: Qi Zheng <qi.zheng@linux.dev>, will@kernel.org, aneesh.kumar@kernel.org,
- npiggin@gmail.com, peterz@infradead.org, dev.jain@arm.com,
- akpm@linux-foundation.org, david@kernel.org, ioworker0@gmail.com,
- linmag7@gmail.com
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, Qi Zheng <zhengqi.arch@bytedance.com>,
- sparclinux <sparclinux@vger.kernel.org>
-References: <cover.1765963770.git.zhengqi.arch@bytedance.com>
- <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
-Content-Language: en-US
-From: Andreas Larsson <andreas@gaisler.com>
-In-Reply-To: <ac2bdb2a66da1edb24f60d1da1099e2a0b734880.1765963770.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[gaisler.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-4504-lists,linux-parisc=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
 	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	R_DKIM_PERMFAIL(0.00)[gaisler.com:s=simplycom2];
-	DKIM_TRACE(0.00)[gaisler.com:~];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[linux.dev,kernel.org,gmail.com,infradead.org,arm.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andreas@gaisler.com,linux-parisc@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-4505-lists,linux-parisc=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,redhat.com,infradead.org,linaro.org,amd.com,suse.de,quora.org,eviden.com,gmx.de,vger.kernel.org,alpha.franken.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,linux-parisc@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.938];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[linux-parisc];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D5F9677A24
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B52FA7B6AD
 X-Rspamd-Action: no action
 
-On 2025-12-17 10:45, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> The PT_RECLAIM can work on all architectures that support
-> MMU_GATHER_RCU_TABLE_FREE, so make PT_RECLAIM depends on
-> MMU_GATHER_RCU_TABLE_FREE.
-> 
-> BTW, change PT_RECLAIM to be enabled by default, since nobody should want
-> to turn it off.
-> 
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
->  arch/x86/Kconfig | 1 -
->  mm/Kconfig       | 9 ++-------
->  2 files changed, 2 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 80527299f859a..0d22da56a71b0 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -331,7 +331,6 @@ config X86
->  	select FUNCTION_ALIGNMENT_4B
->  	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->  	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
-> -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
->  	select ARCH_SUPPORTS_SCHED_SMT		if SMP
->  	select SCHED_SMT			if SMP
->  	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index bd0ea5454af82..fc00b429b7129 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -1447,14 +1447,9 @@ config ARCH_HAS_USER_SHADOW_STACK
->  	  The architecture has hardware support for userspace shadow call
->            stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->  
-> -config ARCH_SUPPORTS_PT_RECLAIM
-> -	def_bool n
-> -
->  config PT_RECLAIM
-> -	bool "reclaim empty user page table pages"
-> -	default y
-> -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
-> -	select MMU_GATHER_RCU_TABLE_FREE
-> +	def_bool y
-> +	depends on MMU_GATHER_RCU_TABLE_FREE
->  	help
->  	  Try to reclaim empty user page table pages in paths other than munmap
->  	  and exit_mmap path.
+The clocksource watchdog code has over time reached the state of an
+unpenetrable maze of duct tape and staples. The original design, which was
+made in the context of systems far smaller than today, is based on the
+assumption that the to be monitored clocksource (TSC) can be trivially
+compared against a known to be stable clocksource (HPET/ACPI-PM timer).
 
-Hi,
+Over the years it turned out that this approach has major flaws:
 
-This patch unfortunately results in a WARN_ON_ONCE and unaligned
-accesses on sparc64:
+  - Long delays between watchdog invocations can result in wrap arounds
+    of the reference clocksource
 
-$ stress-ng --mmaphuge 20 -t 60
-stress-ng: info:  [559] setting to a 1 min run per stressor
-stress-ng: info:  [559] dispatching hogs: 20 mmaphuge
-[  560.592569] ------------[ cut here ]------------
-[  560.592663] WARNING: kernel/rcu/tree.c:3098 at __call_rcu_common.constprop.0+0x200/0x760, CPU#4: stress-ng-mmaph/568
-[  560.592777] CPU: 4 UID: 1000 PID: 568 Comm: stress-ng-mmaph Not tainted 6.19.0-rc5-00127-g62fc9f6ccb97 #8 VOLUNTARY
-[  560.592805] Call Trace:
-[  560.592812] [<00000000004368b8>] dump_stack+0x8/0x60
-[  560.592844] [<0000000000482a60>] __warn+0xe0/0x140
-[  560.592878] [<0000000000482b64>] warn_slowpath_fmt+0xa4/0x120
-[  560.592901] [<0000000000526a40>] __call_rcu_common.constprop.0+0x200/0x760
-[  560.592931] [<0000000000526fd0>] call_rcu+0x10/0x20
-[  560.592954] [<0000000000730838>] tlb_remove_table+0x98/0xc0
-[  560.592986] [<000000000071bec4>] free_pgd_range+0x224/0x4c0
-[  560.593021] [<000000000071c35c>] free_pgtables+0x1fc/0x240
-[  560.593042] [<000000000074a6f0>] vms_clear_ptes+0x110/0x140
-[  560.593068] [<000000000074c3dc>] vms_complete_munmap_vmas+0x5c/0x280
-[  560.593094] [<000000000074de5c>] do_vmi_align_munmap+0x1dc/0x260
-[  560.593117] [<000000000074df80>] do_vmi_munmap+0xa0/0x140
-[  560.593142] [<000000000074fb2c>] __vm_munmap+0x8c/0x160
-[  560.593168] [<000000000072cfd4>] vm_munmap+0x14/0x40
-[  560.593190] [<00000000004402a8>] sys_64_munmap+0x88/0xa0
-[  560.593221] [<0000000000406274>] linux_sparc_syscall+0x34/0x44
-[  560.593274] ---[ end trace 0000000000000000 ]---
-[  560.593960] log_unaligned: 209 callbacks suppressed
-[  560.593979] Kernel unaligned access at TPC[526a4c] __call_rcu_common.constprop.0+0x20c/0x760
-[  560.594121] Kernel unaligned access at TPC[526864] __call_rcu_common.constprop.0+0x24/0x760
-[  560.594198] Kernel unaligned access at TPC[52b3c4] rcu_segcblist_enqueue+0x24/0x40
-[  560.594275] Kernel unaligned access at TPC[526860] __call_rcu_common.constprop.0+0x20/0x760
-[  560.594360] Kernel unaligned access at TPC[526864] __call_rcu_common.constprop.0+0x24/0x760
-[  567.054127] log_unaligned: 1105 callbacks suppressed
-[  567.054167] Kernel unaligned access at TPC[526860] __call_rcu_common.constprop.0+0x20/0x760
-[  567.054331] Kernel unaligned access at TPC[526864] __call_rcu_common.constprop.0+0x24/0x760
-[  567.054410] Kernel unaligned access at TPC[52b3c4] rcu_segcblist_enqueue+0x24/0x40
-...
+  - Scalability of the reference clocksource readout can degrade on large
+    multi-socket systems due to interconnect congestion
 
-I bisected to this one on mm-unstable from approximately 2026-01-12.
+  - Fixed margins based on magic assumptions, which do not work when the
+    watchdog interval diverges too much.
 
-The warning is from 
+This was addressed with various heuristics which degraded the accurracy of
+the watchdog to the point that it fails to detect actual TSC problems on
+older hardware which exposes slow inter CPU drifts due to firmware
+manipulating the TSC to hide SMI time.
 
-	/* Misaligned rcu_head! */
-	WARN_ON_ONCE((unsigned long)head & (sizeof(void *) - 1));
+To address this and bring back sanity to the watchdog, rewrite the code
+completely with a different approach:
 
-in __call_rcu_common() and the unaligned accesses follows from there.
+  1) Restrict the validation against a reference clocksource to the boot
+     CPU, which is usually the CPU/Socket closest to the legacy block which
+     contains the reference source (HPET/ACPI-PM timer). Validate that the
+     reference readout is within a bound latency so that the actual
+     comparison against the TSC stays within 500ppm as long as the clocks
+     are stable.
 
-Regards,
-Andreas
+  2) Compare the TSCs of the other CPUs in a round robin fashion against
+     the boot CPU in the same way the TSC synchronization on CPU hotplug
+     works. This still can suffer from delayed reaction of the remote CPU
+     to the SMP function call and the latency of the control variable cache
+     line. But this latency is not affecting correctness. It only affects
+     the accuracy. With low contention the readout latency is in the low
+     nanoseconds range, which detects even slight skews between CPUs. Under
+     high contention this becomes obviously less accurate, but still
+     detects slow skews reliably as it solely relies on subsequent readouts
+     being monotonically increasing. It just can take slightly longer to
+     detect the issue.
 
+  3) Rewrite the watchdog test so it tests the various mechanisms one by
+     one and validates the result against the expectation.
+
+The series also cleans up random places which set the watchdog bits without
+actually ever using them. Right now the only architecture which uses the
+clocksource watchdog is x86.
+
+The series is based on
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core
+
+and also available from git:
+
+   git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git timers/clocksource
+
+Thanks,
+
+	tglx
+---
+ Documentation/admin-guide/kernel-parameters.txt |    7 
+ arch/mips/Kconfig                               |    1 
+ arch/parisc/kernel/time.c                       |    5 
+ arch/x86/include/asm/time.h                     |    1 
+ arch/x86/kernel/hpet.c                          |    4 
+ arch/x86/kernel/tsc.c                           |   61 --
+ drivers/clocksource/Kconfig                     |    1 
+ drivers/clocksource/acpi_pm.c                   |    4 
+ include/linux/clocksource.h                     |   24 
+ kernel/time/Kconfig                             |   12 
+ kernel/time/clocksource-wdtest.c                |  268 ++++----
+ kernel/time/clocksource.c                       |  731 ++++++++++++------------
+ kernel/time/jiffies.c                           |    1 
+ 13 files changed, 536 insertions(+), 584 deletions(-)
 
