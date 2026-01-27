@@ -1,50 +1,50 @@
-Return-Path: <linux-parisc+bounces-4526-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4527-lists+linux-parisc=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GO0sLWGteGlasAEAu9opvQ
-	(envelope-from <linux-parisc+bounces-4526-lists+linux-parisc=lfdr.de@vger.kernel.org>)
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jan 2026 13:19:45 +0100
+	id UC+TOMCseGl9rwEAu9opvQ
+	(envelope-from <linux-parisc+bounces-4527-lists+linux-parisc=lfdr.de@vger.kernel.org>)
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jan 2026 13:17:04 +0100
 X-Original-To: lists+linux-parisc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1680A94346
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jan 2026 13:19:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 879669422F
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jan 2026 13:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A2F6302C91B
-	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jan 2026 12:16:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BEBA93006138
+	for <lists+linux-parisc@lfdr.de>; Tue, 27 Jan 2026 12:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D910B3126B1;
-	Tue, 27 Jan 2026 12:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF26312807;
+	Tue, 27 Jan 2026 12:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wc/LzcSY"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jSGS7Oe7"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FE6283FF5
-	for <linux-parisc@vger.kernel.org>; Tue, 27 Jan 2026 12:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85872C0F78
+	for <linux-parisc@vger.kernel.org>; Tue, 27 Jan 2026 12:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769516212; cv=none; b=LYxQIr4lCtb8gKPJajXSfaLs73RA25kjItCU1sWLxla5YTsd7gMEEAkES5l9BRXAqTaX7F/EMXNNTW7cHS77hE5nYnktC2xpoHWSvDETvIrSI1m6SDsmBPKd73udIssmGWza1Qr/iF5BivDA8YfJZI++7kwGiulK0fjrALY5IXo=
+	t=1769516221; cv=none; b=iM1F9ilqTFahVKm8qXRcmGa6AddtOnlH4culNKcMAhmwlvsICWKKyzBPylxr62cNLs+N7ukK87ghyfPczOnvAQrw9PnBM5W/bxtZu8EkAfBNUQND43ynMH+GMMPP3wg2pqjDYH9qVck/S6zI3NbCgzxnDFQVn8/FqNtwdT6XQcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769516212; c=relaxed/simple;
-	bh=RY9iG5O6CRC3b3IlwlQVEJmAqDrdvdhuqhPIwDBxGks=;
+	s=arc-20240116; t=1769516221; c=relaxed/simple;
+	bh=l4vn0jafzOH48gJFS9ZbmhoGcYGN1pHeTBN6xc8KkEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=guixxTow5IgLdWUq4jo0MmOCzA4Dhn4an2VX+sWglmTnXLUTYdei7Fe5RKfNhqdNETkM9aZZMflfeXdP6m47bBlXJY/n7yP9URkGNVwoBrorsbNIadNEhc/TcbKEji1zl90TnXSLj9E4VjMnQY7q0XXhmolg+Sd6Q9GwYaoUyjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wc/LzcSY; arc=none smtp.client-ip=95.215.58.182
+	 MIME-Version; b=BGz/3EV5kZca4m6PXuCC2ljMtbDrxsvsH7vY7z8VmsH4nFHY98ujb2ULWPbpBoH4MWyXhVHssOOSSSZTXVcDlLosI22sjAbZCAPlcWbeT7UDMyfNiTMvhjQ57IsexCyJYgHZmnLmZ5q+WzJaMnu4o4Tk7jGMKQi9nEXXs4QyrZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jSGS7Oe7; arc=none smtp.client-ip=95.215.58.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769516209;
+	t=1769516217;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=e0pQYHM1jhSwp9PHWAhzAtLgw7dAo1EQ0j0b9Rhu8lM=;
-	b=wc/LzcSY84XUN/M01s5VcIBtD1/lXhQlVZzRwxMLJY1XGT2wxJOzGUzWA5oPCfbPCsb1/O
-	ht9YXkU/ZBWYV/j9FZpfqWjqnjxWaip5QHGmFskLEMQc1kWqyHjiSkHOF+suDP3tIX1G7K
-	JeMpI6zZYGFo3G12ozp0269DFGB3g9I=
+	bh=cQBzLGwNWLhDwXoP+ZRSwxq1ZRzbrKmRMjKOPlq54sI=;
+	b=jSGS7Oe7flEf1a3jjawW71oBSQhZPtzIf1jHxOLDpEaGXg/8H0JQMtgOEgm1lxSI0nFjif
+	CMLoz1yjkN0nwmCjWOwy4dWfqN8+bvppy0gq8toChP4Uc6ASbK4hQf7zJ4fTJfyy7Xu7HL
+	RfqIvb9PoL98f2B3qx4iqWkzECkNTi0=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: david@kernel.org,
 	andreas@gaisler.com,
@@ -66,13 +66,10 @@ Cc: linux-arch@vger.kernel.org,
 	linux-parisc@vger.kernel.org,
 	linux-um@lists.infradead.org,
 	sparclinux@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>
-Subject: [PATCH v4 6/8] um: mm: enable MMU_GATHER_RCU_TABLE_FREE
-Date: Tue, 27 Jan 2026 20:12:59 +0800
-Message-ID: <e2217546504668b8a87a39eb0e378839339a1bb4.1769515122.git.zhengqi.arch@bytedance.com>
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v4 7/8] mm: convert __HAVE_ARCH_TLB_REMOVE_TABLE to CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config
+Date: Tue, 27 Jan 2026 20:13:00 +0800
+Message-ID: <5ebfa3d4b56e63c6906bda5eccaa9f7194d3a86b.1769515122.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1769515122.git.zhengqi.arch@bytedance.com>
 References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
 Precedence: bulk
@@ -89,16 +86,16 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-4526-lists,linux-parisc=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-4527-lists,linux-parisc=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_TO(0.00)[kernel.org,gaisler.com,gmail.com,infradead.org,arm.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -108,40 +105,109 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-parisc];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:mid,bytedance.com:email,sipsolutions.net:email,cambridgegreys.com:email]
-X-Rspamd-Queue-Id: 1680A94346
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bytedance.com:mid,bytedance.com:email]
+X-Rspamd-Queue-Id: 879669422F
 X-Rspamd-Action: no action
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-On a 64-bit system, madvise(MADV_DONTNEED) may cause a large number of
-empty PTE page table pages (such as 100GB+). To resolve this problem,
-first enable MMU_GATHER_RCU_TABLE_FREE to prepare for enabling the
-PT_RECLAIM feature, which resolves this problem.
+For architectures that define __HAVE_ARCH_TLB_REMOVE_TABLE, the page
+tables at the pmd/pud level are generally not of struct ptdesc type, and
+do not have pt_rcu_head member, thus these architectures cannot support
+PT_RECLAIM.
+
+In preparation for enabling PT_RECLAIM on more architectures, convert
+__HAVE_ARCH_TLB_REMOVE_TABLE to CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config,
+so that we can make conditional judgments in Kconfig.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
 ---
- arch/um/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/Kconfig            | 1 +
+ arch/powerpc/include/asm/tlb.h  | 1 -
+ arch/sparc/Kconfig              | 1 +
+ arch/sparc/include/asm/tlb_64.h | 1 -
+ include/asm-generic/tlb.h       | 2 +-
+ mm/Kconfig                      | 3 +++
+ 6 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-index 8415d39b0d430..098cda44db225 100644
---- a/arch/um/Kconfig
-+++ b/arch/um/Kconfig
-@@ -42,6 +42,7 @@ config UML
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select THREAD_INFO_IN_TASK
- 	select SPARSE_IRQ
-+	select MMU_GATHER_RCU_TABLE_FREE
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 9537a61ebae02..b47aa8fd62742 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -304,6 +304,7 @@ config PPC
+ 	select LOCK_MM_AND_FIND_VMA
+ 	select MMU_GATHER_PAGE_SIZE
+ 	select MMU_GATHER_RCU_TABLE_FREE
++	select HAVE_ARCH_TLB_REMOVE_TABLE
+ 	select MMU_GATHER_MERGE_VMAS
+ 	select MMU_LAZY_TLB_SHOOTDOWN		if PPC_BOOK3S_64
+ 	select MODULES_USE_ELF_RELA
+diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/asm/tlb.h
+index 2058e8d3e0138..1ca7d4c4b90db 100644
+--- a/arch/powerpc/include/asm/tlb.h
++++ b/arch/powerpc/include/asm/tlb.h
+@@ -37,7 +37,6 @@ extern void tlb_flush(struct mmu_gather *tlb);
+  */
+ #define tlb_needs_table_invalidate()	radix_enabled()
  
- config MMU
- 	bool
+-#define __HAVE_ARCH_TLB_REMOVE_TABLE
+ /* Get the generic bits... */
+ #include <asm-generic/tlb.h>
+ 
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index a630d373e6453..25fa2908d6152 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -74,6 +74,7 @@ config SPARC64
+ 	select HAVE_KRETPROBES
+ 	select HAVE_KPROBES
+ 	select MMU_GATHER_RCU_TABLE_FREE if SMP
++	select HAVE_ARCH_TLB_REMOVE_TABLE if SMP
+ 	select MMU_GATHER_MERGE_VMAS
+ 	select MMU_GATHER_NO_FLUSH_CACHE
+ 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+diff --git a/arch/sparc/include/asm/tlb_64.h b/arch/sparc/include/asm/tlb_64.h
+index 1a6e694418e39..3037187482db7 100644
+--- a/arch/sparc/include/asm/tlb_64.h
++++ b/arch/sparc/include/asm/tlb_64.h
+@@ -33,7 +33,6 @@ void flush_tlb_pending(void);
+ #define tlb_needs_table_invalidate()	(false)
+ #endif
+ 
+-#define __HAVE_ARCH_TLB_REMOVE_TABLE
+ #include <asm-generic/tlb.h>
+ 
+ #endif /* _SPARC64_TLB_H */
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index 4d679d2a206b4..3427b8036ba33 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -213,7 +213,7 @@ struct mmu_table_batch {
+ #define MAX_TABLE_BATCH		\
+ 	((PAGE_SIZE - sizeof(struct mmu_table_batch)) / sizeof(void *))
+ 
+-#ifndef __HAVE_ARCH_TLB_REMOVE_TABLE
++#ifndef CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE
+ static inline void __tlb_remove_table(void *table)
+ {
+ 	struct ptdesc *ptdesc = (struct ptdesc *)table;
+diff --git a/mm/Kconfig b/mm/Kconfig
+index a992f2203eb91..456e9eaedca39 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1451,6 +1451,9 @@ config ARCH_HAS_USER_SHADOW_STACK
+ 	  The architecture has hardware support for userspace shadow call
+           stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
+ 
++config HAVE_ARCH_TLB_REMOVE_TABLE
++	def_bool n
++
+ config ARCH_SUPPORTS_PT_RECLAIM
+ 	def_bool n
+ 
 -- 
 2.20.1
 
