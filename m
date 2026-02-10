@@ -1,47 +1,56 @@
-Return-Path: <linux-parisc+bounces-4558-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4559-lists+linux-parisc=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFlsL55Ji2l1TwAAu9opvQ
-	(envelope-from <linux-parisc+bounces-4558-lists+linux-parisc=lfdr.de@vger.kernel.org>)
-	for <lists+linux-parisc@lfdr.de>; Tue, 10 Feb 2026 16:07:10 +0100
+	id WMI4NKZKi2mWTwAAu9opvQ
+	(envelope-from <linux-parisc+bounces-4559-lists+linux-parisc=lfdr.de@vger.kernel.org>)
+	for <lists+linux-parisc@lfdr.de>; Tue, 10 Feb 2026 16:11:34 +0100
 X-Original-To: lists+linux-parisc@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C3411C408
-	for <lists+linux-parisc@lfdr.de>; Tue, 10 Feb 2026 16:07:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D1911C51D
+	for <lists+linux-parisc@lfdr.de>; Tue, 10 Feb 2026 16:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90B78302D979
-	for <lists+linux-parisc@lfdr.de>; Tue, 10 Feb 2026 15:07:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5326B3006208
+	for <lists+linux-parisc@lfdr.de>; Tue, 10 Feb 2026 15:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229673803FE;
-	Tue, 10 Feb 2026 15:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCC23815CE;
+	Tue, 10 Feb 2026 15:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="urq6vVA5"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D693367F25;
-	Tue, 10 Feb 2026 15:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E77366816;
+	Tue, 10 Feb 2026 15:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770736024; cv=none; b=axHj9ZxQSW6r6Ja5b9ogu+4oxI81IuouScC1Oq0IKaXSAqoZrv5IDHZg6UYJ9+fORyAuogle4OkGhD/QdHo9r47zzEo/EM2CSr/tW7xvj9IASYgPHCErBguw1Uk4PYBuhOWrcXlIPCTIbVQbC4tYi4FX8xiJ5CU7pRZRrjkK3+E=
+	t=1770736287; cv=none; b=F9VI4ZIoCqDT2XpknMCaHJsLv0Gej+8ezSLSJh3u1VckZmbOTF+eC92UmAMLSlgI1y9gh30O7WzyzFKTWO63USIONRxG6vAAMto9pyvhRVGjceqh0pDyeIt7sVo4zrsPmq6Cfv6GmoCpIK12rkdm0uPeuO0bHejGlIAIb+CIXL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770736024; c=relaxed/simple;
-	bh=W95p4VhCTCQaRY027oJYrb08jjxns6gg54ZGyTfK2N4=;
+	s=arc-20240116; t=1770736287; c=relaxed/simple;
+	bh=DrZA2lEnZtuNLdn/aPtjSDtEw66qk6VI5lqRaUZw6MU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VVwNsdWpQn/zeQ2ReheKH1fGE8/S8oaZRq75TADDmnzoD0GL/rvNnO1CaKzMDg2sN0pMhBpllYiG2PcJPEAh4EcS3kxdx9mbBgzsYr3uxD/4Fj7NA7tFoDqOs3ZWGTZ38DhZZJPdfDN42DCQaIrSWJk3u6otLUZOxrWa4cJZ3sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 83A22150C;
-	Tue, 10 Feb 2026 07:06:54 -0800 (PST)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B054A3F63F;
-	Tue, 10 Feb 2026 07:06:53 -0800 (PST)
-Date: Tue, 10 Feb 2026 15:06:51 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Mike Rapoport <rppt@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=D0cn7DgtPpvM9XxI1kMzn2KK8IfEtOUMygVTdaR14yPjbMJ7ioEccbHg349YGwLJOjz58j3ANaOfhiCpBGRua3qda3nbNBCEeCDFZcuJmpGRHpWjmp1hK0ufoeLKBYmKT9F4eqpoc6kXklq52TmR61fxp6J3yE5qz3hgqU1pTkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=urq6vVA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8C5C19421;
+	Tue, 10 Feb 2026 15:11:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770736287;
+	bh=DrZA2lEnZtuNLdn/aPtjSDtEw66qk6VI5lqRaUZw6MU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=urq6vVA5/zKz3Gz1KYHkENaWXWCJIrhCTsYUwnayOnesr9oKXBBLBNMjlu+XBMlsX
+	 uvq+Efs174+4yyISyJyhtDzzs/cN02rvp2iUIhXHkx/anXX8qt9ZAmETpPgSslZHmi
+	 dOfA+PMsiB9phlzplVn1h4BGTREeTKK/mGvc6yXqdxvQxzLhPLxFwqFd5ksvBLgBcA
+	 bXe2QTazQVXJjMFOS7sSTsI47jqhux9/INIvbsc/ERm/5Uzn5QYdEvPtT9gAmiWW1c
+	 l9kJ02GWTagzlQ4QKwDTfsaZp4dl08KF0CAozjxLRxRQf1YPFG1TFMTQoA3lk8WvtB
+	 TCA+9Vof32JbQ==
+Date: Tue, 10 Feb 2026 17:11:08 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Andreas Larsson <andreas@gaisler.com>,
 	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
@@ -53,7 +62,6 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Johannes Berg <johannes@sipsolutions.net>,
 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Magnus Lindholm <linmag7@gmail.com>,
 	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
@@ -75,11 +83,11 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
 	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
 	linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH v2 4/4] mm: cache struct page for empty_zero_page and
- return it from ZERO_PAGE()
-Message-ID: <aYtJi4uNcpoCTK_x@arm.com>
+Subject: Re: [PATCH v2 2/4] mm: rename my_zero_pfn() to zero_pfn()
+Message-ID: <aYtKjEYYiVDRi7vF@kernel.org>
 References: <20260209144058.2092871-1-rppt@kernel.org>
- <20260209144058.2092871-5-rppt@kernel.org>
+ <20260209144058.2092871-3-rppt@kernel.org>
+ <b932ac24-2465-4176-a5fa-d9b904600a15@lucifer.local>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -88,59 +96,51 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260209144058.2092871-5-rppt@kernel.org>
+In-Reply-To: <b932ac24-2465-4176-a5fa-d9b904600a15@lucifer.local>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,gaisler.com,alien8.de,kernel.org,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
+	FREEMAIL_CC(0.00)[linux-foundation.org,gaisler.com,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
+	TAGGED_FROM(0.00)[bounces-4559-lists,linux-parisc=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-4558-lists,linux-parisc=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[52];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,linux-parisc@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[linux-parisc];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,linux-parisc@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[52];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:mid,arm.com:email]
-X-Rspamd-Queue-Id: 81C3411C408
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E3D1911C51D
 X-Rspamd-Action: no action
 
-On Mon, Feb 09, 2026 at 04:40:57PM +0200, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Tue, Feb 10, 2026 at 02:52:56PM +0000, Lorenzo Stoakes wrote:
+> On Mon, Feb 09, 2026 at 04:40:55PM +0200, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> >
+> > my_zero_pfn() is a silly name.
 > 
-> For most architectures every invocation of ZERO_PAGE() does
-> virt_to_page(empty_zero_page). But empty_zero_page is in BSS and it is
-> enough to get its struct page once at initialization time and then use
-> it whenever a zero page should be accessed.
-> 
-> Add yet another __zero_page variable that will be initialized as
-> virt_to_page(empty_zero_page) for most architectures in a weak
-> arch_setup_zero_pages() function.
-> 
-> For architectures that use colored zero pages (MIPS and s390) rename their
-> setup_zero_pages() to arch_setup_zero_pages() and make it global rather
-> than static.
-> 
-> For architectures that cannot use virt_to_page() for BSS (arm64 and
-> sparc64) add override of arch_setup_zero_pages().
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Is it too late to ask for it to be renamed to lorenzos_zero_pfn()? I've long
+> felt it was mine, due to the previous naming, and I feel like maybe it's time to
+> make it official... ;)
 
-For arm64:
+It's not too late, but the pfn will go to the highest bidder ;-P
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+-- 
+Sincerely yours,
+Mike.
 
