@@ -1,197 +1,183 @@
-Return-Path: <linux-parisc+bounces-4594-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4595-lists+linux-parisc=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QOUfH/5+nGm6IQQAu9opvQ
-	(envelope-from <linux-parisc+bounces-4594-lists+linux-parisc=lfdr.de@vger.kernel.org>)
-	for <lists+linux-parisc@lfdr.de>; Mon, 23 Feb 2026 17:23:26 +0100
+	id OPHlLJ2pnGklJwQAu9opvQ
+	(envelope-from <linux-parisc+bounces-4595-lists+linux-parisc=lfdr.de@vger.kernel.org>)
+	for <lists+linux-parisc@lfdr.de>; Mon, 23 Feb 2026 20:25:17 +0100
 X-Original-To: lists+linux-parisc@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E952179A8E
-	for <lists+linux-parisc@lfdr.de>; Mon, 23 Feb 2026 17:23:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B71017C55F
+	for <lists+linux-parisc@lfdr.de>; Mon, 23 Feb 2026 20:25:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDD4B301A907
-	for <lists+linux-parisc@lfdr.de>; Mon, 23 Feb 2026 16:20:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FFEC31EF8CD
+	for <lists+linux-parisc@lfdr.de>; Mon, 23 Feb 2026 19:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F7130AD10;
-	Mon, 23 Feb 2026 16:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C508D36E476;
+	Mon, 23 Feb 2026 19:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PvSQrdeo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7lb9mvt"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF312EDD62;
-	Mon, 23 Feb 2026 16:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D76836E469;
+	Mon, 23 Feb 2026 19:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771863626; cv=none; b=uMQ7SdPKPKum6shO57fWN5xauaI4RX/zfKzV1v78BE6D10IFfjixDlBFwXTATnGVgxNgkxazERECBq1FaG3mVhWY3h03Wj5vv7hpy57LCfTE0vMCg3aK6Zk7J/10Zf6mjsBX8Edw+DRgX+8cen5QsTxdUGG/cfW53W+dGUIy5PQ=
+	t=1771873857; cv=none; b=K79FsP6ZQKOKLSnEtTpYxumStHdvMWaNtxvFr5xNpXJlzzS62J5eUs99oZcqzku72RPZGvfyAK6lLDtQV17Vq/6LEvK1yt/BhWqh6ahZExAmqWO5BPPrp418Amz6nqDI6CxwvvkMvf9V69kV0LQwcAtk/2qTtXCZQhInnhRbB5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771863626; c=relaxed/simple;
-	bh=r8mDeUpeW8tBUm82rtc4kcjK4ONsKrxt6c1CNArIpvE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KSnkJqg5K59SBQ+/u//Zzfj38TEA4A5+MnoKKijqFds2v8spHDhrlOYa9wwXmGwmw8uX5U9KrdetoO4fTNA3KYqJICv2aRDgjQKQhLhg7bdGTqaxEpJs65W9VPYiv5PFfU07begBfI8qWb/pAHzOIZbGiT2qcGoX/NqAqfkX/ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PvSQrdeo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491D5C19421;
-	Mon, 23 Feb 2026 16:20:15 +0000 (UTC)
+	s=arc-20240116; t=1771873857; c=relaxed/simple;
+	bh=lEKimZnEjne2BNdsm8RfAwEFAB1/q1VUQbalmtODD1Q=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hItMJ4WkOwdN+wKqoPgyhAw37f14lR+eRGgFkn3SLqL1QB1FZ07SNkB+ZHiCZbTLKga4hXKEKjc01884NMZNdvf6kD5QQYgpIlWYWD1xV0MsTd1UnJpASOEeQwWOhhkMzdDw1MJDS43J/MaFwP172UjiJRvsqgcB2WgRhXvnfkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7lb9mvt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55F7C2BCAF;
+	Mon, 23 Feb 2026 19:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771863626;
-	bh=r8mDeUpeW8tBUm82rtc4kcjK4ONsKrxt6c1CNArIpvE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PvSQrdeocpoNN0p9MaK3sggyEhP6bDqgKlYc4yggH5rAQfcrJSEuKTtELQhVIOkjx
-	 27RQ0W9Om2jLvItanmN74NXkqDRCxLkjXjaCXz5bEKdFVStFxL1rlOWFSZbj8akEiQ
-	 RTIy9lvApB5TO1WlSYuX4YYlQUEqNRrOHfiiFgYlCTl+BgTe7OSrlqkia9urvm4gfH
-	 wEnzHCtCVlI5CNU0NW15/hd1zgUBBwRbdtJjTdH3whUnlSskR3W3fdLulPBddBqTd9
-	 p/zoAG/hQZwKDfywAO//6WYOrm1PgrTL/1tu0We8q3IF+9vQhWyrE7DidGdwP4gezC
-	 Z3Nfs3HSc7qbw==
-Message-ID: <4bbe1b83-da01-4226-9a86-1bf6194c22e4@kernel.org>
-Date: Mon, 23 Feb 2026 17:20:13 +0100
+	s=k20201202; t=1771873857;
+	bh=lEKimZnEjne2BNdsm8RfAwEFAB1/q1VUQbalmtODD1Q=;
+	h=From:Subject:Date:To:Cc:From;
+	b=W7lb9mvt8Ss7DIDpVVbHvo8HG9uV2RHrY5VNGVfhxu/bODlNHPOMU8AHU7cyge+Yt
+	 iRloWl9TfRuTMAM2B+UtspS3O6ZXW8kKmkvGes8uLVlEMNdiU2xt3fqmoiVtIi1Cod
+	 SarcI/AdLtw17TCwEFJVDqDlJoLVMkEcAdtk4srZiwFRO4xHP50LbwxcaP0hEea+z4
+	 RQpOuIRuHl6d6iyM1gY+9wf/r1WTKKzhKqKQITVCr+YsLeL7dTY8wNVJ/jbAXYxUvW
+	 G8FCGINS88O6kG4fIPtGvpELH4y3kmpwj/vyFTEAcpNbcJGdv8VyHGqk/ExuZxYFDL
+	 2gl/lR3828f7g==
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 0/2] kbuild: Switch from '-fms-extensions' to
+ '-fms-anonymous-structs' when available
+Date: Mon, 23 Feb 2026 12:10:27 -0700
+Message-Id: <20260223-fms-anonymous-structs-v1-0-8ee406d3c36c@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm: cache struct page for empty_zero_page and
- return it from ZERO_PAGE()
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
- Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Dave Hansen <dave.hansen@linux.intel.com>, Dinh Nguyen
- <dinguyen@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
- Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
- Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org
-References: <20260209144058.2092871-1-rppt@kernel.org>
- <20260209144058.2092871-5-rppt@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260209144058.2092871-5-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQqDMBBA0avIrDtgIwbxKqWLGCc6gknJJNIi3
+ t1Ul2/x/w5CkUmgr3aItLFw8AXPRwV2Nn4i5LEYVK10rVSDbhU0PvjfGrKgpJhtEnTajKRtN7R
+ GQ2k/kRx/r+/rfVvysJBN/xkcxwnoIdTAeQAAAA==
+X-Change-ID: 20260223-fms-anonymous-structs-f6ade6c8b5a6
+To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, 
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ Kees Cook <kees@kernel.org>, linux-kbuild@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ loongarch@lists.linux.dev, linux-parisc@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+ linux-efi@vger.kernel.org, llvm@lists.linux.dev
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2594; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=lEKimZnEjne2BNdsm8RfAwEFAB1/q1VUQbalmtODD1Q=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDJlzllkKpdb9/H8vK1IjjHf1par1+w9qXs5/w91Rs6jo7
+ o0KpXUhHaUsDGJcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAiR+IYGR7dj3Mv9tp9XOzY
+ T6tjbKzOTUe/79vdcuXP9qw297/fahUZ/qec2K/kXJAvNPuxK8fqb9Jb/zLOkuXmujS3dH7QXL9
+ tnWwA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gaisler.com,alien8.de,kernel.org,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,oracle.com,linux.ibm.com,gmail.com,ellerman.id.au,suse.com,monstr.eu,dabbelt.com,nod.at,armlinux.org.uk,google.com,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.linux-m68k.org,lists.ozlabs.org,kvack.org];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-4594-lists,linux-parisc=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-4595-lists,linux-parisc=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,arm.com,kernel.org,xen0n.name,HansenPartnership.com,gmx.de,linux.ibm.com,ellerman.id.au,gmail.com,redhat.com,alien8.de,linux.intel.com,zytor.com,linaro.org,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[39];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[52];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,linux-parisc@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[linux-parisc];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,linux-parisc@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-parisc,lkml];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1E952179A8E
+X-Rspamd-Queue-Id: 3B71017C55F
 X-Rspamd-Action: no action
 
-On 2/9/26 15:40, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> For most architectures every invocation of ZERO_PAGE() does
-> virt_to_page(empty_zero_page). But empty_zero_page is in BSS and it is
-> enough to get its struct page once at initialization time and then use
-> it whenever a zero page should be accessed.
-> 
-> Add yet another __zero_page variable that will be initialized as
-> virt_to_page(empty_zero_page) for most architectures in a weak
-> arch_setup_zero_pages() function.
-> 
-> For architectures that use colored zero pages (MIPS and s390) rename their
-> setup_zero_pages() to arch_setup_zero_pages() and make it global rather
-> than static.
-> 
-> For architectures that cannot use virt_to_page() for BSS (arm64 and
-> sparc64) add override of arch_setup_zero_pages().
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Hi all,
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+The kernel enabled '-fms-extensions' in commit c4781dc3d1cf ("Kbuild:
+enable -fms-extensions") in 6.19 to gain access to a Microsoft
+(originally Plan 9) extension around including a tagged structure/union
+anonymously in an other structure/union. Since then, Clang 23.0.0
+(current main) has added a flag to enable only that extension, rather
+than all Microsoft extensions, '-fms-anonymous-structs' [1]. Using this
+narrower compiler option would have avoided the build error fixed by
+commit a6773e6932cb ("jfs: Rename _inline to avoid conflict with clang's
+'-fms-extensions'"). While these errors are not expected to be common,
+using the narrower option when available has no drawbacks because the
+kernel only cares about this extension in '-fms-extensions', no others.
+While this could result in build errors for folks using
+'-fms-anonymous-structs' if a developer uses another extension in
+'-fms-extensions' (either intentionally or unintentionally), flagging
+these uses for further scrutiny seems worthwhile.
 
--- 
-Cheers,
+This series converts the build system to use that flag when it is
+available. The first patch consolidates all of the C dialect flags into
+a single variable to make future updates to the dialect flags less
+painful, as updating the logic in every place that uses their custom
+built C flags is getting cumbersome (and C23 is looming). The second
+patch makes the actual switch.
 
-David
+I would like Nicolas to carry this in the Kbuild tree for 7.1, please
+provide Acks as necessary.
+
+[1]: https://github.com/llvm/llvm-project/commit/c391efe6fb67329d8e2fd231692cc6b0ea902956
+
+---
+Nathan Chancellor (2):
+      kbuild: Consolidate C dialect options
+      kbuild: Use '-fms-anonymous-structs' if it is available
+
+ Makefile                              | 16 ++++++++++++----
+ arch/arm64/kernel/vdso32/Makefile     |  3 +--
+ arch/loongarch/vdso/Makefile          |  2 +-
+ arch/parisc/boot/compressed/Makefile  |  2 +-
+ arch/powerpc/boot/Makefile            |  3 +--
+ arch/s390/Makefile                    |  3 +--
+ arch/s390/purgatory/Makefile          |  3 +--
+ arch/x86/Makefile                     |  6 +-----
+ arch/x86/boot/compressed/Makefile     |  6 +-----
+ drivers/firmware/efi/libstub/Makefile |  3 +--
+ init/Kconfig                          |  5 +++++
+ scripts/Makefile.warn                 |  5 -----
+ 12 files changed, 26 insertions(+), 31 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260223-fms-anonymous-structs-f6ade6c8b5a6
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
+
 
