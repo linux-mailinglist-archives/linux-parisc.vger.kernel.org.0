@@ -1,52 +1,52 @@
-Return-Path: <linux-parisc+bounces-4603-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4604-lists+linux-parisc=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMgGLLXcnGl/LwQAu9opvQ
-	(envelope-from <linux-parisc+bounces-4603-lists+linux-parisc=lfdr.de@vger.kernel.org>)
-	for <lists+linux-parisc@lfdr.de>; Tue, 24 Feb 2026 00:03:17 +0100
+	id yK8oI1AQnmlBTQQAu9opvQ
+	(envelope-from <linux-parisc+bounces-4604-lists+linux-parisc=lfdr.de@vger.kernel.org>)
+	for <lists+linux-parisc@lfdr.de>; Tue, 24 Feb 2026 21:55:44 +0100
 X-Original-To: lists+linux-parisc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3854B17EB6E
-	for <lists+linux-parisc@lfdr.de>; Tue, 24 Feb 2026 00:03:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B1E18C873
+	for <lists+linux-parisc@lfdr.de>; Tue, 24 Feb 2026 21:55:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB1DA3047E67
-	for <lists+linux-parisc@lfdr.de>; Mon, 23 Feb 2026 23:02:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 945AD300576B
+	for <lists+linux-parisc@lfdr.de>; Tue, 24 Feb 2026 20:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0CE37C117;
-	Mon, 23 Feb 2026 23:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F182B33B6EB;
+	Tue, 24 Feb 2026 20:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+fu9p4B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5QdJEhD"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B7A34CFC4;
-	Mon, 23 Feb 2026 23:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3F72F617C;
+	Tue, 24 Feb 2026 20:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771887753; cv=none; b=NpYZan65GizD0C+pNKFrtOaD2xYW6Cs65/bJWVTuzChpiWdjYTqwweBbfXwVljibNt+2AH5FeU7O5WwEBwfN9t/qzH2pmOFR2TtAHKgy0R4GRiTXqtd3bFmZe2BayOhBy8oyIHBd1uXj/XXveagP+tCGhYQ8Yn26yyCmaRSPD3k=
+	t=1771966538; cv=none; b=sWjiiqGDKeGN32QPSiu1DM0sdCU6tk/mnREEK29J4Y7HC9MTFrJWy/6J3vGor/2H5B8zmfclU+kY1DlUGmwlt2QMxNDk2IHm8Jm4uDwrJE+SJXhTc1X70m97RxCXFN2JdJyVW80fJUth5jfBbBNSx+LDkA7j8T6YfoPu7v28BpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771887753; c=relaxed/simple;
-	bh=nT0awucs3thOhxybhtypZ+eYhg7lv1UzxhZoWxrV7JE=;
+	s=arc-20240116; t=1771966538; c=relaxed/simple;
+	bh=SQcVebSSVbAr9KoKj2KkC4SNEiz7WbMDmKWz7KrYMDc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sqphRfl4aNtD6t5VL2lspO1UMpjWrQoZl+HFe+TP3BCHroxfst+Y4zz+WbhojUnqCVcDE9rFsOwC/4UkFfJI3Ft/jec6FPHjECgAtviATzJin3l1Gw98PqFkbXQIRQWEU90AwUjZ9KxxjuT8Paj6JAicxZkfCEO5h0J2h5Kwkcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+fu9p4B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48409C116C6;
-	Mon, 23 Feb 2026 23:02:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=WQg5ek8+3pLkSC6xNSAFZ3Cr63IIgSJK3nUIpBV1qtoU7V11KIkVVQt8iJc52TkJx+JoKhYxJnCYnXXnMdA1MTCBR8ZCrSuRprwlzEy0n7keHPKcWhgRe39arSbDlXq2cxDIG1R2ONtBGI/7RAVMKTj58HgbBywudeYhuVjfX3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5QdJEhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21D3C116D0;
+	Tue, 24 Feb 2026 20:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771887753;
-	bh=nT0awucs3thOhxybhtypZ+eYhg7lv1UzxhZoWxrV7JE=;
+	s=k20201202; t=1771966538;
+	bh=SQcVebSSVbAr9KoKj2KkC4SNEiz7WbMDmKWz7KrYMDc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V+fu9p4BCluguUa+f3d7BCn1pI2i9AqAEMBzkLqH4bddGKT5WSOohV6ymAwB0/TBL
-	 lXNzrl+hmSZblzdOixCvwDFcjW9iJo5ImvPlqCzkT22dc1XMIZWAMVzlyyqxTDXaZ5
-	 4A5XwGEGtPXUctEhtggMXSRCQOq7U1cR9rpjbXPVnxUBOrPDtTlXe7A3JD/7+OhTOF
-	 pTf4SXBjLVNbVuMyClIxv9c3QaOT9qAcBGv/vWbbNANtpasn+pQ210tXeKbMh0saY3
-	 VU3OBF9raOPDCjnuuQKM50HH+X66NKDZ7QZi6Z7SFHAdAZXCsNZW64QbGHR00fFjZH
-	 58/1MtBytYDmg==
-Date: Mon, 23 Feb 2026 15:02:32 -0800
-From: Kees Cook <kees@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
+	b=C5QdJEhDu3F3RiE7rGx/Dj0PuDa8L2iA78NrEvl5azZwBu4Ri8KTCOsR7pMfcmtU3
+	 je0zFaQMDs14Xk47ydamr6d7K/C2mLgReCJU0eQ5t1msb9+Cr7JogPuBHz98HpmyQ7
+	 FL/1gMMXhg+L00T+Kh2KO3QlEyL82mSedV36eljnS06LPHa0h3WmsQVmUdeXN3DiC9
+	 cEZqkUgOnFmktJdADtpZXWkrLh5++ZoIg7vfN/CCzxHt5NfLUeQ6OdSa50D7n4i6eP
+	 XnEv8Hyqpy7KHExKA4q8UQSULNu6IIGyin0jFfMRoKZyLBFOB48silsMM4b6g71d0s
+	 /Yrc0O/Gx/2jA==
+Date: Tue, 24 Feb 2026 13:55:29 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Kees Cook <kees@kernel.org>
 Cc: Nicolas Schier <nsc@kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
@@ -77,11 +77,12 @@ Cc: Nicolas Schier <nsc@kernel.org>,
 	linux-efi@vger.kernel.org, llvm@lists.linux.dev
 Subject: Re: [PATCH 2/2] kbuild: Use '-fms-anonymous-structs' if it is
  available
-Message-ID: <202602231459.2A1DD53E0@keescook>
+Message-ID: <20260224205529.GB3510750@ax162>
 References: <20260223-fms-anonymous-structs-v1-0-8ee406d3c36c@kernel.org>
  <20260223-fms-anonymous-structs-v1-2-8ee406d3c36c@kernel.org>
  <202602231432.20F3F0CF@keescook>
  <20260223225311.GA2462602@ax162>
+ <202602231459.2A1DD53E0@keescook>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
@@ -90,7 +91,7 @@ List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260223225311.GA2462602@ax162>
+In-Reply-To: <202602231459.2A1DD53E0@keescook>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
@@ -98,11 +99,11 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-4603-lists,linux-parisc=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-4604-lists,linux-parisc=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -112,42 +113,46 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,arm.com,xen0n.name,hansenpartnership.com,gmx.de,linux.ibm.com,ellerman.id.au,gmail.com,redhat.com,alien8.de,linux.intel.com,zytor.com,linaro.org,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev,lists.ozlabs.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kees@kernel.org,linux-parisc@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,linux-parisc@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-parisc,lkml];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3854B17EB6E
+X-Rspamd-Queue-Id: E6B1E18C873
 X-Rspamd-Action: no action
 
-On Mon, Feb 23, 2026 at 03:53:11PM -0700, Nathan Chancellor wrote:
-> On Mon, Feb 23, 2026 at 02:33:35PM -0800, Kees Cook wrote:
-> > Series looks good to me. One style question, why go the round-trip with
-> > Kconfig instead of doing it all with a fallback in the Makefile:
+On Mon, Feb 23, 2026 at 03:02:32PM -0800, Kees Cook wrote:
+> On Mon, Feb 23, 2026 at 03:53:11PM -0700, Nathan Chancellor wrote:
+> > On Mon, Feb 23, 2026 at 02:33:35PM -0800, Kees Cook wrote:
+> > > Series looks good to me. One style question, why go the round-trip with
+> > > Kconfig instead of doing it all with a fallback in the Makefile:
+> > > 
+> > > CC_FLAGS_DIALECT += $(call cc-option,-fms-anonymous-structs,-fms-extensions)
 > > 
-> > CC_FLAGS_DIALECT += $(call cc-option,-fms-anonymous-structs,-fms-extensions)
+> > I might be misunderstanding how Kbuild works but
+> > arch/$(SRCARCH)/Makefile may have logic for selecting CROSS_COMPILE,
+> > which can impact the selection of $(CC), so I cannot use cc-option prior
+> > to its inclusion but I need CC_FLAGS_DIALECT to be included before
+> > arch/$(SRCARCH)/Makefile in the main build so that they can be used
+> > within it, which is only possible after Kconfig has run. This is
+> > probably worth more flushing out in the code or a comment since it is
+> > subtle.
 > 
-> I might be misunderstanding how Kbuild works but
-> arch/$(SRCARCH)/Makefile may have logic for selecting CROSS_COMPILE,
-> which can impact the selection of $(CC), so I cannot use cc-option prior
-> to its inclusion but I need CC_FLAGS_DIALECT to be included before
-> arch/$(SRCARCH)/Makefile in the main build so that they can be used
-> within it, which is only possible after Kconfig has run. This is
-> probably worth more flushing out in the code or a comment since it is
-> subtle.
+> Will Kconfig see a different CC than Makefile? Regardless, I trust your
 
-Will Kconfig see a different CC than Makefile? Regardless, I trust your
-judgement here! I actually rather prefer having it exposed via Kconfig.
-:)
+It shouldn't, as arch/$(SRCARCH)/Makefile is included before invoking
+Kconfig; if the compiler changes, Kconfig will run again before
+building.
 
-Reviewed-by: Kees Cook <kees@kernel.org>
+> judgement here! I actually rather prefer having it exposed via Kconfig.
+> :)
+> 
+> Reviewed-by: Kees Cook <kees@kernel.org>
 
--Kees
-
--- 
-Kees Cook
+Thanks!
+Nathan
 
