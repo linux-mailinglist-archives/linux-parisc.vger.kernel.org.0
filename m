@@ -1,273 +1,236 @@
-Return-Path: <linux-parisc+bounces-4607-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4608-lists+linux-parisc=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJKOEGs0n2lXZQQAu9opvQ
-	(envelope-from <linux-parisc+bounces-4607-lists+linux-parisc=lfdr.de@vger.kernel.org>)
-	for <lists+linux-parisc@lfdr.de>; Wed, 25 Feb 2026 18:42:03 +0100
+	id OCtrMe47n2kiZgQAu9opvQ
+	(envelope-from <linux-parisc+bounces-4608-lists+linux-parisc=lfdr.de@vger.kernel.org>)
+	for <lists+linux-parisc@lfdr.de>; Wed, 25 Feb 2026 19:14:06 +0100
 X-Original-To: lists+linux-parisc@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A6C19BB20
-	for <lists+linux-parisc@lfdr.de>; Wed, 25 Feb 2026 18:42:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3423819C17A
+	for <lists+linux-parisc@lfdr.de>; Wed, 25 Feb 2026 19:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 19651300BB89
-	for <lists+linux-parisc@lfdr.de>; Wed, 25 Feb 2026 17:42:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21E983004C58
+	for <lists+linux-parisc@lfdr.de>; Wed, 25 Feb 2026 18:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581AF3ECBE8;
-	Wed, 25 Feb 2026 17:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E5B2EBB8C;
+	Wed, 25 Feb 2026 18:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CaQIE8Rb"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="U3Y20bWI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WdNjKPeC";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="U3Y20bWI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="WdNjKPeC"
 X-Original-To: linux-parisc@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7DF3D1CBB
-	for <linux-parisc@vger.kernel.org>; Wed, 25 Feb 2026 17:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB122EAD15
+	for <linux-parisc@vger.kernel.org>; Wed, 25 Feb 2026 18:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772041320; cv=none; b=dqUdeV9XnH1RyQ20Fkkf7Pc+X+xwhSEUVGWi3O8bwEdj1xAIhwuIJCc9FrR7gg4a7YieVUpHWrimsIQYcnFm2xbEBB/x3F0jhvP9oIIZyooDCDZpXDPEQ6I7Tms/qdeUkt8HWy8QRYNjvnbZCh2GuAQ4QplcToCeovhtvp577O4=
+	t=1772043206; cv=none; b=qXexd34XgSy358hWTy9U/7DYYOvalalGalgWDwQ4K2eQJcBrokYVwAt9r51obnWNujmDnfzTMIBikv+MaXR5QrmvCB470zG706jEq/pAHcuJU9/hsd9x4u9Bd0nnBqRcVZAELCa7iKV5tYT4MjTi9GD0oQoEfI2n95ifiZnVF/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772041320; c=relaxed/simple;
-	bh=jOatpcXoBL6KLZUfPVa5YPNNuKV2Y/R+E7YOi+QvXiQ=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=nMkRYHJjXLKubj4kXH7qbyLiCfKZicQ6oe1L2i6kEKLKZtbxQ8/AFB/N2nOfegzH7UJDL9FZeCSR9XZYRhbNW8ovhWk1zL4qNOfSVCbcb+WFVu4ktIKxUv6Jdg/7e/ky/phDZqj5FHwYTq76d1b3C/q5efx2vM2qq1Kct2Pdc8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CaQIE8Rb; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-824a829f9bbso30061b3a.0
-        for <linux-parisc@vger.kernel.org>; Wed, 25 Feb 2026 09:41:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772041318; x=1772646118; darn=vger.kernel.org;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aMnEPXSeAknTUn6pBGQAEqhzdOlacieP4zL+mwxArg0=;
-        b=CaQIE8RbUyOkoSmCFKRJbZFjSrsqh7x5RlwDFyyFM18qmlqolP18GUAVZ+nv7t1Sqh
-         vvWPA6H0Mf3pi4ZiJ7bNTkD4+Eurf4Zic+DGsXTM4pDTnd+Tsyo0aYU218udYhfFIKyU
-         y90NmHECCwix96rOl+KiN/9KZ7fbxIenwLU0a9VlWNYJnt9GtMZi2hv+JSZSmHNsCfR8
-         45o3xwEnksJFn5XKsblVX/wJP9HObSM0yTg5ZE1OQ2UQTUOI0AsZAaqxUAqV7n+0f1v1
-         tte6sRIph189lX7Fazv2FXMqbFTl0s5jH8a63L8aZcclp3Uv4Uf3tKmjvZz8WyPkQGvt
-         f08w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772041318; x=1772646118;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aMnEPXSeAknTUn6pBGQAEqhzdOlacieP4zL+mwxArg0=;
-        b=THOpU1pHs9W0ygJDcqK2t1rcka848Cp0MnEwmZf65Jao1KQizMx4j/oVBTMKcXacwu
-         apHqfp++D0oFpftAyFJbQk0yTUpDkOqS/QNKm4/srdHXEfcg4oar1RRfJWt8hq0zOiXO
-         zw24o30OkW8r8QHDk+PScNUc1EcBi02sL5HuNfeTDYJ+rmTnpLLCBoMscxW4GE4Jdn1c
-         7AmCBe8jGBn5OqhvfiFiXsITxfD2kDDm46wAUJFbSZY2u2/TD1UpuAeKZhYGXSqe+24p
-         U+pZUsRHRhH6c7iMk7zA8dPFX0bIyFYKIegzYA2QOzkLgE+lUcoMka/ZVUCqv1ekNb2j
-         YVew==
-X-Forwarded-Encrypted: i=1; AJvYcCXUIdLHJCvpbqGm3QB/b948tNf0JnSRVsmgRpmirFBY4pw97gHvKckzxFGe3+5Sf1AAKrn+LijTqin9ijk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqucSpaycpiGsYMZjLFrjoADOYaU1WLkEIsmGZdX6u8bRibsgw
-	iz34M8BCLVSHCQm/kB/7CQsLohKAx4DiQVRBHOH1ePWTiF1w9X3BpI8B
-X-Gm-Gg: ATEYQzypY30rqlElk0ZYL12dNm1Lh9BNXId3LWJl3kdl7K52+ZcKOS2ex5v65mevj56
-	RMM7poS7pIfk/5QWa1r5v6J29zWkfCFureBOyc7NaTswiAzROGaSTKLfIgQQh1kDa2Ia8A7IJVP
-	t5BBxXq2VlDNmaF7n3S0tcelyVqfDdJ08Erdh0Uh25q5WXg8ftAFuR6O8sVKqkeYjenjcC4YeqW
-	xyOOIBwyujQ2H4u+aGR8mdRzk3Rb4rvLeiogJygIS6EU0sC/A2I8tSyF/Krjr6wNJk+/Z79gVgp
-	if/+OPzecoWJN0M8Hq5H//p3u9V3gb8RmlYNrbI5gNcJoSA7MtmowhGCaB0DsvX9Bihbby7lqKu
-	KbBdUiENUvn7NmAUeuQXGn61/G/rl/fi/3zPIwkzSHHeOKYmeTXjX06zaf8sxuxDw3EutKq6cCF
-	dHzl5Z9tt6TZdZ+vi1Rg==
-X-Received: by 2002:a05:6a21:3290:b0:38d:edd4:2fbe with SMTP id adf61e73a8af0-39545ed058emr15020115637.31.1772041317482;
-        Wed, 25 Feb 2026 09:41:57 -0800 (PST)
-Received: from dw-tp ([203.81.243.177])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd8fdb81sm14825760b3a.64.2026.02.25.09.41.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 09:41:56 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alex Shi <alexs@kernel.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, 
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	"David S. Miller" <davem@davemloft.net>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Jonathan Corbet <corbet@lwn.net>, 
-	Klara Modin <klarasmodin@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Magnus Lindholm <linmag7@gmail.com>, 
-	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, 
-	Stafford Horne <shorne@gmail.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Will Deacon <will@kernel.org>, x86@kernel.org, linux-alpha@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
-	linux-cxl@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-mm@kvack.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
-	sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 24/29] arch, mm: consolidate initialization of SPARSE memory model
-In-Reply-To: <aZ8idANginXzhf0_@kernel.org>
-Date: Wed, 25 Feb 2026 23:08:38 +0530
-Message-ID: <87seaohgf5.ritesh.list@gmail.com>
-References: <20260111082105.290734-1-rppt@kernel.org> <20260111082105.290734-25-rppt@kernel.org> <87tsv5h544.ritesh.list@gmail.com> <aZ8idANginXzhf0_@kernel.org>
+	s=arc-20240116; t=1772043206; c=relaxed/simple;
+	bh=8gwsOKvZCZr4AnLJiHOdDxfp2Mk1ISF2ATfebWluiKw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gE+0EJgM2WBAGx0pGxMVFdc5ZFfBQ954Cvd86RFZxGclOII7p2dmIJs7ueS+9IRXLxlbrkWkjLixMrSh0cwLDkdN3Kk90p3V0Mvl4xLw6rWaZf/xyI2P1ZTqLvermvhWYW5y3OSB830Idtpd+KX8ITn+VDEoZt+wiHUvef4e8C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=U3Y20bWI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WdNjKPeC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=U3Y20bWI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=WdNjKPeC; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B3D3A5C045;
+	Wed, 25 Feb 2026 18:13:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772043203; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Jr1Q5Rt21I0E0/1ANKqGzthnx1BQydBzGuDuzYU4A4=;
+	b=U3Y20bWIrgJx3Iur0fuiZHHX8sPjfMQpIeNMCec6JsHPgrKwnkCRxGR9A9JPgIlSBHCCiO
+	tVKVkA5T8riMnxhxGaWhVUOAXGj9MXpMJEo4mfO7oJK1f7FPQ8KM5S+isLOV3FQNGWEQuF
+	YHbrEYawQNpFvBAgFq2QZdn9scIH2No=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772043203;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Jr1Q5Rt21I0E0/1ANKqGzthnx1BQydBzGuDuzYU4A4=;
+	b=WdNjKPeCpp/tbrW4oQj/1VAH2iY8uDqCIJyEhv/mD7z7LRr2Ih2Q8ALq+iV7IH7XGbulUH
+	D+KyarO/mdAof9Dw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=U3Y20bWI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=WdNjKPeC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1772043203; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Jr1Q5Rt21I0E0/1ANKqGzthnx1BQydBzGuDuzYU4A4=;
+	b=U3Y20bWIrgJx3Iur0fuiZHHX8sPjfMQpIeNMCec6JsHPgrKwnkCRxGR9A9JPgIlSBHCCiO
+	tVKVkA5T8riMnxhxGaWhVUOAXGj9MXpMJEo4mfO7oJK1f7FPQ8KM5S+isLOV3FQNGWEQuF
+	YHbrEYawQNpFvBAgFq2QZdn9scIH2No=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1772043203;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Jr1Q5Rt21I0E0/1ANKqGzthnx1BQydBzGuDuzYU4A4=;
+	b=WdNjKPeCpp/tbrW4oQj/1VAH2iY8uDqCIJyEhv/mD7z7LRr2Ih2Q8ALq+iV7IH7XGbulUH
+	D+KyarO/mdAof9Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8FECB3EA65;
+	Wed, 25 Feb 2026 18:13:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 8EEbI8M7n2maQwAAD6G6ig
+	(envelope-from <jwiesner@suse.de>); Wed, 25 Feb 2026 18:13:23 +0000
+Received: by incl.suse.cz (Postfix, from userid 1000)
+	id 06AF6FA967; Wed, 25 Feb 2026 19:13:23 +0100 (CET)
+Date: Wed, 25 Feb 2026 19:13:22 +0100
+From: Jiri Wiesner <jwiesner@suse.de>
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	John Stultz <jstultz@google.com>, Waiman Long <longman@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, x86@kernel.org,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Daniel J Blueman <daniel@quora.org>,
+	Scott Hamilton <scott.hamilton@eviden.com>,
+	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org
+Subject: Re: [patch 5/5] clocksource: Rewrite watchdog code completely
+Message-ID: <aZ87wpdHJ5vajYoL@incl>
+References: <20260123230651.688818373@kernel.org>
+ <20260123231521.926490888@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260123231521.926490888@kernel.org>
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
+X-Spam-Level: 
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-4608-lists,linux-parisc=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,google.com,redhat.com,infradead.org,linaro.org,amd.com,quora.org,eviden.com,gmx.de,alpha.franken.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-4607-lists,linux-parisc=lfdr.de];
-	FREEMAIL_CC(0.00)[linux-foundation.org,kernel.org,linux.ibm.com,gaisler.com,alien8.de,arm.com,davemloft.net,linux.intel.com,linux-m68k.org,gmx.de,redhat.com,sipsolutions.net,physik.fu-berlin.de,lwn.net,gmail.com,oracle.com,ellerman.id.au,suse.com,monstr.eu,linux.dev,suse.de,dabbelt.com,nod.at,armlinux.org.uk,google.com,alpha.franken.de,linutronix.de,suse.cz,vger.kernel.org,lists.infradead.org,lists.linux-m68k.org,kvack.org,lists.ozlabs.org,lists.linux.dev];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[riteshlist@gmail.com,linux-parisc@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DKIM_TRACE(0.00)[suse.de:+];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_GT_50(0.00)[66];
+	FROM_NEQ_ENVFROM(0.00)[jwiesner@suse.de,linux-parisc@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[linux-parisc];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D6A6C19BB20
+	TAGGED_RCPT(0.00)[linux-parisc];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 3423819C17A
 X-Rspamd-Action: no action
 
-Mike Rapoport <rppt@kernel.org> writes:
+On Sat, Jan 24, 2026 at 12:18:01AM +0100, Thomas Gleixner wrote:
+> To address this and bring back sanity to the watchdog, rewrite the code
+> completely with a different approach:
+> 
+>   1) Restrict the validation against a reference clocksource to the boot
+>      CPU, which is usually the CPU/Socket closest to the legacy block which
+>      contains the reference source (HPET/ACPI-PM timer).
 
-> Hello Ritesh,
->
-> On Wed, Feb 25, 2026 at 09:00:35AM +0530, Ritesh Harjani wrote:
->> Mike Rapoport <rppt@kernel.org> writes:
->> 
->> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
->> >
->> > Every architecture calls sparse_init() during setup_arch() although the
->> > data structures created by sparse_init() are not used until the
->> > initialization of the core MM.
->> >
->> > Beside the code duplication, calling sparse_init() from architecture
->> > specific code causes ordering differences of vmemmap and HVO initialization
->> > on different architectures.
->> >
->> > Move the call to sparse_init() from architecture specific code to
->> > free_area_init() to ensure that vmemmap and HVO initialization order is
->> > always the same.
->> >
->> 
->> Hello Mike,
->> 
->> [    0.000000][    T0] ------------[ cut here ]------------
->> [    0.000000][    T0] WARNING: arch/powerpc/include/asm/io.h:879 at virt_to_phys+0x44/0x1b8, CPU#0: swapper/0
->> [    0.000000][    T0] Modules linked in:
->> [    0.000000][    T0] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.19.0-12139-gc57b1c00145a #31 PREEMPT
->> [    0.000000][    T0] Hardware name: IBM pSeries (emulated by qemu) POWER10 (architected) 0x801200 0xf000006 of:SLOF,git-ee03ae pSeries
->> [    0.000000][    T0] NIP:  c000000000601584 LR: c000000004075de4 CTR: c000000000601548
->> [    0.000000][    T0] REGS: c000000004d1f870 TRAP: 0700   Not tainted  (6.19.0-12139-gc57b1c00145a)
->> [    0.000000][    T0] MSR:  8000000000021033 <SF,ME,IR,DR,RI,LE>  CR: 48022448  XER: 20040000
->> [    0.000000][    T0] CFAR: c0000000006016c4 IRQMASK: 1
->> [    0.000000][    T0] GPR00: c000000004075dd4 c000000004d1fb10 c00000000304bb00 c000000180000000
->> [    0.000000][    T0] GPR04: 0000000000000009 0000000000000009 c000000004ec94a0 0000000000000000
->> [    0.000000][    T0] GPR08: 0000000000018000 0000000000000001 c000000004921280 0000000048022448
->> [    0.000000][    T0] GPR12: c000000000601548 c000000004fe0000 0000000000000004 0000000000000004
->> [    0.000000][    T0] GPR16: 000000000287fb08 0000000000000060 0000000000000002 0000000002831750
->> [    0.000000][    T0] GPR20: 0000000002831778 fffffffffffffffd c000000004d78050 00000000051cbb00
->> [    0.000000][    T0] GPR24: 0000000005a40008 c000000000000000 c000000000400000 0000000000000100
->> [    0.000000][    T0] GPR28: c000000004d78050 0000000000000000 c000000004ecd4a8 0000000000000001
->> [    0.000000][    T0] NIP [c000000000601584] virt_to_phys+0x44/0x1b8
->> [    0.000000][    T0] LR [c000000004075de4] alloc_bootmem+0x144/0x1a8
->> [    0.000000][    T0] Call Trace:
->> [    0.000000][    T0] [c000000004d1fb50] [c000000004075dd4] alloc_bootmem+0x134/0x1a8
->> [    0.000000][    T0] [c000000004d1fba0] [c000000004075fac] __alloc_bootmem_huge_page+0x164/0x230
->> [    0.000000][    T0] [c000000004d1fbe0] [c000000004030bc4] alloc_bootmem_huge_page+0x44/0x138
->> [    0.000000][    T0] [c000000004d1fc10] [c000000004076e48] hugetlb_hstate_alloc_pages+0x350/0x5ac
->> [    0.000000][    T0] [c000000004d1fd30] [c0000000040782f0] hugetlb_bootmem_alloc+0x15c/0x19c
->> [    0.000000][    T0] [c000000004d1fd70] [c00000000406d7b4] mm_core_init_early+0x7c/0xdf4
->> [    0.000000][    T0] [c000000004d1ff30] [c000000004011d84] start_kernel+0xac/0xc58
->> [    0.000000][    T0] [c000000004d1ffe0] [c00000000000e99c] start_here_common+0x1c/0x20
->> [    0.000000][    T0] Code: 6129ffff 792907c6 6529ffff 6129ffff 7c234840 40810018 3d2201e8 3929a7a8 e9290000 7c291840 41810044 3be00001 <0b1f0000> 3d20bfff 6129ffff 792907c6
->> 
->> 
->> I think this is happening because, now in mm_core_early_init(), the
->> order of initialization between hugetlb_bootmem_alloc() and
->> free_area_init() is reversed. Since free_area_init() -> sparse_init()
->> is responsible for setting SECTIONS and vmemmap area. 
->> 
->> Then in alloc_bootmem() (from hugetlb_bootmem_alloc() path), it uses virt_to_phys(m)...
->> 
->> 			/*
->> 			 * For pre-HVO to work correctly, pages need to be on
->> 			 * the list for the node they were actually allocated
->> 			 * from. That node may be different in the case of
->> 			 * fallback by memblock_alloc_try_nid_raw. So,
->> 			 * extract the actual node first.
->> 			 */
->> 			if (m)
->> 				listnode = early_pfn_to_nid(PHYS_PFN(virt_to_phys(m)));
->> 
->> 
->> ... virt_to_phys on powerpc uses:
->> 
->> static inline unsigned long virt_to_phys(const volatile void * address)
->> {
->> 	WARN_ON(IS_ENABLED(CONFIG_DEBUG_VIRTUAL) && !virt_addr_valid(address));
->> 
->> 	return __pa((unsigned long)address);
->> }
->> 
->> #define virt_addr_valid(vaddr)	({					\
->> 	unsigned long _addr = (unsigned long)vaddr;			\
->> 	_addr >= PAGE_OFFSET && _addr < (unsigned long)high_memory &&	\
->> 	pfn_valid(virt_to_pfn((void *)_addr));				\
->> })
->> 
->> 
->> I think the above warning in dmesg gets printed from above WARN_ON, i.e.
->> because pfn_valid() is false, since we haven't done sparse_init() yet.
->
-> Yes, I agree.
+The UEFI picks the boot CPU so the kernel does not have control over that. On the other hand, I think the CPU that is connected to the southbridge chip (by DMI or PCIe) will be selected in the majority of UEFI implementations. Even if the boot CPU had to use the inter-processor link the readout latency should often pass the 50 microsecond threshold. This is a histogram of the hpet-tsc-hpet readout latency (in nanoseconds) as measured by the old clocksource watchdog (reads carried out from all CPUs on the machine):
+
+wd_delay Duration Distribution
+wd_delay Duration Average:  7822 +-  9413 (min 2875, max 77916)
+        Range      Count
+    0 -  5000       2766 (73.10%)
+ 5000 - 10000        383 (10.12%)
+20000 - 25000        402 (10.62%)
+25000 - 30000         94 ( 2.48%)
+30000 - 35000         49 ( 1.29%)
+35000 - 40000         35 ( 0.92%)
+40000 - 45000         21 ( 0.55%)
+45000 - 50000         14 ( 0.37%)
+50000 - 55000          7 ( 0.18%)
+55000 - 60000          3 ( 0.08%)
+60000 - 65000          4 ( 0.11%)
+65000 - 70000          2 ( 0.05%)
+70000 - 75000          1 ( 0.03%)
+75000 - 80000          3 ( 0.08%)
+Total count: 3,784
+
+The machine has 8 NUMA nodes with 960x Intel Xeon Platinum 8490H. The machine was running:
+stress-ng -t 30m --cpu 480 --switch 520
+It definitely does not represent effect of any arbitrary workload on the inter-processor link but it is a data point.
+
+There is one issue: What if the reference clocksource itself experiences time skew? I have seen a case like this with the sgi_rtc clocksource. I created a debugging kernel with the HPET as a second watchdog (not affecting the decisions by the watchdog) and got this result:
+> clocksource: timekeeping watchdog on CPU118: Marking clocksource 'tsc' as unstable because the skew is too large:
+> clocksource: 'sgi_rtc' wd_nsec: 511302794 wd_now: 1cb50e4c4b wd_last: 1ca7097111 mask: ffffffffffffff
+> clocksource: 'hpet' wd2_nsec: 512005960 wd2_now: 65892719 wd2_last: 64c5d684 mask: ffffffff
+> clocksource: 'tsc' cs_nsec: 512006458 cs_now: 86b5982cb1 cs_last: 867581bbab mask: ffffffffffffffff
+> clocksource: 'tsc' skewed 703664 ns (0 ms) over watchdog 'sgi_rtc' interval of 511302794 ns (511 ms)
+> clocksource: 'tsc' is current clocksource.
+> tsc: Marking TSC unstable due to clocksource watchdog
+> clocksource: Checking clocksource tsc synchronization from CPU 610 to CPUs 0-609,611-767.
+> clocksource: Switched to clocksource sgi_rtc
+
+The intervals measured by the TSC and the HPET match very well; the sgi_rtc is off. Even the new implementation of the clocksource watchdog would be susceptible to the reference clocksource experiencing time skew. I think the clocksource watchdog needs to make the assumption that the reference clocksource is right, and the onus should be on hardware developers to make sure the reference clocksource is accurate. In reality, one has to resort to disabling the reference clocksource experiencing time skew or, at least, decreasing the rating of that clocksource.
+
+> +static bool watchdog_check_freq(struct clocksource *cs, bool reset_pending)
+> +{
+> +		/*
+> +		 * Calculate and validate the skew against the allowed PPM
+> +		 * value of the maximum delta plus the watchdog readout
+> +		 * time.
+> +		 */
+> +		if (abs(wd_delta - cs_delta) < (max_delta >> ppm_shift) + wd_seq)
+> +			return true;
+
+Making the threshold proportional to the length of the interval resolves the issue with the (previously) fixed threshold and the interval being stretched on account of the timer running later than when it was meant to expire.
+
+> +static void watchdog_check_result(struct clocksource *cs)
+>  {
+> -	struct clocksource *cs;
+> +	switch (watchdog_data.result) {
+> +	case WD_SUCCESS:
+> +		clocksource_tick_stable(cs);
+> +		clocksource_enable_highres(cs);
+> +		return;
 >  
->> So, what I wanted to check was - do you think instead of virt_to_phys(), we
->> could directly use __pa() here() in mm/hugetlb.c, since these are
->> memblock alloc addresses? i.e.: 
->> 
->> // alloc_bootmem():
->> -   listnode = early_pfn_to_nid(PHYS_PFN(virt_to_phys(m)));
->> +   listnode = early_pfn_to_nid(PHYS_PFN(__pa(m)));
->> 
->> // __alloc_bootmem_huge_page():
->> -   memblock_reserved_mark_noinit(virt_to_phys((void *)m + PAGE_SIZE),
->> +   memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
->
-> It surely will work for powerpc :)
-> I checked the definitions of __pa() on other architectures and it seems the
-> safest and the easiest way to fix this.
->  
-> Would you send a formal patch?
->
+> -	list_for_each_entry(cs, &watchdog_list, wd_list)
+> +	case WD_FREQ_TIMEOUT:
+> +		watchdog_print_freq_timeout(cs);
+> +		/* Try again later and invalidate the reference timestamps. */
+>  		cs->flags &= ~CLOCK_SOURCE_WATCHDOG;
+> -}
+> +		return;
 
-Thanks Mike for taking a look at above and confirming. Sure, let me
-prepare the patch and send it by tomorrow. 
+I like that the new clocksource watchdog is far less punishing. A clocksource may be marked unstable only when the readout latency is below 50 us (and there is time skew or unsynchronized CPU sockets). There is no need for skipping watchdog checks to mitigate the clocksource being marked unstable on account of quite possibly unrelated readout latency, SMIs or vCPU preemption.
 
--ritesh
+-- 
+Jiri Wiesner
+SUSE Labs
 
