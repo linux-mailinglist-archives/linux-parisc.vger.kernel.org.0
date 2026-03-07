@@ -1,137 +1,114 @@
-Return-Path: <linux-parisc+bounces-4626-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4627-lists+linux-parisc=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id hDBxE+mHrGkpqgEAu9opvQ
-	(envelope-from <linux-parisc+bounces-4626-lists+linux-parisc=lfdr.de@vger.kernel.org>)
-	for <lists+linux-parisc@lfdr.de>; Sat, 07 Mar 2026 21:17:45 +0100
+	id 4LiTN/GNrGkYqwEAu9opvQ
+	(envelope-from <linux-parisc+bounces-4627-lists+linux-parisc=lfdr.de@vger.kernel.org>)
+	for <lists+linux-parisc@lfdr.de>; Sat, 07 Mar 2026 21:43:29 +0100
 X-Original-To: lists+linux-parisc@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 338DD22D7C4
-	for <lists+linux-parisc@lfdr.de>; Sat, 07 Mar 2026 21:17:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D06222D8A9
+	for <lists+linux-parisc@lfdr.de>; Sat, 07 Mar 2026 21:43:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 95658300AD99
-	for <lists+linux-parisc@lfdr.de>; Sat,  7 Mar 2026 20:17:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C900F300A3A1
+	for <lists+linux-parisc@lfdr.de>; Sat,  7 Mar 2026 20:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D87331218;
-	Sat,  7 Mar 2026 20:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E97E364EA9;
+	Sat,  7 Mar 2026 20:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E48jajpO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CbSeIaM6"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE2F27F749;
-	Sat,  7 Mar 2026 20:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA8330AD00;
+	Sat,  7 Mar 2026 20:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772914659; cv=none; b=hJ9dZnlmiIBrKBcrIRcgFT5DgPaz92RQ5YxPXUcFeshrbVt6MAvyn3gh+Lg5Ge1MJR6aOFQSa4DKBSqTf2nokswdJEceD41wdaWnA+USE0l2Np22+MD07y9V9Wm+X68ZIbQrzg64FuUOxzHKhUeDAWnooEerkvYFBdXKvrc8gyg=
+	t=1772916207; cv=none; b=jkZYQNVEsIJdwXFGqv20zKCpSpF1K3i7tNPyiGTyvggDrxxUBLeNokGw8NVnc/VWhSb3zaIFZfOfyP91r16JL8PxP3e+ZcO/x7DH2MNxbbEzMmHJwk8YYvpSKcwSk5S1g60ftXrkyCE8E2S54v2nYHA4TV6W44tlrHBEtqZNOY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772914659; c=relaxed/simple;
-	bh=SxELuXWu1uewFZXpz+wH6+Uu3+KiyfZlxNUxJwfvaGw=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=gVtQdVN4W7natPiZ9l5GSy22ot3j72aDzX4RhIZlN3HzJ6Tn5mfKcg5lEHhyNejklAz+mzGsfOhg9WKFcpLyYV8+xsejctoZPuF7syhvKWd36wWZ1OkMDsjDJ+t0e9SeLoFnHNpulQtsbHuAghGNTwJdR9wUE5A/YRaO50OLroM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E48jajpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E93DC19422;
-	Sat,  7 Mar 2026 20:17:37 +0000 (UTC)
+	s=arc-20240116; t=1772916207; c=relaxed/simple;
+	bh=IN1gR4dHttfOCgqZ9wjOPSXHFuTmY4VSK+s5d6HxwBI=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=njbbS93WTNX2/+NamkZDYU7bYWOFD7Hs8fgm6aS24jNraVnvSGAb9gRmwA3JuPR34axAZvMagrRpjdJv3Q8hSmzwyDqOwG63Fw28yk+HJCcM2FuTIuiukU5ZdTNRfp0VhsJ8NpR1NzpQuXlS0B0ow2sjGZ/cNbhyt8zo/9XEM+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CbSeIaM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BFDC19422;
+	Sat,  7 Mar 2026 20:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772914658;
-	bh=SxELuXWu1uewFZXpz+wH6+Uu3+KiyfZlxNUxJwfvaGw=;
-	h=Date:From:To:Subject:From;
-	b=E48jajpOHr+CyOonvWH0/A7Tv84WI9V1AvWFewxQm5wDLBsc3hlczDZTkYCWaZDqh
-	 XqFK8lSEbTMsckLzSvLcHB3s4QA13pdQmq855kmQ/3JHGG1KYjRfzHHi+htTJ3kug1
-	 sbn6GQf2vsq5FbZCkeX/5NJt5oAKM2qpcNBbCXgXCe+t21tMtfFDawdZs4L3PGrJSK
-	 68SuSLEcNDIhT3IlrEStxPCRdMumnrLh03fMkG2dUt+Fnwy1JcEWMMbCK4Uyy16RkN
-	 /Voxo77Dqh0JFrv/b99uMbRKGiO1i2VSer7HR2bCYGj61TerhOic532tyhNzkdO5g7
-	 joFkbRcLUuWXw==
-Date: Sat, 7 Mar 2026 21:17:34 +0100
-From: Helge Deller <deller@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	John David Anglin <dave.anglin@bell.net>
-Subject: [GIT PULL] parisc architecture fixes for v7.0-rc3
-Message-ID: <aayH3iaMo6nEiCKr@p100>
+	s=k20201202; t=1772916206;
+	bh=IN1gR4dHttfOCgqZ9wjOPSXHFuTmY4VSK+s5d6HxwBI=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=CbSeIaM6P3LDRVK4hWFylckou2AnNmSokeKgWoUyCLGMDQong48iEtNJ6zi48KcGC
+	 qu6WcIAKnKmLHAQ84AaMlYsPtH6BM9UuNERRtgssT6eYc2bL1dv7d+9LlYHZvkMEIh
+	 IHZjqIxWJ2yW+7yoQiO0eJfS3Z1la5jhD7inMoDaFCwy8hL6fpZken6CVyviMfklcy
+	 l+sJXifB9j9n2VO1SAwjoNPF4Z/cKMrkHuv49V9i7GU8K2HbF3NhzJQNnOymNaP7XB
+	 awShJrvsTC3e7KIuvIesGBsEvLF3VVeeCewcTw13W+RpprlCEs809+1yuynV+lpd/Y
+	 pxArMxol1Adbw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF543808200;
+	Sat,  7 Mar 2026 20:43:26 +0000 (UTC)
+Subject: Re: [GIT PULL] parisc architecture fixes for v7.0-rc3
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <aayH3iaMo6nEiCKr@p100>
+References: <aayH3iaMo6nEiCKr@p100>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <aayH3iaMo6nEiCKr@p100>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-7.0-rc3
+X-PR-Tracked-Commit-Id: 8475d8fe21ec9c7eb2faca555fbc5b68cf0d2597
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6deccafcb45b53825b2039c475da0258c899418b
+Message-Id: <177291620494.316744.1656882369193098052.pr-tracker-bot@kernel.org>
+Date: Sat, 07 Mar 2026 20:43:24 +0000
+To: Helge Deller <deller@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, John David Anglin <dave.anglin@bell.net>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 338DD22D7C4
+X-Rspamd-Queue-Id: 3D06222D8A9
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[linux-foundation.org,vger.kernel.org,hansenpartnership.com,bell.net];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-4626-lists,linux-parisc=lfdr.de];
+	FREEMAIL_CC(0.00)[linux-foundation.org,vger.kernel.org,hansenpartnership.com,bell.net];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.926];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[deller@kernel.org,linux-parisc@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-4627-lists,linux-parisc=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[linux-parisc];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pr-tracker-bot@kernel.org,linux-parisc@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[linux-parisc];
+	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-Hi Linus,
+The pull request you sent on Sat, 7 Mar 2026 21:17:34 +0100:
 
-While testing Sasha Levin's "kallsyms: embed source file:line info in kernel
-stack traces" patch series, which increases the typical kernel image size, I
-found some issues with the parisc initial kernel mapping which may prevent the
-kernel to boot.
+> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-7.0-rc3
 
-The three small patches here fix this.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6deccafcb45b53825b2039c475da0258c899418b
 
-Please pull for kernel v7.0-rc3.
+Thank you!
 
-Thanks!
-Helge
-----------------------------------------------------------------
-
-The following changes since commit 11439c4635edd669ae435eec308f4ab8a0804808:
-
-  Linux 7.0-rc2 (2026-03-01 15:39:31 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-7.0-rc3
-
-for you to fetch changes up to 8475d8fe21ec9c7eb2faca555fbc5b68cf0d2597:
-
-  parisc: Fix initial page table creation for boot (2026-03-06 11:33:13 +0100)
-
-----------------------------------------------------------------
-parisc architecture fixes for kernel v7.0-rc3:
-
-Three initial kernel mapping fixes
-
-----------------------------------------------------------------
-Helge Deller (3):
-      parisc: Increase initial mapping to 64 MB with KALLSYMS
-      parisc: Check kernel mapping earlier at bootup
-      parisc: Fix initial page table creation for boot
-
- arch/parisc/include/asm/pgtable.h |  2 +-
- arch/parisc/kernel/head.S         |  7 ++++++-
- arch/parisc/kernel/setup.c        | 20 ++++++++++++--------
- 3 files changed, 19 insertions(+), 10 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
