@@ -1,114 +1,137 @@
-Return-Path: <linux-parisc+bounces-4627-lists+linux-parisc=lfdr.de@vger.kernel.org>
+Return-Path: <linux-parisc+bounces-4628-lists+linux-parisc=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-parisc@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LiTN/GNrGkYqwEAu9opvQ
-	(envelope-from <linux-parisc+bounces-4627-lists+linux-parisc=lfdr.de@vger.kernel.org>)
-	for <lists+linux-parisc@lfdr.de>; Sat, 07 Mar 2026 21:43:29 +0100
+	id MrdoFCRHrWkk0wEAu9opvQ
+	(envelope-from <linux-parisc+bounces-4628-lists+linux-parisc=lfdr.de@vger.kernel.org>)
+	for <lists+linux-parisc@lfdr.de>; Sun, 08 Mar 2026 10:53:40 +0100
 X-Original-To: lists+linux-parisc@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D06222D8A9
-	for <lists+linux-parisc@lfdr.de>; Sat, 07 Mar 2026 21:43:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 891A522F3E1
+	for <lists+linux-parisc@lfdr.de>; Sun, 08 Mar 2026 10:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C900F300A3A1
-	for <lists+linux-parisc@lfdr.de>; Sat,  7 Mar 2026 20:43:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14A9830063B4
+	for <lists+linux-parisc@lfdr.de>; Sun,  8 Mar 2026 09:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E97E364EA9;
-	Sat,  7 Mar 2026 20:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A370C36C0AD;
+	Sun,  8 Mar 2026 09:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CbSeIaM6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTvqX2Cq"
 X-Original-To: linux-parisc@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA8330AD00;
-	Sat,  7 Mar 2026 20:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF0B24337B;
+	Sun,  8 Mar 2026 09:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772916207; cv=none; b=jkZYQNVEsIJdwXFGqv20zKCpSpF1K3i7tNPyiGTyvggDrxxUBLeNokGw8NVnc/VWhSb3zaIFZfOfyP91r16JL8PxP3e+ZcO/x7DH2MNxbbEzMmHJwk8YYvpSKcwSk5S1g60ftXrkyCE8E2S54v2nYHA4TV6W44tlrHBEtqZNOY4=
+	t=1772963617; cv=none; b=MEcJU7IWgTwMfTLOzFLXh5qbHeVMte4mtCLP/FKgNiwW23Ys+SlZkWG/IByE1fz6lXH277pUr/gUqVtJ9EaynpIStGV3LgrkIZ+VJHQjbDj8KlzylVu9tvAteH7JmXaPymj7xzHKnwF7WuqKzZmx0lf9MYT4bla4AtlJcgwYdtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772916207; c=relaxed/simple;
-	bh=IN1gR4dHttfOCgqZ9wjOPSXHFuTmY4VSK+s5d6HxwBI=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=njbbS93WTNX2/+NamkZDYU7bYWOFD7Hs8fgm6aS24jNraVnvSGAb9gRmwA3JuPR34axAZvMagrRpjdJv3Q8hSmzwyDqOwG63Fw28yk+HJCcM2FuTIuiukU5ZdTNRfp0VhsJ8NpR1NzpQuXlS0B0ow2sjGZ/cNbhyt8zo/9XEM+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CbSeIaM6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BFDC19422;
-	Sat,  7 Mar 2026 20:43:26 +0000 (UTC)
+	s=arc-20240116; t=1772963617; c=relaxed/simple;
+	bh=YpZtJeyi3j9I0kfeXGeyMC/v7uGkAInhYxZIAZcLHiQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=MUt/xVo9SbeSRAqZ/rs9+RcbR4UyJyAHjGZ0i9O35nvSTOqXvefa7TMz1QeBHBGwEEV3Nj8W+OAFvUYsHERlrJICjAikwedLJ6qzZL7fVAEckKBogIzPv0jqvI3fAsXZ+ntMSTmhxfvOVtTZv8zuD9gHeTFFWTcyNZkKMD6boVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTvqX2Cq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32853C116C6;
+	Sun,  8 Mar 2026 09:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772916206;
-	bh=IN1gR4dHttfOCgqZ9wjOPSXHFuTmY4VSK+s5d6HxwBI=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=CbSeIaM6P3LDRVK4hWFylckou2AnNmSokeKgWoUyCLGMDQong48iEtNJ6zi48KcGC
-	 qu6WcIAKnKmLHAQ84AaMlYsPtH6BM9UuNERRtgssT6eYc2bL1dv7d+9LlYHZvkMEIh
-	 IHZjqIxWJ2yW+7yoQiO0eJfS3Z1la5jhD7inMoDaFCwy8hL6fpZken6CVyviMfklcy
-	 l+sJXifB9j9n2VO1SAwjoNPF4Z/cKMrkHuv49V9i7GU8K2HbF3NhzJQNnOymNaP7XB
-	 awShJrvsTC3e7KIuvIesGBsEvLF3VVeeCewcTw13W+RpprlCEs809+1yuynV+lpd/Y
-	 pxArMxol1Adbw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF543808200;
-	Sat,  7 Mar 2026 20:43:26 +0000 (UTC)
-Subject: Re: [GIT PULL] parisc architecture fixes for v7.0-rc3
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <aayH3iaMo6nEiCKr@p100>
-References: <aayH3iaMo6nEiCKr@p100>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <aayH3iaMo6nEiCKr@p100>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-7.0-rc3
-X-PR-Tracked-Commit-Id: 8475d8fe21ec9c7eb2faca555fbc5b68cf0d2597
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 6deccafcb45b53825b2039c475da0258c899418b
-Message-Id: <177291620494.316744.1656882369193098052.pr-tracker-bot@kernel.org>
-Date: Sat, 07 Mar 2026 20:43:24 +0000
-To: Helge Deller <deller@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, James Bottomley <James.Bottomley@hansenpartnership.com>, John David Anglin <dave.anglin@bell.net>
+	s=k20201202; t=1772963617;
+	bh=YpZtJeyi3j9I0kfeXGeyMC/v7uGkAInhYxZIAZcLHiQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=RTvqX2CqsybrPAeVVoaqazFAFJGPkzei6O1n7GY6qEkv/iYa6ukUEu/sS4eQnM78A
+	 WR5rowPbwDsAaeuq0az4AZS+jNa1eDlcvcmtDEo4J5x4dcJzgLMVLTVrEZ+lzMLSxU
+	 px2sMA+SBJpkVYHNsU67xLXUuQNCwCuG4YSCNz/IfeBpO+1szqfsy7b1FRJ4MqgKa6
+	 yXz2NjoRBL66CBeMhyDgnE46+3zNstyZJhWXSiuvddb27D2U2gtOMJTvF2vFsUawZR
+	 W1rTO+qCe73tKbQbVsFX21SE4hm/nJcevFlDr8H/aqUhD85PPNTu7m/JQsikdRK5+Q
+	 QGQqHRMjy0UDg==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Daniel J Blueman <daniel@quora.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, "Paul E. McKenney"
+ <paulmck@kernel.org>, John Stultz <jstultz@google.com>, Waiman Long
+ <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Daniel
+ Lezcano <daniel.lezcano@linaro.org>, Stephen Boyd <sboyd@kernel.org>,
+ x86@kernel.org, "Gautham R. Shenoy" <gautham.shenoy@amd.com>, Jiri Wiesner
+ <jwiesner@suse.de>, Scott Hamilton <scott.hamilton@eviden.com>, Helge
+ Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, Thomas Bogendoerfer
+ <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org
+Subject: Re: [patch 5/5] clocksource: Rewrite watchdog code completely
+In-Reply-To: <87ms0zva5i.ffs@tglx>
+References: <20260123230651.688818373@kernel.org>
+ <20260123231521.926490888@kernel.org>
+ <CAMVG2ssXZKmw-YTKB5=CvhEofKeyEfaBCDZbyzfUcm2+P5rQsQ@mail.gmail.com>
+ <87jywvfkrs.ffs@tglx>
+ <CAMVG2ssvadzUUoZw9xdYdZ4T5Sz+xdcQnXmU2NkR0N_yqieT=w@mail.gmail.com>
+ <87ms0zva5i.ffs@tglx>
+Date: Sun, 08 Mar 2026 10:53:33 +0100
+Message-ID: <871phu3aw2.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-parisc@vger.kernel.org
 List-Id: <linux-parisc.vger.kernel.org>
 List-Subscribe: <mailto:linux-parisc+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-parisc+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 3D06222D8A9
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 891A522F3E1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [2.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,vger.kernel.org,hansenpartnership.com,bell.net];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-4627-lists,linux-parisc=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-4628-lists,linux-parisc=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,google.com,redhat.com,infradead.org,linaro.org,amd.com,suse.de,eviden.com,gmx.de,alpha.franken.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pr-tracker-bot@kernel.org,linux-parisc@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.661];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,linux-parisc@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[linux-parisc];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
 
-The pull request you sent on Sat, 7 Mar 2026 21:17:34 +0100:
+Daniel!
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git tags/parisc-for-7.0-rc3
+On Mon, Feb 23 2026 at 14:53, Thomas Gleixner wrote:
+> On Sun, Feb 15 2026 at 20:18, Daniel J Blueman wrote:
+>> On Mon, 2 Feb 2026 at 19:27, Thomas Gleixner <tglx@kernel.org> wrote:
+>> Good step forward! We can also reduce remote cacheline invalidation by
+>> putting 'seq' into the cacheline after 'cpu_ts' by reordering:
+>
+> Good point.
+>
+>> With that said, with your latest change on the 1920 thread setup,
+>> WATCHDOG_READOUT_MAX_US 1000 is still needed to avoid timeouts during
+>> the previous adverse workload, however some timeouts are still seen
+>> during massive parallel process teardowns.
+>>
+>> To limit overhead, perhaps it is sufficient to set the timeout to
+>> 100us, avoid retries (as the hardware thread may continue to be busy
+>> and will be rechecked later anyway), and log timeouts at the debug
+>> level if at all.
+>
+> Something like the below should work even with 50us. I left the print at
+> INFO level for now. We can either change it to pr_info_once() or to
+> debug as you said.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/6deccafcb45b53825b2039c475da0258c899418b
+Any chance you can give this a test ride on that 1920 thread
+monstrosity?
 
-Thank you!
+Thanks,
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+        tglx
 
